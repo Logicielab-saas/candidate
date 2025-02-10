@@ -2,8 +2,14 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Edit } from "lucide-react";
+import { MoreHorizontal, Edit, Eye, Globe, Sparkles, Trash2 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface Annonce {
   intitule: string;
@@ -116,6 +122,46 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
         <span className={getStatusColor(statut)}>
           {statut}
         </span>
+      );
+    },
+  },
+  {
+    id: "actions",
+    header: () => <div className="w-0.5"></div>,
+    cell: ({ row }) => {
+      return (
+        <div className="w-0.5">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-3 w-3 -pr-3">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-2.5 w-2.5 rotate-90" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-[220px]">
+              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm">
+                <Edit className="h-3.5 w-3.5" />
+                <span>Modifier l'annonce</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm">
+                <Eye className="h-3.5 w-3.5" />
+                <span>Voir le détail de l'annonce</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm">
+                <Globe className="h-3.5 w-3.5" />
+                <span>Afficher la page Emploi publique</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm">
+                <Sparkles className="h-3.5 w-3.5" />
+                <span>Sponsoriser l'annonce</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm text-red-600 dark:text-red-400">
+                <Trash2 className="h-3.5 w-3.5" />
+                <span>Supprimer l'annonce</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       );
     },
   },
