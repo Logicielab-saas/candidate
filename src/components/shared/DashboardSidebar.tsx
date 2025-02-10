@@ -30,6 +30,7 @@ import { recruiterNavigation } from "@/core/constants/recruiter-navigation.const
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
+import { cn } from "@/lib/utils"
 // import type { MenuSection, MenuItem } from "@/core/constants/dashboard-navigation.const"
 // import type { RecruiterMenuSection, RecruiterMenuItem } from "@/core/constants/recruiter-navigation.const"
 
@@ -152,12 +153,12 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
                         )}
                         {item.items?.length > 0 ? (
                           <>
-                            <Link href={item.url}>{item.title}</Link>
+                            <Link href={item.url} className={hoverClass}>{item.title}</Link>
                             <Plus className="ml-auto group-data-[state=open]/collapsible:hidden" />
                             <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden" />
                           </>
                         ) : (
-                          <Link href={item.url}>{item.title}</Link>
+                          <Link href={item.url} className={hoverClass}>{item.title}</Link>
                         )}
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
@@ -171,14 +172,15 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
                                 <SidebarMenuSubButton
                                   asChild
                                   isActive={isSubItemActive}
+                                  className={hoverClass}
                                 >
                                   <Link
                                     href={subItem.url}
-                                    className={`min-h-[40px] py-1.5 flex items-center w-full ${hoverClass} ${isSubItemActive ? activeItemClass : ''}`}
+                                    className={`min-h-[40px] py-1.5 flex items-center w-full ${isSubItemActive ? activeItemClass : ''}`}
                                   >
                                     {subItem.icon && (
                                       <subItem.icon
-                                        className={`mr-2 size-4 transition-colors ${isSubItemActive ? activeItemClass : ''}`}
+                                        className={`mr-2 size-4 transition-colors ${isSubItemActive ? '[&>*]:stroke-primaryHex-600 dark:[&>*]:stroke-primaryHex-400' : ''}`}
                                       />
                                     )}
                                     <span className={isSubItemActive ? activeItemClass : ''}>
