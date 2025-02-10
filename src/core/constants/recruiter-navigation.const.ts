@@ -77,22 +77,22 @@ export const recruiterNavigation: RecruiterNavigation = {
       items: [
         {
           title: "Utilisateurs",
-          url: "/recruiter/users",
+          url: "/recruiter/parametres/users",
           icon: Users,
         },
         {
           title: "Fiche d'entreprise",
-          url: "/recruiter/company",
+          url: "/recruiter/parametres/company",
           icon: Building,
         },
         {
           title: "Paramétres de l'entreprise",
-          url: "/recruiter/company-settings",
+          url: "/recruiter/parametres/company-settings",
           icon: NotepadTextDashed,
         },
         {
           title: "Notifications",
-          url: "/recruiter/notifications",
+          url: "/recruiter/parametres/notifications",
           icon: Bell,
         }
       ]
