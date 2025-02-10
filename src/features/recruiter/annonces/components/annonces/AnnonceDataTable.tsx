@@ -14,6 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getColumns } from "./AnnonceColumn";
+import { useState } from "react";
 
 // interface VehiclesTableProps {
 //     data: Vehicle[];
@@ -24,16 +25,22 @@ export function AnnonceDataTable({
 }: {
   data: any
 }) {
+  const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data,
     columns: getColumns(),
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
+    enableRowSelection: true,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      rowSelection,
+    },
   });
 
   return (
-    <div className="w-full rounded-b-xl border border-t-2 border-zinc-200 bg-white/50 backdrop-blur-sm dark:border-zinc-700 dark:bg-zinc-800/50">
+    <div className="w-full rounded-b-xl border border-t-1 border-zinc-200 bg-white/50 backdrop-blur-sm dark:border-zinc-700 dark:bg-zinc-800/50">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -44,7 +51,7 @@ export function AnnonceDataTable({
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
-                  className="h-12 bg-zinc-50/50 font-medium text-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-300"
+                  className="h-12 bg-zinc-50/50 font-medium text-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-300 border-r last:border-r-0 border-zinc-200 dark:border-zinc-700"
                 >
                   {header.isPlaceholder
                     ? null
@@ -67,7 +74,7 @@ export function AnnonceDataTable({
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
                     key={cell.id}
-                    className="py-3 text-zinc-700 dark:text-zinc-300"
+                    className="py-3 text-zinc-700 dark:text-zinc-300 border-r last:border-r-0 border-zinc-200 dark:border-zinc-700"
                   >
                     {flexRender(
                       cell.column.columnDef.cell,
@@ -83,7 +90,7 @@ export function AnnonceDataTable({
                 colSpan={getColumns().length}
                 className="h-24 text-center text-zinc-500 dark:text-zinc-400"
               >
-                Aucun véhicule trouvé.
+                Aucune annonce trouvée.
               </TableCell>
             </TableRow>
           )}
