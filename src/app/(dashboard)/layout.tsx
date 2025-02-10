@@ -1,0 +1,44 @@
+import React from 'react';
+import { ThemeProvider } from '@/lib/providers/ThemeProvider';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { Separator } from '@/components/ui/separator';
+import { DashboardSidebar } from '@/components/shared/DashboardSidebar';
+import { DashboardBreadcrumb } from '@/components/shared/DashboardBreadcrumb';
+// import { logout } from '@/app/actions/auth/logout';
+// import { Button } from '@/components/ui/button';
+interface RoleLayoutProps {
+    children: React.ReactNode;
+    params: Promise<{
+        role: string;
+    }>;
+}
+
+export default async function RoleLayout({ children, params }: RoleLayoutProps) {
+
+    return (
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+            storageKey="dashboard-theme"
+        >
+            <div className="flex h-screen overflow-hidden bg-savor-background-light dark:bg-savor-background-dark">
+                <SidebarProvider>
+                    <DashboardSidebar className="border-r" />
+                    <div className="flex-1 flex flex-col overflow-hidden">
+                        <header className="flex h-14 items-center gap-2 border-b bg-savor-background-light dark:bg-savor-background-dark px-4">
+                            <SidebarTrigger className="-ml-1" />
+                            <Separator orientation="vertical" className="mr-2 h-4" />
+                            <DashboardBreadcrumb />
+                            {/* <Button onClick={logout}>Logout</Button> */}
+                        </header>
+                        <main className="flex-1 overflow-y-auto">
+                            {children}
+                        </main>
+                    </div>
+                </SidebarProvider>
+            </div>
+        </ThemeProvider>
+    );
+}
