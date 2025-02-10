@@ -2,15 +2,13 @@ import type { LucideIcon } from "lucide-react"
 import {
   LayoutDashboard,
   Users,
-  Briefcase,
-  Building,
-  FileText,
-  UserPlus,
   Settings,
   Mail,
   Search,
   BookMarked,
-  UserCheck,
+  FileText,
+  Briefcase,
+  UserPlus,
   MessageSquare,
 } from "lucide-react"
 
@@ -41,7 +39,7 @@ export const dashboardNavigation: DashboardNavigation = {
       url: "/dashboard",
       icon: LayoutDashboard,
       items: [],
-      roles: ['admin', 'recruiter', 'candidate']
+      roles: ['admin', 'candidate']
     },
     {
       title: "User Management",
@@ -60,38 +58,6 @@ export const dashboardNavigation: DashboardNavigation = {
           url: "/admin/users",
           icon: Users,
           roles: ['admin']
-        }
-      ]
-    },
-    {
-      title: "Recruiter Tools",
-      url: "#",
-      icon: Building,
-      roles: ['recruiter'],
-      items: [
-        {
-          title: "Post Job",
-          url: "/recruiter/jobs/create",
-          icon: Briefcase,
-          roles: ['recruiter']
-        },
-        {
-          title: "My Job Posts",
-          url: "/recruiter/jobs",
-          icon: FileText,
-          roles: ['recruiter']
-        },
-        {
-          title: "Applications",
-          url: "/recruiter/applications",
-          icon: UserCheck,
-          roles: ['recruiter']
-        },
-        {
-          title: "Messages",
-          url: "/recruiter/messages",
-          icon: MessageSquare,
-          roles: ['recruiter']
         }
       ]
     },
@@ -122,7 +88,7 @@ export const dashboardNavigation: DashboardNavigation = {
         {
           title: "Messages",
           url: "/candidate/messages",
-          icon: Mail,
+          icon: MessageSquare,
           roles: ['candidate']
         }
       ]
@@ -131,13 +97,13 @@ export const dashboardNavigation: DashboardNavigation = {
       title: "Settings",
       url: "#",
       icon: Settings,
-      roles: ['admin', 'recruiter', 'candidate'],
+      roles: ['admin', 'candidate'],
       items: [
         {
           title: "Profile Settings",
           url: "/settings/profile",
           icon: Settings,
-          roles: ['admin', 'recruiter', 'candidate']
+          roles: ['admin', 'candidate']
         }
       ]
     }

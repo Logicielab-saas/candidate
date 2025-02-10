@@ -6,22 +6,35 @@ import { JWTPayloadType } from "@/core/types/jwt-payload.type";
 const ROUTES = {
   PROTECTED: {
     ADMIN: /^\/?(admin|dashboard\/admin)/,
-    AGENT: /^\/?(agent|dashboard\/agent)/,
+    RECRUITER: /^\/?(recruiter|dashboard\/recruiter)/,
+    CANDIDATE: /^\/?(candidate|dashboard\/candidate)/,
   },
   RESTRICTED: {
     // * Routes that only admin can access
     ADMIN_ONLY: [
       "overview",
     ],
+    RECRUITER_ONLY: [
+      "users",
+      "company",
+      "company-settings",
+      "notifications",
+    ],
+    CANDIDATE_ONLY: [
+      "profile",
+      "applications",
+      "notifications",
+    ],
   },
   // * default route redirection
   DEFAULT_REDIRECTS: {
-    ADMIN: "/gestion",
-    AGENT: "/gestion",
+    ADMIN: "/admin/dashboard",
+    RECRUITER: "/recruiter/dashboard",
+    CANDIDATE: "/candidate/dashboard",
   },
 } as const;
 
-const VALID_ROLES = ["admin", "agent"] as const;
+const VALID_ROLES = ["admin", "recruiter", "candidate"] as const;
 type ValidRole = (typeof VALID_ROLES)[number];
 
 function isValidRole(role: string): role is ValidRole {
@@ -32,89 +45,19 @@ function isRestrictedPath(pathname: string): boolean {
   return ROUTES.RESTRICTED.ADMIN_ONLY.some((path) => pathname.includes(path));
 }
 
-function isJWTPayloadType(payload: any): payload is JWTPayloadType {
-  return (
-    typeof payload === "object" &&
-    payload !== null &&
-    typeof payload.sub === "number" &&
-    typeof payload.email === "string" &&
-    typeof payload.role === "string"
-  );
-}
-
 export default function middleware(request: NextRequest) {
-  // const accessToken = request.cookies.get("accessToken")?.value;
-  // const pathname = request.nextUrl.pathname;
-  // const pathnameSegments = pathname.split("/");
-  // const potentialRole = pathnameSegments[1];
+  const { pathname } = request.nextUrl;
 
-  // // Prevent logged in users from accessing login page
-  // if (pathname.includes("/login") && accessToken) {
-  //   try {
-  //     const decoded = jwt.decode(accessToken);
-  //     if (!decoded || !isJWTPayloadType(decoded)) {
-  //       throw new Error("Invalid token payload");
-  //     }
-  //     const role = decoded.role.toLowerCase();
-  //     const redirectPath = `/${role}${ROUTES.DEFAULT_REDIRECTS[role === "admin" ? "ADMIN" : "AGENT"]}`;
-  //     return NextResponse.redirect(new URL(redirectPath, request.url));
-  //   } catch (error) {
-  //     return NextResponse.redirect(new URL("/login", request.url));
-  //   }
-  // }
-
-  // // Handle role-based root redirects
-  // if (potentialRole && isValidRole(potentialRole)) {
-  //   if (pathname === `/${potentialRole}`) {
-  //     const redirectPath = `/${potentialRole}${potentialRole === "admin"
-  //       ? ROUTES.DEFAULT_REDIRECTS.ADMIN
-  //       : ROUTES.DEFAULT_REDIRECTS.AGENT
-  //       }`;
-  //     return NextResponse.redirect(new URL(redirectPath, request.url));
-  //   }
-  // }
-
-  // // Handle protected and restricted routes
-  // if (
-  //   pathname.match(ROUTES.PROTECTED.ADMIN) ||
-  //   pathname.match(ROUTES.PROTECTED.AGENT)
-  // ) {
-  //   // No token → redirect to login
-  //   if (!accessToken) {
-  //     return NextResponse.redirect(new URL("/login", request.url));
-  //   }
-
-  //   try {
-  //     // Verify and decode the token
-  //     const decoded = jwt.decode(accessToken);
-  //     if (!decoded || !isJWTPayloadType(decoded)) {
-  //       throw new Error("Invalid token payload");
-  //     }
-
-  //     // Wrong role for admin routes → unauthorized
-  //     if (
-  //       pathname.match(ROUTES.PROTECTED.ADMIN) &&
-  //       decoded.role !== "ADMIN"
-  //     ) {
-  //       return NextResponse.redirect(new URL("/unauthorized", request.url));
-  //     }
-
-  //     // Wrong role for agent routes → unauthorized
-  //     if (
-  //       pathname.match(ROUTES.PROTECTED.AGENT) &&
-  //       decoded.role !== "AGENT"
-  //     ) {
-  //       return NextResponse.redirect(new URL("/unauthorized", request.url));
-  //     }
-
-  //     // Agent trying to access admin-only pages → unauthorized
-  //     if (decoded.role === "AGENT" && isRestrictedPath(pathname)) {
-  //       return NextResponse.redirect(new URL("/unauthorized", request.url));
-  //     }
-  //   } catch (error) {
-  //     return NextResponse.redirect(new URL("/login", request.url));
-  //   }
-  // }
+  // Only redirect if the path is exactly /admin, /recruiter, or /candidate
+  if (pathname === '/admin') {
+    return NextResponse.redirect(new URL(ROUTES.DEFAULT_REDIRECTS.ADMIN, request.url));
+  }
+  if (pathname === '/recruiter') {
+    return NextResponse.redirect(new URL(ROUTES.DEFAULT_REDIRECTS.RECRUITER, request.url));
+  }
+  if (pathname === '/candidate') {
+    return NextResponse.redirect(new URL(ROUTES.DEFAULT_REDIRECTS.CANDIDATE, request.url));
+  }
 
   return NextResponse.next();
 }

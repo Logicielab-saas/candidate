@@ -30,7 +30,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={cn("antialiased", geistSans.className)}>
         <ReactQueryProvider>
-          <NextTopLoader showSpinner={false} />
+          <NextTopLoader showSpinner={false} color="#F97316" />
           <main>
             {children}
           </main>

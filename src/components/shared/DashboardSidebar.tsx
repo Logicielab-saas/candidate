@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import {
   Plus,
@@ -25,22 +27,47 @@ import {
 } from "@/components/ui/sidebar"
 import { Separator } from "../ui/separator"
 import { dashboardNavigation } from "@/core/constants/dashboard-navigation.const"
-import type { MenuSection, MenuItem } from "@/core/constants/dashboard-navigation.const"
+import { recruiterNavigation } from "@/core/constants/recruiter-navigation.const"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+// import type { MenuSection, MenuItem } from "@/core/constants/dashboard-navigation.const"
+// import type { RecruiterMenuSection, RecruiterMenuItem } from "@/core/constants/recruiter-navigation.const"
 
 interface DashboardSidebarProps extends React.ComponentProps<typeof Sidebar> {
   userRole?: 'admin' | 'recruiter' | 'candidate';
 }
 
-export function DashboardSidebar({ userRole = 'candidate', ...props }: DashboardSidebarProps) {
-  // Filter menu items based on user role
-  const filteredNavMain = dashboardNavigation.navMain.filter(section =>
-    section.roles?.includes(userRole)
-  ).map(section => ({
-    ...section,
-    items: section.items.filter(item =>
-      item.roles?.includes(userRole)
-    )
-  }));
+export function DashboardSidebar({ userRole = 'recruiter', ...props }: DashboardSidebarProps) {
+  const pathname = usePathname()
+
+  // Get navigation items based on user role
+  const getNavigationItems = () => {
+    if (userRole === 'recruiter') {
+      return recruiterNavigation.navMain.map(section => ({
+        ...section,
+        isActive: pathname === section.url,
+        items: section.items.map(item => ({
+          ...item,
+          isActive: pathname === item.url
+        }))
+      }));
+    }
+
+    return dashboardNavigation.navMain.filter(section =>
+      section.roles?.includes(userRole)
+    ).map(section => ({
+      ...section,
+      isActive: pathname === section.url,
+      items: section.items.filter(item =>
+        item.roles?.includes(userRole)
+      ).map(item => ({
+        ...item,
+        isActive: pathname === item.url
+      }))
+    }));
+  };
+
+  const navigationItems = getNavigationItems();
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -48,7 +75,7 @@ export function DashboardSidebar({ userRole = 'candidate', ...props }: Dashboard
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild tooltip="Jobs Platform">
-              <a href="/dashboard">
+              <a href="/recruiter/dashboard">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                   <Briefcase className="size-4" />
                 </div>
@@ -66,7 +93,7 @@ export function DashboardSidebar({ userRole = 'candidate', ...props }: Dashboard
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            {filteredNavMain.map((item: MenuSection) => (
+            {navigationItems.map((item) => (
               <Collapsible
                 key={item.title}
                 defaultOpen={item.title === 'Dashboard'}
@@ -74,25 +101,28 @@ export function DashboardSidebar({ userRole = 'candidate', ...props }: Dashboard
               >
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuButton tooltip={item.title}>
-                      {item.icon && <item.icon className="mr-2 size-4" />}
-                      {item.title}
-                      {item.items?.length > 0 && (
-                        <>
-                          <Plus className="ml-auto group-data-[state=open]/collapsible:hidden" />
-                          <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden" />
-                        </>
-                      )}
+                    <SidebarMenuButton tooltip={item.title} className={`hover:text-primaryHex-600 dark:hover:text-primaryHex-400 transition-colors ${item.isActive ? 'text-primaryHex-600 dark:text-primaryHex-400 font-medium' : ''}`}>
+                      {item.icon && <item.icon className={`mr-2 size-4 transition-colors ${item.isActive ? 'text-primaryHex-600 dark:text-primaryHex-400' : ''}`} />}
+                      {item.items?.length > 0
+                        ? (
+                          <>
+                            <Link href={item.url}>{item.title}</Link>
+                            <Plus className="ml-auto group-data-[state=open]/collapsible:hidden" />
+                            <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden" />
+                          </>
+                        )
+                        : <Link href={item.url}>{item.title}</Link>}
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
                   {item.items?.length ? (
                     <CollapsibleContent>
                       <SidebarMenuSub>
-                        {item.items.map((subItem: MenuItem) => (
+                        {item.items.map((subItem) => (
                           <SidebarMenuSubItem key={subItem.title}>
                             <SidebarMenuSubButton
                               asChild
                               isActive={subItem.isActive}
+                              className={`min-h-[40px] py-1.5 hover:text-primaryHex-600 dark:hover:text-primaryHex-400 transition-colors ${subItem.isActive ? 'text-primaryHex-600 dark:text-primaryHex-400 font-medium' : ''}`}
                             >
                               <a href={subItem.url}>
                                 {subItem.icon && <subItem.icon className="mr-2 size-4" />}
