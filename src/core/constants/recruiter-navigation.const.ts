@@ -42,7 +42,7 @@ export const recruiterNavigation: RecruiterNavigation = {
     },
     {
       title: "Mes Annonces",
-      url: "/recruiter/jobs",
+      url: "/recruiter/annonces",
       icon: Briefcase,
       items: [],
     },

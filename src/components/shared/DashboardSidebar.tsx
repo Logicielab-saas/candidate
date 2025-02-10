@@ -53,12 +53,6 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
         if (section.items?.length > 0) {
           const items = section.items.map(item => {
             const isActive = pathname === item.url;
-            // Debug log for each submenu item
-            console.log(`Submenu item: ${item.title}`, {
-              itemUrl: item.url,
-              pathname,
-              isActive
-            });
             return {
               ...item,
               isActive
