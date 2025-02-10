@@ -29,7 +29,6 @@ import { dashboardNavigation } from "@/core/constants/dashboard-navigation.const
 import { recruiterNavigation } from "@/core/constants/recruiter-navigation.const"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 // import type { MenuSection, MenuItem } from "@/core/constants/dashboard-navigation.const"
 // import type { RecruiterMenuSection, RecruiterMenuItem } from "@/core/constants/recruiter-navigation.const"
@@ -38,13 +37,12 @@ interface DashboardSidebarProps {
   userRole?: 'admin' | 'recruiter' | 'candidate';
 }
 
+// Base styles that won't change between server and client
+const activeItemClass = "text-primaryHex-600 dark:text-primaryHex-400 font-medium"
+const hoverClass = "hover:text-primaryHex-600 dark:hover:text-primaryHex-400 transition-colors"
+
 export function DashboardSidebar({ userRole = 'recruiter', ...props }: DashboardSidebarProps) {
   const pathname = usePathname()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   // Get navigation items based on user role
   const getNavigationItems = () => {
@@ -105,9 +103,7 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
 
   const navigationItems = getNavigationItems();
 
-  // Base styles that won't change between server and client
-  const activeItemClass = "text-primaryHex-600 dark:text-primaryHex-400 font-medium"
-  const hoverClass = "hover:text-primaryHex-600 dark:hover:text-primaryHex-400 transition-colors"
+
 
   return (
     <>
@@ -144,48 +140,56 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton
                         tooltip={item.title}
-                        className={`${hoverClass} ${mounted && item.isActive ? activeItemClass : ''}`}
+                        className={cn(hoverClass, item.isActive && activeItemClass)}
+                        asChild
                       >
-                        {item.icon && (
-                          <item.icon
-                            className={`mr-2 size-4 transition-colors ${mounted && item.isActive ? activeItemClass : ''}`}
-                          />
-                        )}
-                        {item.items?.length > 0 ? (
-                          <>
-                            <Link href={item.url} className={hoverClass}>{item.title}</Link>
-                            <Plus className="ml-auto group-data-[state=open]/collapsible:hidden" />
-                            <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden" />
-                          </>
-                        ) : (
-                          <Link href={item.url} className={hoverClass}>{item.title}</Link>
-                        )}
+                        <Link href={item.url} className="flex w-full items-center">
+                          {item.icon && (
+                            <item.icon
+                              className={cn("mr-2 size-4 transition-colors", item.isActive && activeItemClass)}
+                            />
+                          )}
+                          <span className={`flex-1 ${hoverClass}`}>{item.title}</span>
+                          {item.items?.length > 0 && (
+                            <>
+                              <Plus className="ml-auto group-data-[state=open]/collapsible:hidden" />
+                              <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden" />
+                            </>
+                          )}
+                        </Link>
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
                     {item.items?.length ? (
                       <CollapsibleContent>
                         <SidebarMenuSub>
                           {item.items.map((subItem) => {
-                            const isSubItemActive = mounted && subItem.isActive;
+                            const isSubItemActive = subItem.isActive;
                             return (
                               <SidebarMenuSubItem key={subItem.title}>
                                 <SidebarMenuSubButton
                                   asChild
                                   isActive={isSubItemActive}
-                                  className={hoverClass}
+                                  className={cn(
+                                    "w-full transition-colors hover:bg-accent/50",
+                                    isSubItemActive && "bg-accent"
+                                  )}
                                 >
                                   <Link
                                     href={subItem.url}
-                                    className={`min-h-[40px] py-1.5 flex items-center w-full ${isSubItemActive ? activeItemClass : ''}`}
+                                    className={cn(
+                                      "flex min-h-[40px] w-full items-center py-1.5",
+                                      isSubItemActive ? activeItemClass : "text-muted-foreground"
+                                    )}
                                   >
                                     {subItem.icon && (
                                       <subItem.icon
-                                        className={`mr-2 size-4 transition-colors ${isSubItemActive ? '[&>*]:stroke-primaryHex-600 dark:[&>*]:stroke-primaryHex-400' : ''}`}
+                                        className={cn(
+                                          "mr-2 size-4 transition-colors",
+                                          isSubItemActive && '[&>*]:stroke-primaryHex-600 dark:[&>*]:stroke-primaryHex-400'
+                                        )}
                                       />
                                     )}
-                                    <span className={isSubItemActive ? activeItemClass : ''}>
-                                      {subItem.title}
-                                    </span>
+                                    <span>{subItem.title}</span>
                                   </Link>
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
