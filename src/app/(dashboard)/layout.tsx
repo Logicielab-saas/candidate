@@ -4,6 +4,7 @@ import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Separator } from '@/components/ui/separator';
 import { DashboardSidebar } from '@/components/shared/DashboardSidebar';
 import { DashboardBreadcrumb } from '@/components/shared/DashboardBreadcrumb';
+import { ThemeButton } from '@/components/shared/ThemeButton';
 // import { logout } from '@/app/actions/auth/logout';
 // import { Button } from '@/components/ui/button';
 interface RoleLayoutProps {
@@ -31,6 +32,8 @@ export default async function RoleLayout({ children, params }: RoleLayoutProps) 
                             <SidebarTrigger className="-ml-1" />
                             <Separator orientation="vertical" className="mr-2 h-4" />
                             <DashboardBreadcrumb />
+                            <div className="flex-1" />
+                            <ThemeButton />
                             {/* <Button onClick={logout}>Logout</Button> */}
                         </header>
                         <main className="flex-1 overflow-y-auto">
