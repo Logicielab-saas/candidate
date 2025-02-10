@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import {
   Plus,
   Minus,
@@ -30,18 +29,19 @@ import { dashboardNavigation } from "@/core/constants/dashboard-navigation.const
 import { recruiterNavigation } from "@/core/constants/recruiter-navigation.const"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
 // import type { MenuSection, MenuItem } from "@/core/constants/dashboard-navigation.const"
 // import type { RecruiterMenuSection, RecruiterMenuItem } from "@/core/constants/recruiter-navigation.const"
 
-interface DashboardSidebarProps extends React.ComponentProps<typeof Sidebar> {
+interface DashboardSidebarProps {
   userRole?: 'admin' | 'recruiter' | 'candidate';
 }
 
 export function DashboardSidebar({ userRole = 'recruiter', ...props }: DashboardSidebarProps) {
   const pathname = usePathname()
-  const [mounted, setMounted] = React.useState(false)
+  const [mounted, setMounted] = useState(false)
 
-  React.useEffect(() => {
+  useEffect(() => {
     setMounted(true)
   }, [])
 
@@ -121,7 +121,7 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" asChild tooltip="Jobs Platform">
-                <a href="/recruiter/dashboard">
+                <Link href="/recruiter/dashboard">
                   <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                     <Briefcase className="size-4" />
                   </div>
@@ -131,7 +131,7 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
                       {userRole.charAt(0).toUpperCase() + userRole.slice(1)} Portal
                     </span>
                   </div>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
