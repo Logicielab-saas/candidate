@@ -2,7 +2,6 @@
 
 import {
   ColumnDef,
-  PaginationState,
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -15,77 +14,22 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import React, { useEffect, useState } from "react";
-import { DataTablePagination } from "./DataTablePagination";
-
-type Params = {
-  page: string;
-  limit: string;
-};
+import React from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  data: {
-    data: TData[];
-    meta: {
-      total: string | number;
-      page?: number;
-      limit?: number;
-    };
-  };
-  setParams: React.Dispatch<React.SetStateAction<Params>>;
-  params: Params;
-  isPagination?: boolean;
+  data: TData[];
 }
 
 export default function DataTable<TData, TValue>({
   columns,
   data,
-  setParams,
-  params,
-  isPagination = true,
 }: DataTableProps<TData, TValue>) {
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: parseInt(params.page) - 1,
-    pageSize: parseInt(params.limit),
-  });
-
   const table = useReactTable<TData>({
-    data: data.data,
+    data,
     columns,
-    rowCount: typeof data.meta.total === 'string' ? parseInt(data.meta.total) : data.meta.total,
-    state: {
-      pagination,
-    },
-    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
   });
-
-  const handlePageChange = (page: number) => {
-    setPagination(prev => ({
-      ...prev,
-      pageIndex: page - 1
-    }));
-  };
-
-  const handleLimitChange = (limit: number) => {
-    setPagination(prev => ({
-      pageIndex: 0,
-      pageSize: limit
-    }));
-  };
-
-  useEffect(() => {
-    setParams({
-      page: (pagination.pageIndex + 1).toString(),
-      limit: pagination.pageSize.toString(),
-    });
-  }, [pagination, setParams]);
-
-  const totalPages = Math.ceil(
-    (typeof data.meta.total === 'string' ? parseInt(data.meta.total) : data.meta.total) / pagination.pageSize
-  );
 
   return (
     <div className="space-y-4">
@@ -135,18 +79,6 @@ export default function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-
-      {isPagination && (
-        <DataTablePagination
-          currentPage={pagination.pageIndex + 1}
-          totalPages={totalPages}
-          totalItems={typeof data.meta.total === 'string' ? parseInt(data.meta.total) : data.meta.total}
-          limit={pagination.pageSize}
-          currentItems={table.getRowModel().rows.length}
-          onPageChange={handlePageChange}
-          onlimitChange={handleLimitChange}
-        />
-      )}
     </div>
   );
 }

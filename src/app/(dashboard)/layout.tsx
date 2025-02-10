@@ -36,7 +36,7 @@ export default async function RoleLayout({ children, params }: RoleLayoutProps) 
                             <ThemeButton />
                             {/* <Button onClick={logout}>Logout</Button> */}
                         </header>
-                        <main className="flex-1 overflow-y-auto">
+                        <main className="flex-1 overflow-y-auto p-6">
                             {children}
                         </main>
                     </div>
