@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { AnnonceTabs } from '@/features/recruiter/annonces/components/AnnonceTabs'
+import { AnnonceTabs } from '@/features/recruiter/annonces/components/annonces/AnnonceTabs'
 import React from 'react'
 
 const JobsPage = () => {

@@ -2,13 +2,53 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
 import { AnnonceSelectFilter } from "./AnnonceSelectFilter"
+import { AnnonceDataTable } from "./AnnonceDataTable"
 
 interface AnnonceTabsProps {
   children?: React.ReactNode
   className?: string
 }
 
+const data = [
+  {
+    intitule: "Software Engineer",
+    candidatures: 5,
+    statutDeSponsorisation: "Sponsorisé",
+    dateDePublication: "2023-10-01",
+    statutDeLAnnonce: "Ouvert",
+  },
+  {
+    intitule: "Product Manager",
+    candidatures: 3,
+    statutDeSponsorisation: "Non sponsorisé",
+    dateDePublication: "2023-09-15",
+    statutDeLAnnonce: "Ouvert",
+  },
+  {
+    intitule: "Data Scientist",
+    candidatures: 8,
+    statutDeSponsorisation: "Sponsorisé",
+    dateDePublication: "2023-08-20",
+    statutDeLAnnonce: "Fermé",
+  },
+  {
+    intitule: "UX Designer",
+    candidatures: 2,
+    statutDeSponsorisation: "Non sponsorisé",
+    dateDePublication: "2023-07-10",
+    statutDeLAnnonce: "Ouvert",
+  },
+  {
+    intitule: "DevOps Engineer",
+    candidatures: 4,
+    statutDeSponsorisation: "Sponsorisé",
+    dateDePublication: "2023-06-05",
+    statutDeLAnnonce: "Fermé",
+  },
+]
+
 export function AnnonceTabs({ children, className }: AnnonceTabsProps) {
+
   return (
     <Tabs defaultValue="active" className={cn("w-full space-y-6", className)}>
       <TabsList className="flex h-12 w-fit items-center gap-8 border-b border-secondaryHex-200 dark:border-secondaryHex-800 bg-transparent p-0">
@@ -31,7 +71,7 @@ export function AnnonceTabs({ children, className }: AnnonceTabsProps) {
       {/* Content for active jobs */}
       <TabsContent value="active">
         <div className="rounded-lg">
-          <div>qq</div>
+          <AnnonceDataTable data={data} />
         </div>
       </TabsContent>
       {/* Content for closed jobs */}
