@@ -150,23 +150,23 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[220px]">
-              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm">
+              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
                 <Edit className="h-3.5 w-3.5" />
                 <span>Modifier l'annonce</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm">
+              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
                 <Eye className="h-3.5 w-3.5" />
                 <Link href={`/recruiter/annonces/details/1`}>Voir le détail de l'annonce</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm">
+              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
                 <Globe className="h-3.5 w-3.5" />
                 <span>Afficher la page Emploi publique</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm">
+              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
                 <Sparkles className="h-3.5 w-3.5" />
                 <span>Sponsoriser l'annonce</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm text-red-600 dark:text-red-400">
+              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm text-red-600 dark:text-red-400 cursor-pointer">
                 <Trash2 className="h-3.5 w-3.5" />
                 <span>Supprimer l'annonce</span>
               </DropdownMenuItem>

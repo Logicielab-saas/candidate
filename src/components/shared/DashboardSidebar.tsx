@@ -26,6 +26,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
+  useSidebar
 } from "@/components/ui/sidebar"
 import { Separator } from "../ui/separator"
 import { dashboardNavigation } from "@/core/constants/dashboard-navigation.const"
@@ -34,6 +35,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { ThemeButton } from "./ThemeButton"
+import { Button } from "../ui/button"
 
 interface DashboardSidebarProps {
   userRole?: 'admin' | 'recruiter' | 'candidate';
@@ -45,6 +47,7 @@ const hoverClass = "hover:text-primaryHex-600 dark:hover:text-primaryHex-400 tra
 
 export function DashboardSidebar({ userRole = 'recruiter', ...props }: DashboardSidebarProps) {
   const pathname = usePathname()
+  const { state } = useSidebar()
 
   // Get navigation items based on user role
   const getNavigationItems = () => {
@@ -245,19 +248,20 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
             </SidebarMenu>
           </SidebarGroup>
           <Separator className="my-2" />
-          <SidebarFooter className="flex flex-row items-center justify-between gap-2 px-2 py-2">
-            <ThemeButton />
-            <SidebarMenuButton
-              tooltip="Logout"
-              asChild
-              variant="outline"
-              size="sm"
-              className="w-7"
-            >
-              <Link href="#" className="flex items-center gap-2">
-                <LogOut className="size-4" />
-              </Link>
-            </SidebarMenuButton>
+          <SidebarFooter className="py-2">
+            <div className={cn(
+              state !== "collapsed" && "flex flex-row items-center justify-between gap-2 px-2"
+            )}>
+              <ThemeButton />
+
+              <Button variant="outline" size="sm" className={cn(
+                state !== "collapsed" ? "w-9" : "w-9 mt-2"
+              )}>
+                <Link href="#">
+                  <LogOut />
+                </Link>
+              </Button>
+            </div>
           </SidebarFooter>
         </div>
         <SidebarRail />
