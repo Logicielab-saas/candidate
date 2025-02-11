@@ -5,6 +5,7 @@ import { ArrowLeft, Users, UserPlus, Eye, MousePointerClick, UserCircle2, FileCh
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { PerformanceCard } from "./PerformanceCard";
+import { AnnonceDescription } from "./AnnonceDescription";
 
 interface AnnonceDetailsProps {
   // TODO: Replace with proper type when API integration is done
@@ -150,7 +151,9 @@ export function AnnonceDetails({ data }: AnnonceDetailsProps) {
             Améliorer la visibilité
           </Button>
         </div>
+
       </div>
+      <AnnonceDescription />
     </div>
   );
 }
