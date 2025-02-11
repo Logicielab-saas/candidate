@@ -140,20 +140,29 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton
                         tooltip={item.title}
-                        className={cn(hoverClass, item.isActive && activeItemClass)}
+                        className="w-full transition-colors"
                         asChild
                       >
-                        <Link href={item.url} className="flex w-full items-center">
+                        <Link href={item.url} className={cn(
+                          "group/main flex w-full items-center hover:bg-accent/50",
+                          item.isActive ? activeItemClass : ""
+                        )}>
                           {item.icon && (
                             <item.icon
-                              className={cn("mr-2 size-4 transition-colors", item.isActive && activeItemClass)}
+                              className={cn(
+                                "mr-2 size-4 transition-colors group-hover/main:stroke-primaryHex-600 dark:group-hover/main:stroke-primaryHex-400",
+                                item.isActive && '[&>*]:stroke-primaryHex-600 dark:[&>*]:stroke-primaryHex-400'
+                              )}
                             />
                           )}
-                          <span className={`flex-1 ${hoverClass}`}>{item.title}</span>
+                          <span className={cn(
+                            "flex-1 group-hover/main:text-primaryHex-600 dark:group-hover/main:text-primaryHex-400",
+                            item.isActive ? activeItemClass : ""
+                          )}>{item.title}</span>
                           {item.items?.length > 0 && (
                             <>
-                              <Plus className="ml-auto group-data-[state=open]/collapsible:hidden" />
-                              <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden" />
+                              <Plus className="ml-auto group-data-[state=open]/collapsible:hidden group-hover/main:stroke-primaryHex-600 dark:group-hover/main:stroke-primaryHex-400" />
+                              <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden group-hover/main:stroke-primaryHex-600 dark:group-hover/main:stroke-primaryHex-400" />
                             </>
                           )}
                         </Link>
@@ -169,27 +178,26 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
                                 <SidebarMenuSubButton
                                   asChild
                                   isActive={isSubItemActive}
-                                  className={cn(
-                                    "w-full transition-colors hover:bg-accent/50",
-                                    isSubItemActive && "bg-accent"
-                                  )}
+                                  className="w-full transition-colors"
                                 >
                                   <Link
                                     href={subItem.url}
                                     className={cn(
-                                      "flex min-h-[40px] w-full items-center py-1.5",
-                                      isSubItemActive ? activeItemClass : "text-muted-foreground"
+                                      "group/item flex min-h-[40px] w-full items-center py-1.5 hover:bg-accent/50",
+                                      isSubItemActive
+                                        ? activeItemClass
+                                        : " hover:text-primaryHex-600 dark:hover:text-primaryHex-400"
                                     )}
                                   >
                                     {subItem.icon && (
                                       <subItem.icon
                                         className={cn(
-                                          "mr-2 size-4 transition-colors",
+                                          "mr-2 size-4 transition-colors group-hover/item:stroke-primaryHex-600 dark:group-hover/item:stroke-primaryHex-400",
                                           isSubItemActive && '[&>*]:stroke-primaryHex-600 dark:[&>*]:stroke-primaryHex-400'
                                         )}
                                       />
                                     )}
-                                    <span>{subItem.title}</span>
+                                    <span className={` group-hover/item:text-primaryHex-600 dark:group-hover/item:text-primaryHex-400 ${hoverClass} ${isSubItemActive ? activeItemClass : ''}`}>{subItem.title}</span>
                                   </Link>
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
