@@ -80,8 +80,8 @@ export function AnnonceDetails({ data }: AnnonceDetailsProps) {
         </h1>
       </div>
 
-      <div className="flex gap-6 items-stretch">
-        <div className="w-[350px]">
+      <div className="flex flex-col lg:flex-row gap-6 items-stretch">
+        <div className="w-full lg:w-[350px]">
           <h2 className="text-xl font-semibold text-secondaryHex-900 dark:text-secondaryHex-50 mb-4">
             Candidatures
           </h2>
@@ -115,14 +115,15 @@ export function AnnonceDetails({ data }: AnnonceDetailsProps) {
           </Card>
         </div>
 
-        <Separator orientation="vertical" className="h-40 mt-11 bg-secondaryHex-200 dark:bg-secondaryHex-700" />
+        <Separator orientation="vertical" className="hidden lg:block h-40 mt-11 bg-secondaryHex-200 dark:bg-secondaryHex-700" />
+        <Separator className="block lg:hidden h-px w-full bg-secondaryHex-200 dark:bg-secondaryHex-700" />
 
         <div className="flex-1">
           <h2 className="text-xl font-semibold text-secondaryHex-900 dark:text-secondaryHex-50 mb-4">
             Récapitulatif des performances
           </h2>
 
-          <div className="grid grid-cols-4 gap-3 p-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-0">
             {performanceMetrics.map((metric, index) => (
               <PerformanceCard
                 key={index}
