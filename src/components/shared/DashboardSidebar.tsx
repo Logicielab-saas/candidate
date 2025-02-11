@@ -29,8 +29,7 @@ import {
   useSidebar
 } from "@/components/ui/sidebar"
 import { Separator } from "../ui/separator"
-import { dashboardNavigation } from "@/core/constants/dashboard-navigation.const"
-import { recruiterNavigation } from "@/core/constants/recruiter-navigation.const"
+import { recruiterNavigation, type RecruiterMenuSection } from "@/core/constants/recruiter-navigation.const"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -38,77 +37,38 @@ import { ThemeButton } from "./ThemeButton"
 import { Button } from "../ui/button"
 
 interface DashboardSidebarProps {
-  userRole?: 'admin' | 'recruiter' | 'candidate';
+  userRole?: 'recruiter';
 }
 
 // Base styles that won't change between server and client
 const activeItemClass = "text-primaryHex-600 dark:text-primaryHex-400 font-medium"
 const hoverClass = "hover:text-primaryHex-600 dark:hover:text-primaryHex-400 transition-colors"
 
+// Get navigation items based on user role
+const getNavigationItems = (pathname: string) => {
+  return recruiterNavigation.navMain.map(section => {
+    const items = section.items?.length > 0
+      ? section.items.map(item => ({
+        ...item,
+        isActive: pathname === item.url
+      }))
+      : [];
+
+    return {
+      ...section,
+      isActive: items.length > 0
+        ? items.some(item => item.isActive)
+        : pathname === section.url,
+      items
+    };
+  });
+};
+
 export function DashboardSidebar({ userRole = 'recruiter', ...props }: DashboardSidebarProps) {
   const pathname = usePathname()
   const { state } = useSidebar()
 
-  // Get navigation items based on user role
-  const getNavigationItems = () => {
-    if (userRole === 'recruiter') {
-      return recruiterNavigation.navMain.map(section => {
-        // For sections with submenu items
-        if (section.items?.length > 0) {
-          const items = section.items.map(item => {
-            const isActive = pathname === item.url;
-            return {
-              ...item,
-              isActive
-            };
-          });
-
-          const hasActiveSubmenu = items.some(item => item.isActive);
-
-          return {
-            ...section,
-            isActive: hasActiveSubmenu,
-            items
-          };
-        }
-
-        return {
-          ...section,
-          isActive: pathname === section.url,
-          items: []
-        };
-      });
-    }
-
-    return dashboardNavigation.navMain.filter(section =>
-      section.roles?.includes(userRole)
-    ).map(section => {
-      if (section.items?.length > 0) {
-        const items = section.items
-          .filter(item => item.roles?.includes(userRole))
-          .map(item => ({
-            ...item,
-            isActive: pathname === item.url
-          }));
-
-        return {
-          ...section,
-          isActive: items.some(item => item.isActive),
-          items
-        };
-      }
-
-      return {
-        ...section,
-        isActive: pathname === section.url,
-        items: []
-      };
-    });
-  };
-
-  const navigationItems = getNavigationItems();
-
-
+  const navigationItems = getNavigationItems(pathname);
 
   return (
     <>
@@ -254,7 +214,7 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
             )}>
               <ThemeButton />
 
-              <Button variant="outline" size="sm" className={cn(
+              <Button variant="ghost" size="sm" className={cn(
                 state !== "collapsed" ? "w-9" : "w-9 mt-2"
               )}>
                 <Link href="#">

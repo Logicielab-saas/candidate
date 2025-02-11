@@ -10,7 +10,7 @@ export function ThemeButton(): React.JSX.Element {
 
   return (
     <Button
-      variant="outline"
+      variant="ghost"
       size="sm"
       onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
       className="w-9"
