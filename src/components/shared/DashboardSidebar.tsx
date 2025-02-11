@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Plus,
@@ -6,13 +6,13 @@ import {
   Briefcase,
   HelpCircle,
   Settings,
-  LogOut
-} from "lucide-react"
+  LogOut,
+} from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from "@/components/ui/collapsible";
 import {
   Sidebar,
   SidebarContent,
@@ -26,47 +26,54 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
-  useSidebar
-} from "@/components/ui/sidebar"
-import { Separator } from "../ui/separator"
-import { recruiterNavigation, type RecruiterMenuSection } from "@/core/constants/recruiter-navigation.const"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
-import { ThemeButton } from "./ThemeButton"
-import { Button } from "../ui/button"
+  useSidebar,
+} from "@/components/ui/sidebar";
+import { Separator } from "../ui/separator";
+import { recruiterNavigation } from "@/core/constants/recruiter-navigation.const";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { ThemeButton } from "./ThemeButton";
+import { Button } from "../ui/button";
 
 interface DashboardSidebarProps {
-  userRole?: 'recruiter';
+  userRole?: "recruiter";
 }
 
 // Base styles that won't change between server and client
-const activeItemClass = "text-primaryHex-600 dark:text-primaryHex-400 font-medium"
-const hoverClass = "hover:text-primaryHex-600 dark:hover:text-primaryHex-400 transition-colors"
+const activeItemClass =
+  "text-primaryHex-600 dark:text-primaryHex-400 font-medium";
+const hoverClass =
+  "hover:text-primaryHex-600 dark:hover:text-primaryHex-400 transition-colors";
 
 // Get navigation items based on user role
 const getNavigationItems = (pathname: string) => {
-  return recruiterNavigation.navMain.map(section => {
-    const items = section.items?.length > 0
-      ? section.items.map(item => ({
-        ...item,
-        isActive: pathname === item.url
-      }))
-      : [];
+  return recruiterNavigation.navMain.map((section) => {
+    const items =
+      section.items?.length > 0
+        ? section.items.map((item) => ({
+            ...item,
+            isActive: pathname === item.url,
+          }))
+        : [];
 
     return {
       ...section,
-      isActive: items.length > 0
-        ? items.some(item => item.isActive)
-        : pathname === section.url,
-      items
+      isActive:
+        items.length > 0
+          ? items.some((item) => item.isActive)
+          : pathname === section.url,
+      items,
     };
   });
 };
 
-export function DashboardSidebar({ userRole = 'recruiter', ...props }: DashboardSidebarProps) {
-  const pathname = usePathname()
-  const { state } = useSidebar()
+export function DashboardSidebar({
+  userRole = "recruiter",
+  ...props
+}: DashboardSidebarProps) {
+  const pathname = usePathname();
+  const { state } = useSidebar();
 
   const navigationItems = getNavigationItems(pathname);
 
@@ -84,7 +91,8 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
                   <div className="flex flex-col gap-0.5 leading-none">
                     <span className="font-semibold">Postuly</span>
                     <span className="text-xs text-muted-foreground">
-                      {userRole.charAt(0).toUpperCase() + userRole.slice(1)} Portal
+                      {userRole.charAt(0).toUpperCase() + userRole.slice(1)}{" "}
+                      Portal
                     </span>
                   </div>
                 </Link>
@@ -98,7 +106,7 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
               {navigationItems.map((item) => (
                 <Collapsible
                   key={item.title}
-                  defaultOpen={item.isActive || item.title === 'Dashboard'}
+                  defaultOpen={item.isActive || item.title === "Dashboard"}
                   className="group/collapsible"
                 >
                   <SidebarMenuItem>
@@ -108,22 +116,30 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
                         className="w-full transition-colors"
                         asChild
                       >
-                        <Link href={item.url} className={cn(
-                          "group/main flex w-full items-center hover:bg-accent/50",
-                          item.isActive ? activeItemClass : ""
-                        )}>
+                        <Link
+                          href={item.url}
+                          className={cn(
+                            "group/main flex w-full items-center hover:bg-accent/50",
+                            item.isActive ? activeItemClass : ""
+                          )}
+                        >
                           {item.icon && (
                             <item.icon
                               className={cn(
                                 "mr-2 size-4 transition-colors group-hover/main:stroke-primaryHex-600 dark:group-hover/main:stroke-primaryHex-400",
-                                item.isActive && '[&>*]:stroke-primaryHex-600 dark:[&>*]:stroke-primaryHex-400'
+                                item.isActive &&
+                                  "[&>*]:stroke-primaryHex-600 dark:[&>*]:stroke-primaryHex-400"
                               )}
                             />
                           )}
-                          <span className={cn(
-                            "flex-1 group-hover/main:text-primaryHex-600 dark:group-hover/main:text-primaryHex-400",
-                            item.isActive ? activeItemClass : ""
-                          )}>{item.title}</span>
+                          <span
+                            className={cn(
+                              "flex-1 group-hover/main:text-primaryHex-600 dark:group-hover/main:text-primaryHex-400",
+                              item.isActive ? activeItemClass : ""
+                            )}
+                          >
+                            {item.title}
+                          </span>
                           {item.items?.length > 0 && (
                             <>
                               <Plus className="ml-auto group-data-[state=open]/collapsible:hidden group-hover/main:stroke-primaryHex-600 dark:group-hover/main:stroke-primaryHex-400" />
@@ -158,11 +174,18 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
                                       <subItem.icon
                                         className={cn(
                                           "mr-2 size-4 transition-colors group-hover/item:stroke-primaryHex-600 dark:group-hover/item:stroke-primaryHex-400",
-                                          isSubItemActive && '[&>*]:stroke-primaryHex-600 dark:[&>*]:stroke-primaryHex-400'
+                                          isSubItemActive &&
+                                            "[&>*]:stroke-primaryHex-600 dark:[&>*]:stroke-primaryHex-400"
                                         )}
                                       />
                                     )}
-                                    <span className={` group-hover/item:text-primaryHex-600 dark:group-hover/item:text-primaryHex-400 ${hoverClass} ${isSubItemActive ? activeItemClass : ''}`}>{subItem.title}</span>
+                                    <span
+                                      className={` group-hover/item:text-primaryHex-600 dark:group-hover/item:text-primaryHex-400 ${hoverClass} ${
+                                        isSubItemActive ? activeItemClass : ""
+                                      }`}
+                                    >
+                                      {subItem.title}
+                                    </span>
                                   </Link>
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
@@ -209,14 +232,19 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
           </SidebarGroup>
           <Separator className="my-2" />
           <SidebarFooter className="py-2">
-            <div className={cn(
-              state !== "collapsed" && "flex flex-row items-center justify-between gap-2 px-2"
-            )}>
+            <div
+              className={cn(
+                state !== "collapsed" &&
+                  "flex flex-row items-center justify-between gap-2 px-2"
+              )}
+            >
               <ThemeButton />
 
-              <Button variant="ghost" size="sm" className={cn(
-                state !== "collapsed" ? "w-9" : "w-9 mt-2"
-              )}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className={cn(state !== "collapsed" ? "w-9" : "w-9 mt-2")}
+              >
                 <Link href="#">
                   <LogOut />
                 </Link>
@@ -227,5 +255,5 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
         <SidebarRail />
       </Sidebar>
     </>
-  )
+  );
 }

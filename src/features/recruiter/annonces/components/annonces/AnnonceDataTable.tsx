@@ -21,9 +21,10 @@ import { useState } from "react";
 // }
 
 export function AnnonceDataTable({
-  data
+  data,
 }: {
-  data: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
 }) {
   const [rowSelection, setRowSelection] = useState({});
 
@@ -56,9 +57,9 @@ export function AnnonceDataTable({
                   {header.isPlaceholder
                     ? null
                     : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                 </TableHead>
               ))}
             </TableRow>
@@ -76,10 +77,7 @@ export function AnnonceDataTable({
                     key={cell.id}
                     className="py-3 text-zinc-700 dark:text-zinc-300 border-r last:border-r-0 border-zinc-200 dark:border-zinc-700"
                   >
-                    {flexRender(
-                      cell.column.columnDef.cell,
-                      cell.getContext(),
-                    )}
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>

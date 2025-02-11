@@ -2,7 +2,14 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Edit, Eye, Globe, Sparkles, Trash2 } from "lucide-react";
+import {
+  MoreHorizontal,
+  Edit,
+  Eye,
+  Globe,
+  Sparkles,
+  Trash2,
+} from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -34,7 +41,9 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && "indeterminate")
           }
-          onCheckedChange={(value: boolean | "indeterminate") => table.toggleAllPageRowsSelected(!!value)}
+          onCheckedChange={(value: boolean | "indeterminate") =>
+            table.toggleAllPageRowsSelected(!!value)
+          }
           aria-label="Select all"
         />
       </div>
@@ -68,9 +77,7 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
             asChild
           >
             {/* TODO: get the id from the row */}
-            <Link href={`/recruiter/annonces/details/1`}>
-              {intitule}
-            </Link>
+            <Link href={`/recruiter/annonces/details/1`}>{intitule}</Link>
           </Button>
           <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
             <span>{city}</span>
@@ -83,12 +90,13 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
   },
   {
     id: "candidatures",
-    header: () => (
-      <div className="text-center">Candidatures</div>
-    ),
+    header: () => <div className="text-center">Candidatures</div>,
     accessorKey: "candidatures",
     cell: ({ row }) => {
-      const candidatures = row.getValue("candidatures") as { tous: number; nouveaux: number };
+      const candidatures = row.getValue("candidatures") as {
+        tous: number;
+        nouveaux: number;
+      };
       return (
         <div className="grid grid-cols-2">
           <div className="flex items-center justify-center py-3 border-r border-zinc-200 dark:border-zinc-700">
@@ -119,26 +127,23 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
       const statut = row.getValue("statutDeLAnnonce") as string;
       const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
-          case 'ouverte':
-            return 'text-green-600';
-          case 'suspendue':
-            return 'text-yellow-600';
-          case 'fermée':
-            return 'text-red-600';
+          case "ouverte":
+            return "text-green-600";
+          case "suspendue":
+            return "text-yellow-600";
+          case "fermée":
+            return "text-red-600";
           default:
-            return '';
+            return "";
         }
       };
-      return (
-        <span className={getStatusColor(statut)}>
-          {statut}
-        </span>
-      );
+      return <span className={getStatusColor(statut)}>{statut}</span>;
     },
   },
   {
     id: "actions",
     header: () => <div className="w-0.5"></div>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     cell: ({ row }) => {
       return (
         <div className="w-0.5">
@@ -152,11 +157,13 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
             <DropdownMenuContent align="end" className="w-[220px]">
               <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
                 <Edit className="h-3.5 w-3.5" />
-                <span>Modifier l'annonce</span>
+                <span>Modifier l&apos;annonce</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
                 <Eye className="h-3.5 w-3.5" />
-                <Link href={`/recruiter/annonces/details/1`}>Voir le détail de l'annonce</Link>
+                <Link href={`/recruiter/annonces/details/1`}>
+                  Voir le détail de l&apos;annonce
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
                 <Globe className="h-3.5 w-3.5" />
@@ -164,11 +171,11 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
                 <Sparkles className="h-3.5 w-3.5" />
-                <span>Sponsoriser l'annonce</span>
+                <span>Sponsoriser l&apos;annonce</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm text-red-600 dark:text-red-400 cursor-pointer">
                 <Trash2 className="h-3.5 w-3.5" />
-                <span>Supprimer l'annonce</span>
+                <span>Supprimer l&apos;annonce</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

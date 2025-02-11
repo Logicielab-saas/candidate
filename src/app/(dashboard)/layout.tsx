@@ -5,14 +5,11 @@ import { Separator } from '@/components/ui/separator';
 import { DashboardSidebar } from '@/components/shared/DashboardSidebar';
 import { DashboardBreadcrumb } from '@/components/shared/DashboardBreadcrumb';
 
-interface RoleLayoutProps {
+interface DashboardLayoutProps {
     children: React.ReactNode;
-    params: Promise<{
-        role: string;
-    }>;
 }
 
-export default async function RoleLayout({ children, params }: RoleLayoutProps) {
+export default async function DashboardLayout({ children }: DashboardLayoutProps) {
 
     return (
         <ThemeProvider

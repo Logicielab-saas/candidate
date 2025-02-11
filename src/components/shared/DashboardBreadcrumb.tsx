@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname } from 'next/navigation'
-import { dashboardNavigation } from '@/core/constants/dashboard-navigation.const'
 import {
   Breadcrumb,
   BreadcrumbList,

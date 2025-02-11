@@ -21,12 +21,23 @@ export function AnnonceDescription() {
                   Description du poste
                 </h3>
                 <p className="text-secondaryHex-600 dark:text-secondaryHex-400 text-sm leading-relaxed">
-                  Nous recherchons un(e) stagiaire PFE motivé(e) pour rejoindre notre équipe en tant que Social Media Manager. Vous serez impliqué(e) dans :
+                  Nous recherchons un(e) stagiaire PFE motivé(e) pour rejoindre
+                  notre équipe en tant que Social Media Manager. Vous serez
+                  impliqué(e) dans :
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm text-secondaryHex-600 dark:text-secondaryHex-400 ml-4">
-                  <li>Création de contenu : Conception de contenus variés (photos, vidéos, textes) adaptés aux plateformes sociales.</li>
-                  <li>Gestion des réseaux sociaux : Participer à la planification, publication, et modération des publications.</li>
-                  <li>Veille et brainstorming : Analyser les tendances digitales et contribuer à la création de concepts innovants.</li>
+                  <li>
+                    Création de contenu : Conception de contenus variés (photos,
+                    vidéos, textes) adaptés aux plateformes sociales.
+                  </li>
+                  <li>
+                    Gestion des réseaux sociaux : Participer à la planification,
+                    publication, et modération des publications.
+                  </li>
+                  <li>
+                    Veille et brainstorming : Analyser les tendances digitales
+                    et contribuer à la création de concepts innovants.
+                  </li>
                 </ul>
               </div>
             </div>
@@ -41,11 +52,26 @@ export function AnnonceDescription() {
                   Profil recherché
                 </h3>
                 <ul className="list-disc list-inside space-y-2 text-sm text-secondaryHex-600 dark:text-secondaryHex-400 ml-4">
-                  <li>Formation : Étudiant(e) en fin de cycle (Bac+4/Bac+5) en communication, marketing, audiovisuel, ou équivalent.</li>
-                  <li>Compétences techniques : Maîtrise des outils de tournage et montage.</li>
-                  <li>Créativité : Capacité à produire des contenus visuellement attractifs et engageants.</li>
-                  <li>Organisation : Esprit structuré et aptitude à respecter les délais.</li>
-                  <li>Passion : Grand intérêt pour les réseaux sociaux et les nouvelles tendances digitales.</li>
+                  <li>
+                    Formation : Étudiant(e) en fin de cycle (Bac+4/Bac+5) en
+                    communication, marketing, audiovisuel, ou équivalent.
+                  </li>
+                  <li>
+                    Compétences techniques : Maîtrise des outils de tournage et
+                    montage.
+                  </li>
+                  <li>
+                    Créativité : Capacité à produire des contenus visuellement
+                    attractifs et engageants.
+                  </li>
+                  <li>
+                    Organisation : Esprit structuré et aptitude à respecter les
+                    délais.
+                  </li>
+                  <li>
+                    Passion : Grand intérêt pour les réseaux sociaux et les
+                    nouvelles tendances digitales.
+                  </li>
                 </ul>
               </div>
             </div>
@@ -60,9 +86,18 @@ export function AnnonceDescription() {
                   Ce que nous offrons
                 </h3>
                 <ul className="list-disc list-inside space-y-2 text-sm text-secondaryHex-600 dark:text-secondaryHex-400 ml-4">
-                  <li>Une expérience enrichissante au sein d'une équipe dynamique et bienveillante.</li>
-                  <li>L'opportunité de travailler sur des projets variés et d'apporter des idées créatives.</li>
-                  <li>Possibilité d'embauche à l'issue du stage pour les profils performants</li>
+                  <li>
+                    Une expérience enrichissante au sein d&apos;une équipe
+                    dynamique et bienveillante.
+                  </li>
+                  <li>
+                    L&apos;opportunité de travailler sur des projets variés et
+                    d&apos;apporter des idées créatives.
+                  </li>
+                  <li>
+                    Possibilité d&apos;embauche à l&apos;issue du stage pour les
+                    profils performants
+                  </li>
                 </ul>
               </div>
             </div>

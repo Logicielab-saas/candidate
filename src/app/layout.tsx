@@ -11,7 +11,7 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
+const _geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
@@ -29,17 +29,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script src="https://unpkg.com/react-scan/dist/auto.global.js" />
+        <script src="https://unpkg.com/react-scan/dist/auto.global.js" async />
       </head>
       <body className={cn("antialiased", geistSans.className)}>
         <ReactQueryProvider>
           <NextTopLoader showSpinner={false} color="#F97316" />
-          <main>
-            {children}
-          </main>
+          <main>{children}</main>
           <Toaster />
         </ReactQueryProvider>
-
       </body>
     </html>
   );

@@ -1,7 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Users, UserPlus, Eye, MousePointerClick, UserCircle2, FileCheck } from "lucide-react";
+import {
+  ArrowLeft,
+  Users,
+  UserPlus,
+  Eye,
+  MousePointerClick,
+  UserCircle2,
+  FileCheck,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { PerformanceCard } from "./PerformanceCard";
@@ -71,8 +79,11 @@ export function AnnonceDetails({ data }: AnnonceDetailsProps) {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex items-center gap-4">
-        <span className="cursor-pointer text-primaryHex-600 hover:text-primaryHex-500 transition-colors
-         dark:bg-primaryHex-900/20 dark:text-primaryHex-400 bg-primaryHex-50 rounded-full p-2" onClick={() => router.back()}>
+        <span
+          className="cursor-pointer text-primaryHex-600 hover:text-primaryHex-500 transition-colors
+         dark:bg-primaryHex-900/20 dark:text-primaryHex-400 bg-primaryHex-50 rounded-full p-2"
+          onClick={() => router.back()}
+        >
           <ArrowLeft className="w-8 h-8 cursor-pointer" />
         </span>
         <h1 className="text-2xl font-semibold text-secondaryHex-900 dark:text-secondaryHex-50">
@@ -85,8 +96,10 @@ export function AnnonceDetails({ data }: AnnonceDetailsProps) {
           <h2 className="text-xl font-semibold text-secondaryHex-900 dark:text-secondaryHex-50 mb-4">
             Candidatures
           </h2>
-          <Card className="bg-white/50 backdrop-blur-sm dark:bg-zinc-800/50 border p-1
-           border-secondaryHex-200 dark:border-secondaryHex-700 shadow-sm hover:shadow-md transition-all">
+          <Card
+            className="bg-white/50 backdrop-blur-sm dark:bg-zinc-800/50 border p-1
+           border-secondaryHex-200 dark:border-secondaryHex-700 shadow-sm hover:shadow-md transition-all"
+          >
             <CardContent className="flex items-center justify-between p-5 min-h-full">
               <div className="flex flex-col items-center gap-2">
                 <div className="rounded-full bg-primaryHex-50 dark:bg-primaryHex-900/20 p-3">
@@ -115,7 +128,10 @@ export function AnnonceDetails({ data }: AnnonceDetailsProps) {
           </Card>
         </div>
 
-        <Separator orientation="vertical" className="hidden lg:block h-40 mt-11 bg-secondaryHex-200 dark:bg-secondaryHex-700" />
+        <Separator
+          orientation="vertical"
+          className="hidden lg:block h-40 mt-11 bg-secondaryHex-200 dark:bg-secondaryHex-700"
+        />
         <Separator className="block lg:hidden h-px w-full bg-secondaryHex-200 dark:bg-secondaryHex-700" />
 
         <div className="flex-1">
@@ -142,7 +158,7 @@ export function AnnonceDetails({ data }: AnnonceDetailsProps) {
           size="sm"
           className="bg-white dark:bg-zinc-800 text-primaryHex-600 border-primaryHex-200 hover:bg-primaryHex-50 dark:hover:bg-primaryHex-900/20"
         >
-          Sponsoriser l'annonce
+          Sponsoriser l&apos;annonce
         </Button>
         <Button
           variant="outline"

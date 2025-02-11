@@ -1,7 +1,4 @@
 import { NextResponse, type NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
-import { JWTPayloadType } from "@/core/types/jwt-payload.type";
-
 // route protection configuration
 const ROUTES = {
   PROTECTED: {
@@ -37,11 +34,11 @@ const ROUTES = {
 const VALID_ROLES = ["admin", "recruiter", "candidate"] as const;
 type ValidRole = (typeof VALID_ROLES)[number];
 
-function isValidRole(role: string): role is ValidRole {
+function _isValidRole(role: string): role is ValidRole {
   return VALID_ROLES.includes(role as ValidRole);
 }
 
-function isRestrictedPath(pathname: string): boolean {
+function _isRestrictedPath(pathname: string): boolean {
   return ROUTES.RESTRICTED.ADMIN_ONLY.some((path) => pathname.includes(path));
 }
 

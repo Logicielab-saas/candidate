@@ -1,17 +1,24 @@
-"use client"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { cn } from "@/lib/utils"
+"use client";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
 
 interface AnnonceTabsProps {
-  activeTab: "active" | "closed"
-  onTabChange: (value: "active" | "closed") => void
-  className?: string
+  activeTab: "active" | "closed";
+  onTabChange: (_value: "active" | "closed") => void;
+  className?: string;
 }
 
-export function AnnonceTabs({ activeTab, onTabChange, className }: AnnonceTabsProps) {
+export function AnnonceTabs({
+  activeTab,
+  onTabChange,
+  className,
+}: AnnonceTabsProps) {
   return (
     <div className={cn("w-full", className)}>
-      <Tabs value={activeTab} onValueChange={(value) => onTabChange(value as "active" | "closed")}>
+      <Tabs
+        value={activeTab}
+        onValueChange={(value) => onTabChange(value as "active" | "closed")}
+      >
         <div className="w-full border-secondaryHex-200 dark:border-secondaryHex-800">
           <TabsList className="flex h-12 w-fit items-center gap-8 bg-transparent p-0">
             <TabsTrigger
@@ -30,5 +37,5 @@ export function AnnonceTabs({ activeTab, onTabChange, className }: AnnonceTabsPr
         </div>
       </Tabs>
     </div>
-  )
+  );
 }

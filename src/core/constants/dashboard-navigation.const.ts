@@ -3,7 +3,6 @@ import {
   LayoutDashboard,
   Users,
   Settings,
-  Mail,
   Search,
   BookMarked,
   FileText,
