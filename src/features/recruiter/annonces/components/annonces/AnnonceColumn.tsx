@@ -64,7 +64,7 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
           <Button
             variant="link"
             size="sm"
-            className="text-secondaryHex-800  w-fit text-sm font-medium text-left p-0"
+            className="text-secondaryHex-800 hover:text-secondaryHex-900 dark:text-secondaryHex-50 dark:hover:text-secondaryHex-40 w-fit text-sm font-medium text-left p-0"
             asChild
           >
             {/* TODO: get the id from the row */}
