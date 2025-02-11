@@ -156,7 +156,7 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm">
                 <Eye className="h-3.5 w-3.5" />
-                <span>Voir le détail de l'annonce</span>
+                <Link href={`/recruiter/annonces/details/1`}>Voir le détail de l'annonce</Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm">
                 <Globe className="h-3.5 w-3.5" />
