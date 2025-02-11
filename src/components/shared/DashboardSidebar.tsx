@@ -34,8 +34,6 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { ThemeButton } from "./ThemeButton"
-// import type { MenuSection, MenuItem } from "@/core/constants/dashboard-navigation.const"
-// import type { RecruiterMenuSection, RecruiterMenuItem } from "@/core/constants/recruiter-navigation.const"
 
 interface DashboardSidebarProps {
   userRole?: 'admin' | 'recruiter' | 'candidate';
@@ -115,13 +113,13 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton size="lg" asChild tooltip="Jobs Platform">
+              <SidebarMenuButton size="lg" asChild tooltip="Postuly Platform">
                 <Link href="/recruiter/dashboard">
                   <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                     <Briefcase className="size-4" />
                   </div>
                   <div className="flex flex-col gap-0.5 leading-none">
-                    <span className="font-semibold">JobsBoard</span>
+                    <span className="font-semibold">Postuly</span>
                     <span className="text-xs text-muted-foreground">
                       {userRole.charAt(0).toUpperCase() + userRole.slice(1)} Portal
                     </span>
