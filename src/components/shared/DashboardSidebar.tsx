@@ -3,7 +3,10 @@
 import {
   Plus,
   Minus,
-  Briefcase
+  Briefcase,
+  HelpCircle,
+  Settings,
+  LogOut
 } from "lucide-react"
 import {
   Collapsible,
@@ -30,6 +33,7 @@ import { recruiterNavigation } from "@/core/constants/recruiter-navigation.const
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { ThemeButton } from "./ThemeButton"
 // import type { MenuSection, MenuItem } from "@/core/constants/dashboard-navigation.const"
 // import type { RecruiterMenuSection, RecruiterMenuItem } from "@/core/constants/recruiter-navigation.const"
 
@@ -212,9 +216,53 @@ export function DashboardSidebar({ userRole = 'recruiter', ...props }: Dashboard
             </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>
+
+        <div className="mt-auto">
+          <SidebarGroup>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  tooltip="Help & Support"
+                  asChild
+                  className="hover:text-primaryHex-600 dark:hover:text-primaryHex-400 hover:bg-accent/50"
+                >
+                  <Link href="#">
+                    <HelpCircle className="size-4" />
+                    <span>Help & Support</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  tooltip="Settings"
+                  asChild
+                  className="hover:text-primaryHex-600 dark:hover:text-primaryHex-400 hover:bg-accent/50"
+                >
+                  <Link href="#">
+                    <Settings className="size-4" />
+                    <span>Settings</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroup>
+          <Separator className="my-2" />
+          <SidebarFooter className="flex flex-row items-center justify-between gap-2 px-2 py-2">
+            <ThemeButton />
+            <SidebarMenuButton
+              tooltip="Logout"
+              asChild
+              variant="outline"
+              size="sm"
+              className="w-7"
+            >
+              <Link href="#" className="flex items-center gap-2">
+                <LogOut className="size-4" />
+              </Link>
+            </SidebarMenuButton>
+          </SidebarFooter>
+        </div>
         <SidebarRail />
-        <Separator />
-        <SidebarFooter className="text-center">© {new Date().getFullYear()} JobsBoard</SidebarFooter>
       </Sidebar>
     </>
   )

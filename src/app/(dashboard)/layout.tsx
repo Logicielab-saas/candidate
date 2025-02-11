@@ -4,9 +4,7 @@ import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Separator } from '@/components/ui/separator';
 import { DashboardSidebar } from '@/components/shared/DashboardSidebar';
 import { DashboardBreadcrumb } from '@/components/shared/DashboardBreadcrumb';
-import { ThemeButton } from '@/components/shared/ThemeButton';
-// import { logout } from '@/app/actions/auth/logout';
-// import { Button } from '@/components/ui/button';
+
 interface RoleLayoutProps {
     children: React.ReactNode;
     params: Promise<{
@@ -33,7 +31,6 @@ export default async function RoleLayout({ children, params }: RoleLayoutProps) 
                             <Separator orientation="vertical" className="mr-2 h-4" />
                             <DashboardBreadcrumb />
                             <div className="flex-1" />
-                            <ThemeButton />
                             {/* <Button onClick={logout}>Logout</Button> */}
                         </header>
                         <main className="flex-1 overflow-y-auto p-6">
