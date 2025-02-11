@@ -44,7 +44,7 @@ export function AnnoncesContainer() {
     : data.filter(annonce => annonce.statutDeLAnnonce === "Fermée");
 
   return (
-    <div className="flex flex-col gap-6 mt-4">
+    <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between w-full">
         <div className="flex-1">
           <AnnonceTabs activeTab={activeTab} onTabChange={setActiveTab} />

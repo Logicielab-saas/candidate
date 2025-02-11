@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 interface Annonce {
   intitule: string;
@@ -60,7 +61,17 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
       const date = row.original.dateDePublication;
       return (
         <div className="flex flex-col gap-1">
-          <span className="text-sm font-medium">{intitule}</span>
+          <Button
+            variant="link"
+            size="sm"
+            className="text-secondaryHex-800  w-fit text-sm font-medium text-left p-0"
+            asChild
+          >
+            {/* TODO: get the id from the row */}
+            <Link href={`/recruiter/annonces/details/1`}>
+              {intitule}
+            </Link>
+          </Button>
           <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
             <span>{city}</span>
             <span>•</span>
