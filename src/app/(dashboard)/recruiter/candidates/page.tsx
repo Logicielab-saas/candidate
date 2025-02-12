@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { CandidateFiltersMenu } from "@/features/recruiter/candidatures/components/CandidateFiltersMenu";
-import { CandidateTabs } from "@/features/recruiter/candidatures/components/CandidateFilterTabs";
+import { CandidateFilters } from "@/features/recruiter/candidatures/components/CandidateFilters";
+import { CandidateFiltersMenu } from "@/features/recruiter/candidatures/components/CandidateFiltersAnnonceMenu";
+import { CandidateFilterTabs } from "@/features/recruiter/candidatures/components/CandidateFilterTabs";
 import React from "react";
 
 const CandidatesPage = () => {
@@ -14,8 +15,12 @@ const CandidatesPage = () => {
         <Button className="mt-2">Publier une annonce</Button>
       </div>
       <CandidateFiltersMenu />
+
       <Separator />
-      <CandidateTabs />
+
+      <CandidateFilterTabs />
+
+      <CandidateFilters />
     </div>
   );
 };
