@@ -86,7 +86,7 @@ export const getColumns = (): ColumnDef<Candidate>[] => [
           <div className="flex flex-col">
             <Button
               variant="link"
-              className="h-auto p-0 text-base font-semibold text-primary hover:text-primary/90 justify-start text-secondaryHex-800"
+              className="h-auto p-0 text-base font-semibold text-primary hover:text-primary/90 justify-start text-secondaryHex-800 dark:text-secondaryHex-200"
             >
               {nom}
             </Button>
@@ -164,7 +164,7 @@ export const getColumns = (): ColumnDef<Candidate>[] => [
       return (
         <div className="flex items-center justify-center">
           <TooltipProvider>
-            <Tooltip>
+            <Tooltip delayDuration={200}>
               <TooltipTrigger asChild>
                 <Button
                   variant="outline"
@@ -179,7 +179,7 @@ export const getColumns = (): ColumnDef<Candidate>[] => [
               </TooltipContent>
             </Tooltip>
 
-            <Tooltip>
+            <Tooltip delayDuration={200}>
               <TooltipTrigger asChild>
                 <Button
                   variant="outline"
@@ -194,7 +194,7 @@ export const getColumns = (): ColumnDef<Candidate>[] => [
               </TooltipContent>
             </Tooltip>
 
-            <Tooltip>
+            <Tooltip delayDuration={200}>
               <TooltipTrigger asChild>
                 <Button
                   variant="outline"
@@ -209,7 +209,7 @@ export const getColumns = (): ColumnDef<Candidate>[] => [
               </TooltipContent>
             </Tooltip>
 
-            <Tooltip>
+            <Tooltip delayDuration={200}>
               <TooltipTrigger asChild>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -218,22 +218,25 @@ export const getColumns = (): ColumnDef<Candidate>[] => [
                       <MoreVertical className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-[160px]">
-                    <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
-                      <MessageCircle className="h-3.5 w-3.5" />
+                  <DropdownMenuContent align="end" className="w-[200px]">
+                    <DropdownMenuItem className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800 transition-colors">
+                      <MessageCircle className="h-4 w-4 text-blue-600" />
                       <span>Contacter</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
-                      <Phone className="h-3.5 w-3.5" />
+                    <DropdownMenuItem className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800 transition-colors">
+                      <Phone className="h-4 w-4 text-green-600" />
                       <span>Appeler</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
-                      <Calendar className="h-3.5 w-3.5" />
+                    <DropdownMenuItem className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800 transition-colors">
+                      <Calendar className="h-4 w-4 text-purple-600" />
                       <span>Planifier un Entretien</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm text-red-600 dark:text-red-400 cursor-pointer">
-                      <X className="h-3.5 w-3.5" />
-                      <span>Supprimer</span>
+                    <DropdownMenuItem
+                      className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer
+                     text-red-600 hover:bg-red-50 dark:hover:bg-red-950/50 focus:bg-red-50 dark:focus:bg-red-950/50 hover:text-red-700 dark:hover:text-red-400 transition-colors"
+                    >
+                      <X className="h-4 w-4 text-red-600" />
+                      <span className="text-red-600">Supprimer</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
