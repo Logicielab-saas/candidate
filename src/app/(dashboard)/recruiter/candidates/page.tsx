@@ -3,7 +3,62 @@ import { Separator } from "@/components/ui/separator";
 import { CandidateFilters } from "@/features/recruiter/candidatures/components/CandidateFilters";
 import { CandidateFiltersMenu } from "@/features/recruiter/candidatures/components/CandidateFiltersAnnonceMenu";
 import { CandidateFilterTabs } from "@/features/recruiter/candidatures/components/CandidateFilterTabs";
-import React from "react";
+import { CandidateDataTable } from "@/features/recruiter/candidatures/components/CandidateDataTable";
+
+const mockCandidates = [
+  {
+    nom: "Nadia Rozine",
+    ville: "Casablanca",
+    profil: "Gestion Marketing",
+    situation: "En recherche d'emploi",
+    datePostule: "15 juin",
+    titreOffre: "Social Media Manager",
+    pertinence: "Aucune qualification correspondant au profil",
+    activite: {
+      status: "Nouvelle candidature",
+      message: "Les candidatures identifiées sont plus susceptibles.",
+    },
+  },
+  {
+    nom: "Mariam Blanche",
+    ville: "La Chapelle-des-Fougeretz",
+    profil: "Social Head Marketing",
+    situation: "Disponible immédiatement",
+    datePostule: "15 juin",
+    titreOffre: "Social Media Manager",
+    pertinence: "Disponible immédiatement",
+    activite: {
+      status: "Nouvelle candidature",
+      message: "Les candidatures identifiées sont plus susceptibles.",
+    },
+  },
+  {
+    nom: "Mohamed El MAIZI",
+    ville: "Casablanca",
+    profil: "Social Head Marketing",
+    situation: "En recherche d'emploi",
+    datePostule: "15 juin",
+    titreOffre: "Social Media Manager",
+    pertinence: "Disponible immédiatement",
+    activite: {
+      status: "Nouvelle candidature",
+      message: "Les candidatures identifiées sont plus susceptibles.",
+    },
+  },
+  {
+    nom: "Ayoub BOUKHANE",
+    ville: "Casablanca",
+    profil: "Social Head Marketing",
+    situation: "En recherche d'emploi",
+    datePostule: "15 juin",
+    titreOffre: "Social Media Manager",
+    pertinence: "Disponible immédiatement",
+    activite: {
+      status: "Nouvelle candidature",
+      message: "Les candidatures identifiées sont plus susceptibles.",
+    },
+  },
+];
 
 const CandidatesPage = () => {
   return (
@@ -21,6 +76,10 @@ const CandidatesPage = () => {
       <CandidateFilterTabs />
 
       <CandidateFilters />
+
+      <div className="mt-2">
+        <CandidateDataTable data={mockCandidates} />
+      </div>
     </div>
   );
 };
