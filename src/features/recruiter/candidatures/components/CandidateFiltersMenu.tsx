@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Check,
-  ChevronsUpDown,
-  MapPin,
-  Activity,
-  Calendar,
-} from "lucide-react";
+import { Check, ChevronsUpDown, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,6 +23,7 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
+import { MultiSelect } from "@/components/ui/multi-select";
 import { useState } from "react";
 
 // TODO: Replace with actual annonces data from API
@@ -77,14 +72,12 @@ interface FilterOption {
 }
 
 const statusOptions: FilterOption[] = [
-  { value: "all", label: "Statuts" },
   { value: "active", label: "Ouverte" },
   { value: "pending", label: "Suspendueeeeeeeeee" },
   { value: "rejected", label: "Fermée" },
 ];
 
 const locationOptions: FilterOption[] = [
-  { value: "all", label: "Villes" },
   { value: "tanger", label: "Tanger" },
   { value: "meknes", label: "Meknes" },
   { value: "rabat", label: "Rabat" },
@@ -108,8 +101,8 @@ interface Annonce {
 export function CandidateFiltersMenu() {
   const [open, setOpen] = useState(false);
   const [selectedAnnonce, setSelectedAnnonce] = useState<Annonce | null>(null);
-  const [selectedStatus, setSelectedStatus] = useState("all");
-  const [selectedLocation, setSelectedLocation] = useState("all");
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
+  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState("all");
 
   return (
@@ -147,71 +140,32 @@ export function CandidateFiltersMenu() {
             <div className="flex p-2 gap-2 items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-[120px]">
-                  <Select
-                    value={selectedStatus}
-                    onValueChange={setSelectedStatus}
-                  >
-                    <SelectTrigger className="w-full h-8">
-                      <div className="flex items-center w-full">
-                        <Activity className="w-4 h-4 opacity-50 mr-2 flex-shrink-0" />
-                        <div className="max-w-[50px] overflow-hidden">
-                          <p className="truncate text-sm">
-                            {selectedStatus === "all"
-                              ? "Statuts"
-                              : statusOptions.find(
-                                  (status) => status.value === selectedStatus
-                                )?.label}
-                          </p>
-                        </div>
-                      </div>
-                    </SelectTrigger>
-                    <SelectContent>
-                      {statusOptions.map((status) => (
-                        <SelectItem key={status.value} value={status.value}>
-                          {status.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <MultiSelect
+                    options={statusOptions}
+                    placeholder="Statuts"
+                    value={selectedStatuses}
+                    onValueChange={setSelectedStatuses}
+                    className="h-8"
+                  />
                 </div>
                 <div className="w-[120px]">
-                  <Select
-                    value={selectedLocation}
-                    onValueChange={setSelectedLocation}
-                  >
-                    <SelectTrigger className="w-full h-8">
-                      <div className="flex items-center w-full">
-                        <MapPin className="w-4 h-4 opacity-50 mr-2 flex-shrink-0" />
-                        <div className="max-w-[50px] overflow-hidden">
-                          <p className="truncate text-sm">
-                            {selectedLocation === "all"
-                              ? "Villes"
-                              : locationOptions.find(
-                                  (location) =>
-                                    location.value === selectedLocation
-                                )?.label}
-                          </p>
-                        </div>
-                      </div>
-                    </SelectTrigger>
-                    <SelectContent>
-                      {locationOptions.map((location) => (
-                        <SelectItem key={location.value} value={location.value}>
-                          {location.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <MultiSelect
+                    options={locationOptions}
+                    placeholder="Villes"
+                    value={selectedLocations}
+                    onValueChange={setSelectedLocations}
+                    className="h-8"
+                  />
                 </div>
-                {(selectedStatus !== "all" ||
-                  selectedLocation !== "all" ||
+                {(selectedStatuses.length > 0 ||
+                  selectedLocations.length > 0 ||
                   selectedDate !== "all") && (
                   <Button
                     variant="ghost"
                     className="h-8 px-2 text-xs"
                     onClick={() => {
-                      setSelectedStatus("all");
-                      setSelectedLocation("all");
+                      setSelectedStatuses([]);
+                      setSelectedLocations([]);
                       setSelectedDate("all");
                     }}
                   >
