@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -17,6 +16,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Video, Phone, MapPin } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
 
 interface EntretienPlanDialogProps {
   isOpen: boolean;
@@ -33,7 +35,13 @@ const DURATIONS = [
   { value: "60", label: "1 heure" },
 ];
 
-const FORMATS = [
+type FormatType = {
+  value: "video" | "telephone" | "person";
+  label: string;
+  icon: React.ElementType;
+};
+
+const FORMATS: FormatType[] = [
   {
     value: "video",
     label: "Vidéo",
@@ -56,6 +64,8 @@ export function EntretienPlanDialog({
   onOpenChange,
   candidat,
 }: EntretienPlanDialogProps) {
+  const [format, setFormat] = useState<FormatType["value"]>("video");
+
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[900px]">
@@ -68,11 +78,9 @@ export function EntretienPlanDialog({
           <div className="flex flex-col gap-4">
             {/* Duration Select */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                Durée
-              </label>
+              <Label htmlFor="duration">Durée</Label>
               <Select>
-                <SelectTrigger>
+                <SelectTrigger id="duration">
                   <SelectValue placeholder="Sélectionnez une durée" />
                 </SelectTrigger>
                 <SelectContent>
@@ -85,39 +93,43 @@ export function EntretienPlanDialog({
               </Select>
             </div>
 
-            {/* Format Buttons */}
+            {/* Format Radio Group */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                Format
-              </label>
-              <div className="flex gap-2">
+              <Label>Format</Label>
+              <RadioGroup
+                value={format}
+                onValueChange={(value: FormatType["value"]) => setFormat(value)}
+                className="flex gap-2"
+              >
                 {FORMATS.map(({ value, label, icon: Icon }) => (
-                  <Button
+                  <Label
                     key={value}
-                    variant="outline"
-                    className="flex-1 gap-2 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    className={`flex flex-1 items-center justify-center gap-2 rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm font-medium
+                      ${
+                        format === value
+                          ? "border-primaryHex-500 text-primaryHex-500 "
+                          : ""
+                      } cursor-pointer`}
                   >
+                    <RadioGroupItem value={value} className="sr-only" />
                     <Icon className="h-4 w-4" />
                     {label}
-                  </Button>
+                  </Label>
                 ))}
-              </div>
+              </RadioGroup>
             </div>
 
             {/* Address Input */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                Adresse de l&apos;entretien
-              </label>
-              <Input placeholder="Saisissez l'adresse" />
+              <Label htmlFor="address">Adresse de l&apos;entretien</Label>
+              <Input id="address" placeholder="Saisissez l'adresse" />
             </div>
 
             {/* Message Textarea */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                Message destiné à {candidat.nom}
-              </label>
+              <Label htmlFor="message">Message destiné à {candidat.nom}</Label>
               <Textarea
+                id="message"
                 placeholder="Écrivez un message..."
                 className="min-h-[120px] resize-none"
               />
@@ -125,10 +137,11 @@ export function EntretienPlanDialog({
 
             {/* Team Members Input */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                Ajouter des membres d&apos;équipe
-              </label>
-              <Input placeholder="Saisissez les adresses email en les séparant par une virgule" />
+              <Label htmlFor="team">Ajouter des membres d&apos;équipe</Label>
+              <Input
+                id="team"
+                placeholder="Saisissez les adresses email en les séparant par une virgule"
+              />
             </div>
           </div>
 
