@@ -26,6 +26,7 @@ import {
 import { useState } from "react";
 import { AppelerDialog } from "./AppelerDialog";
 import { SupprimerDialog } from "./SupprimerDialog";
+import { EntretienPlanDialog } from "./EntretienPlanDialog";
 
 interface Candidate {
   nom: string;
@@ -43,8 +44,10 @@ interface Candidate {
 }
 
 export function ActionCell({ candidate }: { candidate: Candidate }) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isAppelerDialogOpen, setIsAppelerDialogOpen] = useState(false);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
+  const [isEntretienPlanDialogOpen, setIsEntretienPlanDialogOpen] =
+    useState(false);
 
   const handleDelete = () => {
     // Add delete logic here
@@ -113,19 +116,24 @@ export function ActionCell({ candidate }: { candidate: Candidate }) {
                 <DropdownMenuItem
                   className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100
                  dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800 transition-colors"
+                  // onClick={() => setIsDialogOpen(true)}
                 >
                   <MessageCircle className="h-4 w-4 text-blue-600" />
                   <span>Contacter</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800 transition-colors"
-                  onClick={() => setIsDialogOpen(true)}
+                  onClick={() => setIsAppelerDialogOpen(true)}
                 >
                   <Phone className="h-4 w-4 text-green-600" />
                   <span>Appeler</span>
                 </DropdownMenuItem>
 
-                <DropdownMenuItem className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800 transition-colors">
+                <DropdownMenuItem
+                  className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100
+                  dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800 transition-colors"
+                  onClick={() => setIsEntretienPlanDialogOpen(true)}
+                >
                   <Calendar className="h-4 w-4 text-purple-600" />
                   <span>Planifier un Entretien</span>
                 </DropdownMenuItem>
@@ -145,9 +153,17 @@ export function ActionCell({ candidate }: { candidate: Candidate }) {
         </Tooltip>
       </TooltipProvider>
 
+      <EntretienPlanDialog
+        isOpen={isEntretienPlanDialogOpen}
+        onOpenChange={setIsEntretienPlanDialogOpen}
+        candidat={{
+          nom: candidate.nom,
+        }}
+      />
+
       <AppelerDialog
-        isOpen={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
+        isOpen={isAppelerDialogOpen}
+        onOpenChange={setIsAppelerDialogOpen}
         candidat={{
           nom: candidate.nom,
           telephone: candidate.telephone,
