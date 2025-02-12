@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Job Recruitment Platform
 
-## Getting Started
+A modern recruitment platform built with Next.js 15, TypeScript, and Shadcn UI, designed to streamline the hiring process by connecting recruiters with candidates.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Multi-Role System**:
+  - Admin: System management and oversight
+  - Recruiter: Job posting and candidate management
+  - Candidate: Profile management and job applications
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Key Functionalities**:
+  - Advanced candidate filtering and search
+  - Interview scheduling and management
+  - Real-time chat interface
+  - Comprehensive candidate tracking
+  - Responsive dashboard interfaces
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Frontend**: Next.js 14 (App Router), TypeScript, React
+- **UI Components**: Shadcn UI, Radix UI
+- **Styling**: Tailwind CSS
+- **State Management**: Server Components, nuqs for URL state
+- **Authentication**: Next-Auth
 
-## Learn More
+## 📋 Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+- Node.js 18.x or higher
+- pnpm (recommended) or npm
+- Git
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔧 Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Clone the repository:
 
-## Deploy on Vercel
+   ```bash
+   git clone https://github.com/nightfall-storm/next_frontJob.git
+   cd next_frontJob
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Install dependencies:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   pnpm install
+   ```
+
+3. Set up environment variables:
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+   Then edit `.env.local` with your configuration.
+
+4. Run the development server:
+
+   ```bash
+   pnpm dev
+   ```
+
+## 🌐 Usage
+
+Access the application at `http://localhost:3000`
+
+### Role-Based Access
+
+1. **Admin Dashboard**
+   - URL: `/admin`
+   - Manage users, roles, and system settings
+
+2. **Recruiter Portal**
+   - URL: `/recruiter`
+   - Post jobs
+   - Review applications
+   - Schedule interviews
+   - Communicate with candidates
+
+3. **Candidate Interface**
+   - URL: `/candidate`
+   - Create and manage profile
+   - Apply for positions
+   - Track application status
+   - Participate in interviews
+
+<!-- ## 📚 Documentation
+
+For detailed documentation about specific features:
+
+- [Authentication Guide](docs/authentication.md)
+- [Recruiter Guide](docs/recruiter.md)
+- [Candidate Guide](docs/candidate.md)
+- [Admin Guide](docs/admin.md) -->
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+For support, raise an issue in the repository.
