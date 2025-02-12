@@ -14,6 +14,7 @@ const mockCandidates = [
     datePostule: "15 juin",
     titreOffre: "Social Media Manager",
     pertinence: "Aucune qualification correspondant au profil",
+    telephone: "+212 6 12 34 56 78",
     activite: {
       status: "Nouvelle candidature",
       message: "Les candidatures identifiées sont plus susceptibles.",
@@ -27,6 +28,7 @@ const mockCandidates = [
     datePostule: "15 juin",
     titreOffre: "Social Media Manager",
     pertinence: "Disponible immédiatement",
+    telephone: "+33 6 12 34 56 78",
     activite: {
       status: "Nouvelle candidature",
       message: "Les candidatures identifiées sont plus susceptibles.",
@@ -40,6 +42,7 @@ const mockCandidates = [
     datePostule: "15 juin",
     titreOffre: "Social Media Manager",
     pertinence: "Disponible immédiatement",
+    telephone: "+212 6 98 76 54 32",
     activite: {
       status: "Nouvelle candidature",
       message: "Les candidatures identifiées sont plus susceptibles.",
@@ -53,6 +56,7 @@ const mockCandidates = [
     datePostule: "15 juin",
     titreOffre: "Social Media Manager",
     pertinence: "Disponible immédiatement",
+    telephone: "+212 6 11 22 33 44",
     activite: {
       status: "Nouvelle candidature",
       message: "Les candidatures identifiées sont plus susceptibles.",
