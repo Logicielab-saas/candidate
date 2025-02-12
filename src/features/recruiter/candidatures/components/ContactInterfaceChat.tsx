@@ -14,6 +14,25 @@ interface Message {
   timestamp: Date;
 }
 
+// Quick reply suggestions
+const QUICK_REPLIES = [
+  {
+    id: "1",
+    content:
+      "Bonjour, je suis intéressé(e) par votre profil. Êtes-vous disponible pour échanger ?",
+  },
+  {
+    id: "2",
+    content:
+      "Bonjour, votre candidature a retenu notre attention. Pourrions-nous planifier un entretien ?",
+  },
+  {
+    id: "3",
+    content:
+      "Bonjour, merci pour votre candidature. Quelles sont vos disponibilités cette semaine ?",
+  },
+] as const;
+
 // Mock initial messages
 const initialMessages: Message[] = [
   {
@@ -65,6 +84,7 @@ export function ContactInterfaceChat({
   const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(
     null
   );
+  const [showSuggestions, setShowSuggestions] = useState(messages.length === 0);
 
   useEffect(() => {
     // Find the portal container
@@ -72,18 +92,19 @@ export function ContactInterfaceChat({
     setPortalContainer(container);
   }, []);
 
-  const handleSendMessage = () => {
-    if (!message.trim()) return;
+  const handleSendMessage = (content: string = message) => {
+    if (!content.trim()) return;
 
     const newMessage: Message = {
       id: Date.now().toString(),
-      content: message,
+      content: content.trim(),
       sender: "user",
       timestamp: new Date(),
     };
 
     setMessages((prev) => [...prev, newMessage]);
     setMessage("");
+    setShowSuggestions(false);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -130,6 +151,25 @@ export function ContactInterfaceChat({
             {/* Messages */}
             <ScrollArea className="flex-1 p-3">
               <div className="space-y-3">
+                {showSuggestions && messages.length === 0 && (
+                  <div className="flex flex-col gap-2 mb-4">
+                    <p className="text-sm text-muted-foreground">
+                      Engager la conversation :
+                    </p>
+                    <div className="flex flex-col gap-2">
+                      {QUICK_REPLIES.map((reply) => (
+                        <Button
+                          key={reply.id}
+                          variant="outline"
+                          className="justify-start h-auto whitespace-normal text-left py-2 text-sm font-normal"
+                          onClick={() => handleSendMessage(reply.content)}
+                        >
+                          {reply.content}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 {messages.map((msg) => (
                   <div
                     key={msg.id}
@@ -173,7 +213,7 @@ export function ContactInterfaceChat({
                   className="min-h-[44px] max-h-[120px] resize-none text-sm"
                 />
                 <Button
-                  onClick={handleSendMessage}
+                  onClick={() => handleSendMessage()}
                   size="icon"
                   className="h-[44px] w-[44px] shrink-0"
                   disabled={!message.trim()}
