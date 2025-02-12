@@ -9,6 +9,8 @@ import {
   HelpCircle,
   Ban,
   MoreVertical,
+  Phone,
+  Calendar,
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -216,10 +218,18 @@ export const getColumns = (): ColumnDef<Candidate>[] => [
                       <MoreVertical className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="center" className="w-[130px]">
+                  <DropdownMenuContent align="end" className="w-[160px]">
                     <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
                       <MessageCircle className="h-3.5 w-3.5" />
                       <span>Contacter</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
+                      <Phone className="h-3.5 w-3.5" />
+                      <span>Appeler</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
+                      <Calendar className="h-3.5 w-3.5" />
+                      <span>Planifier un Entretien</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm text-red-600 dark:text-red-400 cursor-pointer">
                       <X className="h-3.5 w-3.5" />
