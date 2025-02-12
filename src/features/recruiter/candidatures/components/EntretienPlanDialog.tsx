@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { EntretienPlanRightSide } from "./EntretienPlanRightSide";
+import { Separator } from "@/components/ui/separator";
 
 interface EntretienPlanDialogProps {
   isOpen: boolean;
@@ -268,6 +269,7 @@ export function EntretienPlanDialog({
               {/* Right Side */}
               <EntretienPlanRightSide form={form} fieldArray={fieldArray} />
             </div>
+            <Separator />
 
             <div className="flex justify-end gap-2">
               <Button
