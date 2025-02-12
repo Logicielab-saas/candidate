@@ -27,6 +27,7 @@ import { useState } from "react";
 import { AppelerDialog } from "./AppelerDialog";
 import { SupprimerDialog } from "./SupprimerDialog";
 import { EntretienPlanDialog } from "./EntretienPlanDialog";
+import { ContactInterfaceChat } from "./ContactInterfaceChat";
 
 interface Candidate {
   nom: string;
@@ -48,6 +49,7 @@ export function ActionCell({ candidate }: { candidate: Candidate }) {
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [isEntretienPlanDialogOpen, setIsEntretienPlanDialogOpen] =
     useState(false);
+  const [isChatDialogOpen, setIsChatDialogOpen] = useState(false);
 
   const handleDelete = () => {
     // Add delete logic here
@@ -116,7 +118,7 @@ export function ActionCell({ candidate }: { candidate: Candidate }) {
                 <DropdownMenuItem
                   className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100
                  dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800 transition-colors"
-                  // onClick={() => setIsDialogOpen(true)}
+                  onClick={() => setIsChatDialogOpen(true)}
                 >
                   <MessageCircle className="h-4 w-4 text-blue-600" />
                   <span>Contacter</span>
@@ -177,6 +179,14 @@ export function ActionCell({ candidate }: { candidate: Candidate }) {
           nom: candidate.nom,
         }}
         onConfirm={handleDelete}
+      />
+
+      <ContactInterfaceChat
+        isOpen={isChatDialogOpen}
+        onOpenChange={setIsChatDialogOpen}
+        candidat={{
+          nom: candidate.nom,
+        }}
       />
     </div>
   );
