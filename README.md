@@ -18,7 +18,7 @@ A modern recruitment platform built with Next.js 15, TypeScript, and Shadcn UI, 
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: Next.js 14 (App Router), TypeScript, React
+- **Frontend**: Next.js 15 (App Router), TypeScript, React
 - **UI Components**: Shadcn UI, Radix UI
 - **Styling**: Tailwind CSS
 - **State Management**: Server Components, nuqs for URL state
