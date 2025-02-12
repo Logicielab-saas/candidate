@@ -28,7 +28,6 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
 
@@ -50,6 +49,24 @@ const mockAnnonces = [
     id: "3",
     value: "infographiste",
     label: "Infographiste",
+    city: "Rabat",
+  },
+  {
+    id: "4",
+    value: "Developer",
+    label: "Developer",
+    city: "Rabat",
+  },
+  {
+    id: "5",
+    value: "Machine Learning",
+    label: "Machine Learning",
+    city: "Rabat",
+  },
+  {
+    id: "6",
+    value: "Data Scientist",
+    label: "Data Scientist",
     city: "Rabat",
   },
 ];
@@ -233,7 +250,7 @@ export function CandidateFiltersMenu() {
               </div>
             </div>
             <CommandSeparator />
-            <CommandGroup heading="Annonces">
+            <CommandGroup heading={`Annonces (${mockAnnonces.length})`}>
               {mockAnnonces.map((annonce) => (
                 <CommandItem
                   key={annonce.value}
