@@ -6,9 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import { Copy, Phone } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -45,15 +43,6 @@ export function AppelerDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <DropdownMenuItem
-          className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800 transition-colors"
-          onSelect={(e) => e.preventDefault()}
-        >
-          <Phone className="h-4 w-4 text-green-600" />
-          <span>Appeler</span>
-        </DropdownMenuItem>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Appeler {candidat.nom}</DialogTitle>

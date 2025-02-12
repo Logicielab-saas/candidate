@@ -20,10 +20,12 @@ import {
   HelpCircle,
   MessageCircle,
   MoreVertical,
+  Phone,
   X,
 } from "lucide-react";
 import { useState } from "react";
 import { AppelerDialog } from "./AppelerDialog";
+import { SupprimerDialog } from "./SupprimerDialog";
 
 interface Candidate {
   nom: string;
@@ -42,6 +44,13 @@ interface Candidate {
 
 export function ActionCell({ candidate }: { candidate: Candidate }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
+
+  const handleDelete = () => {
+    // Add delete logic here
+    console.log("Deleting candidate:", candidate.nom);
+    setIsAlertDialogOpen(false);
+  };
 
   return (
     <div className="flex items-center justify-center">
@@ -101,25 +110,29 @@ export function ActionCell({ candidate }: { candidate: Candidate }) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[200px]">
-                <DropdownMenuItem className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800 transition-colors">
+                <DropdownMenuItem
+                  className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100
+                 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800 transition-colors"
+                >
                   <MessageCircle className="h-4 w-4 text-blue-600" />
                   <span>Contacter</span>
                 </DropdownMenuItem>
-
-                <AppelerDialog
-                  isOpen={isDialogOpen}
-                  onOpenChange={setIsDialogOpen}
-                  candidat={{
-                    nom: candidate.nom,
-                    telephone: candidate.telephone,
-                  }}
-                />
+                <DropdownMenuItem
+                  className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800 transition-colors"
+                  onClick={() => setIsDialogOpen(true)}
+                >
+                  <Phone className="h-4 w-4 text-green-600" />
+                  <span>Appeler</span>
+                </DropdownMenuItem>
 
                 <DropdownMenuItem className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800 transition-colors">
                   <Calendar className="h-4 w-4 text-purple-600" />
                   <span>Planifier un Entretien</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer text-red-600 hover:bg-red-50 dark:hover:bg-red-950/50 focus:bg-red-50 dark:focus:bg-red-950/50 hover:text-red-700 dark:hover:text-red-400 transition-colors">
+                <DropdownMenuItem
+                  className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer text-red-600 hover:bg-red-50 dark:hover:bg-red-950/50 focus:bg-red-50 dark:focus:bg-red-950/50 hover:text-red-700 dark:hover:text-red-400 transition-colors"
+                  onClick={() => setIsAlertDialogOpen(true)}
+                >
                   <X className="h-4 w-4" />
                   <span>Supprimer</span>
                 </DropdownMenuItem>
@@ -131,6 +144,24 @@ export function ActionCell({ candidate }: { candidate: Candidate }) {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
+
+      <AppelerDialog
+        isOpen={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        candidat={{
+          nom: candidate.nom,
+          telephone: candidate.telephone,
+        }}
+      />
+
+      <SupprimerDialog
+        isOpen={isAlertDialogOpen}
+        onOpenChange={setIsAlertDialogOpen}
+        candidat={{
+          nom: candidate.nom,
+        }}
+        onConfirm={handleDelete}
+      />
     </div>
   );
 }
