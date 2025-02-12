@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { Minus, Paperclip, Send, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 interface Message {
   id: string;
@@ -61,6 +62,15 @@ export function ContactInterfaceChat({
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [isMinimized, setIsMinimized] = useState(false);
+  const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(
+    null
+  );
+
+  useEffect(() => {
+    // Find the portal container
+    const container = document.getElementById("floating-elements");
+    setPortalContainer(container);
+  }, []);
 
   const handleSendMessage = () => {
     if (!message.trim()) return;
@@ -83,11 +93,11 @@ export function ContactInterfaceChat({
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !portalContainer) return null;
 
-  return (
+  const chatContent = (
     <div
-      className={`fixed bottom-4 right-4 w-[340px] bg-background rounded-lg shadow-lg z-50 transition-all duration-200 ease-in-out overflow-hidden ${
+      className={`fixed bottom-4 right-4 w-[340px] bg-background rounded-lg shadow-lg z-[100] transition-all duration-200 ease-in-out overflow-hidden ${
         isMinimized ? "h-[48px]" : "h-[480px]"
       }`}
     >
@@ -177,4 +187,6 @@ export function ContactInterfaceChat({
       </div>
     </div>
   );
+
+  return createPortal(chatContent, portalContainer);
 }
