@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
-import { Minus, Send, X } from "lucide-react";
+import { Minus, Paperclip, Send, X } from "lucide-react";
 import { useState } from "react";
 
 interface Message {
@@ -55,13 +55,13 @@ export function ContactInterfaceChat({
 
   return (
     <div
-      className={`fixed bottom-4 right-4 w-[340px] bg-background rounded-lg shadow-lg z-50 transition-all duration-200 ease-in-out ${
+      className={`fixed bottom-4 right-4 w-[340px] bg-background rounded-lg shadow-lg z-50 transition-all duration-200 ease-in-out overflow-hidden ${
         isMinimized ? "h-[48px]" : "h-[480px]"
       }`}
     >
       <div className="flex flex-col h-full border rounded-lg">
         {/* Header */}
-        <div className="p-3 border-b flex items-center justify-between bg-primary text-primary-foreground rounded-t-lg">
+        <div className="p-3 border-b flex items-center justify-between bg-primary text-primary-foreground">
           <h2 className="font-semibold text-sm">{candidat.nom}</h2>
           <div className="flex items-center gap-1">
             <Button
@@ -114,7 +114,15 @@ export function ContactInterfaceChat({
 
             {/* Input */}
             <div className="border-t p-3 bg-background rounded-b-lg">
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-[44px] w-[44px] shrink-0 hover:bg-muted"
+                  title="Joindre un fichier"
+                >
+                  <Paperclip className="h-4 w-4" />
+                </Button>
                 <Textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
@@ -125,7 +133,7 @@ export function ContactInterfaceChat({
                 <Button
                   onClick={handleSendMessage}
                   size="icon"
-                  className="h-[44px] w-[44px]"
+                  className="h-[44px] w-[44px] shrink-0"
                   disabled={!message.trim()}
                 >
                   <Send className="h-4 w-4" />
