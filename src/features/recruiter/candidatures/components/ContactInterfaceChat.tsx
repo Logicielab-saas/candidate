@@ -13,6 +13,38 @@ interface Message {
   timestamp: Date;
 }
 
+// Mock initial messages
+const initialMessages: Message[] = [
+  {
+    id: "1",
+    content:
+      "Bonjour, je suis très intéressé par votre profil pour le poste de développeur frontend.",
+    sender: "user",
+    timestamp: new Date(Date.now() - 3600000), // 1 hour ago
+  },
+  {
+    id: "2",
+    content:
+      "Bonjour ! Merci de votre intérêt. Je suis disponible pour échanger sur cette opportunité.",
+    sender: "candidate",
+    timestamp: new Date(Date.now() - 3300000), // 55 minutes ago
+  },
+  {
+    id: "3",
+    content:
+      "Parfait ! Seriez-vous disponible pour un entretien cette semaine ?",
+    sender: "user",
+    timestamp: new Date(Date.now() - 3000000), // 50 minutes ago
+  },
+  {
+    id: "4",
+    content:
+      "Oui, je suis disponible jeudi après-midi ou vendredi matin si cela vous convient.",
+    sender: "candidate",
+    timestamp: new Date(Date.now() - 2700000), // 45 minutes ago
+  },
+];
+
 interface ContactInterfaceChatProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
@@ -27,7 +59,7 @@ export function ContactInterfaceChat({
   candidat,
 }: ContactInterfaceChatProps) {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [isMinimized, setIsMinimized] = useState(false);
 
   const handleSendMessage = () => {
