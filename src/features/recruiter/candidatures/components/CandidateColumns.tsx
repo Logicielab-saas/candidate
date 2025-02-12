@@ -2,7 +2,14 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, MessageCircle, X } from "lucide-react";
+import {
+  MessageCircle,
+  X,
+  Check,
+  HelpCircle,
+  Ban,
+  MoreVertical,
+} from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -11,6 +18,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Candidate {
   nom: string;
@@ -144,28 +157,82 @@ export const getColumns = (): ColumnDef<Candidate>[] => [
   },
   {
     id: "actions",
-    header: () => <div className="w-0.5"></div>,
+    header: () => <div className="flex justify-center">Actions</div>,
     cell: () => {
       return (
-        <div className="w-0.5">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-3 w-3 -pr-3">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-2.5 w-2.5 rotate-90" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[180px]">
-              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
-                <MessageCircle className="h-3.5 w-3.5" />
-                <span>Contacter</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm text-red-600 dark:text-red-400 cursor-pointer">
-                <X className="h-3.5 w-3.5" />
-                <span>Supprimer</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <div className="flex items-center justify-center">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="h-10 w-10 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 p-0 rounded-l-sm rounded-r-none"
+                >
+                  <Check className="h-4 w-4" />
+                  <span className="sr-only">Préselectionées</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Préselectionées</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="h-10 w-10 text-amber-600 hover:text-amber-700 hover:bg-amber-50 rounded-none"
+                >
+                  <HelpCircle className="h-4 w-4" />
+                  <span className="sr-only">À décider</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>À décider</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="h-10 w-10 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-r-sm rounded-l-none"
+                >
+                  <Ban className="h-4 w-4" />
+                  <span className="sr-only">Ecarter</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Ecarter</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <span className="sr-only">Open menu</span>
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="center" className="w-[130px]">
+                    <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
+                      <MessageCircle className="h-3.5 w-3.5" />
+                      <span>Contacter</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm text-red-600 dark:text-red-400 cursor-pointer">
+                      <X className="h-3.5 w-3.5" />
+                      <span>Supprimer</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Plus d&apos;actions</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       );
     },
