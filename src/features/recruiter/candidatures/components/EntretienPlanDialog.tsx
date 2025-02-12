@@ -18,7 +18,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { Video, Phone, MapPin } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 
 interface EntretienPlanDialogProps {
   isOpen: boolean;
@@ -33,7 +44,7 @@ const DURATIONS = [
   { value: "30", label: "30 min" },
   { value: "45", label: "45 min" },
   { value: "60", label: "1 heure" },
-];
+] as const;
 
 type FormatType = {
   value: "video" | "telephone" | "person";
@@ -59,12 +70,38 @@ const FORMATS: FormatType[] = [
   },
 ];
 
+const formSchema = z.object({
+  duration: z.enum(["15", "30", "45", "60"], {
+    required_error: "Veuillez sélectionner une durée",
+  }),
+  format: z.enum(["video", "telephone", "person"], {
+    required_error: "Veuillez sélectionner un format",
+  }),
+  address: z.string().min(1, "L'adresse est requise"),
+  message: z.string().min(1, "Le message est requis"),
+  teamMembers: z.string().optional(),
+});
+
 export function EntretienPlanDialog({
   isOpen,
   onOpenChange,
   candidat,
 }: EntretienPlanDialogProps) {
-  const [format, setFormat] = useState<FormatType["value"]>("video");
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      format: "video",
+      duration: "30",
+      address: "",
+      message: "",
+      teamMembers: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+    // Handle form submission
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -73,83 +110,152 @@ export function EntretienPlanDialog({
           <DialogTitle>Programmer un entretien avec {candidat.nom}</DialogTitle>
         </DialogHeader>
 
-        <div className="grid grid-cols-2 gap-6 py-4">
-          {/* Left Side */}
-          <div className="flex flex-col gap-4">
-            {/* Duration Select */}
-            <div className="space-y-2">
-              <Label htmlFor="duration">Durée</Label>
-              <Select>
-                <SelectTrigger id="duration">
-                  <SelectValue placeholder="Sélectionnez une durée" />
-                </SelectTrigger>
-                <SelectContent>
-                  {DURATIONS.map((duration) => (
-                    <SelectItem key={duration.value} value={duration.value}>
-                      {duration.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="grid grid-cols-2 gap-6">
+              {/* Left Side */}
+              <div className="flex flex-col gap-4">
+                {/* Duration Select */}
+                <FormField
+                  control={form.control}
+                  name="duration"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Durée</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Sélectionnez une durée" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {DURATIONS.map((duration) => (
+                            <SelectItem
+                              key={duration.value}
+                              value={duration.value}
+                            >
+                              {duration.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Format Radio Group */}
+                <FormField
+                  control={form.control}
+                  name="format"
+                  render={({ field }) => (
+                    <FormItem className="space-y-2">
+                      <FormLabel>Format</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex gap-2"
+                        >
+                          {FORMATS.map(({ value, label, icon: Icon }) => (
+                            <Label
+                              key={value}
+                              className={`flex flex-1 items-center justify-center gap-2 rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm font-medium
+                                ${
+                                  field.value === value
+                                    ? "border-primaryHex-500 text-primaryHex-500"
+                                    : ""
+                                } cursor-pointer`}
+                            >
+                              <RadioGroupItem
+                                value={value}
+                                className="sr-only"
+                              />
+                              <Icon className="h-4 w-4" />
+                              {label}
+                            </Label>
+                          ))}
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Address Input */}
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Adresse de l&apos;entretien</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Saisissez l'adresse" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Message Textarea */}
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Message destiné à {candidat.nom}</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Écrivez un message..."
+                          className="min-h-[120px] resize-none"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Team Members Input */}
+                <FormField
+                  control={form.control}
+                  name="teamMembers"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Ajouter des membres d&apos;équipe</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Saisissez les adresses email en les séparant par une virgule"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Right Side - Will be implemented later */}
+              <div className="border-l border-zinc-200 dark:border-zinc-700 pl-6">
+                {/* Calendar will go here */}
+              </div>
             </div>
 
-            {/* Format Radio Group */}
-            <div className="space-y-2">
-              <Label>Format</Label>
-              <RadioGroup
-                value={format}
-                onValueChange={(value: FormatType["value"]) => setFormat(value)}
-                className="flex gap-2"
+            <div className="flex justify-end gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
               >
-                {FORMATS.map(({ value, label, icon: Icon }) => (
-                  <Label
-                    key={value}
-                    className={`flex flex-1 items-center justify-center gap-2 rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm font-medium
-                      ${
-                        format === value
-                          ? "border-primaryHex-500 text-primaryHex-500 "
-                          : ""
-                      } cursor-pointer`}
-                  >
-                    <RadioGroupItem value={value} className="sr-only" />
-                    <Icon className="h-4 w-4" />
-                    {label}
-                  </Label>
-                ))}
-              </RadioGroup>
+                Annuler
+              </Button>
+              <Button type="submit">Programmer</Button>
             </div>
-
-            {/* Address Input */}
-            <div className="space-y-2">
-              <Label htmlFor="address">Adresse de l&apos;entretien</Label>
-              <Input id="address" placeholder="Saisissez l'adresse" />
-            </div>
-
-            {/* Message Textarea */}
-            <div className="space-y-2">
-              <Label htmlFor="message">Message destiné à {candidat.nom}</Label>
-              <Textarea
-                id="message"
-                placeholder="Écrivez un message..."
-                className="min-h-[120px] resize-none"
-              />
-            </div>
-
-            {/* Team Members Input */}
-            <div className="space-y-2">
-              <Label htmlFor="team">Ajouter des membres d&apos;équipe</Label>
-              <Input
-                id="team"
-                placeholder="Saisissez les adresses email en les séparant par une virgule"
-              />
-            </div>
-          </div>
-
-          {/* Right Side - Will be implemented later */}
-          <div className="border-l border-zinc-200 dark:border-zinc-700 pl-6">
-            {/* Calendar will go here */}
-          </div>
-        </div>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
