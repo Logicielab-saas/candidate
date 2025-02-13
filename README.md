@@ -1,4 +1,4 @@
-# Job Recruitment Platform
+# Postuly Platform
 
 A modern recruitment platform built with Next.js 15, TypeScript, and Shadcn UI, designed to streamline the hiring process by connecting recruiters with candidates.
 
@@ -18,11 +18,11 @@ A modern recruitment platform built with Next.js 15, TypeScript, and Shadcn UI, 
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: Next.js 15 (App Router), TypeScript, React
+- **Frontend**: Next.js 15 (App Router), TypeScript
 - **UI Components**: Shadcn UI, Radix UI
 - **Styling**: Tailwind CSS
 - **State Management**: Server Components, nuqs for URL state
-- **Authentication**: Next-Auth
+- **Authentication**: Custom Auth
 
 ## 📋 Prerequisites
 
@@ -34,20 +34,20 @@ A modern recruitment platform built with Next.js 15, TypeScript, and Shadcn UI, 
 
 1. Clone the repository:
 
-   ```bash
-   git clone https://github.com/nightfall-storm/next_frontJob.git
-   cd next_frontJob
+   ```shell
+   git clone https://github.com/Logicielab-saas/jobdashboard.git
+   cd jobdashboard
    ```
 
 2. Install dependencies:
 
-   ```bash
+   ```shell
    pnpm install
    ```
 
 3. Set up environment variables:
 
-   ```bash
+   ```shell
    cp .env.example .env.local
    ```
 
@@ -55,7 +55,7 @@ A modern recruitment platform built with Next.js 15, TypeScript, and Shadcn UI, 
 
 4. Run the development server:
 
-   ```bash
+   ```shell
    pnpm dev
    ```
 
@@ -83,14 +83,133 @@ Access the application at `http://localhost:3000`
    - Track application status
    - Participate in interviews
 
-<!-- ## 📚 Documentation
+## 📚 File Structure
 
-For detailed documentation about specific features:
+- **Features focused Structure**
 
-- [Authentication Guide](docs/authentication.md)
-- [Recruiter Guide](docs/recruiter.md)
-- [Candidate Guide](docs/candidate.md)
-- [Admin Guide](docs/admin.md) -->
+```plaintext
+└── 📁src
+    └── 📁app
+        └── 📁(auth)
+            └── 📁login
+                └── page.tsx
+        └── 📁(dashboard)
+            └── layout.tsx
+            └── 📁recruiter
+                └── 📁annonces
+                    └── 📁details
+                        └── 📁[id]
+                            └── page.tsx
+                    └── page.tsx
+                └── 📁candidates
+                    └── page.tsx
+                └── 📁dashboard
+                    └── page.tsx
+                └── 📁interviews
+                    └── page.tsx
+                └── layout.tsx
+                └── 📁messages
+                    └── page.tsx
+                └── 📁parametres
+                    └── 📁company
+                    └── 📁company-settings
+                        └── page.tsx
+                        └── page.tsx
+                    └── 📁notifications
+                        └── page.tsx
+                    └── 📁users
+                        └── page.tsx
+                └── 📁stats
+                    └── page.tsx
+        └── favicon.ico
+        └── globals.css
+        └── layout.tsx
+        └── page.tsx
+    └── 📁components
+        └── 📁shared
+            └── DashboardBreadcrumb.tsx
+            └── DashboardSidebar.tsx
+            └── DataTable.tsx
+            └── DataTablePagination.tsx
+            └── ThemeButton.tsx
+        └── 📁ui
+            └── alert-dialog.tsx
+            └── avatar.tsx
+            └── badge.tsx
+            └── breadcrumb.tsx
+            └── button.tsx
+            └── calendar.tsx
+            └── card.tsx
+            └── checkbox.tsx
+            └── collapsible.tsx
+            └── command.tsx
+            └── dialog.tsx
+            └── dropdown-menu.tsx
+            └── form.tsx
+            └── input.tsx
+            └── label.tsx
+            └── multi-select.tsx
+            └── popover.tsx
+            └── radio-group.tsx
+            └── scroll-area.tsx
+            └── select.tsx
+            └── separator.tsx
+            └── sheet.tsx
+            └── sidebar.tsx
+            └── skeleton.tsx
+            └── table.tsx
+            └── tabs.tsx
+            └── textarea.tsx
+            └── toast.tsx
+            └── toaster.tsx
+            └── tooltip.tsx
+    └── 📁core
+        └── 📁constants
+            └── dashboard-navigation.const.ts
+            └── recruiter-navigation.const.ts
+        └── 📁types
+            └── jwt-payload.type.ts
+    └── 📁features
+        └── 📁recruiter
+            └── 📁annonces
+                └── 📁actions
+                └── 📁components
+                    └── 📁annonces
+                        └── AnnonceColumn.tsx
+                        └── AnnonceDataTable.tsx
+                        └── AnnonceDescription.tsx
+                        └── AnnonceDetails.tsx
+                        └── AnnoncesContainer.tsx
+                        └── AnnonceSelectFilter.tsx
+                        └── AnnonceTabs.tsx
+                        └── PerformanceCard.tsx
+                └── 📁hooks
+            └── 📁candidatures
+                └── 📁actions
+                └── 📁components
+                    └── ActionCell.tsx
+                    └── AppelerDialog.tsx
+                    └── CandidateColumns.tsx
+                    └── CandidateDataTable.tsx
+                    └── CandidateFilters.tsx
+                    └── CandidateFiltersAnnonceMenu.tsx
+                    └── CandidateFilterTabs.tsx
+                    └── ContactInterfaceChat.tsx
+                    └── EntretienPlanDialog.tsx
+                    └── EntretienPlanRightSide.tsx
+                    └── SupprimerDialog.tsx
+                └── 📁hooks
+    └── 📁hooks
+        └── use-mobile.tsx
+        └── use-toast.ts
+    └── 📁lib
+        └── axios.ts
+        └── 📁providers
+            └── ReactQueryProvider.tsx
+            └── ThemeProvider.tsx
+        └── utils.ts
+    └── middleware.ts
+```
 
 ## 🤝 Contributing
 
