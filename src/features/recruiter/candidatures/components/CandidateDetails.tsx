@@ -6,6 +6,7 @@ import { BackArrow } from "@/components/shared/BackArrow";
 import { CandidatesList } from "./CandidatesList";
 import { useSearchParams } from "next/navigation";
 import { CandidateDetailsContent } from "./CandidateDetailsContent";
+import { CandidateNavigationPanel } from "./CandidateNavigationPanel";
 
 export function CandidateDetails() {
   const searchParams = useSearchParams();
@@ -31,9 +32,7 @@ export function CandidateDetails() {
       </div>
 
       {/* Content */}
-
-      {/* TODO: Adjustable Height here */}
-      <div className="flex gap-6 max-h-[calc(100vh-320px)]">
+      <div className="flex gap-6 h-[calc(100vh-510px)]">
         {/* Left column - List */}
         <div className="w-[300px]">
           <CandidatesList
@@ -48,10 +47,10 @@ export function CandidateDetails() {
           />
         </div>
 
-        {/* Right column - Future content */}
-        <div className="w-[300px]">
-          {/* Space reserved for future content */}
-        </div>
+        {/* Right column - Navigation Panel */}
+        <CandidateNavigationPanel
+          currentCandidateId={currentCandidateId || undefined}
+        />
       </div>
     </div>
   );

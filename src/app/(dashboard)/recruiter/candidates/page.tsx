@@ -19,6 +19,7 @@ export const mockCandidates = [
       status: "Nouvelle candidature",
       message: "Les candidatures identifiées sont plus susceptibles.",
     },
+    statut: "nouveau",
   },
   {
     nom: "Mariam Blanche",
@@ -33,6 +34,7 @@ export const mockCandidates = [
       status: "En cours d'évaluation",
       message: "Candidature en cours d'examen.",
     },
+    statut: "en-cours-examen",
   },
   {
     nom: "Mohamed El MAIZI",
@@ -47,6 +49,7 @@ export const mockCandidates = [
       status: "Nouvelle candidature",
       message: "Les candidatures identifiées sont plus susceptibles.",
     },
+    statut: "nouveau",
   },
   {
     nom: "Ayoub BOUKHANE",
@@ -61,6 +64,7 @@ export const mockCandidates = [
       status: "Entretien planifié",
       message: "Entretien prévu pour la semaine prochaine.",
     },
+    statut: "en-cours-entretien",
   },
   {
     nom: "Sofia LEMARCHAND",
@@ -75,6 +79,7 @@ export const mockCandidates = [
       status: "En attente de réponse",
       message: "En attente de confirmation du candidat.",
     },
+    statut: "contacte",
   },
   {
     nom: "Khalid BENSAID",
@@ -89,6 +94,7 @@ export const mockCandidates = [
       status: "Nouvelle candidature",
       message: "Les candidatures identifiées sont plus susceptibles.",
     },
+    statut: "nouveau",
   },
   {
     nom: "Fatima ZAHRA",
@@ -103,6 +109,7 @@ export const mockCandidates = [
       status: "En cours d'évaluation",
       message: "Candidature en cours d'examen.",
     },
+    statut: "en-cours-examen",
   },
   {
     nom: "Omar EL HADDADI",
@@ -117,6 +124,7 @@ export const mockCandidates = [
       status: "Entretien planifié",
       message: "Entretien prévu pour la semaine prochaine.",
     },
+    statut: "en-cours-entretien",
   },
   {
     nom: "Laila MOUSTAPHA",
@@ -131,6 +139,7 @@ export const mockCandidates = [
       status: "En attente de réponse",
       message: "En attente de confirmation du candidat.",
     },
+    statut: "contacte",
   },
   {
     nom: "Youssef EL AMRANI",
@@ -145,6 +154,7 @@ export const mockCandidates = [
       status: "En cours d'évaluation",
       message: "Candidature en cours d'examen.",
     },
+    statut: "en-cours-examen",
   },
   {
     nom: "Sara BOUHLAOUI",
@@ -159,6 +169,7 @@ export const mockCandidates = [
       status: "Entretien planifié",
       message: "Entretien prévu pour la semaine prochaine.",
     },
+    statut: "en-cours-entretien",
   },
   {
     nom: "Hassan EL KHALED",
@@ -173,6 +184,7 @@ export const mockCandidates = [
       status: "En attente de réponse",
       message: "En attente de confirmation du candidat.",
     },
+    statut: "ecarte",
   },
   {
     nom: "Nadia EL HASSANI",
@@ -187,6 +199,7 @@ export const mockCandidates = [
       status: "En cours d'évaluation",
       message: "Candidature en cours d'examen.",
     },
+    statut: "embauche",
   },
   {
     nom: "Omar BENJELLOUN",
@@ -201,6 +214,7 @@ export const mockCandidates = [
       status: "Entretien planifié",
       message: "Entretien prévu pour la semaine prochaine.",
     },
+    statut: "en-cours-entretien",
   },
 ];
 
