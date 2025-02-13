@@ -13,7 +13,6 @@ import { AppelerDialog } from "./AppelerDialog";
 import { EntretienPlanDialog } from "./EntretienPlanDialog";
 import { ContactInterfaceChat } from "./ContactInterfaceChat";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { PDFViewer } from "./PDFViewer";
 
 interface QuestionAnswer {
   id: number;
@@ -23,28 +22,27 @@ interface QuestionAnswer {
 }
 
 const MOCK_QUESTIONS: QuestionAnswer[] = [
-  // {
-  //   id: 1,
-  //   question:
-  //     "Êtes-vous disponible pour un entretien dans les prochains jours ?",
-  //   answer:
-  //     "Oui, je suis disponible tous les jours de la semaine prochaine, de préférence en matinée.",
-  //   timestamp: "2024-03-20T10:30:00Z",
-  // },
-  // {
-  //   id: 2,
-  //   question: "Quel est votre niveau d'anglais ?",
-  //   answer:
-  //     "Je possède un niveau C1 en anglais, certifié par le TOEIC (score: 945). Je pratique régulièrement l'anglais dans un contexte professionnel.",
-  //   timestamp: "2024-03-20T10:31:00Z",
-  // },
-  // {
-  //   id: 3,
-  //   question: "Quelle est votre prétention salariale ?",
-  //   answer:
-  //     "Ma prétention salariale se situe entre 45K€ et 50K€ brut annuel, selon les avantages proposés.",
-  //   timestamp: "2024-03-20T10:32:00Z",
-  // },
+  {
+    id: 1,
+    question: "Êtes-vous disponible pour entretien dans les prochains jours ?",
+    answer:
+      "Oui, je suis disponible tous les jours de la semaine prochaine, de préférence en matinée.",
+    timestamp: "2024-03-20T10:30:00Z",
+  },
+  {
+    id: 2,
+    question: "Quel est votre niveau d'anglais ?",
+    answer:
+      "Je possède un niveau C1 en anglais, certifié par le TOEIC (score: 945). Je pratique régulièrement l'anglais dans un contexte professionnel.",
+    timestamp: "2024-03-20T10:31:00Z",
+  },
+  {
+    id: 3,
+    question: "Quelle est votre prétention salariale ?",
+    answer:
+      "Ma prétention salariale se situe entre 45K€ et 50K€ brut annuel, selon les avantages proposés.",
+    timestamp: "2024-03-20T10:32:00Z",
+  },
 ];
 
 interface CandidateDetailsContentProps {
@@ -64,141 +62,133 @@ export function CandidateDetailsContent({
   if (!candidate) return null;
 
   return (
-    <div className="flex-1 flex flex-col gap-6">
-      {/* Top Half - Candidate Info */}
-      <div className="p-6 bg-background rounded-lg border">
-        {/* Header with name and actions */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-semibold">{candidate.nom}</h1>
-            </div>
-          </div>
-          <div className="flex items-center">
-            <TooltipProvider>
-              <ActionButtons />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <MoreVertical className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-[200px]">
-                  <DropdownMenuItem
-                    className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                    onClick={() => setIsChatDialogOpen(true)}
-                  >
-                    <MessageCircle className="h-4 w-4 text-blue-600" />
-                    <span>Contacter</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                    onClick={() => setIsAppelerDialogOpen(true)}
-                  >
-                    <Phone className="h-4 w-4 text-green-600" />
-                    <span>Appeler</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                    onClick={() => setIsEntretienPlanDialogOpen(true)}
-                  >
-                    <Calendar className="h-4 w-4 text-purple-600" />
-                    <span>Planifier un Entretien</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </TooltipProvider>
+    <div className="p-6 bg-background rounded-lg border">
+      {/* Header with name and actions */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-semibold">{candidate.nom}</h1>
           </div>
         </div>
-
-        {/* Profile and Location */}
-        <div className="space-y-1 mb-6">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <span className="font-bold">{candidate.profil}</span>
-            <span className="h-1 w-1 rounded-full bg-current opacity-40" />
-            <span>{candidate.ville}</span>
-          </div>
-          <div className="flex items-center gap-2 text-muted-foreground"></div>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <span>
-              A postulé pour{" "}
-              <span className="font-bold">{candidate.titreOffre}</span>
-            </span>
-            <span>•</span>
-            <span>{candidate.ville}</span>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex gap-3 mb-6">
-          <Button
-            variant="outline"
-            className="flex-1"
-            onClick={() => setIsChatDialogOpen(true)}
-          >
-            <MessageCircle className="h-4 w-4 mr-2" />
-            Contacter
-          </Button>
-          <Button
-            variant="outline"
-            className="flex-1"
-            onClick={() => setIsAppelerDialogOpen(true)}
-          >
-            <Phone className="h-4 w-4 mr-2" />
-            Appeler
-          </Button>
-          <Button
-            variant="outline"
-            className="flex-1"
-            onClick={() => setIsEntretienPlanDialogOpen(true)}
-          >
-            <Calendar className="h-4 w-4 mr-2" />
-            Entretien
-          </Button>
-        </div>
-
-        {/* Questions Section */}
-        <div>
-          <h2 className="text-lg font-semibold mb-4">
-            Questions de présélection personnalisées
-          </h2>
-          {MOCK_QUESTIONS.length > 0 ? (
-            <div className="space-y-4">
-              {MOCK_QUESTIONS.map((qa) => (
-                <div
-                  key={qa.id}
-                  className="rounded-lg border bg-card p-4 text-card-foreground"
+        <div className="flex items-center">
+          <TooltipProvider>
+            <ActionButtons />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <MoreVertical className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[200px]">
+                <DropdownMenuItem
+                  className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  onClick={() => setIsChatDialogOpen(true)}
                 >
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <p className="font-medium">{qa.question}</p>
-                      <time className="text-sm text-muted-foreground">
-                        {new Date(qa.timestamp).toLocaleDateString("fr-FR", {
-                          day: "numeric",
-                          month: "long",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </time>
-                    </div>
-                    <p className="text-sm text-muted-foreground">{qa.answer}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-sm text-muted-foreground">
-              Aucune Q/R n&apos;a été et ne pourra être configurée pour cette
-              offre d&apos;emploi car aucun questionnaire n&apos;a été
-              sélectionné.
-            </div>
-          )}
+                  <MessageCircle className="h-4 w-4 text-blue-600" />
+                  <span>Contacter</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  onClick={() => setIsAppelerDialogOpen(true)}
+                >
+                  <Phone className="h-4 w-4 text-green-600" />
+                  <span>Appeler</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  onClick={() => setIsEntretienPlanDialogOpen(true)}
+                >
+                  <Calendar className="h-4 w-4 text-purple-600" />
+                  <span>Planifier un Entretien</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </TooltipProvider>
         </div>
       </div>
 
-      {/* Bottom Half - CV Section */}
-      <div className="flex-1">
-        <PDFViewer url="/cvs/mycv.pdf" />
+      {/* Profile and Location */}
+      <div className="space-y-1 mb-6">
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <span className="font-bold">{candidate.profil}</span>
+          <span className="h-1 w-1 rounded-full bg-current opacity-40" />
+          <span>{candidate.ville}</span>
+        </div>
+        <div className="flex items-center gap-2 text-muted-foreground"></div>
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <span>
+            A postulé pour{" "}
+            <span className="font-bold">{candidate.titreOffre}</span>
+          </span>
+          <span>•</span>
+          <span>{candidate.ville}</span>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex gap-3 mb-6">
+        <Button
+          variant="outline"
+          className="flex-1"
+          onClick={() => setIsChatDialogOpen(true)}
+        >
+          <MessageCircle className="h-4 w-4 mr-2" />
+          Contacter
+        </Button>
+        <Button
+          variant="outline"
+          className="flex-1"
+          onClick={() => setIsAppelerDialogOpen(true)}
+        >
+          <Phone className="h-4 w-4 mr-2" />
+          Appeler
+        </Button>
+        <Button
+          variant="outline"
+          className="flex-1"
+          onClick={() => setIsEntretienPlanDialogOpen(true)}
+        >
+          <Calendar className="h-4 w-4 mr-2" />
+          Entretien
+        </Button>
+      </div>
+
+      {/* Questions Section */}
+      <div>
+        <h2 className="text-lg font-semibold mb-4">
+          Questions de présélection personnalisées
+        </h2>
+        {MOCK_QUESTIONS.length > 0 ? (
+          <div className="space-y-4">
+            {MOCK_QUESTIONS.map((qa) => (
+              <div
+                key={qa.id}
+                className="rounded-lg border bg-card p-4 text-card-foreground"
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <p className="font-medium">{qa.question}</p>
+                    <time className="text-sm text-muted-foreground">
+                      {new Date(qa.timestamp).toLocaleDateString("fr-FR", {
+                        day: "numeric",
+                        month: "long",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </time>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{qa.answer}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-sm text-muted-foreground">
+            Aucune Q/R n&apos;a été et ne pourra être configurée pour cette
+            offre d&apos;emploi car aucun questionnaire n&apos;a été
+            sélectionné.
+          </div>
+        )}
       </div>
 
       {/* Dialogs */}

@@ -11,7 +11,6 @@ import { mockCandidates } from "@/app/(dashboard)/recruiter/candidates/page";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { useRouter } from "next/navigation";
 
 interface Note {
   id: string;
@@ -35,17 +34,12 @@ const STATUS_OPTIONS = {
 export function CandidateNavigationPanel({
   currentCandidateId,
 }: CandidateNavigationPanelProps) {
-  const router = useRouter();
   const [note, setNote] = useState("");
   const [notes, setNotes] = useState<Note[]>([]);
 
   const currentCandidate = mockCandidates.find(
     (c) => c.nom === currentCandidateId
   );
-
-  const currentIndex = currentCandidateId
-    ? mockCandidates.findIndex((c) => c.nom === currentCandidateId)
-    : -1;
 
   const [status, setStatus] = useState<keyof typeof STATUS_OPTIONS>(
     (currentCandidate?.statut as keyof typeof STATUS_OPTIONS) || "nouveau"
@@ -57,20 +51,6 @@ export function CandidateNavigationPanel({
       setStatus(currentCandidate.statut as keyof typeof STATUS_OPTIONS);
     }
   }, [currentCandidate]);
-
-  const handleNavigation = (direction: "prev" | "next") => {
-    if (currentIndex === -1) return;
-
-    const newIndex =
-      direction === "prev"
-        ? Math.max(0, currentIndex - 1)
-        : Math.min(mockCandidates.length - 1, currentIndex + 1);
-
-    const candidate = mockCandidates[newIndex];
-    if (candidate) {
-      router.push(`/recruiter/candidates/details?id=${candidate.nom}`);
-    }
-  };
 
   const handleAddNote = () => {
     if (!note.trim()) return;

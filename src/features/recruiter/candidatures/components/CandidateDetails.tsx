@@ -5,9 +5,9 @@ import { Separator } from "@/components/ui/separator";
 import { CandidatesList } from "./CandidatesList";
 import { useSearchParams } from "next/navigation";
 import { CandidateDetailsContent } from "./CandidateDetailsContent";
-import { CandidateNavigationPanel } from "./CandidateNavigationPanel";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { PDFViewer } from "./PDFViewer";
 
 export function CandidateDetails() {
   const searchParams = useSearchParams();
@@ -29,9 +29,11 @@ export function CandidateDetails() {
           </div>
           <p className="text-2xl font-bold">Candidat(e)s</p>
           <Separator orientation="vertical" className="h-10" />
-          <Button variant="outline" className="bg-accent hover:bg-accent/50">
-            Liste Des Candidats
-          </Button>
+          <Link href="/recruiter/candidates">
+            <Button variant="outline" className="bg-accent hover:bg-accent/50">
+              Liste Des Candidats
+            </Button>
+          </Link>
         </div>
         <Button>Publier une annonce</Button>
       </div>
@@ -52,10 +54,12 @@ export function CandidateDetails() {
           />
         </div>
 
-        {/* Right column - Navigation Panel */}
-        <CandidateNavigationPanel
-          currentCandidateId={currentCandidateId || undefined}
-        />
+        {/* Right column - CV Display */}
+        <div className="w-[600px]">
+          {currentCandidateId && (
+            <PDFViewer key={currentCandidateId} url="/cvs/mycv.pdf" />
+          )}
+        </div>
       </div>
     </div>
   );
