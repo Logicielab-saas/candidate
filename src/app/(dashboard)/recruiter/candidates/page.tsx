@@ -30,8 +30,8 @@ export const mockCandidates = [
     pertinence: "Disponible immédiatement",
     telephone: "+33 612 34 56 78",
     activite: {
-      status: "Nouvelle candidature",
-      message: "Les candidatures identifiées sont plus susceptibles.",
+      status: "En cours d'évaluation",
+      message: "Candidature en cours d'examen.",
     },
   },
   {
@@ -58,8 +58,8 @@ export const mockCandidates = [
     pertinence: "Disponible immédiatement",
     telephone: "+212 611 22 33 44",
     activite: {
-      status: "Nouvelle candidature",
-      message: "Les candidatures identifiées sont plus susceptibles.",
+      status: "Entretien planifié",
+      message: "Entretien prévu pour la semaine prochaine.",
     },
   },
   {
@@ -72,8 +72,8 @@ export const mockCandidates = [
     pertinence: "Compétences correspondantes",
     telephone: "+212 612 34 56 79",
     activite: {
-      status: "Nouvelle candidature",
-      message: "Les candidatures identifiées sont plus susceptibles.",
+      status: "En attente de réponse",
+      message: "En attente de confirmation du candidat.",
     },
   },
   {
@@ -100,8 +100,8 @@ export const mockCandidates = [
     pertinence: "Compétences correspondantes",
     telephone: "+212 614 56 78 81",
     activite: {
-      status: "Nouvelle candidature",
-      message: "Les candidatures identifiées sont plus susceptibles.",
+      status: "En cours d'évaluation",
+      message: "Candidature en cours d'examen.",
     },
   },
   {
@@ -114,8 +114,8 @@ export const mockCandidates = [
     pertinence: "Compétences correspondantes",
     telephone: "+212 615 67 89 82",
     activite: {
-      status: "Nouvelle candidature",
-      message: "Les candidatures identifiées sont plus susceptibles.",
+      status: "Entretien planifié",
+      message: "Entretien prévu pour la semaine prochaine.",
     },
   },
   {
@@ -128,8 +128,78 @@ export const mockCandidates = [
     pertinence: "Aucune qualification correspondant au profil",
     telephone: "+212 616 78 90 83",
     activite: {
-      status: "Nouvelle candidature",
-      message: "Les candidatures identifiées sont plus susceptibles.",
+      status: "En attente de réponse",
+      message: "En attente de confirmation du candidat.",
+    },
+  },
+  {
+    nom: "Youssef EL AMRANI",
+    ville: "Casablanca",
+    profil: "Développeur Full Stack",
+    situation: "En recherche d'emploi",
+    datePostule: "21 juin",
+    titreOffre: "Développeur Web",
+    pertinence: "Compétences correspondantes",
+    telephone: "+212 617 89 01 84",
+    activite: {
+      status: "En cours d'évaluation",
+      message: "Candidature en cours d'examen.",
+    },
+  },
+  {
+    nom: "Sara BOUHLAOUI",
+    ville: "Rabat",
+    profil: "Analyste Marketing",
+    situation: "Disponible immédiatement",
+    datePostule: "22 juin",
+    titreOffre: "Marketing Analyst",
+    pertinence: "Compétences correspondantes",
+    telephone: "+212 618 90 12 85",
+    activite: {
+      status: "Entretien planifié",
+      message: "Entretien prévu pour la semaine prochaine.",
+    },
+  },
+  {
+    nom: "Hassan EL KHALED",
+    ville: "Marrakech",
+    profil: "Ingénieur Logiciel",
+    situation: "En recherche d'emploi",
+    datePostule: "23 juin",
+    titreOffre: "Software Engineer",
+    pertinence: "Compétences correspondantes",
+    telephone: "+212 619 01 23 86",
+    activite: {
+      status: "En attente de réponse",
+      message: "En attente de confirmation du candidat.",
+    },
+  },
+  {
+    nom: "Nadia EL HASSANI",
+    ville: "Tanger",
+    profil: "Chef de Produit",
+    situation: "Disponible immédiatement",
+    datePostule: "24 juin",
+    titreOffre: "Product Manager",
+    pertinence: "Compétences correspondantes",
+    telephone: "+212 620 12 34 87",
+    activite: {
+      status: "En cours d'évaluation",
+      message: "Candidature en cours d'examen.",
+    },
+  },
+  {
+    nom: "Omar BENJELLOUN",
+    ville: "Fès",
+    profil: "Consultant IT",
+    situation: "En recherche d'emploi",
+    datePostule: "25 juin",
+    titreOffre: "IT Consultant",
+    pertinence: "Compétences correspondantes",
+    telephone: "+212 621 23 45 88",
+    activite: {
+      status: "Entretien planifié",
+      message: "Entretien prévu pour la semaine prochaine.",
     },
   },
 ];
