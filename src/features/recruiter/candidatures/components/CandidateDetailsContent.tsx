@@ -19,6 +19,7 @@ import { AppelerDialog } from "./AppelerDialog";
 import { EntretienPlanDialog } from "./EntretienPlanDialog";
 import { ContactInterfaceChat } from "./ContactInterfaceChat";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { PDFViewer } from "./PDFViewer";
 
 interface CandidateDetailsContentProps {
   candidateId?: string;
@@ -159,12 +160,7 @@ export function CandidateDetailsContent({
             Télécharger au format PDF
           </Button>
         </div>
-        <div className="p-4 rounded-lg border bg-muted/40">
-          {/* CV content placeholder - you can add actual CV content here */}
-          <div className="text-sm text-muted-foreground">
-            CV content will be displayed here
-          </div>
-        </div>
+        <PDFViewer url="/cvs/mycv.pdf" />
       </div>
 
       {/* Dialogs */}
