@@ -87,28 +87,8 @@ export function CandidateNavigationPanel({
 
   return (
     <div className="w-[300px] flex flex-col gap-6">
-      {/* Navigation Buttons */}
-      <div className="flex gap-3">
-        <Button
-          variant="outline"
-          className="flex-1"
-          onClick={() => handleNavigation("prev")}
-          disabled={currentIndex <= 0}
-        >
-          Précédent
-        </Button>
-        <Button
-          variant="outline"
-          className="flex-1"
-          onClick={() => handleNavigation("next")}
-          disabled={currentIndex === mockCandidates.length - 1}
-        >
-          Suivant
-        </Button>
-      </div>
-
       {/* Status Container */}
-      <div className="p-4 border rounded-lg bg-background h-[calc(100vh-670px)]">
+      <div className="p-4 border rounded-lg bg-background h-[calc(100vh-600px)]">
         <div className="space-y-4 h-full flex flex-col">
           <div>
             <Select

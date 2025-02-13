@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { ContactInterfaceChat } from "./ContactInterfaceChat";
+import { useRouter } from "next/navigation";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface CandidatesListProps {
   currentCandidateId?: string;
@@ -14,14 +16,53 @@ export function CandidatesList({ currentCandidateId }: CandidatesListProps) {
   const [selectedChatCandidate, setSelectedChatCandidate] = useState<
     string | null
   >(null);
+  const router = useRouter();
+
+  const currentIndex = currentCandidateId
+    ? mockCandidates.findIndex((c) => c.nom === currentCandidateId)
+    : -1;
+
+  const handleNavigation = (direction: "prev" | "next") => {
+    if (currentIndex === -1) return;
+
+    const newIndex =
+      direction === "prev"
+        ? Math.max(0, currentIndex - 1)
+        : Math.min(mockCandidates.length - 1, currentIndex + 1);
+
+    const candidate = mockCandidates[newIndex];
+    if (candidate) {
+      router.push(`/recruiter/candidates/details?id=${candidate.nom}`);
+    }
+  };
 
   return (
     <div className="w-[300px] border rounded-lg bg-background">
-      <div className="p-4 border-b">
+      <div className="p-4 border-b flex items-center justify-between">
         <div className="flex flex-col gap-2">
           <h2 className="text-lg font-semibold text-muted-foreground">
             ({mockCandidates.length}) candidat(e)s
           </h2>
+        </div>
+        <div className="flex items-center gap-1">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 rounded-full hover:bg-accent"
+            disabled={currentIndex <= 0}
+            onClick={() => handleNavigation("prev")}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 rounded-full hover:bg-accent"
+            disabled={currentIndex === mockCandidates.length - 1}
+            onClick={() => handleNavigation("next")}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
         </div>
       </div>
       {/* Adjustable height */}

@@ -15,6 +15,38 @@ import { ContactInterfaceChat } from "./ContactInterfaceChat";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { PDFViewer } from "./PDFViewer";
 
+interface QuestionAnswer {
+  id: number;
+  question: string;
+  answer: string;
+  timestamp: string;
+}
+
+const MOCK_QUESTIONS: QuestionAnswer[] = [
+  // {
+  //   id: 1,
+  //   question:
+  //     "Êtes-vous disponible pour un entretien dans les prochains jours ?",
+  //   answer:
+  //     "Oui, je suis disponible tous les jours de la semaine prochaine, de préférence en matinée.",
+  //   timestamp: "2024-03-20T10:30:00Z",
+  // },
+  // {
+  //   id: 2,
+  //   question: "Quel est votre niveau d'anglais ?",
+  //   answer:
+  //     "Je possède un niveau C1 en anglais, certifié par le TOEIC (score: 945). Je pratique régulièrement l'anglais dans un contexte professionnel.",
+  //   timestamp: "2024-03-20T10:31:00Z",
+  // },
+  // {
+  //   id: 3,
+  //   question: "Quelle est votre prétention salariale ?",
+  //   answer:
+  //     "Ma prétention salariale se situe entre 45K€ et 50K€ brut annuel, selon les avantages proposés.",
+  //   timestamp: "2024-03-20T10:32:00Z",
+  // },
+];
+
 interface CandidateDetailsContentProps {
   candidateId?: string;
 }
@@ -36,8 +68,12 @@ export function CandidateDetailsContent({
       {/* Top Half - Candidate Info */}
       <div className="p-6 bg-background rounded-lg border">
         {/* Header with name and actions */}
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-semibold">{candidate.nom}</h1>
+        <div className="flex items-center justify-between mb-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-semibold">{candidate.nom}</h1>
+            </div>
+          </div>
           <div className="flex items-center">
             <TooltipProvider>
               <ActionButtons />
@@ -78,25 +114,18 @@ export function CandidateDetailsContent({
         {/* Profile and Location */}
         <div className="space-y-1 mb-6">
           <div className="flex items-center gap-2 text-muted-foreground">
-            <span className="h-1 w-1 rounded-full bg-current opacity-40" />
-            <span>{candidate.profil}</span>
-          </div>
-          <div className="flex items-center gap-2 text-muted-foreground">
+            <span className="font-bold">{candidate.profil}</span>
             <span className="h-1 w-1 rounded-full bg-current opacity-40" />
             <span>{candidate.ville}</span>
           </div>
-        </div>
-
-        {/* Job Application Info */}
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-2">A postulé pour</h2>
-          <div className="p-4 rounded-lg border bg-muted/40">
-            <div className="flex flex-col gap-1">
-              <span className="font-medium">{candidate.titreOffre}</span>
-              <span className="text-sm text-muted-foreground">
-                {candidate.ville}
-              </span>
-            </div>
+          <div className="flex items-center gap-2 text-muted-foreground"></div>
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <span>
+              A postulé pour{" "}
+              <span className="font-bold">{candidate.titreOffre}</span>
+            </span>
+            <span>•</span>
+            <span>{candidate.ville}</span>
           </div>
         </div>
 
@@ -133,11 +162,37 @@ export function CandidateDetailsContent({
           <h2 className="text-lg font-semibold mb-4">
             Questions de présélection personnalisées
           </h2>
-          <div className="text-sm text-muted-foreground">
-            Aucune Q/R n&apos;a été et ne pourra être configurée pour cette
-            offre d&apos;emploi car aucun questionnaire n&apos;a été
-            sélectionné.
-          </div>
+          {MOCK_QUESTIONS.length > 0 ? (
+            <div className="space-y-4">
+              {MOCK_QUESTIONS.map((qa) => (
+                <div
+                  key={qa.id}
+                  className="rounded-lg border bg-card p-4 text-card-foreground"
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="font-medium">{qa.question}</p>
+                      <time className="text-sm text-muted-foreground">
+                        {new Date(qa.timestamp).toLocaleDateString("fr-FR", {
+                          day: "numeric",
+                          month: "long",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </time>
+                    </div>
+                    <p className="text-sm text-muted-foreground">{qa.answer}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-sm text-muted-foreground">
+              Aucune Q/R n&apos;a été et ne pourra être configurée pour cette
+              offre d&apos;emploi car aucun questionnaire n&apos;a été
+              sélectionné.
+            </div>
+          )}
         </div>
       </div>
 

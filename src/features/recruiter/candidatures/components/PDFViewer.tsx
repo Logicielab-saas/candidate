@@ -107,7 +107,7 @@ export function PDFViewer({ url }: PDFViewerProps) {
       </div>
 
       {/* PDF Content */}
-      <div className="h-[calc(100vh-510px)] overflow-auto scrollbar-thin scrollbar-thumb-accent scrollbar-track-transparent border border-border/40 rounded-lg p-4 mb-6">
+      <div className="h-[calc(100vh-543px)] overflow-auto scrollbar-thin scrollbar-thumb-accent scrollbar-track-transparent border border-border/40 rounded-lg p-4 mb-6">
         <canvas ref={canvasRef} className="max-w-full" />
       </div>
     </div>
