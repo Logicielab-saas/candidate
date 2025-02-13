@@ -40,24 +40,24 @@ export function CandidateDetails() {
       {/* Content */}
       <div className="flex gap-6">
         {/* Left column - List */}
-        <div className="w-[300px]">
+        <div className="">
           <CandidatesList
             currentCandidateId={currentCandidateId || undefined}
           />
         </div>
 
-        {/* Center column - Details */}
-        <div className="flex-1">
-          <CandidateDetailsContent
-            candidateId={currentCandidateId || undefined}
-          />
-        </div>
-
-        {/* Right column - CV Display */}
-        <div className="w-[600px]">
+        {/* Center column - CV Display */}
+        <div className="flex-1 w-[700px]">
           {currentCandidateId && (
             <PDFViewer key={currentCandidateId} url="/cvs/mycv.pdf" />
           )}
+        </div>
+
+        {/* Right column - Details */}
+        <div className="max-w-[550px] shrink-0">
+          <CandidateDetailsContent
+            candidateId={currentCandidateId || undefined}
+          />
         </div>
       </div>
     </div>
