@@ -31,7 +31,9 @@ export function CandidateDetails() {
       </div>
 
       {/* Content */}
-      <div className="flex gap-6 h-[calc(100vh-240px)]">
+
+      {/* TODO: Adjustable Height here */}
+      <div className="flex gap-6 max-h-[calc(100vh-320px)]">
         {/* Left column - List */}
         <div className="w-[300px]">
           <CandidatesList

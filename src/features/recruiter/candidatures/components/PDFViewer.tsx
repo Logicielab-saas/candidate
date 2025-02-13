@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as pdfjsLib from "pdfjs-dist";
 import { PDFDocumentProxy } from "pdfjs-dist";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `/pdf.worker.mjs`;
@@ -17,7 +17,7 @@ export function PDFViewer({ url }: PDFViewerProps) {
   const [pdfDoc, setPdfDoc] = useState<PDFDocumentProxy | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [numPages, setNumPages] = useState(0);
-  const scale = 1.5; // Fixed scale
+  const scale = 1.5;
 
   useEffect(() => {
     const loadPDF = async () => {
@@ -69,31 +69,45 @@ export function PDFViewer({ url }: PDFViewerProps) {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="flex items-center gap-2">
+    <div className="relative flex flex-col items-center">
+      {/* Floating Navigation Bar */}
+      <div className="sticky top-4 z-10 mb-4 flex items-center justify-between w-fit max-w-[400px] px-4 py-2 bg-background/80 backdrop-blur-md border rounded-full shadow-lg">
+        <p>CV </p>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => changePage(-1)}
+            disabled={currentPage <= 1}
+            className="h-8 w-8 rounded-full hover:bg-accent disabled:opacity-50"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <span className="text-center text-sm">
+            {currentPage}/{numPages}
+          </span>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => changePage(1)}
+            disabled={currentPage >= numPages}
+            className="h-8 w-8 rounded-full hover:bg-accent disabled:opacity-50"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => changePage(-1)}
-          disabled={currentPage <= 1}
-          className="h-8 w-8 disabled:opacity-50"
+          className="h-8 w-8 rounded-full hover:bg-accent"
         >
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-        <span className="min-w-[100px] text-center">
-          Page {currentPage} of {numPages}
-        </span>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => changePage(1)}
-          disabled={currentPage >= numPages}
-          className="h-8 w-8 disabled:opacity-50"
-        >
-          <ChevronRight className="h-4 w-4" />
+          <Download className="h-4 w-4" />
         </Button>
       </div>
-      <div className="border rounded-lg p-4 bg-white shadow-lg overflow-auto max-h-[800px]">
+
+      {/* PDF Content */}
+      <div className="h-[calc(100vh-510px)] overflow-auto scrollbar-thin scrollbar-thumb-accent scrollbar-track-transparent border border-border/40 rounded-lg p-4 mb-6">
         <canvas ref={canvasRef} className="max-w-full" />
       </div>
     </div>

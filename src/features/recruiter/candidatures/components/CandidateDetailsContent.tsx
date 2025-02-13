@@ -6,13 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Calendar,
-  Download,
-  MessageCircle,
-  MoreVertical,
-  Phone,
-} from "lucide-react";
+import { Calendar, MessageCircle, MoreVertical, Phone } from "lucide-react";
 import { mockCandidates } from "@/app/(dashboard)/recruiter/candidates/page";
 import { useState } from "react";
 import { AppelerDialog } from "./AppelerDialog";
@@ -148,18 +142,7 @@ export function CandidateDetailsContent({
       </div>
 
       {/* Bottom Half - CV Section */}
-      <div className="p-6 bg-background rounded-lg border">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">CV</h2>
-          <Button
-            variant="outline"
-            size="sm"
-            className="text-primaryHex-600 border-primaryHex-200 hover:bg-primaryHex-50"
-          >
-            <Download className="h-4 w-4 mr-2" />
-            Télécharger au format PDF
-          </Button>
-        </div>
+      <div className="flex-1">
         <PDFViewer url="/cvs/mycv.pdf" />
       </div>
 
