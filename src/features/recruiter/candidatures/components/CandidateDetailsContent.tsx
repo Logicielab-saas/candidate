@@ -62,12 +62,14 @@ export function CandidateDetailsContent({
   if (!candidate) return null;
 
   return (
-    <div className="p-6 bg-background rounded-lg border">
+    <div className="p-6 bg-background rounded-lg border border-border">
       {/* Header with name and actions */}
       <div className="flex items-center justify-between mb-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-semibold">{candidate.nom}</h1>
+            <h1 className="text-2xl font-semibold text-foreground">
+              {candidate.nom}
+            </h1>
           </div>
         </div>
         <div className="flex items-center">
@@ -81,24 +83,24 @@ export function CandidateDetailsContent({
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[200px]">
                 <DropdownMenuItem
-                  className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-accent"
                   onClick={() => setIsChatDialogOpen(true)}
                 >
-                  <MessageCircle className="h-4 w-4 text-blue-600" />
+                  <MessageCircle className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                   <span>Contacter</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-accent"
                   onClick={() => setIsAppelerDialogOpen(true)}
                 >
-                  <Phone className="h-4 w-4 text-green-600" />
+                  <Phone className="h-4 w-4 text-green-500 dark:text-green-400" />
                   <span>Appeler</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-accent"
                   onClick={() => setIsEntretienPlanDialogOpen(true)}
                 >
-                  <Calendar className="h-4 w-4 text-purple-600" />
+                  <Calendar className="h-4 w-4 text-purple-500 dark:text-purple-400" />
                   <span>Planifier un Entretien</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -155,7 +157,7 @@ export function CandidateDetailsContent({
 
       {/* Questions Section */}
       <div>
-        <h2 className="text-lg font-semibold mb-4">
+        <h2 className="text-lg font-semibold mb-4 text-foreground">
           Questions de présélection personnalisées
         </h2>
         {MOCK_QUESTIONS.length > 0 ? (
@@ -163,7 +165,7 @@ export function CandidateDetailsContent({
             {MOCK_QUESTIONS.map((qa) => (
               <div
                 key={qa.id}
-                className="rounded-lg border bg-card p-4 text-card-foreground"
+                className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">

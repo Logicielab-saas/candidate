@@ -37,8 +37,8 @@ export function CandidatesList({ currentCandidateId }: CandidatesListProps) {
   };
 
   return (
-    <div className="w-[300px] border rounded-lg bg-background">
-      <div className="p-4 border-b flex items-center justify-between">
+    <div className="w-[300px] border border-border rounded-lg bg-background">
+      <div className="p-4 border-b border-border flex items-center justify-between">
         <div className="flex flex-col gap-2">
           <h2 className="text-lg font-semibold text-muted-foreground">
             ({mockCandidates.length}) candidat(e)s
@@ -74,7 +74,7 @@ export function CandidatesList({ currentCandidateId }: CandidatesListProps) {
                 key={candidate.nom}
                 className={`rounded-lg p-1 transition-colors ${
                   currentCandidateId === candidate.nom
-                    ? "bg-accent border border-primaryHex-800"
+                    ? "bg-accent border border-border"
                     : "hover:bg-accent/50"
                 }`}
               >
@@ -115,19 +115,17 @@ export function CandidatesList({ currentCandidateId }: CandidatesListProps) {
                   <div className="px-3 pb-3 space-y-1.5">
                     <Badge
                       variant="outline"
-                      className={`w-fit border-emerald-200 ${
+                      className={`w-fit ${
                         currentCandidateId === candidate.nom
-                          ? "bg-emerald-100 text-emerald-700"
-                          : "bg-emerald-50 text-emerald-600"
+                          ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800"
+                          : "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800"
                       }`}
                     >
                       Nouvelle candidature
                     </Badge>
                     <Button
                       variant="link"
-                      className={`w-fit h-auto p-1 text-sm font-normal
-                          "text-primaryHex-500 hover:text-primaryHex-500/90"
-                      `}
+                      className={`w-fit h-auto p-1 text-sm font-normal text-primaryHex-500 dark:text-primaryHex-400 hover:text-primaryHex-600 dark:hover:text-primaryHex-300`}
                       onClick={() => setSelectedChatCandidate(candidate.nom)}
                     >
                       Envoyer un message

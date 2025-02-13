@@ -21,13 +21,12 @@ export function CandidateDetails() {
           <div className="flex items-center gap-4">
             <Link
               href="/recruiter/candidates"
-              className="cursor-pointer text-primaryHex-600 hover:text-primaryHex-500 transition-colors
-            dark:bg-primaryHex-900/20 dark:text-primaryHex-400 bg-primaryHex-50 rounded-full p-2"
+              className="cursor-pointer text-primaryHex-600 hover:text-primaryHex-500 dark:text-primaryHex-400 dark:hover:text-primaryHex-300 transition-colors bg-primaryHex-50 dark:bg-primaryHex-900/20 rounded-full p-2"
             >
               <ArrowLeft className="w-8 h-8 cursor-pointer" />
             </Link>
           </div>
-          <p className="text-2xl font-bold">Candidat(e)s</p>
+          <p className="text-2xl font-bold text-foreground">Candidat(e)s</p>
           <Separator orientation="vertical" className="h-10" />
           <Link href="/recruiter/candidates">
             <Button variant="outline" className="bg-accent hover:bg-accent/50">

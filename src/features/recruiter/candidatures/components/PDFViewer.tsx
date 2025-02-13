@@ -133,13 +133,13 @@ export function PDFViewer({ url }: PDFViewerProps) {
   return (
     <div className="relative flex flex-col items-center">
       {/* PDF Content */}
-      <div className="h-[calc(100vh-300px)] overflow-auto scrollbar-thin scrollbar-thumb-accent scrollbar-track-transparent border border-border/40 rounded-lg p-4 mb-6">
+      <div className="h-[calc(100vh-300px)] overflow-auto scrollbar-thin scrollbar-thumb-accent scrollbar-track-transparent border border-border/40 rounded-lg p-4 mb-6 bg-background">
         <canvas ref={canvasRef} className="max-w-full" />
       </div>
 
       {/* Floating Navigation Bar */}
-      <div className="sticky top-4 z-10 mb-4 flex items-center justify-between w-fit max-w-[400px] px-4 py-2 bg-background/80 backdrop-blur-md border rounded-full shadow-lg">
-        <p>CV </p>
+      <div className="sticky top-4 z-10 mb-4 flex items-center justify-between w-fit max-w-[400px] px-4 py-2 bg-background/80 dark:bg-background/90 backdrop-blur-md border border-border rounded-full shadow-lg">
+        <p className="text-foreground">CV </p>
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
@@ -150,7 +150,7 @@ export function PDFViewer({ url }: PDFViewerProps) {
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <span className="text-center text-sm">
+          <span className="text-center text-sm text-foreground">
             {currentPage}/{numPages}
           </span>
           <Button
