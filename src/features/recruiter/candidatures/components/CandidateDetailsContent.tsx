@@ -8,10 +8,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   Calendar,
+  Download,
   MessageCircle,
   MoreVertical,
   Phone,
   StickyNote,
+  Trash2,
 } from "lucide-react";
 import { mockCandidates } from "@/app/(dashboard)/recruiter/candidates/page";
 import { useState } from "react";
@@ -20,6 +22,8 @@ import { EntretienPlanDialog } from "./EntretienPlanDialog";
 import { ContactInterfaceChat } from "./ContactInterfaceChat";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { NotesDialog } from "./NotesDialog";
+import { handleDownloadCV } from "@/core/utils/download-cv";
+import { SupprimerDialog } from "./SupprimerDialog";
 
 interface QuestionAnswer {
   id: number;
@@ -64,10 +68,15 @@ export function CandidateDetailsContent({
     useState(false);
   const [isChatDialogOpen, setIsChatDialogOpen] = useState(false);
   const [isNotesDialogOpen, setIsNotesDialogOpen] = useState(false);
+  const [isSupprimerDialogOpen, setIsSupprimerDialogOpen] = useState(false);
 
   const candidate = mockCandidates.find((c) => c.nom === candidateId);
 
   if (!candidate) return null;
+
+  const handleDeleteCandidate = () => {
+    console.log("delete candidate");
+  };
 
   return (
     <div className="p-6 bg-background rounded-lg border border-border">
@@ -89,27 +98,20 @@ export function CandidateDetailsContent({
                   <MoreVertical className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-[200px]">
+              <DropdownMenuContent align="center" className="w-[200px] mt-2">
                 <DropdownMenuItem
                   className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-accent"
-                  onClick={() => setIsChatDialogOpen(true)}
+                  onClick={() => handleDownloadCV("/cvs/mycv.pdf")}
                 >
-                  <MessageCircle className="h-4 w-4 text-blue-500 dark:text-blue-400" />
-                  <span>Contacter</span>
+                  <Download className="h-4 w-4 text-orange-500 dark:text-orange-400" />
+                  <span>Télécharger le CV</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-accent"
-                  onClick={() => setIsAppelerDialogOpen(true)}
+                  className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-accent text-red-500 dark:text-red-400"
+                  onClick={() => setIsSupprimerDialogOpen(true)}
                 >
-                  <Phone className="h-4 w-4 text-green-500 dark:text-green-400" />
-                  <span>Appeler</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="flex items-center gap-2.5 py-2.5 px-3 text-sm cursor-pointer hover:bg-accent"
-                  onClick={() => setIsEntretienPlanDialogOpen(true)}
-                >
-                  <Calendar className="h-4 w-4 text-purple-500 dark:text-purple-400" />
-                  <span>Planifier un Entretien</span>
+                  <Trash2 className="h-4 w-4" />
+                  <span className="">Supprimer candidat(e)</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -236,6 +238,14 @@ export function CandidateDetailsContent({
         isOpen={isNotesDialogOpen}
         onOpenChange={setIsNotesDialogOpen}
         candidateNom={candidate.nom}
+      />
+      <SupprimerDialog
+        isOpen={isSupprimerDialogOpen}
+        onOpenChange={setIsSupprimerDialogOpen}
+        candidat={{
+          nom: candidate.nom,
+        }}
+        onConfirm={handleDeleteCandidate}
       />
     </div>
   );

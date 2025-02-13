@@ -5,6 +5,7 @@ import * as pdfjsLib from "pdfjs-dist";
 import { PDFDocumentProxy } from "pdfjs-dist";
 import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { handleDownloadCV } from "@/core/utils/download-cv";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `/pdf.worker.mjs`;
 
@@ -109,27 +110,6 @@ export function PDFViewer({ url }: PDFViewerProps) {
     });
   };
 
-  const handleDownload = async () => {
-    try {
-      const response = await fetch(url);
-      const blob = await response.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = downloadUrl;
-
-      // Extract filename from url or use default
-      const filename = url.split("/").pop() || "document.pdf";
-      link.download = filename;
-
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(downloadUrl);
-    } catch (error) {
-      console.error("Error downloading PDF:", error);
-    }
-  };
-
   return (
     <div className="relative flex flex-col items-center">
       {/* PDF Content */}
@@ -168,7 +148,7 @@ export function PDFViewer({ url }: PDFViewerProps) {
           variant="ghost"
           size="icon"
           className="h-8 w-8 rounded-full hover:bg-accent"
-          onClick={handleDownload}
+          onClick={() => handleDownloadCV(url)}
           title="Télécharger le CV"
         >
           <Download className="h-4 w-4" />
