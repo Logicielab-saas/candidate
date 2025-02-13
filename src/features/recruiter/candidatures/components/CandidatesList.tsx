@@ -16,7 +16,7 @@ export function CandidatesList({ currentCandidateId }: CandidatesListProps) {
   >(null);
 
   return (
-    <div className="w-[300px] border rounded-lg bg-background mt-4">
+    <div className="w-[300px] border rounded-lg bg-background">
       <div className="p-4 border-b">
         <div className="flex flex-col gap-2">
           <h2 className="text-lg font-semibold text-muted-foreground">
