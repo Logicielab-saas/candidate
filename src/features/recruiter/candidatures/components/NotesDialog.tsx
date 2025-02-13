@@ -7,7 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -15,9 +14,8 @@ import { useState } from "react";
 import { StickyNote } from "lucide-react";
 
 interface Note {
-  id: string;
   content: string;
-  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface NotesDialogProps {
@@ -31,20 +29,20 @@ export function NotesDialog({
   onOpenChange,
   candidateNom,
 }: NotesDialogProps) {
-  const [note, setNote] = useState("");
-  const [notes, setNotes] = useState<Note[]>([]);
+  const [note, setNote] = useState<Note>({
+    content: "",
+    updatedAt: new Date(),
+  });
+  const [inputValue, setInputValue] = useState("");
 
-  const handleAddNote = () => {
-    if (!note.trim()) return;
+  const handleUpdateNote = () => {
+    if (!inputValue.trim()) return;
 
-    const newNote: Note = {
-      id: crypto.randomUUID(),
-      content: note.trim(),
-      createdAt: new Date(),
-    };
-
-    setNotes((prev) => [newNote, ...prev]);
-    setNote("");
+    setNote({
+      content: inputValue.trim(),
+      updatedAt: new Date(),
+    });
+    setInputValue("");
   };
 
   return (
@@ -53,55 +51,47 @@ export function NotesDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <StickyNote className="h-5 w-5" />
-            <span>Notes - {candidateNom}</span>
+            <span>Note - {candidateNom}</span>
           </DialogTitle>
         </DialogHeader>
 
         <div className="flex-1 min-h-0 flex flex-col gap-4">
-          {/* Add Note Form */}
-          <div className="space-y-2">
+          {/* Existing Note Display */}
+          {note.content ? (
+            <div className="rounded-lg border border-border bg-accent/50 p-4">
+              <p className="text-sm whitespace-pre-wrap text-foreground mb-2">
+                {note.content}
+              </p>
+              <time className="text-xs text-muted-foreground block">
+                Dernière mise à jour le{" "}
+                {format(note.updatedAt, "d MMMM yyyy 'à' HH:mm", {
+                  locale: fr,
+                })}
+              </time>
+            </div>
+          ) : (
+            <div className="text-sm text-muted-foreground text-center py-4">
+              Aucune note pour le moment
+            </div>
+          )}
+
+          {/* Note Input Form */}
+          <div className="space-y-2 border-t pt-4">
             <Textarea
-              placeholder="Ajouter une note..."
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
+              placeholder="Modifier la note..."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
               className="resize-none"
               rows={4}
             />
             <Button
               className="w-full"
-              disabled={!note.trim()}
-              onClick={handleAddNote}
+              disabled={!inputValue.trim()}
+              onClick={handleUpdateNote}
             >
-              Ajouter la note
+              Mettre à jour la note
             </Button>
           </div>
-
-          {/* Notes List */}
-          {notes.length > 0 ? (
-            <ScrollArea className="flex-1 min-h-0">
-              <div className="space-y-3 pt-3 border-t border-border">
-                {notes.map((note) => (
-                  <div
-                    key={note.id}
-                    className="text-sm space-y-1 p-3 rounded-lg border border-border bg-accent/50"
-                  >
-                    <p className="text-foreground whitespace-pre-wrap">
-                      {note.content}
-                    </p>
-                    <time className="text-xs text-muted-foreground block">
-                      {format(note.createdAt, "d MMMM yyyy 'à' HH:mm", {
-                        locale: fr,
-                      })}
-                    </time>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
-          ) : (
-            <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm">
-              Aucune note pour le moment
-            </div>
-          )}
         </div>
       </DialogContent>
     </Dialog>

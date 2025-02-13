@@ -169,7 +169,7 @@ export function CandidateDetailsContent({
           onClick={() => setIsNotesDialogOpen(true)}
         >
           <StickyNote className="h-4 w-4 mr-2" />
-          Notes <span className="text-primaryHex-700">(N/A)</span>
+          Note
         </Button>
       </div>
 
