@@ -118,7 +118,7 @@ export function ContactInterfaceChat({
 
   const chatContent = (
     <div
-      className={`fixed bottom-4 right-4 w-[340px] bg-background rounded-lg shadow-lg z-[100] transition-all duration-200 ease-in-out overflow-hidden ${
+      className={`fixed bottom-1 right-4 w-[340px] bg-background rounded-lg shadow-lg z-[100] transition-all duration-200 ease-in-out overflow-hidden ${
         isMinimized ? "h-[48px]" : "h-[480px]"
       }`}
     >
