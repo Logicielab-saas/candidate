@@ -47,14 +47,14 @@ export function CandidateDetails() {
         </div>
 
         {/* Center column - CV Display */}
-        <div className="flex-1 w-[700px]">
+        <div className="flex-1 min-w-[500px]">
           {currentCandidateId && (
             <PDFViewer key={currentCandidateId} url="/cvs/mycv.pdf" />
           )}
         </div>
 
         {/* Right column - Details */}
-        <div className="max-w-[550px] shrink-0">
+        <div className="max-w-[400px] shrink-0">
           <CandidateDetailsContent
             candidateId={currentCandidateId || undefined}
           />

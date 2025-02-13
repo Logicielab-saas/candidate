@@ -130,47 +130,49 @@ export function CandidateDetailsContent({
         <div className="flex items-center gap-2 text-muted-foreground">
           <span>
             A postulé pour{" "}
-            <span className="font-bold">{candidate.titreOffre}</span>
+            <span className="font-bold">
+              {candidate.titreOffre} • {candidate.ville}
+            </span>
           </span>
-          <span>•</span>
-          <span>{candidate.ville}</span>
         </div>
       </div>
 
       {/* Action Buttons */}
-      <div className="flex gap-3 mb-6">
-        <Button
-          variant="outline"
-          className="flex-1"
-          onClick={() => setIsChatDialogOpen(true)}
-        >
-          <MessageCircle className="h-4 w-4 mr-2" />
-          Contacter
-        </Button>
-        <Button
-          variant="outline"
-          className="flex-1"
-          onClick={() => setIsAppelerDialogOpen(true)}
-        >
-          <Phone className="h-4 w-4 mr-2" />
-          Appeler
-        </Button>
-        <Button
-          variant="outline"
-          className="flex-1"
-          onClick={() => setIsEntretienPlanDialogOpen(true)}
-        >
-          <Calendar className="h-4 w-4 mr-2" />
-          Entretien
-        </Button>
-        <Button
-          variant="outline"
-          className="flex-1"
-          onClick={() => setIsNotesDialogOpen(true)}
-        >
-          <StickyNote className="h-4 w-4 mr-2" />
-          Note
-        </Button>
+      <div className="@container">
+        <div className="grid grid-cols-2 @[380px]:grid-cols-4 gap-3 mb-6">
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => setIsChatDialogOpen(true)}
+          >
+            <MessageCircle className="h-4 w-4 mr-2" />
+            Contacter
+          </Button>
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => setIsAppelerDialogOpen(true)}
+          >
+            <Phone className="h-4 w-4 mr-2" />
+            Appeler
+          </Button>
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => setIsEntretienPlanDialogOpen(true)}
+          >
+            <Calendar className="h-4 w-4 mr-2" />
+            Entretien
+          </Button>
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => setIsNotesDialogOpen(true)}
+          >
+            <StickyNote className="h-4 w-4 mr-2" />
+            Note
+          </Button>
+        </div>
       </div>
 
       {/* Questions Section */}
