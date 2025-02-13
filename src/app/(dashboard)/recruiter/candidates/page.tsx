@@ -5,7 +5,7 @@ import { CandidateFiltersMenu } from "@/features/recruiter/candidatures/componen
 import { CandidateFilterTabs } from "@/features/recruiter/candidatures/components/CandidateFilterTabs";
 import { CandidateDataTable } from "@/features/recruiter/candidatures/components/CandidateDataTable";
 
-const mockCandidates = [
+export const mockCandidates = [
   {
     nom: "Nadia Rozine",
     ville: "Casablanca",

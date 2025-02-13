@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { ActionCell } from "./ActionCell";
 
-interface Candidate {
+export interface Candidate {
   nom: string;
   ville: string;
   profil: string;
@@ -66,9 +66,14 @@ export const getColumns = (): ColumnDef<Candidate>[] => [
           <div className="flex flex-col">
             <Button
               variant="link"
-              className="h-auto p-0 text-base font-semibold text-primary hover:text-primary/90 justify-start text-secondaryHex-800 dark:text-secondaryHex-200"
+              className="p-0 text-base font-semibold text-primary hover:text-primary/90 justify-start text-secondaryHex-800 dark:text-secondaryHex-200 w-fit"
             >
-              {nom}
+              <Link
+                href={`/recruiter/candidates/details?id=${row.original.nom}`}
+                className=""
+              >
+                {nom}
+              </Link>
             </Button>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>{ville}</span>

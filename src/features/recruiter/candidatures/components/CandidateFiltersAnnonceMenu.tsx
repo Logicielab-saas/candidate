@@ -86,6 +86,7 @@ const locationOptions: FilterOption[] = [
 const dateOptions: FilterOption[] = [
   { value: "all", label: "Date" },
   { value: "today", label: "Aujourd'hui" },
+  { value: "yesterday", label: "Hier" },
   { value: "last7", label: "7 jours" },
   { value: "last30", label: "30 jours" },
   { value: "last90", label: "90 jours" },

@@ -1,8 +1,5 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import {
-  ArrowLeft,
   Users,
   UserPlus,
   Eye,
@@ -10,14 +7,14 @@ import {
   UserCircle2,
   FileCheck,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { PerformanceCard } from "./PerformanceCard";
 import { AnnonceDescription } from "./AnnonceDescription";
 import { Separator } from "@/components/ui/separator";
+import { BackArrow } from "@/components/shared/BackArrow";
 
+// TODO: Replace with proper type when API integration is done
 interface AnnonceDetailsProps {
-  // TODO: Replace with proper type when API integration is done
   data?: {
     intitule: string;
     candidatures: {
@@ -49,8 +46,6 @@ const mockData = {
 };
 
 export function AnnonceDetails({ data }: AnnonceDetailsProps) {
-  const router = useRouter();
-
   const annonceData = data || mockData;
 
   const performanceMetrics = [
@@ -78,18 +73,7 @@ export function AnnonceDetails({ data }: AnnonceDetailsProps) {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex items-center gap-4">
-        <span
-          className="cursor-pointer text-primaryHex-600 hover:text-primaryHex-500 transition-colors
-         dark:bg-primaryHex-900/20 dark:text-primaryHex-400 bg-primaryHex-50 rounded-full p-2"
-          onClick={() => router.back()}
-        >
-          <ArrowLeft className="w-8 h-8 cursor-pointer" />
-        </span>
-        <h1 className="text-2xl font-semibold text-secondaryHex-900 dark:text-secondaryHex-50">
-          {annonceData.intitule}
-        </h1>
-      </div>
+      <BackArrow title={annonceData.intitule} />
 
       <div className="flex flex-col lg:flex-row gap-6 items-stretch">
         <div className="w-full lg:w-[350px]">
