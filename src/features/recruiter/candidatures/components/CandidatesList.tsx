@@ -24,7 +24,8 @@ export function CandidatesList({ currentCandidateId }: CandidatesListProps) {
           </h2>
         </div>
       </div>
-      <ScrollArea className="h-[calc(100vh)]">
+      {/* Adjustable height */}
+      <ScrollArea className="h-[calc(100vh-25px)]">
         <div className="p-3">
           <div className="space-y-2">
             {mockCandidates.map((candidate) => (

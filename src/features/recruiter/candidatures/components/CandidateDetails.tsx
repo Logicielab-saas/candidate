@@ -32,7 +32,7 @@ export function CandidateDetails() {
       </div>
 
       {/* Content */}
-      <div className="flex gap-6 h-[calc(100vh-510px)]">
+      <div className="flex gap-6">
         {/* Left column - List */}
         <div className="w-[300px]">
           <CandidatesList
