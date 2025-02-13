@@ -6,13 +6,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Calendar, MessageCircle, MoreVertical, Phone } from "lucide-react";
+import {
+  Calendar,
+  MessageCircle,
+  MoreVertical,
+  Phone,
+  StickyNote,
+} from "lucide-react";
 import { mockCandidates } from "@/app/(dashboard)/recruiter/candidates/page";
 import { useState } from "react";
 import { AppelerDialog } from "./AppelerDialog";
 import { EntretienPlanDialog } from "./EntretienPlanDialog";
 import { ContactInterfaceChat } from "./ContactInterfaceChat";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { NotesDialog } from "./NotesDialog";
 
 interface QuestionAnswer {
   id: number;
@@ -56,6 +63,7 @@ export function CandidateDetailsContent({
   const [isEntretienPlanDialogOpen, setIsEntretienPlanDialogOpen] =
     useState(false);
   const [isChatDialogOpen, setIsChatDialogOpen] = useState(false);
+  const [isNotesDialogOpen, setIsNotesDialogOpen] = useState(false);
 
   const candidate = mockCandidates.find((c) => c.nom === candidateId);
 
@@ -153,6 +161,14 @@ export function CandidateDetailsContent({
           <Calendar className="h-4 w-4 mr-2" />
           Entretien
         </Button>
+        <Button
+          variant="outline"
+          className="flex-1"
+          onClick={() => setIsNotesDialogOpen(true)}
+        >
+          <StickyNote className="h-4 w-4 mr-2" />
+          Notes <span className="text-primaryHex-700">(N/A)</span>
+        </Button>
       </div>
 
       {/* Questions Section */}
@@ -215,6 +231,11 @@ export function CandidateDetailsContent({
         candidat={{
           nom: candidate.nom,
         }}
+      />
+      <NotesDialog
+        isOpen={isNotesDialogOpen}
+        onOpenChange={setIsNotesDialogOpen}
+        candidateNom={candidate.nom}
       />
     </div>
   );
