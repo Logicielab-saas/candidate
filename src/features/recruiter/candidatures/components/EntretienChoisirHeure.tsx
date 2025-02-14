@@ -43,24 +43,42 @@ const TIMEZONES = [
 ] as const;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const formSchema = z.object({
-  duration: z.enum(["15", "30", "45", "60"]),
-  format: z.enum(["video", "telephone", "person"]),
-  address: z.string(),
-  message: z.string(),
-  teamMembers: z.string().optional(),
-  date: z.date(),
-  time: z.string(),
-  timezone: z.string(),
-  alternateSlots: z
-    .array(
-      z.object({
-        date: z.date(),
-        time: z.string(),
-      })
-    )
-    .default([]),
-});
+const formSchema = z
+  .object({
+    duration: z.enum(["15", "30", "45", "60"]),
+    format: z.enum(["video", "telephone", "person"]),
+    videoUrl: z.string().optional(),
+    address: z.string().optional(),
+    message: z.string(),
+    teamMembers: z.string().optional(),
+    date: z.date(),
+    time: z.string(),
+    timezone: z.string(),
+    alternateSlots: z
+      .array(
+        z.object({
+          date: z.date(),
+          time: z.string(),
+        })
+      )
+      .default([]),
+  })
+  .superRefine((data, ctx) => {
+    if (data.format === "video" && !data.videoUrl) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "L'URL de la visioconférence est requise",
+        path: ["videoUrl"],
+      });
+    }
+    if (data.format === "person" && !data.address) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "L'adresse est requise",
+        path: ["address"],
+      });
+    }
+  });
 
 type FormValues = z.infer<typeof formSchema>;
 

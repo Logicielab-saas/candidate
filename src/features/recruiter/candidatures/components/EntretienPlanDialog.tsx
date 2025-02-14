@@ -77,34 +77,52 @@ const FORMATS: FormatType[] = [
   },
 ];
 
-const formSchema = z.object({
-  duration: z.enum(["15", "30", "45", "60"], {
-    required_error: "Veuillez sélectionner une durée",
-  }),
-  format: z.enum(["video", "telephone", "person"], {
-    required_error: "Veuillez sélectionner un format",
-  }),
-  address: z.string().min(1, "L'adresse est requise"),
-  message: z.string().min(1, "Le message est requis"),
-  teamMembers: z.string().optional(),
-  date: z.date({
-    required_error: "sélectionner date",
-  }),
-  time: z.string({
-    required_error: "select heure",
-  }),
-  timezone: z.string({
-    required_error: "Veuillez sélectionner un fuseau horaire",
-  }),
-  alternateSlots: z
-    .array(
-      z.object({
-        date: z.date(),
-        time: z.string(),
-      })
-    )
-    .default([]),
-});
+const formSchema = z
+  .object({
+    duration: z.enum(["15", "30", "45", "60"], {
+      required_error: "Veuillez sélectionner une durée",
+    }),
+    format: z.enum(["video", "telephone", "person"], {
+      required_error: "Veuillez sélectionner un format",
+    }),
+    videoUrl: z.string().optional(),
+    address: z.string().optional(),
+    message: z.string().min(1, "Le message est requis"),
+    teamMembers: z.string().optional(),
+    date: z.date({
+      required_error: "sélectionner date",
+    }),
+    time: z.string({
+      required_error: "select heure",
+    }),
+    timezone: z.string({
+      required_error: "Veuillez sélectionner un fuseau horaire",
+    }),
+    alternateSlots: z
+      .array(
+        z.object({
+          date: z.date(),
+          time: z.string(),
+        })
+      )
+      .default([]),
+  })
+  .superRefine((data, ctx) => {
+    if (data.format === "video" && !data.videoUrl) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "L'URL de la visioconférence est requise",
+        path: ["videoUrl"],
+      });
+    }
+    if (data.format === "person" && !data.address) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "L'adresse est requise",
+        path: ["address"],
+      });
+    }
+  });
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -219,20 +237,53 @@ export function EntretienPlanDialog({
                   )}
                 />
 
-                {/* Address Input */}
-                <FormField
-                  control={form.control}
-                  name="address"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Adresse de l&apos;entretien</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Saisissez l'adresse" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {/* Conditional Format-specific Fields */}
+                {form.watch("format") === "video" && (
+                  <FormField
+                    control={form.control}
+                    name="videoUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Lien de la visioconférence</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="https://meet.google.com/..."
+                            {...field}
+                            value={field.value || ""}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+
+                {form.watch("format") === "telephone" && (
+                  <div className="rounded-md bg-blue-50 dark:bg-blue-950 p-3 text-sm text-blue-600 dark:text-blue-400">
+                    Le numéro de téléphone du candidat sera partagé une fois
+                    qu&apos;il aura confirmé l&apos;entretien.
+                  </div>
+                )}
+
+                {form.watch("format") === "person" && (
+                  <FormField
+                    control={form.control}
+                    name="address"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Adresse de l&apos;entretien</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Saisissez l'adresse complète"
+                            {...field}
+                            value={field.value || ""}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
 
                 {/* Message Textarea */}
                 <FormField
