@@ -30,8 +30,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { EntretienPlanRightSide } from "./EntretienPlanRightSide";
+import { EntretienChoisirHeure } from "./EntretienChoisirHeure";
 import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface EntretienPlanDialogProps {
   isOpen: boolean;
@@ -267,7 +268,37 @@ export function EntretienPlanDialog({
               </div>
 
               {/* Right Side */}
-              <EntretienPlanRightSide form={form} fieldArray={fieldArray} />
+              <div className="border-l border-zinc-200 dark:border-zinc-700 pl-6">
+                <Tabs defaultValue="specific-time" className="w-full">
+                  <div className="w-full border-secondaryHex-200 dark:border-secondaryHex-800">
+                    <TabsList className="flex h-12 w-full items-center bg-transparent p-0">
+                      <TabsTrigger
+                        value="share-availability"
+                        className="relative flex-1 h-full rounded-none border-b-2 border-transparent px-4 font-medium text-secondaryHex-600 dark:text-secondaryHex-400 outline-none ring-offset-background transition-colors hover:text-primaryHex-600 dark:hover:text-primaryHex-400 data-[state=active]:border-primaryHex-500 data-[state=active]:text-primaryHex-500 dark:data-[state=active]:border-primaryHex-400 dark:data-[state=active]:text-primaryHex-400"
+                      >
+                        Partager vos disponibilités
+                      </TabsTrigger>
+                      <TabsTrigger
+                        value="specific-time"
+                        className="relative flex-1 h-full rounded-none border-b-2 border-transparent px-4 font-medium text-secondaryHex-600 dark:text-secondaryHex-400 outline-none ring-offset-background transition-colors hover:text-primaryHex-600 dark:hover:text-primaryHex-400 data-[state=active]:border-primaryHex-500 data-[state=active]:text-primaryHex-500 dark:data-[state=active]:border-primaryHex-400 dark:data-[state=active]:text-primaryHex-400"
+                      >
+                        Choisir une heure spécifique
+                      </TabsTrigger>
+                    </TabsList>
+                  </div>
+                  <TabsContent value="share-availability" className="mt-4">
+                    <div className="flex items-center justify-center h-[400px] text-muted-foreground">
+                      Cette fonctionnalité sera bientôt disponible
+                    </div>
+                  </TabsContent>
+                  <TabsContent value="specific-time" className="mt-4">
+                    <EntretienChoisirHeure
+                      form={form}
+                      fieldArray={fieldArray}
+                    />
+                  </TabsContent>
+                </Tabs>
+              </div>
             </div>
             <Separator />
 
