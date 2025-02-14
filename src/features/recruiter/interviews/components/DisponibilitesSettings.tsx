@@ -451,9 +451,9 @@ export function DisponibilitesSettings() {
 
         {/* Right Side - Calendar View */}
         <div className="w-full overflow-x-auto">
-          <div className="min-w-[800px] lg:w-full">
+          <div className="min-w-[700px] lg:w-full">
             <CalendarView
-              className="h-[800px]"
+              className="h-fit"
               availabilities={form.watch("availabilities")}
               exceptions={form.watch("exceptions")}
             />

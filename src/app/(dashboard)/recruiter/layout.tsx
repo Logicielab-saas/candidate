@@ -5,5 +5,5 @@ interface RecruiterLayoutProps {
 }
 
 export default function RecruiterLayout({ children }: RecruiterLayoutProps) {
-  return <div className="mt-4">{children}</div>;
+  return <>{children}</>;
 }
