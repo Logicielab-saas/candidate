@@ -27,6 +27,8 @@ import {
 import { cn } from "@/lib/utils";
 import { type Entretien } from "@/core/mockData/entretiens-data";
 import Link from "next/link";
+import { useState } from "react";
+import { EntretienPlanDialog } from "../../candidatures/components/EntretienPlanDialog";
 
 interface EntretienDetailsProps {
   entretien: Entretien;
@@ -44,6 +46,7 @@ export function EntretienDetails({
   className,
 }: EntretienDetailsProps) {
   const Icon = TYPE_ICONS[entretien.type];
+  const [isReprogramOpen, setIsReprogramOpen] = useState(false);
 
   const handleCancelInterview = () => {
     // Handle the cancellation logic here
@@ -99,7 +102,11 @@ export function EntretienDetails({
 
         {/* Actions */}
         <div className="flex gap-3">
-          <Button variant="outline" className="flex-1">
+          <Button
+            variant="outline"
+            className="flex-1"
+            onClick={() => setIsReprogramOpen(true)}
+          >
             Reprogrammer
           </Button>
           <AlertDialog>
@@ -171,6 +178,12 @@ export function EntretienDetails({
           </Button>
         </div>
       </div>
+
+      <EntretienPlanDialog
+        isOpen={isReprogramOpen}
+        onOpenChange={setIsReprogramOpen}
+        candidat={{ nom: entretien.candidatName }}
+      />
     </Card>
   );
 }
