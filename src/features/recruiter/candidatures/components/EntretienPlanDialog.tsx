@@ -197,11 +197,11 @@ export function EntretienPlanDialog({
                           {FORMATS.map(({ value, label, icon: Icon }) => (
                             <Label
                               key={value}
-                              className={`flex flex-1 items-center justify-center gap-2 rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm font-medium
+                              className={`flex flex-1 items-center justify-center gap-2 rounded-md border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-800 px-3 py-2 text-sm font-medium
                                 ${
                                   field.value === value
-                                    ? "border-primaryHex-500 text-primaryHex-500"
-                                    : ""
+                                    ? "border-primaryHex-500 text-primaryHex-500 dark:border-primaryHex-400 dark:text-primaryHex-400"
+                                    : "dark:text-zinc-300"
                                 } cursor-pointer`}
                             >
                               <RadioGroupItem
@@ -309,10 +309,14 @@ export function EntretienPlanDialog({
                               </span>
                             </div>
                             <Button
+                              type="button"
                               variant="outline"
                               size="sm"
                               className="gap-2"
-                              onClick={() => setIsReprogramDialogOpen(true)}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setIsReprogramDialogOpen(true);
+                              }}
                             >
                               <Pencil className="h-4 w-4" />
                               Modifier les disponibilités

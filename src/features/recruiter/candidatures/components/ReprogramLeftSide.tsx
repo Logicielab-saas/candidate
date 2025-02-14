@@ -58,6 +58,14 @@ const formSchema = z.object({
       {} as { [key: string]: z.ZodBoolean }
     )
   ),
+  programmingWindow: z.object({
+    period: z.enum(["7", "14", "30"], {
+      required_error: "Sélectionnez une période",
+    }),
+    timeWindow: z.enum(["24", "48", "72"], {
+      required_error: "Sélectionnez une fenêtre horaire",
+    }),
+  }),
   exceptions: z.array(exceptionSchema),
   availabilities: z.object(
     WEEKDAYS.reduce(
@@ -87,6 +95,10 @@ export function ReprogramLeftSide({ onSubmit }: ReprogramLeftSideProps) {
         }),
         {} as { [key: string]: boolean }
       ),
+      programmingWindow: {
+        period: "7",
+        timeWindow: "24",
+      },
       exceptions: [],
       availabilities: WEEKDAYS.reduce(
         (acc, day) => ({
@@ -252,6 +264,61 @@ export function ReprogramLeftSide({ onSubmit }: ReprogramLeftSideProps) {
                     </div>
                   );
                 })}
+              </div>
+            </div>
+
+            <Separator />
+
+            {/* Programming Window Section */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-medium">Fenêtre de programmation</h3>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label className="text-sm">
+                    Sélectionnez votre période de disponibilité pour des
+                    entretiens
+                  </Label>
+                  <Select
+                    value={form.watch("programmingWindow.period")}
+                    onValueChange={(value) =>
+                      form.setValue(
+                        "programmingWindow.period",
+                        value as "7" | "14" | "30"
+                      )
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionnez une période" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="7">Les 7 prochains jours</SelectItem>
+                      <SelectItem value="14">Les 14 prochains jours</SelectItem>
+                      <SelectItem value="30">Les 30 prochains jours</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-sm">Avis préalable maximal</Label>
+                  <Select
+                    value={form.watch("programmingWindow.timeWindow")}
+                    onValueChange={(value) =>
+                      form.setValue(
+                        "programmingWindow.timeWindow",
+                        value as "24" | "48" | "72"
+                      )
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionnez une fenêtre horaire" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="24">24 heures (recommandé)</SelectItem>
+                      <SelectItem value="48">48 heures</SelectItem>
+                      <SelectItem value="72">72 heures</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
 
