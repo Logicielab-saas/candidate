@@ -102,7 +102,7 @@ export function DisponibilitesSettings() {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[500px_1fr]">
+      <div className="grid grid-cols-1 xl:grid-cols-[minmax(400px,500px)_1fr] gap-6">
         {/* Left Side - Settings */}
         <Card className="h-fit">
           <CardHeader className="pb-4">
@@ -239,11 +239,13 @@ export function DisponibilitesSettings() {
         </Card>
 
         {/* Right Side - Calendar View */}
-        <div className="hidden lg:block">
-          <CalendarView
-            className="h-full"
-            availabilities={form.watch("availabilities")}
-          />
+        <div className="w-full overflow-x-auto">
+          <div className="min-w-[800px] lg:w-full">
+            <CalendarView
+              className="h-[800px]"
+              availabilities={form.watch("availabilities")}
+            />
+          </div>
         </div>
       </div>
     </form>

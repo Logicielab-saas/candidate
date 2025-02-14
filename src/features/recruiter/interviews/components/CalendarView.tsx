@@ -70,10 +70,10 @@ export function CalendarView({ className, availabilities }: CalendarViewProps) {
   };
 
   return (
-    <Card className={cn("flex flex-col max-h-[800px]", className)}>
+    <Card className={cn("flex flex-col", className)}>
       <CardHeader className="flex-row items-center justify-between space-y-0 pb-4">
         <div className="flex items-center gap-4">
-          <CardTitle>
+          <CardTitle className="whitespace-nowrap">
             {format(weekDays[0], "MMMM yyyy", { locale: fr })}
           </CardTitle>
           <div className="flex items-center gap-1">
@@ -118,7 +118,6 @@ export function CalendarView({ className, availabilities }: CalendarViewProps) {
                 {hour}:00
               </div>
             ))}
-            <div className="h-4 border-t" /> {/* Bottom spacer */}
           </div>
 
           {/* Days columns */}
@@ -127,7 +126,7 @@ export function CalendarView({ className, availabilities }: CalendarViewProps) {
               <div
                 key={day.toString()}
                 className={cn(
-                  "flex-1 min-w-[120px] border-r last:border-r-0",
+                  "flex-1 border-r last:border-r-0",
                   isToday(day) && "bg-muted/5"
                 )}
               >
@@ -162,7 +161,6 @@ export function CalendarView({ className, availabilities }: CalendarViewProps) {
                     )}
                   />
                 ))}
-                <div className="h-4" /> {/* Bottom spacer */}
               </div>
             ))}
 

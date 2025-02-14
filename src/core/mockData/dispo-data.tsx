@@ -65,8 +65,30 @@ export const DEFAULT_AVAILABILITIES: WeekdayAvailabilities = WEEKDAYS.reduce(
     ...acc,
     [day.id]: {
       isAvailable: day.id <= 5, // Monday to Friday available by default
-      startTime: "09:00",
-      endTime: "17:00",
+      startTime:
+        day.id === 1
+          ? "08:00" // Monday starts early
+          : day.id === 2
+          ? "09:30" // Tuesday starts later
+          : day.id === 3
+          ? "10:00" // Wednesday starts even later
+          : day.id === 4
+          ? "08:30" // Thursday starts early-ish
+          : day.id === 5
+          ? "09:00" // Friday normal start
+          : "10:00", // Weekend (if available)
+      endTime:
+        day.id === 1
+          ? "18:00" // Monday ends at 6
+          : day.id === 2
+          ? "19:30" // Tuesday ends late
+          : day.id === 3
+          ? "17:30" // Wednesday ends early
+          : day.id === 4
+          ? "20:00" // Thursday ends latest
+          : day.id === 5
+          ? "16:00" // Friday ends earliest
+          : "15:00", // Weekend (if available)
     },
   }),
   {}
