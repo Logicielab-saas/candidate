@@ -61,16 +61,99 @@ export function CalendarView({
         e.date.getFullYear() === day.getFullYear()
     );
 
+    const getHalfHourClasses = (
+      startTime: string,
+      endTime: string,
+      hour: number
+    ) => {
+      const [startHour, startMinute] = startTime.split(":").map(Number);
+      const [endHour, endMinute] = endTime.split(":").map(Number);
+      const startDecimal = startHour + startMinute / 60;
+      const endDecimal = endHour + endMinute / 60;
+      const currentHourDecimal = hour;
+
+      // Only process if we're within the time range
+      if (
+        currentHourDecimal >= Math.floor(startDecimal) &&
+        currentHourDecimal < Math.ceil(endDecimal)
+      ) {
+        const classes = ["relative"];
+
+        // Add top border for the first block
+        if (currentHourDecimal === Math.floor(startDecimal)) {
+          if (startMinute === 30) {
+            classes.push(
+              "[&>div]:content-[''] [&>div]:absolute [&>div]:left-0 [&>div]:right-0 [&>div]:h-0.5 [&>div]:top-[50%] [&>div]:bg-primaryHex-500/50"
+            );
+          } else {
+            classes.push("border-t border-t-primaryHex-500/50");
+          }
+        }
+
+        // Add bottom border for the last block
+        if (Math.ceil(endDecimal) - 1 === currentHourDecimal) {
+          if (endMinute === 30) {
+            // For half-hour endings, add a gradient border at the bottom
+            classes.push(
+              "[&>div]:content-[''] [&>div]:absolute [&>div]:left-0 [&>div]:right-0 [&>div]:h-0.5 [&>div]:top-[50%] [&>div]:bg-primaryHex-500/50",
+              "overflow-visible"
+            );
+          } else {
+            // For full-hour endings, add a normal bottom border
+            classes.push("border-b border-b-primaryHex-500/50");
+          }
+        }
+
+        // Handle start block (either full or half)
+        if (currentHourDecimal === Math.floor(startDecimal)) {
+          if (startMinute === 30) {
+            // Half block starting at :30
+            return [
+              ...classes,
+              "bg-gradient-to-b from-transparent from-55% to-primaryHex-50/50 to-50% dark:to-primaryHex-900/10",
+              "before:content-[''] before:absolute before:w-0.5 before:left-0 before:top-[50%] before:h-[50%] before:bg-primaryHex-500/50",
+              "after:content-[''] after:absolute after:w-0.5 after:right-0 after:top-[50%] after:h-[50%] after:bg-primaryHex-500/50",
+            ].join(" ");
+          }
+        }
+
+        // Handle end block
+        if (currentHourDecimal === Math.floor(endDecimal)) {
+          if (endMinute === 30) {
+            // Half block ending at :30
+            return [
+              ...classes,
+              "bg-gradient-to-b from-primaryHex-50/50 from-55% to-transparent to-50% dark:from-primaryHex-900/10",
+              "before:content-[''] before:absolute before:w-0.5 before:left-0 before:top-0 before:h-[50%] before:bg-primaryHex-500/50",
+              "after:content-[''] after:absolute after:w-0.5 after:right-0 after:top-0 after:h-[50%] after:bg-primaryHex-500/50",
+            ].join(" ");
+          }
+        }
+
+        // Full blocks (only for hours completely within the range)
+        if (
+          (currentHourDecimal > Math.floor(startDecimal) ||
+            (currentHourDecimal === Math.floor(startDecimal) &&
+              startMinute === 0)) &&
+          currentHourDecimal < Math.floor(endDecimal)
+        ) {
+          return [
+            ...classes,
+            "bg-primaryHex-50/50 dark:bg-primaryHex-900/10",
+            "border-l-2 border-l-primaryHex-500/50",
+            "border-r-2 border-r-primaryHex-500/50",
+          ].join(" ");
+        }
+      }
+
+      return "";
+    };
+
     if (exception) {
-      if (!exception.isAvailable) return "bg-red-100/50 dark:bg-red-900/20";
+      if (!exception.isAvailable) return "bg-zinc-100 dark:bg-zinc-800/50";
 
       if (exception.startTime && exception.endTime) {
-        const startHour = parseInt(exception.startTime.split(":")[0]);
-        const endHour = parseInt(exception.endTime.split(":")[0]);
-
-        if (hour >= startHour && hour < endHour) {
-          return "bg-primaryHex-100/50 dark:bg-primaryHex-900/20";
-        }
+        return getHalfHourClasses(exception.startTime, exception.endTime, hour);
       }
       return "";
     }
@@ -82,14 +165,11 @@ export function CalendarView({
 
     if (!dayAvailability?.isAvailable) return "";
 
-    const startHour = parseInt(dayAvailability.startTime.split(":")[0]);
-    const endHour = parseInt(dayAvailability.endTime.split(":")[0]);
-
-    if (hour >= startHour && hour < endHour) {
-      return "bg-primaryHex-100/50 dark:bg-primaryHex-900/20";
-    }
-
-    return "";
+    return getHalfHourClasses(
+      dayAvailability.startTime,
+      dayAvailability.endTime,
+      hour
+    );
   };
 
   const getCurrentTimePosition = () => {
@@ -103,6 +183,17 @@ export function CalendarView({
 
   return (
     <Card className={cn("flex flex-col", className)}>
+      <style jsx>{`
+        .bottom-border-half::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          height: 2px;
+          top: 50%;
+          background: rgb(var(--primary) / 0.5);
+        }
+      `}</style>
       <CardHeader className="flex-row items-center justify-between space-y-0 pb-4">
         <div className="flex items-center gap-4">
           <CardTitle className="whitespace-nowrap">
@@ -184,15 +275,26 @@ export function CalendarView({
                   </div>
                 </div>
                 {/* Hour cells */}
-                {HOURS.map((hour) => (
-                  <div
-                    key={hour}
-                    className={cn(
-                      "group relative h-12 border-b transition-colors hover:bg-accent/50",
-                      getAvailabilityStyle(day, hour)
-                    )}
-                  />
-                ))}
+                {HOURS.map((hour) => {
+                  const availabilityStyle = getAvailabilityStyle(day, hour);
+                  // Check if this hour has a half-hour ending slot
+                  const hasHalfHourEnd = availabilityStyle?.includes(
+                    "from-primaryHex-50/50 from-55%"
+                  );
+
+                  return (
+                    <div
+                      key={hour}
+                      className={cn(
+                        "group relative h-12 transition-colors",
+                        (!availabilityStyle || hasHalfHourEnd) && "border-b", // Keep border for non-available slots and half-hour endings
+                        availabilityStyle
+                      )}
+                    >
+                      <div />
+                    </div>
+                  );
+                })}
               </div>
             ))}
 
