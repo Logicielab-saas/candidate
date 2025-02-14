@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 import { WeekdayAvailability } from "@/core/mockData/dispo-data";
+import { ArrowLeft } from "lucide-react";
 
 interface FormValues {
   calendarConnections: { [key: string]: boolean };
@@ -64,7 +65,18 @@ export function EntretienReprogramDialog({
     >
       <DialogContent className="sm:max-w-[950px] p-0">
         <DialogHeader className="p-6 pb-0">
-          <DialogTitle>Modifier vos disponibilités</DialogTitle>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              className="flex items-center gap-2 h-8 hover:bg-transparent hover:opacity-70 pl-0"
+              onClick={() => onOpenChange(false)}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <DialogTitle className="hover:cursor-pointer">
+                Modifier vos disponibilités
+              </DialogTitle>
+            </Button>
+          </div>
         </DialogHeader>
         <ScrollArea className="h-[calc(100vh-200px)] max-h-[800px]">
           <div className="p-6 pt-0">
