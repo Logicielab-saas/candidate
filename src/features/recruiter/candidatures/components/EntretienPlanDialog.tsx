@@ -33,6 +33,8 @@ import { Button } from "@/components/ui/button";
 import { EntretienChoisirHeure } from "./EntretienChoisirHeure";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CalendarView } from "../../interviews/components/CalendarView";
+import { Pencil } from "lucide-react";
 
 interface EntretienPlanDialogProps {
   isOpen: boolean;
@@ -141,9 +143,9 @@ export function EntretienPlanDialog({
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-[2fr_3fr] gap-6">
               {/* Left Side */}
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 max-w-md">
                 {/* Duration Select */}
                 <FormField
                   control={form.control}
@@ -287,8 +289,80 @@ export function EntretienPlanDialog({
                     </TabsList>
                   </div>
                   <TabsContent value="share-availability" className="mt-4">
-                    <div className="flex items-center justify-center h-[400px] text-muted-foreground">
-                      Cette fonctionnalité sera bientôt disponible
+                    <div className="space-y-4">
+                      <p className="text-sm text-muted-foreground">
+                        Indiquez vos disponibilités d&apos;entretien : ajoutez
+                        et supprimez des créneaux qui s&apos;appliqueront à
+                        l&apos;ensemble des candidat(e)s. Vous pourrez les
+                        mettre à jour à tout moment.
+                      </p>
+                      <div className="rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                        <div className="p-4 border-b border-zinc-200 dark:border-zinc-700">
+                          <div className="flex items-center justify-between">
+                            <div className="text-sm text-muted-foreground flex items-center gap-2">
+                              <span>You are sharing</span>
+                              <span className="font-medium text-foreground">
+                                N/A time slots
+                              </span>
+                            </div>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="gap-2"
+                            >
+                              <Pencil className="h-4 w-4" />
+                              Modifier les disponibilités
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="relative">
+                          <div
+                            id="calendar-scroll-container"
+                            className="h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-200 scrollbar-track-transparent hover:scrollbar-thumb-zinc-300"
+                          >
+                            <CalendarView
+                              availabilities={{
+                                1: {
+                                  isAvailable: true,
+                                  startTime: "09:00",
+                                  endTime: "17:00",
+                                },
+                                2: {
+                                  isAvailable: true,
+                                  startTime: "09:00",
+                                  endTime: "17:00",
+                                },
+                                3: {
+                                  isAvailable: true,
+                                  startTime: "09:00",
+                                  endTime: "17:00",
+                                },
+                                4: {
+                                  isAvailable: true,
+                                  startTime: "09:00",
+                                  endTime: "14:00",
+                                },
+                                5: {
+                                  isAvailable: false,
+                                  startTime: "09:00",
+                                  endTime: "17:00",
+                                },
+                                6: {
+                                  isAvailable: false,
+                                  startTime: "09:00",
+                                  endTime: "17:00",
+                                },
+                                7: {
+                                  isAvailable: false,
+                                  startTime: "09:00",
+                                  endTime: "17:00",
+                                },
+                              }}
+                              className="border-none"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </TabsContent>
                   <TabsContent value="specific-time" className="mt-4">
