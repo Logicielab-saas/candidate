@@ -5,25 +5,45 @@ import { EntretienTabs } from "./EntretienTabs";
 import { DisponibilitesSettings } from "./DisponibilitesSettings";
 import { EntretiensList } from "./EntretiensList";
 import { EntretienDetails } from "./EntretienDetails";
-import { type Entretien } from "@/core/mockData/entretiens-data";
+import {
+  type Entretien,
+  type FilterType,
+  type SubFilterType,
+} from "@/core/mockData/entretiens-data";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MOCK_ENTRETIENS } from "@/core/mockData/entretiens-data";
 
 export default function EntretiensContainer() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState<"Entretiens" | "Disponibilites">(
-    "Entretiens"
-  );
 
-  // Get the current selected interview from URL
+  // Get all URL parameters
   const currentEntretienId = searchParams.get("entretien");
+  const currentTab =
+    (searchParams.get("tab") as "Entretiens" | "Disponibilites") ||
+    "Entretiens";
+  const currentFilter =
+    (searchParams.get("filter") as FilterType) || "upcoming";
+  const currentSubFilter = searchParams.get(
+    "subFilter"
+  ) as SubFilterType | null;
+
+  // States
+  const [activeTab, setActiveTab] = useState<"Entretiens" | "Disponibilites">(
+    currentTab
+  );
   const [selectedEntretien, setSelectedEntretien] = useState<Entretien | null>(
     null
+  );
+  const [activeFilter, setActiveFilter] = useState<FilterType>(currentFilter);
+  const [activeSubFilter, setActiveSubFilter] = useState<SubFilterType | null>(
+    currentSubFilter
   );
 
   // Effect to handle initial load and URL updates
   useEffect(() => {
+    if (activeTab !== "Entretiens") return;
+
     // If there's an ID in the URL, find that interview
     if (currentEntretienId) {
       const entretien = MOCK_ENTRETIENS.find(
@@ -39,21 +59,59 @@ export default function EntretiensContainer() {
     if (MOCK_ENTRETIENS.length > 0) {
       const firstEntretien = MOCK_ENTRETIENS[0];
       setSelectedEntretien(firstEntretien);
-      router.push(`/recruiter/interviews?entretien=${firstEntretien.id}`);
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set("entretien", firstEntretien.id);
+      router.push(`/recruiter/interviews?${newParams.toString()}`);
     }
-  }, [currentEntretienId, router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentEntretienId, activeTab]);
 
-  // Handler for interview selection
+  // Handlers for state changes
+  const handleTabChange = (tab: "Entretiens" | "Disponibilites") => {
+    setActiveTab(tab);
+    // Reset all states
+    setSelectedEntretien(null);
+    setActiveFilter("upcoming");
+    setActiveSubFilter(null);
+    // Update URL with only the tab parameter
+    router.push(`/recruiter/interviews?tab=${tab}`);
+  };
+
   const handleEntretienSelect = (entretien: Entretien) => {
     setSelectedEntretien(entretien);
-    router.push(`/recruiter/interviews?entretien=${entretien.id}`);
+    // Preserve the current tab when updating entretien
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("entretien", entretien.id);
+    router.push(`/recruiter/interviews?${newParams.toString()}`);
+  };
+
+  const handleFilterChange = (filter: FilterType) => {
+    setActiveFilter(filter);
+    setActiveSubFilter(null);
+    // Preserve the current tab when updating filter
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("filter", filter);
+    newParams.delete("subFilter");
+    router.push(`/recruiter/interviews?${newParams.toString()}`);
+  };
+
+  const handleSubFilterChange = (subFilter: SubFilterType | null) => {
+    setActiveSubFilter(subFilter);
+    // Preserve the current tab when updating subFilter
+    const newParams = new URLSearchParams(searchParams);
+    if (subFilter) {
+      newParams.set("subFilter", subFilter);
+    } else {
+      newParams.delete("subFilter");
+    }
+    router.push(`/recruiter/interviews?${newParams.toString()}`);
   };
 
   return (
     <div className="">
       <EntretienTabs
         activeTab={activeTab}
-        onTabChange={setActiveTab}
+        onTabChange={handleTabChange}
         className="mb-6"
       />
 
@@ -62,6 +120,10 @@ export default function EntretiensContainer() {
           <EntretiensList
             onEntretienSelect={handleEntretienSelect}
             selectedEntretienId={selectedEntretien?.id}
+            activeFilter={activeFilter}
+            onFilterChange={handleFilterChange}
+            activeSubFilter={activeSubFilter}
+            onSubFilterChange={handleSubFilterChange}
           />
           <div className="hidden xl:block">
             {selectedEntretien && (

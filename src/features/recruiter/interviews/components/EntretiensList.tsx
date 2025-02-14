@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import {
   MOCK_ENTRETIENS,
   FILTER_OPTIONS,
@@ -23,18 +23,21 @@ interface EntretiensListProps {
   className?: string;
   onEntretienSelect?: (entretien: Entretien) => void;
   selectedEntretienId?: string;
+  activeFilter: FilterType;
+  onFilterChange: (filter: FilterType) => void;
+  activeSubFilter: SubFilterType | null;
+  onSubFilterChange: (subFilter: SubFilterType | null) => void;
 }
 
 export function EntretiensList({
   className,
   onEntretienSelect,
   selectedEntretienId,
+  activeFilter,
+  onFilterChange,
+  activeSubFilter,
+  onSubFilterChange,
 }: EntretiensListProps) {
-  const [activeFilter, setActiveFilter] = useState<FilterType>("upcoming");
-  const [activeSubFilter, setActiveSubFilter] = useState<SubFilterType | null>(
-    null
-  );
-
   const filteredEntretiens = useMemo(() => {
     const baseFiltered = MOCK_ENTRETIENS.filter(
       (entretien) => entretien.status === activeFilter
@@ -115,8 +118,7 @@ export function EntretiensList({
         <Tabs
           value={activeFilter}
           onValueChange={(v) => {
-            setActiveFilter(v as FilterType);
-            setActiveSubFilter(null);
+            onFilterChange(v as FilterType);
           }}
           className="w-full"
         >
@@ -152,7 +154,7 @@ export function EntretiensList({
               type="single"
               value={activeSubFilter || ""}
               onValueChange={(value) =>
-                setActiveSubFilter((value as SubFilterType) || null)
+                onSubFilterChange((value as SubFilterType) || null)
               }
             >
               {currentFilter.subFilters.map((subFilter) => (
