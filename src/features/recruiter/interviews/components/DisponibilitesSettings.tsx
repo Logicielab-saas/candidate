@@ -29,6 +29,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CalendarView } from "./CalendarView";
 
 const weekdaySchema = z.object({
   isAvailable: z.boolean(),
@@ -101,7 +102,7 @@ export function DisponibilitesSettings() {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[400px_1fr]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[500px_1fr]">
         {/* Left Side - Settings */}
         <Card className="h-fit">
           <CardHeader className="pb-4">
@@ -237,9 +238,12 @@ export function DisponibilitesSettings() {
           </CardFooter>
         </Card>
 
-        {/* Right Side - Calendar View (to be implemented) */}
+        {/* Right Side - Calendar View */}
         <div className="hidden lg:block">
-          {/* Calendar will be added here */}
+          <CalendarView
+            className="h-full"
+            availabilities={form.watch("availabilities")}
+          />
         </div>
       </div>
     </form>

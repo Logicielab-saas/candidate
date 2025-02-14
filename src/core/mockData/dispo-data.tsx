@@ -10,12 +10,17 @@ export const WEEKDAYS = [
   { id: 7, name: "Dimanche" },
 ] as const;
 
-export const TIME_SLOTS = Array.from({ length: 18 * 2 }).map((_, i) => {
-  const hour = Math.floor(i / 2);
-  const minutes = i % 2 === 0 ? "00" : "30";
-  const time = `${hour.toString().padStart(2, "0")}:${minutes}`;
-  return { value: time, label: time };
-});
+export const TIME_SLOTS = Array.from({ length: 25 })
+  .map((_, i) => {
+    const hour = Math.floor(i / 2) + 8;
+    const minutes = i % 2 === 0 ? "00" : "30";
+    const time = `${hour.toString().padStart(2, "0")}:${minutes}`;
+    return { value: time, label: time };
+  })
+  .filter((slot) => {
+    const hour = parseInt(slot.value.split(":")[0]);
+    return hour <= 20;
+  });
 
 export interface CalendarConnection {
   id: string;
