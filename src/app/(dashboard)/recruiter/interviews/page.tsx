@@ -1,9 +1,7 @@
-import React from 'react'
+import EntretiensContainer from "@/features/recruiter/interviews/components/EntretiensContainer";
 
 const InterviewsPage = () => {
-  return (
-    <div>Interviews</div>
-  )
-}
+  return <EntretiensContainer />;
+};
 
-export default InterviewsPage
+export default InterviewsPage;
