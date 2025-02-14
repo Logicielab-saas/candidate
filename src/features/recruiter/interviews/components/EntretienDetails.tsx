@@ -4,6 +4,17 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
@@ -33,6 +44,11 @@ export function EntretienDetails({
   className,
 }: EntretienDetailsProps) {
   const Icon = TYPE_ICONS[entretien.type];
+
+  const handleCancelInterview = () => {
+    // Handle the cancellation logic here
+    console.log("Interview cancelled:", entretien.id);
+  };
 
   return (
     <Card className={cn("flex flex-col p-6", className)}>
@@ -86,9 +102,37 @@ export function EntretienDetails({
           <Button variant="outline" className="flex-1">
             Reprogrammer
           </Button>
-          <Button variant="destructive" className="flex-1">
-            Annuler
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" className="flex-1">
+                Annuler
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Annuler l&apos;entretien</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Êtes-vous sûr de vouloir annuler l&apos;entretien avec{" "}
+                  {entretien.candidatName} prévu le{" "}
+                  {format(entretien.date, "d MMMM", { locale: fr })} à{" "}
+                  {entretien.startTime} ?
+                  <br />
+                  <br />
+                  Cette action est irréversible. Un email sera envoyé au
+                  candidat pour l&apos;informer de l&apos;annulation.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Retour</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleCancelInterview}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Confirmer l&apos;annulation
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
 
         <Separator />
