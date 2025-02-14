@@ -3,23 +3,38 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { mockCandidates } from "@/app/(dashboard)/recruiter/candidates/page";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ContactInterfaceChat } from "./ContactInterfaceChat";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface CandidatesListProps {
   currentCandidateId?: string;
+  source?: "entretien";
+  candidateName?: string;
 }
 
-export function CandidatesList({ currentCandidateId }: CandidatesListProps) {
+export function CandidatesList({
+  currentCandidateId,
+  source,
+  candidateName,
+}: CandidatesListProps) {
   const [selectedChatCandidate, setSelectedChatCandidate] = useState<
     string | null
   >(null);
   const router = useRouter();
 
+  // Filter candidates based on source
+  const filteredCandidates = useMemo(() => {
+    if (source === "entretien" && candidateName) {
+      return mockCandidates.filter((c) => c.nom === candidateName);
+    }
+    return mockCandidates;
+  }, [source, candidateName]);
+
   const currentIndex = currentCandidateId
-    ? mockCandidates.findIndex((c) => c.nom === currentCandidateId)
+    ? filteredCandidates.findIndex((c) => c.nom === currentCandidateId)
     : -1;
 
   const handleNavigation = (direction: "prev" | "next") => {
@@ -28,9 +43,9 @@ export function CandidatesList({ currentCandidateId }: CandidatesListProps) {
     const newIndex =
       direction === "prev"
         ? Math.max(0, currentIndex - 1)
-        : Math.min(mockCandidates.length - 1, currentIndex + 1);
+        : Math.min(filteredCandidates.length - 1, currentIndex + 1);
 
-    const candidate = mockCandidates[newIndex];
+    const candidate = filteredCandidates[newIndex];
     if (candidate) {
       router.push(`/recruiter/candidates/details?id=${candidate.nom}`);
     }
@@ -41,35 +56,44 @@ export function CandidatesList({ currentCandidateId }: CandidatesListProps) {
       <div className="p-4 border-b border-border flex items-center justify-between">
         <div className="flex flex-col gap-2">
           <h2 className="text-lg font-semibold text-muted-foreground">
-            ({mockCandidates.length}) candidat(e)s
+            {source === "entretien"
+              ? "Candidature"
+              : `(${filteredCandidates.length}) candidat(e)s`}
           </h2>
         </div>
-        <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 rounded-full hover:bg-accent"
-            disabled={currentIndex <= 0}
-            onClick={() => handleNavigation("prev")}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 rounded-full hover:bg-accent"
-            disabled={currentIndex === mockCandidates.length - 1}
-            onClick={() => handleNavigation("next")}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
+        {!source && (
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full hover:bg-accent"
+              disabled={currentIndex <= 0}
+              onClick={() => handleNavigation("prev")}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full hover:bg-accent"
+              disabled={currentIndex === filteredCandidates.length - 1}
+              onClick={() => handleNavigation("next")}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
       </div>
       {/* Adjustable height */}
-      <ScrollArea className="h-[calc(100vh-300px)]">
+      <ScrollArea
+        className={cn(
+          "h-[calc(100vh-300px)]",
+          source === "entretien" && "h-[calc(100vh-400px)]"
+        )}
+      >
         <div className="p-3">
           <div className="space-y-2">
-            {mockCandidates.map((candidate) => (
+            {filteredCandidates.map((candidate) => (
               <div
                 key={candidate.nom}
                 className={`rounded-lg p-1 transition-colors ${
@@ -111,27 +135,28 @@ export function CandidatesList({ currentCandidateId }: CandidatesListProps) {
                     </div>
                   </div>
                 </Link>
-                {candidate.activite.status === "Nouvelle candidature" && (
-                  <div className="px-3 pb-3 space-y-1.5">
-                    <Badge
-                      variant="outline"
-                      className={`w-fit ${
-                        currentCandidateId === candidate.nom
-                          ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800"
-                          : "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800"
-                      }`}
-                    >
-                      Nouvelle candidature
-                    </Badge>
-                    <Button
-                      variant="link"
-                      className={`w-fit h-auto p-1 text-sm font-normal text-primaryHex-500 dark:text-primaryHex-400 hover:text-primaryHex-600 dark:hover:text-primaryHex-300`}
-                      onClick={() => setSelectedChatCandidate(candidate.nom)}
-                    >
-                      Envoyer un message
-                    </Button>
-                  </div>
-                )}
+                {candidate.activite.status === "Nouvelle candidature" &&
+                  !source && (
+                    <div className="px-3 pb-3 space-y-1.5">
+                      <Badge
+                        variant="outline"
+                        className={`w-fit ${
+                          currentCandidateId === candidate.nom
+                            ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800"
+                            : "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800"
+                        }`}
+                      >
+                        Nouvelle candidature
+                      </Badge>
+                      <Button
+                        variant="link"
+                        className={`w-fit h-auto p-1 text-sm font-normal text-primaryHex-500 dark:text-primaryHex-400 hover:text-primaryHex-600 dark:hover:text-primaryHex-300`}
+                        onClick={() => setSelectedChatCandidate(candidate.nom)}
+                      >
+                        Envoyer un message
+                      </Button>
+                    </div>
+                  )}
               </div>
             ))}
           </div>

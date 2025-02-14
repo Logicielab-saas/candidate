@@ -3,10 +3,15 @@ import { useState } from "react";
 import { EntretienTabs } from "./EntretienTabs";
 import { DisponibilitesSettings } from "./DisponibilitesSettings";
 import { EntretiensList } from "./EntretiensList";
+import { EntretienDetails } from "./EntretienDetails";
+import { type Entretien } from "@/core/mockData/entretiens-data";
 
 export default function EntretiensContainer() {
   const [activeTab, setActiveTab] = useState<"Entretiens" | "Disponibilites">(
-    "Disponibilites"
+    "Entretiens"
+  );
+  const [selectedEntretien, setSelectedEntretien] = useState<Entretien | null>(
+    null
   );
 
   return (
@@ -19,9 +24,14 @@ export default function EntretiensContainer() {
 
       {activeTab === "Entretiens" && (
         <div className="grid grid-cols-1 xl:grid-cols-[400px_1fr] gap-6">
-          <EntretiensList />
+          <EntretiensList
+            onEntretienSelect={setSelectedEntretien}
+            selectedEntretienId={selectedEntretien?.id}
+          />
           <div className="hidden xl:block">
-            {/* Right side content - To be implemented */}
+            {selectedEntretien && (
+              <EntretienDetails entretien={selectedEntretien} />
+            )}
           </div>
         </div>
       )}

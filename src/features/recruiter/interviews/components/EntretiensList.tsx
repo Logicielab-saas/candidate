@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -20,9 +21,15 @@ import {
 
 interface EntretiensListProps {
   className?: string;
+  onEntretienSelect?: (entretien: Entretien) => void;
+  selectedEntretienId?: string;
 }
 
-export function EntretiensList({ className }: EntretiensListProps) {
+export function EntretiensList({
+  className,
+  onEntretienSelect,
+  selectedEntretienId,
+}: EntretiensListProps) {
   const [activeFilter, setActiveFilter] = useState<FilterType>("upcoming");
   const [activeSubFilter, setActiveSubFilter] = useState<SubFilterType | null>(
     null
@@ -102,7 +109,7 @@ export function EntretiensList({ className }: EntretiensListProps) {
   };
 
   return (
-    <Card className={cn("h-fit", className)}>
+    <Card className={cn("flex h-fit flex-col", className)}>
       {/* Filters */}
       <div className="w-full border-b">
         <Tabs
@@ -178,43 +185,63 @@ export function EntretiensList({ className }: EntretiensListProps) {
         )}
 
       {/* Interviews List */}
-      <div className="divide-y">
-        {filteredEntretiens.map((entretien) => {
-          const badgeConfig = getBadgeConfig(entretien);
-          return (
-            <div
-              key={entretien.id}
-              className="flex flex-col gap-2 p-4 transition-colors hover:bg-secondaryHex-50 dark:hover:bg-secondaryHex-900/50"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-secondaryHex-600 dark:text-secondaryHex-400">
-                    {entretien.type}
-                  </span>
-                  <span className="font-medium">{entretien.candidatName}</span>
+      <ScrollArea className="h-[500px]">
+        <div className="divide-y">
+          {filteredEntretiens.map((entretien) => {
+            const badgeConfig = getBadgeConfig(entretien);
+            return (
+              <div
+                key={entretien.id}
+                className={cn(
+                  "flex cursor-pointer flex-col gap-2 p-4 transition-colors",
+                  selectedEntretienId === entretien.id
+                    ? "bg-primaryHex-50 dark:bg-primaryHex-900/20"
+                    : "hover:bg-secondaryHex-50 dark:hover:bg-secondaryHex-900/50"
+                )}
+                onClick={() => onEntretienSelect?.(entretien)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onEntretienSelect?.(entretien);
+                  }
+                }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium">
+                      {entretien.candidatName}
+                    </span>
+                  </div>
+                  <Badge variant={badgeConfig.variant}>
+                    {badgeConfig.label}
+                  </Badge>
                 </div>
-                <Badge variant={badgeConfig.variant}>{badgeConfig.label}</Badge>
+                <div className="flex items-center gap-1 text-sm">
+                  <span>{entretien.type}</span>
+                </div>
+                <div className="flex items-center gap-1 text-sm text-secondaryHex-600 dark:text-secondaryHex-400">
+                  <span className="font-medium">
+                    {format(entretien.date, "EEEE d MMMM", { locale: fr })}
+                  </span>
+                  <span>•</span>
+                  <span>
+                    {entretien.startTime} - {entretien.endTime}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1 text-sm">
+                  <span>{entretien.poste}</span>
+                  <span className="text-secondaryHex-400">•</span>
+                  <span className="text-secondaryHex-600 dark:text-secondaryHex-400">
+                    {entretien.city}
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center gap-1 text-sm text-secondaryHex-600 dark:text-secondaryHex-400">
-                <span className="font-medium">
-                  {format(entretien.date, "EEEE d MMMM", { locale: fr })}
-                </span>
-                <span>•</span>
-                <span>
-                  {entretien.startTime} - {entretien.endTime}
-                </span>
-              </div>
-              <div className="flex items-center gap-1 text-sm">
-                <span>{entretien.poste}</span>
-                <span className="text-secondaryHex-400">•</span>
-                <span className="text-secondaryHex-600 dark:text-secondaryHex-400">
-                  {entretien.city}
-                </span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      </ScrollArea>
     </Card>
   );
 }
