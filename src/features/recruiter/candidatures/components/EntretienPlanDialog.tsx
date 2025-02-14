@@ -35,6 +35,8 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CalendarView } from "../../interviews/components/CalendarView";
 import { Pencil } from "lucide-react";
+import { useState } from "react";
+import { EntretienReprogramDialog } from "./EntretienReprogramDialog";
 
 interface EntretienPlanDialogProps {
   isOpen: boolean;
@@ -86,10 +88,10 @@ const formSchema = z.object({
   message: z.string().min(1, "Le message est requis"),
   teamMembers: z.string().optional(),
   date: z.date({
-    required_error: "Veuillez sélectionner une date",
+    required_error: "sélectionner date",
   }),
   time: z.string({
-    required_error: "Veuillez sélectionner une heure",
+    required_error: "select heure",
   }),
   timezone: z.string({
     required_error: "Veuillez sélectionner un fuseau horaire",
@@ -111,6 +113,7 @@ export function EntretienPlanDialog({
   onOpenChange,
   candidat,
 }: EntretienPlanDialogProps) {
+  const [isReprogramDialogOpen, setIsReprogramDialogOpen] = useState(false);
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -309,6 +312,7 @@ export function EntretienPlanDialog({
                               variant="outline"
                               size="sm"
                               className="gap-2"
+                              onClick={() => setIsReprogramDialogOpen(true)}
                             >
                               <Pencil className="h-4 w-4" />
                               Modifier les disponibilités
@@ -389,6 +393,10 @@ export function EntretienPlanDialog({
           </form>
         </Form>
       </DialogContent>
+      <EntretienReprogramDialog
+        isOpen={isReprogramDialogOpen}
+        onOpenChange={setIsReprogramDialogOpen}
+      />
     </Dialog>
   );
 }
