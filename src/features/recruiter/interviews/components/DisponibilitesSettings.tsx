@@ -30,6 +30,24 @@ import { toast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarView } from "./CalendarView";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { fr } from "date-fns/locale";
+import { FormField } from "@/components/ui/form";
+
+const exceptionSchema = z.object({
+  date: z.date(),
+  isAvailable: z.boolean(),
+  startTime: z.string().optional(),
+  endTime: z.string().optional(),
+});
 
 const weekdaySchema = z.object({
   isAvailable: z.boolean(),
@@ -47,6 +65,7 @@ const formSchema = z.object({
       {} as { [key: string]: z.ZodBoolean }
     )
   ),
+  exceptions: z.array(exceptionSchema),
   availabilities: z.object(
     WEEKDAYS.reduce(
       (acc, day) => ({
@@ -71,6 +90,7 @@ export function DisponibilitesSettings() {
         }),
         {} as { [key: string]: boolean }
       ),
+      exceptions: [],
       availabilities: WEEKDAYS.reduce(
         (acc, day) => ({
           ...acc,
@@ -80,6 +100,27 @@ export function DisponibilitesSettings() {
       ),
     },
   });
+
+  const handleDateSelect = (dates: Date[] | undefined) => {
+    if (!dates) return;
+
+    const currentExceptions = form.getValues("exceptions");
+    const newExceptions = dates.map((date) => {
+      const existing = currentExceptions.find(
+        (e) => e.date.getTime() === date.getTime()
+      );
+      return (
+        existing || {
+          date,
+          isAvailable: false,
+          startTime: undefined,
+          endTime: undefined,
+        }
+      );
+    });
+
+    form.setValue("exceptions", newExceptions);
+  };
 
   const onSubmit = async (data: FormValues) => {
     try {
@@ -232,6 +273,176 @@ export function DisponibilitesSettings() {
                 })}
               </div>
             </div>
+
+            <Separator />
+
+            {/* Exceptions Section */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-medium">Exceptions</h3>
+              <div className="space-y-2">
+                <Label className="text-sm">
+                  Quand êtes-vous indisponible ?
+                </Label>
+                <FormField
+                  control={form.control}
+                  name="exceptions"
+                  render={({ field }) => (
+                    <div className="space-y-2">
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              !field.value?.length && "text-muted-foreground"
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {field.value?.length === 0 &&
+                              "Sélectionner des dates"}
+                            {field.value?.length > 0 && (
+                              <>
+                                {field.value.length} date
+                                {field.value.length > 1 ? "s" : ""} sélectionnée
+                                {field.value.length > 1 ? "s" : ""}
+                              </>
+                            )}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="multiple"
+                            selected={field.value.map((e) => e.date)}
+                            onSelect={handleDateSelect}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      {field.value?.length > 0 && (
+                        <div className="space-y-2">
+                          {field.value.map((exception, index) => (
+                            <div
+                              key={exception.date.toISOString()}
+                              className="space-y-2 rounded-md border p-3"
+                            >
+                              <div className="flex items-center justify-between">
+                                <span className="text-sm">
+                                  {format(exception.date, "dd MMMM yyyy", {
+                                    locale: fr,
+                                  })}
+                                </span>
+                                <div className="flex items-center gap-3">
+                                  {!exception.isAvailable && (
+                                    <span className="text-xs text-muted-foreground">
+                                      Indisponible
+                                    </span>
+                                  )}
+                                  <Switch
+                                    checked={exception.isAvailable}
+                                    onCheckedChange={(checked) => {
+                                      const newExceptions = [...field.value];
+                                      newExceptions[index] = {
+                                        ...exception,
+                                        isAvailable: checked,
+                                        startTime: checked
+                                          ? "09:00"
+                                          : undefined,
+                                        endTime: checked ? "17:00" : undefined,
+                                      };
+                                      form.setValue(
+                                        "exceptions",
+                                        newExceptions
+                                      );
+                                    }}
+                                  />
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => {
+                                      const newExceptions = [...field.value];
+                                      newExceptions.splice(index, 1);
+                                      form.setValue(
+                                        "exceptions",
+                                        newExceptions
+                                      );
+                                    }}
+                                  >
+                                    Supprimer
+                                  </Button>
+                                </div>
+                              </div>
+                              {exception.isAvailable && (
+                                <div className="grid grid-cols-2 gap-2">
+                                  <Select
+                                    value={exception.startTime}
+                                    onValueChange={(value) => {
+                                      const newExceptions = [...field.value];
+                                      newExceptions[index] = {
+                                        ...exception,
+                                        startTime: value,
+                                      };
+                                      form.setValue(
+                                        "exceptions",
+                                        newExceptions
+                                      );
+                                    }}
+                                  >
+                                    <SelectTrigger className="h-8">
+                                      <SelectValue placeholder="Début" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      {TIME_SLOTS.map((slot) => (
+                                        <SelectItem
+                                          key={slot.value}
+                                          value={slot.value}
+                                          className="text-sm"
+                                        >
+                                          {slot.label}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <Select
+                                    value={exception.endTime}
+                                    onValueChange={(value) => {
+                                      const newExceptions = [...field.value];
+                                      newExceptions[index] = {
+                                        ...exception,
+                                        endTime: value,
+                                      };
+                                      form.setValue(
+                                        "exceptions",
+                                        newExceptions
+                                      );
+                                    }}
+                                  >
+                                    <SelectTrigger className="h-8">
+                                      <SelectValue placeholder="Fin" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      {TIME_SLOTS.map((slot) => (
+                                        <SelectItem
+                                          key={slot.value}
+                                          value={slot.value}
+                                          className="text-sm"
+                                        >
+                                          {slot.label}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                />
+              </div>
+            </div>
           </CardContent>
           <CardFooter className="flex justify-end border-t pt-6">
             <Button type="submit">Appliquer les modifications</Button>
@@ -244,6 +455,7 @@ export function DisponibilitesSettings() {
             <CalendarView
               className="h-[800px]"
               availabilities={form.watch("availabilities")}
+              exceptions={form.watch("exceptions")}
             />
           </div>
         </div>

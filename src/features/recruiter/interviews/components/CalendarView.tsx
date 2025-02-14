@@ -23,9 +23,19 @@ const HOURS = Array.from({ length: 13 }, (_, i) => i + 8); // 8:00 to 20:00
 interface CalendarViewProps {
   className?: string;
   availabilities: Record<number, WeekdayAvailability>;
+  exceptions?: Array<{
+    date: Date;
+    isAvailable: boolean;
+    startTime?: string;
+    endTime?: string;
+  }>;
 }
 
-export function CalendarView({ className, availabilities }: CalendarViewProps) {
+export function CalendarView({
+  className,
+  availabilities,
+  exceptions = [],
+}: CalendarViewProps) {
   const [currentWeek, setCurrentWeek] = useState(() =>
     startOfWeek(new Date(), { weekStartsOn: 1 })
   ); // Start week on Monday
@@ -43,8 +53,30 @@ export function CalendarView({ className, availabilities }: CalendarViewProps) {
   const handleNextWeek = () => setCurrentWeek((prev) => addWeeks(prev, 1));
 
   const getAvailabilityStyle = (day: Date, hour: number) => {
+    // First check if this day has an exception
+    const exception = exceptions?.find(
+      (e) =>
+        e.date.getDate() === day.getDate() &&
+        e.date.getMonth() === day.getMonth() &&
+        e.date.getFullYear() === day.getFullYear()
+    );
+
+    if (exception) {
+      if (!exception.isAvailable) return "bg-red-100/50 dark:bg-red-900/20";
+
+      if (exception.startTime && exception.endTime) {
+        const startHour = parseInt(exception.startTime.split(":")[0]);
+        const endHour = parseInt(exception.endTime.split(":")[0]);
+
+        if (hour >= startHour && hour < endHour) {
+          return "bg-primaryHex-100/50 dark:bg-primaryHex-900/20";
+        }
+      }
+      return "";
+    }
+
+    // If no exception, fall back to regular weekly availability
     let dayOfWeek = getDay(day);
-    // Convert Sunday from 0 to 7 to match our data structure
     if (dayOfWeek === 0) dayOfWeek = 7;
     const dayAvailability = availabilities[dayOfWeek];
 
