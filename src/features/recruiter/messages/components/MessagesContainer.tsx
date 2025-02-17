@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import { MessagesList } from "./MessagesList";
 import { MessageChatContent } from "./MessageChatContent";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { type Message, MOCK_MESSAGES } from "@/core/mockData/messages-data";
+import { useDebouncedCallback } from "use-debounce";
 
 export function MessagesContainer() {
   const router = useRouter();
@@ -15,6 +16,8 @@ export function MessagesContainer() {
   // Get URL parameters
   const messageId = searchParams.get("message");
   const currentTab = (searchParams.get("tab") as "all" | "unread") || "all";
+  const searchQuery = searchParams.get("q") || "";
+  const jobsFilter = searchParams.get("jobs")?.split(",") || [];
 
   const selectedMessage = messageId
     ? MOCK_MESSAGES.find((m) => m.id === Number(messageId))
@@ -46,23 +49,41 @@ export function MessagesContainer() {
     updateSearchParams({ tab });
   };
 
-  // Helper function to update search params
-  const updateSearchParams = (updates: Record<string, string | null>) => {
-    const params = new URLSearchParams(searchParams.toString());
+  // Debounced search handler
+  const debouncedSearch = useDebouncedCallback((query: string) => {
+    updateSearchParams({ q: query || null });
+  }, 300);
 
-    // Update or remove each parameter
-    Object.entries(updates).forEach(([key, value]) => {
-      if (value === null) {
-        params.delete(key);
-      } else {
-        params.set(key, value);
-      }
-    });
-
-    // Use replace for initial load/cleanup, push for user actions
-    const method = updates.message === null ? "replace" : "push";
-    router[method](`/recruiter/messages?${params.toString()}`);
+  const handleSearch = (query: string) => {
+    debouncedSearch(query);
   };
+
+  const handleJobsFilter = (jobs: string[]) => {
+    updateSearchParams({
+      jobs: jobs.length > 0 ? jobs.join(",") : null,
+    });
+  };
+
+  // Helper function to update search params
+  const updateSearchParams = useCallback(
+    (updates: Record<string, string | null>) => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      // Update or remove each parameter
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value === null) {
+          params.delete(key);
+        } else {
+          params.set(key, value);
+        }
+      });
+
+      // Use replace for initial load/cleanup, push for user actions
+      const method = updates.message === null ? "replace" : "push";
+      router[method](`/recruiter/messages?${params.toString()}`);
+    },
+    [router, searchParams]
+  );
 
   return (
     <div className="space-y-6">
@@ -81,6 +102,10 @@ export function MessagesContainer() {
           selectedMessageId={selectedMessage?.id}
           currentTab={currentTab}
           onTabChange={handleTabChange}
+          searchQuery={searchQuery}
+          onSearch={handleSearch}
+          selectedJobs={jobsFilter}
+          onJobsChange={handleJobsFilter}
         />
 
         {/* Right Side - Message Content */}

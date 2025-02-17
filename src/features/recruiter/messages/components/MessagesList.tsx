@@ -3,10 +3,9 @@
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, Loader2, X } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Tooltip,
@@ -20,12 +19,18 @@ import {
   JOBS_OPTIONS,
   MOCK_MESSAGES,
 } from "@/core/mockData/messages-data";
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 interface MessagesListProps {
   onMessageSelect: (message: Message) => void;
   selectedMessageId?: number;
   currentTab: "all" | "unread";
   onTabChange: (tab: "all" | "unread") => void;
+  searchQuery: string;
+  onSearch: (query: string) => void;
+  selectedJobs: string[];
+  onJobsChange: (jobs: string[]) => void;
 }
 
 export function MessagesList({
@@ -33,9 +38,52 @@ export function MessagesList({
   selectedMessageId,
   currentTab,
   onTabChange,
+  searchQuery,
+  onSearch,
+  selectedJobs,
+  onJobsChange,
 }: MessagesListProps) {
-  const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  // Local states for immediate feedback
+  const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
+  const [localSelectedJobs, setLocalSelectedJobs] = useState(selectedJobs);
+  const [isSearching, setIsSearching] = useState(false);
+
+  // Sync local states with props when they change
+  useEffect(() => {
+    setLocalSearchQuery(searchQuery);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    setLocalSelectedJobs(selectedJobs);
+  }, [selectedJobs]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setLocalSearchQuery(value); // Update local state immediately
+    setIsSearching(true); // Show loading indicator
+    onSearch(value); // Trigger debounced search
+  };
+
+  const handleJobsChange = (jobs: string[]) => {
+    setLocalSelectedJobs(jobs); // Update local state immediately
+    onJobsChange(jobs); // Update URL state
+  };
+
+  // Clear search
+  const handleClearSearch = () => {
+    setLocalSearchQuery("");
+    onSearch("");
+  };
+
+  // Effect to handle search loading state
+  useEffect(() => {
+    if (isSearching) {
+      const timer = setTimeout(() => {
+        setIsSearching(false);
+      }, 300); // Match debounce timing
+      return () => clearTimeout(timer);
+    }
+  }, [isSearching]);
 
   const filteredMessages = MOCK_MESSAGES.filter((message) => {
     const matchesTab = currentTab === "all" || message.isUnread;
@@ -119,16 +167,31 @@ export function MessagesList({
             <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Rechercher un message..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-8 pl-8"
+              value={localSearchQuery}
+              onChange={handleSearchChange}
+              className="h-8 pl-8 pr-16"
             />
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+              {isSearching && (
+                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+              )}
+              {localSearchQuery && !isSearching && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6"
+                  onClick={handleClearSearch}
+                >
+                  <X className="h-4 w-4 text-muted-foreground" />
+                </Button>
+              )}
+            </div>
           </div>
 
           <MultiSelect
             options={JOBS_OPTIONS}
-            value={selectedJobs}
-            onValueChange={setSelectedJobs}
+            value={localSelectedJobs}
+            onValueChange={handleJobsChange}
             placeholder="Filtrer par emploi"
             className="h-8 w-full"
             contentClassName="min-w-[315px]"
