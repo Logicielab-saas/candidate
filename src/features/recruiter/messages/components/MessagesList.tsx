@@ -1,7 +1,6 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
@@ -15,6 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { MessageItem } from "./MessageItem";
 
 // Mock data for jobs
 const JOBS_OPTIONS = [
@@ -27,29 +27,44 @@ const JOBS_OPTIONS = [
 const MOCK_MESSAGES = [
   {
     id: 1,
-    jobTitle: "Appel à candidature pour l'emploi « Social Media Manager »",
+    jobTitle: "A postulé pour « Social Media Manager »",
     jobType: "social-media",
-    date: "14 Mars 2025",
-    candidate: "Meryem AZELMAD",
-    preview: "Bonjour meryem, Je vous re...",
+    date: "Il y a 2 heures",
+    candidate: {
+      name: "Meryem AZELMAD",
+      position: "Social Media Manager",
+      city: "Casablanca",
+    },
+    preview:
+      "Bonjour, Je suis très intéressée par le poste de Social Media Manager. J'ai 5 ans d'expérience dans le domaine et je souhaiterais...",
     isUnread: true,
   },
   {
     id: 2,
-    jobTitle: "Appel à candidature pour l'emploi « Graphiste »",
+    jobTitle: "A postulé pour « Graphiste »",
     jobType: "graphiste",
-    date: "23 Juin 2025",
-    candidate: "Mohammed LAKHDAR",
-    preview: "Bonjour, Je vous ai envoyé...",
+    date: "Hier",
+    candidate: {
+      name: "Mohammed LAKHDAR",
+      position: "Graphiste Senior",
+      city: "Rabat",
+    },
+    preview:
+      "Bonjour, Suite à notre entretien de la semaine dernière, je vous envoie comme convenu mon portfolio actualisé avec mes dernières réalisations...",
     isUnread: false,
   },
   {
     id: 3,
-    jobTitle: "Appel à candidature pour l'emploi « Stage UI/UX »",
+    jobTitle: "A postulé pour « Stage UI/UX »",
     jobType: "ui-ux",
-    date: "31 Août 2024",
-    candidate: "BASSMA MOUHADI",
-    preview: "Bonjour, I hope this message...",
+    date: "Il y a 3 jours",
+    candidate: {
+      name: "BASSMA MOUHADI",
+      position: "UI/UX Designer Junior",
+      city: "Tanger",
+    },
+    preview:
+      "Bonjour, Je suis actuellement en dernière année d'études en design numérique et je suis très intéressée par l'opportunité de stage...",
     isUnread: true,
   },
 ] as const;
@@ -65,7 +80,9 @@ export function MessagesList() {
       selectedJobs.length === 0 || selectedJobs.includes(message.jobType);
     const matchesSearch = searchQuery
       ? message.jobTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        message.candidate.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        message.candidate.name
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
         message.preview.toLowerCase().includes(searchQuery.toLowerCase())
       : true;
     return matchesTab && matchesJobs && matchesSearch;
@@ -158,45 +175,14 @@ export function MessagesList() {
           <div className="p-3">
             <div className="space-y-1">
               {filteredMessages.map((message) => (
-                <button
+                <MessageItem
                   key={message.id}
-                  className={cn(
-                    "w-full p-3 rounded-lg transition-colors",
-                    "hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-                    message.isUnread && "bg-accent/30"
-                  )}
-                >
-                  <div className="space-y-1">
-                    <div className="flex items-start justify-between gap-2">
-                      <p className="text-sm font-medium line-clamp-1 text-foreground">
-                        {message.jobTitle}
-                      </p>
-                      <span className="text-xs text-muted-foreground shrink-0">
-                        {message.date}
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-0.5 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-2">
-                        <span className="h-1 w-1 rounded-full bg-current opacity-40" />
-                        <span>{message.candidate}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="h-1 w-1 rounded-full bg-current opacity-40" />
-                        <span className="line-clamp-1">{message.preview}</span>
-                      </div>
-                    </div>
-                    {message.isUnread && (
-                      <div className="pt-1">
-                        <Badge
-                          variant="outline"
-                          className="w-fit bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800"
-                        >
-                          Nouveau message
-                        </Badge>
-                      </div>
-                    )}
-                  </div>
-                </button>
+                  message={message}
+                  onClick={() => {
+                    // Handle message click
+                    console.log("Message clicked:", message.id);
+                  }}
+                />
               ))}
             </div>
           </div>
