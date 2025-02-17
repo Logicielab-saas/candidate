@@ -45,8 +45,8 @@ export function MessagesList({ onMessageSelect }: MessagesListProps) {
   });
 
   return (
-    <Card className="border-border">
-      <CardHeader className="p-4 space-y-4 border-b">
+    <Card className="border-border h-[calc(100vh-180px)]">
+      <CardHeader className="p-3 space-y-3 border-b">
         {/* Status and Count */}
         <div className="flex items-center justify-between">
           <TooltipProvider>
@@ -76,35 +76,34 @@ export function MessagesList({ onMessageSelect }: MessagesListProps) {
         <Tabs
           value={currentTab}
           onValueChange={(value) => setCurrentTab(value as "all" | "unread")}
+          className="w-full"
         >
-          <div className="w-full border-b border-secondaryHex-200 dark:border-secondaryHex-800">
-            <TabsList className="flex h-10 w-full items-center gap-8 bg-transparent p-0">
-              <TabsTrigger
-                value="all"
-                className="relative h-full rounded-none border-b-2 border-transparent px-4 font-medium text-secondaryHex-600 dark:text-secondaryHex-400 outline-none ring-offset-background transition-colors hover:text-primaryHex-600 dark:hover:text-primaryHex-400 data-[state=active]:border-primaryHex-500 data-[state=active]:text-primaryHex-500 dark:data-[state=active]:border-primaryHex-400 dark:data-[state=active]:text-primaryHex-400"
-              >
-                Tous les messages
-              </TabsTrigger>
-              <TabsTrigger
-                value="unread"
-                className="relative h-full rounded-none border-b-2 border-transparent px-4 font-medium text-secondaryHex-600 dark:text-secondaryHex-400 outline-none ring-offset-background transition-colors hover:text-primaryHex-600 dark:hover:text-primaryHex-400 data-[state=active]:border-primaryHex-500 data-[state=active]:text-primaryHex-500 dark:data-[state=active]:border-primaryHex-400 dark:data-[state=active]:text-primaryHex-400"
-              >
-                Non lus
-                {MOCK_MESSAGES.filter((m) => m.isUnread).length > 0 && (
-                  <Badge
-                    variant="secondary"
-                    className="ml-2 bg-primaryHex-100 dark:bg-primaryHex-900/30 text-primaryHex-700 dark:text-primaryHex-400 border-primaryHex-200 dark:border-primaryHex-800"
-                  >
-                    {MOCK_MESSAGES.filter((m) => m.isUnread).length}
-                  </Badge>
-                )}
-              </TabsTrigger>
-            </TabsList>
-          </div>
+          <TabsList className="flex h-8 w-full items-center gap-6 bg-transparent p-0 border-b border-secondaryHex-200 dark:border-secondaryHex-800">
+            <TabsTrigger
+              value="all"
+              className="relative h-full rounded-none border-b-2 border-transparent px-3 font-medium text-secondaryHex-600 dark:text-secondaryHex-400 outline-none ring-offset-background transition-colors hover:text-primaryHex-600 dark:hover:text-primaryHex-400 data-[state=active]:border-primaryHex-500 data-[state=active]:text-primaryHex-500 dark:data-[state=active]:border-primaryHex-400 dark:data-[state=active]:text-primaryHex-400"
+            >
+              Tous les messages
+            </TabsTrigger>
+            <TabsTrigger
+              value="unread"
+              className="relative h-full rounded-none border-b-2 border-transparent px-3 font-medium text-secondaryHex-600 dark:text-secondaryHex-400 outline-none ring-offset-background transition-colors hover:text-primaryHex-600 dark:hover:text-primaryHex-400 data-[state=active]:border-primaryHex-500 data-[state=active]:text-primaryHex-500 dark:data-[state=active]:border-primaryHex-400 dark:data-[state=active]:text-primaryHex-400"
+            >
+              Non lus
+              {MOCK_MESSAGES.filter((m) => m.isUnread).length > 0 && (
+                <Badge
+                  variant="secondary"
+                  className="ml-2 bg-primaryHex-100 dark:bg-primaryHex-900/30 text-primaryHex-700 dark:text-primaryHex-400 border-primaryHex-200 dark:border-primaryHex-800"
+                >
+                  {MOCK_MESSAGES.filter((m) => m.isUnread).length}
+                </Badge>
+              )}
+            </TabsTrigger>
+          </TabsList>
         </Tabs>
 
         {/* Search and Filter Section */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <div className="relative">
             <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -127,8 +126,8 @@ export function MessagesList({ onMessageSelect }: MessagesListProps) {
       </CardHeader>
 
       <CardContent className="p-0">
-        <ScrollArea className="h-[calc(100vh-300px)]">
-          <div className="p-3">
+        <ScrollArea className="h-[calc(100vh-380px)]">
+          <div className="p-2">
             <div className="space-y-1">
               {filteredMessages.map((message) => (
                 <MessageItem
