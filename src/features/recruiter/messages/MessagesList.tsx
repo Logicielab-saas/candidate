@@ -8,6 +8,13 @@ import { useState } from "react";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 // Mock data for jobs
 const JOBS_OPTIONS = [
@@ -65,21 +72,31 @@ export function MessagesList() {
   });
 
   return (
-    <div className="border border-border rounded-lg bg-background">
-      {/* Header */}
-      <div className="p-4 border-b border-border space-y-4">
+    <Card className="border-border">
+      <CardHeader className="p-4 space-y-4 border-b">
         {/* Status and Count */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="relative flex h-2.5 w-2.5 items-center justify-center">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-            </div>
-            <span className="text-sm text-muted-foreground">En ligne</span>
-          </div>
-          <span className="text-sm text-muted-foreground">
-            ({filteredMessages.length}) messages
-          </span>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center gap-2 cursor-help">
+                  <div className="relative flex h-2.5 w-2.5 items-center justify-center">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+                  </div>
+                  <span className="text-sm text-muted-foreground">
+                    En ligne
+                  </span>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Statut de connexion</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <Badge variant="secondary" className="bg-muted text-muted-foreground">
+            {filteredMessages.length} messages
+          </Badge>
         </div>
 
         {/* Message Tabs */}
@@ -113,76 +130,78 @@ export function MessagesList() {
           </div>
         </Tabs>
 
-        {/* Search Input */}
-        <div className="relative">
-          <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Rechercher un message..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-8 pl-8"
+        {/* Search and Filter Section */}
+        <div className="space-y-3">
+          <div className="relative">
+            <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder="Rechercher un message..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="h-8 pl-8"
+            />
+          </div>
+
+          <MultiSelect
+            options={JOBS_OPTIONS}
+            value={selectedJobs}
+            onValueChange={setSelectedJobs}
+            placeholder="Filtrer par emploi"
+            className="h-8 w-full"
+            contentClassName="min-w-[315px]"
           />
         </div>
+      </CardHeader>
 
-        {/* Filter MultiSelect */}
-        <MultiSelect
-          options={JOBS_OPTIONS}
-          value={selectedJobs}
-          onValueChange={setSelectedJobs}
-          placeholder="Filtrer par emploi"
-          className="h-8 w-full"
-          contentClassName="min-w-[315px]"
-        />
-      </div>
-
-      {/* Messages List */}
-      <ScrollArea className="h-[calc(100vh-300px)]">
-        <div className="p-3">
-          <div className="space-y-2">
-            {filteredMessages.map((message) => (
-              <button
-                key={message.id}
-                className={cn(
-                  "w-full rounded-lg transition-colors",
-                  "hover:bg-accent/50",
-                  message.isUnread && "bg-accent/30"
-                )}
-              >
-                <div className="p-3 space-y-1">
-                  <div className="flex items-start justify-between gap-2">
-                    <p className="text-sm font-medium line-clamp-1 text-foreground">
-                      {message.jobTitle}
-                    </p>
-                    <span className="text-xs text-muted-foreground shrink-0">
-                      {message.date}
-                    </span>
-                  </div>
-                  <div className="flex flex-col gap-0.5 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      <span className="h-1 w-1 rounded-full bg-current opacity-40" />
-                      <span>{message.candidate}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="h-1 w-1 rounded-full bg-current opacity-40" />
-                      <span className="line-clamp-1">{message.preview}</span>
-                    </div>
-                  </div>
-                  {message.isUnread && (
-                    <div className="pt-1">
-                      <Badge
-                        variant="outline"
-                        className="w-fit bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800"
-                      >
-                        Nouveau message
-                      </Badge>
-                    </div>
+      <CardContent className="p-0">
+        <ScrollArea className="h-[calc(100vh-300px)]">
+          <div className="p-3">
+            <div className="space-y-1">
+              {filteredMessages.map((message) => (
+                <button
+                  key={message.id}
+                  className={cn(
+                    "w-full p-3 rounded-lg transition-colors",
+                    "hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+                    message.isUnread && "bg-accent/30"
                   )}
-                </div>
-              </button>
-            ))}
+                >
+                  <div className="space-y-1">
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="text-sm font-medium line-clamp-1 text-foreground">
+                        {message.jobTitle}
+                      </p>
+                      <span className="text-xs text-muted-foreground shrink-0">
+                        {message.date}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2">
+                        <span className="h-1 w-1 rounded-full bg-current opacity-40" />
+                        <span>{message.candidate}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="h-1 w-1 rounded-full bg-current opacity-40" />
+                        <span className="line-clamp-1">{message.preview}</span>
+                      </div>
+                    </div>
+                    {message.isUnread && (
+                      <div className="pt-1">
+                        <Badge
+                          variant="outline"
+                          className="w-fit bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800"
+                        >
+                          Nouveau message
+                        </Badge>
+                      </div>
+                    )}
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      </ScrollArea>
-    </div>
+        </ScrollArea>
+      </CardContent>
+    </Card>
   );
 }
