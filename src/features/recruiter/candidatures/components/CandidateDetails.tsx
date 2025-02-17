@@ -8,6 +8,13 @@ import { CandidateDetailsContent } from "./CandidateDetailsContent";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { PDFViewer } from "./PDFViewer";
+/*
+? This component displays the details of a selected candidate in a recruiter interface.
+? It utilizes the Next.js `useSearchParams` hook to retrieve the current candidate's ID and source from the URL.
+? The layout adapts based on whether a source is present, displaying either a split layout for interviews or a three-column layout for candidate listings.
+? The header includes navigation links and buttons for additional actions, while the content area shows the candidate's CV and details.
+? Custom breakpoints are used to adjust the layout for different screen sizes of 3 rows < 1170px and 2 rows < 1635px and 1 row > 1635px.
+*/
 
 export function CandidateDetails() {
   const searchParams = useSearchParams();
@@ -17,8 +24,8 @@ export function CandidateDetails() {
   return (
     <div className="flex flex-col min-h-full gap-6">
       {/* Header */}
-      <div className="flex items-center justify-between w-full gap-4 shrink-0">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between w-full gap-4 shrink-0">
+        <div className="flex flex-col w-full lg:w-auto lg:flex-row items-start lg:items-center gap-4">
           <div className="flex items-center gap-4">
             <Link
               href={
@@ -30,27 +37,31 @@ export function CandidateDetails() {
             >
               <ArrowLeft className="w-8 h-8 cursor-pointer" />
             </Link>
+            <p className="text-2xl font-bold text-foreground">
+              {source === "entretien"
+                ? "Détails de la candidature"
+                : "Candidat(e)s"}
+            </p>
           </div>
-          <p className="text-2xl font-bold text-foreground">
-            {source === "entretien"
-              ? "Détails de la candidature"
-              : "Candidat(e)s"}
-          </p>
           {!source && (
-            <>
-              <Separator orientation="vertical" className="h-10" />
-              <Link href="/recruiter/candidates">
-                <Button
-                  variant="outline"
-                  className="bg-accent hover:bg-accent/50"
-                >
-                  Liste Des Candidats
-                </Button>
-              </Link>
-            </>
+            <div className="w-full lg:w-auto lg:flex lg:items-center lg:gap-4">
+              <Separator
+                orientation="vertical"
+                className="h-10 hidden lg:block"
+              />
+              <Button
+                variant="outline"
+                asChild
+                className="w-full bg-accent hover:bg-accent/50"
+              >
+                <Link href="/recruiter/candidates">Liste Des Candidats</Link>
+              </Button>
+            </div>
           )}
         </div>
-        {!source && <Button>Publier une annonce</Button>}
+        {!source && (
+          <Button className="w-full lg:w-auto">Publier une annonce</Button>
+        )}
       </div>
 
       {/* Content */}
