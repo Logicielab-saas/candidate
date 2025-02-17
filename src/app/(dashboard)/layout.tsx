@@ -4,6 +4,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { DashboardSidebar } from "@/components/shared/DashboardSidebar";
 import { DashboardBreadcrumb } from "@/components/shared/DashboardBreadcrumb";
+import { cn } from "@/lib/utils";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -20,18 +21,20 @@ export default async function DashboardLayout({
       disableTransitionOnChange
       storageKey="dashboard-theme"
     >
-      <div className="flex h-screen overflow-hidden">
+      <div className={cn("flex h-screen overflow-hidden")}>
         <SidebarProvider>
           <DashboardSidebar />
-          <div className="flex-1 flex flex-col overflow-hidden">
-            <header className="flex h-14 items-center gap-2 border-b px-4">
+          <div className={cn("flex-1 flex flex-col overflow-hidden")}>
+            <header
+              className={cn("flex h-14 items-center gap-2 border-b px-4")}
+            >
               <SidebarTrigger className="-ml-1" />
               <Separator orientation="vertical" className="mr-2 h-4" />
               <DashboardBreadcrumb />
               <div className="flex-1" />
               {/* <Button onClick={logout}>Logout</Button> */}
             </header>
-            <main className="flex-1 overflow-y-auto p-6">{children}</main>
+            <main className={cn("flex-1 overflow-y-auto p-6")}>{children}</main>
           </div>
         </SidebarProvider>
       </div>

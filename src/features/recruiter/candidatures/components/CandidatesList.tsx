@@ -52,7 +52,7 @@ export function CandidatesList({
   };
 
   return (
-    <div className="w-[300px] border border-border rounded-lg bg-background">
+    <div className="w-[300px] max-2lg:w-full border border-border rounded-lg bg-background">
       <div className="p-4 border-b border-border flex items-center justify-between">
         <div className="flex flex-col gap-2">
           <h2 className="text-lg font-semibold text-muted-foreground">

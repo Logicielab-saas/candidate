@@ -8,7 +8,6 @@ import { CandidateDetailsContent } from "./CandidateDetailsContent";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { PDFViewer } from "./PDFViewer";
-import { cn } from "@/lib/utils";
 
 export function CandidateDetails() {
   const searchParams = useSearchParams();
@@ -16,9 +15,9 @@ export function CandidateDetails() {
   const source = searchParams.get("source");
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col min-h-full gap-6">
       {/* Header */}
-      <div className="flex items-center justify-between w-full gap-4">
+      <div className="flex items-center justify-between w-full gap-4 shrink-0">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-4">
             <Link
@@ -55,29 +54,53 @@ export function CandidateDetails() {
       </div>
 
       {/* Content */}
-      <div className="flex gap-6">
-        {/* Left column - List */}
-        {!source && (
-          <div className="">
-            <CandidatesList
-              currentCandidateId={currentCandidateId || undefined}
-            />
+      <div className="grid grid-cols-1 gap-6">
+        {source ? (
+          // Source present - 60/40 split layout
+          <div className="grid grid-cols-1 2lg:grid-cols-[60fr_40fr] gap-6">
+            {/* CV Display - 60% */}
+            <div className="h-[calc(100vh-200px)]">
+              <div className="w-full h-full">
+                {currentCandidateId && (
+                  <PDFViewer key={currentCandidateId} url="/cvs/mycv.pdf" />
+                )}
+              </div>
+            </div>
+
+            {/* Details - 40% */}
+            <div className="h-[calc(100vh-200px)] overflow-y-auto">
+              <CandidateDetailsContent
+                candidateId={currentCandidateId || undefined}
+              />
+            </div>
+          </div>
+        ) : (
+          // No source - Original 3-column layout
+          <div className="grid grid-cols-1 2lg:grid-cols-[300px_1fr] 3xl:grid-cols-[300px_1fr_400px] gap-4">
+            {/* Left column - List */}
+            <div className="h-[calc(100vh-200px)]">
+              <CandidatesList
+                currentCandidateId={currentCandidateId || undefined}
+              />
+            </div>
+
+            {/* Center column - CV Display */}
+            <div className="h-[calc(100vh-200px)]">
+              <div className="w-full h-full">
+                {currentCandidateId && (
+                  <PDFViewer key={currentCandidateId} url="/cvs/mycv.pdf" />
+                )}
+              </div>
+            </div>
+
+            {/* Right column - Details */}
+            <div className="3xl:h-[calc(100vh-200px)] col-span-full 3xl:col-span-1 overflow-y-auto">
+              <CandidateDetailsContent
+                candidateId={currentCandidateId || undefined}
+              />
+            </div>
           </div>
         )}
-
-        {/* Center column - CV Display */}
-        <div className={cn("flex-1 min-w-[500px]", !source && "max-w-[500px]")}>
-          {currentCandidateId && (
-            <PDFViewer key={currentCandidateId} url="/cvs/mycv.pdf" />
-          )}
-        </div>
-
-        {/* Right column - Details */}
-        <div className="max-w-[400px] shrink-0">
-          <CandidateDetailsContent
-            candidateId={currentCandidateId || undefined}
-          />
-        </div>
       </div>
     </div>
   );

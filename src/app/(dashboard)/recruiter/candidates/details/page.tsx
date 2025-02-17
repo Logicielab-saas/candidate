@@ -2,7 +2,11 @@ import { CandidateDetails } from "@/features/recruiter/candidatures/components/C
 import React from "react";
 
 const CandidateDetailsPage = () => {
-  return <CandidateDetails />;
+  return (
+    <div className="h-full overflow-hidden">
+      <CandidateDetails />
+    </div>
+  );
 };
 
 export default CandidateDetailsPage;

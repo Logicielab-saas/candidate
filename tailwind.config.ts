@@ -18,7 +18,8 @@ export default {
 	theme: {
 		extend: {
 			screens: {
-				'3xl': '1686px',
+				'3xl': '1635px',
+				'2lg': '1170px',
 			},
 			containers: {
 				'xs': '20rem',
