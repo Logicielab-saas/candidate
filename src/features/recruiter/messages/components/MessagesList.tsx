@@ -8,11 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Search, Loader2, X, Filter } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { MessageItem } from "./MessageItem";
 import {
   type Message,
@@ -22,6 +22,40 @@ import {
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+interface Status {
+  id: string;
+  label: string;
+  color: string;
+  className: string;
+}
+
+const STATUSES: Status[] = [
+  {
+    id: "online",
+    label: "En ligne",
+    color: "bg-green-500",
+    className: "text-green-600 dark:text-green-400",
+  },
+  {
+    id: "away",
+    label: "Absent",
+    color: "bg-orange-500",
+    className: "text-orange-600 dark:text-orange-400",
+  },
+  {
+    id: "busy",
+    label: "Ne pas déranger",
+    color: "bg-red-500",
+    className: "text-red-600 dark:text-red-400",
+  },
+  {
+    id: "offline",
+    label: "Hors ligne",
+    color: "bg-gray-500",
+    className: "text-gray-600 dark:text-gray-400",
+  },
+];
 
 interface MessagesListProps {
   onMessageSelect: (message: Message) => void;
@@ -49,6 +83,7 @@ export function MessagesList({
   const [localSelectedJobs, setLocalSelectedJobs] = useState(selectedJobs);
   const [isSearching, setIsSearching] = useState(false);
   const [isFiltering, setIsFiltering] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState<Status>(STATUSES[0]);
 
   // Sync local states with props when they change
   useEffect(() => {
@@ -131,24 +166,48 @@ export function MessagesList({
       <CardHeader className="p-3 space-y-3 border-b">
         {/* Status and Count */}
         <div className="flex items-center justify-between">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="flex items-center gap-2 cursor-help">
-                  <div className="relative flex h-2.5 w-2.5 items-center justify-center">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-                  </div>
-                  <span className="text-sm text-muted-foreground">
-                    En ligne
-                  </span>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 px-2 gap-2 -ml-2 hover:bg-accent"
+              >
+                <div className="relative flex h-2.5 w-2.5 items-center justify-center">
+                  <span
+                    className={cn(
+                      "absolute inline-flex h-full w-full animate-ping rounded-full opacity-75",
+                      currentStatus.color
+                    )}
+                  />
+                  <span
+                    className={cn(
+                      "relative inline-flex h-2 w-2 rounded-full",
+                      currentStatus.color
+                    )}
+                  />
                 </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Statut de connexion</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+                <span className={cn("text-sm", currentStatus.className)}>
+                  {currentStatus.label}
+                </span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-[200px]">
+              {STATUSES.map((status) => (
+                <DropdownMenuItem
+                  key={status.id}
+                  className={cn(
+                    "flex items-center gap-2 cursor-pointer",
+                    currentStatus.id === status.id && "bg-accent"
+                  )}
+                  onClick={() => setCurrentStatus(status)}
+                >
+                  <div className={cn("h-2 w-2 rounded-full", status.color)} />
+                  <span className={status.className}>{status.label}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Badge variant="secondary" className="bg-muted text-muted-foreground">
             {filteredMessages.length} messages
           </Badge>
