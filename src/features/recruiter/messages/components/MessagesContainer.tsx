@@ -4,22 +4,30 @@ import { Button } from "@/components/ui/button";
 import { PlusIcon, ArrowLeft } from "lucide-react";
 import { MessagesList } from "./MessagesList";
 import { MessageChatContent } from "./MessageChatContent";
-import { useEffect, useCallback, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { type Message, MOCK_MESSAGES } from "@/core/mockData/messages-data";
-import { useDebouncedCallback } from "use-debounce";
 import { cn } from "@/lib/utils";
+import { useQueryState, parseAsString } from "nuqs";
+
+type TabValue = "all" | "unread";
 
 export function MessagesContainer() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
   const [isMobileView, setIsMobileView] = useState(false);
 
-  // Get URL parameters
-  const messageId = searchParams.get("message");
-  const currentTab = (searchParams.get("tab") as "all" | "unread") || "all";
-  const searchQuery = searchParams.get("q") || "";
-  const jobsFilter = searchParams.get("jobs")?.split(",") || [];
+  // URL state management with nuqs
+  const [messageId, setMessageId] = useQueryState("message", parseAsString);
+  const [currentTab, setCurrentTab] = useQueryState<TabValue>("tab", {
+    defaultValue: "all",
+    parse: (value: string | null) => (value === "unread" ? "unread" : "all"),
+    serialize: (value: TabValue) => value,
+  });
+  const [searchQuery, setSearchQuery] = useQueryState("q", parseAsString);
+  const [jobsFilter, setJobsFilter] = useQueryState<string[]>("jobs", {
+    defaultValue: [],
+    parse: (value: string | null) =>
+      value ? value.split(",").filter(Boolean) : [],
+    serialize: (value: string[]) => value.join(","),
+  });
 
   const selectedMessage = messageId
     ? MOCK_MESSAGES.find((m) => m.id === Number(messageId))
@@ -31,20 +39,16 @@ export function MessagesContainer() {
       const message = MOCK_MESSAGES.find((m) => m.id === Number(messageId));
       if (!message) {
         // If message ID is invalid, clear it from URL
-        updateSearchParams({ message: null });
+        setMessageId(null);
       }
     } else if (MOCK_MESSAGES.length > 0) {
       // If no message is selected, select the first one
-      updateSearchParams({
-        message: MOCK_MESSAGES[0].id.toString(),
-        tab: currentTab,
-      });
+      setMessageId(MOCK_MESSAGES[0].id.toString());
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messageId, currentTab]);
+  }, [messageId, setMessageId]);
 
   const handleMessageSelect = (message: Message) => {
-    updateSearchParams({ message: message.id.toString() });
+    setMessageId(message.id.toString());
     setIsMobileView(true);
   };
 
@@ -52,45 +56,17 @@ export function MessagesContainer() {
     setIsMobileView(false);
   };
 
-  const handleTabChange = (tab: "all" | "unread") => {
-    updateSearchParams({ tab });
+  const handleTabChange = (tab: TabValue) => {
+    setCurrentTab(tab);
   };
 
-  // Debounced search handler
-  const debouncedSearch = useDebouncedCallback((query: string) => {
-    updateSearchParams({ q: query || null });
-  }, 300);
-
   const handleSearch = (query: string) => {
-    debouncedSearch(query);
+    setSearchQuery(query || null);
   };
 
   const handleJobsFilter = (jobs: string[]) => {
-    updateSearchParams({
-      jobs: jobs.length > 0 ? jobs.join(",") : null,
-    });
+    setJobsFilter(jobs);
   };
-
-  // Helper function to update search params
-  const updateSearchParams = useCallback(
-    (updates: Record<string, string | null>) => {
-      const params = new URLSearchParams(searchParams.toString());
-
-      // Update or remove each parameter
-      Object.entries(updates).forEach(([key, value]) => {
-        if (value === null) {
-          params.delete(key);
-        } else {
-          params.set(key, value);
-        }
-      });
-
-      // Use replace for initial load/cleanup, push for user actions
-      const method = updates.message === null ? "replace" : "push";
-      router[method](`/recruiter/messages?${params.toString()}`);
-    },
-    [router, searchParams]
-  );
 
   return (
     <div className="space-y-6">
@@ -117,7 +93,7 @@ export function MessagesContainer() {
             selectedMessageId={selectedMessage?.id}
             currentTab={currentTab}
             onTabChange={handleTabChange}
-            searchQuery={searchQuery}
+            searchQuery={searchQuery || ""}
             onSearch={handleSearch}
             selectedJobs={jobsFilter}
             onJobsChange={handleJobsFilter}

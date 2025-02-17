@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { ReactQueryProvider } from "@/lib/providers/ReactQueryProvider";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/toaster";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +35,7 @@ export default function RootLayout({
       <body className={cn("antialiased", geistSans.className)}>
         <ReactQueryProvider>
           <NextTopLoader showSpinner={false} color="#F97316" />
-          <main>{children}</main>
+          <NuqsAdapter>{children}</NuqsAdapter>
           <Toaster />
         </ReactQueryProvider>
       </body>
