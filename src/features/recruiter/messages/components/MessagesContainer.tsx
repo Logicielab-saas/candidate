@@ -1,17 +1,19 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, ArrowLeft } from "lucide-react";
 import { MessagesList } from "./MessagesList";
 import { MessageChatContent } from "./MessageChatContent";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { type Message, MOCK_MESSAGES } from "@/core/mockData/messages-data";
 import { useDebouncedCallback } from "use-debounce";
+import { cn } from "@/lib/utils";
 
 export function MessagesContainer() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isMobileView, setIsMobileView] = useState(false);
 
   // Get URL parameters
   const messageId = searchParams.get("message");
@@ -43,6 +45,11 @@ export function MessagesContainer() {
 
   const handleMessageSelect = (message: Message) => {
     updateSearchParams({ message: message.id.toString() });
+    setIsMobileView(true);
+  };
+
+  const handleBackToList = () => {
+    setIsMobileView(false);
   };
 
   const handleTabChange = (tab: "all" | "unread") => {
@@ -95,21 +102,47 @@ export function MessagesContainer() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-[350px_1fr] gap-6">
-        {/* Left Side - Messages List */}
-        <MessagesList
-          onMessageSelect={handleMessageSelect}
-          selectedMessageId={selectedMessage?.id}
-          currentTab={currentTab}
-          onTabChange={handleTabChange}
-          searchQuery={searchQuery}
-          onSearch={handleSearch}
-          selectedJobs={jobsFilter}
-          onJobsChange={handleJobsFilter}
-        />
+      <div className="grid grid-cols-1 xl:grid-cols-[350px_1fr] gap-6 relative overflow-x-hidden">
+        {/* Messages List */}
+        <div
+          className={cn(
+            "transition-[transform,opacity] duration-300 ease-in-out xl:transform-none xl:opacity-100 xl:relative w-full",
+            isMobileView &&
+              "xl:relative opacity-0 -translate-x-full absolute inset-0",
+            !isMobileView && "opacity-100 translate-x-0 relative"
+          )}
+        >
+          <MessagesList
+            onMessageSelect={handleMessageSelect}
+            selectedMessageId={selectedMessage?.id}
+            currentTab={currentTab}
+            onTabChange={handleTabChange}
+            searchQuery={searchQuery}
+            onSearch={handleSearch}
+            selectedJobs={jobsFilter}
+            onJobsChange={handleJobsFilter}
+          />
+        </div>
 
-        {/* Right Side - Message Content */}
-        <div className="hidden xl:block">
+        {/* Message Content */}
+        <div
+          className={cn(
+            "transition-[transform,opacity] duration-300 ease-in-out xl:transform-none xl:opacity-100 xl:relative w-full",
+            !isMobileView && "opacity-0 translate-x-full absolute inset-0",
+            isMobileView && "opacity-100 translate-x-0 relative"
+          )}
+        >
+          <div className="xl:hidden mb-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleBackToList}
+              className="gap-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Retour à la liste
+            </Button>
+          </div>
           <MessageChatContent message={selectedMessage} />
         </div>
       </div>
