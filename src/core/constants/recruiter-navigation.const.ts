@@ -31,6 +31,34 @@ export interface RecruiterNavigation {
   navMain: RecruiterMenuSection[]
 }
 
+export const settingsNavigation: RecruiterMenuSection = {
+  title: "Paramètres",
+  url: "#",
+  icon: Settings,
+  items: [
+    {
+      title: "Utilisateurs",
+      url: "/recruiter/parametres/users",
+      icon: Users,
+    },
+    {
+      title: "Fiche d'entreprise",
+      url: "/recruiter/parametres/company",
+      icon: Building,
+    },
+    {
+      title: "Paramétres de l'entreprise",
+      url: "/recruiter/parametres/company-settings",
+      icon: NotepadTextDashed,
+    },
+    {
+      title: "Notifications",
+      url: "/recruiter/parametres/notifications",
+      icon: Bell,
+    }
+  ]
+}
+
 export const recruiterNavigation: RecruiterNavigation = {
   navMain: [
     {
@@ -68,33 +96,6 @@ export const recruiterNavigation: RecruiterNavigation = {
       url: "/recruiter/messages",
       icon: MessageSquare,
       items: [],
-    },
-    {
-      title: "Paramètres",
-      url: "#",
-      icon: Settings,
-      items: [
-        {
-          title: "Utilisateurs",
-          url: "/recruiter/parametres/users",
-          icon: Users,
-        },
-        {
-          title: "Fiche d'entreprise",
-          url: "/recruiter/parametres/company",
-          icon: Building,
-        },
-        {
-          title: "Paramétres de l'entreprise",
-          url: "/recruiter/parametres/company-settings",
-          icon: NotepadTextDashed,
-        },
-        {
-          title: "Notifications",
-          url: "/recruiter/parametres/notifications",
-          icon: Bell,
-        }
-      ]
     }
   ]
 }

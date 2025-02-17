@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Plus,
-  Minus,
-  Briefcase,
-  HelpCircle,
-  Settings,
-  LogOut,
-} from "lucide-react";
+import { Plus, Minus, Briefcase, HelpCircle, LogOut } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -29,7 +22,10 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Separator } from "../ui/separator";
-import { recruiterNavigation } from "@/core/constants/recruiter-navigation.const";
+import {
+  recruiterNavigation,
+  settingsNavigation,
+} from "@/core/constants/recruiter-navigation.const";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -66,6 +62,19 @@ const getNavigationItems = (pathname: string) => {
       items,
     };
   });
+};
+
+const getSettingsNavigation = (pathname: string) => {
+  const items = settingsNavigation.items.map((item) => ({
+    ...item,
+    isActive: pathname === item.url,
+  }));
+
+  return {
+    ...settingsNavigation,
+    isActive: items.some((item) => item.isActive),
+    items,
+  };
 };
 
 export function DashboardSidebar({
@@ -216,18 +225,76 @@ export function DashboardSidebar({
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  tooltip="Settings"
-                  asChild
-                  className="hover:text-primaryHex-600 dark:hover:text-primaryHex-400 hover:bg-accent/50"
-                >
-                  <Link href="#">
-                    <Settings className="size-4" />
-                    <span>Settings</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              <Collapsible
+                defaultOpen={getSettingsNavigation(pathname).isActive}
+                className="group/collapsible"
+              >
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton
+                      tooltip={settingsNavigation.title}
+                      className="w-full transition-colors hover:text-primaryHex-600 dark:hover:text-primaryHex-400 hover:bg-accent/50"
+                      asChild
+                    >
+                      <Link
+                        href={settingsNavigation.url}
+                        className="group/main flex w-full items-center"
+                      >
+                        {settingsNavigation.icon && (
+                          <settingsNavigation.icon className="mr-2 size-4 transition-colors group-hover/main:stroke-primaryHex-600 dark:group-hover/main:stroke-primaryHex-400" />
+                        )}
+                        <span className="flex-1 group-hover/main:text-primaryHex-600 dark:group-hover/main:text-primaryHex-400">
+                          {settingsNavigation.title}
+                        </span>
+                        <Plus className="ml-auto group-data-[state=open]/collapsible:hidden group-hover/main:stroke-primaryHex-600 dark:group-hover/main:stroke-primaryHex-400" />
+                        <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden group-hover/main:stroke-primaryHex-600 dark:group-hover/main:stroke-primaryHex-400" />
+                      </Link>
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {getSettingsNavigation(pathname).items.map((subItem) => (
+                        <SidebarMenuSubItem key={subItem.title}>
+                          <SidebarMenuSubButton
+                            asChild
+                            isActive={subItem.isActive}
+                            className="w-full transition-colors"
+                          >
+                            <Link
+                              href={subItem.url}
+                              className={cn(
+                                "group/item flex min-h-[40px] w-full items-center py-1.5 hover:bg-accent/50",
+                                subItem.isActive
+                                  ? activeItemClass
+                                  : "hover:text-primaryHex-600 dark:hover:text-primaryHex-400"
+                              )}
+                            >
+                              {subItem.icon && (
+                                <subItem.icon
+                                  className={cn(
+                                    "mr-2 size-4 transition-colors group-hover/item:stroke-primaryHex-600 dark:group-hover/item:stroke-primaryHex-400",
+                                    subItem.isActive &&
+                                      "[&>*]:stroke-primaryHex-600 dark:[&>*]:stroke-primaryHex-400"
+                                  )}
+                                />
+                              )}
+                              <span
+                                className={cn(
+                                  "group-hover/item:text-primaryHex-600 dark:group-hover/item:text-primaryHex-400",
+                                  hoverClass,
+                                  subItem.isActive ? activeItemClass : ""
+                                )}
+                              >
+                                {subItem.title}
+                              </span>
+                            </Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
             </SidebarMenu>
           </SidebarGroup>
           <Separator className="my-2" />
