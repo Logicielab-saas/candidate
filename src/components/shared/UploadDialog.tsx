@@ -64,7 +64,7 @@ export function UploadDialog({
       // Check if adding new files would exceed the limit
       if (newFiles.length + selectedFiles.length > maxFiles) {
         toast({
-          variant: "destructive",
+          variant: "warning",
           title: "Limite de fichiers atteinte",
           description: `Vous ne pouvez pas télécharger plus de ${maxFiles} fichiers à la fois.`,
         });
@@ -93,12 +93,14 @@ export function UploadDialog({
 
       // Show success toast
       toast({
+        variant: "default",
         title: "Fichiers ajoutés",
         description: `${newFiles.length} fichier${
           newFiles.length > 1 ? "s" : ""
         } ajouté${newFiles.length > 1 ? "s" : ""} avec succès.`,
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [maxFiles, selectedFiles.length, toast, acceptedTypes]
   );
 
@@ -151,6 +153,7 @@ export function UploadDialog({
     // Show toast after state update
     setTimeout(() => {
       toast({
+        variant: "info",
         title: "Fichier supprimé",
         description: `${fileName} a été supprimé.`,
       });
@@ -170,6 +173,7 @@ export function UploadDialog({
 
       // Show success toast
       toast({
+        variant: "success",
         title: "Téléchargement réussi",
         description: `${selectedFiles.length} fichier${
           selectedFiles.length > 1 ? "s" : ""
