@@ -32,7 +32,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { fr } from "date-fns/locale";
 import { FormField } from "@/components/ui/form";
-import { CalendarView } from "../../interviews/components/CalendarView";
+import { CalendarView } from "@/features/recruiter/interviews/components/CalendarView";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const exceptionSchema = z.object({
