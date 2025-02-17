@@ -5,7 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { Input } from "@/components/ui/input";
-import { Search, Loader2, X } from "lucide-react";
+import { Search, Loader2, X, Filter } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Tooltip,
@@ -21,6 +21,7 @@ import {
 } from "@/core/mockData/messages-data";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface MessagesListProps {
   onMessageSelect: (message: Message) => void;
@@ -47,6 +48,7 @@ export function MessagesList({
   const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
   const [localSelectedJobs, setLocalSelectedJobs] = useState(selectedJobs);
   const [isSearching, setIsSearching] = useState(false);
+  const [isFiltering, setIsFiltering] = useState(false);
 
   // Sync local states with props when they change
   useEffect(() => {
@@ -66,6 +68,7 @@ export function MessagesList({
 
   const handleJobsChange = (jobs: string[]) => {
     setLocalSelectedJobs(jobs); // Update local state immediately
+    setIsFiltering(true); // Show loading indicator
     onJobsChange(jobs); // Update URL state
   };
 
@@ -75,15 +78,30 @@ export function MessagesList({
     onSearch("");
   };
 
-  // Effect to handle search loading state
+  // Clear all filters
+  const handleClearFilters = () => {
+    setLocalSelectedJobs([]);
+    onJobsChange([]);
+  };
+
+  // Effect to handle loading states
   useEffect(() => {
     if (isSearching) {
       const timer = setTimeout(() => {
         setIsSearching(false);
-      }, 300); // Match debounce timing
+      }, 300);
       return () => clearTimeout(timer);
     }
   }, [isSearching]);
+
+  useEffect(() => {
+    if (isFiltering) {
+      const timer = setTimeout(() => {
+        setIsFiltering(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isFiltering]);
 
   const filteredMessages = MOCK_MESSAGES.filter((message) => {
     const matchesTab = currentTab === "all" || message.isUnread;
@@ -102,6 +120,11 @@ export function MessagesList({
   const handleTabChange = (value: string) => {
     onTabChange(value as "all" | "unread");
   };
+
+  // Get active filter labels
+  const activeFilters = JOBS_OPTIONS.filter((option) =>
+    localSelectedJobs.includes(option.value)
+  );
 
   return (
     <Card className="border-border h-[calc(100vh-180px)]">
@@ -173,29 +196,67 @@ export function MessagesList({
             />
             <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
               {isSearching && (
-                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                <Loader2 className="h-4 w-4 animate-spin text-primaryHex-500" />
               )}
               {localSearchQuery && !isSearching && (
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-6 w-6"
+                  className="h-6 w-6 hover:text-primaryHex-500"
                   onClick={handleClearSearch}
                 >
-                  <X className="h-4 w-4 text-muted-foreground" />
+                  <X className="h-4 w-4" />
                 </Button>
               )}
             </div>
           </div>
 
-          <MultiSelect
-            options={JOBS_OPTIONS}
-            value={localSelectedJobs}
-            onValueChange={handleJobsChange}
-            placeholder="Filtrer par emploi"
-            className="h-8 w-full"
-            contentClassName="min-w-[315px]"
-          />
+          <div className="relative">
+            <MultiSelect
+              options={JOBS_OPTIONS}
+              value={localSelectedJobs}
+              onValueChange={handleJobsChange}
+              placeholder="Filtrer par emploi"
+              className={cn(
+                "h-8 w-full",
+                isFiltering &&
+                  "border-primaryHex-500 ring-2 ring-primaryHex-500/20"
+              )}
+              contentClassName="min-w-[315px]"
+            />
+            {isFiltering && (
+              <div className="absolute right-10 top-1/2 -translate-y-1/2">
+                <Loader2 className="h-4 w-4 animate-spin text-primaryHex-500" />
+              </div>
+            )}
+          </div>
+
+          {/* Active Filters */}
+          {activeFilters.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                <Filter className="h-3 w-3" />
+                <span>Filtres actifs:</span>
+              </div>
+              {activeFilters.map((filter) => (
+                <Badge
+                  key={filter.value}
+                  variant="secondary"
+                  className="bg-primaryHex-50 text-primaryHex-700 border-primaryHex-200"
+                >
+                  {filter.label}
+                </Badge>
+              ))}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-5 px-2 text-xs text-muted-foreground hover:text-primaryHex-500"
+                onClick={handleClearFilters}
+              >
+                Effacer tout
+              </Button>
+            </div>
+          )}
         </div>
       </CardHeader>
 
