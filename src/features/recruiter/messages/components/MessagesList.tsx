@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MessageItem } from "./MessageItem";
+import { DeleteMessageDialog } from "./DeleteMessageDialog";
 import {
   type Message,
   JOBS_OPTIONS,
@@ -84,6 +85,9 @@ export function MessagesList({
   const [isSearching, setIsSearching] = useState(false);
   const [isFiltering, setIsFiltering] = useState(false);
   const [currentStatus, setCurrentStatus] = useState<Status>(STATUSES[0]);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [messageToDelete, setMessageToDelete] = useState<Message | null>(null);
+  const [messages, setMessages] = useState<Message[]>(MOCK_MESSAGES);
 
   // Sync local states with props when they change
   useEffect(() => {
@@ -138,7 +142,7 @@ export function MessagesList({
     }
   }, [isFiltering]);
 
-  const filteredMessages = MOCK_MESSAGES.filter((message) => {
+  const filteredMessages = messages.filter((message) => {
     const matchesTab = currentTab === "all" || message.isUnread;
     const matchesJobs =
       selectedJobs.length === 0 || selectedJobs.includes(message.jobType);
@@ -160,6 +164,35 @@ export function MessagesList({
   const activeFilters = JOBS_OPTIONS.filter((option) =>
     localSelectedJobs.includes(option.value)
   );
+
+  const handleDeleteClick = (
+    message: Message,
+    e?: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    if (e) {
+      e.stopPropagation(); // Prevent message selection
+    }
+    setMessageToDelete(message);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (messageToDelete) {
+      setMessages((prev) =>
+        prev.filter((msg) => msg.id !== messageToDelete.id)
+      );
+      if (selectedMessageId === messageToDelete.id) {
+        const nextMessage = messages.find(
+          (msg) => msg.id !== messageToDelete.id
+        );
+        if (nextMessage) {
+          onMessageSelect(nextMessage);
+        }
+      }
+    }
+    setDeleteDialogOpen(false);
+    setMessageToDelete(null);
+  };
 
   return (
     <Card className="border-border h-[calc(100vh-180px)]">
@@ -324,17 +357,26 @@ export function MessagesList({
           <div className="p-2">
             <div className="space-y-1">
               {filteredMessages.map((message) => (
-                <MessageItem
-                  key={message.id}
-                  message={message}
-                  isSelected={message.id === selectedMessageId}
-                  onClick={() => onMessageSelect(message)}
-                />
+                <div key={message.id} className="group relative">
+                  <MessageItem
+                    message={message}
+                    isSelected={message.id === selectedMessageId}
+                    onClick={() => onMessageSelect(message)}
+                    onDelete={() => handleDeleteClick(message)}
+                  />
+                </div>
               ))}
             </div>
           </div>
         </ScrollArea>
       </CardContent>
+
+      <DeleteMessageDialog
+        isOpen={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        messageToDelete={messageToDelete}
+        onConfirm={handleConfirmDelete}
+      />
     </Card>
   );
 }
