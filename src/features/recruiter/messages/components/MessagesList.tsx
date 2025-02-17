@@ -24,13 +24,16 @@ import {
 interface MessagesListProps {
   onMessageSelect: (message: Message) => void;
   selectedMessageId?: number;
+  currentTab: "all" | "unread";
+  onTabChange: (tab: "all" | "unread") => void;
 }
 
 export function MessagesList({
   onMessageSelect,
   selectedMessageId,
+  currentTab,
+  onTabChange,
 }: MessagesListProps) {
-  const [currentTab, setCurrentTab] = useState<"all" | "unread">("all");
   const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -47,6 +50,10 @@ export function MessagesList({
       : true;
     return matchesTab && matchesJobs && matchesSearch;
   });
+
+  const handleTabChange = (value: string) => {
+    onTabChange(value as "all" | "unread");
+  };
 
   return (
     <Card className="border-border h-[calc(100vh-180px)]">
@@ -79,7 +86,7 @@ export function MessagesList({
         {/* Message Tabs */}
         <Tabs
           value={currentTab}
-          onValueChange={(value) => setCurrentTab(value as "all" | "unread")}
+          onValueChange={handleTabChange}
           className="w-full"
         >
           <TabsList className="flex h-8 w-full items-center gap-6 bg-transparent p-0 border-b border-secondaryHex-200 dark:border-secondaryHex-800">

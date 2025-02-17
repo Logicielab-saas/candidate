@@ -14,6 +14,8 @@ export function MessagesContainer() {
 
   // Get URL parameters
   const messageId = searchParams.get("message");
+  const currentTab = (searchParams.get("tab") as "all" | "unread") || "all";
+
   const selectedMessage = messageId
     ? MOCK_MESSAGES.find((m) => m.id === Number(messageId))
     : undefined;
@@ -24,22 +26,42 @@ export function MessagesContainer() {
       const message = MOCK_MESSAGES.find((m) => m.id === Number(messageId));
       if (!message) {
         // If message ID is invalid, clear it from URL
-        const params = new URLSearchParams(searchParams.toString());
-        params.delete("message");
-        router.replace(`/recruiter/messages?${params.toString()}`);
+        updateSearchParams({ message: null });
       }
     } else if (MOCK_MESSAGES.length > 0) {
       // If no message is selected, select the first one
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("message", MOCK_MESSAGES[0].id.toString());
-      router.replace(`/recruiter/messages?${params.toString()}`);
+      updateSearchParams({
+        message: MOCK_MESSAGES[0].id.toString(),
+        tab: currentTab,
+      });
     }
-  }, [messageId, router, searchParams]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messageId, currentTab]);
 
   const handleMessageSelect = (message: Message) => {
+    updateSearchParams({ message: message.id.toString() });
+  };
+
+  const handleTabChange = (tab: "all" | "unread") => {
+    updateSearchParams({ tab });
+  };
+
+  // Helper function to update search params
+  const updateSearchParams = (updates: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set("message", message.id.toString());
-    router.push(`/recruiter/messages?${params.toString()}`);
+
+    // Update or remove each parameter
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value === null) {
+        params.delete(key);
+      } else {
+        params.set(key, value);
+      }
+    });
+
+    // Use replace for initial load/cleanup, push for user actions
+    const method = updates.message === null ? "replace" : "push";
+    router[method](`/recruiter/messages?${params.toString()}`);
   };
 
   return (
@@ -57,6 +79,8 @@ export function MessagesContainer() {
         <MessagesList
           onMessageSelect={handleMessageSelect}
           selectedMessageId={selectedMessage?.id}
+          currentTab={currentTab}
+          onTabChange={handleTabChange}
         />
 
         {/* Right Side - Message Content */}
