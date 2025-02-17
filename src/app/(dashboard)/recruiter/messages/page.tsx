@@ -1,9 +1,8 @@
-import React from 'react'
+import { MessagesContainer } from "@/features/recruiter/messages/MessagesContainer";
+import React from "react";
 
 const MessagesPage = () => {
-  return (
-    <div>MessagesPage</div>
-  )
-}
+  return <MessagesContainer />;
+};
 
-export default MessagesPage
+export default MessagesPage;

@@ -25,6 +25,8 @@ import { NotesDialog } from "./NotesDialog";
 import { handleDownloadCV } from "@/core/utils/download-cv";
 import { SupprimerDialog } from "./SupprimerDialog";
 
+// TODO: make this scrollable at fixed height when not source presented in page details
+
 interface QuestionAnswer {
   id: number;
   question: string;
@@ -49,6 +51,20 @@ const MOCK_QUESTIONS: QuestionAnswer[] = [
   },
   {
     id: 3,
+    question: "Quelle est votre prétention salariale ?",
+    answer:
+      "Ma prétention salariale se situe entre 45K€ et 50K€ brut annuel, selon les avantages proposés.",
+    timestamp: "2024-03-20T10:32:00Z",
+  },
+  {
+    id: 4,
+    question: "Quelle est votre prétention salariale ?",
+    answer:
+      "Ma prétention salariale se situe entre 45K€ et 50K€ brut annuel, selon les avantages proposés.",
+    timestamp: "2024-03-20T10:32:00Z",
+  },
+  {
+    id: 5,
     question: "Quelle est votre prétention salariale ?",
     answer:
       "Ma prétention salariale se situe entre 45K€ et 50K€ brut annuel, selon les avantages proposés.",

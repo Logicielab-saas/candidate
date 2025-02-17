@@ -110,6 +110,12 @@ interface MultiSelectProps
    * Optional, can be used to add custom styles.
    */
   className?: string;
+
+  /**
+   * Additional class names to apply custom styles to the popover content.
+   * Optional, can be used to customize the dropdown width and other styles.
+   */
+  contentClassName?: string;
 }
 
 export const MultiSelect = React.forwardRef<
@@ -126,6 +132,7 @@ export const MultiSelect = React.forwardRef<
       placeholder = "Select options",
       modalPopover = false,
       className,
+      contentClassName,
       ...props
     },
     ref
@@ -202,7 +209,7 @@ export const MultiSelect = React.forwardRef<
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-auto p-0"
+          className={cn("w-auto p-0", contentClassName)}
           align="start"
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
         >
