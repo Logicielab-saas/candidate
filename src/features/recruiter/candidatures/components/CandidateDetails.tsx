@@ -57,7 +57,7 @@ export function CandidateDetails() {
       <div className="grid grid-cols-1 gap-6">
         {source ? (
           // Source present - 60/40 split layout
-          <div className="grid grid-cols-1 2lg:grid-cols-[60fr_40fr] gap-6">
+          <div className="grid grid-cols-1 [@media(min-width:1170px)]:grid-cols-[60fr_40fr] gap-6">
             {/* CV Display - 60% */}
             <div className="h-[calc(100vh-200px)]">
               <div className="w-full h-full">
@@ -76,7 +76,7 @@ export function CandidateDetails() {
           </div>
         ) : (
           // No source - Original 3-column layout
-          <div className="grid grid-cols-1 2lg:grid-cols-[300px_1fr] 3xl:grid-cols-[300px_1fr_400px] gap-4">
+          <div className="grid grid-cols-1 [@media(min-width:1170px)]:grid-cols-[300px_1fr] [@media(min-width:1635px)]:grid-cols-[300px_1fr_400px] gap-4">
             {/* Left column - List */}
             <div className="h-[calc(100vh-200px)]">
               <CandidatesList
@@ -94,7 +94,7 @@ export function CandidateDetails() {
             </div>
 
             {/* Right column - Details */}
-            <div className="3xl:h-[calc(100vh-200px)] col-span-full 3xl:col-span-1 overflow-y-auto">
+            <div className="[@media(min-width:1635px)]:h-[calc(100vh-200px)] col-span-full [@media(min-width:1635px)]:col-span-1 overflow-y-auto">
               <CandidateDetailsContent
                 candidateId={currentCandidateId || undefined}
               />
