@@ -17,8 +17,8 @@ import {
 } from "lucide-react";
 import { mockCandidates } from "@/app/(dashboard)/recruiter/candidates/page";
 import { useState } from "react";
-import { AppelerDialog } from "./AppelerDialog";
-import { EntretienPlanDialog } from "./EntretienPlanDialog";
+import { AppelerDialog } from "../../../../components/shared/AppelerDialog";
+import { EntretienPlanDialog } from "../../../../components/shared/EntretienPlanDialog";
 import { ContactInterfaceChat } from "./ContactInterfaceChat";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { NotesDialog } from "./NotesDialog";

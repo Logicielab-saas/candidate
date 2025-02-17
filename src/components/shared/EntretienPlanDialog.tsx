@@ -33,7 +33,7 @@ import { Button } from "@/components/ui/button";
 import { EntretienChoisirHeure } from "./EntretienChoisirHeure";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarView } from "../../interviews/components/CalendarView";
+import { CalendarView } from "../../features/recruiter/interviews/components/CalendarView";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { EntretienReprogramDialog } from "./EntretienReprogramDialog";

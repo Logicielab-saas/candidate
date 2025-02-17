@@ -20,19 +20,27 @@ export function MessageItem({
     <button
       onClick={onClick}
       className={cn(
-        "w-full p-3 rounded-lg transition-colors text-left",
-        "hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-        isSelected && "bg-accent/80 hover:bg-accent/80",
-        message.isUnread && !isSelected && "bg-accent/30"
+        "w-full rounded-lg p-1 transition-colors",
+        isSelected ? "bg-accent border border-border" : "hover:bg-accent/50"
       )}
     >
-      <div className="space-y-2">
+      <div className="p-3 space-y-2">
         {/* Header: Job Title and Date */}
         <div className="flex items-start justify-between gap-2">
-          <p className="text-sm font-medium line-clamp-1 text-foreground">
+          <p
+            className={cn(
+              "text-sm font-medium line-clamp-1",
+              isSelected ? "text-accent-foreground" : "text-foreground"
+            )}
+          >
             {message.jobTitle}
           </p>
-          <span className="text-xs text-muted-foreground shrink-0">
+          <span
+            className={cn(
+              "text-xs",
+              isSelected ? "text-accent-foreground/70" : "text-muted-foreground"
+            )}
+          >
             {message.date}
           </span>
         </div>
@@ -41,22 +49,44 @@ export function MessageItem({
         <div className="flex flex-col gap-1.5">
           {/* Name and Position */}
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-foreground">
+            <span
+              className={cn(
+                "text-sm font-medium",
+                isSelected ? "text-accent-foreground" : "text-foreground"
+              )}
+            >
               {message.candidate.name}
             </span>
-            <span className="text-xs text-muted-foreground">
+            <span
+              className={cn(
+                "text-xs",
+                isSelected
+                  ? "text-accent-foreground/70"
+                  : "text-muted-foreground"
+              )}
+            >
               {message.candidate.position}
             </span>
           </div>
 
           {/* Location */}
-          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+          <div
+            className={cn(
+              "flex items-center gap-1 text-xs",
+              isSelected ? "text-accent-foreground/70" : "text-muted-foreground"
+            )}
+          >
             <MapPin className="h-3 w-3" />
             <span>{message.candidate.city}</span>
           </div>
 
           {/* Message Preview */}
-          <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+          <p
+            className={cn(
+              "text-sm line-clamp-2 mt-1",
+              isSelected ? "text-accent-foreground/70" : "text-muted-foreground"
+            )}
+          >
             {message.preview}
           </p>
         </div>
@@ -66,7 +96,12 @@ export function MessageItem({
           <div className="pt-1">
             <Badge
               variant="outline"
-              className="w-fit bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800"
+              className={cn(
+                "w-fit",
+                isSelected
+                  ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800"
+                  : "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800"
+              )}
             >
               Nouveau message
             </Badge>

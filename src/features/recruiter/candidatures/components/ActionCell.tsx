@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Calendar, MessageCircle, MoreVertical, Phone, X } from "lucide-react";
 import { useState } from "react";
-import { AppelerDialog } from "./AppelerDialog";
+import { AppelerDialog } from "../../../../components/shared/AppelerDialog";
 import { SupprimerDialog } from "./SupprimerDialog";
-import { EntretienPlanDialog } from "./EntretienPlanDialog";
+import { EntretienPlanDialog } from "../../../../components/shared/EntretienPlanDialog";
 import { ContactInterfaceChat } from "./ContactInterfaceChat";
 import { ActionButtons } from "./ActionButtons";
 

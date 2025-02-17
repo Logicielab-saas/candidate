@@ -28,7 +28,7 @@ import { cn } from "@/lib/utils";
 import { type Entretien } from "@/core/mockData/entretiens-data";
 import Link from "next/link";
 import { useState } from "react";
-import { EntretienPlanDialog } from "../../candidatures/components/EntretienPlanDialog";
+import { EntretienPlanDialog } from "../../../../components/shared/EntretienPlanDialog";
 
 interface EntretienDetailsProps {
   entretien: Entretien;

@@ -8,8 +8,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { AppelerDialog } from "../../candidatures/components/AppelerDialog";
-import { EntretienPlanDialog } from "../../candidatures/components/EntretienPlanDialog";
+import { AppelerDialog } from "../../../../components/shared/AppelerDialog";
+import { EntretienPlanDialog } from "../../../../components/shared/EntretienPlanDialog";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
