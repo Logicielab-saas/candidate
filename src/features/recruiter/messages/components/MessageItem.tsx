@@ -3,34 +3,27 @@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { MapPin } from "lucide-react";
-
-interface Message {
-  id: number;
-  jobTitle: string;
-  jobType: string;
-  date: string;
-  candidate: {
-    name: string;
-    position: string;
-    city: string;
-  };
-  preview: string;
-  isUnread: boolean;
-}
+import { type Message } from "@/core/mockData/messages-data";
 
 interface MessageItemProps {
   message: Message;
   onClick?: () => void;
+  isSelected?: boolean;
 }
 
-export function MessageItem({ message, onClick }: MessageItemProps) {
+export function MessageItem({
+  message,
+  onClick,
+  isSelected,
+}: MessageItemProps) {
   return (
     <button
       onClick={onClick}
       className={cn(
         "w-full p-3 rounded-lg transition-colors text-left",
-        "hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-        message.isUnread && "bg-accent/30"
+        "hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+        isSelected && "bg-accent/80 hover:bg-accent/80",
+        message.isUnread && !isSelected && "bg-accent/30"
       )}
     >
       <div className="space-y-2">

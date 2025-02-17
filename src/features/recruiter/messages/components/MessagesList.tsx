@@ -22,10 +22,14 @@ import {
 } from "@/core/mockData/messages-data";
 
 interface MessagesListProps {
-  onMessageSelect?: (message: Message) => void;
+  onMessageSelect: (message: Message) => void;
+  selectedMessageId?: number;
 }
 
-export function MessagesList({ onMessageSelect }: MessagesListProps) {
+export function MessagesList({
+  onMessageSelect,
+  selectedMessageId,
+}: MessagesListProps) {
   const [currentTab, setCurrentTab] = useState<"all" | "unread">("all");
   const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -133,7 +137,8 @@ export function MessagesList({ onMessageSelect }: MessagesListProps) {
                 <MessageItem
                   key={message.id}
                   message={message}
-                  onClick={() => onMessageSelect?.(message)}
+                  isSelected={message.id === selectedMessageId}
+                  onClick={() => onMessageSelect(message)}
                 />
               ))}
             </div>
