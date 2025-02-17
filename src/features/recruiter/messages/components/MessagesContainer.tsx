@@ -102,7 +102,7 @@ export function MessagesContainer() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-[350px_1fr] gap-6 relative overflow-x-hidden">
+      <div className="grid grid-cols-1 xl:grid-cols-[350px_1fr] gap-6 relative overflow-hidden">
         {/* Messages List */}
         <div
           className={cn(
