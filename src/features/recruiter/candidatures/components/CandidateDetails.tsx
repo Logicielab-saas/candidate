@@ -21,6 +21,17 @@ export function CandidateDetails() {
   const currentCandidateId = searchParams.get("id");
   const source = searchParams.get("source");
 
+  const backUrl = () => {
+    switch (source) {
+      case "entretien":
+        return "/recruiter/interviews";
+      case "messagerie":
+        return "/recruiter/messages";
+      default:
+        return "/recruiter/candidates";
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-full gap-6">
       {/* Header */}
@@ -28,19 +39,13 @@ export function CandidateDetails() {
         <div className="flex flex-col w-full lg:w-auto lg:flex-row items-start lg:items-center gap-4">
           <div className="flex items-center gap-4">
             <Link
-              href={
-                source === "entretien"
-                  ? "/recruiter/interviews"
-                  : "/recruiter/candidates"
-              }
+              href={backUrl()}
               className="cursor-pointer text-primaryHex-600 hover:text-primaryHex-500 dark:text-primaryHex-400 dark:hover:text-primaryHex-300 transition-colors bg-primaryHex-50 dark:bg-primaryHex-900/20 rounded-full p-2"
             >
               <ArrowLeft className="w-8 h-8 cursor-pointer" />
             </Link>
             <p className="text-2xl font-bold text-foreground">
-              {source === "entretien"
-                ? "Détails de la candidature"
-                : "Candidat(e)s"}
+              {source ? "Détails de la candidature" : "Candidat(e)s"}
             </p>
           </div>
           {!source && (

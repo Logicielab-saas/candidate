@@ -3,8 +3,28 @@
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import { MessagesList } from "./MessagesList";
+import { MessageContent } from "./MessageContent";
+import { useState } from "react";
+
+// Types
+interface Message {
+  id: number;
+  jobTitle: string;
+  jobType: string;
+  date: string;
+  candidate: {
+    name: string;
+    position: string;
+    city: string;
+  };
+  preview: string;
+  isUnread: boolean;
+  participantsCount?: number;
+}
 
 export function MessagesContainer() {
+  const [selectedMessage, setSelectedMessage] = useState<Message | undefined>();
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -17,11 +37,11 @@ export function MessagesContainer() {
 
       <div className="grid grid-cols-1 xl:grid-cols-[350px_1fr] gap-6">
         {/* Left Side - Messages List */}
-        <MessagesList />
+        <MessagesList onMessageSelect={setSelectedMessage} />
 
         {/* Right Side - Message Content */}
-        <div className="hidden xl:block border border-border rounded-lg bg-background">
-          {/* Message content will go here */}
+        <div className="hidden xl:block">
+          <MessageContent message={selectedMessage} />
         </div>
       </div>
     </div>
