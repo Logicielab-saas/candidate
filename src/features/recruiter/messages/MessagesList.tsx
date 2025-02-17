@@ -6,6 +6,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { MultiSelect } from "@/components/ui/multi-select";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 
 // Mock data for jobs
 const JOBS_OPTIONS = [
@@ -48,12 +50,18 @@ const MOCK_MESSAGES = [
 export function MessagesList() {
   const [currentTab, setCurrentTab] = useState<"all" | "unread">("all");
   const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filteredMessages = MOCK_MESSAGES.filter((message) => {
     const matchesTab = currentTab === "all" || message.isUnread;
     const matchesJobs =
       selectedJobs.length === 0 || selectedJobs.includes(message.jobType);
-    return matchesTab && matchesJobs;
+    const matchesSearch = searchQuery
+      ? message.jobTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        message.candidate.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        message.preview.toLowerCase().includes(searchQuery.toLowerCase())
+      : true;
+    return matchesTab && matchesJobs && matchesSearch;
   });
 
   return (
@@ -104,6 +112,17 @@ export function MessagesList() {
             </TabsList>
           </div>
         </Tabs>
+
+        {/* Search Input */}
+        <div className="relative">
+          <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Rechercher un message..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="h-8 pl-8"
+          />
+        </div>
 
         {/* Filter MultiSelect */}
         <MultiSelect
