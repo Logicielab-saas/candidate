@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Phone, Calendar, User, Users2 } from "lucide-react";
+import { Phone, Calendar, User, Users2, MoreVertical } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -12,6 +12,12 @@ import { AppelerDialog } from "../../candidatures/components/AppelerDialog";
 import { EntretienPlanDialog } from "../../candidatures/components/EntretienPlanDialog";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface Participant {
   name: string;
@@ -94,21 +100,28 @@ export function MessageHeader({
           </p>
         </div>
 
-        {/* Right side - Actions */}
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={handlePhoneClick}>
-            <Phone className="h-4 w-4 mr-2" />
-            Afficher téléphone
-          </Button>
-          <Button variant="outline" size="sm" onClick={handleScheduleClick}>
-            <Calendar className="h-4 w-4 mr-2" />
-            Planifier entretien
-          </Button>
-          <Button variant="outline" size="sm" onClick={handleDetailsClick}>
-            <User className="h-4 w-4 mr-2" />
-            Détails candidat
-          </Button>
-        </div>
+        {/* Right side - Actions Dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <MoreVertical className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuItem onClick={handlePhoneClick} className="gap-2">
+              <Phone className="h-4 w-4" />
+              <span>Afficher téléphone</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleScheduleClick} className="gap-2">
+              <Calendar className="h-4 w-4" />
+              <span>Planifier entretien</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleDetailsClick} className="gap-2">
+              <User className="h-4 w-4" />
+              <span>Détails candidat</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <AppelerDialog

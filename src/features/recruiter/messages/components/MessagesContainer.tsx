@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import { MessagesList } from "./MessagesList";
-import { MessageContent } from "./MessageContent";
+import { MessageChatContent } from "./MessageChatContent";
 import { useState } from "react";
 
 // Types
@@ -41,7 +41,7 @@ export function MessagesContainer() {
 
         {/* Right Side - Message Content */}
         <div className="hidden xl:block">
-          <MessageContent message={selectedMessage} />
+          <MessageChatContent message={selectedMessage} />
         </div>
       </div>
     </div>
