@@ -58,7 +58,7 @@ export function ContractDurationDetails({
           control={form.control}
           name={`${fieldName}.duration`}
           render={({ field }) => (
-            <FormItem className="flex-1">
+            <FormItem className="flex">
               <FormControl>
                 <Input
                   type="text"
@@ -82,7 +82,7 @@ export function ContractDurationDetails({
           control={form.control}
           name={`${fieldName}.unit`}
           render={({ field }) => (
-            <FormItem className="flex-1">
+            <FormItem className="flex">
               <Select
                 onValueChange={handleUnitChange}
                 defaultValue={field.value}
