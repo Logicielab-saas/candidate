@@ -31,6 +31,7 @@ import {
   salaryFormSchema,
   SalaryForm,
 } from "../../../common/schemas/salary.schema";
+import { useToast } from "@/hooks/use-toast";
 
 const SALARY_DISPLAY_TYPES = [
   { value: SalaryDisplayType.RANGE, label: "Fourchette" },
@@ -61,6 +62,7 @@ export function SalaryStep() {
     nextStep,
     canProceed,
   } = useCreateAnnonceStore();
+  const { toast } = useToast();
 
   const form = useForm<SalaryForm>({
     resolver: zodResolver(salaryFormSchema),
@@ -95,17 +97,40 @@ export function SalaryStep() {
     }
   };
 
+  const validateAndProceed = () => {
+    const formData = form.getValues();
+
+    // If a display type is selected and it's RANGE, validate that maxSalary is greater than minSalary
+    if (
+      formData.displayType === SalaryDisplayType.RANGE &&
+      formData.minSalary &&
+      formData.maxSalary &&
+      Number(formData.maxSalary) <= Number(formData.minSalary)
+    ) {
+      toast({
+        variant: "destructive",
+        title: "Validation",
+        description:
+          "Le salaire maximum doit être supérieur au salaire minimum",
+      });
+      return;
+    }
+
+    // Everything is optional, so we can proceed
+    nextStep();
+  };
+
   return (
     <div className="w-full max-w-3xl mx-auto space-y-8">
       <HeaderSectionStepsForm
-        title="Rémunération"
-        description="Définissez la rémunération pour ce poste (optionnel)"
+        title="Salaire"
+        description="Définissez le salaire pour ce poste (optionnel)"
       />
 
       <Card>
         <CardContent className="pt-6">
           <Form {...form}>
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
               <FormField
                 control={form.control}
                 name="displayType"
@@ -237,7 +262,7 @@ export function SalaryStep() {
 
       <FormStepsNavigation
         onPrevious={previousStep}
-        onNext={nextStep}
+        onNext={validateAndProceed}
         canProceed={canProceed()}
       />
     </div>
