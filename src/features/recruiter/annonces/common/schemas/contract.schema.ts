@@ -19,6 +19,7 @@ export const jobTypeFormSchema = z.object({
   partTimeDetails: partTimeDetailsSchema.optional(),
   interimDetails: durationDetailsSchema.optional(),
   cddDetails: durationDetailsSchema.optional(),
+  internshipDetails: durationDetailsSchema.optional(),
 });
 
 export type JobTypeForm = z.infer<typeof jobTypeFormSchema>;

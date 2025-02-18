@@ -116,9 +116,11 @@ export function JobTypeStep() {
       console.log("Clearing previous details");
       form.setValue("interimDetails", undefined);
       form.setValue("cddDetails", undefined);
+      form.setValue("internshipDetails", undefined);
     } else if (value === ContractType.INTERIM) {
       form.setValue("partTimeDetails", undefined);
       form.setValue("cddDetails", undefined);
+      form.setValue("internshipDetails", undefined);
       form.setValue("interimDetails", {
         duration: "",
         unit: ContractDurationUnit.DAYS,
@@ -126,7 +128,16 @@ export function JobTypeStep() {
     } else if (value === ContractType.CDD) {
       form.setValue("partTimeDetails", undefined);
       form.setValue("interimDetails", undefined);
+      form.setValue("internshipDetails", undefined);
       form.setValue("cddDetails", {
+        duration: "",
+        unit: ContractDurationUnit.MONTHS,
+      });
+    } else if (value === ContractType.INTERNSHIP) {
+      form.setValue("partTimeDetails", undefined);
+      form.setValue("interimDetails", undefined);
+      form.setValue("cddDetails", undefined);
+      form.setValue("internshipDetails", {
         duration: "",
         unit: ContractDurationUnit.MONTHS,
       });
@@ -135,6 +146,7 @@ export function JobTypeStep() {
       form.setValue("partTimeDetails", undefined);
       form.setValue("interimDetails", undefined);
       form.setValue("cddDetails", undefined);
+      form.setValue("internshipDetails", undefined);
     }
   };
 
@@ -235,6 +247,14 @@ export function JobTypeStep() {
                   form={form}
                   type="cdd"
                   label="Quelle est la durée du CDD ?"
+                />
+              )}
+
+              {form.watch("contractType") === ContractType.INTERNSHIP && (
+                <ContractDurationDetails
+                  form={form}
+                  type="internship"
+                  label="Quelle est la durée du stage ?"
                 />
               )}
 

@@ -15,4 +15,5 @@ export interface JobTypeInformation {
   partTimeDetails?: PartTimeDetails;
   interimDetails?: DurationDetails;
   cddDetails?: DurationDetails;
+  internshipDetails?: DurationDetails;
 }

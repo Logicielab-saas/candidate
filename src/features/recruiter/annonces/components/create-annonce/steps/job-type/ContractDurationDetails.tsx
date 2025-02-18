@@ -24,7 +24,7 @@ const DURATION_UNITS = [
 
 interface ContractDurationDetailsProps {
   form: UseFormReturn<JobTypeForm>;
-  type: "interim" | "cdd";
+  type: "interim" | "cdd" | "internship";
   label?: string;
 }
 
@@ -33,7 +33,12 @@ export function ContractDurationDetails({
   type,
   label = "Quelle est la durée du contrat ?",
 }: ContractDurationDetailsProps) {
-  const fieldName = type === "interim" ? "interimDetails" : "cddDetails";
+  const fieldName =
+    type === "interim"
+      ? "interimDetails"
+      : type === "cdd"
+      ? "cddDetails"
+      : "internshipDetails";
 
   const handleDurationChange = (value: string) => {
     console.log(`${type} Duration Changed:`, value);
