@@ -40,6 +40,52 @@ const CONTRACT_TYPES = [
   { id: ContractType.APPRENTICESHIP, label: "Apprentissage/Alternance" },
 ];
 
+/**
+ * Transforms form values into the final JobTypeInformation structure
+ * Only includes optional fields if they have valid values
+ */
+const transformFormData = (
+  values: Partial<JobTypeForm>
+): JobTypeInformation => {
+  const formData: JobTypeInformation = {
+    contractType: values.contractType || "",
+  };
+
+  // Only include details if they have valid values
+  if (
+    values.partTimeDetails?.scheduleType ||
+    values.partTimeDetails?.hoursPerWeek
+  ) {
+    formData.partTimeDetails = {
+      scheduleType: values.partTimeDetails.scheduleType,
+      hoursPerWeek: values.partTimeDetails.hoursPerWeek?.toString(),
+    };
+  }
+
+  if (values.interimDetails?.duration && values.interimDetails?.unit) {
+    formData.interimDetails = {
+      duration: values.interimDetails.duration,
+      unit: values.interimDetails.unit,
+    };
+  }
+
+  if (values.cddDetails?.duration && values.cddDetails?.unit) {
+    formData.cddDetails = {
+      duration: values.cddDetails.duration,
+      unit: values.cddDetails.unit,
+    };
+  }
+
+  if (values.internshipDetails?.duration && values.internshipDetails?.unit) {
+    formData.internshipDetails = {
+      duration: values.internshipDetails.duration,
+      unit: values.internshipDetails.unit,
+    };
+  }
+
+  return formData;
+};
+
 export function JobTypeStep() {
   const {
     jobTypeInformation,
@@ -63,91 +109,63 @@ export function JobTypeStep() {
   // Update store when form values change
   const formValues = useWatch({
     control: form.control,
-  });
+  }) as JobTypeForm;
+
+  // Log when radio selection changes
+  const handleContractTypeChange = (value: string) => {
+    console.log("Contract Type Selected:", value);
+    // Clear all previous details
+    form.setValue("partTimeDetails", undefined);
+    form.setValue("interimDetails", undefined);
+    form.setValue("cddDetails", undefined);
+    form.setValue("internshipDetails", undefined);
+
+    // Set contract type
+    form.setValue("contractType", value);
+
+    // Initialize duration details for contracts that need it
+    if (
+      [
+        ContractType.INTERIM,
+        ContractType.CDD,
+        ContractType.INTERNSHIP,
+      ].includes(value as ContractType)
+    ) {
+      const fieldName =
+        value === ContractType.INTERIM
+          ? "interimDetails"
+          : value === ContractType.CDD
+          ? "cddDetails"
+          : "internshipDetails";
+
+      const defaultUnit =
+        value === ContractType.INTERIM
+          ? ContractDurationUnit.DAYS
+          : ContractDurationUnit.MONTHS;
+
+      form.setValue(fieldName, {
+        duration: "",
+        unit: defaultUnit,
+      });
+    }
+  };
 
   useEffect(() => {
-    if (formValues) {
-      const formData: JobTypeInformation = {
-        contractType: formValues.contractType || "",
-      };
-
-      // Only include partTimeDetails if it exists and has at least one field filled
-      if (
-        formValues.partTimeDetails &&
-        (formValues.partTimeDetails.scheduleType ||
-          formValues.partTimeDetails.hoursPerWeek)
-      ) {
-        formData.partTimeDetails = {
-          scheduleType: formValues.partTimeDetails.scheduleType,
-          hoursPerWeek: formValues.partTimeDetails.hoursPerWeek?.toString(),
-        };
-      }
-
-      // Only include interimDetails if both duration and unit are filled
-      if (
-        formValues.interimDetails?.duration &&
-        formValues.interimDetails?.unit
-      ) {
-        formData.interimDetails = {
-          duration: formValues.interimDetails.duration,
-          unit: formValues.interimDetails.unit,
-        };
-      }
-
-      // Only include cddDetails if both duration and unit are filled
-      if (formValues.cddDetails?.duration && formValues.cddDetails?.unit) {
-        formData.cddDetails = {
-          duration: formValues.cddDetails.duration,
-          unit: formValues.cddDetails.unit,
-        };
-      }
-
+    if (formValues?.contractType) {
+      const formData = transformFormData(formValues);
       console.log("Form Values Changed:", formValues);
       console.log("Updating Store with:", formData);
       setJobTypeInformation(formData);
     }
   }, [formValues, setJobTypeInformation]);
 
-  // Log when radio selection changes
-  const handleContractTypeChange = (value: string) => {
-    console.log("Contract Type Selected:", value);
-    form.setValue("contractType", value);
-    if (value === ContractType.PART_TIME) {
-      console.log("Clearing previous details");
-      form.setValue("interimDetails", undefined);
-      form.setValue("cddDetails", undefined);
-      form.setValue("internshipDetails", undefined);
-    } else if (value === ContractType.INTERIM) {
-      form.setValue("partTimeDetails", undefined);
-      form.setValue("cddDetails", undefined);
-      form.setValue("internshipDetails", undefined);
-      form.setValue("interimDetails", {
-        duration: "",
-        unit: ContractDurationUnit.DAYS,
-      });
-    } else if (value === ContractType.CDD) {
-      form.setValue("partTimeDetails", undefined);
-      form.setValue("interimDetails", undefined);
-      form.setValue("internshipDetails", undefined);
-      form.setValue("cddDetails", {
-        duration: "",
-        unit: ContractDurationUnit.MONTHS,
-      });
-    } else if (value === ContractType.INTERNSHIP) {
-      form.setValue("partTimeDetails", undefined);
-      form.setValue("interimDetails", undefined);
-      form.setValue("cddDetails", undefined);
-      form.setValue("internshipDetails", {
-        duration: "",
-        unit: ContractDurationUnit.MONTHS,
-      });
-    } else {
-      console.log("Clearing Details");
-      form.setValue("partTimeDetails", undefined);
-      form.setValue("interimDetails", undefined);
-      form.setValue("cddDetails", undefined);
-      form.setValue("internshipDetails", undefined);
-    }
+  // Handler for form submission
+  const handleFormSubmit = () => {
+    const values = form.getValues();
+    const formData = transformFormData(values);
+    setJobTypeInformation(formData);
+    console.log("Final Form State:", formData);
+    nextStep();
   };
 
   return (
@@ -165,7 +183,7 @@ export function JobTypeStep() {
               onSubmit={(e) => {
                 e.preventDefault();
                 console.log("Form Submitted with values:", form.getValues());
-                nextStep();
+                handleFormSubmit();
               }}
             >
               <FormField
@@ -268,11 +286,7 @@ export function JobTypeStep() {
 
       <FormStepsNavigation
         onPrevious={previousStep}
-        onNext={() => {
-          console.log("Final Form Values:", form.getValues());
-          console.log("Store State:", jobTypeInformation);
-          nextStep();
-        }}
+        onNext={handleFormSubmit}
         canProceed={canProceed()}
       />
     </div>

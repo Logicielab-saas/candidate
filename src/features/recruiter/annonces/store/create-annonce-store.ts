@@ -98,10 +98,11 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
       console.log("Moving to step:", nextStep);
 
       // Log current state when moving to next step
-      const { annonceType, baseInformation } = get();
+      const { annonceType, baseInformation, jobTypeInformation } = get();
       console.log("Current Form State:", {
         annonceType,
         baseInformation,
+        jobTypeInformation,
       });
     }
   },
