@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function CreateAnnoncePage() {
   return (
-    <div className="container py-8">
+    <div className="container relative min-w-0 shrink-0 min-h-0 p-6">
       <CreateAnnonceSteps />
     </div>
   );
