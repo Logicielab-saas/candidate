@@ -2,6 +2,21 @@ import { create } from "zustand";
 
 export type AnnonceCreationStep = "type" | "details" | "preview";
 
+export const STEPS_CONFIG = [
+  {
+    id: "type" as const,
+    title: "Type d'annonce",
+  },
+  {
+    id: "details" as const,
+    title: "Détails",
+  },
+  {
+    id: "preview" as const,
+    title: "Aperçu",
+  },
+] as const;
+
 interface CreateAnnonceState {
   currentStep: AnnonceCreationStep;
   annonceType: "existing" | "new" | null;
@@ -10,9 +25,10 @@ interface CreateAnnonceState {
   previousStep: () => void;
   canProceed: () => boolean;
   reset: () => void;
+  getCurrentStepIndex: () => number;
 }
 
-const STEPS: AnnonceCreationStep[] = ["type", "details", "preview"];
+const STEPS: AnnonceCreationStep[] = STEPS_CONFIG.map(step => step.id);
 
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   currentStep: "type",
@@ -32,6 +48,10 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
     if (currentIndex > 0) {
       set({ currentStep: STEPS[currentIndex - 1] });
     }
+  },
+
+  getCurrentStepIndex: () => {
+    return STEPS.indexOf(get().currentStep);
   },
 
   canProceed: () => {
