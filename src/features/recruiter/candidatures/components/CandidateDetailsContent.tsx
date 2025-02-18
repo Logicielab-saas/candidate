@@ -15,7 +15,7 @@ import {
   StickyNote,
   Trash2,
 } from "lucide-react";
-import { mockCandidates } from "@/app/(dashboard)/recruiter/candidates/page";
+import { mockCandidates } from "@/core/mockData/candidates-data";
 import { useState } from "react";
 import { AppelerDialog } from "../../../../components/shared/AppelerDialog";
 import { EntretienPlanDialog } from "../../../../components/shared/EntretienPlanDialog";

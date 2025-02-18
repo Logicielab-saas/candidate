@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { mockCandidates } from "@/app/(dashboard)/recruiter/candidates/page";
+import { mockCandidates } from "@/core/mockData/candidates-data";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { useState, useMemo } from "react";
