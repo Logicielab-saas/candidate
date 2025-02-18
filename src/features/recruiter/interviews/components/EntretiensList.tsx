@@ -187,7 +187,7 @@ export function EntretiensList({
         )}
 
       {/* Interviews List */}
-      <ScrollArea className="h-[500px]">
+      <ScrollArea className="h-[500px] p-2">
         <div className="divide-y">
           {filteredEntretiens.map((entretien) => {
             const badgeConfig = getBadgeConfig(entretien);
@@ -197,8 +197,8 @@ export function EntretiensList({
                 className={cn(
                   "flex cursor-pointer flex-col gap-2 p-4 transition-colors",
                   selectedEntretienId === entretien.id
-                    ? "bg-primaryHex-50 dark:bg-primaryHex-900/20"
-                    : "hover:bg-secondaryHex-50 dark:hover:bg-secondaryHex-900/50"
+                    ? "bg-accent border border-border rounded-sm"
+                    : "hover:bg-accent/50"
                 )}
                 onClick={() => onEntretienSelect?.(entretien)}
                 role="button"
