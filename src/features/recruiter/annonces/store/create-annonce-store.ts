@@ -46,12 +46,14 @@ interface CreateAnnonceState {
   baseInformation: BaseInformation;
   jobTypeInformation: JobTypeInformation;
   salaryInformation: SalaryInformation;
+  description: string;
 
   // Actions
   setAnnonceType: (type: "existing" | "new" | null) => void;
   setBaseInformation: (data: BaseInformation) => void;
   setJobTypeInformation: (data: JobTypeInformation) => void;
   setSalaryInformation: (data: SalaryInformation) => void;
+  setDescription: (description: string) => void;
   nextStep: () => void;
   previousStep: () => void;
   canProceed: () => boolean;
@@ -80,6 +82,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   baseInformation: INITIAL_BASE_INFORMATION,
   jobTypeInformation: INITIAL_JOB_TYPE_INFORMATION,
   salaryInformation: INITIAL_SALARY_INFORMATION,
+  description: "",
 
   // Actions
   setAnnonceType: (type) => {
@@ -101,6 +104,11 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
     console.log("Salary Information Updated:", data);
   },
 
+  setDescription: (description) => {
+    set({ description });
+    console.log("Description Updated:", description);
+  },
+
   nextStep: () => {
     const currentIndex = STEPS.indexOf(get().currentStep);
     if (currentIndex < STEPS.length - 1) {
@@ -109,12 +117,13 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
       console.log("Moving to step:", nextStep);
 
       // Log current state when moving to next step
-      const { annonceType, baseInformation, jobTypeInformation, salaryInformation } = get();
+      const { annonceType, baseInformation, jobTypeInformation, salaryInformation, description } = get();
       console.log("Current Form State:", {
         annonceType,
         baseInformation,
         jobTypeInformation,
         salaryInformation,
+        description,
       });
     }
   },
@@ -131,7 +140,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   },
 
   canProceed: () => {
-    const { currentStep, annonceType, baseInformation, jobTypeInformation } = get();
+    const { currentStep, annonceType, baseInformation, jobTypeInformation, description } = get();
 
     switch (currentStep) {
       case "type":
@@ -150,7 +159,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
       case "salary":
         return true; // Salary is optional
       case "description-annonce":
-        return true; // Will be implemented later
+        return !!description.trim(); // Description is required
       case "preview":
         return true;
       default:
@@ -165,6 +174,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
       baseInformation: INITIAL_BASE_INFORMATION,
       jobTypeInformation: INITIAL_JOB_TYPE_INFORMATION,
       salaryInformation: INITIAL_SALARY_INFORMATION,
+      description: "",
     });
   },
 }));
