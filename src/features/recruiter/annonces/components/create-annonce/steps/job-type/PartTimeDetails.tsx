@@ -14,7 +14,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { UseFormReturn } from "react-hook-form";
-import { ContractScheduleType, JobTypeForm } from "../../../../common";
+import { ContractScheduleType } from "../../../../common";
+import { JobInformationForm } from "../../../../common/schemas/job-information.schema";
 
 const SCHEDULE_TYPES = [
   { value: ContractScheduleType.FIXED, label: "Heures fixes" },
@@ -24,41 +25,22 @@ const SCHEDULE_TYPES = [
 ] as const;
 
 interface PartTimeDetailsProps {
-  form: UseFormReturn<JobTypeForm>;
+  form: UseFormReturn<JobInformationForm>;
 }
 
 export function PartTimeDetails({ form }: PartTimeDetailsProps) {
-  const handleScheduleTypeChange = (value: ContractScheduleType) => {
-    console.log("Schedule Type Changed:", value);
-    if (!form.getValues("partTimeDetails")) {
-      form.setValue("partTimeDetails", {});
-    }
-    form.setValue("partTimeDetails.scheduleType", value);
-  };
-
-  const handleHoursChange = (value: string) => {
-    console.log("Hours Changed:", value);
-    if (!form.getValues("partTimeDetails")) {
-      form.setValue("partTimeDetails", {});
-    }
-    form.setValue("partTimeDetails.hoursPerWeek", value);
-  };
-
   return (
-    <div className="space-y-4 pl-4 border-l-2 border-primaryHex-100">
+    <div className="space-y-4">
       <FormField
         control={form.control}
         name="partTimeDetails.scheduleType"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Type d&apos;horaires</FormLabel>
-            <Select
-              onValueChange={handleScheduleTypeChange}
-              defaultValue={field.value}
-            >
+            <FormLabel>Type d&apos;horaire</FormLabel>
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger>
-                  <SelectValue placeholder="Sélectionnez le type d'horaires" />
+                  <SelectValue placeholder="Sélectionnez le type d'horaire" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
@@ -80,25 +62,20 @@ export function PartTimeDetails({ form }: PartTimeDetailsProps) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>Heures par semaine</FormLabel>
-            <div className="flex items-center gap-2">
-              <FormControl>
-                <Input
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  placeholder="Ex: 20"
-                  {...field}
-                  onChange={(e) => {
-                    const value = e.target.value.replace(/[^0-9]/g, "");
-                    handleHoursChange(value);
-                  }}
-                  className="w-24"
-                />
-              </FormControl>
-              <span className="text-sm text-muted-foreground">
-                Heures par semaine
-              </span>
-            </div>
+            <FormControl>
+              <Input
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                placeholder="Ex: 20"
+                {...field}
+                value={field.value || ""}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/[^0-9]/g, "");
+                  field.onChange(value);
+                }}
+              />
+            </FormControl>
             <FormMessage />
           </FormItem>
         )}

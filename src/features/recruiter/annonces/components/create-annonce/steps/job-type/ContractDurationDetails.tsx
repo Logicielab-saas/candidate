@@ -14,7 +14,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { UseFormReturn } from "react-hook-form";
-import { ContractDurationUnit, JobTypeForm } from "../../../../common";
+import { ContractDurationUnit } from "../../../../common";
+import { JobInformationForm } from "../../../../common/schemas/job-information.schema";
 
 const DURATION_UNITS = [
   { value: ContractDurationUnit.DAYS, label: "Jour(s)" },
@@ -23,7 +24,7 @@ const DURATION_UNITS = [
 ] as const;
 
 interface ContractDurationDetailsProps {
-  form: UseFormReturn<JobTypeForm>;
+  form: UseFormReturn<JobInformationForm>;
   type: "interim" | "cdd" | "internship";
   label?: string;
 }
@@ -33,32 +34,21 @@ export function ContractDurationDetails({
   type,
   label = "Quelle est la durée du contrat ?",
 }: ContractDurationDetailsProps) {
-  const fieldName =
-    type === "interim"
-      ? "interimDetails"
-      : type === "cdd"
-      ? "cddDetails"
-      : "internshipDetails";
-
-  const handleDurationChange = (value: string) => {
-    console.log(`${type} Duration Changed:`, value);
-    form.setValue(`${fieldName}.duration`, value);
-  };
+  const fieldName = `${type}Details` as const;
 
   const handleUnitChange = (value: ContractDurationUnit) => {
-    console.log(`${type} Unit Changed:`, value);
     form.setValue(`${fieldName}.unit`, value);
   };
 
   return (
-    <div className="space-y-4 pl-4 border-l-2 border-primaryHex-100">
+    <div className="space-y-4">
       <FormLabel>{label}</FormLabel>
-      <div className="flex items-center gap-4">
+      <div className="flex gap-4">
         <FormField
           control={form.control}
           name={`${fieldName}.duration`}
           render={({ field }) => (
-            <FormItem className="flex">
+            <FormItem className="flex-1">
               <FormControl>
                 <Input
                   type="text"
@@ -66,11 +56,11 @@ export function ContractDurationDetails({
                   pattern="[0-9]*"
                   placeholder="Ex: 3"
                   {...field}
+                  value={field.value || ""}
                   onChange={(e) => {
                     const value = e.target.value.replace(/[^0-9]/g, "");
-                    handleDurationChange(value);
+                    field.onChange(value);
                   }}
-                  className="w-24"
                 />
               </FormControl>
               <FormMessage />
