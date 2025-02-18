@@ -3,11 +3,11 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { useCreateAnnonceStore } from "../../store/create-annonce-store";
-import { ArrowRight, CheckCircle2, Copy, PlusCircle } from "lucide-react";
+import { CheckCircle2, Copy, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { HeaderSectionStepsForm } from "@/components/shared/HeaderSectionStepsForm";
+import { FormStepsNavigation } from "@/components/shared/FormStepsNavigation";
 
 export function CreateAnnonceType() {
   const { annonceType, setAnnonceType, nextStep, canProceed } =
@@ -125,13 +125,14 @@ export function CreateAnnonceType() {
         </div>
       </RadioGroup>
 
-      {/* Continue Button */}
-      <div className="flex justify-end pt-6">
-        <Button onClick={nextStep} disabled={!canProceed()} className="gap-2">
-          Continuer
-          <ArrowRight className="w-4 h-4" />
-        </Button>
-      </div>
+      {/* Navigation - Only show next button for first step */}
+      <FormStepsNavigation
+        onPrevious={() => {}}
+        onNext={nextStep}
+        canProceed={canProceed()}
+        className="flex justify-end pt-6"
+        previousLabel={null}
+      />
     </div>
   );
 }
