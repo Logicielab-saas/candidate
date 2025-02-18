@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { CandidatesContainer } from "@/features/recruiter/candidatures/components/CandidatesContainer";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Suspense } from "react";
 
 const CandidatesPage = () => {
   return (
@@ -10,7 +12,15 @@ const CandidatesPage = () => {
         </div>
         <Button className="mt-2">Publier une annonce</Button>
       </div>
-      <CandidatesContainer />
+      <Suspense
+        fallback={
+          <div className="flex flex-col min-h-full gap-6">
+            <Skeleton className="h-8 w-64" />
+          </div>
+        }
+      >
+        <CandidatesContainer />
+      </Suspense>
     </div>
   );
 };
