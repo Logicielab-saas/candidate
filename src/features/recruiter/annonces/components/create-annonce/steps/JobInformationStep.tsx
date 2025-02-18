@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useCreateAnnonceStore } from "../../../store/create-annonce-store";
 import { HeaderSectionStepsForm } from "@/components/shared/HeaderSectionStepsForm";
 import { FormStepsNavigation } from "@/components/shared/FormStepsNavigation";
@@ -39,6 +39,7 @@ import {
   JobInformationForm,
   jobInformationFormSchema,
 } from "../../../common/schemas/job-information.schema";
+import { Separator } from "@/components/ui/separator";
 
 const numberOfPeopleOptions = [
   { value: "1", label: "1 personne" },
@@ -281,276 +282,256 @@ export function JobInformationStep() {
       />
 
       <Form {...form}>
-        <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+        <form onSubmit={(e) => e.preventDefault()}>
           <Card>
-            <CardHeader>
-              <CardTitle>Informations de base</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <FormField
-                control={form.control}
-                name="jobTitle"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center gap-1">
-                      Intitulé du poste
-                      <span className="text-destructive">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="ex: Développeur Full Stack"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="numberOfPeople"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center gap-1">
-                      Nombre de personnes à recruter
-                      <span className="text-destructive">*</span>
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+            <CardContent className="pt-6 space-y-8">
+              {/* Base Information Section */}
+              <div className="space-y-6">
+                <h3 className="font-semibold text-lg text-foreground">
+                  Informations de base
+                </h3>
+                <FormField
+                  control={form.control}
+                  name="jobTitle"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-1">
+                        Intitulé du poste
+                        <span className="text-destructive">*</span>
+                      </FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Sélectionnez le nombre de personnes" />
-                        </SelectTrigger>
+                        <Input
+                          placeholder="ex: Développeur Full Stack"
+                          {...field}
+                        />
                       </FormControl>
-                      <SelectContent>
-                        {numberOfPeopleOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="promotionLocation"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center gap-1">
-                      Ville de l&apos;offre d&apos;emploi
-                      <span className="text-destructive">*</span>
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Sélectionnez une ville" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {allCities.map((city) => (
-                          <SelectItem key={city.value} value={city.value}>
-                            {city.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Type de poste</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <FormField
-                control={form.control}
-                name="contractType"
-                render={({ field }) => (
-                  <FormItem className="space-y-3">
-                    <FormLabel className="flex items-center gap-1">
-                      Type de poste
-                      <span className="text-destructive">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={handleContractTypeChange}
+                <FormField
+                  control={form.control}
+                  name="numberOfPeople"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-1">
+                        Nombre de personnes à recruter
+                        <span className="text-destructive">*</span>
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
                         defaultValue={field.value}
-                        className="flex flex-wrap gap-2"
                       >
-                        {CONTRACT_TYPES.map((type) => (
-                          <div key={type.id} className="relative">
-                            <RadioGroupItem
-                              value={type.id}
-                              id={type.id}
-                              className="peer sr-only"
-                            />
-                            <Label
-                              htmlFor={type.id}
-                              className={cn(
-                                "inline-flex items-center gap-2 cursor-pointer rounded-md border px-3 py-1.5 text-sm",
-                                "hover:border-primaryHex-500 hover:bg-primaryHex-50/50",
-                                field.value === type.id
-                                  ? "border-primaryHex-500 bg-primaryHex-50 text-primaryHex-900"
-                                  : "border-input bg-background",
-                                "transition-all duration-150 ease-in-out"
-                              )}
-                            >
-                              <div className="relative w-3.5 h-3.5">
-                                <Plus
-                                  className={cn(
-                                    "absolute inset-0 h-3.5 w-3.5 text-muted-foreground",
-                                    field.value === type.id
-                                      ? "opacity-0"
-                                      : "opacity-100",
-                                    "transition-opacity"
-                                  )}
-                                />
-                                <Check
-                                  className={cn(
-                                    "absolute inset-0 h-3.5 w-3.5 text-primaryHex-500",
-                                    field.value === type.id
-                                      ? "opacity-100"
-                                      : "opacity-0",
-                                    "transition-opacity"
-                                  )}
-                                />
-                              </div>
-                              <span className="text-sm font-medium leading-none">
-                                {type.label}
-                              </span>
-                            </Label>
-                          </div>
-                        ))}
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {form.watch("contractType") === ContractType.INTERIM && (
-                <ContractDurationDetails
-                  form={form}
-                  type="interim"
-                  label="Quelle est la durée de la mission ?"
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Sélectionnez le nombre de personnes" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {numberOfPeopleOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              )}
 
-              {form.watch("contractType") === ContractType.CDD && (
-                <ContractDurationDetails
-                  form={form}
-                  type="cdd"
-                  label="Quelle est la durée du CDD ?"
+                <FormField
+                  control={form.control}
+                  name="promotionLocation"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-1">
+                        Ville de l&apos;offre d&apos;emploi
+                        <span className="text-destructive">*</span>
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Sélectionnez une ville" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {allCities.map((city) => (
+                            <SelectItem key={city.value} value={city.value}>
+                              {city.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              )}
+              </div>
 
-              {form.watch("contractType") === ContractType.INTERNSHIP && (
-                <ContractDurationDetails
-                  form={form}
-                  type="internship"
-                  label="Quelle est la durée du stage ?"
-                />
-              )}
+              <Separator className="my-6" />
 
-              {form.watch("contractType") === ContractType.PART_TIME && (
-                <PartTimeDetails form={form} />
-              )}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Salaire (Optionnel)</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <FormField
-                control={form.control}
-                name="displayType"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Afficher les salaires par</FormLabel>
-                    <Select
-                      onValueChange={handleDisplayTypeChange}
-                      value={field.value}
-                    >
+              {/* Job Type Section */}
+              <div className="space-y-6">
+                <h3 className="font-semibold text-lg text-foreground">
+                  Type de poste
+                </h3>
+                <FormField
+                  control={form.control}
+                  name="contractType"
+                  render={({ field }) => (
+                    <FormItem className="space-y-3">
+                      <FormLabel className="flex items-center gap-1">
+                        Type de poste
+                        <span className="text-destructive">*</span>
+                      </FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Sélectionnez le type d'affichage" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {SALARY_DISPLAY_TYPES.map((type) => (
-                          <SelectItem key={type.value} value={type.value}>
-                            {type.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {form.watch("displayType") &&
-                form.watch("displayType") !== SalaryDisplayType.NEGOTIABLE && (
-                  <>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="minSalary"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Minimum</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                inputMode="numeric"
-                                pattern="[0-9]*"
-                                placeholder="Ex: 2500"
-                                {...field}
-                                value={field.value || ""}
-                                onChange={(e) => {
-                                  const value = e.target.value.replace(
-                                    /[^0-9]/g,
-                                    ""
-                                  );
-                                  field.onChange(value);
-                                }}
+                        <RadioGroup
+                          onValueChange={handleContractTypeChange}
+                          defaultValue={field.value}
+                          className="flex flex-wrap gap-2"
+                        >
+                          {CONTRACT_TYPES.map((type) => (
+                            <div key={type.id} className="relative">
+                              <RadioGroupItem
+                                value={type.id}
+                                id={type.id}
+                                className="peer sr-only"
                               />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                              <Label
+                                htmlFor={type.id}
+                                className={cn(
+                                  "inline-flex items-center gap-2 cursor-pointer rounded-md border px-3 py-1.5 text-sm",
+                                  "hover:border-primaryHex-500 hover:bg-primaryHex-50/50",
+                                  field.value === type.id
+                                    ? "border-primaryHex-500 bg-primaryHex-50 text-primaryHex-900"
+                                    : "border-input bg-background",
+                                  "transition-all duration-150 ease-in-out"
+                                )}
+                              >
+                                <div className="relative w-3.5 h-3.5">
+                                  <Plus
+                                    className={cn(
+                                      "absolute inset-0 h-3.5 w-3.5 text-muted-foreground",
+                                      field.value === type.id
+                                        ? "opacity-0"
+                                        : "opacity-100",
+                                      "transition-opacity"
+                                    )}
+                                  />
+                                  <Check
+                                    className={cn(
+                                      "absolute inset-0 h-3.5 w-3.5 text-primaryHex-500",
+                                      field.value === type.id
+                                        ? "opacity-100"
+                                        : "opacity-0",
+                                      "transition-opacity"
+                                    )}
+                                  />
+                                </div>
+                                <span className="text-sm font-medium leading-none">
+                                  {type.label}
+                                </span>
+                              </Label>
+                            </div>
+                          ))}
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                      {form.watch("displayType") ===
-                        SalaryDisplayType.RANGE && (
+                {form.watch("contractType") === ContractType.INTERIM && (
+                  <ContractDurationDetails
+                    form={form}
+                    type="interim"
+                    label="Quelle est la durée de la mission ?"
+                  />
+                )}
+
+                {form.watch("contractType") === ContractType.CDD && (
+                  <ContractDurationDetails
+                    form={form}
+                    type="cdd"
+                    label="Quelle est la durée du CDD ?"
+                  />
+                )}
+
+                {form.watch("contractType") === ContractType.INTERNSHIP && (
+                  <ContractDurationDetails
+                    form={form}
+                    type="internship"
+                    label="Quelle est la durée du stage ?"
+                  />
+                )}
+
+                {form.watch("contractType") === ContractType.PART_TIME && (
+                  <PartTimeDetails form={form} />
+                )}
+              </div>
+
+              <Separator className="my-6" />
+
+              {/* Salary Section */}
+              <div className="space-y-6">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-semibold text-lg text-foreground">
+                    Salaire
+                  </h3>
+                  <span className="text-sm text-muted-foreground">
+                    (Optionnel)
+                  </span>
+                </div>
+                <FormField
+                  control={form.control}
+                  name="displayType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Afficher les salaires par</FormLabel>
+                      <Select
+                        onValueChange={handleDisplayTypeChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Sélectionnez le type d'affichage" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {SALARY_DISPLAY_TYPES.map((type) => (
+                            <SelectItem key={type.value} value={type.value}>
+                              {type.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {form.watch("displayType") &&
+                  form.watch("displayType") !==
+                    SalaryDisplayType.NEGOTIABLE && (
+                    <>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                           control={form.control}
-                          name="maxSalary"
+                          name="minSalary"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Maximum</FormLabel>
+                              <FormLabel>Minimum</FormLabel>
                               <FormControl>
                                 <Input
                                   type="text"
                                   inputMode="numeric"
                                   pattern="[0-9]*"
-                                  placeholder="Ex: 3500"
+                                  placeholder="Ex: 2500"
                                   {...field}
                                   value={field.value || ""}
                                   onChange={(e) => {
@@ -566,41 +547,72 @@ export function JobInformationStep() {
                             </FormItem>
                           )}
                         />
-                      )}
-                    </div>
 
-                    <FormField
-                      control={form.control}
-                      name="frequency"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Fréquence</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            value={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Sélectionnez la fréquence" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {SALARY_FREQUENCIES.map((frequency) => (
-                                <SelectItem
-                                  key={frequency.value}
-                                  value={frequency.value}
-                                >
-                                  {frequency.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </>
-                )}
+                        {form.watch("displayType") ===
+                          SalaryDisplayType.RANGE && (
+                          <FormField
+                            control={form.control}
+                            name="maxSalary"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Maximum</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="text"
+                                    inputMode="numeric"
+                                    pattern="[0-9]*"
+                                    placeholder="Ex: 3500"
+                                    {...field}
+                                    value={field.value || ""}
+                                    onChange={(e) => {
+                                      const value = e.target.value.replace(
+                                        /[^0-9]/g,
+                                        ""
+                                      );
+                                      field.onChange(value);
+                                    }}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        )}
+                      </div>
+
+                      <FormField
+                        control={form.control}
+                        name="frequency"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Fréquence</FormLabel>
+                            <Select
+                              onValueChange={field.onChange}
+                              value={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Sélectionnez la fréquence" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {SALARY_FREQUENCIES.map((frequency) => (
+                                  <SelectItem
+                                    key={frequency.value}
+                                    value={frequency.value}
+                                  >
+                                    {frequency.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </>
+                  )}
+              </div>
             </CardContent>
           </Card>
         </form>
