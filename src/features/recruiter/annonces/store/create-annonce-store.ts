@@ -101,11 +101,11 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
         return annonceType !== null;
       case "details":
         if (annonceType === "new") {
-          // Validate base information is complete
+          // Validate base information is complete and not empty
           return (
-            !!baseInformation.jobTitle &&
-            !!baseInformation.numberOfPeople &&
-            !!baseInformation.promotionLocation
+            !!baseInformation.jobTitle?.trim() &&
+            !!baseInformation.numberOfPeople?.trim() &&
+            !!baseInformation.promotionLocation?.trim()
           );
         }
         return true;

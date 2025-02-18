@@ -114,34 +114,51 @@ export function BaseInformationStep() {
   const form = useForm<BaseInformationForm>({
     resolver: zodResolver(formSchema),
     defaultValues: baseInformation,
+    mode: "onChange",
   });
 
   // Update store when form values change
   const { watch } = form;
   useEffect(() => {
     const subscription = watch((value) => {
-      if (value.jobTitle && value.numberOfPeople && value.promotionLocation) {
-        setBaseInformation(value as BaseInformationForm);
-      }
+      // Always update the store with current values
+      setBaseInformation(value as BaseInformationForm);
     });
     return () => subscription.unsubscribe();
   }, [watch, setBaseInformation]);
+
+  // Handle form submission
+  const onSubmit = (data: BaseInformationForm) => {
+    setBaseInformation(data);
+  };
 
   return (
     <Card>
       <CardContent className="pt-6">
         <Form {...form}>
-          <form className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="jobTitle"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Intitulé du poste</FormLabel>
+                  <FormLabel className="flex items-center gap-1">
+                    Intitulé du poste
+                    <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="ex: Développeur Full Stack"
                       {...field}
+                      onBlur={(e) => {
+                        field.onBlur();
+                        if (!e.target.value) {
+                          form.setError("jobTitle", {
+                            type: "required",
+                            message: "L'intitulé du poste est requis",
+                          });
+                        }
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
@@ -154,9 +171,20 @@ export function BaseInformationStep() {
               name="numberOfPeople"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nombre de personnes à recruter</FormLabel>
+                  <FormLabel className="flex items-center gap-1">
+                    Nombre de personnes à recruter
+                    <span className="text-destructive">*</span>
+                  </FormLabel>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      if (!value) {
+                        form.setError("numberOfPeople", {
+                          type: "required",
+                          message: "Le nombre de personnes est requis",
+                        });
+                      }
+                    }}
                     defaultValue={field.value}
                   >
                     <FormControl>
@@ -182,7 +210,10 @@ export function BaseInformationStep() {
               name="promotionLocation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Ville de l&apos;offre d&apos;emploi</FormLabel>
+                  <FormLabel className="flex items-center gap-1">
+                    Ville de l&apos;offre d&apos;emploi
+                    <span className="text-destructive">*</span>
+                  </FormLabel>
                   <Popover open={openCity} onOpenChange={setOpenCity}>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -190,7 +221,20 @@ export function BaseInformationStep() {
                           variant="outline"
                           role="combobox"
                           aria-expanded={openCity}
-                          className="w-full justify-between"
+                          className={cn(
+                            "w-full justify-between",
+                            !field.value &&
+                              form.formState.isSubmitted &&
+                              "border-destructive"
+                          )}
+                          onClick={() => {
+                            if (!field.value && form.formState.isSubmitted) {
+                              form.setError("promotionLocation", {
+                                type: "required",
+                                message: "La ville est requise",
+                              });
+                            }
+                          }}
                         >
                           {field.value
                             ? allCities.find(
