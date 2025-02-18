@@ -35,8 +35,12 @@ interface BaseInformation {
   promotionLocation: string;
 }
 
-interface JobTypeInformation {
+export interface JobTypeInformation {
   contractType: string;
+  partTimeDetails?: {
+    scheduleType?: 'fixed' | 'range' | 'maximum' | 'minimum';
+    hoursPerWeek?: string;
+  };
 }
 
 interface CreateAnnonceState {
@@ -69,6 +73,10 @@ const INITIAL_BASE_INFORMATION: BaseInformation = {
 
 const INITIAL_JOB_TYPE_INFORMATION: JobTypeInformation = {
   contractType: "",
+  partTimeDetails: {
+    scheduleType: "fixed",
+    hoursPerWeek: "",
+  },
 };
 
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
