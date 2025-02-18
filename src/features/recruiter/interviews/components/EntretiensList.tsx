@@ -187,7 +187,7 @@ export function EntretiensList({
         )}
 
       {/* Interviews List */}
-      <ScrollArea className="h-[500px] p-2">
+      <ScrollArea className="h-[580px] p-2">
         <div className="divide-y">
           {filteredEntretiens.map((entretien) => {
             const badgeConfig = getBadgeConfig(entretien);

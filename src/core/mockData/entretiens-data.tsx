@@ -142,6 +142,30 @@ export const MOCK_ENTRETIENS: Entretien[] = [
     city: "Fès",
     status: "upcoming",
   },
+  {
+    id: "12",
+    type: "Téléphone",
+    candidatName: "Omar EL HADDADI",
+    isConfirmed: true,
+    date: getRelativeDate(5, 10),
+    startTime: "10:00",
+    endTime: "11:00",
+    poste: "Data Analyst",
+    city: "Fès",
+    status: "upcoming",
+  },
+  {
+    id: "13",
+    type: "Téléphone",
+    candidatName: "Omar EL HADDADI",
+    isConfirmed: true,
+    date: getRelativeDate(5, 10),
+    startTime: "10:00",
+    endTime: "11:00",
+    poste: "Data Analyst",
+    city: "Fès",
+    status: "upcoming",
+  },
 
   // Pending interviews
   {
