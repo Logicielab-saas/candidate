@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { AnnonceTabs } from "./AnnonceTabs";
 import { AnnonceSelectFilter } from "./AnnonceSelectFilter";
 import { AnnonceDataTable } from "./AnnonceDataTable";
+import Link from "next/link";
 
 // TODO: Move this to a proper data fetching solution
 const data = [
@@ -39,9 +39,12 @@ type TabValue = "active" | "closed";
 export function AnnoncesContainer() {
   const [activeTab, setActiveTab] = useState<TabValue>("active");
 
-  const filteredData = activeTab === "active"
-    ? data.filter(annonce => ["Ouverte", "Suspendue"].includes(annonce.statutDeLAnnonce))
-    : data.filter(annonce => annonce.statutDeLAnnonce === "Fermée");
+  const filteredData =
+    activeTab === "active"
+      ? data.filter((annonce) =>
+          ["Ouverte", "Suspendue"].includes(annonce.statutDeLAnnonce)
+        )
+      : data.filter((annonce) => annonce.statutDeLAnnonce === "Fermée");
 
   return (
     <div className="flex flex-col gap-6">
@@ -49,7 +52,12 @@ export function AnnoncesContainer() {
         <div className="flex-1">
           <AnnonceTabs activeTab={activeTab} onTabChange={setActiveTab} />
         </div>
-        <Button className="mt-2">Publier une annonce</Button>
+        <Link
+          href="/recruiter/annonces/create-annonce"
+          className="mt-2 bg-primaryHex-500 text-white px-4 py-2 rounded-md"
+        >
+          Publier une annonce
+        </Link>
       </div>
 
       <AnnonceSelectFilter />
