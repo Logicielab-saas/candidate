@@ -2,7 +2,7 @@
 
 import { useCreateAnnonceStore } from "../../store/create-annonce-store";
 import { CreateAnnonceType } from "./CreateAnnonceType";
-import { CreateNewAnnonce } from "./CreateNewAnnonce";
+import { BaseInformationStep } from "./steps/BaseInformationStep";
 
 export function CreateAnnonceSteps() {
   const { currentStep, annonceType } = useCreateAnnonceStore();
@@ -12,9 +12,8 @@ export function CreateAnnonceSteps() {
       case "type":
         return <CreateAnnonceType />;
       case "details":
-        // If annonceType is "new", show CreateNewAnnonce
         if (annonceType === "new") {
-          return <CreateNewAnnonce />;
+          return <BaseInformationStep />;
         }
         // We'll implement the existing annonce flow later
         return <div>Existing Annonce Details Step</div>;

@@ -38,6 +38,8 @@ import {
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { FormStepsNavigation } from "@/components/shared/FormStepsNavigation";
+import { HeaderSectionStepsForm } from "@/components/shared/HeaderSectionStepsForm";
 
 const formSchema = z.object({
   jobTitle: z.string().min(1, "L'intitulé du poste est requis"),
@@ -108,7 +110,13 @@ const allCities = citiesByRegion.flatMap((region) =>
 );
 
 export function BaseInformationStep() {
-  const { baseInformation, setBaseInformation } = useCreateAnnonceStore();
+  const {
+    baseInformation,
+    setBaseInformation,
+    previousStep,
+    nextStep,
+    canProceed,
+  } = useCreateAnnonceStore();
   const [openCity, setOpenCity] = useState(false);
 
   const form = useForm<BaseInformationForm>({
@@ -133,164 +141,176 @@ export function BaseInformationStep() {
   };
 
   return (
-    <Card>
-      <CardContent className="pt-6">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="jobTitle"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center gap-1">
-                    Intitulé du poste
-                    <span className="text-destructive">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="ex: Développeur Full Stack"
-                      {...field}
-                      onBlur={(e) => {
-                        field.onBlur();
-                        if (!e.target.value) {
-                          form.setError("jobTitle", {
+    <div className="w-full max-w-3xl mx-auto space-y-8">
+      <HeaderSectionStepsForm
+        title="Nouvelle annonce"
+        description="Remplissez les informations de base de votre annonce"
+      />
+
+      <Card>
+        <CardContent className="pt-6">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="jobTitle"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-1">
+                      Intitulé du poste
+                      <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="ex: Développeur Full Stack"
+                        {...field}
+                        onBlur={(e) => {
+                          field.onBlur();
+                          if (!e.target.value) {
+                            form.setError("jobTitle", {
+                              type: "required",
+                              message: "L'intitulé du poste est requis",
+                            });
+                          }
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="numberOfPeople"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-1">
+                      Nombre de personnes à recruter
+                      <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        if (!value) {
+                          form.setError("numberOfPeople", {
                             type: "required",
-                            message: "L'intitulé du poste est requis",
+                            message: "Le nombre de personnes est requis",
                           });
                         }
                       }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="numberOfPeople"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center gap-1">
-                    Nombre de personnes à recruter
-                    <span className="text-destructive">*</span>
-                  </FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                      if (!value) {
-                        form.setError("numberOfPeople", {
-                          type: "required",
-                          message: "Le nombre de personnes est requis",
-                        });
-                      }
-                    }}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Sélectionnez le nombre de personnes" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {numberOfPeopleOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="promotionLocation"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center gap-1">
-                    Ville de l&apos;offre d&apos;emploi
-                    <span className="text-destructive">*</span>
-                  </FormLabel>
-                  <Popover open={openCity} onOpenChange={setOpenCity}>
-                    <PopoverTrigger asChild>
+                      defaultValue={field.value}
+                    >
                       <FormControl>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          aria-expanded={openCity}
-                          className={cn(
-                            "w-full justify-between",
-                            !field.value &&
-                              form.formState.isSubmitted &&
-                              "border-destructive"
-                          )}
-                          onClick={() => {
-                            if (!field.value && form.formState.isSubmitted) {
-                              form.setError("promotionLocation", {
-                                type: "required",
-                                message: "La ville est requise",
-                              });
-                            }
-                          }}
-                        >
-                          {field.value
-                            ? allCities.find(
-                                (city) => city.value === field.value
-                              )?.label
-                            : "Sélectionnez une ville"}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sélectionnez le nombre de personnes" />
+                        </SelectTrigger>
                       </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-full p-0">
-                      <Command>
-                        <CommandInput placeholder="Rechercher une ville..." />
-                        <CommandList>
-                          <CommandEmpty>Aucune ville trouvée.</CommandEmpty>
-                          {citiesByRegion.map((region) => (
-                            <CommandGroup
-                              key={region.region}
-                              heading={region.region}
-                            >
-                              {region.cities.map((city) => (
-                                <CommandItem
-                                  key={city.value}
-                                  value={city.value}
-                                  onSelect={(currentValue) => {
-                                    form.setValue(
-                                      "promotionLocation",
-                                      currentValue
-                                    );
-                                    setOpenCity(false);
-                                  }}
-                                >
-                                  <Check
-                                    className={cn(
-                                      "mr-2 h-4 w-4",
-                                      field.value === city.value
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    )}
-                                  />
-                                  {city.label}
-                                </CommandItem>
-                              ))}
-                            </CommandGroup>
-                          ))}
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+                      <SelectContent>
+                        {numberOfPeopleOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="promotionLocation"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-1">
+                      Ville de l&apos;offre d&apos;emploi
+                      <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <Popover open={openCity} onOpenChange={setOpenCity}>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={openCity}
+                            className={cn(
+                              "w-full justify-between",
+                              !field.value &&
+                                form.formState.isSubmitted &&
+                                "border-destructive"
+                            )}
+                            onClick={() => {
+                              if (!field.value && form.formState.isSubmitted) {
+                                form.setError("promotionLocation", {
+                                  type: "required",
+                                  message: "La ville est requise",
+                                });
+                              }
+                            }}
+                          >
+                            {field.value
+                              ? allCities.find(
+                                  (city) => city.value === field.value
+                                )?.label
+                              : "Sélectionnez une ville"}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-full p-0">
+                        <Command>
+                          <CommandInput placeholder="Rechercher une ville..." />
+                          <CommandList>
+                            <CommandEmpty>Aucune ville trouvée.</CommandEmpty>
+                            {citiesByRegion.map((region) => (
+                              <CommandGroup
+                                key={region.region}
+                                heading={region.region}
+                              >
+                                {region.cities.map((city) => (
+                                  <CommandItem
+                                    key={city.value}
+                                    value={city.value}
+                                    onSelect={(currentValue) => {
+                                      form.setValue(
+                                        "promotionLocation",
+                                        currentValue
+                                      );
+                                      setOpenCity(false);
+                                    }}
+                                  >
+                                    <Check
+                                      className={cn(
+                                        "mr-2 h-4 w-4",
+                                        field.value === city.value
+                                          ? "opacity-100"
+                                          : "opacity-0"
+                                      )}
+                                    />
+                                    {city.label}
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            ))}
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+      <FormStepsNavigation
+        onPrevious={previousStep}
+        onNext={nextStep}
+        canProceed={canProceed()}
+      />
+    </div>
   );
 }
