@@ -1,13 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { mockCandidates } from "@/core/mockData/candidates-data";
-import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { useState, useMemo } from "react";
 import { ContactInterfaceChat } from "./ContactInterfaceChat";
-import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useQueryState, parseAsString } from "nuqs";
 
 interface CandidatesListProps {
   currentCandidateId?: string;
@@ -23,7 +22,7 @@ export function CandidatesList({
   const [selectedChatCandidate, setSelectedChatCandidate] = useState<
     string | null
   >(null);
-  const router = useRouter();
+  const [_candidateId, setCandidateId] = useQueryState("id", parseAsString);
 
   // Filter candidates based on source
   const filteredCandidates = useMemo(() => {
@@ -47,7 +46,7 @@ export function CandidatesList({
 
     const candidate = filteredCandidates[newIndex];
     if (candidate) {
-      router.push(`/recruiter/candidates/details?id=${candidate.nom}`);
+      setCandidateId(candidate.nom);
     }
   };
 
@@ -102,10 +101,12 @@ export function CandidatesList({
                     : "hover:bg-accent/50"
                 }`}
               >
-                <Link
-                  href={`/recruiter/candidates/details?id=${candidate.nom}`}
+                <Button
+                  variant="ghost"
+                  className="w-full p-0 h-auto hover:bg-transparent text-start"
+                  onClick={() => setCandidateId(candidate.nom)}
                 >
-                  <div className="p-3">
+                  <div className="p-3 w-full">
                     <div className="flex flex-col gap-1">
                       <span
                         className={`font-medium ${
@@ -134,7 +135,7 @@ export function CandidatesList({
                       </div>
                     </div>
                   </div>
-                </Link>
+                </Button>
                 {candidate.activite.status === "Nouvelle candidature" &&
                   !source && (
                     <div className="px-3 pb-3 space-y-1.5">
