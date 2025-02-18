@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type AnnonceCreationStep = "type" | "details" | "preview";
+export type AnnonceCreationStep = "type" | "base-information" | "job-type" | "salary" | "description-annonce" | "preview";
 
 export const STEPS_CONFIG = [
   {
@@ -8,8 +8,20 @@ export const STEPS_CONFIG = [
     title: "Type d'annonce",
   },
   {
-    id: "details" as const,
-    title: "Détails",
+    id: "base-information" as const,
+    title: "Informations de base",
+  },
+  {
+    id: "job-type" as const,
+    title: "Type de poste",
+  },
+  {
+    id: "salary" as const,
+    title: "Salaire",
+  },
+  {
+    id: "description-annonce" as const,
+    title: "Description",
   },
   {
     id: "preview" as const,
@@ -23,6 +35,10 @@ interface BaseInformation {
   promotionLocation: string;
 }
 
+interface JobTypeInformation {
+  contractType: string[];
+}
+
 interface CreateAnnonceState {
   // Step Management
   currentStep: AnnonceCreationStep;
@@ -30,10 +46,12 @@ interface CreateAnnonceState {
 
   // Form Data
   baseInformation: BaseInformation;
+  jobTypeInformation: JobTypeInformation;
 
   // Actions
   setAnnonceType: (type: "existing" | "new" | null) => void;
   setBaseInformation: (data: BaseInformation) => void;
+  setJobTypeInformation: (data: JobTypeInformation) => void;
   nextStep: () => void;
   previousStep: () => void;
   canProceed: () => boolean;
@@ -49,11 +67,16 @@ const INITIAL_BASE_INFORMATION: BaseInformation = {
   promotionLocation: "",
 };
 
+const INITIAL_JOB_TYPE_INFORMATION: JobTypeInformation = {
+  contractType: [],
+};
+
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   // Initial State
   currentStep: "type",
   annonceType: null,
   baseInformation: INITIAL_BASE_INFORMATION,
+  jobTypeInformation: INITIAL_JOB_TYPE_INFORMATION,
 
   // Actions
   setAnnonceType: (type) => {
@@ -64,6 +87,10 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   setBaseInformation: (data) => {
     set({ baseInformation: data });
     console.log("Base Information Updated:", data);
+  },
+
+  setJobTypeInformation: (data) => {
+    set({ jobTypeInformation: data });
   },
 
   nextStep: () => {
@@ -94,14 +121,13 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   },
 
   canProceed: () => {
-    const { currentStep, annonceType, baseInformation } = get();
+    const { currentStep, annonceType, baseInformation, jobTypeInformation } = get();
 
     switch (currentStep) {
       case "type":
         return annonceType !== null;
-      case "details":
+      case "base-information":
         if (annonceType === "new") {
-          // Validate base information is complete and not empty
           return (
             !!baseInformation.jobTitle?.trim() &&
             !!baseInformation.numberOfPeople?.trim() &&
@@ -109,6 +135,12 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
           );
         }
         return true;
+      case "job-type":
+        return jobTypeInformation.contractType.length > 0;
+      case "salary":
+        return true; // Will be implemented later
+      case "description-annonce":
+        return true; // Will be implemented later
       case "preview":
         return true;
       default:
@@ -121,6 +153,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
       currentStep: "type",
       annonceType: null,
       baseInformation: INITIAL_BASE_INFORMATION,
+      jobTypeInformation: INITIAL_JOB_TYPE_INFORMATION,
     });
   },
 }));
