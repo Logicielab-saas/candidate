@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { JobTypeInformation } from "../common";
 
 export type AnnonceCreationStep = "type" | "base-information" | "job-type" | "salary" | "description-annonce" | "preview";
 
@@ -35,22 +36,6 @@ interface BaseInformation {
   promotionLocation: string;
 }
 
-export interface JobTypeInformation {
-  contractType: string;
-  partTimeDetails?: {
-    scheduleType?: 'fixed' | 'range' | 'maximum' | 'minimum';
-    hoursPerWeek?: string;
-  };
-  interimDetails?: {
-    duration: string;
-    unit: 'days' | 'weeks' | 'months';
-  };
-  cddDetails?: {
-    duration: string;
-    unit: 'days' | 'weeks' | 'months';
-  };
-}
-
 interface CreateAnnonceState {
   // Step Management
   currentStep: AnnonceCreationStep;
@@ -81,11 +66,6 @@ const INITIAL_BASE_INFORMATION: BaseInformation = {
 
 const INITIAL_JOB_TYPE_INFORMATION: JobTypeInformation = {
   contractType: "",
-  partTimeDetails: {
-    scheduleType: "fixed",
-    hoursPerWeek: "",
-  },
-  interimDetails: undefined,
 };
 
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({

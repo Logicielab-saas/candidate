@@ -12,27 +12,32 @@ import {
 } from "@/components/ui/form";
 import { Card, CardContent } from "@/components/ui/card";
 import { useCreateAnnonceStore } from "../../../store/create-annonce-store";
-import type { JobTypeInformation } from "../../../store/create-annonce-store";
-import { useEffect } from "react";
 import { HeaderSectionStepsForm } from "@/components/shared/HeaderSectionStepsForm";
 import { FormStepsNavigation } from "@/components/shared/FormStepsNavigation";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Check, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { formSchema, JobTypeForm } from "./job-type/types";
+import {
+  ContractType,
+  JobTypeForm,
+  JobTypeInformation,
+  jobTypeFormSchema,
+  ContractDurationUnit,
+} from "../../../common";
 import { ContractDurationDetails } from "./job-type/ContractDurationDetails";
 import { PartTimeDetails } from "./job-type/PartTimeDetails";
+import { useEffect } from "react";
 
 const CONTRACT_TYPES = [
-  { id: "full-time", label: "Temps plein" },
-  { id: "part-time", label: "Temps partiel" },
-  { id: "cdi", label: "CDI" },
-  { id: "interim", label: "Intérim" },
-  { id: "cdd", label: "CDD" },
-  { id: "freelance", label: "Profession libérale" },
-  { id: "internship", label: "Stage" },
-  { id: "apprenticeship", label: "Apprentissage/Alternance" },
+  { id: ContractType.FULL_TIME, label: "Temps plein" },
+  { id: ContractType.PART_TIME, label: "Temps partiel" },
+  { id: ContractType.CDI, label: "CDI" },
+  { id: ContractType.INTERIM, label: "Intérim" },
+  { id: ContractType.CDD, label: "CDD" },
+  { id: ContractType.FREELANCE, label: "Profession libérale" },
+  { id: ContractType.INTERNSHIP, label: "Stage" },
+  { id: ContractType.APPRENTICESHIP, label: "Apprentissage/Alternance" },
 ];
 
 export function JobTypeStep() {
@@ -45,7 +50,7 @@ export function JobTypeStep() {
   } = useCreateAnnonceStore();
 
   const form = useForm<JobTypeForm>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(jobTypeFormSchema),
     defaultValues: {
       contractType: jobTypeInformation.contractType,
       partTimeDetails: jobTypeInformation.partTimeDetails,
@@ -107,23 +112,23 @@ export function JobTypeStep() {
   const handleContractTypeChange = (value: string) => {
     console.log("Contract Type Selected:", value);
     form.setValue("contractType", value);
-    if (value === "part-time") {
+    if (value === ContractType.PART_TIME) {
       console.log("Clearing previous details");
       form.setValue("interimDetails", undefined);
       form.setValue("cddDetails", undefined);
-    } else if (value === "interim") {
+    } else if (value === ContractType.INTERIM) {
       form.setValue("partTimeDetails", undefined);
       form.setValue("cddDetails", undefined);
       form.setValue("interimDetails", {
         duration: "",
-        unit: "days",
+        unit: ContractDurationUnit.DAYS,
       });
-    } else if (value === "cdd") {
+    } else if (value === ContractType.CDD) {
       form.setValue("partTimeDetails", undefined);
       form.setValue("interimDetails", undefined);
       form.setValue("cddDetails", {
         duration: "",
-        unit: "months",
+        unit: ContractDurationUnit.MONTHS,
       });
     } else {
       console.log("Clearing Details");
@@ -217,7 +222,7 @@ export function JobTypeStep() {
                 )}
               />
 
-              {form.watch("contractType") === "interim" && (
+              {form.watch("contractType") === ContractType.INTERIM && (
                 <ContractDurationDetails
                   form={form}
                   type="interim"
@@ -225,7 +230,7 @@ export function JobTypeStep() {
                 />
               )}
 
-              {form.watch("contractType") === "cdd" && (
+              {form.watch("contractType") === ContractType.CDD && (
                 <ContractDurationDetails
                   form={form}
                   type="cdd"
@@ -233,7 +238,7 @@ export function JobTypeStep() {
                 />
               )}
 
-              {form.watch("contractType") === "part-time" && (
+              {form.watch("contractType") === ContractType.PART_TIME && (
                 <PartTimeDetails form={form} />
               )}
             </form>

@@ -14,12 +14,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { UseFormReturn } from "react-hook-form";
-import { JobTypeForm } from "./types";
+import { ContractDurationUnit, JobTypeForm } from "../../../../common";
 
 const DURATION_UNITS = [
-  { value: "days", label: "Jour(s)" },
-  { value: "weeks", label: "Semaine(s)" },
-  { value: "months", label: "Mois" },
+  { value: ContractDurationUnit.DAYS, label: "Jour(s)" },
+  { value: ContractDurationUnit.WEEKS, label: "Semaine(s)" },
+  { value: ContractDurationUnit.MONTHS, label: "Mois" },
 ] as const;
 
 interface ContractDurationDetailsProps {
@@ -40,7 +40,7 @@ export function ContractDurationDetails({
     form.setValue(`${fieldName}.duration`, value);
   };
 
-  const handleUnitChange = (value: "days" | "weeks" | "months") => {
+  const handleUnitChange = (value: ContractDurationUnit) => {
     console.log(`${type} Unit Changed:`, value);
     form.setValue(`${fieldName}.unit`, value);
   };

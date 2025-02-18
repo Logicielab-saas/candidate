@@ -14,13 +14,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { UseFormReturn } from "react-hook-form";
-import { JobTypeForm } from "./types";
+import { ContractScheduleType, JobTypeForm } from "../../../../common";
 
 const SCHEDULE_TYPES = [
-  { value: "fixed", label: "Heures fixes" },
-  { value: "range", label: "Plage" },
-  { value: "maximum", label: "Maximum" },
-  { value: "minimum", label: "Minimum" },
+  { value: ContractScheduleType.FIXED, label: "Heures fixes" },
+  { value: ContractScheduleType.RANGE, label: "Plage" },
+  { value: ContractScheduleType.MAXIMUM, label: "Maximum" },
+  { value: ContractScheduleType.MINIMUM, label: "Minimum" },
 ] as const;
 
 interface PartTimeDetailsProps {
@@ -28,9 +28,7 @@ interface PartTimeDetailsProps {
 }
 
 export function PartTimeDetails({ form }: PartTimeDetailsProps) {
-  const handleScheduleTypeChange = (
-    value: "fixed" | "range" | "maximum" | "minimum"
-  ) => {
+  const handleScheduleTypeChange = (value: ContractScheduleType) => {
     console.log("Schedule Type Changed:", value);
     if (!form.getValues("partTimeDetails")) {
       form.setValue("partTimeDetails", {});
