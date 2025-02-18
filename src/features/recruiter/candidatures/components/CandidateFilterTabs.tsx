@@ -7,6 +7,8 @@ import { Fragment } from "react";
 
 interface CandidateTabsProps {
   className?: string;
+  currentTab: string;
+  onTabChange: (value: string) => void;
 }
 
 // TODO: Replace with actual data from API
@@ -22,10 +24,14 @@ const tabsData = [
   { id: 9, value: "adecider", label: "A décider", count: 10 },
 ];
 
-export function CandidateFilterTabs({ className }: CandidateTabsProps) {
+export function CandidateFilterTabs({
+  className,
+  currentTab,
+  onTabChange,
+}: CandidateTabsProps) {
   return (
     <div className={cn("w-full", className)}>
-      <Tabs defaultValue="all">
+      <Tabs value={currentTab} onValueChange={onTabChange}>
         <div className="w-full border-secondaryHex-200 dark:border-secondaryHex-800">
           <ScrollArea className="w-full">
             <TabsList className="flex h-12 w-fit items-center gap-8 bg-transparent p-0">

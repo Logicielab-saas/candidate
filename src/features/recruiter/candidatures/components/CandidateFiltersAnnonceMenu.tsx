@@ -26,8 +26,13 @@ import {
 import { MultiSelect } from "@/components/ui/multi-select";
 import { useState } from "react";
 
+interface CandidateFiltersAnnonceMenuProps {
+  selectedAnnonceId: string | null;
+  onAnnonceChange: (id: string | null) => void;
+}
+
 // TODO: Replace with actual annonces data from API
-const mockAnnonces = [
+const mockAnnonces: Annonce[] = [
   {
     id: "1",
     value: "social-media-manager",
@@ -99,12 +104,16 @@ interface Annonce {
   city: string;
 }
 
-export function CandidateFiltersMenu() {
+export function CandidateFiltersAnnonceMenu({
+  selectedAnnonceId,
+  onAnnonceChange,
+}: CandidateFiltersAnnonceMenuProps) {
   const [open, setOpen] = useState(false);
-  const [selectedAnnonce, setSelectedAnnonce] = useState<Annonce | null>(null);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState("all");
+
+  const selectedAnnonce = mockAnnonces.find((a) => a.id === selectedAnnonceId);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -211,8 +220,8 @@ export function CandidateFiltersMenu() {
                   key={annonce.value}
                   value={annonce.value}
                   onSelect={() => {
-                    setSelectedAnnonce(
-                      selectedAnnonce?.id === annonce.id ? null : annonce
+                    onAnnonceChange(
+                      selectedAnnonceId === annonce.id ? null : annonce.id
                     );
                     setOpen(false);
                   }}
@@ -230,7 +239,7 @@ export function CandidateFiltersMenu() {
                     <Check
                       className={cn(
                         "ml-auto h-4 w-4",
-                        selectedAnnonce?.id === annonce.id
+                        selectedAnnonceId === annonce.id
                           ? "opacity-100"
                           : "opacity-0"
                       )}

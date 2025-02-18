@@ -8,7 +8,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+
+interface CandidateFiltersProps {
+  selectedLocations: string[];
+  onLocationsChange: (locations: string[]) => void;
+  sortBy: string;
+  onSortChange: (value: string) => void;
+}
 
 const orderByOptions = [
   { value: "newest", label: "les plus récents en premier" },
@@ -31,12 +37,15 @@ const locationOptions = [
   { value: "ifrane", label: "ifrane" },
 ];
 
-export function CandidateFilters() {
-  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
-
+export function CandidateFilters({
+  selectedLocations,
+  onLocationsChange,
+  sortBy,
+  onSortChange,
+}: CandidateFiltersProps) {
   return (
     <div className="flex items-center justify-start w-full gap-4">
-      <Select defaultValue="newest">
+      <Select value={sortBy} onValueChange={onSortChange}>
         <SelectTrigger className="w-[350px]">
           <div className="flex items-center gap-2">
             <span className="text-foreground font-medium">Trier par:</span>
@@ -56,7 +65,7 @@ export function CandidateFilters() {
         options={locationOptions}
         placeholder="Villes"
         value={selectedLocations}
-        onValueChange={setSelectedLocations}
+        onValueChange={onLocationsChange}
         className="h-8 w-[120px]"
       />
     </div>
