@@ -10,39 +10,46 @@ import {
   type FilterType,
   type SubFilterType,
 } from "@/core/mockData/entretiens-data";
-import { useRouter, useSearchParams } from "next/navigation";
 import { MOCK_ENTRETIENS } from "@/core/mockData/entretiens-data";
+import { useQueryState, parseAsString } from "nuqs";
 
 export default function EntretiensContainer() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  // Get all URL parameters
-  const currentEntretienId = searchParams.get("entretien");
-  const currentTab =
-    (searchParams.get("tab") as "Entretiens" | "Disponibilites") ||
-    "Entretiens";
-  const currentFilter =
-    (searchParams.get("filter") as FilterType) || "upcoming";
-  const currentSubFilter = searchParams.get(
-    "subFilter"
-  ) as SubFilterType | null;
+  // URL state management with nuqs
+  const [currentEntretienId, setCurrentEntretienId] = useQueryState(
+    "entretien",
+    parseAsString
+  );
+  const [currentTab, setCurrentTab] = useQueryState<
+    "Entretiens" | "Disponibilites"
+  >("tab", {
+    defaultValue: "Entretiens",
+    parse: (value: string | null) =>
+      value === "Disponibilites" ? "Disponibilites" : "Entretiens",
+    serialize: (value: "Entretiens" | "Disponibilites") => value,
+  });
+  const [currentFilter, setCurrentFilter] = useQueryState<FilterType>(
+    "filter",
+    {
+      defaultValue: "upcoming",
+      parse: (value: string | null) => (value as FilterType) || "upcoming",
+      serialize: (value: FilterType) => value,
+    }
+  );
+  const [currentSubFilter, setCurrentSubFilter] =
+    useQueryState<SubFilterType | null>("subFilter", {
+      defaultValue: null,
+      parse: (value: string | null) => value as SubFilterType | null,
+      serialize: (value: SubFilterType | null) => value || "",
+    });
 
   // States
-  const [activeTab, setActiveTab] = useState<"Entretiens" | "Disponibilites">(
-    currentTab
-  );
   const [selectedEntretien, setSelectedEntretien] = useState<Entretien | null>(
     null
-  );
-  const [activeFilter, setActiveFilter] = useState<FilterType>(currentFilter);
-  const [activeSubFilter, setActiveSubFilter] = useState<SubFilterType | null>(
-    currentSubFilter
   );
 
   // Effect to handle initial load and URL updates
   useEffect(() => {
-    if (activeTab !== "Entretiens") return;
+    if (currentTab !== "Entretiens") return;
 
     // If there's an ID in the URL, find that interview
     if (currentEntretienId) {
@@ -55,74 +62,54 @@ export default function EntretiensContainer() {
       }
     }
 
-    // If no ID in URL or ID not found, select first interview and update URL
+    // If no ID in URL or ID not found, select first interview
     if (MOCK_ENTRETIENS.length > 0) {
       const firstEntretien = MOCK_ENTRETIENS[0];
       setSelectedEntretien(firstEntretien);
-      const newParams = new URLSearchParams(searchParams);
-      newParams.set("entretien", firstEntretien.id);
-      router.push(`/recruiter/interviews?${newParams.toString()}`);
+      setCurrentEntretienId(firstEntretien.id);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentEntretienId, activeTab]);
+  }, [currentEntretienId, currentTab, setCurrentEntretienId]);
 
   // Handlers for state changes
   const handleTabChange = (tab: "Entretiens" | "Disponibilites") => {
-    setActiveTab(tab);
+    setCurrentTab(tab);
     // Reset all states
     setSelectedEntretien(null);
-    setActiveFilter("upcoming");
-    setActiveSubFilter(null);
-    // Update URL with only the tab parameter
-    router.push(`/recruiter/interviews?tab=${tab}`);
+    setCurrentFilter("upcoming");
+    setCurrentSubFilter(null);
+    setCurrentEntretienId(null);
   };
 
   const handleEntretienSelect = (entretien: Entretien) => {
     setSelectedEntretien(entretien);
-    // Preserve the current tab when updating entretien
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set("entretien", entretien.id);
-    router.push(`/recruiter/interviews?${newParams.toString()}`);
+    setCurrentEntretienId(entretien.id);
   };
 
   const handleFilterChange = (filter: FilterType) => {
-    setActiveFilter(filter);
-    setActiveSubFilter(null);
-    // Preserve the current tab when updating filter
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set("filter", filter);
-    newParams.delete("subFilter");
-    router.push(`/recruiter/interviews?${newParams.toString()}`);
+    setCurrentFilter(filter);
+    setCurrentSubFilter(null);
   };
 
   const handleSubFilterChange = (subFilter: SubFilterType | null) => {
-    setActiveSubFilter(subFilter);
-    // Preserve the current tab when updating subFilter
-    const newParams = new URLSearchParams(searchParams);
-    if (subFilter) {
-      newParams.set("subFilter", subFilter);
-    } else {
-      newParams.delete("subFilter");
-    }
-    router.push(`/recruiter/interviews?${newParams.toString()}`);
+    setCurrentSubFilter(subFilter);
   };
 
   return (
     <div className="">
       <EntretienTabs
-        activeTab={activeTab}
+        activeTab={currentTab}
         onTabChange={handleTabChange}
         className="mb-6"
       />
 
-      {activeTab === "Entretiens" && (
+      {currentTab === "Entretiens" && (
         <div className="grid grid-cols-1 xl:grid-cols-[400px_1fr] gap-6">
           <EntretiensList
             onEntretienSelect={handleEntretienSelect}
             selectedEntretienId={selectedEntretien?.id}
-            activeFilter={activeFilter}
+            activeFilter={currentFilter}
             onFilterChange={handleFilterChange}
-            activeSubFilter={activeSubFilter}
+            activeSubFilter={currentSubFilter}
             onSubFilterChange={handleSubFilterChange}
           />
           <div className="hidden xl:block">
@@ -132,7 +119,7 @@ export default function EntretiensContainer() {
           </div>
         </div>
       )}
-      {activeTab === "Disponibilites" && <DisponibilitesSettings />}
+      {currentTab === "Disponibilites" && <DisponibilitesSettings />}
     </div>
   );
 }
