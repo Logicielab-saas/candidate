@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { JobTypeInformation } from "../common";
+import { SalaryInformation } from "../common/interfaces/salary.interface";
 
 export type AnnonceCreationStep = "type" | "base-information" | "job-type" | "salary" | "description-annonce" | "preview";
 
@@ -44,11 +45,13 @@ interface CreateAnnonceState {
   // Form Data
   baseInformation: BaseInformation;
   jobTypeInformation: JobTypeInformation;
+  salaryInformation: SalaryInformation;
 
   // Actions
   setAnnonceType: (type: "existing" | "new" | null) => void;
   setBaseInformation: (data: BaseInformation) => void;
   setJobTypeInformation: (data: JobTypeInformation) => void;
+  setSalaryInformation: (data: SalaryInformation) => void;
   nextStep: () => void;
   previousStep: () => void;
   canProceed: () => boolean;
@@ -68,12 +71,15 @@ const INITIAL_JOB_TYPE_INFORMATION: JobTypeInformation = {
   contractType: "",
 };
 
+const INITIAL_SALARY_INFORMATION: SalaryInformation = {};
+
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   // Initial State
   currentStep: "type",
   annonceType: null,
   baseInformation: INITIAL_BASE_INFORMATION,
   jobTypeInformation: INITIAL_JOB_TYPE_INFORMATION,
+  salaryInformation: INITIAL_SALARY_INFORMATION,
 
   // Actions
   setAnnonceType: (type) => {
@@ -88,6 +94,11 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
 
   setJobTypeInformation: (data) => {
     set({ jobTypeInformation: data });
+  },
+
+  setSalaryInformation: (data) => {
+    set({ salaryInformation: data });
+    console.log("Salary Information Updated:", data);
   },
 
   nextStep: () => {
@@ -136,7 +147,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
       case "job-type":
         return !!jobTypeInformation.contractType;
       case "salary":
-        return true; // Will be implemented later
+        return true; // Salary is optional
       case "description-annonce":
         return true; // Will be implemented later
       case "preview":
@@ -152,6 +163,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
       annonceType: null,
       baseInformation: INITIAL_BASE_INFORMATION,
       jobTypeInformation: INITIAL_JOB_TYPE_INFORMATION,
+      salaryInformation: INITIAL_SALARY_INFORMATION,
     });
   },
 }));
