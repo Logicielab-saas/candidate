@@ -41,6 +41,12 @@ const formSchema = z.object({
         .optional(),
     })
     .optional(),
+  interimDetails: z
+    .object({
+      duration: z.string().min(1, "La durée est requise"),
+      unit: z.enum(["days", "weeks", "months"]),
+    })
+    .optional(),
 });
 
 type JobTypeForm = z.infer<typeof formSchema>;
@@ -63,6 +69,12 @@ const SCHEDULE_TYPES = [
   { value: "minimum", label: "Minimum" },
 ];
 
+const DURATION_UNITS = [
+  { value: "days", label: "Jour(s)" },
+  { value: "weeks", label: "Semaine(s)" },
+  { value: "months", label: "Mois" },
+];
+
 export function JobTypeStep() {
   const {
     jobTypeInformation,
@@ -77,6 +89,7 @@ export function JobTypeStep() {
     defaultValues: {
       contractType: jobTypeInformation.contractType,
       partTimeDetails: jobTypeInformation.partTimeDetails,
+      interimDetails: jobTypeInformation.interimDetails,
     },
     mode: "onChange",
   });
@@ -94,6 +107,15 @@ export function JobTypeStep() {
                 hoursPerWeek: value.partTimeDetails.hoursPerWeek?.toString(),
               }
             : undefined,
+          interimDetails:
+            value.interimDetails &&
+            value.interimDetails.duration &&
+            value.interimDetails.unit
+              ? {
+                  duration: value.interimDetails.duration,
+                  unit: value.interimDetails.unit,
+                }
+              : undefined,
         };
         console.log("Form Values Changed:", value);
         console.log("Updating Store with:", formData);
@@ -114,9 +136,17 @@ export function JobTypeStep() {
       };
       console.log("Setting Part Time Details:", partTimeDetails);
       form.setValue("partTimeDetails", partTimeDetails);
-    } else {
-      console.log("Clearing Part Time Details");
+      form.setValue("interimDetails", undefined);
+    } else if (value === "interim") {
       form.setValue("partTimeDetails", undefined);
+      form.setValue("interimDetails", {
+        duration: "",
+        unit: "days",
+      });
+    } else {
+      console.log("Clearing Details");
+      form.setValue("partTimeDetails", undefined);
+      form.setValue("interimDetails", undefined);
     }
   };
 
@@ -218,6 +248,72 @@ export function JobTypeStep() {
                   </FormItem>
                 )}
               />
+
+              {form.watch("contractType") === "interim" && (
+                <div className="space-y-4 pl-4 border-l-2 border-primaryHex-100">
+                  <FormLabel>Quelle est la durée du contrat ?</FormLabel>
+                  <div className="flex items-center gap-4">
+                    <FormField
+                      control={form.control}
+                      name="interimDetails.duration"
+                      render={({ field }) => (
+                        <FormItem className="flex">
+                          <FormControl>
+                            <Input
+                              type="text"
+                              inputMode="numeric"
+                              pattern="[0-9]*"
+                              placeholder="Ex: 3"
+                              {...field}
+                              onChange={(e) => {
+                                const value = e.target.value.replace(
+                                  /[^0-9]/g,
+                                  ""
+                                );
+                                form.setValue("interimDetails.duration", value);
+                              }}
+                              className="w-24"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="interimDetails.unit"
+                      render={({ field }) => (
+                        <FormItem className="flex">
+                          <Select
+                            onValueChange={(value) =>
+                              form.setValue(
+                                "interimDetails.unit",
+                                value as "days" | "weeks" | "months"
+                              )
+                            }
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Sélectionnez l'unité" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {DURATION_UNITS.map((unit) => (
+                                <SelectItem key={unit.value} value={unit.value}>
+                                  {unit.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+              )}
 
               {form.watch("contractType") === "part-time" && (
                 <div className="space-y-4 pl-4 border-l-2 border-primaryHex-100">

@@ -41,6 +41,10 @@ export interface JobTypeInformation {
     scheduleType?: 'fixed' | 'range' | 'maximum' | 'minimum';
     hoursPerWeek?: string;
   };
+  interimDetails?: {
+    duration: string;
+    unit: 'days' | 'weeks' | 'months';
+  };
 }
 
 interface CreateAnnonceState {
@@ -77,6 +81,7 @@ const INITIAL_JOB_TYPE_INFORMATION: JobTypeInformation = {
     scheduleType: "fixed",
     hoursPerWeek: "",
   },
+  interimDetails: undefined,
 };
 
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
