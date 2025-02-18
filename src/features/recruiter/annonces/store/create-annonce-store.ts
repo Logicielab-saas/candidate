@@ -17,10 +17,23 @@ export const STEPS_CONFIG = [
   },
 ] as const;
 
+interface BaseInformation {
+  jobTitle: string;
+  numberOfPeople: string;
+  promotionLocation: string;
+}
+
 interface CreateAnnonceState {
+  // Step Management
   currentStep: AnnonceCreationStep;
   annonceType: "existing" | "new" | null;
+
+  // Form Data
+  baseInformation: BaseInformation;
+
+  // Actions
   setAnnonceType: (type: "existing" | "new" | null) => void;
+  setBaseInformation: (data: BaseInformation) => void;
   nextStep: () => void;
   previousStep: () => void;
   canProceed: () => boolean;
@@ -30,16 +43,42 @@ interface CreateAnnonceState {
 
 const STEPS: AnnonceCreationStep[] = STEPS_CONFIG.map(step => step.id);
 
+const INITIAL_BASE_INFORMATION: BaseInformation = {
+  jobTitle: "",
+  numberOfPeople: "",
+  promotionLocation: "",
+};
+
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
+  // Initial State
   currentStep: "type",
   annonceType: null,
+  baseInformation: INITIAL_BASE_INFORMATION,
 
-  setAnnonceType: (type) => set({ annonceType: type }),
+  // Actions
+  setAnnonceType: (type) => {
+    set({ annonceType: type });
+    console.log("Annonce Type Selected:", type);
+  },
+
+  setBaseInformation: (data) => {
+    set({ baseInformation: data });
+    console.log("Base Information Updated:", data);
+  },
 
   nextStep: () => {
     const currentIndex = STEPS.indexOf(get().currentStep);
     if (currentIndex < STEPS.length - 1) {
-      set({ currentStep: STEPS[currentIndex + 1] });
+      const nextStep = STEPS[currentIndex + 1];
+      set({ currentStep: nextStep });
+      console.log("Moving to step:", nextStep);
+
+      // Log current state when moving to next step
+      const { annonceType, baseInformation } = get();
+      console.log("Current Form State:", {
+        annonceType,
+        baseInformation,
+      });
     }
   },
 
@@ -55,14 +94,20 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   },
 
   canProceed: () => {
-    const { currentStep, annonceType } = get();
+    const { currentStep, annonceType, baseInformation } = get();
 
     switch (currentStep) {
       case "type":
         return annonceType !== null;
       case "details":
-        // For now, always allow proceeding from details
-        // We'll add proper validation when we implement the form
+        if (annonceType === "new") {
+          // Validate base information is complete
+          return (
+            !!baseInformation.jobTitle &&
+            !!baseInformation.numberOfPeople &&
+            !!baseInformation.promotionLocation
+          );
+        }
         return true;
       case "preview":
         return true;
@@ -75,6 +120,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
     set({
       currentStep: "type",
       annonceType: null,
+      baseInformation: INITIAL_BASE_INFORMATION,
     });
   },
 }));
