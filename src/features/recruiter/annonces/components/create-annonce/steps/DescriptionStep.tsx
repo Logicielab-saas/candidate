@@ -19,24 +19,41 @@ import * as z from "zod";
 import { useToast } from "@/hooks/use-toast";
 
 const descriptionFormSchema = z.object({
-  description: z.string().min(1, "La description est requise"),
+  description: z
+    .string()
+    .min(50, "La description doit contenir au moins 50 caractères")
+    .refine((value) => value.trim() !== "", "La description est requise")
+    .refine((value) => {
+      // Remove HTML tags to count actual content length
+      const textContent = value.replace(/<[^>]*>/g, "");
+      return textContent.length >= 50;
+    }, "La description doit contenir au moins 50 caractères de texte"),
 });
 
 type DescriptionForm = z.infer<typeof descriptionFormSchema>;
 
 export function DescriptionStep() {
-  const { description, setDescription, previousStep, nextStep, canProceed } =
+  const { description, setDescription, previousStep, nextStep } =
     useCreateAnnonceStore();
   const { toast } = useToast();
 
   const form = useForm<DescriptionForm>({
     resolver: zodResolver(descriptionFormSchema),
     defaultValues: {
-      description: description,
+      description: description || "",
     },
+    mode: "onChange", // Enable real-time validation
   });
 
   const onSubmit = (data: DescriptionForm) => {
+    // Log the raw HTML content
+    console.log("Raw HTML Description:", data.description);
+
+    // Log the text content (without HTML tags)
+    const textContent = data.description.replace(/<[^>]*>/g, "");
+    console.log("Text Content:", textContent);
+    console.log("Text Content Length:", textContent.length);
+
     setDescription(data.description);
     toast({
       title: "Description enregistrée",
@@ -62,12 +79,15 @@ export function DescriptionStep() {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description du poste</FormLabel>
+                    <FormLabel className="flex items-center gap-1">
+                      Description du poste
+                      <span className="text-destructive">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Tiptap
                         description={field.value}
                         onChange={field.onChange}
-                        placeholder="Décrivez le poste, les responsabilités, et les compétences requises..."
+                        placeholder="Décrivez le poste, les responsabilités, et les compétences requises... (minimum 50 caractères)"
                       />
                     </FormControl>
                     <FormMessage />
@@ -82,7 +102,7 @@ export function DescriptionStep() {
       <FormStepsNavigation
         onPrevious={previousStep}
         onNext={form.handleSubmit(onSubmit)}
-        canProceed={canProceed()}
+        canProceed={!form.formState.errors.description}
       />
     </div>
   );
