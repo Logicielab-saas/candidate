@@ -123,3 +123,56 @@ export const MOCK_MESSAGES: Message[] = [
     ],
   },
 ];
+
+// Message templates data
+export interface MessageTemplate {
+  id: string;
+  category: string;
+  title: string;
+  content: string;
+}
+
+export const MESSAGE_TEMPLATES: MessageTemplate[] = [
+  {
+    id: "template-1",
+    category: "Entretiens",
+    title: "Proposition d'entretien",
+    content:
+      "Bonjour,\n\nVotre profil a retenu toute notre attention. Nous aimerions vous rencontrer pour un entretien.\n\nQuelles seraient vos disponibilités pour la semaine prochaine ?\n\nCordialement",
+  },
+  {
+    id: "template-2",
+    category: "Entretiens",
+    title: "Confirmation d'entretien",
+    content:
+      "Bonjour,\n\nJe confirme notre entretien prévu le [DATE] à [HEURE].\n\nL'entretien se déroulera [en visioconférence/dans nos locaux].\n\nÀ bientôt",
+  },
+  {
+    id: "template-3",
+    category: "Suivi",
+    title: "Demande d'informations complémentaires",
+    content:
+      "Bonjour,\n\nPourriez-vous nous faire parvenir les éléments suivants pour compléter votre dossier :\n- CV actualisé\n- Lettre de motivation\n- Références professionnelles\n\nCordialement",
+  },
+  {
+    id: "template-4",
+    category: "Suivi",
+    title: "Accusé de réception",
+    content:
+      "Bonjour,\n\nNous accusons réception de votre candidature et vous en remercions.\n\nNous allons l'étudier avec attention et reviendrons vers vous dans les meilleurs délais.\n\nCordialement",
+  },
+  {
+    id: "template-5",
+    category: "Décisions",
+    title: "Réponse positive",
+    content:
+      "Bonjour,\n\nNous avons le plaisir de vous informer que votre candidature a été retenue.\n\nNous souhaiterions vous rencontrer pour discuter plus en détail des modalités.\n\nPouvez-vous nous indiquer vos disponibilités ?\n\nCordialement",
+  },
+  {
+    id: "template-6",
+    category: "Décisions",
+    title: "Réponse d'attente",
+    content:
+      "Bonjour,\n\nNous avons bien étudié votre candidature qui a retenu notre attention.\n\nNous sommes actuellement en cours de recrutement et nous permettons de conserver votre dossier.\n\nNous ne manquerons pas de revenir vers vous dès que possible.\n\nCordialement",
+  },
+];

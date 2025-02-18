@@ -4,12 +4,33 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { MessageHeader } from "./MessageHeader";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, Paperclip, X, File, Download, ZoomIn } from "lucide-react";
+import {
+  Send,
+  Paperclip,
+  X,
+  File,
+  Download,
+  ZoomIn,
+  FileText,
+} from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { UploadDialog } from "@/components/shared/UploadDialog";
 import { ImageLightbox } from "@/components/shared/ImageLightbox";
 import Image from "next/image";
+import {
+  type MessageTemplate,
+  MESSAGE_TEMPLATES,
+} from "@/core/mockData/messages-data";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface ChatMessage {
   id: number;
@@ -298,6 +319,12 @@ export function MessageChatContent({ message }: MessageChatContentProps) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
+  const handleTemplateSelect = (template: MessageTemplate) => {
+    setNewMessage(template.content);
+    setIsTyping(true);
+    // Auto-resize will be handled by the useEffect
+  };
+
   if (!message) {
     return (
       <Card className="h-[calc(100vh-180px)] overflow-hidden">
@@ -361,14 +388,66 @@ export function MessageChatContent({ message }: MessageChatContentProps) {
           <div className="shrink-0 p-3 border-t bg-background">
             <div className="flex flex-col gap-2">
               <div className="flex items-end gap-2">
-                <Button
-                  onClick={() => setIsUploadOpen(true)}
-                  size="icon"
-                  variant="ghost"
-                  className="shrink-0 h-10 w-10 rounded-full hover:bg-accent"
-                >
-                  <Paperclip className="h-5 w-5 text-muted-foreground" />
-                </Button>
+                <div className="flex gap-1">
+                  <Button
+                    onClick={() => setIsUploadOpen(true)}
+                    size="icon"
+                    variant="ghost"
+                    className="shrink-0 h-10 w-10 rounded-full hover:bg-accent"
+                  >
+                    <Paperclip className="h-5 w-5 text-muted-foreground" />
+                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="shrink-0 h-10 w-10 rounded-full hover:bg-accent"
+                      >
+                        <FileText className="h-5 w-5 text-muted-foreground" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-72">
+                      <DropdownMenuLabel>Modèles de messages</DropdownMenuLabel>
+                      {Object.entries(
+                        MESSAGE_TEMPLATES.reduce<
+                          Record<string, MessageTemplate[]>
+                        >((acc, template) => {
+                          if (!acc[template.category]) {
+                            acc[template.category] = [];
+                          }
+                          acc[template.category].push(template);
+                          return acc;
+                        }, {})
+                      ).map(([category, templates], index, array) => (
+                        <div key={category}>
+                          <DropdownMenuGroup>
+                            <DropdownMenuLabel className="text-xs text-muted-foreground pl-2">
+                              {category}
+                            </DropdownMenuLabel>
+                            {templates.map((template) => (
+                              <DropdownMenuItem
+                                key={template.id}
+                                onClick={() => handleTemplateSelect(template)}
+                                className="flex flex-col items-start gap-1 min-h-[2.5rem]"
+                              >
+                                <span className="font-medium">
+                                  {template.title}
+                                </span>
+                                <span className="text-xs text-muted-foreground line-clamp-1">
+                                  {template.content.split("\n")[0]}
+                                </span>
+                              </DropdownMenuItem>
+                            ))}
+                          </DropdownMenuGroup>
+                          {index < array.length - 1 && (
+                            <DropdownMenuSeparator />
+                          )}
+                        </div>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
                 <div className="flex-1">
                   <Textarea
                     ref={textareaRef}
@@ -376,7 +455,7 @@ export function MessageChatContent({ message }: MessageChatContentProps) {
                     value={newMessage}
                     onChange={handleInputChange}
                     onKeyDown={handleKeyPress}
-                    className="resize-none py-2.5 min-h-[40px] max-h-[120px] overflow-hidden"
+                    className="resize-none py-2.5 min-h-[42px] max-h-[120px] overflow-y-auto"
                     rows={1}
                   />
                 </div>
