@@ -52,6 +52,12 @@ export function MessagesContainer() {
     setIsMobileView(true);
   };
 
+  const handleMessageDelete = () => {
+    // When a message is deleted, clear the message ID and return to list view in mobile
+    setMessageId(null);
+    setIsMobileView(false);
+  };
+
   const handleBackToList = () => {
     setIsMobileView(false);
   };
@@ -90,6 +96,7 @@ export function MessagesContainer() {
         >
           <MessagesList
             onMessageSelect={handleMessageSelect}
+            onMessageDelete={handleMessageDelete}
             selectedMessageId={selectedMessage?.id}
             currentTab={currentTab}
             onTabChange={handleTabChange}

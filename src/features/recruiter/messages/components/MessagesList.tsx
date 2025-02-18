@@ -60,6 +60,7 @@ const STATUSES: Status[] = [
 
 interface MessagesListProps {
   onMessageSelect: (message: Message) => void;
+  onMessageDelete: () => void;
   selectedMessageId?: number;
   currentTab: "all" | "unread";
   onTabChange: (tab: "all" | "unread") => void;
@@ -71,6 +72,7 @@ interface MessagesListProps {
 
 export function MessagesList({
   onMessageSelect,
+  onMessageDelete,
   selectedMessageId,
   currentTab,
   onTabChange,
@@ -189,6 +191,7 @@ export function MessagesList({
           onMessageSelect(nextMessage);
         }
       }
+      onMessageDelete();
     }
     setDeleteDialogOpen(false);
     setMessageToDelete(null);
