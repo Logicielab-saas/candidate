@@ -8,7 +8,7 @@ const partTimeDetailsSchema = z.object({
     .optional(),
 });
 
-const interimDetailsSchema = z.object({
+const durationDetailsSchema = z.object({
   duration: z.string().min(1, "La durée est requise"),
   unit: z.enum(["days", "weeks", "months"]),
 });
@@ -16,9 +16,10 @@ const interimDetailsSchema = z.object({
 export const formSchema = z.object({
   contractType: z.string().min(1, "Sélectionnez un type de contrat"),
   partTimeDetails: partTimeDetailsSchema.optional(),
-  interimDetails: interimDetailsSchema.optional(),
+  interimDetails: durationDetailsSchema.optional(),
+  cddDetails: durationDetailsSchema.optional(),
 });
 
 export type JobTypeForm = z.infer<typeof formSchema>;
 export type PartTimeDetails = z.infer<typeof partTimeDetailsSchema>;
-export type InterimDetails = z.infer<typeof interimDetailsSchema>;
+export type DurationDetails = z.infer<typeof durationDetailsSchema>;

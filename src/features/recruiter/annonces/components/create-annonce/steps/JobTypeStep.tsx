@@ -21,7 +21,7 @@ import { Label } from "@/components/ui/label";
 import { Check, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formSchema, JobTypeForm } from "./job-type/types";
-import { InterimDetails } from "./job-type/InterimDetails";
+import { ContractDurationDetails } from "./job-type/ContractDurationDetails";
 import { PartTimeDetails } from "./job-type/PartTimeDetails";
 
 const CONTRACT_TYPES = [
@@ -50,6 +50,7 @@ export function JobTypeStep() {
       contractType: jobTypeInformation.contractType,
       partTimeDetails: jobTypeInformation.partTimeDetails,
       interimDetails: jobTypeInformation.interimDetails,
+      cddDetails: jobTypeInformation.cddDetails,
     },
     mode: "onChange",
   });
@@ -88,6 +89,14 @@ export function JobTypeStep() {
         };
       }
 
+      // Only include cddDetails if both duration and unit are filled
+      if (formValues.cddDetails?.duration && formValues.cddDetails?.unit) {
+        formData.cddDetails = {
+          duration: formValues.cddDetails.duration,
+          unit: formValues.cddDetails.unit,
+        };
+      }
+
       console.log("Form Values Changed:", formValues);
       console.log("Updating Store with:", formData);
       setJobTypeInformation(formData);
@@ -101,16 +110,26 @@ export function JobTypeStep() {
     if (value === "part-time") {
       console.log("Clearing previous details");
       form.setValue("interimDetails", undefined);
+      form.setValue("cddDetails", undefined);
     } else if (value === "interim") {
       form.setValue("partTimeDetails", undefined);
+      form.setValue("cddDetails", undefined);
       form.setValue("interimDetails", {
         duration: "",
         unit: "days",
+      });
+    } else if (value === "cdd") {
+      form.setValue("partTimeDetails", undefined);
+      form.setValue("interimDetails", undefined);
+      form.setValue("cddDetails", {
+        duration: "",
+        unit: "months",
       });
     } else {
       console.log("Clearing Details");
       form.setValue("partTimeDetails", undefined);
       form.setValue("interimDetails", undefined);
+      form.setValue("cddDetails", undefined);
     }
   };
 
@@ -199,7 +218,19 @@ export function JobTypeStep() {
               />
 
               {form.watch("contractType") === "interim" && (
-                <InterimDetails form={form} />
+                <ContractDurationDetails
+                  form={form}
+                  type="interim"
+                  label="Quelle est la durée de la mission ?"
+                />
+              )}
+
+              {form.watch("contractType") === "cdd" && (
+                <ContractDurationDetails
+                  form={form}
+                  type="cdd"
+                  label="Quelle est la durée du CDD ?"
+                />
               )}
 
               {form.watch("contractType") === "part-time" && (

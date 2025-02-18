@@ -45,6 +45,10 @@ export interface JobTypeInformation {
     duration: string;
     unit: 'days' | 'weeks' | 'months';
   };
+  cddDetails?: {
+    duration: string;
+    unit: 'days' | 'weeks' | 'months';
+  };
 }
 
 interface CreateAnnonceState {
