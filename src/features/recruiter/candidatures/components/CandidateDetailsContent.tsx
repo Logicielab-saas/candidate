@@ -97,12 +97,18 @@ export function CandidateDetailsContent({
   return (
     <div className="p-6 bg-background rounded-lg border border-border">
       {/* Header with name and actions */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-semibold text-foreground">
-              {candidate.nom}
-            </h1>
+      <div className="flex items-start justify-between mb-4">
+        <div className="space-y-0.5">
+          <h1 className="text-lg font-medium text-foreground">
+            {candidate.nom}{" "}
+          </h1>
+          <div className="text-sm text-muted-foreground mt-3">
+            {candidate.profil + " "} • {candidate.ville}
+          </div>
+          <div className="text-sm text-muted-foreground mt-1">
+            A postulé pour{" "}
+            <span className="font-medium">{candidate.titreOffre}</span> •{" "}
+            {candidate.ville}
           </div>
         </div>
         <div className="flex items-center">
@@ -135,58 +141,40 @@ export function CandidateDetailsContent({
         </div>
       </div>
 
-      {/* Profile and Location */}
-      <div className="space-y-1 mb-6">
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <span className="font-bold">{candidate.profil}</span>
-          <span className="h-1 w-1 rounded-full bg-current opacity-40" />
-          <span>{candidate.ville}</span>
-        </div>
-        <div className="flex items-center gap-2 text-muted-foreground"></div>
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <span>
-            A postulé pour{" "}
-            <span className="font-bold">
-              {candidate.titreOffre} • {candidate.ville}
-            </span>
-          </span>
-        </div>
-      </div>
-
       {/* Action Buttons */}
-      <div className="@container">
-        <div className="grid grid-cols-2 @[380px]:grid-cols-4 gap-3 mb-6">
+      <div className="@container mb-6">
+        <div className="grid grid-cols-2 @[380px]:grid-cols-4 max-[620px]:grid-cols-2 gap-3">
           <Button
             variant="outline"
-            className="w-full"
+            className="w-full max-[620px]:flex max-[620px]:items-center max-[620px]:justify-center max-[620px]:gap-2 max-[620px]:whitespace-nowrap"
             onClick={() => setIsChatDialogOpen(true)}
           >
-            <MessageCircle className="h-4 w-4 mr-2" />
-            Contacter
+            <MessageCircle className="h-4 w-4 max-[620px]:h-4 max-[620px]:w-4 max-[620px]:mr-0 mr-2 shrink-0" />
+            <span className="max-[620px]:text-sm">Contacter</span>
           </Button>
           <Button
             variant="outline"
-            className="w-full"
+            className="w-full max-[620px]:flex max-[620px]:items-center max-[620px]:justify-center max-[620px]:gap-2 max-[620px]:whitespace-nowrap"
             onClick={() => setIsAppelerDialogOpen(true)}
           >
-            <Phone className="h-4 w-4 mr-2" />
-            Appeler
+            <Phone className="h-4 w-4 max-[620px]:h-4 max-[620px]:w-4 max-[620px]:mr-0 mr-2 shrink-0" />
+            <span className="max-[620px]:text-sm">Appeler</span>
           </Button>
           <Button
             variant="outline"
-            className="w-full"
+            className="w-full max-[620px]:flex max-[620px]:items-center max-[620px]:justify-center max-[620px]:gap-2 max-[620px]:whitespace-nowrap"
             onClick={() => setIsEntretienPlanDialogOpen(true)}
           >
-            <Calendar className="h-4 w-4 mr-2" />
-            Entretien
+            <Calendar className="h-4 w-4 max-[620px]:h-4 max-[620px]:w-4 max-[620px]:mr-0 mr-2 shrink-0" />
+            <span className="max-[620px]:text-sm">Entretien</span>
           </Button>
           <Button
             variant="outline"
-            className="w-full"
+            className="w-full max-[620px]:flex max-[620px]:items-center max-[620px]:justify-center max-[620px]:gap-2 max-[620px]:whitespace-nowrap"
             onClick={() => setIsNotesDialogOpen(true)}
           >
-            <StickyNote className="h-4 w-4 mr-2" />
-            Note
+            <StickyNote className="h-4 w-4 max-[620px]:h-4 max-[620px]:w-4 max-[620px]:mr-0 mr-2 shrink-0" />
+            <span className="max-[620px]:text-sm">Note</span>
           </Button>
         </div>
       </div>
