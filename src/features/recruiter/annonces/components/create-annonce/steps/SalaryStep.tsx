@@ -116,6 +116,44 @@ export function SalaryStep() {
       return;
     }
 
+    // Show appropriate success message based on the salary configuration
+    if (formData.displayType) {
+      let message = "";
+      switch (formData.displayType) {
+        case SalaryDisplayType.RANGE:
+          if (formData.minSalary && formData.maxSalary && formData.frequency) {
+            message = `Fourchette de salaire : ${formData.minSalary} à ${
+              formData.maxSalary
+            } ${
+              SALARY_FREQUENCIES.find(
+                (f) => f.value === formData.frequency
+              )?.label.toLowerCase() || ""
+            }`;
+          }
+          break;
+        case SalaryDisplayType.FIXED:
+          if (formData.minSalary && formData.frequency) {
+            message = `Salaire fixe : ${formData.minSalary} ${
+              SALARY_FREQUENCIES.find(
+                (f) => f.value === formData.frequency
+              )?.label.toLowerCase() || ""
+            }`;
+          }
+          break;
+        case SalaryDisplayType.NEGOTIABLE:
+          message = "Salaire à négocier";
+          break;
+      }
+
+      if (message) {
+        toast({
+          variant: "success",
+          title: "Salaire configuré",
+          description: message,
+        });
+      }
+    }
+
     // Everything is optional, so we can proceed
     nextStep();
   };
