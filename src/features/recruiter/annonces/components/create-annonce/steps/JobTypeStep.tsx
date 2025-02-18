@@ -1,8 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { useForm, useWatch } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -21,35 +20,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Check, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-
-const formSchema = z.object({
-  contractType: z.string().min(1, "Sélectionnez un type de contrat"),
-  partTimeDetails: z
-    .object({
-      scheduleType: z.enum(["fixed", "range", "maximum", "minimum"]).optional(),
-      hoursPerWeek: z
-        .string()
-        .regex(/^\d+$/, "Veuillez entrer un nombre valide")
-        .optional(),
-    })
-    .optional(),
-  interimDetails: z
-    .object({
-      duration: z.string().min(1, "La durée est requise"),
-      unit: z.enum(["days", "weeks", "months"]),
-    })
-    .optional(),
-});
-
-type JobTypeForm = z.infer<typeof formSchema>;
+import { formSchema, JobTypeForm } from "./job-type/types";
+import { InterimDetails } from "./job-type/InterimDetails";
+import { PartTimeDetails } from "./job-type/PartTimeDetails";
 
 const CONTRACT_TYPES = [
   { id: "full-time", label: "Temps plein" },
@@ -60,19 +33,6 @@ const CONTRACT_TYPES = [
   { id: "freelance", label: "Profession libérale" },
   { id: "internship", label: "Stage" },
   { id: "apprenticeship", label: "Apprentissage/Alternance" },
-];
-
-const SCHEDULE_TYPES = [
-  { value: "fixed", label: "Heures fixes" },
-  { value: "range", label: "Plage" },
-  { value: "maximum", label: "Maximum" },
-  { value: "minimum", label: "Minimum" },
-];
-
-const DURATION_UNITS = [
-  { value: "days", label: "Jour(s)" },
-  { value: "weeks", label: "Semaine(s)" },
-  { value: "months", label: "Mois" },
 ];
 
 export function JobTypeStep() {
@@ -95,47 +55,51 @@ export function JobTypeStep() {
   });
 
   // Update store when form values change
-  const { watch } = form;
+  const formValues = useWatch({
+    control: form.control,
+  });
+
   useEffect(() => {
-    const subscription = watch((value) => {
-      if (value.contractType) {
-        const formData: JobTypeInformation = {
-          contractType: value.contractType,
-          partTimeDetails: value.partTimeDetails
-            ? {
-                scheduleType: value.partTimeDetails.scheduleType,
-                hoursPerWeek: value.partTimeDetails.hoursPerWeek?.toString(),
-              }
-            : undefined,
-          interimDetails:
-            value.interimDetails &&
-            value.interimDetails.duration &&
-            value.interimDetails.unit
-              ? {
-                  duration: value.interimDetails.duration,
-                  unit: value.interimDetails.unit,
-                }
-              : undefined,
+    if (formValues) {
+      const formData: JobTypeInformation = {
+        contractType: formValues.contractType || "",
+      };
+
+      // Only include partTimeDetails if it exists and has at least one field filled
+      if (
+        formValues.partTimeDetails &&
+        (formValues.partTimeDetails.scheduleType ||
+          formValues.partTimeDetails.hoursPerWeek)
+      ) {
+        formData.partTimeDetails = {
+          scheduleType: formValues.partTimeDetails.scheduleType,
+          hoursPerWeek: formValues.partTimeDetails.hoursPerWeek?.toString(),
         };
-        console.log("Form Values Changed:", value);
-        console.log("Updating Store with:", formData);
-        setJobTypeInformation(formData);
       }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch, setJobTypeInformation]);
+
+      // Only include interimDetails if both duration and unit are filled
+      if (
+        formValues.interimDetails?.duration &&
+        formValues.interimDetails?.unit
+      ) {
+        formData.interimDetails = {
+          duration: formValues.interimDetails.duration,
+          unit: formValues.interimDetails.unit,
+        };
+      }
+
+      console.log("Form Values Changed:", formValues);
+      console.log("Updating Store with:", formData);
+      setJobTypeInformation(formData);
+    }
+  }, [formValues, setJobTypeInformation]);
 
   // Log when radio selection changes
   const handleContractTypeChange = (value: string) => {
     console.log("Contract Type Selected:", value);
     form.setValue("contractType", value);
     if (value === "part-time") {
-      const partTimeDetails = {
-        scheduleType: "fixed" as const,
-        hoursPerWeek: "",
-      };
-      console.log("Setting Part Time Details:", partTimeDetails);
-      form.setValue("partTimeDetails", partTimeDetails);
+      console.log("Clearing previous details");
       form.setValue("interimDetails", undefined);
     } else if (value === "interim") {
       form.setValue("partTimeDetails", undefined);
@@ -148,21 +112,6 @@ export function JobTypeStep() {
       form.setValue("partTimeDetails", undefined);
       form.setValue("interimDetails", undefined);
     }
-  };
-
-  // Log when schedule type changes
-  const handleScheduleTypeChange = (value: string) => {
-    console.log("Schedule Type Changed:", value);
-    form.setValue(
-      "partTimeDetails.scheduleType",
-      value as "fixed" | "range" | "maximum" | "minimum"
-    );
-  };
-
-  // Log when hours change
-  const handleHoursChange = (value: string) => {
-    console.log("Hours Changed:", value);
-    form.setValue("partTimeDetails.hoursPerWeek", value);
   };
 
   return (
@@ -250,134 +199,11 @@ export function JobTypeStep() {
               />
 
               {form.watch("contractType") === "interim" && (
-                <div className="space-y-4 pl-4 border-l-2 border-primaryHex-100">
-                  <FormLabel>Quelle est la durée du contrat ?</FormLabel>
-                  <div className="flex items-center gap-4">
-                    <FormField
-                      control={form.control}
-                      name="interimDetails.duration"
-                      render={({ field }) => (
-                        <FormItem className="flex">
-                          <FormControl>
-                            <Input
-                              type="text"
-                              inputMode="numeric"
-                              pattern="[0-9]*"
-                              placeholder="Ex: 3"
-                              {...field}
-                              onChange={(e) => {
-                                const value = e.target.value.replace(
-                                  /[^0-9]/g,
-                                  ""
-                                );
-                                form.setValue("interimDetails.duration", value);
-                              }}
-                              className="w-24"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="interimDetails.unit"
-                      render={({ field }) => (
-                        <FormItem className="flex">
-                          <Select
-                            onValueChange={(value) =>
-                              form.setValue(
-                                "interimDetails.unit",
-                                value as "days" | "weeks" | "months"
-                              )
-                            }
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Sélectionnez l'unité" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {DURATION_UNITS.map((unit) => (
-                                <SelectItem key={unit.value} value={unit.value}>
-                                  {unit.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
+                <InterimDetails form={form} />
               )}
 
               {form.watch("contractType") === "part-time" && (
-                <div className="space-y-4 pl-4 border-l-2 border-primaryHex-100">
-                  <FormField
-                    control={form.control}
-                    name="partTimeDetails.scheduleType"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Type d&apos;horaires</FormLabel>
-                        <Select
-                          onValueChange={handleScheduleTypeChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Sélectionnez le type d'horaires" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {SCHEDULE_TYPES.map((type) => (
-                              <SelectItem key={type.value} value={type.value}>
-                                {type.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="partTimeDetails.hoursPerWeek"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Heures par semaine</FormLabel>
-                        <div className="flex items-center gap-2">
-                          <FormControl>
-                            <Input
-                              type="text"
-                              inputMode="numeric"
-                              pattern="[0-9]*"
-                              placeholder="Ex: 20"
-                              {...field}
-                              onChange={(e) => {
-                                const value = e.target.value.replace(
-                                  /[^0-9]/g,
-                                  ""
-                                );
-                                handleHoursChange(value);
-                              }}
-                              className="w-24"
-                            />
-                          </FormControl>
-                          <span className="text-sm text-muted-foreground">
-                            Heures par semaine
-                          </span>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                <PartTimeDetails form={form} />
               )}
             </form>
           </Form>
