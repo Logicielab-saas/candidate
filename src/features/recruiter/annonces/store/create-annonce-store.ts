@@ -36,7 +36,7 @@ interface BaseInformation {
 }
 
 interface JobTypeInformation {
-  contractType: string[];
+  contractType: string;
 }
 
 interface CreateAnnonceState {
@@ -68,7 +68,7 @@ const INITIAL_BASE_INFORMATION: BaseInformation = {
 };
 
 const INITIAL_JOB_TYPE_INFORMATION: JobTypeInformation = {
-  contractType: [],
+  contractType: "",
 };
 
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
@@ -136,7 +136,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
         }
         return true;
       case "job-type":
-        return jobTypeInformation.contractType.length > 0;
+        return !!jobTypeInformation.contractType;
       case "salary":
         return true; // Will be implemented later
       case "description-annonce":

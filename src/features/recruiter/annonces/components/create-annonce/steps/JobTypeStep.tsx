@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
@@ -15,13 +16,13 @@ import { useCreateAnnonceStore } from "../../../store/create-annonce-store";
 import { useEffect } from "react";
 import { HeaderSectionStepsForm } from "@/components/shared/HeaderSectionStepsForm";
 import { FormStepsNavigation } from "@/components/shared/FormStepsNavigation";
-import { Badge } from "@/components/ui/badge";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Check, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
-  contractType: z
-    .array(z.string())
-    .min(1, "Sélectionnez au moins un type de contrat"),
+  contractType: z.string().min(1, "Sélectionnez un type de contrat"),
 });
 
 type JobTypeForm = z.infer<typeof formSchema>;
@@ -58,9 +59,8 @@ export function JobTypeStep() {
   const { watch } = form;
   useEffect(() => {
     const subscription = watch((value) => {
-      const contractTypes = value.contractType || [];
-      if (contractTypes.length > 0) {
-        setJobTypeInformation({ contractType: contractTypes as string[] });
+      if (value.contractType) {
+        setJobTypeInformation({ contractType: value.contractType });
       }
     });
     return () => subscription.unsubscribe();
@@ -81,33 +81,63 @@ export function JobTypeStep() {
                 control={form.control}
                 name="contractType"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="space-y-3">
                     <FormLabel className="flex items-center gap-1">
                       Type de poste
                       <span className="text-destructive">*</span>
                     </FormLabel>
-                    <div className="flex flex-wrap gap-2">
-                      {CONTRACT_TYPES.map((type) => (
-                        <Badge
-                          key={type.id}
-                          variant="outline"
-                          className={cn(
-                            "cursor-pointer hover:bg-primary/10 transition-colors py-2 px-4",
-                            field.value?.includes(type.id) &&
-                              "bg-primary text-primary-foreground hover:bg-primary/90"
-                          )}
-                          onClick={() => {
-                            const currentValue = field.value || [];
-                            const newValue = currentValue.includes(type.id)
-                              ? currentValue.filter((v) => v !== type.id)
-                              : [...currentValue, type.id];
-                            field.onChange(newValue);
-                          }}
-                        >
-                          {type.label}
-                        </Badge>
-                      ))}
-                    </div>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-wrap gap-2"
+                      >
+                        {CONTRACT_TYPES.map((type) => (
+                          <div key={type.id} className="relative">
+                            <RadioGroupItem
+                              value={type.id}
+                              id={type.id}
+                              className="peer sr-only"
+                            />
+                            <Label
+                              htmlFor={type.id}
+                              className={cn(
+                                "inline-flex items-center gap-2 cursor-pointer rounded-md border px-3 py-1.5 text-sm",
+                                "hover:border-primaryHex-500 hover:bg-primaryHex-50/50",
+                                field.value === type.id
+                                  ? "border-primaryHex-500 bg-primaryHex-50 text-primaryHex-900"
+                                  : "border-input bg-background",
+                                "transition-all duration-150 ease-in-out"
+                              )}
+                            >
+                              <div className="relative w-3.5 h-3.5">
+                                <Plus
+                                  className={cn(
+                                    "absolute inset-0 h-3.5 w-3.5 text-muted-foreground",
+                                    field.value === type.id
+                                      ? "opacity-0"
+                                      : "opacity-100",
+                                    "transition-opacity"
+                                  )}
+                                />
+                                <Check
+                                  className={cn(
+                                    "absolute inset-0 h-3.5 w-3.5 text-primaryHex-500",
+                                    field.value === type.id
+                                      ? "opacity-100"
+                                      : "opacity-0",
+                                    "transition-opacity"
+                                  )}
+                                />
+                              </div>
+                              <span className="text-sm font-medium leading-none">
+                                {type.label}
+                              </span>
+                            </Label>
+                          </div>
+                        ))}
+                      </RadioGroup>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
