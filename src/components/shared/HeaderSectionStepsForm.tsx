@@ -1,9 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { STEPS_CONFIG } from "@/features/recruiter/annonces/store/create-annonce-store";
 import { useCreateAnnonceStore } from "@/features/recruiter/annonces/store/create-annonce-store";
 import { Check } from "lucide-react";
+import { STEPS_CONFIG } from "@/features/recruiter/annonces/common";
 
 interface HeaderSectionStepsFormProps {
   title: string;

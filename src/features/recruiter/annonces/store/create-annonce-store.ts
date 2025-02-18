@@ -1,66 +1,12 @@
 import { create } from "zustand";
-import { JobTypeInformation } from "../common";
-import { SalaryInformation } from "../common/interfaces/salary.interface";
-import { BaseInformation } from "../common/interfaces/base-information.interface";
-
-export type AnnonceCreationStep = "type" | "job-information" | "description-annonce" | "preview";
-
-export const STEPS_CONFIG = [
-  {
-    id: "type" as const,
-    title: "Type d'annonce",
-  },
-  {
-    id: "job-information" as const,
-    title: "Informations du poste",
-  },
-  {
-    id: "description-annonce" as const,
-    title: "Description",
-  },
-  {
-    id: "preview" as const,
-    title: "Aperçu",
-  },
-] as const;
-
-interface CreateAnnonceState {
-  // Step Management
-  currentStep: AnnonceCreationStep;
-  annonceType: "existing" | "new" | null;
-
-  // Form Data
-  baseInformation: BaseInformation;
-  jobTypeInformation: JobTypeInformation;
-  salaryInformation: SalaryInformation;
-  description: string;
-
-  // Actions
-  setAnnonceType: (type: "existing" | "new" | null) => void;
-  setBaseInformation: (data: BaseInformation) => void;
-  setJobTypeInformation: (data: JobTypeInformation) => void;
-  setSalaryInformation: (data: SalaryInformation) => void;
-  setDescription: (description: string) => void;
-  nextStep: () => void;
-  previousStep: () => void;
-  canProceed: () => boolean;
-  reset: () => void;
-  getCurrentStepIndex: () => number;
-}
-
-const STEPS: AnnonceCreationStep[] = STEPS_CONFIG.map(step => step.id);
-
-const INITIAL_BASE_INFORMATION: BaseInformation = {
-  jobTitle: "",
-  numberOfPeople: "",
-  promotionLocation: "",
-};
-
-const INITIAL_JOB_TYPE_INFORMATION: JobTypeInformation = {
-  contractType: "",
-};
-
-const INITIAL_SALARY_INFORMATION: SalaryInformation = {};
+import {
+  INITIAL_BASE_INFORMATION,
+  INITIAL_JOB_TYPE_INFORMATION,
+  INITIAL_SALARY_INFORMATION,
+} from "../common/constants/initial-state.constants";
+import { STEPS } from "../common/constants/steps.constants";
+import { formatStepData } from "../common/utils/step-formatter.utils";
+import { CreateAnnonceState } from "../common/types/create-annonce.types";
 
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   // Initial State
@@ -93,21 +39,43 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   },
 
   nextStep: () => {
-    const currentIndex = STEPS.indexOf(get().currentStep);
+    const state = get();
+    const currentIndex = STEPS.indexOf(state.currentStep);
     if (currentIndex < STEPS.length - 1) {
+      // Log the current step's data before moving to the next step
+      const stepData = formatStepData(state);
+
+      console.group(`✨ Step Completed: ${stepData.step}`);
+      console.log("Step Data:", stepData.data);
+
+      // If we're moving to preview, log the complete form
+      if (STEPS[currentIndex + 1] === "preview") {
+        console.log("\n📋 Complete Form Data:", {
+          annonceType: state.annonceType,
+          baseInformation: state.baseInformation,
+          jobTypeInformation: state.jobTypeInformation,
+          salaryInformation: state.salaryInformation,
+          description: state.description,
+        });
+      }
+
+      console.groupEnd();
+
       set({ currentStep: STEPS[currentIndex + 1] });
     }
   },
 
   previousStep: () => {
-    const currentIndex = STEPS.indexOf(get().currentStep);
+    const state = get();
+    const currentIndex = STEPS.indexOf(state.currentStep);
     if (currentIndex > 0) {
       set({ currentStep: STEPS[currentIndex - 1] });
     }
   },
 
   getCurrentStepIndex: () => {
-    return STEPS.indexOf(get().currentStep);
+    const state = get();
+    return STEPS.indexOf(state.currentStep);
   },
 
   canProceed: () => {
