@@ -19,9 +19,9 @@ export function QuestionFactory({
   onChange,
   value,
 }: QuestionFactoryProps) {
-  // Set initial value for yes/no questions
+  // Set initial value for yes/no and open questions
   useEffect(() => {
-    if (question.type === "yesno" && !value) {
+    if ((question.type === "yesno" || question.type === "open") && !value) {
       onChange(question.question);
     }
   }, [question, onChange, value]);
@@ -62,8 +62,6 @@ export function QuestionFactory({
         <OpenQuestion
           question={question.question}
           isRequired={question.isRequired}
-          onChange={onChange}
-          value={value as string}
         />
       );
 
