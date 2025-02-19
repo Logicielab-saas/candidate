@@ -4,7 +4,7 @@ import { SalaryInformation } from "../interfaces/salary.interface";
 import { StepperState } from "./store.types";
 import { PreferencesForm } from "@/features/recruiter/annonces/common";
 
-export type AnnonceCreationStep = "job-information" | "description-annonce" | "preferences" | "preview";
+export type AnnonceCreationStep = "job-information" | "description-annonce" | "preferences" | "questions" | "preview";
 
 export type AnnonceType = "existing" | "new" | null;
 

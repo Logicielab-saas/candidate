@@ -11,7 +11,7 @@ import { CreateAnnonceState } from "../common/types/create-annonce.types";
 // TODO: Add step questions then verification At the steps constants and adapt the store and relevant components
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   // Initial State
-  currentStep: "job-information",
+  currentStep: "questions",
   annonceType: null,
   baseInformation: INITIAL_BASE_INFORMATION,
   jobTypeInformation: INITIAL_JOB_TYPE_INFORMATION,

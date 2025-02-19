@@ -15,6 +15,10 @@ export const STEPS_CONFIG: StepConfig<AnnonceCreationStep>[] = [
     title: "Préférences",
   },
   {
+    id: "questions",
+    title: "Questions",
+  },
+  {
     id: "preview",
     title: "Aperçu",
   },

@@ -5,6 +5,7 @@ import { CreateAnnonceType } from "./CreateAnnonceType";
 import { JobInformationStep } from "./steps/JobInformationStep";
 import { DescriptionStep } from "./steps/DescriptionStep";
 import { PreferencesStep } from "./steps/PreferencesStep";
+import { QuestionsStep } from "./steps/QuestionsStep";
 
 export function CreateAnnonceSteps() {
   const { currentStep, annonceType } = useCreateAnnonceStore();
@@ -27,6 +28,8 @@ export function CreateAnnonceSteps() {
         return <DescriptionStep />;
       case "preferences":
         return <PreferencesStep />;
+      case "questions":
+        return <QuestionsStep />;
       case "preview":
         return <div>Preview Step (Coming Soon)</div>;
       default:
