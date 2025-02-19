@@ -18,9 +18,3 @@ interface SimpleQuestion extends BaseQuestion {
 }
 
 export type PredefinedQuestion = SimpleQuestion | ChoiceQuestion;
-
-export interface QuestionCategory {
-  id: QuestionType;
-  label: string;
-  description: string;
-}
