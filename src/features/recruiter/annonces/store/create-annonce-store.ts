@@ -8,9 +8,10 @@ import { STEPS } from "../common/constants/steps.constants";
 import { formatStepData } from "../common/utils/step-formatter.utils";
 import { CreateAnnonceState } from "../common/types/create-annonce.types";
 
+// TODO: Add step communication then questions then verification At the steps constants and adapt the store and relevant components
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   // Initial State
-  currentStep: "type",
+  currentStep: "job-information",
   annonceType: null,
   baseInformation: INITIAL_BASE_INFORMATION,
   jobTypeInformation: INITIAL_JOB_TYPE_INFORMATION,
@@ -68,7 +69,14 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   previousStep: () => {
     const state = get();
     const currentIndex = STEPS.indexOf(state.currentStep);
-    if (currentIndex > 0) {
+
+    // If we're at the first step (job-information), allow going back to type selection
+    if (currentIndex === 0) {
+      set({
+        annonceType: null,
+        currentStep: "job-information"
+      });
+    } else if (currentIndex > 0) {
       set({ currentStep: STEPS[currentIndex - 1] });
     }
   },
@@ -82,8 +90,6 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
     const { currentStep, annonceType, baseInformation, jobTypeInformation, description } = get();
 
     switch (currentStep) {
-      case "type":
-        return annonceType !== null;
       case "job-information":
         if (annonceType === "new") {
           return (
@@ -105,7 +111,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
 
   reset: () => {
     set({
-      currentStep: "type",
+      currentStep: "job-information",
       annonceType: null,
       baseInformation: INITIAL_BASE_INFORMATION,
       jobTypeInformation: INITIAL_JOB_TYPE_INFORMATION,

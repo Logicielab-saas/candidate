@@ -3,10 +3,6 @@ import { AnnonceCreationStep } from "../types/create-annonce.types";
 
 export const STEPS_CONFIG: StepConfig<AnnonceCreationStep>[] = [
   {
-    id: "type",
-    title: "Type d'annonce",
-  },
-  {
     id: "job-information",
     title: "Informations du poste",
   },

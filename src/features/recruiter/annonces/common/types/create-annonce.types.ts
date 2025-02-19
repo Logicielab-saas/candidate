@@ -3,7 +3,7 @@ import { JobTypeInformation } from "../interfaces/contract.interface";
 import { SalaryInformation } from "../interfaces/salary.interface";
 import { StepperState } from "./store.types";
 
-export type AnnonceCreationStep = "type" | "job-information" | "description-annonce" | "preview";
+export type AnnonceCreationStep = "job-information" | "description-annonce" | "preview";
 
 export type AnnonceType = "existing" | "new" | null;
 

@@ -8,11 +8,6 @@ export const formatStepData = (state: CreateAnnonceState): StepData => {
   };
 
   switch (currentStep) {
-    case "type":
-      stepData.data = {
-        annonceType: state.annonceType,
-      };
-      break;
     case "job-information":
       stepData.data = {
         baseInformation: state.baseInformation,

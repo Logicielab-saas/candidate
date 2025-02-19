@@ -8,10 +8,14 @@ import { DescriptionStep } from "./steps/DescriptionStep";
 export function CreateAnnonceSteps() {
   const { currentStep, annonceType } = useCreateAnnonceStore();
 
+  // If no annonce type is selected, show the type selection screen
+  if (!annonceType) {
+    return <CreateAnnonceType />;
+  }
+
+  // Once type is selected, show the steps
   const renderStep = () => {
     switch (currentStep) {
-      case "type":
-        return <CreateAnnonceType />;
       case "job-information":
         if (annonceType === "new") {
           return <JobInformationStep />;
@@ -23,7 +27,7 @@ export function CreateAnnonceSteps() {
       case "preview":
         return <div>Preview Step (Coming Soon)</div>;
       default:
-        return <CreateAnnonceType />;
+        return <JobInformationStep />;
     }
   };
 
