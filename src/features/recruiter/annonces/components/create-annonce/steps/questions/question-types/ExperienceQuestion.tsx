@@ -9,6 +9,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+import { AlertCircle } from "lucide-react";
 
 interface ExperienceQuestionProps {
   question: string;
@@ -18,6 +20,7 @@ interface ExperienceQuestionProps {
 }
 
 const EXPERIENCE_OPTIONS = [
+  { value: "0", label: "Aucune expérience requise" },
   { value: "1", label: "Au moins 1 an" },
   { value: "2", label: "Au moins 2 ans" },
   { value: "3", label: "Au moins 3 ans" },
@@ -27,64 +30,96 @@ const EXPERIENCE_OPTIONS = [
 ];
 
 export function ExperienceQuestion({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   question,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   isRequired,
   onChange,
   value,
 }: ExperienceQuestionProps) {
+  const skill = value?.split(" au moins ")[0] || "";
+  const years = value?.split(" au moins ")[1]?.split(" ")[0] || "0";
+  const hasError = !value || !skill;
+
   return (
     <div className="space-y-3">
       <div className="space-y-2">
-        <Label className="text-base">
+        <Label className="text-base flex items-center gap-2">
           Créer une question d&apos;expérience
-          {isRequired && <span className="text-destructive ml-1">*</span>}
+          <span className="text-destructive text-sm font-medium">
+            (Champ obligatoire)
+          </span>
         </Label>
         <div className="flex items-end gap-3">
-          <div className="flex-1">
+          <div className="flex-1 space-y-2">
             <Label
               htmlFor="skill"
-              className="text-sm text-muted-foreground mb-2"
+              className="text-sm mb-2 text-muted-foreground"
             >
               Compétence ou technologie requise
             </Label>
-            <Input
-              id="skill"
-              placeholder="Ex: React, Flutter, Java, Management..."
-              value={value?.split(" au moins ")[0] || ""}
-              onChange={(e) => {
-                const years =
-                  value?.split(" au moins ")[1]?.split(" ")[0] || "";
-                onChange(
-                  `${e.target.value}${years ? ` au moins ${years} ans` : ""}`
-                );
-              }}
-            />
+            <div className="relative">
+              <Input
+                id="skill"
+                placeholder="Ex: React, Flutter, Java, Management..."
+                value={skill}
+                onChange={(e) => {
+                  const newSkill = e.target.value;
+                  if (years === "0") {
+                    onChange(newSkill);
+                  } else {
+                    onChange(`${newSkill} au moins ${years} ans`);
+                  }
+                }}
+                className={cn(
+                  hasError && "border-destructive pr-10",
+                  "transition-colors"
+                )}
+              />
+              {hasError && (
+                <AlertCircle className="h-4 w-4 absolute right-3 top-1/2 -translate-y-1/2 text-destructive" />
+              )}
+            </div>
           </div>
-          <div className="w-[200px]">
+          <div className="w-[200px] space-y-2">
             <Label
               htmlFor="years"
-              className="text-sm text-muted-foreground mb-2"
+              className="text-sm mb-2 text-muted-foreground"
             >
               Expérience requise
             </Label>
-            <Select
-              value={value?.split(" au moins ")[1]?.split(" ")[0] || ""}
-              onValueChange={(newYears) => {
-                const skill = value?.split(" au moins ")[0] || "";
-                onChange(`${skill} au moins ${newYears} ans`);
-              }}
-            >
-              <SelectTrigger id="years">
-                <SelectValue placeholder="Années" />
-              </SelectTrigger>
-              <SelectContent>
-                {EXPERIENCE_OPTIONS.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="relative">
+              <Select
+                value={years}
+                onValueChange={(newYears) => {
+                  if (newYears === "0") {
+                    onChange(skill);
+                  } else {
+                    onChange(`${skill} au moins ${newYears} ans`);
+                  }
+                }}
+              >
+                <SelectTrigger
+                  id="years"
+                  className={cn(
+                    hasError && "border-destructive pr-10",
+                    "transition-colors"
+                  )}
+                >
+                  <SelectValue placeholder="Années" />
+                  {hasError && (
+                    <AlertCircle className="h-4 w-4 absolute right-8 text-destructive" />
+                  )}
+                </SelectTrigger>
+                <SelectContent>
+                  {EXPERIENCE_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
       </div>
