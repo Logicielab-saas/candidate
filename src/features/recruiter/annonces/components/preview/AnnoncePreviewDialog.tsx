@@ -29,6 +29,9 @@ export function AnnoncePreviewDialog() {
   const { baseInformation, jobTypeInformation, description } =
     useCreateAnnonceStore();
 
+  const hasDescription = description && description.trim() !== "";
+  console.log("Current description:", description); // Debug log
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -118,15 +121,19 @@ export function AnnoncePreviewDialog() {
           {/* Description */}
           <div className="space-y-4">
             <h3 className="font-semibold text-lg">Description du poste</h3>
-            <div
-              className={cn(
-                "prose prose-zinc dark:prose-invert max-w-none",
-                "prose-p:leading-relaxed prose-ul:leading-relaxed"
-              )}
-              dangerouslySetInnerHTML={{
-                __html: description || "Aucune description fournie",
-              }}
-            />
+            {hasDescription ? (
+              <div
+                className={cn(
+                  "prose prose-zinc dark:prose-invert max-w-none",
+                  "prose-p:leading-relaxed prose-ul:leading-relaxed"
+                )}
+                dangerouslySetInnerHTML={{ __html: description }}
+              />
+            ) : (
+              <p className="text-muted-foreground">
+                Aucune description fournie
+              </p>
+            )}
           </div>
         </div>
       </DialogContent>

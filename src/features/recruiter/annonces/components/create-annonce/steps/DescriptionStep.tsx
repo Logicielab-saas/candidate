@@ -17,6 +17,7 @@ import {
 import { Tiptap } from "@/components/ui/tiptap";
 import * as z from "zod";
 import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
 
 const descriptionFormSchema = z.object({
   description: z
@@ -45,6 +46,17 @@ export function DescriptionStep() {
     mode: "onChange", // Enable real-time validation
   });
 
+  // Update description in store when it changes
+  const { watch } = form;
+  useEffect(() => {
+    const subscription = watch((value) => {
+      if (value.description) {
+        setDescription(value.description);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, setDescription]);
+
   const onSubmit = (data: DescriptionForm) => {
     // Log the raw HTML content
     console.log("Raw HTML Description:", data.description);
@@ -54,7 +66,10 @@ export function DescriptionStep() {
     console.log("Text Content:", textContent);
     console.log("Text Content Length:", textContent.length);
 
+    // Save the description immediately when it changes
     setDescription(data.description);
+
+    // Show success toast and proceed to next step
     toast({
       title: "Description enregistrée",
       description: "La description du poste a été enregistrée avec succès.",
