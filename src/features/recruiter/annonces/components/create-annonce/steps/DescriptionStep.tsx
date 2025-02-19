@@ -103,6 +103,7 @@ export function DescriptionStep() {
         onPrevious={previousStep}
         onNext={form.handleSubmit(onSubmit)}
         canProceed={!form.formState.errors.description}
+        showPreview
       />
     </div>
   );
