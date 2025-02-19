@@ -7,7 +7,8 @@ import {
 import { STEPS } from "../common/constants/steps.constants";
 import { formatStepData } from "../common/utils/step-formatter.utils";
 import { CreateAnnonceState } from "../common/types/create-annonce.types";
-import { FormattedQuestion, SelectedQuestion } from "../common/types/questions.types";
+import { SelectedQuestion } from "../common/types/questions.types";
+import { FinalQuestion } from "../common/interfaces/questions.interface";
 
 // TODO: Add step questions then verification At the steps constants and adapt the store and relevant components
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
@@ -52,18 +53,17 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
 
   getFormattedQuestions: () => {
     const { questions } = get();
-    return questions.map((q): FormattedQuestion => {
+    return questions.map((q): FinalQuestion => {
       const base = {
         id: q.id,
         isRequired: q.isRequired,
-        label: q.type === 'choice' ? q.question : (q.answer as string) || "",
       };
 
-      if (q.type === "choice") {
+      // For choice questions, only add isMultipleChoices if true
+      if (q.type === "choice" && q.isMultiple) {
         return {
           ...base,
-          options: q.options,
-          isMultipleChoices: q.isMultiple,
+          isMultipleChoices: true,
         };
       }
 

@@ -22,9 +22,7 @@ export type PredefinedQuestion = SimpleQuestion | ChoiceQuestion;
 
 // Interface for the final question data to be sent
 export interface FinalQuestion {
-  id: string; // The predefined question ID determines the type
-  label: string;
+  id: string;
   isRequired: boolean;
-  options?: string[]; // Only for choice type
-  isMultipleChoices?: boolean; // Only for choice type - allows multiple selections for candidates
+  isMultipleChoices?: boolean; // Only for choice questions
 }
