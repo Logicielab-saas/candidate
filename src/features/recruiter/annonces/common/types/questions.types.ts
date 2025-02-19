@@ -1,7 +1,9 @@
-import { PredefinedQuestion } from "../interfaces/questions.interface";
+import { FinalQuestion, PredefinedQuestion } from "../interfaces/questions.interface";
 
 export type QuestionAnswer = string | string[];
 
 export type SelectedQuestion = PredefinedQuestion & {
   answer?: QuestionAnswer;
 };
+
+export type FormattedQuestion = FinalQuestion;

@@ -7,6 +7,7 @@ import {
 import { STEPS } from "../common/constants/steps.constants";
 import { formatStepData } from "../common/utils/step-formatter.utils";
 import { CreateAnnonceState } from "../common/types/create-annonce.types";
+import { FormattedQuestion, SelectedQuestion } from "../common/types/questions.types";
 
 // TODO: Add step questions then verification At the steps constants and adapt the store and relevant components
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
@@ -18,6 +19,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   salaryInformation: INITIAL_SALARY_INFORMATION,
   description: "",
   preferences: null,
+  questions: [],
 
   // Actions
   setAnnonceType: (type) => {
@@ -44,6 +46,30 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
     set({ preferences: data });
   },
 
+  setQuestions: (questions: SelectedQuestion[]) => {
+    set({ questions });
+  },
+
+  getFormattedQuestions: () => {
+    const { questions } = get();
+    return questions.map((q): FormattedQuestion => {
+      const base = {
+        id: q.id,
+        isRequired: q.isRequired,
+        label: q.answer as string || "",
+      };
+
+      if (q.type === "choice") {
+        return {
+          ...base,
+          options: q.options,
+        };
+      }
+
+      return base;
+    });
+  },
+
   nextStep: () => {
     const state = get();
     const currentIndex = STEPS.indexOf(state.currentStep);
@@ -63,6 +89,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
           salaryInformation: state.salaryInformation,
           description: state.description,
           preferences: state.preferences,
+          questions: state.getFormattedQuestions(),
         });
       }
 
@@ -93,7 +120,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   },
 
   canProceed: () => {
-    const { currentStep, annonceType, baseInformation, jobTypeInformation, description } = get();
+    const { currentStep, annonceType, baseInformation, jobTypeInformation, description, questions } = get();
 
     switch (currentStep) {
       case "job-information":
@@ -110,6 +137,9 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
         return !!description.trim();
       case "preferences":
         return true; // Validation is handled by the form
+      case "questions":
+        // At least one question must be added and all required questions must be filled
+        return questions.length > 0 && questions.every(q => !q.isRequired || !!q.answer);
       case "preview":
         return true;
       default:
@@ -126,6 +156,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
       salaryInformation: INITIAL_SALARY_INFORMATION,
       description: "",
       preferences: null,
+      questions: [],
     });
   },
 }));

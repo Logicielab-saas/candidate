@@ -1,11 +1,12 @@
 export type QuestionType = 'experience' | 'open' | 'choice' | 'yesno';
 
+// Base interface for predefined questions (templates)
 interface BaseQuestion {
   id: string;
   type: QuestionType;
   question: string;
   isRequired: boolean;
-  isMultiple: boolean;
+  isMultiple: boolean; // Only used for template selection, not sent to backend
 }
 
 interface ChoiceQuestion extends BaseQuestion {
@@ -18,3 +19,11 @@ interface SimpleQuestion extends BaseQuestion {
 }
 
 export type PredefinedQuestion = SimpleQuestion | ChoiceQuestion;
+
+// Interface for the final question data to be sent
+export interface FinalQuestion {
+  id: string; // The predefined question ID determines the type
+  label: string;
+  isRequired: boolean;
+  options?: string[]; // Only for choice type
+}

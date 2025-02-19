@@ -3,6 +3,7 @@ import { JobTypeInformation } from "../interfaces/contract.interface";
 import { SalaryInformation } from "../interfaces/salary.interface";
 import { StepperState } from "./store.types";
 import { PreferencesForm } from "@/features/recruiter/annonces/common";
+import { FormattedQuestion, SelectedQuestion } from "./questions.types";
 
 export type AnnonceCreationStep = "job-information" | "description-annonce" | "preferences" | "questions" | "preview";
 
@@ -18,6 +19,7 @@ export interface CreateAnnonceState extends StepperState<AnnonceCreationStep> {
   salaryInformation: SalaryInformation;
   description: string;
   preferences: PreferencesForm | null;
+  questions: SelectedQuestion[];
 
   // Actions
   setAnnonceType: (type: AnnonceType) => void;
@@ -26,6 +28,8 @@ export interface CreateAnnonceState extends StepperState<AnnonceCreationStep> {
   setSalaryInformation: (data: SalaryInformation) => void;
   setDescription: (description: string) => void;
   setPreferences: (data: PreferencesForm) => void;
+  setQuestions: (questions: SelectedQuestion[]) => void;
+  getFormattedQuestions: () => FormattedQuestion[];
 }
 
 export interface StepData {
@@ -44,6 +48,7 @@ export interface StepData {
       salaryInformation: SalaryInformation;
       description: string;
       preferences: PreferencesForm | null;
+      questions: FormattedQuestion[];
     };
   };
 }

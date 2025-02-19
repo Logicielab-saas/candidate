@@ -7,7 +7,6 @@ import { Card } from "@/components/ui/card";
 import { Plus, X } from "lucide-react";
 import { PREDEFINED_QUESTIONS } from "@/core/mockData/questions-data";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { QuestionFactory } from "./questions/QuestionFactory";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { QuestionAnswer } from "@/features/recruiter/annonces/common/types/questions.types";
@@ -18,30 +17,23 @@ type QuestionWithAnswer = PredefinedQuestion & {
 };
 
 export function QuestionsStep() {
-  const { nextStep, previousStep, canProceed } = useCreateAnnonceStore();
-  const [selectedQuestions, setSelectedQuestions] = useState<
-    QuestionWithAnswer[]
-  >([]);
+  const { nextStep, previousStep, canProceed, questions, setQuestions } =
+    useCreateAnnonceStore();
 
   const handleAddQuestion = (questionId: string) => {
     const question = PREDEFINED_QUESTIONS.find((q) => q.id === questionId);
-    if (question && !selectedQuestions.some((q) => q.id === questionId)) {
-      setSelectedQuestions([
-        ...selectedQuestions,
-        { ...question, answer: undefined },
-      ]);
+    if (question && !questions.some((q) => q.id === questionId)) {
+      setQuestions([...questions, { ...question, answer: undefined }]);
     }
   };
 
   const handleRemoveQuestion = (questionId: string) => {
-    setSelectedQuestions(selectedQuestions.filter((q) => q.id !== questionId));
+    setQuestions(questions.filter((q) => q.id !== questionId));
   };
 
   const handleQuestionChange = (questionId: string, value: QuestionAnswer) => {
-    setSelectedQuestions(
-      selectedQuestions.map((q) =>
-        q.id === questionId ? { ...q, answer: value } : q
-      )
+    setQuestions(
+      questions.map((q) => (q.id === questionId ? { ...q, answer: value } : q))
     );
   };
 
@@ -60,7 +52,7 @@ export function QuestionsStep() {
               variant="ghost"
               className="h-auto py-4 px-6 flex items-center gap-3 justify-start rounded-full hover:bg-primaryHex-50 dark:hover:bg-primaryHex-900/50"
               onClick={() => handleAddQuestion(question.id)}
-              disabled={selectedQuestions.some((q) => q.id === question.id)}
+              disabled={questions.some((q) => q.id === question.id)}
             >
               <div className="w-8 h-8 rounded-full bg-primaryHex-100 dark:bg-primaryHex-900 flex items-center justify-center flex-shrink-0">
                 <Plus className="w-4 h-4 text-primaryHex-500" />
@@ -73,14 +65,14 @@ export function QuestionsStep() {
         </div>
       </Card>
 
-      {selectedQuestions.length > 0 && (
+      {questions.length > 0 && (
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-6">
             Questions sélectionnées
           </h3>
           <ScrollArea className="h-[400px] pr-4">
             <div className="space-y-8">
-              {selectedQuestions.map((question) => (
+              {questions.map((question) => (
                 <div key={question.id} className="relative">
                   <Button
                     variant="ghost"
