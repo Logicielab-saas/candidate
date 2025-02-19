@@ -8,7 +8,7 @@ import { STEPS } from "../common/constants/steps.constants";
 import { formatStepData } from "../common/utils/step-formatter.utils";
 import { CreateAnnonceState } from "../common/types/create-annonce.types";
 
-// TODO: Add step communication then questions then verification At the steps constants and adapt the store and relevant components
+// TODO: Add step questions then verification At the steps constants and adapt the store and relevant components
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   // Initial State
   currentStep: "job-information",
@@ -17,6 +17,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   jobTypeInformation: INITIAL_JOB_TYPE_INFORMATION,
   salaryInformation: INITIAL_SALARY_INFORMATION,
   description: "",
+  preferences: null,
 
   // Actions
   setAnnonceType: (type) => {
@@ -39,6 +40,10 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
     set({ description });
   },
 
+  setPreferences: (data) => {
+    set({ preferences: data });
+  },
+
   nextStep: () => {
     const state = get();
     const currentIndex = STEPS.indexOf(state.currentStep);
@@ -57,6 +62,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
           jobTypeInformation: state.jobTypeInformation,
           salaryInformation: state.salaryInformation,
           description: state.description,
+          preferences: state.preferences,
         });
       }
 
@@ -102,6 +108,8 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
         return true;
       case "description-annonce":
         return !!description.trim();
+      case "preferences":
+        return true; // Validation is handled by the form
       case "preview":
         return true;
       default:
@@ -117,6 +125,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
       jobTypeInformation: INITIAL_JOB_TYPE_INFORMATION,
       salaryInformation: INITIAL_SALARY_INFORMATION,
       description: "",
+      preferences: null,
     });
   },
 }));

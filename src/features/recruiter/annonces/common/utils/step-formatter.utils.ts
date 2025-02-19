@@ -20,6 +20,11 @@ export const formatStepData = (state: CreateAnnonceState): StepData => {
         description: state.description,
       };
       break;
+    case "preferences":
+      stepData.data = {
+        preferences: state.preferences || undefined,
+      };
+      break;
     case "preview":
       stepData.data = {
         completeForm: {
@@ -28,6 +33,7 @@ export const formatStepData = (state: CreateAnnonceState): StepData => {
           jobTypeInformation: state.jobTypeInformation,
           salaryInformation: state.salaryInformation,
           description: state.description,
+          preferences: state.preferences,
         },
       };
       break;
