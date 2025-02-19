@@ -38,6 +38,25 @@ export function QuestionsStep() {
     );
   };
 
+  const handleRequiredChange = (questionId: string, required: boolean) => {
+    setQuestions(
+      questions.map((q) =>
+        q.id === questionId ? { ...q, isRequired: required } : q
+      )
+    );
+  };
+
+  const handleMultipleChoicesChange = (
+    questionId: string,
+    multiple: boolean
+  ) => {
+    setQuestions(
+      questions.map((q) =>
+        q.id === questionId ? { ...q, isMultiple: multiple } : q
+      )
+    );
+  };
+
   return (
     <div className="container max-w-4xl mx-auto py-8 space-y-8">
       <HeaderSectionStepsForm
@@ -88,6 +107,15 @@ export function QuestionsStep() {
                     value={question.answer}
                     onChange={(value) =>
                       handleQuestionChange(question.id, value)
+                    }
+                    onRequiredChange={(required) =>
+                      handleRequiredChange(question.id, required)
+                    }
+                    onMultipleChoicesChange={
+                      question.type === "choice"
+                        ? (multiple) =>
+                            handleMultipleChoicesChange(question.id, multiple)
+                        : undefined
                     }
                   />
                 </div>
