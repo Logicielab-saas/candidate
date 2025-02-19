@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { PredefinedQuestion } from "@/features/recruiter/annonces/common/interfaces/questions.interface";
 import { QuestionAnswer } from "@/features/recruiter/annonces/common/types/questions.types";
 import { YesNoQuestion } from "./question-types/YesNoQuestion";
@@ -18,14 +19,19 @@ export function QuestionFactory({
   onChange,
   value,
 }: QuestionFactoryProps) {
+  // Set initial value for yes/no questions
+  useEffect(() => {
+    if (question.type === "yesno" && !value) {
+      onChange(question.question);
+    }
+  }, [question, onChange, value]);
+
   switch (question.type) {
     case "yesno":
       return (
         <YesNoQuestion
           question={question.question}
           isRequired={question.isRequired}
-          onChange={onChange}
-          value={value as string}
         />
       );
 
