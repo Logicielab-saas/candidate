@@ -26,4 +26,5 @@ export interface FinalQuestion {
   label: string;
   isRequired: boolean;
   options?: string[]; // Only for choice type
+  isMultipleChoices?: boolean; // Only for choice type - allows multiple selections for candidates
 }

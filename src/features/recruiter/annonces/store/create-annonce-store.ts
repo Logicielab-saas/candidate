@@ -56,13 +56,14 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
       const base = {
         id: q.id,
         isRequired: q.isRequired,
-        label: q.answer as string || "",
+        label: q.type === 'choice' ? q.question : (q.answer as string) || "",
       };
 
       if (q.type === "choice") {
         return {
           ...base,
           options: q.options,
+          isMultipleChoices: q.isMultiple,
         };
       }
 
@@ -138,8 +139,19 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
       case "preferences":
         return true; // Validation is handled by the form
       case "questions":
-        // At least one question must be added and all required questions must be filled
-        return questions.length > 0 && questions.every(q => !q.isRequired || !!q.answer);
+        // At least one question must be added
+        // Experience questions must always be filled
+        // Choice questions don't need an answer
+        // Other questions need answers only if required
+        return questions.length > 0 && questions.every(q => {
+          if (q.type === 'experience') {
+            return !!q.answer; // Experience questions must be filled
+          }
+          if (q.type === 'choice') {
+            return true; // Choice questions don't need answers
+          }
+          return !q.isRequired || !!q.answer; // Other questions based on isRequired
+        });
       case "preview":
         return true;
       default:
