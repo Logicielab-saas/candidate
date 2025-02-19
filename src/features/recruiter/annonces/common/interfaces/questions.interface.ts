@@ -25,4 +25,5 @@ export interface FinalQuestion {
   id: string;
   isRequired: boolean;
   isMultipleChoices?: boolean; // Only for choice questions
+  label?: string; // Only for experience questions - contains the experience requirement
 }

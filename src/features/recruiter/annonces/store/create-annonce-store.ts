@@ -59,7 +59,15 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
         isRequired: q.isRequired,
       };
 
-      // For choice questions, only add isMultipleChoices if true
+      // For experience questions, we need to keep the label (answer)
+      if (q.type === "experience") {
+        return {
+          ...base,
+          label: q.answer as string,
+        };
+      }
+
+      // For choice questions with multiple choices
       if (q.type === "choice" && q.isMultiple) {
         return {
           ...base,
@@ -67,6 +75,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
         };
       }
 
+      // For other predefined questions (open, yesno), we only need id and isRequired
       return base;
     });
   },
