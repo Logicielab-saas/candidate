@@ -8,38 +8,46 @@ import { Plus, X } from "lucide-react";
 import { PREDEFINED_QUESTIONS } from "@/core/mockData/questions-data";
 import { Button } from "@/components/ui/button";
 import { QuestionFactory } from "./questions/QuestionFactory";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { QuestionAnswer } from "@/features/recruiter/annonces/common/types/questions.types";
 import {
   CustomQuestion,
   PredefinedQuestion,
 } from "@/features/recruiter/annonces/common/interfaces/questions.interface";
 import { CustomQuestionDialog } from "./questions/dialogs/CustomQuestionDialog";
+import { useEffect, useRef } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const MAX_QUESTIONS = 5;
-
-// TODO: Add Custom Questions and handle it
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type QuestionWithAnswer = PredefinedQuestion & {
-  answer?: QuestionAnswer;
-};
 
 export function QuestionsStep() {
   const { nextStep, previousStep, canProceed, questions, setQuestions } =
     useCreateAnnonceStore();
+  const { toast } = useToast();
+
+  // Ref for the last question
+  const lastQuestionRef = useRef<HTMLDivElement>(null);
+
+  // Effect to scroll to the last question when questions array changes
+  useEffect(() => {
+    if (lastQuestionRef.current) {
+      lastQuestionRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+    if (questions.length == MAX_QUESTIONS) {
+      toast({
+        variant: "warning",
+        title: "Limite atteinte",
+        description: `Vous ne pouvez pas ajouter plus de ${MAX_QUESTIONS} questions.`,
+      });
+      return;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [questions.length]); // Only trigger when questions length changes
 
   const handleAddQuestion = (questionId: string) => {
     const predefinedQuestion = PREDEFINED_QUESTIONS.find(
       (q) => q.id === questionId
     );
     if (!predefinedQuestion) return;
-
-    // Check if we've reached the maximum number of questions
-    if (questions.length >= MAX_QUESTIONS) {
-      // You might want to show a toast or alert here
-      console.warn("Maximum number of questions reached");
-      return;
-    }
 
     // For questions with isMultiple=true, generate a unique ID
     if (predefinedQuestion.isMultiple) {
@@ -58,13 +66,7 @@ export function QuestionsStep() {
   };
 
   const handleAddCustomQuestion = (customQuestion: CustomQuestion) => {
-    // Check if we've reached the maximum number of questions
-    if (questions.length >= MAX_QUESTIONS) {
-      // You might want to show a toast or alert here
-      console.warn("Maximum number of questions reached");
-      return;
-    }
-
+    // * Generate a unique ID for the question
     const baseQuestion = {
       id: `custom-${Date.now()}`,
       question: customQuestion.label,
@@ -72,7 +74,7 @@ export function QuestionsStep() {
       isMultiple: customQuestion.isMultipleChoices || false,
     };
 
-    // Handle each type explicitly to satisfy TypeScript
+    // * Handle each type explicitly to satisfy TypeScript
     switch (customQuestion.type) {
       case "choice":
         setQuestions([
@@ -188,38 +190,40 @@ export function QuestionsStep() {
               {questions.length} / {MAX_QUESTIONS} questions
             </span>
           </div>
-          <ScrollArea className="h-[400px] pr-4">
-            <div className="space-y-8">
-              {questions.map((question) => (
-                <div key={question.id} className="relative">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute -right-2 -top-2"
-                    onClick={() => handleRemoveQuestion(question.id)}
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-                  <QuestionFactory
-                    question={question}
-                    value={question.answer}
-                    onChange={(value) =>
-                      handleQuestionChange(question.id, value)
-                    }
-                    onRequiredChange={(required) =>
-                      handleRequiredChange(question.id, required)
-                    }
-                    onMultipleChoicesChange={
-                      question.type === "choice"
-                        ? (multiple) =>
-                            handleMultipleChoicesChange(question.id, multiple)
-                        : undefined
-                    }
-                  />
-                </div>
-              ))}
-            </div>
-          </ScrollArea>
+          {/* <ScrollArea className="h-[400px] pr-4"> */}
+          <div className="space-y-8">
+            {questions.map((question, index) => (
+              <div
+                key={question.id}
+                className="relative"
+                ref={index === questions.length - 1 ? lastQuestionRef : null}
+              >
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute -right-2 -top-2"
+                  onClick={() => handleRemoveQuestion(question.id)}
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+                <QuestionFactory
+                  question={question}
+                  value={question.answer}
+                  onChange={(value) => handleQuestionChange(question.id, value)}
+                  onRequiredChange={(required) =>
+                    handleRequiredChange(question.id, required)
+                  }
+                  onMultipleChoicesChange={
+                    question.type === "choice"
+                      ? (multiple) =>
+                          handleMultipleChoicesChange(question.id, multiple)
+                      : undefined
+                  }
+                />
+              </div>
+            ))}
+          </div>
+          {/* </ScrollArea> */}
         </Card>
       )}
 
