@@ -3,25 +3,27 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useCreateAnnonceStore } from "@/features/recruiter/annonces/store/create-annonce-store";
 import { HeaderSectionStepsForm } from "@/components/shared/HeaderSectionStepsForm";
-import { FormStepsNavigation } from "@/components/shared/FormStepsNavigation";
 import { JobPostDetails } from "@/components/shared/JobPostDetails";
 import { useToast } from "@/hooks/use-toast";
 import { FloatingScrollButton } from "./questions/FloatingScrollButton";
+import { useState } from "react";
+import { SuccessScreen } from "./SuccessScreen";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 export function VerificationStep() {
   const {
     previousStep,
-    nextStep,
     baseInformation,
     jobTypeInformation,
     salaryInformation,
     description,
     preferences,
     questions,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    currentStep,
   } = useCreateAnnonceStore();
 
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const handleEdit = (
@@ -35,15 +37,37 @@ export function VerificationStep() {
     useCreateAnnonceStore.setState({ currentStep: section });
   };
 
-  const handleSubmit = () => {
-    // TODO: Implement API call to create the job post
-    toast({
-      title: "Annonce créée",
-      description: "Votre annonce a été créée avec succès.",
-      variant: "success",
-    });
-    nextStep();
+  const handleSubmit = async () => {
+    try {
+      setIsLoading(true);
+      // TODO: Implement API call to create the job post
+      // Simulate API call with timeout
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      setIsSubmitted(true);
+
+      toast({
+        title: "Annonce créée",
+        description: "Votre annonce a été créée avec succès.",
+        variant: "success",
+      });
+    } catch (_error) {
+      toast({
+        title: "Erreur",
+        description:
+          "Une erreur est survenue lors de la création de l'annonce.",
+        variant: "destructive",
+      });
+      console.error(_error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  // Show success screen if submitted
+  if (isSubmitted) {
+    return <SuccessScreen />;
+  }
 
   return (
     <>
@@ -70,12 +94,21 @@ export function VerificationStep() {
           </CardContent>
         </Card>
 
-        <FormStepsNavigation
-          onPrevious={previousStep}
-          onNext={handleSubmit}
-          canProceed={true}
-          nextLabel="Publier l'annonce"
-        />
+        <div className="flex justify-between pt-6">
+          <Button onClick={previousStep} variant="outline" disabled={isLoading}>
+            Retour
+          </Button>
+          <Button onClick={handleSubmit} disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Publication en cours...
+              </>
+            ) : (
+              "Publier l'annonce"
+            )}
+          </Button>
+        </div>
       </div>
     </>
   );

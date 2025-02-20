@@ -4,7 +4,7 @@ import { useState } from "react";
 import { AnnonceTabs } from "./AnnonceTabs";
 import { AnnonceSelectFilter } from "./AnnonceSelectFilter";
 import { AnnonceDataTable } from "./AnnonceDataTable";
-import Link from "next/link";
+import { PublierAnnonceLink } from "@/components/shared/PublierAnnonceLink";
 
 // TODO: Move this to a proper data fetching solution
 const data = [
@@ -52,12 +52,7 @@ export function AnnoncesContainer() {
         <div className="flex-1">
           <AnnonceTabs activeTab={activeTab} onTabChange={setActiveTab} />
         </div>
-        <Link
-          href="/recruiter/annonces/create-annonce"
-          className="mt-2 bg-primaryHex-500 text-white px-4 py-2 rounded-md"
-        >
-          Publier une annonce
-        </Link>
+        <PublierAnnonceLink />
       </div>
 
       <AnnonceSelectFilter />
