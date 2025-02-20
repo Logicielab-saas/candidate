@@ -14,6 +14,7 @@ import { useState } from "react";
 import { EditJobDetailsDialog } from "@/features/recruiter/annonces/components/create-annonce/edit-dialogs/EditJobDetailsDialog";
 import { EditPreferencesDialog } from "@/features/recruiter/annonces/components/create-annonce/edit-dialogs/EditPreferencesDialog";
 import { EditQuestionsDialog } from "@/features/recruiter/annonces/components/create-annonce/edit-dialogs/EditQuestionsDialog";
+import { EditDescriptionDialog } from "@/features/recruiter/annonces/components/create-annonce/edit-dialogs/EditDescriptionDialog";
 
 interface DetailRowProps {
   label: string;
@@ -29,17 +30,19 @@ function DetailRow({
   onEdit,
 }: DetailRowProps) {
   return (
-    <div className="flex items-center py-3 border-b border-gray-100 dark:border-gray-800 last:border-0">
-      <div className="flex-1">
+    <div className="flex items-start py-3 border-b border-gray-100 dark:border-gray-800 last:border-0">
+      <div className="flex-1 min-w-0">
         <div className="text-sm text-muted-foreground">{label}</div>
-        <div className="mt-1 font-medium">{value}</div>
+        <div className="mt-1 font-medium break-words overflow-hidden">
+          {value}
+        </div>
       </div>
       {showEditButton && (
         <Button
           variant="ghost"
           size="icon"
           onClick={onEdit}
-          className="ml-2 h-8 w-8 text-muted-foreground hover:text-foreground"
+          className="ml-2 h-8 w-8 flex-shrink-0 text-muted-foreground hover:text-foreground"
         >
           <Edit2 className="h-4 w-4" />
         </Button>
@@ -69,10 +72,10 @@ function DescriptionContent({ description }: { description: string }) {
   const isLong = plainText.length > 50;
 
   return (
-    <div>
+    <div className="w-full">
       <div
         className={cn(
-          "prose prose-sm dark:prose-invert",
+          "prose prose-sm dark:prose-invert max-w-none break-words",
           !isExpanded && "line-clamp-2"
         )}
         dangerouslySetInnerHTML={{
@@ -185,6 +188,7 @@ export function JobPostDetails({
   const [isJobDetailsDialogOpen, setIsJobDetailsDialogOpen] = useState(false);
   const [isPreferencesDialogOpen, setIsPreferencesDialogOpen] = useState(false);
   const [isQuestionsDialogOpen, setIsQuestionsDialogOpen] = useState(false);
+  const [isDescriptionDialogOpen, setIsDescriptionDialogOpen] = useState(false);
 
   const formatSalary = () => {
     const { displayType, minSalary, maxSalary } = data.salaryInformation;
@@ -216,6 +220,10 @@ export function JobPostDetails({
       <EditQuestionsDialog
         isOpen={isQuestionsDialogOpen}
         onClose={() => setIsQuestionsDialogOpen(false)}
+      />
+      <EditDescriptionDialog
+        isOpen={isDescriptionDialogOpen}
+        onClose={() => setIsDescriptionDialogOpen(false)}
       />
 
       <div className="space-y-8">
@@ -260,7 +268,7 @@ export function JobPostDetails({
               label="Description du poste"
               value={<DescriptionContent description={data.description} />}
               showEditButton={showEditButtons}
-              onEdit={() => setIsJobDetailsDialogOpen(true)}
+              onEdit={() => setIsDescriptionDialogOpen(true)}
             />
           </div>
         </Section>

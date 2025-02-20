@@ -18,6 +18,7 @@ import { Tiptap } from "@/components/ui/tiptap";
 import * as z from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 const descriptionFormSchema = z.object({
   description: z
@@ -33,7 +34,15 @@ const descriptionFormSchema = z.object({
 
 type DescriptionForm = z.infer<typeof descriptionFormSchema>;
 
-export function DescriptionStep() {
+interface DescriptionStepProps {
+  isDialog?: boolean;
+  onDialogClose?: () => void;
+}
+
+export function DescriptionStep({
+  isDialog = false,
+  onDialogClose,
+}: DescriptionStepProps) {
   const { description, setDescription, previousStep, nextStep } =
     useCreateAnnonceStore();
   const { toast } = useToast();
@@ -46,44 +55,45 @@ export function DescriptionStep() {
     mode: "onChange", // Enable real-time validation
   });
 
-  // Update description in store when it changes
+  // Update description in store when it changes - only in non-dialog mode
   const { watch } = form;
   useEffect(() => {
+    if (isDialog) return; // Skip the effect in dialog mode
+
     const subscription = watch((value) => {
       if (value.description) {
         setDescription(value.description);
       }
     });
     return () => subscription.unsubscribe();
-  }, [watch, setDescription]);
+  }, [watch, setDescription, isDialog]);
 
   const onSubmit = (data: DescriptionForm) => {
-    // Log the raw HTML content
-    console.log("Raw HTML Description:", data.description);
-
-    // Log the text content (without HTML tags)
-    const textContent = data.description.replace(/<[^>]*>/g, "");
-    console.log("Text Content:", textContent);
-    console.log("Text Content Length:", textContent.length);
-
-    // Save the description immediately when it changes
+    // Save the description
     setDescription(data.description);
 
-    // Show success toast and proceed to next step
+    // Show success toast and proceed
     toast({
       title: "Description enregistrée",
       description: "La description du poste a été enregistrée avec succès.",
       variant: "success",
     });
-    nextStep();
+
+    if (isDialog) {
+      onDialogClose?.();
+    } else {
+      nextStep();
+    }
   };
 
   return (
     <div className="w-full max-w-3xl mx-auto space-y-8">
-      <HeaderSectionStepsForm
-        title="Description du poste"
-        description="Décrivez le poste et les compétences requises"
-      />
+      {!isDialog && (
+        <HeaderSectionStepsForm
+          title="Description du poste"
+          description="Décrivez le poste et les compétences requises"
+        />
+      )}
 
       <Card>
         <CardContent className="pt-6">
@@ -114,12 +124,23 @@ export function DescriptionStep() {
         </CardContent>
       </Card>
 
-      <FormStepsNavigation
-        onPrevious={previousStep}
-        onNext={form.handleSubmit(onSubmit)}
-        canProceed={!form.formState.errors.description}
-        showPreview
-      />
+      {isDialog ? (
+        <div className="flex justify-end gap-4">
+          <Button variant="outline" onClick={onDialogClose}>
+            Annuler
+          </Button>
+          <Button onClick={form.handleSubmit(onSubmit)}>
+            Enregistrer les modifications
+          </Button>
+        </div>
+      ) : (
+        <FormStepsNavigation
+          onPrevious={previousStep}
+          onNext={form.handleSubmit(onSubmit)}
+          canProceed={!form.formState.errors.description}
+          showPreview
+        />
+      )}
     </div>
   );
 }
