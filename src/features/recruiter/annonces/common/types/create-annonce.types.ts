@@ -41,6 +41,7 @@ export interface StepData {
     salaryInformation?: SalaryInformation;
     description?: string;
     preferences?: PreferencesForm;
+    questions?: FormattedQuestion[];
     completeForm?: {
       annonceType: AnnonceType;
       baseInformation: BaseInformation;

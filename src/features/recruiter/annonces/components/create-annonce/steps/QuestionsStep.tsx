@@ -11,7 +11,7 @@ import { QuestionFactory } from "./questions/QuestionFactory";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { QuestionAnswer } from "@/features/recruiter/annonces/common/types/questions.types";
 import { PredefinedQuestion } from "@/features/recruiter/annonces/common/interfaces/questions.interface";
-
+// TODO: Add Custom Questions and handle it
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type QuestionWithAnswer = PredefinedQuestion & {
   answer?: QuestionAnswer;
