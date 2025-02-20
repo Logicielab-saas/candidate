@@ -25,14 +25,16 @@ import { Plus } from "lucide-react";
 
 type CustomQuestionType = Exclude<QuestionType, "experience">;
 
+export interface CustomQuestionProps {
+  type: CustomQuestionType;
+  label: string;
+  isRequired: boolean;
+  isMultipleChoices?: boolean;
+  options?: string[];
+}
+
 interface CustomQuestionDialogProps {
-  onAddQuestion: (question: {
-    type: CustomQuestionType;
-    label: string;
-    isRequired: boolean;
-    isMultipleChoices?: boolean;
-    options?: string[];
-  }) => void;
+  onAddQuestion: (question: CustomQuestionProps) => void;
   disabled?: boolean;
 }
 

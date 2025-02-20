@@ -9,13 +9,12 @@ import { PREDEFINED_QUESTIONS } from "@/core/mockData/questions-data";
 import { Button } from "@/components/ui/button";
 import { QuestionFactory } from "./questions/QuestionFactory";
 import { QuestionAnswer } from "@/features/recruiter/annonces/common/types/questions.types";
-import {
-  CustomQuestion,
-  PredefinedQuestion,
-} from "@/features/recruiter/annonces/common/interfaces/questions.interface";
+import { PredefinedQuestion } from "@/features/recruiter/annonces/common/interfaces/questions.interface";
 import { CustomQuestionDialog } from "./questions/dialogs/CustomQuestionDialog";
 import { useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { createPredefinedFromCustom } from "@/core/utils";
+import type { CustomQuestionProps } from "./questions/dialogs/CustomQuestionDialog";
 
 const MAX_QUESTIONS = 5;
 
@@ -65,49 +64,16 @@ export function QuestionsStep() {
     }
   };
 
-  const handleAddCustomQuestion = (customQuestion: CustomQuestion) => {
-    // * Generate a unique ID for the question
-    const baseQuestion = {
-      id: `custom-${Date.now()}`,
-      question: customQuestion.label,
-      isRequired: customQuestion.isRequired,
-      isMultiple: customQuestion.isMultipleChoices || false,
-    };
-
-    // * Handle each type explicitly to satisfy TypeScript
-    switch (customQuestion.type) {
-      case "choice":
-        setQuestions([
-          ...questions,
-          {
-            ...baseQuestion,
-            type: "choice",
-            options: customQuestion.options || [],
-            answer: undefined,
-          } as PredefinedQuestion,
-        ]);
-        break;
-      case "open":
-        setQuestions([
-          ...questions,
-          {
-            ...baseQuestion,
-            type: "open",
-            answer: undefined,
-          } as PredefinedQuestion,
-        ]);
-        break;
-      case "yesno":
-        setQuestions([
-          ...questions,
-          {
-            ...baseQuestion,
-            type: "yesno",
-            answer: undefined,
-          } as PredefinedQuestion,
-        ]);
-        break;
+  const handleAddCustomQuestion = (customQuestion: CustomQuestionProps) => {
+    // Check if we've reached the maximum number of questions
+    if (questions.length >= MAX_QUESTIONS) {
+      // You might want to show a toast or alert here
+      console.warn("Maximum number of questions reached");
+      return;
     }
+
+    const newQuestion = createPredefinedFromCustom(customQuestion);
+    setQuestions([...questions, { ...newQuestion, answer: undefined }]);
   };
 
   const handleRemoveQuestion = (questionId: string) => {
