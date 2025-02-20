@@ -2,6 +2,7 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 interface QuestionSettingsProps {
   questionId: string;
@@ -26,20 +27,20 @@ export function QuestionSettings({
   const multipleId = `multiple-${questionId}`;
 
   return (
-    <div className={className}>
-      <div className="flex items-center space-x-2">
+    <div className={cn("flex items-center gap-4 mr-8", className)}>
+      <div className="flex items-center gap-2">
         <Checkbox
           id={requiredId}
           checked={isRequired}
           onCheckedChange={onRequiredChange}
         />
         <Label htmlFor={requiredId} className="text-sm font-normal">
-          Question obligatoire
+          Obligatoire
         </Label>
       </div>
 
       {isChoice && onMultipleChoicesChange && (
-        <div className="flex items-center space-x-2 mt-2">
+        <div className="flex items-center gap-2">
           <Checkbox
             id={multipleId}
             checked={isMultipleChoices}

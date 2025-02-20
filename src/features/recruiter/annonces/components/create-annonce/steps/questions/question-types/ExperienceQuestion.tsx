@@ -11,12 +11,15 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { AlertCircle } from "lucide-react";
+import { QuestionSettings } from "./QuestionSettings";
 
 interface ExperienceQuestionProps {
   question: string;
   isRequired: boolean;
   onChange: (value: string) => void;
   value?: string;
+  questionId: string;
+  onRequiredChange: (required: boolean) => void;
 }
 
 const EXPERIENCE_OPTIONS = [
@@ -32,10 +35,11 @@ const EXPERIENCE_OPTIONS = [
 export function ExperienceQuestion({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   question,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   isRequired,
   onChange,
   value,
+  questionId,
+  onRequiredChange,
 }: ExperienceQuestionProps) {
   const skill = value?.split(" au moins ")[0] || "";
   const years = value?.split(" au moins ")[1]?.split(" ")[0] || "0";
@@ -44,12 +48,16 @@ export function ExperienceQuestion({
   return (
     <div className="space-y-3">
       <div className="space-y-2">
-        <Label className="text-base flex items-center gap-2">
-          Créer une question d&apos;expérience
-          <span className="text-destructive text-sm font-medium">
-            (Champ obligatoire)
-          </span>
-        </Label>
+        <div className="flex items-center justify-between gap-4">
+          <Label className="text-base">
+            Créer une question d&apos;expérience
+          </Label>
+          <QuestionSettings
+            questionId={questionId}
+            isRequired={isRequired}
+            onRequiredChange={onRequiredChange}
+          />
+        </div>
         <div className="flex items-end gap-3">
           <div className="flex-1 space-y-2">
             <Label

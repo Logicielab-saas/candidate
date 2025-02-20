@@ -2,21 +2,33 @@
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { QuestionSettings } from "./QuestionSettings";
 
 interface YesNoQuestionProps {
   question: string;
   isRequired: boolean;
   onChange?: (value: string) => void;
   value?: string;
+  questionId: string;
+  onRequiredChange: (required: boolean) => void;
 }
 
-export function YesNoQuestion({ question, isRequired }: YesNoQuestionProps) {
+export function YesNoQuestion({
+  question,
+  isRequired,
+  questionId,
+  onRequiredChange,
+}: YesNoQuestionProps) {
   return (
     <div className="space-y-3">
-      <Label className="text-base">
-        {question}
-        {isRequired && <span className="text-destructive ml-1">*</span>}
-      </Label>
+      <div className="flex items-center justify-between gap-4">
+        <Label className="text-base">{question}</Label>
+        <QuestionSettings
+          questionId={questionId}
+          isRequired={isRequired}
+          onRequiredChange={onRequiredChange}
+        />
+      </div>
       <RadioGroup className="flex gap-4">
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="yes" id="yes" />

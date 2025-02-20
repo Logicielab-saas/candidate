@@ -39,7 +39,7 @@ export const PREDEFINED_QUESTIONS: PredefinedQuestion[] = [
       "Bilingue",
       "Langue maternelle"
     ],
-    isRequired: true,
+    isRequired: false,
     isMultiple: false,
   },
 

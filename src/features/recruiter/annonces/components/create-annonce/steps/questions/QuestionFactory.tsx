@@ -7,7 +7,8 @@ import { YesNoQuestion } from "./question-types/YesNoQuestion";
 import { ChoiceQuestion } from "./question-types/ChoiceQuestion";
 import { ExperienceQuestion } from "./question-types/ExperienceQuestion";
 import { OpenQuestion } from "./question-types/OpenQuestion";
-import { QuestionSettings } from "./question-types/QuestionSettings";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 
 interface QuestionFactoryProps {
   question: PredefinedQuestion;
@@ -15,6 +16,7 @@ interface QuestionFactoryProps {
   value?: QuestionAnswer;
   onRequiredChange: (required: boolean) => void;
   onMultipleChoicesChange?: (multiple: boolean) => void;
+  onRemove: () => void;
 }
 
 export function QuestionFactory({
@@ -23,6 +25,7 @@ export function QuestionFactory({
   value,
   onRequiredChange,
   onMultipleChoicesChange,
+  onRemove,
 }: QuestionFactoryProps) {
   // Set initial value for yes/no and open questions
   useEffect(() => {
@@ -38,6 +41,8 @@ export function QuestionFactory({
           <YesNoQuestion
             question={question.question}
             isRequired={question.isRequired}
+            questionId={question.id}
+            onRequiredChange={onRequiredChange}
           />
         );
 
@@ -50,6 +55,9 @@ export function QuestionFactory({
             isMultiple={question.isMultiple}
             onChange={onChange}
             value={value}
+            questionId={question.id}
+            onRequiredChange={onRequiredChange}
+            onMultipleChoicesChange={onMultipleChoicesChange}
           />
         );
 
@@ -60,6 +68,8 @@ export function QuestionFactory({
             isRequired={question.isRequired}
             onChange={onChange}
             value={value as string}
+            questionId={question.id}
+            onRequiredChange={onRequiredChange}
           />
         );
 
@@ -68,6 +78,8 @@ export function QuestionFactory({
           <OpenQuestion
             question={question.question}
             isRequired={question.isRequired}
+            questionId={question.id}
+            onRequiredChange={onRequiredChange}
           />
         );
 
@@ -77,19 +89,16 @@ export function QuestionFactory({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="relative space-y-4 bg-background rounded-lg border p-3">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="absolute -right-0 -top-0 h-8 w-8 rounded-full hover:bg-destructive/10 hover:text-destructive"
+        onClick={onRemove}
+      >
+        <X className="h-4 w-4" />
+      </Button>
       {renderQuestion()}
-      <QuestionSettings
-        questionId={question.id}
-        isRequired={question.isRequired}
-        onRequiredChange={onRequiredChange}
-        isChoice={question.type === "choice"}
-        isMultipleChoices={
-          question.type === "choice" ? question.isMultiple : undefined
-        }
-        onMultipleChoicesChange={onMultipleChoicesChange}
-        className="mt-4"
-      />
     </div>
   );
 }

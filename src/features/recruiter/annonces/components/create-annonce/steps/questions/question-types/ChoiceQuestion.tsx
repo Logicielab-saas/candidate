@@ -3,6 +3,7 @@
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
+import { QuestionSettings } from "./QuestionSettings";
 
 interface ChoiceQuestionProps {
   question: string;
@@ -11,6 +12,9 @@ interface ChoiceQuestionProps {
   isMultiple: boolean;
   onChange: (value: string | string[]) => void;
   value?: string | string[];
+  questionId: string;
+  onRequiredChange: (required: boolean) => void;
+  onMultipleChoicesChange?: (multiple: boolean) => void;
 }
 
 export function ChoiceQuestion({
@@ -20,6 +24,9 @@ export function ChoiceQuestion({
   isMultiple,
   onChange,
   value = isMultiple ? [] : undefined,
+  questionId,
+  onRequiredChange,
+  onMultipleChoicesChange,
 }: ChoiceQuestionProps) {
   const handleMultipleChange = (checked: boolean, option: string) => {
     const currentValue = (value as string[]) || [];
@@ -32,12 +39,19 @@ export function ChoiceQuestion({
 
   return (
     <div className="space-y-3">
-      <Label className="text-base">
-        {question}
-        {isRequired && <span className="text-destructive ml-1">*</span>}
-      </Label>
+      <div className="flex items-center justify-between gap-4">
+        <Label className="text-base">{question}</Label>
+        <QuestionSettings
+          questionId={questionId}
+          isRequired={isRequired}
+          onRequiredChange={onRequiredChange}
+          isChoice={true}
+          isMultipleChoices={isMultiple}
+          onMultipleChoicesChange={onMultipleChoicesChange}
+        />
+      </div>
       {isMultiple ? (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3">
           {options.map((option) => (
             <div key={option} className="flex items-center space-x-2">
               <Checkbox
@@ -57,7 +71,7 @@ export function ChoiceQuestion({
         <RadioGroup
           value={value as string}
           onValueChange={onChange}
-          className="grid grid-cols-2 gap-3"
+          className="grid grid-cols-1 gap-3"
         >
           {options.map((option) => (
             <div key={option} className="flex items-center space-x-2">

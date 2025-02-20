@@ -4,7 +4,7 @@ import { HeaderSectionStepsForm } from "@/components/shared/HeaderSectionStepsFo
 import { FormStepsNavigation } from "@/components/shared/FormStepsNavigation";
 import { useCreateAnnonceStore } from "@/features/recruiter/annonces/store/create-annonce-store";
 import { Card } from "@/components/ui/card";
-import { Plus, X } from "lucide-react";
+import { Plus } from "lucide-react";
 import { PREDEFINED_QUESTIONS } from "@/core/mockData/questions-data";
 import { Button } from "@/components/ui/button";
 import { QuestionFactory } from "./questions/QuestionFactory";
@@ -169,14 +169,6 @@ export function QuestionsStep() {
                   className="relative"
                   ref={index === questions.length - 1 ? lastQuestionRef : null}
                 >
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute -right-2 -top-2"
-                    onClick={() => handleRemoveQuestion(question.id)}
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
                   <QuestionFactory
                     question={question}
                     value={question.answer}
@@ -192,6 +184,7 @@ export function QuestionsStep() {
                             handleMultipleChoicesChange(question.id, multiple)
                         : undefined
                     }
+                    onRemove={() => handleRemoveQuestion(question.id)}
                   />
                 </div>
               ))}
