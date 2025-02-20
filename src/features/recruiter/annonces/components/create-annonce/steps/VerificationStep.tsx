@@ -15,14 +15,15 @@ export function VerificationStep() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const {
-    previousStep,
     baseInformation,
     jobTypeInformation,
     salaryInformation,
     description,
     preferences,
     questions,
+    previousStep,
     reset,
+    getFormattedQuestions,
   } = useCreateAnnonceStore();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -35,6 +36,9 @@ export function VerificationStep() {
       // Simulate API call with timeout
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
+      // Get formatted questions for submission
+      const formattedQuestions = getFormattedQuestions();
+
       // Store the form data somewhere (e.g., in an API or localStorage) if needed
       const formData = {
         baseInformation,
@@ -42,7 +46,7 @@ export function VerificationStep() {
         salaryInformation,
         description,
         preferences,
-        questions,
+        questions: formattedQuestions,
       };
       console.log("Form data to be submitted:", formData);
 

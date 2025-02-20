@@ -48,43 +48,46 @@ export const createPredefinedFromCustom = (
  * and structuring the data according to question type
  */
 export const formatQuestionsForSubmission = (questions: SelectedQuestion[]): SubmissionQuestion[] => {
-  return questions.map((q) => {
-    // For custom questions, send all the data
+  return questions.map((q): SubmissionQuestion => {
+    console.log("teeeeeeeeeeeeeeeeeeeeeeeeeeeeest")
+    // For custom questions, strip down to essential data
     if (q.id.startsWith('custom-')) {
+      if (q.type === 'choice') {
+        return {
+          type: q.type,
+          label: q.question,
+          isRequired: q.isRequired,
+          options: q.options
+        };
+      }
       return {
         type: q.type,
         label: q.question,
-        isRequired: q.isRequired,
-        ...(q.type === "choice" && {
-          isMultipleChoices: q.isMultiple,
-          options: q.options,
-        }),
+        isRequired: q.isRequired
       };
     }
 
     // For predefined questions
-    const base = {
+    if (q.type === 'choice') {
+      return {
+        id: q.id,
+        isRequired: q.isRequired,
+        isMultipleChoices: q.isMultiple
+      };
+    }
+
+    if (q.type === 'experience') {
+      return {
+        id: q.id,
+        isRequired: q.isRequired,
+        label: q.answer as string
+      };
+    }
+
+    // For open and yesno questions, just id and isRequired
+    return {
       id: q.id,
-      isRequired: q.isRequired,
+      isRequired: q.isRequired
     };
-
-    // For experience questions, we need to keep the label (answer)
-    if (q.type === "experience") {
-      return {
-        ...base,
-        label: q.answer as string,
-      };
-    }
-
-    // For choice questions with multiple choices
-    if (q.type === "choice" && q.isMultiple) {
-      return {
-        ...base,
-        isMultipleChoices: true,
-      };
-    }
-
-    // For other predefined questions (open, yesno), we only need id and isRequired
-    return base;
   });
 };

@@ -44,18 +44,17 @@ export interface FormQuestion {
 
 // Interface for the final question data to be sent (minimal data)
 export interface SubmissionQuestion {
-  // For predefined questions
-  id?: string;
+  // Common fields
   isRequired: boolean;
-  isMultipleChoices?: boolean;
-  label?: string;
 
-  // For custom questions
+  // Fields for predefined questions
+  id?: string;
+  isMultipleChoices?: boolean;
+  label?: string; // Used for experience questions
+
+  // Fields for custom questions
   type?: QuestionType;
   options?: string[];
-
-  question?: string;
-  answer?: string | string[];
 }
 
 // Union type for questions depending on the step

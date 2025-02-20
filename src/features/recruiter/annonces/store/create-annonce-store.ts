@@ -8,7 +8,6 @@ import { STEPS } from "../common/constants/steps.constants";
 import { formatStepData } from "../common/utils/step-formatter.utils";
 import { CreateAnnonceState } from "../common/types/create-annonce.types";
 import { SelectedQuestion } from "../common/types/questions.types";
-import { FormQuestion } from "../common/interfaces/questions.interface";
 import { formatQuestionsForSubmission } from "@/core/utils";
 // TODO: add step verification At the steps constants and adapt the store and relevant components
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
@@ -64,13 +63,12 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
       id: q.id,
       type: q.type,
       question: q.question,
-      label: q.type === 'experience' ? q.answer as string : q.question,
       isRequired: q.isRequired,
       isMultiple: q.isMultiple,
       isMultipleChoices: q.type === 'choice' ? q.isMultiple : undefined,
       options: q.type === 'choice' ? q.options : undefined,
       answer: q.answer,
-    })) as FormQuestion[];
+    }));
   },
 
   nextStep: () => {
