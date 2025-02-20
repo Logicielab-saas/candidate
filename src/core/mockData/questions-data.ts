@@ -7,7 +7,7 @@ export const PREDEFINED_QUESTIONS: PredefinedQuestion[] = [
     type: "experience",
     question: "Combien d'années d'expérience avez-vous dans ce domaine ?",
     isRequired: false,
-    isMultiple: false,
+    isMultiple: true,
   },
 
   // Open Questions
@@ -39,7 +39,7 @@ export const PREDEFINED_QUESTIONS: PredefinedQuestion[] = [
       "Bilingue",
       "Langue maternelle"
     ],
-    isRequired: false,
+    isRequired: true,
     isMultiple: false,
   },
 

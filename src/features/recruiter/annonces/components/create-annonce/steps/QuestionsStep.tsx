@@ -16,6 +16,8 @@ import {
 } from "@/features/recruiter/annonces/common/interfaces/questions.interface";
 import { CustomQuestionDialog } from "./questions/dialogs/CustomQuestionDialog";
 
+const MAX_QUESTIONS = 5;
+
 // TODO: Add Custom Questions and handle it
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type QuestionWithAnswer = PredefinedQuestion & {
@@ -27,13 +29,42 @@ export function QuestionsStep() {
     useCreateAnnonceStore();
 
   const handleAddQuestion = (questionId: string) => {
-    const question = PREDEFINED_QUESTIONS.find((q) => q.id === questionId);
-    if (question && !questions.some((q) => q.id === questionId)) {
-      setQuestions([...questions, { ...question, answer: undefined }]);
+    const predefinedQuestion = PREDEFINED_QUESTIONS.find(
+      (q) => q.id === questionId
+    );
+    if (!predefinedQuestion) return;
+
+    // Check if we've reached the maximum number of questions
+    if (questions.length >= MAX_QUESTIONS) {
+      // You might want to show a toast or alert here
+      console.warn("Maximum number of questions reached");
+      return;
+    }
+
+    // For questions with isMultiple=true, generate a unique ID
+    if (predefinedQuestion.isMultiple) {
+      const uniqueId = `${questionId}-${Date.now()}`;
+      setQuestions([
+        ...questions,
+        { ...predefinedQuestion, id: uniqueId, answer: undefined },
+      ]);
+    } else if (!questions.some((q) => q.id === questionId)) {
+      // For non-multiple questions, only add if not already present
+      setQuestions([
+        ...questions,
+        { ...predefinedQuestion, answer: undefined },
+      ]);
     }
   };
 
   const handleAddCustomQuestion = (customQuestion: CustomQuestion) => {
+    // Check if we've reached the maximum number of questions
+    if (questions.length >= MAX_QUESTIONS) {
+      // You might want to show a toast or alert here
+      console.warn("Maximum number of questions reached");
+      return;
+    }
+
     const baseQuestion = {
       id: `custom-${Date.now()}`,
       question: customQuestion.label,
@@ -41,22 +72,40 @@ export function QuestionsStep() {
       isMultiple: customQuestion.isMultipleChoices || false,
     };
 
-    let newQuestion: PredefinedQuestion;
-
-    if (customQuestion.type === "choice") {
-      newQuestion = {
-        ...baseQuestion,
-        type: "choice",
-        options: customQuestion.options || [],
-      };
-    } else {
-      newQuestion = {
-        ...baseQuestion,
-        type: customQuestion.type,
-      };
+    // Handle each type explicitly to satisfy TypeScript
+    switch (customQuestion.type) {
+      case "choice":
+        setQuestions([
+          ...questions,
+          {
+            ...baseQuestion,
+            type: "choice",
+            options: customQuestion.options || [],
+            answer: undefined,
+          } as PredefinedQuestion,
+        ]);
+        break;
+      case "open":
+        setQuestions([
+          ...questions,
+          {
+            ...baseQuestion,
+            type: "open",
+            answer: undefined,
+          } as PredefinedQuestion,
+        ]);
+        break;
+      case "yesno":
+        setQuestions([
+          ...questions,
+          {
+            ...baseQuestion,
+            type: "yesno",
+            answer: undefined,
+          } as PredefinedQuestion,
+        ]);
+        break;
     }
-
-    setQuestions([...questions, { ...newQuestion, answer: undefined }]);
   };
 
   const handleRemoveQuestion = (questionId: string) => {
@@ -88,11 +137,17 @@ export function QuestionsStep() {
     );
   };
 
+  // Function to check if a predefined question can be added
+  const canAddQuestion = (question: PredefinedQuestion) => {
+    if (questions.length >= MAX_QUESTIONS) return false;
+    return question.isMultiple || !questions.some((q) => q.id === question.id);
+  };
+
   return (
     <div className="container max-w-4xl mx-auto py-8 space-y-8">
       <HeaderSectionStepsForm
         title="Questions pour les candidats"
-        description="Ajoutez des questions pour mieux évaluer les candidats"
+        description={`Ajoutez des questions pour mieux évaluer les candidats (maximum ${MAX_QUESTIONS} questions)`}
       />
 
       <Card className="p-6">
@@ -103,25 +158,36 @@ export function QuestionsStep() {
               variant="ghost"
               className="h-auto py-4 px-6 flex items-center gap-3 justify-start rounded-full hover:bg-primaryHex-50 dark:hover:bg-primaryHex-900/50"
               onClick={() => handleAddQuestion(question.id)}
-              disabled={questions.some((q) => q.id === question.id)}
+              disabled={!canAddQuestion(question)}
             >
               <div className="w-8 h-8 rounded-full bg-primaryHex-100 dark:bg-primaryHex-900 flex items-center justify-center flex-shrink-0">
                 <Plus className="w-4 h-4 text-primaryHex-500" />
               </div>
               <span className="text-left font-medium line-clamp-2">
                 {question.question}
+                {question.isMultiple && (
+                  <span className="block text-xs text-muted-foreground">
+                    (Peut être ajoutée plusieurs fois)
+                  </span>
+                )}
               </span>
             </Button>
           ))}
-          <CustomQuestionDialog onAddQuestion={handleAddCustomQuestion} />
+          <CustomQuestionDialog
+            onAddQuestion={handleAddCustomQuestion}
+            disabled={questions.length >= MAX_QUESTIONS}
+          />
         </div>
       </Card>
 
       {questions.length > 0 && (
         <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-6">
-            Questions sélectionnées
-          </h3>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold">Questions sélectionnées</h3>
+            <span className="text-sm text-muted-foreground">
+              {questions.length} / {MAX_QUESTIONS} questions
+            </span>
+          </div>
           <ScrollArea className="h-[400px] pr-4">
             <div className="space-y-8">
               {questions.map((question) => (

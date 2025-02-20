@@ -33,10 +33,12 @@ interface CustomQuestionDialogProps {
     isMultipleChoices?: boolean;
     options?: string[];
   }) => void;
+  disabled?: boolean;
 }
 
 export function CustomQuestionDialog({
   onAddQuestion,
+  disabled = false,
 }: CustomQuestionDialogProps) {
   const [open, setOpen] = useState(false);
   const [type, setType] = useState<CustomQuestionType | "">("");
@@ -93,6 +95,7 @@ export function CustomQuestionDialog({
         <Button
           variant="ghost"
           className="h-auto py-4 px-6 flex items-center gap-3 justify-start rounded-full hover:bg-primaryHex-50 dark:hover:bg-primaryHex-900/50 w-full"
+          disabled={disabled}
         >
           <div className="w-8 h-8 rounded-full bg-primaryHex-100 dark:bg-primaryHex-900 flex items-center justify-center flex-shrink-0">
             <Plus className="w-4 h-4 text-primaryHex-500" />
