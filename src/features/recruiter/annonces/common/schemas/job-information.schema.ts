@@ -22,7 +22,7 @@ export const jobInformationFormSchema = z.object({
   promotionLocation: z.string().min(1, "La ville est requise"),
 
   // Job Type
-  contractType: z.string().min(1, "Sélectionnez un type de contrat"),
+  contractTypes: z.array(z.string()).min(1, "Sélectionnez au moins un type de contrat"),
   partTimeDetails: partTimeDetailsSchema.optional(),
   interimDetails: durationDetailsSchema.optional(),
   cddDetails: durationDetailsSchema.optional(),

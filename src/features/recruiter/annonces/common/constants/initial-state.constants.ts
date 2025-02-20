@@ -9,7 +9,12 @@ export const INITIAL_BASE_INFORMATION: BaseInformation = {
 };
 
 export const INITIAL_JOB_TYPE_INFORMATION: JobTypeInformation = {
-  contractType: "",
+  contractTypes: [],
 };
 
-export const INITIAL_SALARY_INFORMATION: SalaryInformation = {};
+export const INITIAL_SALARY_INFORMATION: SalaryInformation = {
+  displayType: undefined,
+  minSalary: "",
+  maxSalary: "",
+  frequency: undefined,
+};

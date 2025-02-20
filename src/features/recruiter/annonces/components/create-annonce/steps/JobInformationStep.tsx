@@ -22,7 +22,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useCreateAnnonceStore } from "../../../store/create-annonce-store";
 import { HeaderSectionStepsForm } from "@/components/shared/HeaderSectionStepsForm";
 import { FormStepsNavigation } from "@/components/shared/FormStepsNavigation";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Check, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -40,6 +39,7 @@ import {
   jobInformationFormSchema,
 } from "../../../common/schemas/job-information.schema";
 import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const numberOfPeopleOptions = [
   { value: "1", label: "1 personne" },
@@ -137,7 +137,7 @@ export function JobInformationStep() {
       promotionLocation: baseInformation.promotionLocation || "",
 
       // Job Type
-      contractType: jobTypeInformation.contractType || "",
+      contractTypes: jobTypeInformation.contractTypes || [],
       partTimeDetails: jobTypeInformation.partTimeDetails,
       interimDetails: jobTypeInformation.interimDetails,
       cddDetails: jobTypeInformation.cddDetails,
@@ -165,7 +165,10 @@ export function JobInformationStep() {
 
       // Update job type information
       setJobTypeInformation({
-        contractType: value.contractType || "",
+        contractTypes:
+          value.contractTypes?.filter(
+            (type): type is string => type !== undefined
+          ) || [],
         partTimeDetails: value.partTimeDetails,
         interimDetails: transformDurationDetails(value.interimDetails),
         cddDetails: transformDurationDetails(value.cddDetails),
@@ -183,38 +186,60 @@ export function JobInformationStep() {
     return () => subscription.unsubscribe();
   }, [watch, setBaseInformation, setJobTypeInformation, setSalaryInformation]);
 
-  const handleContractTypeChange = (value: string) => {
-    form.setValue("contractType", value);
-    // Clear all previous details
-    form.setValue("partTimeDetails", undefined);
-    form.setValue("interimDetails", undefined);
-    form.setValue("cddDetails", undefined);
-    form.setValue("internshipDetails", undefined);
+  const handleContractTypeChange = (value: string, checked: boolean) => {
+    const currentTypes = form.getValues("contractTypes") || [];
+    let newTypes: string[];
 
-    // Initialize duration details for contracts that need it
-    if (
-      [
-        ContractType.INTERIM,
-        ContractType.CDD,
-        ContractType.INTERNSHIP,
-      ].includes(value as ContractType)
-    ) {
-      const fieldName =
-        value === ContractType.INTERIM
-          ? "interimDetails"
-          : value === ContractType.CDD
-          ? "cddDetails"
-          : "internshipDetails";
+    if (checked) {
+      newTypes = [...currentTypes, value];
+    } else {
+      newTypes = currentTypes.filter((type) => type !== value);
+    }
 
-      const defaultUnit =
-        value === ContractType.INTERIM
-          ? ContractDurationUnit.DAYS
-          : ContractDurationUnit.MONTHS;
+    form.setValue("contractTypes", newTypes);
 
-      form.setValue(fieldName, {
-        duration: "",
-        unit: defaultUnit,
-      });
+    // Clear details for removed contract types
+    if (!checked) {
+      switch (value) {
+        case ContractType.PART_TIME:
+          form.setValue("partTimeDetails", undefined);
+          break;
+        case ContractType.INTERIM:
+          form.setValue("interimDetails", undefined);
+          break;
+        case ContractType.CDD:
+          form.setValue("cddDetails", undefined);
+          break;
+        case ContractType.INTERNSHIP:
+          form.setValue("internshipDetails", undefined);
+          break;
+      }
+    } else {
+      // Initialize duration details for contracts that need it
+      if (
+        [
+          ContractType.INTERIM,
+          ContractType.CDD,
+          ContractType.INTERNSHIP,
+        ].includes(value as ContractType)
+      ) {
+        const fieldName =
+          value === ContractType.INTERIM
+            ? "interimDetails"
+            : value === ContractType.CDD
+            ? "cddDetails"
+            : "internshipDetails";
+
+        const defaultUnit =
+          value === ContractType.INTERIM
+            ? ContractDurationUnit.DAYS
+            : ContractDurationUnit.MONTHS;
+
+        form.setValue(fieldName, {
+          duration: "",
+          unit: defaultUnit,
+        });
+      }
     }
   };
 
@@ -245,12 +270,12 @@ export function JobInformationStep() {
       return;
     }
 
-    // Validate contract type
-    if (!formData.contractType) {
+    // Validate contract types
+    if (!formData.contractTypes || formData.contractTypes.length === 0) {
       toast({
         variant: "destructive",
         title: "Validation",
-        description: "Veuillez sélectionner un type de contrat",
+        description: "Veuillez sélectionner au moins un type de contrat",
       });
       return;
     }
@@ -382,24 +407,25 @@ export function JobInformationStep() {
                 </h3>
                 <FormField
                   control={form.control}
-                  name="contractType"
+                  name="contractTypes"
                   render={({ field }) => (
                     <FormItem className="space-y-3">
                       <FormLabel className="flex items-center gap-1">
-                        Type de poste
+                        Types de poste
                         <span className="text-destructive">*</span>
                       </FormLabel>
                       <FormControl>
-                        <RadioGroup
-                          onValueChange={handleContractTypeChange}
-                          defaultValue={field.value}
-                          className="flex flex-wrap gap-2"
-                        >
+                        <div className="flex flex-wrap gap-2">
                           {CONTRACT_TYPES.map((type) => (
                             <div key={type.id} className="relative">
-                              <RadioGroupItem
-                                value={type.id}
+                              <Checkbox
                                 id={type.id}
+                                checked={field.value?.includes(type.id)}
+                                onCheckedChange={(checked: boolean) => {
+                                  if (checked !== undefined) {
+                                    handleContractTypeChange(type.id, checked);
+                                  }
+                                }}
                                 className="peer sr-only"
                               />
                               <Label
@@ -407,7 +433,7 @@ export function JobInformationStep() {
                                 className={cn(
                                   "inline-flex items-center gap-2 cursor-pointer rounded-md border px-3 py-1.5 text-sm",
                                   "hover:border-primaryHex-500 hover:bg-primaryHex-50/50",
-                                  field.value === type.id
+                                  field.value?.includes(type.id)
                                     ? "border-primaryHex-500 bg-primaryHex-50 text-primaryHex-900"
                                     : "border-input bg-background",
                                   "transition-all duration-150 ease-in-out"
@@ -417,7 +443,7 @@ export function JobInformationStep() {
                                   <Plus
                                     className={cn(
                                       "absolute inset-0 h-3.5 w-3.5 text-muted-foreground",
-                                      field.value === type.id
+                                      field.value?.includes(type.id)
                                         ? "opacity-0"
                                         : "opacity-100",
                                       "transition-opacity"
@@ -426,7 +452,7 @@ export function JobInformationStep() {
                                   <Check
                                     className={cn(
                                       "absolute inset-0 h-3.5 w-3.5 text-primaryHex-500",
-                                      field.value === type.id
+                                      field.value?.includes(type.id)
                                         ? "opacity-100"
                                         : "opacity-0",
                                       "transition-opacity"
@@ -439,14 +465,16 @@ export function JobInformationStep() {
                               </Label>
                             </div>
                           ))}
-                        </RadioGroup>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                {form.watch("contractType") === ContractType.INTERIM && (
+                {form
+                  .watch("contractTypes")
+                  ?.includes(ContractType.INTERIM) && (
                   <ContractDurationDetails
                     form={form}
                     type="interim"
@@ -454,7 +482,7 @@ export function JobInformationStep() {
                   />
                 )}
 
-                {form.watch("contractType") === ContractType.CDD && (
+                {form.watch("contractTypes")?.includes(ContractType.CDD) && (
                   <ContractDurationDetails
                     form={form}
                     type="cdd"
@@ -462,7 +490,9 @@ export function JobInformationStep() {
                   />
                 )}
 
-                {form.watch("contractType") === ContractType.INTERNSHIP && (
+                {form
+                  .watch("contractTypes")
+                  ?.includes(ContractType.INTERNSHIP) && (
                   <ContractDurationDetails
                     form={form}
                     type="internship"
@@ -470,7 +500,9 @@ export function JobInformationStep() {
                   />
                 )}
 
-                {form.watch("contractType") === ContractType.PART_TIME && (
+                {form
+                  .watch("contractTypes")
+                  ?.includes(ContractType.PART_TIME) && (
                   <PartTimeDetails form={form} />
                 )}
               </div>

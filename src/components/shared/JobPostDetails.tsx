@@ -228,11 +228,12 @@ export function JobPostDetails({
           />
           <DetailRow
             label="Type de poste"
-            value={
-              CONTRACT_TYPE_LABELS[
-                data.jobTypeInformation.contractType as ContractType
-              ]
-            }
+            value={data.jobTypeInformation.contractTypes
+              .map(
+                (contractType) =>
+                  CONTRACT_TYPE_LABELS[contractType as ContractType]
+              )
+              .join(", ")}
             onEdit={() => onEdit?.("job-information")}
             isEditable={isEditable}
           />

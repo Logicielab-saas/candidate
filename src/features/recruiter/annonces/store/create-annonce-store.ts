@@ -148,7 +148,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
             !!baseInformation.jobTitle?.trim() &&
             !!baseInformation.numberOfPeople?.trim() &&
             !!baseInformation.promotionLocation?.trim() &&
-            !!jobTypeInformation.contractType
+            !!jobTypeInformation.contractTypes?.length
           );
         }
         return true;

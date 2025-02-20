@@ -11,7 +11,7 @@ export interface DurationDetails {
 }
 
 export interface JobTypeInformation {
-  contractType: string;
+  contractTypes: string[];
   partTimeDetails?: PartTimeDetails;
   interimDetails?: DurationDetails;
   cddDetails?: DurationDetails;
