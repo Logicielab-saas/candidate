@@ -3,15 +3,15 @@ import { JobTypeInformation } from "../interfaces/contract.interface";
 import { SalaryInformation } from "../interfaces/salary.interface";
 import { StepperState } from "./store.types";
 import { PreferencesForm } from "@/features/recruiter/annonces/common";
-import { FormattedQuestion, SelectedQuestion } from "./questions.types";
+import { FormattedQuestion, SelectedQuestion, SubmissionQuestion } from "./questions.types";
 
 export type AnnonceCreationStep = "job-information" | "description-annonce" | "preferences" | "questions" | "verification";
 
-export type AnnonceType = "existing" | "new" | null;
+export type CreateAnnonceType = "new" | "duplicate" | null;
 
 export interface CreateAnnonceState extends StepperState<AnnonceCreationStep> {
   // Step Management
-  annonceType: AnnonceType;
+  annonceType: CreateAnnonceType;
 
   // Form Data
   baseInformation: BaseInformation;
@@ -22,20 +22,20 @@ export interface CreateAnnonceState extends StepperState<AnnonceCreationStep> {
   questions: SelectedQuestion[];
 
   // Actions
-  setAnnonceType: (type: AnnonceType) => void;
+  setAnnonceType: (type: CreateAnnonceType) => void;
   setBaseInformation: (data: BaseInformation) => void;
   setJobTypeInformation: (data: JobTypeInformation) => void;
   setSalaryInformation: (data: SalaryInformation) => void;
   setDescription: (description: string) => void;
   setPreferences: (data: PreferencesForm) => void;
   setQuestions: (questions: SelectedQuestion[]) => void;
-  getFormattedQuestions: () => FormattedQuestion[];
+  getFormattedQuestions: () => SubmissionQuestion[];
 }
 
 export interface StepData {
   step: AnnonceCreationStep;
   data: {
-    annonceType?: AnnonceType;
+    annonceType?: CreateAnnonceType;
     baseInformation?: BaseInformation;
     jobTypeInformation?: JobTypeInformation;
     salaryInformation?: SalaryInformation;
@@ -43,7 +43,7 @@ export interface StepData {
     preferences?: PreferencesForm;
     questions?: FormattedQuestion[];
     completeForm?: {
-      annonceType: AnnonceType;
+      annonceType: CreateAnnonceType;
       baseInformation: BaseInformation;
       jobTypeInformation: JobTypeInformation;
       salaryInformation: SalaryInformation;

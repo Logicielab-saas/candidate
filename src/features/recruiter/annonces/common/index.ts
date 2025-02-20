@@ -11,6 +11,13 @@ export * from './interfaces/preferences.interface';
 // Types
 export * from './types/create-annonce.types';
 export * from './types/store.types';
+export type {
+  AnnonceStatus,
+  AnnonceQuestion,
+  AnnonceCandidatures,
+  AnnonceData,
+  QuestionType,
+} from './types/annonce.types';
 
 // Constants
 export * from './constants/steps.constants';

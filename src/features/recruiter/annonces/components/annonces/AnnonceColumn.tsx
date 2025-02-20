@@ -167,7 +167,11 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
             <DropdownMenuContent align="end" className="w-[220px]">
               <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
                 <Edit className="h-3.5 w-3.5" />
-                <span>Modifier l&apos;annonce</span>
+                <Link
+                  href={`/recruiter/annonces/edit-annonce/${row.original.id}`}
+                >
+                  Modifier l&apos;annonce
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
                 <Eye className="h-3.5 w-3.5" />

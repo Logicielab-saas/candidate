@@ -70,15 +70,46 @@ export function QuestionsStep({
     // For questions with isMultiple=true, generate a unique ID
     if (predefinedQuestion.isMultiple) {
       const uniqueId = `${questionId}-${Date.now()}`;
+      const baseQuestion = {
+        ...predefinedQuestion,
+        id: uniqueId,
+        answer: undefined,
+      };
+
       newQuestions = [
         ...currentQuestions,
-        { ...predefinedQuestion, id: uniqueId, answer: undefined },
+        predefinedQuestion.type === "choice"
+          ? {
+              ...baseQuestion,
+              type: "choice" as const,
+              options: predefinedQuestion.options || [],
+              isMultipleChoices: predefinedQuestion.isMultiple,
+            }
+          : {
+              ...baseQuestion,
+              type: predefinedQuestion.type as "experience" | "open" | "yesno",
+            },
       ];
     } else if (!currentQuestions.some((q) => q.id === questionId)) {
       // * For non-multiple questions, only add if not already present
+      const baseQuestion = {
+        ...predefinedQuestion,
+        answer: undefined,
+      };
+
       newQuestions = [
         ...currentQuestions,
-        { ...predefinedQuestion, answer: undefined },
+        predefinedQuestion.type === "choice"
+          ? {
+              ...baseQuestion,
+              type: "choice" as const,
+              options: predefinedQuestion.options || [],
+              isMultipleChoices: predefinedQuestion.isMultiple,
+            }
+          : {
+              ...baseQuestion,
+              type: predefinedQuestion.type as "experience" | "open" | "yesno",
+            },
       ];
     } else {
       return;
@@ -93,13 +124,28 @@ export function QuestionsStep({
 
   const handleAddCustomQuestion = (customQuestion: CustomQuestionProps) => {
     const newQuestion = createPredefinedFromCustom(customQuestion);
+    const baseQuestion = {
+      ...newQuestion,
+      answer: undefined,
+    };
+
+    const typedQuestion =
+      newQuestion.type === "choice"
+        ? {
+            ...baseQuestion,
+            type: "choice" as const,
+            options: newQuestion.options || [],
+            isMultipleChoices: newQuestion.isMultiple,
+          }
+        : {
+            ...baseQuestion,
+            type: newQuestion.type as "experience" | "open" | "yesno",
+          };
+
     if (isDialog) {
-      setLocalQuestions([
-        ...localQuestions,
-        { ...newQuestion, answer: undefined },
-      ]);
+      setLocalQuestions([...localQuestions, typedQuestion]);
     } else {
-      setQuestions([...questions, { ...newQuestion, answer: undefined }]);
+      setQuestions([...questions, typedQuestion]);
     }
   };
 

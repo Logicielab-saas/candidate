@@ -8,7 +8,7 @@ import { STEPS } from "../common/constants/steps.constants";
 import { formatStepData } from "../common/utils/step-formatter.utils";
 import { CreateAnnonceState } from "../common/types/create-annonce.types";
 import { SelectedQuestion } from "../common/types/questions.types";
-import { formatQuestionsForSubmission } from "@/core/utils";
+import { formatQuestionsForSubmission } from "../common/utils/questions.utils";
 
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   // Initial State
@@ -59,16 +59,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
     }
 
     // During form steps, return all question data
-    return questions.map((q) => ({
-      id: q.id,
-      type: q.type,
-      question: q.question,
-      isRequired: q.isRequired,
-      isMultiple: q.isMultiple,
-      isMultipleChoices: q.type === 'choice' ? q.isMultiple : undefined,
-      options: q.type === 'choice' ? q.options : undefined,
-      answer: q.answer,
-    }));
+    return formatQuestionsForSubmission(questions);
   },
 
   nextStep: () => {
@@ -107,12 +98,9 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
         salaryInformation: state.salaryInformation,
         description: state.description,
         preferences: state.preferences,
-        questions: formatQuestionsForSubmission(state.questions), // Use the formatting function directly
+        questions: formatQuestionsForSubmission(state.questions),
       });
       console.groupEnd();
-
-      // Here you would typically make your API call
-      // For now, we just log the data
     }
   },
 
