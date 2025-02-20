@@ -18,7 +18,7 @@ export function SuccessScreen() {
 
           {/* Text Content */}
           <h1 className="text-2xl font-semibold text-foreground">
-            Annonce crée avec succès
+            Annonce créée avec succès
           </h1>
           <p className="text-muted-foreground text-center text-wrap">
             Votre annonce est prête. Vous pouvez la consulter ou retourner au
