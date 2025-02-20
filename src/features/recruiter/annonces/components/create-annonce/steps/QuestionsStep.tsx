@@ -120,23 +120,24 @@ export function QuestionsStep() {
 
         {/* Card for adding predefined and custom questions */}
         <Card className="p-6">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 max-md:grid-cols-1 gap-4">
             {/* Render predefined questions as buttons */}
             {PREDEFINED_QUESTIONS.map((question) => (
               <Button
                 key={question.id}
                 variant="ghost"
-                className="h-auto py-4 px-6 flex items-center gap-3 justify-start rounded-full hover:bg-primaryHex-50 dark:hover:bg-primaryHex-900/50"
+                className="h-auto py-4 px-6 flex items-start gap-3 justify-start rounded-full hover:bg-primaryHex-50 dark:hover:bg-primaryHex-900/50
+                overflow-hidden text-wrap"
                 onClick={() => handleAddQuestion(question.id)}
                 disabled={!canAddQuestion(question)}
               >
                 <div className="w-8 h-8 rounded-full bg-primaryHex-100 dark:bg-primaryHex-900 flex items-center justify-center flex-shrink-0">
                   <Plus className="w-4 h-4 text-primaryHex-500" />
                 </div>
-                <span className="text-left font-medium line-clamp-2">
+                <span className="font-medium justify-center items-center text-center">
                   {question.question}
                   {question.isMultiple && (
-                    <span className="block text-xs text-muted-foreground">
+                    <span className="block text-xs text-muted-foreground ">
                       (Peut être ajoutée plusieurs fois)
                     </span>
                   )}
