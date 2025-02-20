@@ -53,6 +53,20 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   getFormattedQuestions: () => {
     const { questions } = get();
     return questions.map((q): FinalQuestion => {
+      // For custom questions, send all the data
+      if (q.id.startsWith('custom-')) {
+        return {
+          type: q.type,
+          label: q.question,
+          isRequired: q.isRequired,
+          ...(q.type === "choice" && {
+            isMultipleChoices: q.isMultiple,
+            options: q.options,
+          }),
+        };
+      }
+
+      // For predefined questions
       const base = {
         id: q.id,
         isRequired: q.isRequired,

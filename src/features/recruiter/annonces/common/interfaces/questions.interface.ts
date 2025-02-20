@@ -9,6 +9,15 @@ interface BaseQuestion {
   isMultiple: boolean; // Only used for template selection, not sent to backend
 }
 
+// Interface for custom questions that are not predefined
+export interface CustomQuestion {
+  type: QuestionType;
+  label: string;
+  isRequired: boolean;
+  isMultipleChoices?: boolean;
+  options?: string[];
+}
+
 interface ChoiceQuestion extends BaseQuestion {
   type: 'choice';
   options: string[];
@@ -22,8 +31,13 @@ export type PredefinedQuestion = SimpleQuestion | ChoiceQuestion;
 
 // Interface for the final question data to be sent
 export interface FinalQuestion {
-  id: string;
+  // For predefined questions
+  id?: string;
   isRequired: boolean;
-  isMultipleChoices?: boolean; // Only for choice questions
-  label?: string; // Only for experience questions - contains the experience requirement
+  isMultipleChoices?: boolean;
+
+  // For custom questions
+  type?: QuestionType;
+  label?: string;
+  options?: string[];
 }

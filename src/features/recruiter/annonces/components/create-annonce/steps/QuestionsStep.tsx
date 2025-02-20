@@ -10,7 +10,12 @@ import { Button } from "@/components/ui/button";
 import { QuestionFactory } from "./questions/QuestionFactory";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { QuestionAnswer } from "@/features/recruiter/annonces/common/types/questions.types";
-import { PredefinedQuestion } from "@/features/recruiter/annonces/common/interfaces/questions.interface";
+import {
+  CustomQuestion,
+  PredefinedQuestion,
+} from "@/features/recruiter/annonces/common/interfaces/questions.interface";
+import { CustomQuestionDialog } from "./questions/dialogs/CustomQuestionDialog";
+
 // TODO: Add Custom Questions and handle it
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type QuestionWithAnswer = PredefinedQuestion & {
@@ -26,6 +31,32 @@ export function QuestionsStep() {
     if (question && !questions.some((q) => q.id === questionId)) {
       setQuestions([...questions, { ...question, answer: undefined }]);
     }
+  };
+
+  const handleAddCustomQuestion = (customQuestion: CustomQuestion) => {
+    const baseQuestion = {
+      id: `custom-${Date.now()}`,
+      question: customQuestion.label,
+      isRequired: customQuestion.isRequired,
+      isMultiple: customQuestion.isMultipleChoices || false,
+    };
+
+    let newQuestion: PredefinedQuestion;
+
+    if (customQuestion.type === "choice") {
+      newQuestion = {
+        ...baseQuestion,
+        type: "choice",
+        options: customQuestion.options || [],
+      };
+    } else {
+      newQuestion = {
+        ...baseQuestion,
+        type: customQuestion.type,
+      };
+    }
+
+    setQuestions([...questions, { ...newQuestion, answer: undefined }]);
   };
 
   const handleRemoveQuestion = (questionId: string) => {
@@ -82,6 +113,7 @@ export function QuestionsStep() {
               </span>
             </Button>
           ))}
+          <CustomQuestionDialog onAddQuestion={handleAddCustomQuestion} />
         </div>
       </Card>
 
