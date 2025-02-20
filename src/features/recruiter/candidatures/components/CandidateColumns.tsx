@@ -19,6 +19,7 @@ export interface Candidate {
     status: string;
     message: string;
   };
+  annonceId?: string;
 }
 
 export const getColumns = (): ColumnDef<Candidate>[] => [
@@ -60,6 +61,7 @@ export const getColumns = (): ColumnDef<Candidate>[] => [
       const situation = row.original.situation;
       const datePostule = row.original.datePostule;
       const titreOffre = row.original.titreOffre;
+      const annonceId = row.original.annonceId;
 
       return (
         <div className="flex flex-col gap-2 py-2">
@@ -69,7 +71,9 @@ export const getColumns = (): ColumnDef<Candidate>[] => [
               className="p-0 text-base font-semibold text-primary hover:text-primary/90 justify-start text-secondaryHex-800 dark:text-secondaryHex-200 w-fit"
             >
               <Link
-                href={`/recruiter/candidates/details?id=${row.original.nom}`}
+                href={`/recruiter/candidates/details?id=${row.original.nom}${
+                  annonceId ? `&annonce=${annonceId}` : ""
+                }`}
                 className=""
               >
                 {nom}
@@ -96,7 +100,7 @@ export const getColumns = (): ColumnDef<Candidate>[] => [
                 <span>A postulé le {datePostule}</span>
               </div>
               <Link
-                href={`/recruiter/annonces/details/1`}
+                href={`/recruiter/annonces/details/${annonceId || "1"}`}
                 className="group flex items-center gap-1.5 hover:text-primary transition-colors"
               >
                 <span className="h-1 w-1 rounded-full bg-zinc-300 dark:bg-zinc-600 group-hover:bg-primary/70" />

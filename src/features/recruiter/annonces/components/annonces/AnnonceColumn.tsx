@@ -20,6 +20,7 @@ import {
 import Link from "next/link";
 
 interface Annonce {
+  id: number;
   intitule: string;
   city: string;
   candidatures: {
@@ -100,10 +101,20 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
       return (
         <div className="grid grid-cols-2">
           <div className="flex items-center justify-center py-3 border-r border-zinc-200 dark:border-zinc-700">
-            <span>Tous ({candidatures.tous})</span>
+            <Button variant="link" size="sm">
+              <Link href={`/recruiter/candidates?annonce=${row.original.id}`}>
+                Tous ({candidatures.tous})
+              </Link>
+            </Button>
           </div>
           <div className="flex items-center justify-center py-3">
-            <span>Nvx ({candidatures.nouveaux})</span>
+            <Button variant="link" size="sm">
+              <Link
+                href={`/recruiter/candidates?annonce=${row.original.id}&tab=new`}
+              >
+                Nvx ({candidatures.nouveaux})
+              </Link>
+            </Button>
           </div>
         </div>
       );
@@ -143,7 +154,6 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
   {
     id: "actions",
     header: () => <div className="w-0.5"></div>,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     cell: ({ row }) => {
       return (
         <div className="w-0.5">
@@ -157,11 +167,15 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
             <DropdownMenuContent align="end" className="w-[220px]">
               <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
                 <Edit className="h-3.5 w-3.5" />
-                <span>Modifier l&apos;annonce</span>
+                <Link
+                  href={`/recruiter/annonces/edit-annonce/${row.original.id}`}
+                >
+                  Modifier l&apos;annonce
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
                 <Eye className="h-3.5 w-3.5" />
-                <Link href={`/recruiter/annonces/details/1`}>
+                <Link href={`/recruiter/annonces/details/${row.original.id}`}>
                   Voir le détail de l&apos;annonce
                 </Link>
               </DropdownMenuItem>

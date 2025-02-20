@@ -3,27 +3,40 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { useCreateAnnonceStore } from "../../store/create-annonce-store";
-import { ArrowRight, CheckCircle2, Copy, PlusCircle } from "lucide-react";
+import { CheckCircle2, Copy, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { HeaderSectionStepsForm } from "@/components/shared/HeaderSectionStepsForm";
+import { FormStepsNavigation } from "@/components/shared/FormStepsNavigation";
+import { useState } from "react";
 
 export function CreateAnnonceType() {
-  const { annonceType, setAnnonceType, nextStep, canProceed } =
-    useCreateAnnonceStore();
+  const { setAnnonceType } = useCreateAnnonceStore();
+  const [selectedType, setSelectedType] = useState<"existing" | "new" | null>(
+    null
+  );
+
+  const handleContinue = () => {
+    if (selectedType) {
+      setAnnonceType(selectedType);
+    }
+  };
 
   return (
     <div className="w-full max-w-3xl mx-auto space-y-8">
-      <HeaderSectionStepsForm
-        title="Créer une nouvelle annonce"
-        description="Choisissez comment vous souhaitez créer votre annonce"
-      />
+      {/* Simple Header */}
+      <div className="text-center space-y-4">
+        <h1 className="text-3xl font-bold tracking-tight text-secondaryHex-900 dark:text-secondaryHex-50">
+          Créer une nouvelle annonce
+        </h1>
+        <p className="text-secondaryHex-600 dark:text-secondaryHex-400 text-lg">
+          Choisissez comment vous souhaitez créer votre annonce
+        </p>
+      </div>
 
       {/* Selection Cards */}
       <RadioGroup
-        value={annonceType || ""}
-        onValueChange={(value) => setAnnonceType(value as "existing" | "new")}
+        value={selectedType || ""}
+        onValueChange={(value) => setSelectedType(value as "existing" | "new")}
         className="grid grid-cols-1 md:grid-cols-2 gap-6"
       >
         <div className="relative">
@@ -38,7 +51,7 @@ export function CreateAnnonceType() {
               "flex flex-col h-full cursor-pointer rounded-lg border-2 transition-all",
               "hover:border-primaryHex-500 hover:shadow-md",
               "peer-checked:border-primaryHex-500 peer-checked:shadow-md",
-              annonceType === "existing"
+              selectedType === "existing"
                 ? "border-primaryHex-500"
                 : "border-transparent"
             )}
@@ -54,7 +67,7 @@ export function CreateAnnonceType() {
               <div
                 className={cn(
                   "absolute top-1 right-4 transition-opacity",
-                  annonceType === "existing" ? "opacity-100" : "opacity-0"
+                  selectedType === "existing" ? "opacity-100" : "opacity-0"
                 )}
               >
                 <CheckCircle2 className="w-6 h-6 text-primaryHex-500" />
@@ -85,7 +98,7 @@ export function CreateAnnonceType() {
               "flex flex-col h-full cursor-pointer rounded-lg border-2 transition-all",
               "hover:border-primaryHex-500 hover:shadow-md",
               "peer-checked:border-primaryHex-500 peer-checked:shadow-md",
-              annonceType === "new"
+              selectedType === "new"
                 ? "border-primaryHex-500"
                 : "border-transparent"
             )}
@@ -101,7 +114,7 @@ export function CreateAnnonceType() {
               <div
                 className={cn(
                   "absolute top-1 right-4 transition-opacity",
-                  annonceType === "new" ? "opacity-100" : "opacity-0"
+                  selectedType === "new" ? "opacity-100" : "opacity-0"
                 )}
               >
                 <CheckCircle2 className="w-6 h-6 text-primaryHex-500" />
@@ -125,13 +138,14 @@ export function CreateAnnonceType() {
         </div>
       </RadioGroup>
 
-      {/* Continue Button */}
-      <div className="flex justify-end pt-6">
-        <Button onClick={nextStep} disabled={!canProceed()} className="gap-2">
-          Continuer
-          <ArrowRight className="w-4 h-4" />
-        </Button>
-      </div>
+      {/* Navigation - Only show next button for first step */}
+      <FormStepsNavigation
+        onPrevious={() => {}}
+        onNext={handleContinue}
+        canProceed={!!selectedType}
+        className="flex justify-end pt-6"
+        previousLabel={null}
+      />
     </div>
   );
 }

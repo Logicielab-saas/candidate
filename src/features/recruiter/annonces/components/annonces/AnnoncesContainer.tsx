@@ -4,35 +4,8 @@ import { useState } from "react";
 import { AnnonceTabs } from "./AnnonceTabs";
 import { AnnonceSelectFilter } from "./AnnonceSelectFilter";
 import { AnnonceDataTable } from "./AnnonceDataTable";
-import Link from "next/link";
-
-// TODO: Move this to a proper data fetching solution
-const data = [
-  {
-    intitule: "Social media manager",
-    city: "Tanger",
-    candidatures: { tous: 10, nouveaux: 5 },
-    statutDeSponsorisation: "Annonce gratuite",
-    dateDePublication: "10/02/2025",
-    statutDeLAnnonce: "Ouverte",
-  },
-  {
-    intitule: "assistante commerciale",
-    city: "Meknes",
-    candidatures: { tous: 10, nouveaux: 3 },
-    statutDeSponsorisation: "Annonce sponsorisée",
-    dateDePublication: "02/02/2025",
-    statutDeLAnnonce: "Suspendue",
-  },
-  {
-    intitule: "infographiste",
-    city: "Rabat",
-    candidatures: { tous: 30, nouveaux: 2 },
-    statutDeSponsorisation: "Annonce gratuite",
-    dateDePublication: "01/02/2025",
-    statutDeLAnnonce: "Fermée",
-  },
-];
+import { PublierAnnonceLink } from "@/components/shared/PublierAnnonceLink";
+import { mockAnnonceData } from "@/core/mockData/annonces-real-data";
 
 type TabValue = "active" | "closed";
 
@@ -41,10 +14,12 @@ export function AnnoncesContainer() {
 
   const filteredData =
     activeTab === "active"
-      ? data.filter((annonce) =>
+      ? mockAnnonceData.filter((annonce) =>
           ["Ouverte", "Suspendue"].includes(annonce.statutDeLAnnonce)
         )
-      : data.filter((annonce) => annonce.statutDeLAnnonce === "Fermée");
+      : mockAnnonceData.filter(
+          (annonce) => annonce.statutDeLAnnonce === "Fermée"
+        );
 
   return (
     <div className="flex flex-col gap-6">
@@ -52,12 +27,7 @@ export function AnnoncesContainer() {
         <div className="flex-1">
           <AnnonceTabs activeTab={activeTab} onTabChange={setActiveTab} />
         </div>
-        <Link
-          href="/recruiter/annonces/create-annonce"
-          className="mt-2 bg-primaryHex-500 text-white px-4 py-2 rounded-md"
-        >
-          Publier une annonce
-        </Link>
+        <PublierAnnonceLink />
       </div>
 
       <AnnonceSelectFilter />

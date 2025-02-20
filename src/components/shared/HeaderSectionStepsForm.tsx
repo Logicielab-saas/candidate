@@ -1,9 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { STEPS_CONFIG } from "@/features/recruiter/annonces/store/create-annonce-store";
 import { useCreateAnnonceStore } from "@/features/recruiter/annonces/store/create-annonce-store";
 import { Check } from "lucide-react";
+import { STEPS_CONFIG } from "@/features/recruiter/annonces/common";
 
 interface HeaderSectionStepsFormProps {
   title: string;
@@ -32,7 +32,7 @@ export function HeaderSectionStepsForm({
                 {index !== 0 && (
                   <div
                     className={cn(
-                      "h-[2px] w-16 mx-2",
+                      "h-[2px] xl:w-16 w-8 mx-2",
                       isCompleted
                         ? "bg-primaryHex-500"
                         : "bg-zinc-200 dark:bg-zinc-700"
@@ -40,7 +40,7 @@ export function HeaderSectionStepsForm({
                     aria-hidden="true"
                   />
                 )}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 xl:gap-3">
                   <div
                     className={cn(
                       "relative flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-semibold transition-colors",
@@ -60,7 +60,7 @@ export function HeaderSectionStepsForm({
                   </div>
                   <span
                     className={cn(
-                      "text-sm font-medium whitespace-nowrap",
+                      "text-sm font-medium whitespace-nowrap hidden xl:inline-block",
                       isCompleted && "text-primaryHex-500",
                       isCurrentStep && "text-primaryHex-500",
                       !isCompleted &&
@@ -78,7 +78,7 @@ export function HeaderSectionStepsForm({
       </nav>
 
       {/* Title and description */}
-      <div className="text-center space-y-4">
+      <div className="text-center space-y-4 px-4">
         <h1 className="text-3xl font-bold tracking-tight text-secondaryHex-900 dark:text-secondaryHex-50">
           {title}
         </h1>

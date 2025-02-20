@@ -25,51 +25,12 @@ import {
 } from "@/components/ui/select";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { useState } from "react";
+import { mockAnnonces } from "@/core/mockData/annonces-data";
 
 interface CandidateFiltersAnnonceMenuProps {
   selectedAnnonceId: string | null;
   onAnnonceChange: (id: string | null) => void;
 }
-
-// TODO: Replace with actual annonces data from API
-const mockAnnonces: Annonce[] = [
-  {
-    id: "1",
-    value: "social-media-manager",
-    label: "Social Media Manager",
-    city: "Tanger",
-  },
-  {
-    id: "2",
-    value: "assistante-commerciale",
-    label: "Assistante Commerciale",
-    city: "Meknes",
-  },
-  {
-    id: "3",
-    value: "infographiste",
-    label: "Infographiste",
-    city: "Rabat",
-  },
-  {
-    id: "4",
-    value: "Developer",
-    label: "Developer",
-    city: "Rabat",
-  },
-  {
-    id: "5",
-    value: "Machine Learning",
-    label: "Machine Learning",
-    city: "Rabat",
-  },
-  {
-    id: "6",
-    value: "Data Scientist",
-    label: "Data Scientist",
-    city: "Rabat",
-  },
-];
 
 interface FilterOption {
   value: string;
@@ -96,13 +57,6 @@ const dateOptions: FilterOption[] = [
   { value: "last30", label: "30 jours" },
   { value: "last90", label: "90 jours" },
 ];
-
-interface Annonce {
-  id: string;
-  value: string;
-  label: string;
-  city: string;
-}
 
 export function CandidateFiltersAnnonceMenu({
   selectedAnnonceId,

@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 import animate from "tailwindcss-animate";
 import containerQueries from "@tailwindcss/container-queries";
+import typography from "@tailwindcss/typography";
 
 export default {
 	darkMode: ["class"],
@@ -33,6 +34,46 @@ export default {
 				'5xl': '64rem',
 				'6xl': '72rem',
 				'7xl': '80rem',
+			},
+			typography: {
+				DEFAULT: {
+					css: {
+						maxWidth: 'none',
+						color: 'inherit',
+						a: {
+							color: 'inherit',
+							textDecoration: 'none',
+							fontWeight: '500',
+						},
+						strong: {
+							color: 'inherit',
+						},
+						b: {
+							color: 'inherit',
+						},
+						h1: {
+							color: 'inherit',
+						},
+						h2: {
+							color: 'inherit',
+						},
+						h3: {
+							color: 'inherit',
+						},
+						h4: {
+							color: 'inherit',
+						},
+						code: {
+							color: 'inherit',
+						},
+						pre: {
+							color: 'inherit',
+						},
+						blockquote: {
+							color: 'inherit',
+						},
+					},
+				},
 			},
 			colors: {
 				'primaryHex': {
@@ -119,6 +160,7 @@ export default {
 	},
 	plugins: [
 		animate,
-		containerQueries
+		containerQueries,
+		typography
 	],
 } satisfies Config;
