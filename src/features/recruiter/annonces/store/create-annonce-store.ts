@@ -52,45 +52,58 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
 
   getFormattedQuestions: () => {
     const { questions } = get();
-    return questions.map((q): FinalQuestion => {
-      // For custom questions, send all the data
-      if (q.id.startsWith('custom-')) {
-        return {
-          type: q.type,
-          label: q.question,
-          isRequired: q.isRequired,
-          ...(q.type === "choice" && {
-            isMultipleChoices: q.isMultiple,
-            options: q.options,
-          }),
-        };
-      }
+    // return questions.map((q): FinalQuestion => {
+    //   // For custom questions, send all the data
+    //   if (q.id.startsWith('custom-')) {
+    //     return {
+    //       type: q.type,
+    //       label: q.question,
+    //       isRequired: q.isRequired,
+    //       ...(q.type === "choice" && {
+    //         isMultipleChoices: q.isMultiple,
+    //         options: q.options,
+    //       }),
+    //     };
+    //   }
 
-      // For predefined questions
-      const base = {
-        id: q.id,
-        isRequired: q.isRequired,
-      };
+    //   // For predefined questions
+    //   const base = {
+    //     id: q.id,
+    //     isRequired: q.isRequired,
+    //   };
 
-      // For experience questions, we need to keep the label (answer)
-      if (q.type === "experience") {
-        return {
-          ...base,
-          label: q.answer as string,
-        };
-      }
+    //   // For experience questions, we need to keep the label (answer)
+    //   if (q.type === "experience") {
+    //     return {
+    //       ...base,
+    //       label: q.answer as string,
+    //     };
+    //   }
 
-      // For choice questions with multiple choices
-      if (q.type === "choice" && q.isMultiple) {
-        return {
-          ...base,
-          isMultipleChoices: true,
-        };
-      }
+    //   // For choice questions with multiple choices
+    //   if (q.type === "choice" && q.isMultiple) {
+    //     return {
+    //       ...base,
+    //       isMultipleChoices: true,
+    //     };
+    //   }
 
-      // For other predefined questions (open, yesno), we only need id and isRequired
-      return base;
-    });
+    //   // For other predefined questions (open, yesno), we only need id and isRequired
+    //   return base;
+    // });
+
+
+    return questions.map((q) => ({
+      id: q.id,
+      type: q.type,
+      question: q.question,
+      label: q.type === 'experience' ? q.answer as string : q.question,
+      isRequired: q.isRequired,
+      isMultiple: q.isMultiple,
+      isMultipleChoices: q.type === 'choice' ? q.isMultiple : undefined,
+      options: q.type === 'choice' ? q.options : undefined,
+      answer: q.answer,
+    }));
   },
 
   nextStep: () => {

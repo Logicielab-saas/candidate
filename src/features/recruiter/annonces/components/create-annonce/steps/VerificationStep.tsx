@@ -4,12 +4,43 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useCreateAnnonceStore } from "../../../store/create-annonce-store";
 import { HeaderSectionStepsForm } from "@/components/shared/HeaderSectionStepsForm";
 import { FormStepsNavigation } from "@/components/shared/FormStepsNavigation";
+import { JobPostDetails } from "../../shared/JobPostDetails";
+import { useToast } from "@/hooks/use-toast";
 
 export function VerificationStep() {
-  const { previousStep, nextStep } = useCreateAnnonceStore();
+  const {
+    previousStep,
+    nextStep,
+    baseInformation,
+    jobTypeInformation,
+    salaryInformation,
+    description,
+    preferences,
+    questions,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    currentStep,
+  } = useCreateAnnonceStore();
+
+  const { toast } = useToast();
+
+  const handleEdit = (
+    section:
+      | "job-information"
+      | "description-annonce"
+      | "preferences"
+      | "questions"
+  ) => {
+    // Navigate to the selected section
+    useCreateAnnonceStore.setState({ currentStep: section });
+  };
 
   const handleSubmit = () => {
-    // TODO: Implement verification logic
+    // TODO: Implement API call to create the job post
+    toast({
+      title: "Annonce créée",
+      description: "Votre annonce a été créée avec succès.",
+      variant: "success",
+    });
     nextStep();
   };
 
@@ -22,7 +53,17 @@ export function VerificationStep() {
 
       <Card>
         <CardContent className="pt-6">
-          {/* TODO: Add verification content */}
+          <JobPostDetails
+            data={{
+              baseInformation,
+              jobTypeInformation,
+              salaryInformation,
+              description,
+              preferences,
+              questions,
+            }}
+            onEdit={handleEdit}
+          />
         </CardContent>
       </Card>
 

@@ -31,13 +31,25 @@ export type PredefinedQuestion = SimpleQuestion | ChoiceQuestion;
 
 // Interface for the final question data to be sent
 export interface FinalQuestion {
-  // For predefined questions
-  id?: string;
+  id: string;
+  type: QuestionType;
+  question: string;
+  label: string;
   isRequired: boolean;
+  isMultiple: boolean;
   isMultipleChoices?: boolean;
-
-  // For custom questions
-  type?: QuestionType;
-  label?: string;
   options?: string[];
+  answer?: string | string[];
 }
+
+// export interface FinalQuestion {
+//   // For predefined questions
+//   id?: string;
+//   isRequired: boolean;
+//   isMultipleChoices?: boolean;
+
+//   // For custom questions
+//   type?: QuestionType;
+//   label?: string;
+//   options?: string[];
+// }
