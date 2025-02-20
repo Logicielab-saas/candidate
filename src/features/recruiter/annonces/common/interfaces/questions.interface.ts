@@ -55,6 +55,9 @@ export interface SubmissionQuestion {
   // Fields for custom questions
   type?: QuestionType;
   options?: string[];
+
+  answer?: string | string[];
+  question?: string;
 }
 
 // Union type for questions depending on the step
