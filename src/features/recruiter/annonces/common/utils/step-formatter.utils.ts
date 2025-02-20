@@ -30,7 +30,7 @@ export const formatStepData = (state: CreateAnnonceState): StepData => {
         questions: state.getFormattedQuestions(),
       };
       break;
-    case "preview":
+    case "verification":
       stepData.data = {
         completeForm: {
           annonceType: state.annonceType,

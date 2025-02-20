@@ -5,7 +5,7 @@ import { StepperState } from "./store.types";
 import { PreferencesForm } from "@/features/recruiter/annonces/common";
 import { FormattedQuestion, SelectedQuestion } from "./questions.types";
 
-export type AnnonceCreationStep = "job-information" | "description-annonce" | "preferences" | "questions" | "preview";
+export type AnnonceCreationStep = "job-information" | "description-annonce" | "preferences" | "questions" | "verification";
 
 export type AnnonceType = "existing" | "new" | null;
 

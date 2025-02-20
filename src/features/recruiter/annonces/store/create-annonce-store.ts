@@ -12,7 +12,7 @@ import { FinalQuestion } from "../common/interfaces/questions.interface";
 // TODO: add step verification At the steps constants and adapt the store and relevant components
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   // Initial State
-  currentStep: "job-information",
+  currentStep: "verification",
   annonceType: null,
   baseInformation: INITIAL_BASE_INFORMATION,
   jobTypeInformation: INITIAL_JOB_TYPE_INFORMATION,
@@ -103,8 +103,8 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
       console.group(`✨ Step Completed: ${stepData.step}`);
       console.log("Step Data:", stepData.data);
 
-      // If we're moving to preview, log the complete form
-      if (STEPS[currentIndex + 1] === "preview") {
+      // If we're moving to verification, log the complete form
+      if (STEPS[currentIndex + 1] === "verification") {
         console.log("\n📋 Complete Form Data:", {
           annonceType: state.annonceType,
           baseInformation: state.baseInformation,
@@ -174,7 +174,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
           }
           return !q.isRequired || !!q.answer; // Other questions based on isRequired
         });
-      case "preview":
+      case "verification":
         return true;
       default:
         return false;
