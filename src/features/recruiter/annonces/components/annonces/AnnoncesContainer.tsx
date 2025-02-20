@@ -9,7 +9,8 @@ import { PublierAnnonceLink } from "@/components/shared/PublierAnnonceLink";
 // TODO: Move this to a proper data fetching solution
 const data = [
   {
-    intitule: "Social media manager",
+    id: "1",
+    intitule: "Social Media Manager",
     city: "Tanger",
     candidatures: { tous: 10, nouveaux: 5 },
     statutDeSponsorisation: "Annonce gratuite",
@@ -17,7 +18,8 @@ const data = [
     statutDeLAnnonce: "Ouverte",
   },
   {
-    intitule: "assistante commerciale",
+    id: "2",
+    intitule: "Assistante Commerciale",
     city: "Meknes",
     candidatures: { tous: 10, nouveaux: 3 },
     statutDeSponsorisation: "Annonce sponsorisée",
@@ -25,12 +27,40 @@ const data = [
     statutDeLAnnonce: "Suspendue",
   },
   {
-    intitule: "infographiste",
+    id: "3",
+    intitule: "Infographiste",
     city: "Rabat",
     candidatures: { tous: 30, nouveaux: 2 },
     statutDeSponsorisation: "Annonce gratuite",
     dateDePublication: "01/02/2025",
     statutDeLAnnonce: "Fermée",
+  },
+  {
+    id: "4",
+    intitule: "Developer",
+    city: "Rabat",
+    candidatures: { tous: 15, nouveaux: 4 },
+    statutDeSponsorisation: "Annonce gratuite",
+    dateDePublication: "15/02/2025",
+    statutDeLAnnonce: "Ouverte",
+  },
+  {
+    id: "5",
+    intitule: "Machine Learning",
+    city: "Rabat",
+    candidatures: { tous: 20, nouveaux: 6 },
+    statutDeSponsorisation: "Annonce sponsorisée",
+    dateDePublication: "20/02/2025",
+    statutDeLAnnonce: "Ouverte",
+  },
+  {
+    id: "6",
+    intitule: "Data Scientist",
+    city: "Rabat",
+    candidatures: { tous: 25, nouveaux: 8 },
+    statutDeSponsorisation: "Annonce gratuite",
+    dateDePublication: "25/02/2025",
+    statutDeLAnnonce: "Ouverte",
   },
 ];
 

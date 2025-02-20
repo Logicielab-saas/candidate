@@ -20,6 +20,7 @@ import {
 import Link from "next/link";
 
 interface Annonce {
+  id: number;
   intitule: string;
   city: string;
   candidatures: {
@@ -100,10 +101,20 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
       return (
         <div className="grid grid-cols-2">
           <div className="flex items-center justify-center py-3 border-r border-zinc-200 dark:border-zinc-700">
-            <span>Tous ({candidatures.tous})</span>
+            <Button variant="link" size="sm">
+              <Link href={`/recruiter/candidates?annonce=${row.original.id}`}>
+                Tous ({candidatures.tous})
+              </Link>
+            </Button>
           </div>
           <div className="flex items-center justify-center py-3">
-            <span>Nvx ({candidatures.nouveaux})</span>
+            <Button variant="link" size="sm">
+              <Link
+                href={`/recruiter/candidates?annonce=${row.original.id}&tab=new`}
+              >
+                Nvx ({candidatures.nouveaux})
+              </Link>
+            </Button>
           </div>
         </div>
       );

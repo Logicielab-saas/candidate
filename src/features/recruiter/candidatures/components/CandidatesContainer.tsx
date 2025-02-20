@@ -33,6 +33,13 @@ export function CandidatesContainer() {
   const filteredCandidates = useMemo(() => {
     let filtered = [...mockCandidates];
 
+    // Filter by annonce ID
+    if (annonceId) {
+      filtered = filtered.filter(
+        (candidate) => candidate.annonceId === annonceId
+      );
+    }
+
     // Filter by tab
     if (tab && tab !== "all") {
       filtered = filtered.filter((candidate) => {

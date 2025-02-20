@@ -14,6 +14,7 @@ export interface Candidate {
   telephone: string;
   activite: CandidateActivity;
   statut: string;
+  annonceId: string;
 }
 
 export const mockCandidates: Candidate[] = [
@@ -31,6 +32,7 @@ export const mockCandidates: Candidate[] = [
       message: "Les candidatures identifiées sont plus susceptibles.",
     },
     statut: "nouveau",
+    annonceId: "1",
   },
   {
     nom: "Mariam Blanche",
@@ -46,6 +48,7 @@ export const mockCandidates: Candidate[] = [
       message: "Candidature en cours d'examen.",
     },
     statut: "en-cours-examen",
+    annonceId: "1",
   },
   {
     nom: "Mohamed El MAIZI",
@@ -61,6 +64,7 @@ export const mockCandidates: Candidate[] = [
       message: "Les candidatures identifiées sont plus susceptibles.",
     },
     statut: "nouveau",
+    annonceId: "1",
   },
   {
     nom: "Ayoub BOUKHANE",
@@ -76,6 +80,7 @@ export const mockCandidates: Candidate[] = [
       message: "Entretien prévu pour la semaine prochaine.",
     },
     statut: "en-cours-entretien",
+    annonceId: "1",
   },
   {
     nom: "Sofia LEMARCHAND",
@@ -91,6 +96,7 @@ export const mockCandidates: Candidate[] = [
       message: "En attente de confirmation du candidat.",
     },
     statut: "contacte",
+    annonceId: "4",
   },
   {
     nom: "Khalid BENSAID",
@@ -106,6 +112,7 @@ export const mockCandidates: Candidate[] = [
       message: "Les candidatures identifiées sont plus susceptibles.",
     },
     statut: "nouveau",
+    annonceId: "3",
   },
   {
     nom: "Fatima ZAHRA",
@@ -121,6 +128,7 @@ export const mockCandidates: Candidate[] = [
       message: "Candidature en cours d'examen.",
     },
     statut: "en-cours-examen",
+    annonceId: "4",
   },
   {
     nom: "Omar EL HADDADI",
@@ -136,6 +144,7 @@ export const mockCandidates: Candidate[] = [
       message: "Entretien prévu pour la semaine prochaine.",
     },
     statut: "en-cours-entretien",
+    annonceId: "6",
   },
   {
     nom: "Laila MOUSTAPHA",
@@ -151,6 +160,7 @@ export const mockCandidates: Candidate[] = [
       message: "En attente de confirmation du candidat.",
     },
     statut: "contacte",
+    annonceId: "10",
   },
   {
     nom: "Youssef EL AMRANI",
@@ -166,6 +176,7 @@ export const mockCandidates: Candidate[] = [
       message: "Candidature en cours d'examen.",
     },
     statut: "en-cours-examen",
+    annonceId: "4",
   },
   {
     nom: "Sara BOUHLAOUI",
@@ -181,6 +192,7 @@ export const mockCandidates: Candidate[] = [
       message: "Entretien prévu pour la semaine prochaine.",
     },
     statut: "en-cours-entretien",
+    annonceId: "2",
   },
   {
     nom: "Hassan EL KHALED",
@@ -196,6 +208,7 @@ export const mockCandidates: Candidate[] = [
       message: "En attente de confirmation du candidat.",
     },
     statut: "ecarte",
+    annonceId: "4",
   },
   {
     nom: "Nadia EL HASSANI",
@@ -211,6 +224,7 @@ export const mockCandidates: Candidate[] = [
       message: "Candidature en cours d'examen.",
     },
     statut: "embauche",
+    annonceId: "5",
   },
   {
     nom: "Omar BENJELLOUN",
@@ -226,5 +240,6 @@ export const mockCandidates: Candidate[] = [
       message: "Entretien prévu pour la semaine prochaine.",
     },
     statut: "en-cours-entretien",
+    annonceId: "4",
   },
 ];
