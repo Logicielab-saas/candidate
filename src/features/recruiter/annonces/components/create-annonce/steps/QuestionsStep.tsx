@@ -11,11 +11,12 @@ import { QuestionFactory } from "./questions/QuestionFactory";
 import { QuestionAnswer } from "@/features/recruiter/annonces/common/types/questions.types";
 import { PredefinedQuestion } from "@/features/recruiter/annonces/common/interfaces/questions.interface";
 import { CustomQuestionDialog } from "./questions/dialogs/CustomQuestionDialog";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { createPredefinedFromCustom } from "@/core/utils";
 import type { CustomQuestionProps } from "./questions/dialogs/CustomQuestionDialog";
 import { FloatingScrollButton } from "./questions/FloatingScrollButton";
+import { SelectedQuestion } from "@/features/recruiter/annonces/common/types/questions.types";
 
 const MAX_QUESTIONS = 5;
 
@@ -32,6 +33,10 @@ export function QuestionsStep({
     useCreateAnnonceStore();
   const { toast } = useToast();
 
+  // Local state for dialog mode
+  const [localQuestions, setLocalQuestions] =
+    useState<SelectedQuestion[]>(questions);
+
   // ? Ref for the last question to scroll to it
   const lastQuestionRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -42,7 +47,7 @@ export function QuestionsStep({
     if (lastQuestionRef.current) {
       lastQuestionRef.current.scrollIntoView({ behavior: "smooth" });
     }
-    if (questions.length == MAX_QUESTIONS) {
+    if ((isDialog ? localQuestions : questions).length == MAX_QUESTIONS) {
       toast({
         variant: "warning",
         title: "Limite atteinte",
@@ -51,7 +56,7 @@ export function QuestionsStep({
       return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [questions.length]); // ! Only trigger when questions length changes
+  }, [isDialog ? localQuestions.length : questions.length]); // ! Only trigger when questions length changes
 
   const handleAddQuestion = (questionId: string) => {
     const predefinedQuestion = PREDEFINED_QUESTIONS.find(
@@ -59,70 +64,127 @@ export function QuestionsStep({
     );
     if (!predefinedQuestion) return;
 
+    const currentQuestions = isDialog ? localQuestions : questions;
+    let newQuestions: SelectedQuestion[];
+
     // For questions with isMultiple=true, generate a unique ID
     if (predefinedQuestion.isMultiple) {
       const uniqueId = `${questionId}-${Date.now()}`;
-      setQuestions([
-        ...questions,
+      newQuestions = [
+        ...currentQuestions,
         { ...predefinedQuestion, id: uniqueId, answer: undefined },
-      ]);
-    } else if (!questions.some((q) => q.id === questionId)) {
+      ];
+    } else if (!currentQuestions.some((q) => q.id === questionId)) {
       // * For non-multiple questions, only add if not already present
-      setQuestions([
-        ...questions,
+      newQuestions = [
+        ...currentQuestions,
         { ...predefinedQuestion, answer: undefined },
-      ]);
+      ];
+    } else {
+      return;
+    }
+
+    if (isDialog) {
+      setLocalQuestions(newQuestions);
+    } else {
+      setQuestions(newQuestions);
     }
   };
 
   const handleAddCustomQuestion = (customQuestion: CustomQuestionProps) => {
     const newQuestion = createPredefinedFromCustom(customQuestion);
-    setQuestions([...questions, { ...newQuestion, answer: undefined }]);
+    if (isDialog) {
+      setLocalQuestions([
+        ...localQuestions,
+        { ...newQuestion, answer: undefined },
+      ]);
+    } else {
+      setQuestions([...questions, { ...newQuestion, answer: undefined }]);
+    }
   };
 
   const handleRemoveQuestion = (questionId: string) => {
-    setQuestions(questions.filter((q) => q.id !== questionId));
+    if (isDialog) {
+      setLocalQuestions(localQuestions.filter((q) => q.id !== questionId));
+    } else {
+      setQuestions(questions.filter((q) => q.id !== questionId));
+    }
   };
 
   const handleQuestionChange = (questionId: string, value: QuestionAnswer) => {
-    setQuestions(
-      questions.map((q) => (q.id === questionId ? { ...q, answer: value } : q))
-    );
+    if (isDialog) {
+      setLocalQuestions(
+        localQuestions.map((q) =>
+          q.id === questionId ? { ...q, answer: value } : q
+        )
+      );
+    } else {
+      setQuestions(
+        questions.map((q) =>
+          q.id === questionId ? { ...q, answer: value } : q
+        )
+      );
+    }
   };
 
   const handleRequiredChange = (questionId: string, required: boolean) => {
-    setQuestions(
-      questions.map((q) =>
-        q.id === questionId ? { ...q, isRequired: required } : q
-      )
-    );
+    if (isDialog) {
+      setLocalQuestions(
+        localQuestions.map((q) =>
+          q.id === questionId ? { ...q, isRequired: required } : q
+        )
+      );
+    } else {
+      setQuestions(
+        questions.map((q) =>
+          q.id === questionId ? { ...q, isRequired: required } : q
+        )
+      );
+    }
   };
 
   const handleMultipleChoicesChange = (
     questionId: string,
     multiple: boolean
   ) => {
-    setQuestions(
-      questions.map((q) =>
-        q.id === questionId ? { ...q, isMultiple: multiple } : q
-      )
-    );
+    if (isDialog) {
+      setLocalQuestions(
+        localQuestions.map((q) =>
+          q.id === questionId ? { ...q, isMultiple: multiple } : q
+        )
+      );
+    } else {
+      setQuestions(
+        questions.map((q) =>
+          q.id === questionId ? { ...q, isMultiple: multiple } : q
+        )
+      );
+    }
   };
 
   // * Function to check if a predefined question can be added
   const canAddQuestion = (question: PredefinedQuestion) => {
-    if (questions.length >= MAX_QUESTIONS) return false;
-    return question.isMultiple || !questions.some((q) => q.id === question.id);
+    const currentQuestions = isDialog ? localQuestions : questions;
+    if (currentQuestions.length >= MAX_QUESTIONS) return false;
+    return (
+      question.isMultiple || !currentQuestions.some((q) => q.id === question.id)
+    );
   };
 
   const handleSave = () => {
-    if (questions.length === 0) {
+    const questionsToValidate = isDialog ? localQuestions : questions;
+
+    if (questionsToValidate.length === 0) {
       toast({
         variant: "destructive",
         title: "Validation",
         description: "Veuillez ajouter au moins une question",
       });
       return;
+    }
+
+    if (isDialog) {
+      setQuestions(localQuestions); // Update the store with local questions
     }
 
     toast({
@@ -137,6 +199,13 @@ export function QuestionsStep({
       nextStep();
     }
   };
+
+  // Initialize local questions when dialog opens
+  useEffect(() => {
+    if (isDialog) {
+      setLocalQuestions(questions);
+    }
+  }, [isDialog, questions]);
 
   return (
     <>
@@ -178,47 +247,57 @@ export function QuestionsStep({
             {/* Custom question dialog for adding new questions */}
             <CustomQuestionDialog
               onAddQuestion={handleAddCustomQuestion}
-              disabled={questions.length >= MAX_QUESTIONS}
+              disabled={
+                (isDialog ? localQuestions : questions).length >= MAX_QUESTIONS
+              }
             />
           </div>
         </Card>
 
         {/* Display selected questions if any */}
-        {questions.length > 0 && (
+        {(isDialog ? localQuestions : questions).length > 0 && (
           <Card className="p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-semibold">Questions sélectionnées</h3>
               <span className="text-sm text-muted-foreground">
-                {questions.length} / {MAX_QUESTIONS} questions
+                {(isDialog ? localQuestions : questions).length} /{" "}
+                {MAX_QUESTIONS} questions
               </span>
             </div>
             {/* Render selected questions with remove button */}
             <div className="space-y-8">
-              {questions.map((question, index) => (
-                <div
-                  key={question.id}
-                  className="relative"
-                  ref={index === questions.length - 1 ? lastQuestionRef : null}
-                >
-                  <QuestionFactory
-                    question={question}
-                    value={question.answer}
-                    onChange={(value) =>
-                      handleQuestionChange(question.id, value)
+              {(isDialog ? localQuestions : questions).map(
+                (question, index) => (
+                  <div
+                    key={question.id}
+                    className="relative"
+                    ref={
+                      index ===
+                      (isDialog ? localQuestions : questions).length - 1
+                        ? lastQuestionRef
+                        : null
                     }
-                    onRequiredChange={(required) =>
-                      handleRequiredChange(question.id, required)
-                    }
-                    onMultipleChoicesChange={
-                      question.type === "choice"
-                        ? (multiple) =>
-                            handleMultipleChoicesChange(question.id, multiple)
-                        : undefined
-                    }
-                    onRemove={() => handleRemoveQuestion(question.id)}
-                  />
-                </div>
-              ))}
+                  >
+                    <QuestionFactory
+                      question={question}
+                      value={question.answer}
+                      onChange={(value) =>
+                        handleQuestionChange(question.id, value)
+                      }
+                      onRequiredChange={(required) =>
+                        handleRequiredChange(question.id, required)
+                      }
+                      onMultipleChoicesChange={
+                        question.type === "choice"
+                          ? (multiple) =>
+                              handleMultipleChoicesChange(question.id, multiple)
+                          : undefined
+                      }
+                      onRemove={() => handleRemoveQuestion(question.id)}
+                    />
+                  </div>
+                )
+              )}
             </div>
           </Card>
         )}
