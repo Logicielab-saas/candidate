@@ -197,6 +197,7 @@ export function QuestionsStep() {
           onPrevious={previousStep}
           onNext={nextStep}
           canProceed={canProceed()}
+          showPreview={true}
         />
       </div>
     </>

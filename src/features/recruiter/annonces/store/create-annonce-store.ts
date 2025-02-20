@@ -9,10 +9,10 @@ import { formatStepData } from "../common/utils/step-formatter.utils";
 import { CreateAnnonceState } from "../common/types/create-annonce.types";
 import { SelectedQuestion } from "../common/types/questions.types";
 import { FinalQuestion } from "../common/interfaces/questions.interface";
-// TODO: Add step questions then verification At the steps constants and adapt the store and relevant components
+// TODO: add step verification At the steps constants and adapt the store and relevant components
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   // Initial State
-  currentStep: "questions",
+  currentStep: "job-information",
   annonceType: null,
   baseInformation: INITIAL_BASE_INFORMATION,
   jobTypeInformation: INITIAL_JOB_TYPE_INFORMATION,
