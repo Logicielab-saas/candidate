@@ -23,9 +23,11 @@ import { useState } from "react";
 import { QuestionType } from "@/features/recruiter/annonces/common/interfaces/questions.interface";
 import { Plus } from "lucide-react";
 
+type CustomQuestionType = Exclude<QuestionType, "experience">;
+
 interface CustomQuestionDialogProps {
   onAddQuestion: (question: {
-    type: QuestionType;
+    type: CustomQuestionType;
     label: string;
     isRequired: boolean;
     isMultipleChoices?: boolean;
@@ -37,7 +39,7 @@ export function CustomQuestionDialog({
   onAddQuestion,
 }: CustomQuestionDialogProps) {
   const [open, setOpen] = useState(false);
-  const [type, setType] = useState<QuestionType | "">("");
+  const [type, setType] = useState<CustomQuestionType | "">("");
   const [label, setLabel] = useState("");
   const [isRequired, setIsRequired] = useState(false);
   const [isMultipleChoices, setIsMultipleChoices] = useState(false);
@@ -109,7 +111,7 @@ export function CustomQuestionDialog({
             <Label>Type de question</Label>
             <Select
               value={type}
-              onValueChange={(value: QuestionType) => setType(value)}
+              onValueChange={(value: CustomQuestionType) => setType(value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Sélectionnez un type" />
@@ -118,7 +120,6 @@ export function CustomQuestionDialog({
                 <SelectItem value="open">Question ouverte</SelectItem>
                 <SelectItem value="choice">Choix multiples</SelectItem>
                 <SelectItem value="yesno">Oui/Non</SelectItem>
-                <SelectItem value="experience">Expérience</SelectItem>
               </SelectContent>
             </Select>
           </div>
