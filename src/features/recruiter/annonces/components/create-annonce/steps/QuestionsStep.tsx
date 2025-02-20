@@ -23,10 +23,10 @@ export function QuestionsStep() {
     useCreateAnnonceStore();
   const { toast } = useToast();
 
-  // Ref for the last question
+  // ? Ref for the last question to scroll to it
   const lastQuestionRef = useRef<HTMLDivElement>(null);
 
-  // Effect to scroll to the last question when questions array changes
+  // ? Effect to scroll to the last question when questions array changes & show toast if max questions reached
   useEffect(() => {
     if (lastQuestionRef.current) {
       lastQuestionRef.current.scrollIntoView({ behavior: "smooth" });
@@ -40,7 +40,7 @@ export function QuestionsStep() {
       return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [questions.length]); // Only trigger when questions length changes
+  }, [questions.length]); // ! Only trigger when questions length changes
 
   const handleAddQuestion = (questionId: string) => {
     const predefinedQuestion = PREDEFINED_QUESTIONS.find(
@@ -56,7 +56,7 @@ export function QuestionsStep() {
         { ...predefinedQuestion, id: uniqueId, answer: undefined },
       ]);
     } else if (!questions.some((q) => q.id === questionId)) {
-      // For non-multiple questions, only add if not already present
+      // * For non-multiple questions, only add if not already present
       setQuestions([
         ...questions,
         { ...predefinedQuestion, answer: undefined },
@@ -65,13 +65,6 @@ export function QuestionsStep() {
   };
 
   const handleAddCustomQuestion = (customQuestion: CustomQuestionProps) => {
-    // Check if we've reached the maximum number of questions
-    if (questions.length >= MAX_QUESTIONS) {
-      // You might want to show a toast or alert here
-      console.warn("Maximum number of questions reached");
-      return;
-    }
-
     const newQuestion = createPredefinedFromCustom(customQuestion);
     setQuestions([...questions, { ...newQuestion, answer: undefined }]);
   };
@@ -105,7 +98,7 @@ export function QuestionsStep() {
     );
   };
 
-  // Function to check if a predefined question can be added
+  // * Function to check if a predefined question can be added
   const canAddQuestion = (question: PredefinedQuestion) => {
     if (questions.length >= MAX_QUESTIONS) return false;
     return question.isMultiple || !questions.some((q) => q.id === question.id);
@@ -118,8 +111,10 @@ export function QuestionsStep() {
         description={`Ajoutez des questions pour mieux évaluer les candidats (maximum ${MAX_QUESTIONS} questions)`}
       />
 
+      {/* Card for adding predefined and custom questions */}
       <Card className="p-6">
         <div className="grid grid-cols-2 gap-4">
+          {/* Render predefined questions as buttons */}
           {PREDEFINED_QUESTIONS.map((question) => (
             <Button
               key={question.id}
@@ -141,6 +136,7 @@ export function QuestionsStep() {
               </span>
             </Button>
           ))}
+          {/* Custom question dialog for adding new questions */}
           <CustomQuestionDialog
             onAddQuestion={handleAddCustomQuestion}
             disabled={questions.length >= MAX_QUESTIONS}
@@ -148,6 +144,7 @@ export function QuestionsStep() {
         </div>
       </Card>
 
+      {/* Display selected questions if any */}
       {questions.length > 0 && (
         <Card className="p-6">
           <div className="flex items-center justify-between mb-6">
@@ -156,7 +153,7 @@ export function QuestionsStep() {
               {questions.length} / {MAX_QUESTIONS} questions
             </span>
           </div>
-          {/* <ScrollArea className="h-[400px] pr-4"> */}
+          {/* Render selected questions with remove button */}
           <div className="space-y-8">
             {questions.map((question, index) => (
               <div
@@ -189,10 +186,10 @@ export function QuestionsStep() {
               </div>
             ))}
           </div>
-          {/* </ScrollArea> */}
         </Card>
       )}
 
+      {/* Navigation buttons for form steps */}
       <FormStepsNavigation
         onPrevious={previousStep}
         onNext={nextStep}
