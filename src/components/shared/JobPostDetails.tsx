@@ -11,58 +11,20 @@ import { CreateAnnonceState } from "../../features/recruiter/annonces/common/typ
 import { FinalQuestion } from "../../features/recruiter/annonces/common/interfaces/questions.interface";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-
-interface JobPostDetailsProps {
-  data: Pick<
-    CreateAnnonceState,
-    | "baseInformation"
-    | "jobTypeInformation"
-    | "salaryInformation"
-    | "description"
-    | "preferences"
-    | "questions"
-  >;
-  onEdit?: (
-    section:
-      | "job-information"
-      | "description-annonce"
-      | "preferences"
-      | "questions"
-  ) => void;
-  isEditable?: boolean;
-}
-
-const CONTRACT_TYPE_LABELS: Record<ContractType, string> = {
-  [ContractType.FULL_TIME]: "Temps plein",
-  [ContractType.PART_TIME]: "Temps partiel",
-  [ContractType.CDI]: "CDI",
-  [ContractType.INTERIM]: "Intérim",
-  [ContractType.CDD]: "CDD",
-  [ContractType.FREELANCE]: "Profession libérale",
-  [ContractType.INTERNSHIP]: "Stage",
-  [ContractType.APPRENTICESHIP]: "Apprentissage/Alternance",
-};
-
-const _SALARY_FREQUENCY_LABELS: Record<SalaryFrequency, string> = {
-  [SalaryFrequency.HOURLY]: "par heure",
-  [SalaryFrequency.DAILY]: "par jour",
-  [SalaryFrequency.WEEKLY]: "par semaine",
-  [SalaryFrequency.MONTHLY]: "par mois",
-  [SalaryFrequency.YEARLY]: "par an",
-};
+import { EditJobDetailsDialog } from "@/features/recruiter/annonces/components/create-annonce/edit-dialogs/EditJobDetailsDialog";
 
 interface DetailRowProps {
   label: string;
-  value: string | React.ReactNode;
+  value: React.ReactNode;
+  showEditButton?: boolean;
   onEdit?: () => void;
-  isEditable?: boolean;
 }
 
 function DetailRow({
   label,
   value,
+  showEditButton = false,
   onEdit,
-  isEditable = true,
 }: DetailRowProps) {
   return (
     <div className="flex items-center py-3 border-b border-gray-100 dark:border-gray-800 last:border-0">
@@ -70,7 +32,7 @@ function DetailRow({
         <div className="text-sm text-muted-foreground">{label}</div>
         <div className="mt-1 font-medium">{value}</div>
       </div>
-      {isEditable && onEdit && (
+      {showEditButton && (
         <Button
           variant="ghost"
           size="icon"
@@ -182,11 +144,44 @@ function QuestionContent({ question }: { question: FinalQuestion }) {
   );
 }
 
+interface JobPostDetailsProps {
+  data: Pick<
+    CreateAnnonceState,
+    | "baseInformation"
+    | "jobTypeInformation"
+    | "salaryInformation"
+    | "description"
+    | "preferences"
+    | "questions"
+  >;
+  showEditButtons?: boolean;
+}
+
+const CONTRACT_TYPE_LABELS: Record<ContractType, string> = {
+  [ContractType.FULL_TIME]: "Temps plein",
+  [ContractType.PART_TIME]: "Temps partiel",
+  [ContractType.CDI]: "CDI",
+  [ContractType.INTERIM]: "Intérim",
+  [ContractType.CDD]: "CDD",
+  [ContractType.FREELANCE]: "Profession libérale",
+  [ContractType.INTERNSHIP]: "Stage",
+  [ContractType.APPRENTICESHIP]: "Apprentissage/Alternance",
+};
+
+const _SALARY_FREQUENCY_LABELS: Record<SalaryFrequency, string> = {
+  [SalaryFrequency.HOURLY]: "par heure",
+  [SalaryFrequency.DAILY]: "par jour",
+  [SalaryFrequency.WEEKLY]: "par semaine",
+  [SalaryFrequency.MONTHLY]: "par mois",
+  [SalaryFrequency.YEARLY]: "par an",
+};
+
 export function JobPostDetails({
   data,
-  onEdit,
-  isEditable = true,
+  showEditButtons = false,
 }: JobPostDetailsProps) {
+  const [isJobDetailsDialogOpen, setIsJobDetailsDialogOpen] = useState(false);
+
   const formatSalary = () => {
     const { displayType, minSalary, maxSalary } = data.salaryInformation;
 
@@ -205,111 +200,120 @@ export function JobPostDetails({
   };
 
   return (
-    <div className="space-y-8">
-      <Section title="Détails de l'emploi">
-        <div className="p-4">
-          <DetailRow
-            label="Intitulé du poste"
-            value={data.baseInformation.jobTitle}
-            onEdit={() => onEdit?.("job-information")}
-            isEditable={isEditable}
-          />
-          <DetailRow
-            label="Nombre de postes"
-            value={data.baseInformation.numberOfPeople}
-            onEdit={() => onEdit?.("job-information")}
-            isEditable={isEditable}
-          />
-          <DetailRow
-            label="Lieu de promotion"
-            value={data.baseInformation.promotionLocation}
-            onEdit={() => onEdit?.("job-information")}
-            isEditable={isEditable}
-          />
-          <DetailRow
-            label="Type de poste"
-            value={data.jobTypeInformation.contractTypes
-              .map(
-                (contractType) =>
-                  CONTRACT_TYPE_LABELS[contractType as ContractType]
-              )
-              .join(", ")}
-            onEdit={() => onEdit?.("job-information")}
-            isEditable={isEditable}
-          />
-          <DetailRow
-            label="Salaire"
-            value={formatSalary()}
-            onEdit={() => onEdit?.("job-information")}
-            isEditable={isEditable}
-          />
-          <DetailRow
-            label="Description du poste"
-            value={<DescriptionContent description={data.description} />}
-            onEdit={() => onEdit?.("description-annonce")}
-            isEditable={isEditable}
-          />
-        </div>
-      </Section>
+    <>
+      <EditJobDetailsDialog
+        isOpen={isJobDetailsDialogOpen}
+        onClose={() => setIsJobDetailsDialogOpen(false)}
+      />
 
-      <Section title="Paramètres">
-        <div className="p-4">
-          <DetailRow
-            label="Méthode de candidature"
-            value={
-              data.preferences?.notificationEmails[0]?.value || "Non spécifié"
-            }
-            onEdit={() => onEdit?.("preferences")}
-            isEditable={isEditable}
-          />
-          <DetailRow
-            label="Demande un CV"
-            value={data.preferences?.requireResume ? "Oui" : "Non"}
-            onEdit={() => onEdit?.("preferences")}
-            isEditable={isEditable}
-          />
-          <DetailRow
-            label="Autoriser les candidatures à me contacter"
-            value={data.preferences?.allowCandidateContact ? "Oui" : "Non"}
-            onEdit={() => onEdit?.("preferences")}
-            isEditable={isEditable}
-          />
-          <DetailRow
-            label="Notification pour nouvelles candidatures"
-            value={data.preferences?.notifyOnNewApplication ? "Oui" : "Non"}
-            onEdit={() => onEdit?.("preferences")}
-            isEditable={isEditable}
-          />
-          <DetailRow
-            label="Échéance de candidature"
-            value={
-              data.preferences?.hasDeadline && data.preferences.deadline
-                ? new Date(data.preferences.deadline).toLocaleDateString(
-                    "fr-FR"
-                  )
-                : "Non"
-            }
-            onEdit={() => onEdit?.("preferences")}
-            isEditable={isEditable}
-          />
-        </div>
-      </Section>
-
-      {data.questions.length > 0 && (
-        <Section title="Questions">
+      <div className="space-y-8">
+        <Section title="Détails de l'emploi">
           <div className="p-4">
-            {data.questions.map((question, index) => (
-              <DetailRow
-                key={question.id}
-                label={`Question ${index + 1}`}
-                value={<QuestionContent question={question as FinalQuestion} />}
-                onEdit={() => onEdit?.("questions")}
-                isEditable={isEditable}
-              />
-            ))}
+            <DetailRow
+              label="Intitulé du poste"
+              value={data.baseInformation.jobTitle}
+              showEditButton={showEditButtons}
+              onEdit={() => setIsJobDetailsDialogOpen(true)}
+            />
+            <DetailRow
+              label="Nombre de postes"
+              value={data.baseInformation.numberOfPeople}
+              showEditButton={showEditButtons}
+              onEdit={() => setIsJobDetailsDialogOpen(true)}
+            />
+            <DetailRow
+              label="Lieu de promotion"
+              value={data.baseInformation.promotionLocation}
+              showEditButton={showEditButtons}
+              onEdit={() => setIsJobDetailsDialogOpen(true)}
+            />
+            <DetailRow
+              label="Type de poste"
+              value={data.jobTypeInformation.contractTypes
+                .map(
+                  (contractType) =>
+                    CONTRACT_TYPE_LABELS[contractType as ContractType]
+                )
+                .join(", ")}
+              showEditButton={showEditButtons}
+              onEdit={() => setIsJobDetailsDialogOpen(true)}
+            />
+            <DetailRow
+              label="Salaire"
+              value={formatSalary()}
+              showEditButton={showEditButtons}
+              onEdit={() => setIsJobDetailsDialogOpen(true)}
+            />
+            <DetailRow
+              label="Description du poste"
+              value={<DescriptionContent description={data.description} />}
+              showEditButton={showEditButtons}
+              onEdit={() => setIsJobDetailsDialogOpen(true)}
+            />
           </div>
         </Section>
-      )}
-    </div>
+
+        <Section title="Paramètres">
+          <div className="p-4">
+            <DetailRow
+              label="Méthode de candidature"
+              value={
+                data.preferences?.notificationEmails[0]?.value || "Non spécifié"
+              }
+              showEditButton={showEditButtons}
+              onEdit={() => setIsJobDetailsDialogOpen(true)}
+            />
+            <DetailRow
+              label="Demande un CV"
+              value={data.preferences?.requireResume ? "Oui" : "Non"}
+              showEditButton={showEditButtons}
+              onEdit={() => setIsJobDetailsDialogOpen(true)}
+            />
+            <DetailRow
+              label="Autoriser les candidatures à me contacter"
+              value={data.preferences?.allowCandidateContact ? "Oui" : "Non"}
+              showEditButton={showEditButtons}
+              onEdit={() => setIsJobDetailsDialogOpen(true)}
+            />
+            <DetailRow
+              label="Notification pour nouvelles candidatures"
+              value={data.preferences?.notifyOnNewApplication ? "Oui" : "Non"}
+              showEditButton={showEditButtons}
+              onEdit={() => setIsJobDetailsDialogOpen(true)}
+            />
+            <DetailRow
+              label="Échéance de candidature"
+              value={
+                data.preferences?.hasDeadline && data.preferences.deadline
+                  ? new Date(data.preferences.deadline).toLocaleDateString(
+                      "fr-FR"
+                    )
+                  : "Non"
+              }
+              showEditButton={showEditButtons}
+              onEdit={() => setIsJobDetailsDialogOpen(true)}
+            />
+          </div>
+        </Section>
+
+        {data.questions.length > 0 && (
+          <Section title="Questions">
+            <div className="p-4">
+              {data.questions.map((question, index) => (
+                <DetailRow
+                  key={question.id}
+                  label={`Question ${index + 1}`}
+                  value={
+                    <QuestionContent question={question as FinalQuestion} />
+                  }
+                  showEditButton={showEditButtons}
+                  onEdit={() => setIsJobDetailsDialogOpen(true)}
+                />
+              ))}
+            </div>
+          </Section>
+        )}
+      </div>
+    </>
   );
 }

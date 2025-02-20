@@ -28,17 +28,6 @@ export function VerificationStep() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const handleEdit = (
-    section:
-      | "job-information"
-      | "description-annonce"
-      | "preferences"
-      | "questions"
-  ) => {
-    // Navigate to the selected section
-    useCreateAnnonceStore.setState({ currentStep: section });
-  };
-
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
@@ -96,7 +85,7 @@ export function VerificationStep() {
                 preferences,
                 questions,
               }}
-              onEdit={handleEdit}
+              showEditButtons={true}
             />
           </CardContent>
         </Card>

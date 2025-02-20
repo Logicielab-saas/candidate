@@ -40,6 +40,7 @@ import {
 } from "../../../common/schemas/job-information.schema";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 
 const numberOfPeopleOptions = [
   { value: "1", label: "1 personne" },
@@ -114,7 +115,15 @@ const transformDurationDetails = (
   };
 };
 
-export function JobInformationStep() {
+interface JobInformationStepProps {
+  isDialog?: boolean;
+  onDialogClose?: () => void;
+}
+
+export function JobInformationStep({
+  isDialog = false,
+  onDialogClose,
+}: JobInformationStepProps) {
   const {
     baseInformation,
     setBaseInformation,
@@ -296,15 +305,26 @@ export function JobInformationStep() {
       return;
     }
 
-    nextStep();
+    if (isDialog) {
+      toast({
+        title: "Modifications enregistrées",
+        description: "Les détails de l'emploi ont été mis à jour avec succès.",
+        variant: "success",
+      });
+      onDialogClose?.();
+    } else {
+      nextStep();
+    }
   };
 
   return (
     <div className="w-full max-w-3xl mx-auto space-y-8">
-      <HeaderSectionStepsForm
-        title="Informations du poste"
-        description="Remplissez les informations concernant le poste"
-      />
+      {!isDialog && (
+        <HeaderSectionStepsForm
+          title="Informations du poste"
+          description="Remplissez les informations concernant le poste"
+        />
+      )}
 
       <Form {...form}>
         <form onSubmit={(e) => e.preventDefault()}>
@@ -650,11 +670,22 @@ export function JobInformationStep() {
         </form>
       </Form>
 
-      <FormStepsNavigation
-        onPrevious={previousStep}
-        onNext={validateAndProceed}
-        canProceed={canProceed()}
-      />
+      {isDialog ? (
+        <div className="flex justify-end gap-4">
+          <Button variant="outline" onClick={onDialogClose}>
+            Annuler
+          </Button>
+          <Button onClick={validateAndProceed}>
+            Enregistrer les modifications
+          </Button>
+        </div>
+      ) : (
+        <FormStepsNavigation
+          onPrevious={previousStep}
+          onNext={validateAndProceed}
+          canProceed={canProceed()}
+        />
+      )}
     </div>
   );
 }
