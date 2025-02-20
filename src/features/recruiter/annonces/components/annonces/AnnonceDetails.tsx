@@ -12,61 +12,51 @@ import { PerformanceCard } from "./PerformanceCard";
 import { AnnonceDescription } from "./AnnonceDescription";
 import { Separator } from "@/components/ui/separator";
 import { BackArrow } from "@/components/shared/BackArrow";
+import {
+  mockAnnonceDetails,
+  AnnonceDetails as AnnonceDetailsType,
+} from "@/core/mockData/annonces-details-data";
 
-// TODO: Replace with proper type when API integration is done
 interface AnnonceDetailsProps {
-  data?: {
-    intitule: string;
-    candidatures: {
-      tous: number;
-      nouveaux: number;
-    };
-    performance?: {
-      impressions: number;
-      clicks: number;
-      candidaturesCommencees: number;
-      candidatures: number;
-    };
-  };
+  annonceId: string;
+  data?: AnnonceDetailsType;
 }
 
-// TODO: Remove this mock data when API integration is done
-const mockData = {
-  intitule: "Social Media Manager",
-  candidatures: {
-    tous: 10,
-    nouveaux: 0,
-  },
-  performance: {
-    impressions: 240,
-    clicks: 30,
-    candidaturesCommencees: 18,
-    candidatures: 100,
-  },
-};
+export function AnnonceDetails({ annonceId, data }: AnnonceDetailsProps) {
+  // Get the annonce details from mock data if not provided
+  const annonceData = data || mockAnnonceDetails[annonceId];
 
-export function AnnonceDetails({ data }: AnnonceDetailsProps) {
-  const annonceData = data || mockData;
+  // If no data found, show error or placeholder
+  if (!annonceData) {
+    return (
+      <div className="flex flex-col gap-8">
+        <BackArrow title="Annonce non trouvée" />
+        <div className="text-center text-muted-foreground">
+          Cette annonce n&apos;existe pas ou a été supprimée.
+        </div>
+      </div>
+    );
+  }
 
   const performanceMetrics = [
     {
       icon: Eye,
-      value: annonceData.performance?.impressions || 0,
+      value: annonceData.performance.impressions,
       label: "Impressions",
     },
     {
       icon: MousePointerClick,
-      value: annonceData.performance?.clicks || 0,
+      value: annonceData.performance.clicks,
       label: "Clicks",
     },
     {
       icon: UserCircle2,
-      value: annonceData.performance?.candidaturesCommencees || 0,
+      value: annonceData.performance.candidaturesCommencees,
       label: "Candidatures commencées",
     },
     {
       icon: FileCheck,
-      value: annonceData.performance?.candidatures || 0,
+      value: annonceData.performance.candidatures,
       label: "Candidatures",
     },
   ];
@@ -152,7 +142,7 @@ export function AnnonceDetails({ data }: AnnonceDetailsProps) {
           Améliorer la visibilité
         </Button>
       </div>
-      <AnnonceDescription />
+      <AnnonceDescription annonceId={annonceId} />
     </div>
   );
 }
