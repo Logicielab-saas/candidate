@@ -29,8 +29,8 @@ interface SimpleQuestion extends BaseQuestion {
 
 export type PredefinedQuestion = SimpleQuestion | ChoiceQuestion;
 
-// Interface for the final question data to be sent
-export interface FinalQuestion {
+// Interface for question data during form steps (complete data)
+export interface FormQuestion {
   id: string;
   type: QuestionType;
   question: string;
@@ -41,6 +41,25 @@ export interface FinalQuestion {
   options?: string[];
   answer?: string | string[];
 }
+
+// Interface for the final question data to be sent (minimal data)
+export interface SubmissionQuestion {
+  // For predefined questions
+  id?: string;
+  isRequired: boolean;
+  isMultipleChoices?: boolean;
+  label?: string;
+
+  // For custom questions
+  type?: QuestionType;
+  options?: string[];
+
+  question?: string;
+  answer?: string | string[];
+}
+
+// Union type for questions depending on the step
+export type FinalQuestion = FormQuestion | SubmissionQuestion;
 
 // export interface FinalQuestion {
 //   // For predefined questions

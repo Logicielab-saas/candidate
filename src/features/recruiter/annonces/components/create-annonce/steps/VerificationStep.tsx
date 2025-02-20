@@ -6,6 +6,7 @@ import { HeaderSectionStepsForm } from "@/components/shared/HeaderSectionStepsFo
 import { FormStepsNavigation } from "@/components/shared/FormStepsNavigation";
 import { JobPostDetails } from "../../shared/JobPostDetails";
 import { useToast } from "@/hooks/use-toast";
+import { FloatingScrollButton } from "./questions/FloatingScrollButton";
 
 export function VerificationStep() {
   const {
@@ -45,34 +46,37 @@ export function VerificationStep() {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto space-y-8">
-      <HeaderSectionStepsForm
-        title="Vérification"
-        description="Vérifiez les informations de votre annonce avant la publication"
-      />
+    <>
+      <FloatingScrollButton />
+      <div className="w-full max-w-3xl mx-auto space-y-8">
+        <HeaderSectionStepsForm
+          title="Vérification"
+          description="Vérifiez les informations de votre annonce avant la publication"
+        />
 
-      <Card>
-        <CardContent className="pt-6">
-          <JobPostDetails
-            data={{
-              baseInformation,
-              jobTypeInformation,
-              salaryInformation,
-              description,
-              preferences,
-              questions,
-            }}
-            onEdit={handleEdit}
-          />
-        </CardContent>
-      </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <JobPostDetails
+              data={{
+                baseInformation,
+                jobTypeInformation,
+                salaryInformation,
+                description,
+                preferences,
+                questions,
+              }}
+              onEdit={handleEdit}
+            />
+          </CardContent>
+        </Card>
 
-      <FormStepsNavigation
-        onPrevious={previousStep}
-        onNext={handleSubmit}
-        canProceed={true}
-        nextLabel="Publier l'annonce"
-      />
-    </div>
+        <FormStepsNavigation
+          onPrevious={previousStep}
+          onNext={handleSubmit}
+          canProceed={true}
+          nextLabel="Publier l'annonce"
+        />
+      </div>
+    </>
   );
 }

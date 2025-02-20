@@ -8,7 +8,8 @@ import { STEPS } from "../common/constants/steps.constants";
 import { formatStepData } from "../common/utils/step-formatter.utils";
 import { CreateAnnonceState } from "../common/types/create-annonce.types";
 import { SelectedQuestion } from "../common/types/questions.types";
-import { FinalQuestion } from "../common/interfaces/questions.interface";
+import { FormQuestion } from "../common/interfaces/questions.interface";
+import { formatQuestionsForSubmission } from "@/core/utils";
 // TODO: add step verification At the steps constants and adapt the store and relevant components
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   // Initial State
@@ -51,48 +52,14 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   },
 
   getFormattedQuestions: () => {
-    const { questions } = get();
-    // return questions.map((q): FinalQuestion => {
-    //   // For custom questions, send all the data
-    //   if (q.id.startsWith('custom-')) {
-    //     return {
-    //       type: q.type,
-    //       label: q.question,
-    //       isRequired: q.isRequired,
-    //       ...(q.type === "choice" && {
-    //         isMultipleChoices: q.isMultiple,
-    //         options: q.options,
-    //       }),
-    //     };
-    //   }
+    const { questions, currentStep } = get();
 
-    //   // For predefined questions
-    //   const base = {
-    //     id: q.id,
-    //     isRequired: q.isRequired,
-    //   };
+    // Only format questions in verification step
+    if (currentStep === "verification") {
+      return formatQuestionsForSubmission(questions);
+    }
 
-    //   // For experience questions, we need to keep the label (answer)
-    //   if (q.type === "experience") {
-    //     return {
-    //       ...base,
-    //       label: q.answer as string,
-    //     };
-    //   }
-
-    //   // For choice questions with multiple choices
-    //   if (q.type === "choice" && q.isMultiple) {
-    //     return {
-    //       ...base,
-    //       isMultipleChoices: true,
-    //     };
-    //   }
-
-    //   // For other predefined questions (open, yesno), we only need id and isRequired
-    //   return base;
-    // });
-
-
+    // During form steps, return all question data
     return questions.map((q) => ({
       id: q.id,
       type: q.type,
@@ -103,7 +70,7 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
       isMultipleChoices: q.type === 'choice' ? q.isMultiple : undefined,
       options: q.type === 'choice' ? q.options : undefined,
       answer: q.answer,
-    }));
+    })) as FormQuestion[];
   },
 
   nextStep: () => {
@@ -132,6 +99,22 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
       console.groupEnd();
 
       set({ currentStep: STEPS[currentIndex + 1] });
+    } else if (currentIndex === STEPS.length - 1) {
+      // We're at the verification step (last step)
+      console.group("📤 Final Submission Data");
+      console.log("Form Data:", {
+        annonceType: state.annonceType,
+        baseInformation: state.baseInformation,
+        jobTypeInformation: state.jobTypeInformation,
+        salaryInformation: state.salaryInformation,
+        description: state.description,
+        preferences: state.preferences,
+        questions: formatQuestionsForSubmission(state.questions), // Use the formatting function directly
+      });
+      console.groupEnd();
+
+      // Here you would typically make your API call
+      // For now, we just log the data
     }
   },
 
