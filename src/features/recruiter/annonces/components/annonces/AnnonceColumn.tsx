@@ -154,7 +154,6 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
   {
     id: "actions",
     header: () => <div className="w-0.5"></div>,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     cell: ({ row }) => {
       return (
         <div className="w-0.5">
@@ -172,7 +171,7 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
                 <Eye className="h-3.5 w-3.5" />
-                <Link href={`/recruiter/annonces/details/1`}>
+                <Link href={`/recruiter/annonces/details/${row.original.id}`}>
                   Voir le détail de l&apos;annonce
                 </Link>
               </DropdownMenuItem>
