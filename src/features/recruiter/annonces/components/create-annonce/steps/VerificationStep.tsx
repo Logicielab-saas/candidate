@@ -1,10 +1,10 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { useCreateAnnonceStore } from "../../../store/create-annonce-store";
+import { useCreateAnnonceStore } from "@/features/recruiter/annonces/store/create-annonce-store";
 import { HeaderSectionStepsForm } from "@/components/shared/HeaderSectionStepsForm";
 import { FormStepsNavigation } from "@/components/shared/FormStepsNavigation";
-import { JobPostDetails } from "../../shared/JobPostDetails";
+import { JobPostDetails } from "@/components/shared/JobPostDetails";
 import { useToast } from "@/hooks/use-toast";
 import { FloatingScrollButton } from "./questions/FloatingScrollButton";
 

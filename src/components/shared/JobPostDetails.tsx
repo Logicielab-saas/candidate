@@ -2,13 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Edit2, ChevronDown, ChevronUp } from "lucide-react";
-import { ContractType } from "../../common/enums/contract.enum";
+import { ContractType } from "../../features/recruiter/annonces/common/enums/contract.enum";
 import {
   SalaryDisplayType,
   SalaryFrequency,
-} from "../../common/enums/salary.enum";
-import { CreateAnnonceState } from "../../common/types/create-annonce.types";
-import { FinalQuestion } from "../../common/interfaces/questions.interface";
+} from "../../features/recruiter/annonces/common/enums/salary.enum";
+import { CreateAnnonceState } from "../../features/recruiter/annonces/common/types/create-annonce.types";
+import { FinalQuestion } from "../../features/recruiter/annonces/common/interfaces/questions.interface";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
