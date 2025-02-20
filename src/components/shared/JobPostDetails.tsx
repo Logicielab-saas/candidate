@@ -12,6 +12,7 @@ import { FinalQuestion } from "../../features/recruiter/annonces/common/interfac
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { EditJobDetailsDialog } from "@/features/recruiter/annonces/components/create-annonce/edit-dialogs/EditJobDetailsDialog";
+import { EditPreferencesDialog } from "@/features/recruiter/annonces/components/create-annonce/edit-dialogs/EditPreferencesDialog";
 
 interface DetailRowProps {
   label: string;
@@ -181,6 +182,7 @@ export function JobPostDetails({
   showEditButtons = false,
 }: JobPostDetailsProps) {
   const [isJobDetailsDialogOpen, setIsJobDetailsDialogOpen] = useState(false);
+  const [isPreferencesDialogOpen, setIsPreferencesDialogOpen] = useState(false);
 
   const formatSalary = () => {
     const { displayType, minSalary, maxSalary } = data.salaryInformation;
@@ -204,6 +206,10 @@ export function JobPostDetails({
       <EditJobDetailsDialog
         isOpen={isJobDetailsDialogOpen}
         onClose={() => setIsJobDetailsDialogOpen(false)}
+      />
+      <EditPreferencesDialog
+        isOpen={isPreferencesDialogOpen}
+        onClose={() => setIsPreferencesDialogOpen(false)}
       />
 
       <div className="space-y-8">
@@ -261,25 +267,25 @@ export function JobPostDetails({
                 data.preferences?.notificationEmails[0]?.value || "Non spécifié"
               }
               showEditButton={showEditButtons}
-              onEdit={() => setIsJobDetailsDialogOpen(true)}
+              onEdit={() => setIsPreferencesDialogOpen(true)}
             />
             <DetailRow
               label="Demande un CV"
               value={data.preferences?.requireResume ? "Oui" : "Non"}
               showEditButton={showEditButtons}
-              onEdit={() => setIsJobDetailsDialogOpen(true)}
+              onEdit={() => setIsPreferencesDialogOpen(true)}
             />
             <DetailRow
               label="Autoriser les candidatures à me contacter"
               value={data.preferences?.allowCandidateContact ? "Oui" : "Non"}
               showEditButton={showEditButtons}
-              onEdit={() => setIsJobDetailsDialogOpen(true)}
+              onEdit={() => setIsPreferencesDialogOpen(true)}
             />
             <DetailRow
               label="Notification pour nouvelles candidatures"
               value={data.preferences?.notifyOnNewApplication ? "Oui" : "Non"}
               showEditButton={showEditButtons}
-              onEdit={() => setIsJobDetailsDialogOpen(true)}
+              onEdit={() => setIsPreferencesDialogOpen(true)}
             />
             <DetailRow
               label="Échéance de candidature"
@@ -291,7 +297,7 @@ export function JobPostDetails({
                   : "Non"
               }
               showEditButton={showEditButtons}
-              onEdit={() => setIsJobDetailsDialogOpen(true)}
+              onEdit={() => setIsPreferencesDialogOpen(true)}
             />
           </div>
         </Section>

@@ -16,8 +16,17 @@ import {
   PreferencesForm,
   preferencesFormSchema,
 } from "@/features/recruiter/annonces/common";
+import { Button } from "@/components/ui/button";
 
-export function PreferencesStep() {
+interface PreferencesStepProps {
+  isDialog?: boolean;
+  onDialogClose?: () => void;
+}
+
+export function PreferencesStep({
+  isDialog = false,
+  onDialogClose,
+}: PreferencesStepProps) {
   const { preferences, setPreferences, previousStep, nextStep } =
     useCreateAnnonceStore();
   const { toast } = useToast();
@@ -41,15 +50,22 @@ export function PreferencesStep() {
       description: "Vos préférences ont été enregistrées avec succès.",
       variant: "success",
     });
-    nextStep();
+
+    if (isDialog) {
+      onDialogClose?.();
+    } else {
+      nextStep();
+    }
   };
 
   return (
     <div className="w-full max-w-3xl mx-auto space-y-8">
-      <HeaderSectionStepsForm
-        title="Préférences"
-        description="Configurez vos préférences pour cette annonce"
-      />
+      {!isDialog && (
+        <HeaderSectionStepsForm
+          title="Préférences"
+          description="Configurez vos préférences pour cette annonce"
+        />
+      )}
 
       <Card>
         <CardContent className="pt-6">
@@ -69,12 +85,23 @@ export function PreferencesStep() {
         </CardContent>
       </Card>
 
-      <FormStepsNavigation
-        onPrevious={previousStep}
-        onNext={form.handleSubmit(onSubmit)}
-        canProceed={!form.formState.isSubmitting}
-        showPreview
-      />
+      {isDialog ? (
+        <div className="flex justify-end gap-4">
+          <Button variant="outline" onClick={onDialogClose}>
+            Annuler
+          </Button>
+          <Button onClick={form.handleSubmit(onSubmit)}>
+            Enregistrer les modifications
+          </Button>
+        </div>
+      ) : (
+        <FormStepsNavigation
+          onPrevious={previousStep}
+          onNext={form.handleSubmit(onSubmit)}
+          canProceed={!form.formState.isSubmitting}
+          showPreview
+        />
+      )}
     </div>
   );
 }
