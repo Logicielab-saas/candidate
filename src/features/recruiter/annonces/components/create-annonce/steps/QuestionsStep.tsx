@@ -19,13 +19,22 @@ import { FloatingScrollButton } from "./questions/FloatingScrollButton";
 
 const MAX_QUESTIONS = 5;
 
-export function QuestionsStep() {
+interface QuestionsStepProps {
+  isDialog?: boolean;
+  onDialogClose?: () => void;
+}
+
+export function QuestionsStep({
+  isDialog = false,
+  onDialogClose,
+}: QuestionsStepProps) {
   const { nextStep, previousStep, canProceed, questions, setQuestions } =
     useCreateAnnonceStore();
   const { toast } = useToast();
 
   // ? Ref for the last question to scroll to it
   const lastQuestionRef = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const containerRef = useRef<HTMLDivElement>(null);
 
   // ? Effect to scroll to the last question when questions array changes & show toast if max questions reached
@@ -106,17 +115,39 @@ export function QuestionsStep() {
     return question.isMultiple || !questions.some((q) => q.id === question.id);
   };
 
+  const handleSave = () => {
+    if (questions.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Validation",
+        description: "Veuillez ajouter au moins une question",
+      });
+      return;
+    }
+
+    toast({
+      title: "Questions enregistrées",
+      description: "Les questions ont été enregistrées avec succès.",
+      variant: "success",
+    });
+
+    if (isDialog) {
+      onDialogClose?.();
+    } else {
+      nextStep();
+    }
+  };
+
   return (
     <>
       <FloatingScrollButton />
-      <div
-        ref={containerRef}
-        className="container max-w-4xl mx-auto py-8 space-y-8"
-      >
-        <HeaderSectionStepsForm
-          title="Questions pour les candidats"
-          description={`Ajoutez des questions pour mieux évaluer les candidats (maximum ${MAX_QUESTIONS} questions)`}
-        />
+      <div className="container max-w-4xl mx-auto py-8 space-y-8">
+        {!isDialog && (
+          <HeaderSectionStepsForm
+            title="Questions pour les candidats"
+            description={`Ajoutez des questions pour mieux évaluer les candidats (maximum ${MAX_QUESTIONS} questions)`}
+          />
+        )}
 
         {/* Card for adding predefined and custom questions */}
         <Card className="p-6">
@@ -192,13 +223,22 @@ export function QuestionsStep() {
           </Card>
         )}
 
-        {/* Navigation buttons for form steps */}
-        <FormStepsNavigation
-          onPrevious={previousStep}
-          onNext={nextStep}
-          canProceed={canProceed()}
-          showPreview={true}
-        />
+        {/* Navigation buttons */}
+        {isDialog ? (
+          <div className="flex justify-end gap-4">
+            <Button variant="outline" onClick={onDialogClose}>
+              Annuler
+            </Button>
+            <Button onClick={handleSave}>Enregistrer les modifications</Button>
+          </div>
+        ) : (
+          <FormStepsNavigation
+            onPrevious={previousStep}
+            onNext={handleSave}
+            canProceed={canProceed()}
+            showPreview={true}
+          />
+        )}
       </div>
     </>
   );

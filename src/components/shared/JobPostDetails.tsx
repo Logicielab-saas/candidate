@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { EditJobDetailsDialog } from "@/features/recruiter/annonces/components/create-annonce/edit-dialogs/EditJobDetailsDialog";
 import { EditPreferencesDialog } from "@/features/recruiter/annonces/components/create-annonce/edit-dialogs/EditPreferencesDialog";
+import { EditQuestionsDialog } from "@/features/recruiter/annonces/components/create-annonce/edit-dialogs/EditQuestionsDialog";
 
 interface DetailRowProps {
   label: string;
@@ -183,6 +184,7 @@ export function JobPostDetails({
 }: JobPostDetailsProps) {
   const [isJobDetailsDialogOpen, setIsJobDetailsDialogOpen] = useState(false);
   const [isPreferencesDialogOpen, setIsPreferencesDialogOpen] = useState(false);
+  const [isQuestionsDialogOpen, setIsQuestionsDialogOpen] = useState(false);
 
   const formatSalary = () => {
     const { displayType, minSalary, maxSalary } = data.salaryInformation;
@@ -210,6 +212,10 @@ export function JobPostDetails({
       <EditPreferencesDialog
         isOpen={isPreferencesDialogOpen}
         onClose={() => setIsPreferencesDialogOpen(false)}
+      />
+      <EditQuestionsDialog
+        isOpen={isQuestionsDialogOpen}
+        onClose={() => setIsQuestionsDialogOpen(false)}
       />
 
       <div className="space-y-8">
@@ -313,7 +319,7 @@ export function JobPostDetails({
                     <QuestionContent question={question as FinalQuestion} />
                   }
                   showEditButton={showEditButtons}
-                  onEdit={() => setIsJobDetailsDialogOpen(true)}
+                  onEdit={() => setIsQuestionsDialogOpen(true)}
                 />
               ))}
             </div>
