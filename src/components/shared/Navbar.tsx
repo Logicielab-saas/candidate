@@ -119,9 +119,11 @@ export function NavBar() {
               <DropdownMenuSeparator />
 
               {/* User Section */}
-              <DropdownMenuItem>
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
+              <DropdownMenuItem className="w-full">
+                <Link href="/profile" className="flex space-x-4 w-full">
+                  <User className=" h-4 w-4" />
+                  <span>Profile</span>
+                </Link>
               </DropdownMenuItem>
 
               {/* Jobs & Reviews Section */}
