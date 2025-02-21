@@ -25,9 +25,9 @@ const ROUTES = {
   },
   // * default route redirection
   DEFAULT_REDIRECTS: {
-    ADMIN: "/admin/dashboard",
-    RECRUITER: "/recruiter/dashboard",
-    CANDIDATE: "/candidate/dashboard",
+    ADMIN: "/admin/annonces",
+    RECRUITER: "/recruiter/annonces",
+    CANDIDATE: "/candidate/annonces",
   },
 } as const;
 

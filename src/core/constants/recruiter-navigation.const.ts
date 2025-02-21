@@ -5,7 +5,6 @@ import {
   UserCheck,
   MessageSquare,
   Settings,
-  LayoutDashboard,
   Calendar,
   BarChart,
   Users,
@@ -61,12 +60,6 @@ export const settingsNavigation: RecruiterMenuSection = {
 
 export const recruiterNavigation: RecruiterNavigation = {
   navMain: [
-    {
-      title: "Tableau de bord",
-      url: "/recruiter/dashboard",
-      icon: LayoutDashboard,
-      items: [],
-    },
     {
       title: "Mes Annonces",
       url: "/recruiter/annonces",
