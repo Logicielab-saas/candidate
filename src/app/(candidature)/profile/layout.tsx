@@ -1,4 +1,5 @@
 import React from "react";
+import { cn } from "@/lib/utils";
 
 export default function ProfileLayout({
   children,
@@ -6,12 +7,12 @@ export default function ProfileLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-[calc(100vh-3.5rem)] w-full bg-background pt-14">
-      <main>
-        <div className="h-full w-full max-w-7xl mx-auto p-8 pb-24 md:pb-8">
-          {children}
+    <div className={cn("min-h-screen bg-background pt-4")}>
+      <div className={cn("mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-8")}>
+        <div className={cn("mx-auto max-w-full")}>
+          <main className={cn("py-8")}>{children}</main>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
