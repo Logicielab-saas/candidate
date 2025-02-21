@@ -1,16 +1,19 @@
-"use client"
-
-import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronsLeft, ChevronRight, ChevronsRight } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import {
+  ChevronLeft,
+  ChevronsLeft,
+  ChevronRight,
+  ChevronsRight,
+} from "lucide-react";
 
 interface DataTablePaginationProps {
-  currentPage: number
-  totalPages: number
-  totalItems?: number
-  limit: number
-  currentItems: number
-  onPageChange: (_page: number) => void
-  onlimitChange?: (_limit: number) => void
+  currentPage: number;
+  totalPages: number;
+  totalItems?: number;
+  limit: number;
+  currentItems: number;
+  onPageChange: (_page: number) => void;
+  onlimitChange?: (_limit: number) => void;
 }
 
 export function DataTablePagination({
@@ -26,7 +29,8 @@ export function DataTablePagination({
     <div className="flex flex-col gap-4 px-2 py-4 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between lg:gap-8">
         <div className="text-sm text-muted-foreground">
-          {currentItems} résultat{currentItems > 1 ? 's' : ''} sur {totalItems ?? 0} entrées
+          {currentItems} résultat{currentItems > 1 ? "s" : ""} sur{" "}
+          {totalItems ?? 0} entrées
         </div>
         <div className="flex items-center gap-2">
           <p className="text-sm font-medium">Lignes par page</p>
@@ -34,7 +38,7 @@ export function DataTablePagination({
             className="h-8 w-[70px] rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             value={limit.toString()}
             onChange={(value) => {
-              onlimitChange?.(Number(value.target.value))
+              onlimitChange?.(Number(value.target.value));
             }}
           >
             {[10, 20, 30, 40, 50].map((pageSize) => (
@@ -89,5 +93,5 @@ export function DataTablePagination({
         </div>
       </div>
     </div>
-  )
+  );
 }

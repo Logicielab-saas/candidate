@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { mockAnnonceData } from "@/core/mockData/annonces-real-data";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
 import { MultiSelect } from "@/components/ui/multi-select";
 import {
   Select,
@@ -72,16 +71,16 @@ export function AnnonceSelectionList({
     return matchesSearch && matchesStatus && matchesLocation && matchesDate;
   });
 
-  const getStatusVariant = (status: string) => {
-    switch (status) {
-      case "Ouverte":
-        return "default";
-      case "Suspendue":
-        return "secondary";
-      default:
-        return "outline";
-    }
-  };
+  // const getStatusVariant = (status: string) => {
+  //   switch (status) {
+  //     case "Ouverte":
+  //       return "default";
+  //     case "Suspendue":
+  //       return "secondary";
+  //     default:
+  //       return "outline";
+  //   }
+  // };
 
   return (
     <div className="space-y-4">
@@ -191,11 +190,11 @@ export function AnnonceSelectionList({
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-medium">{annonce.intitule}</span>
-                      <Badge
+                      {/* <Badge
                         variant={getStatusVariant(annonce.statutDeLAnnonce)}
                       >
                         {annonce.statutDeLAnnonce}
-                      </Badge>
+                      </Badge> */}
                     </div>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <span>{annonce.city}</span>
