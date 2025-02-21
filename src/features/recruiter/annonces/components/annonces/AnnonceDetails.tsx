@@ -16,6 +16,7 @@ import {
   mockAnnonceDetails,
   AnnonceDetails as AnnonceDetailsType,
 } from "@/core/mockData/annonces-details-data";
+import Link from "next/link";
 
 interface AnnonceDetailsProps {
   annonceId: string;
@@ -75,7 +76,10 @@ export function AnnonceDetails({ annonceId, data }: AnnonceDetailsProps) {
            border-secondaryHex-200 dark:border-secondaryHex-700 shadow-sm hover:shadow-md transition-all"
           >
             <CardContent className="flex items-center justify-between p-5 min-h-full">
-              <div className="flex flex-col items-center gap-2">
+              <Link
+                href={`/recruiter/candidates?annonce=${annonceId}`}
+                className="flex flex-col items-center gap-2"
+              >
                 <div className="rounded-full bg-primaryHex-50 dark:bg-primaryHex-900/20 p-3">
                   <Users className="w-6 h-6 text-primaryHex-600 dark:text-primaryHex-400" />
                 </div>
@@ -83,11 +87,14 @@ export function AnnonceDetails({ annonceId, data }: AnnonceDetailsProps) {
                   {annonceData.candidatures.tous}
                 </span>
                 <span className="text-xs font-medium text-secondaryHex-600 dark:text-secondaryHex-400">
-                  Candidatures totales
+                  Voir les candidatures
                 </span>
-              </div>
-              <div className="w-px h-16 bg-secondaryHex-200 dark:bg-secondaryHex-700" />
-              <div className="flex flex-col items-center gap-2">
+              </Link>
+              <Separator orientation="vertical" className="h-16" />
+              <Link
+                href={`/recruiter/candidates?annonce=${annonceId}&tab=new`}
+                className="flex flex-col items-center gap-2"
+              >
                 <div className="rounded-full bg-primaryHex-50 dark:bg-primaryHex-900/20 p-3">
                   <UserPlus className="w-6 h-6 text-primaryHex-600 dark:text-primaryHex-400" />
                 </div>
@@ -97,7 +104,7 @@ export function AnnonceDetails({ annonceId, data }: AnnonceDetailsProps) {
                 <span className="text-xs font-medium text-secondaryHex-600 dark:text-secondaryHex-400">
                   Nouvelles candidatures
                 </span>
-              </div>
+              </Link>
             </CardContent>
           </Card>
         </div>
