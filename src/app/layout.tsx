@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ReactQueryProvider } from "@/lib/providers/ReactQueryProvider";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/toaster";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { NavBar } from "@/components/shared/Navbar";
 
 export const metadata: Metadata = {
   title: "JobsApp",
@@ -22,8 +23,9 @@ export const metadata: Metadata = {
 //   subsets: ["latin"],
 // });
 
-const inter = Inter({
+const roboto = Roboto({
   subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 export default function RootLayout({
@@ -36,9 +38,10 @@ export default function RootLayout({
       <head>
         {/* <script src="https://unpkg.com/react-scan/dist/auto.global.js" async /> */}
       </head>
-      <body className={cn("antialiased", inter.className)}>
+      <body className={cn("antialiased", roboto.className)}>
         <ReactQueryProvider>
           <NextTopLoader showSpinner={false} color="#F97316" />
+          <NavBar />
           <NuqsAdapter>{children}</NuqsAdapter>
           <Toaster />
         </ReactQueryProvider>
