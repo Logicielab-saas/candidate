@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { PredefinedQuestion } from "@/features/recruiter/annonces/common/interfaces/questions.interface";
+import { SelectedQuestion } from "@/features/recruiter/annonces/common/types/questions.types";
 import { QuestionAnswer } from "@/features/recruiter/annonces/common/types/questions.types";
 import { YesNoQuestion } from "./question-types/YesNoQuestion";
 import { ChoiceQuestion } from "./question-types/ChoiceQuestion";
@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 
 interface QuestionFactoryProps {
-  question: PredefinedQuestion;
+  question: SelectedQuestion;
   onChange: (value: QuestionAnswer) => void;
   value?: QuestionAnswer;
   onRequiredChange: (required: boolean) => void;
@@ -52,7 +52,7 @@ export function QuestionFactory({
             question={question.question}
             options={question.options}
             isRequired={question.isRequired}
-            isMultiple={question.isMultiple}
+            isMultiple={question.isMultipleChoices}
             onChange={onChange}
             value={value}
             questionId={question.id}

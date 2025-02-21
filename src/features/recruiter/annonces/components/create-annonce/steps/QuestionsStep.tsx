@@ -8,7 +8,11 @@ import { Plus } from "lucide-react";
 import { PREDEFINED_QUESTIONS } from "@/core/mockData/questions-data";
 import { Button } from "@/components/ui/button";
 import { QuestionFactory } from "./questions/QuestionFactory";
-import { QuestionAnswer } from "@/features/recruiter/annonces/common/types/questions.types";
+import {
+  ChoiceSelectedQuestion,
+  QuestionAnswer,
+  SimpleSelectedQuestion,
+} from "@/features/recruiter/annonces/common/types/questions.types";
 import { PredefinedQuestion } from "@/features/recruiter/annonces/common/interfaces/questions.interface";
 import { CustomQuestionDialog } from "./questions/dialogs/CustomQuestionDialog";
 import { useEffect, useRef, useState } from "react";
@@ -70,47 +74,55 @@ export function QuestionsStep({
     // For questions with isMultiple=true, generate a unique ID
     if (predefinedQuestion.isMultiple) {
       const uniqueId = `${questionId}-${Date.now()}`;
-      const baseQuestion = {
-        ...predefinedQuestion,
-        id: uniqueId,
-        answer: undefined,
-      };
 
-      newQuestions = [
-        ...currentQuestions,
-        predefinedQuestion.type === "choice"
-          ? {
-              ...baseQuestion,
-              type: "choice" as const,
-              options: predefinedQuestion.options || [],
-              isMultipleChoices: predefinedQuestion.isMultiple,
-            }
-          : {
-              ...baseQuestion,
-              type: predefinedQuestion.type as "experience" | "open" | "yesno",
-            },
-      ];
+      if (predefinedQuestion.type === "choice") {
+        const choiceQuestion: ChoiceSelectedQuestion = {
+          id: uniqueId,
+          type: "choice",
+          question: predefinedQuestion.question,
+          isRequired: predefinedQuestion.isRequired,
+          isMultiple: predefinedQuestion.isMultiple,
+          options: predefinedQuestion.options,
+          isMultipleChoices: false,
+          answer: undefined,
+        };
+        newQuestions = [...currentQuestions, choiceQuestion];
+      } else {
+        const simpleQuestion: SimpleSelectedQuestion = {
+          id: uniqueId,
+          type: predefinedQuestion.type,
+          question: predefinedQuestion.question,
+          isRequired: predefinedQuestion.isRequired,
+          isMultiple: predefinedQuestion.isMultiple,
+          answer: undefined,
+        };
+        newQuestions = [...currentQuestions, simpleQuestion];
+      }
     } else if (!currentQuestions.some((q) => q.id === questionId)) {
       // * For non-multiple questions, only add if not already present
-      const baseQuestion = {
-        ...predefinedQuestion,
-        answer: undefined,
-      };
-
-      newQuestions = [
-        ...currentQuestions,
-        predefinedQuestion.type === "choice"
-          ? {
-              ...baseQuestion,
-              type: "choice" as const,
-              options: predefinedQuestion.options || [],
-              isMultipleChoices: predefinedQuestion.isMultiple,
-            }
-          : {
-              ...baseQuestion,
-              type: predefinedQuestion.type as "experience" | "open" | "yesno",
-            },
-      ];
+      if (predefinedQuestion.type === "choice") {
+        const choiceQuestion: ChoiceSelectedQuestion = {
+          id: predefinedQuestion.id,
+          type: "choice",
+          question: predefinedQuestion.question,
+          isRequired: predefinedQuestion.isRequired,
+          isMultiple: predefinedQuestion.isMultiple,
+          options: predefinedQuestion.options,
+          isMultipleChoices: false,
+          answer: undefined,
+        };
+        newQuestions = [...currentQuestions, choiceQuestion];
+      } else {
+        const simpleQuestion: SimpleSelectedQuestion = {
+          id: predefinedQuestion.id,
+          type: predefinedQuestion.type,
+          question: predefinedQuestion.question,
+          isRequired: predefinedQuestion.isRequired,
+          isMultiple: predefinedQuestion.isMultiple,
+          answer: undefined,
+        };
+        newQuestions = [...currentQuestions, simpleQuestion];
+      }
     } else {
       return;
     }
@@ -196,13 +208,17 @@ export function QuestionsStep({
     if (isDialog) {
       setLocalQuestions(
         localQuestions.map((q) =>
-          q.id === questionId ? { ...q, isMultiple: multiple } : q
+          q.id === questionId && q.type === "choice"
+            ? ({ ...q, isMultipleChoices: multiple } as ChoiceSelectedQuestion)
+            : q
         )
       );
     } else {
       setQuestions(
         questions.map((q) =>
-          q.id === questionId ? { ...q, isMultiple: multiple } : q
+          q.id === questionId && q.type === "choice"
+            ? ({ ...q, isMultipleChoices: multiple } as ChoiceSelectedQuestion)
+            : q
         )
       );
     }

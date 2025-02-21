@@ -32,7 +32,7 @@ export function QuestionSettings({
         <Checkbox
           id={requiredId}
           checked={isRequired}
-          onCheckedChange={onRequiredChange}
+          onCheckedChange={(checked) => onRequiredChange(checked as boolean)}
         />
         <Label htmlFor={requiredId} className="text-sm font-normal">
           Obligatoire
@@ -44,7 +44,9 @@ export function QuestionSettings({
           <Checkbox
             id={multipleId}
             checked={isMultipleChoices}
-            onCheckedChange={onMultipleChoicesChange}
+            onCheckedChange={(checked) =>
+              onMultipleChoicesChange(checked as boolean)
+            }
           />
           <Label htmlFor={multipleId} className="text-sm font-normal">
             Choix multiples
