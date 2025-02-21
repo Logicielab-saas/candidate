@@ -12,7 +12,7 @@ import { formatQuestionsForSubmission } from "../common/utils/questions.utils";
 
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   // Initial State
-  currentStep: "verification",
+  currentStep: "job-information",
   annonceType: null,
   baseInformation: INITIAL_BASE_INFORMATION,
   jobTypeInformation: INITIAL_JOB_TYPE_INFORMATION,
