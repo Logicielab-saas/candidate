@@ -8,6 +8,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { PDFViewer } from "./PDFViewer";
 import { useQueryState, parseAsString } from "nuqs";
+import { PublierAnnonceLink } from "@/components/shared/PublierAnnonceLink";
 /*
 ? This component displays the details of a selected candidate in a recruiter interface.
 ? It utilizes nuqs for URL state management to handle the candidate's ID and source.
@@ -63,9 +64,7 @@ export function CandidateDetails() {
             </div>
           )}
         </div>
-        {!source && (
-          <Button className="w-full lg:w-auto">Publier une annonce</Button>
-        )}
+        {!source && <PublierAnnonceLink />}
       </div>
 
       {/* Content */}

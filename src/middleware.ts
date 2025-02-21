@@ -56,6 +56,10 @@ export default function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(ROUTES.DEFAULT_REDIRECTS.CANDIDATE, request.url));
   }
 
+  if (pathname === "/recruiter/annonces/edit-annonce") {
+    return NextResponse.redirect(new URL("/recruiter/annonces", request.url));
+  }
+
   return NextResponse.next();
 }
 

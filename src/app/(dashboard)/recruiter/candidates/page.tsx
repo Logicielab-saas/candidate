@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { CandidatesContainer } from "@/features/recruiter/candidatures/components/CandidatesContainer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
+import { PublierAnnonceLink } from "@/components/shared/PublierAnnonceLink";
 
 const CandidatesPage = () => {
   return (
@@ -10,7 +10,7 @@ const CandidatesPage = () => {
         <div className="flex-1">
           <p className="text-2xl font-bold">Candidat(e)s</p>
         </div>
-        <Button className="mt-2">Publier une annonce</Button>
+        <PublierAnnonceLink />
       </div>
       <Suspense
         fallback={

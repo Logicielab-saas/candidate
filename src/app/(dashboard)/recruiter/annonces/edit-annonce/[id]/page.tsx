@@ -22,7 +22,7 @@ export default async function EditAnnoncePage({
 
   return (
     <div className="container py-8">
-      <div className="mb-8">
+      <div className="mb-8 text-center">
         <h1 className="text-2xl font-semibold text-secondaryHex-900 dark:text-secondaryHex-50">
           Modifier l&apos;annonce: {annonceData.intitule}
         </h1>
