@@ -137,7 +137,9 @@ export function MessageHeader({
         isOpen={isEntretienDialogOpen}
         onOpenChange={setIsEntretienDialogOpen}
         candidat={{
+          id: 1,
           nom: candidate.name,
+          telephone: candidate.telephone || "+212 6XX-XXXXXX",
         }}
       />
     </>
