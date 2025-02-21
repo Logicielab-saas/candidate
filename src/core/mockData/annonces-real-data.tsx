@@ -30,7 +30,7 @@ export interface AnnonceRealData {
     displayType: "range" | "fixed" | "negotiable";
     minSalary?: string;
     maxSalary?: string;
-    frequency: "monthly" | "yearly";
+    frequency: SalaryFrequency;
   };
   description: string;
   preferences: {
@@ -66,7 +66,7 @@ export const mockAnnonceData: AnnonceData[] = [
     annonceType: "new",
     baseInformation: {
       jobTitle: "Social Media Manager",
-      numberOfPeople: "1-5",
+      numberOfPeople: "1",
       promotionLocation: "Tanger",
     },
     jobTypeInformation: {
@@ -167,7 +167,7 @@ export const mockAnnonceData: AnnonceData[] = [
     annonceType: "new",
     baseInformation: {
       jobTitle: "Infographiste",
-      numberOfPeople: "2",
+      numberOfPeople: "2-5",
       promotionLocation: "Rabat",
     },
     jobTypeInformation: {
@@ -211,7 +211,7 @@ export const mockAnnonceData: AnnonceData[] = [
     annonceType: "new",
     baseInformation: {
       jobTitle: "Développeur Full Stack",
-      numberOfPeople: "3",
+      numberOfPeople: "5-10",
       promotionLocation: "Rabat",
     },
     jobTypeInformation: {
@@ -255,7 +255,7 @@ export const mockAnnonceData: AnnonceData[] = [
   {
     id: "5",
     intitule: "Machine Learning Engineer",
-    city: "Rabat",
+    city: "sale",
     candidatures: { tous: 20, nouveaux: 6 },
     statutDeSponsorisation: "Annonce sponsorisée",
     dateDePublication: "20/02/2025",
@@ -263,7 +263,7 @@ export const mockAnnonceData: AnnonceData[] = [
     annonceType: "new",
     baseInformation: {
       jobTitle: "Machine Learning Engineer",
-      numberOfPeople: "2",
+      numberOfPeople: "2-5",
       promotionLocation: "Rabat",
     },
     jobTypeInformation: {
@@ -298,7 +298,7 @@ export const mockAnnonceData: AnnonceData[] = [
   {
     id: "6",
     intitule: "Data Scientist",
-    city: "Rabat",
+    city: "casablanca",
     candidatures: { tous: 25, nouveaux: 8 },
     statutDeSponsorisation: "Annonce gratuite",
     dateDePublication: "25/02/2025",
@@ -306,7 +306,7 @@ export const mockAnnonceData: AnnonceData[] = [
     annonceType: "new",
     baseInformation: {
       jobTitle: "Data Scientist",
-      numberOfPeople: "1",
+      numberOfPeople: "10+",
       promotionLocation: "Rabat",
     },
     jobTypeInformation: {

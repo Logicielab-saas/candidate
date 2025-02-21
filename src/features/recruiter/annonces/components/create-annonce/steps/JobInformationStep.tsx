@@ -76,6 +76,14 @@ const SALARY_FREQUENCIES = [
 
 const citiesByRegion = [
   {
+    region: "Tanger-tetouan-alhoceima",
+    cities: [
+      { value: "tanger", label: "Tanger" },
+      { value: "tetouan", label: "Tetouan" },
+      { value: "alhoceima", label: "Al Hoceima" },
+    ],
+  },
+  {
     region: "Casablanca-Settat",
     cities: [
       { value: "casablanca", label: "Casablanca" },
@@ -91,6 +99,13 @@ const citiesByRegion = [
       { value: "sale", label: "Salé" },
       { value: "kenitra", label: "Kénitra" },
       { value: "temara", label: "Témara" },
+    ],
+  },
+  {
+    region: "Fès-Meknès",
+    cities: [
+      { value: "fes", label: "Fès" },
+      { value: "meknes", label: "Meknès" },
     ],
   },
   // ... other regions
