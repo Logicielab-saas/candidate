@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Video, Phone, MapPin } from "lucide-react";
+import { Video, Phone, MapPin, Copy } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,6 +37,7 @@ import { CalendarView } from "../../features/recruiter/interviews/components/Cal
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { EntretienReprogramDialog } from "./EntretienReprogramDialog";
+import { toast } from "@/hooks/use-toast";
 
 interface EntretienPlanDialogProps {
   isOpen: boolean;
@@ -162,7 +163,6 @@ export function EntretienPlanDialog({
     name: "alternateSlots",
   });
 
-  console.log(candidat);
   function onSubmit(values: FormValues) {
     console.log(values);
     // Handle form submission
@@ -276,11 +276,32 @@ export function EntretienPlanDialog({
                     <FormLabel>Numéro de téléphone du candidat</FormLabel>
                     <div className="rounded-lg border bg-card p-4">
                       {candidat.telephone ? (
-                        <div className="flex items-center gap-3">
-                          <Phone className="h-4 w-4 text-muted-foreground" />
-                          <span className="font-medium">
-                            {candidat.telephone}
-                          </span>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <Phone className="h-4 w-4 text-muted-foreground" />
+                            <span className="font-medium">
+                              {candidat.telephone}
+                            </span>
+                          </div>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                candidat.telephone || ""
+                              );
+                              toast({
+                                title: "Copié !",
+                                description:
+                                  "Le numéro a été copié dans le presse-papiers",
+                              });
+                            }}
+                          >
+                            <Copy className="h-4 w-4" />
+                            <span className="sr-only">Copier le numéro</span>
+                          </Button>
                         </div>
                       ) : (
                         <div className="flex items-center gap-3 text-muted-foreground">
