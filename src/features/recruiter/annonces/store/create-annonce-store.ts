@@ -12,7 +12,7 @@ import { formatQuestionsForSubmission } from "../common/utils/questions.utils";
 
 export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
   // Initial State
-  currentStep: "job-information",
+  currentStep: "verification",
   annonceType: null,
   baseInformation: INITIAL_BASE_INFORMATION,
   jobTypeInformation: INITIAL_JOB_TYPE_INFORMATION,
@@ -143,13 +143,18 @@ export const useCreateAnnonceStore = create<CreateAnnonceState>((set, get) => ({
       case "preferences":
         return true; // Validation is handled by the form
       case "questions":
-        // At least one question must be added
-        // Experience questions must always be filled
-        // Choice questions don't need an answer
-        // Other questions need answers only if required
-        return questions.length > 0 && questions.every(q => {
+        // No question is required
+        return questions.every(q => {
           if (q.type === 'experience') {
-            return !!q.answer; // Experience questions must be filled
+            // For experience questions:
+            // If years is "0", allow proceeding (Aucune expérience requise)
+            // Otherwise, require a skill to be entered
+            const answer = q.answer as string | undefined;
+            if (!answer) return false;
+            if (answer === "Aucune expérience requise") return true;
+            const years = answer.split(" au moins ")[1]?.split(" ")[0] || "0";
+            const skill = answer.split(" au moins ")[0] || "";
+            return years === "0" || (years !== "0" && !!skill.trim());
           }
           if (q.type === 'choice') {
             return true; // Choice questions don't need answers

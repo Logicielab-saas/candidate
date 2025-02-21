@@ -9,9 +9,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { QuestionSettings } from "./QuestionSettings";
 import { cn } from "@/lib/utils";
 import { AlertCircle } from "lucide-react";
-import { QuestionSettings } from "./QuestionSettings";
 
 interface ExperienceQuestionProps {
   question: string;
@@ -43,7 +43,7 @@ export function ExperienceQuestion({
 }: ExperienceQuestionProps) {
   const skill = value?.split(" au moins ")[0] || "";
   const years = value?.split(" au moins ")[1]?.split(" ")[0] || "0";
-  const hasError = !value || !skill;
+  const hasError = years !== "0" && !skill.trim();
 
   return (
     <div className="space-y-3">
@@ -74,15 +74,16 @@ export function ExperienceQuestion({
                 onChange={(e) => {
                   const newSkill = e.target.value;
                   if (years === "0") {
-                    onChange(newSkill);
+                    onChange("Aucune expérience requise");
                   } else {
                     onChange(`${newSkill} au moins ${years} ans`);
                   }
                 }}
                 className={cn(
-                  hasError && "border-destructive pr-10",
+                  hasError && "border-destructive",
                   "transition-colors"
                 )}
+                disabled={years === "0"}
               />
               {hasError && (
                 <AlertCircle className="h-4 w-4 absolute right-3 top-1/2 -translate-y-1/2 text-destructive" />
@@ -98,26 +99,18 @@ export function ExperienceQuestion({
             </Label>
             <div className="relative">
               <Select
+                defaultValue="0"
                 value={years}
                 onValueChange={(newYears) => {
                   if (newYears === "0") {
-                    onChange(skill);
+                    onChange("Aucune expérience requise");
                   } else {
                     onChange(`${skill} au moins ${newYears} ans`);
                   }
                 }}
               >
-                <SelectTrigger
-                  id="years"
-                  className={cn(
-                    hasError && "border-destructive pr-10",
-                    "transition-colors"
-                  )}
-                >
+                <SelectTrigger id="years">
                   <SelectValue placeholder="Années" />
-                  {hasError && (
-                    <AlertCircle className="h-4 w-4 absolute right-8 text-destructive" />
-                  )}
                 </SelectTrigger>
                 <SelectContent>
                   {EXPERIENCE_OPTIONS.map((option) => (

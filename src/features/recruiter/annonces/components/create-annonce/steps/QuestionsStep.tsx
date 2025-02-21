@@ -94,7 +94,10 @@ export function QuestionsStep({
           question: predefinedQuestion.question,
           isRequired: predefinedQuestion.isRequired,
           isMultiple: predefinedQuestion.isMultiple,
-          answer: undefined,
+          answer:
+            predefinedQuestion.type === "experience"
+              ? "Aucune expérience requise"
+              : undefined,
         };
         newQuestions = [...currentQuestions, simpleQuestion];
       }
@@ -119,7 +122,10 @@ export function QuestionsStep({
           question: predefinedQuestion.question,
           isRequired: predefinedQuestion.isRequired,
           isMultiple: predefinedQuestion.isMultiple,
-          answer: undefined,
+          answer:
+            predefinedQuestion.type === "experience"
+              ? "Aucune expérience requise"
+              : undefined,
         };
         newQuestions = [...currentQuestions, simpleQuestion];
       }
@@ -234,16 +240,16 @@ export function QuestionsStep({
   };
 
   const handleSave = () => {
-    const questionsToValidate = isDialog ? localQuestions : questions;
+    // const questionsToValidate = isDialog ? localQuestions : questions;
 
-    if (questionsToValidate.length === 0) {
-      toast({
-        variant: "destructive",
-        title: "Validation",
-        description: "Veuillez ajouter au moins une question",
-      });
-      return;
-    }
+    // if (questionsToValidate.length === 0) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Validation",
+    //     description: "Veuillez ajouter au moins une question",
+    //   });
+    //   return;
+    // }
 
     if (isDialog) {
       setQuestions(localQuestions); // Update the store with local questions
