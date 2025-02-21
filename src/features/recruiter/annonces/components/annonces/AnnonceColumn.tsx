@@ -2,22 +2,9 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import {
-  MoreHorizontal,
-  Edit,
-  Eye,
-  Globe,
-  Sparkles,
-  Trash2,
-} from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { AnnonceActionCell } from "./AnnonceActionCell";
 
 interface Annonce {
   id: number;
@@ -157,42 +144,10 @@ export const getColumns = (): ColumnDef<Annonce>[] => [
     cell: ({ row }) => {
       return (
         <div className="w-0.5">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-3 w-3 -pr-3">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-2.5 w-2.5 rotate-90" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[220px]">
-              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
-                <Edit className="h-3.5 w-3.5" />
-                <Link
-                  href={`/recruiter/annonces/edit-annonce/${row.original.id}`}
-                >
-                  Modifier l&apos;annonce
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
-                <Eye className="h-3.5 w-3.5" />
-                <Link href={`/recruiter/annonces/details/${row.original.id}`}>
-                  Voir le détail de l&apos;annonce
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
-                <Globe className="h-3.5 w-3.5" />
-                <span>Afficher la page Emploi publique</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm cursor-pointer">
-                <Sparkles className="h-3.5 w-3.5" />
-                <span>Sponsoriser l&apos;annonce</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 py-2 text-sm text-red-600 dark:text-red-400 cursor-pointer">
-                <Trash2 className="h-3.5 w-3.5" />
-                <span>Supprimer l&apos;annonce</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <AnnonceActionCell
+            annonceId={row.original.id}
+            annonceName={row.original.intitule}
+          />
         </div>
       );
     },
