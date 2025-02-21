@@ -30,6 +30,7 @@ import { type Entretien } from "@/core/mockData/entretiens-data";
 import Link from "next/link";
 import { useState } from "react";
 import { EntretienPlanDialog } from "../../../../components/shared/EntretienPlanDialog";
+import { toast } from "@/hooks/use-toast";
 
 interface EntretienDetailsProps {
   entretien: Entretien;
@@ -52,6 +53,15 @@ export function EntretienDetails({
   const handleCancelInterview = () => {
     // Handle the cancellation logic here
     console.log("Interview cancelled:", entretien.id);
+  };
+
+  const handleAcceptInterview = () => {
+    // Handle the acceptance logic here
+    console.log("Interview accepted:", entretien.id);
+    toast({
+      title: "Entretien accepté",
+      description: `L'entretien avec ${entretien.candidatName} a été accepté.`,
+    });
   };
 
   return (
@@ -111,6 +121,15 @@ export function EntretienDetails({
             >
               Reprogrammer
             </Button>
+            {!entretien.isConfirmed && (
+              <Button
+                variant="default"
+                className="flex-1"
+                onClick={handleAcceptInterview}
+              >
+                Accepter
+              </Button>
+            )}
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="destructive" className="flex-1">

@@ -29,7 +29,12 @@ type FilterWithSubs = BaseFilter & {
   subFilters: SubFilter[];
 };
 
-type BadgeVariant = "default" | "secondary" | "destructive" | "outline";
+type BadgeVariant =
+  | "default"
+  | "secondary"
+  | "destructive"
+  | "outline"
+  | "success";
 
 // Status configurations
 export const STATUS_CONFIG = {
@@ -51,7 +56,7 @@ export const STATUS_CONFIG = {
   past: {
     label: "Passés",
     subStatus: {
-      termine: { label: "Terminé", variant: "default" as BadgeVariant },
+      termine: { label: "Terminé", variant: "success" as BadgeVariant },
       expire: { label: "Expiré", variant: "destructive" as BadgeVariant },
     },
   },
