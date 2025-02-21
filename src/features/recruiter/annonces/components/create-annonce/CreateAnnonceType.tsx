@@ -8,6 +8,7 @@ import { CheckCircle2, Copy, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FormStepsNavigation } from "@/components/shared/FormStepsNavigation";
 import { useState } from "react";
+import { AnnonceType } from "../../common/types/annonce.types";
 
 export function CreateAnnonceType() {
   const { setAnnonceType } = useCreateAnnonceStore();
@@ -17,7 +18,7 @@ export function CreateAnnonceType() {
 
   const handleContinue = () => {
     if (selectedType) {
-      setAnnonceType(selectedType);
+      setAnnonceType(selectedType as AnnonceType);
     }
   };
 
