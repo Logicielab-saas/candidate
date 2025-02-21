@@ -6,28 +6,31 @@ import { Separator } from "@/components/ui/separator";
 
 export default function ProfilePage() {
   return (
-    <div className="max-w-full space-y-8">
-      <div className="flex items-center justify-end"></div>
+    <div className="w-full space-y-8">
+      <div className="flex items-center justify-end">
+        <Button variant="outline" size="sm">
+          <Edit className="mr-2 h-4 w-4" />
+          Edit Profile
+        </Button>
+      </div>
 
-      <div className="space-y-8">
+      <div className="space-y-6">
         {/* Profile Section */}
-        <div className="flex flex-row justify-between gap-4">
-          <div className="flex items-center gap-6 px-8">
-            <Avatar className="h-24 w-24">
+        <div>
+          <div className="flex items-center gap-6">
+            <Avatar className="h-20 w-20 sm:h-24 sm:w-24">
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
             <div className="space-y-1">
-              <h3 className="text-2xl font-semibold">Sarah Connor</h3>
+              <h3 className="text-xl sm:text-2xl font-semibold">
+                Sarah Connor
+              </h3>
               <p className="text-sm text-muted-foreground">sarah@example.com</p>
             </div>
           </div>
-          <Button variant="outline" size="sm">
-            <Edit className="mr-2 h-4 w-4" />
-            Edit Profile
-          </Button>
         </div>
 
-        <div className="space-y-8 px-8">
+        <div className="space-y-8">
           <div className="space-y-4">
             <div>
               <h3 className="text-lg font-medium">About</h3>
