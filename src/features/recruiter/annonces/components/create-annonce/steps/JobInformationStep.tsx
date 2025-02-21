@@ -25,7 +25,7 @@ import { FormStepsNavigation } from "@/components/shared/FormStepsNavigation";
 import { Label } from "@/components/ui/label";
 import { Check, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ContractDurationDetails } from "./job-type/ContractDurationDetails";
 import { PartTimeDetails } from "./job-type/PartTimeDetails";
 import { ContractType, ContractDurationUnit } from "../../../common";
@@ -137,33 +137,65 @@ export function JobInformationStep({
   } = useCreateAnnonceStore();
   const { toast } = useToast();
 
+  // Initialize local state for dialog mode
+  const [localBaseInfo, setLocalBaseInfo] = useState(baseInformation);
+  const [localJobTypeInfo, setLocalJobTypeInfo] = useState(jobTypeInformation);
+  const [localSalaryInfo, setLocalSalaryInfo] = useState(salaryInformation);
+
+  // Initialize form with either local or global state based on mode
   const form = useForm<JobInformationForm>({
     resolver: zodResolver(jobInformationFormSchema),
     defaultValues: {
       // Base Information
-      jobTitle: baseInformation.jobTitle || "",
-      numberOfPeople: baseInformation.numberOfPeople || "",
-      promotionLocation: baseInformation.promotionLocation || "",
+      jobTitle: isDialog
+        ? localBaseInfo.jobTitle
+        : baseInformation.jobTitle || "",
+      numberOfPeople: isDialog
+        ? localBaseInfo.numberOfPeople
+        : baseInformation.numberOfPeople || "",
+      promotionLocation: isDialog
+        ? localBaseInfo.promotionLocation
+        : baseInformation.promotionLocation || "",
 
       // Job Type
-      contractTypes: jobTypeInformation.contractTypes || [],
-      partTimeDetails: jobTypeInformation.partTimeDetails,
-      interimDetails: jobTypeInformation.interimDetails,
-      cddDetails: jobTypeInformation.cddDetails,
-      internshipDetails: jobTypeInformation.internshipDetails,
+      contractTypes: isDialog
+        ? localJobTypeInfo.contractTypes
+        : jobTypeInformation.contractTypes || [],
+      partTimeDetails: isDialog
+        ? localJobTypeInfo.partTimeDetails
+        : jobTypeInformation.partTimeDetails,
+      interimDetails: isDialog
+        ? localJobTypeInfo.interimDetails
+        : jobTypeInformation.interimDetails,
+      cddDetails: isDialog
+        ? localJobTypeInfo.cddDetails
+        : jobTypeInformation.cddDetails,
+      internshipDetails: isDialog
+        ? localJobTypeInfo.internshipDetails
+        : jobTypeInformation.internshipDetails,
 
       // Salary
-      displayType: salaryInformation.displayType,
-      minSalary: salaryInformation.minSalary || "",
-      maxSalary: salaryInformation.maxSalary || "",
-      frequency: salaryInformation.frequency,
+      displayType: isDialog
+        ? localSalaryInfo.displayType
+        : salaryInformation.displayType,
+      minSalary: isDialog
+        ? localSalaryInfo.minSalary
+        : salaryInformation.minSalary || "",
+      maxSalary: isDialog
+        ? localSalaryInfo.maxSalary
+        : salaryInformation.maxSalary || "",
+      frequency: isDialog
+        ? localSalaryInfo.frequency
+        : salaryInformation.frequency,
     },
     mode: "onChange",
   });
 
-  // Update store when form values change
+  // Update local or store state when form values change
   const { watch } = form;
   useEffect(() => {
+    if (isDialog) return; // Skip the effect in dialog mode
+
     const subscription = watch((value) => {
       // Update base information
       setBaseInformation({
@@ -193,7 +225,22 @@ export function JobInformationStep({
       });
     });
     return () => subscription.unsubscribe();
-  }, [watch, setBaseInformation, setJobTypeInformation, setSalaryInformation]);
+  }, [
+    watch,
+    setBaseInformation,
+    setJobTypeInformation,
+    setSalaryInformation,
+    isDialog,
+  ]);
+
+  // Initialize local state when dialog opens
+  useEffect(() => {
+    if (isDialog) {
+      setLocalBaseInfo(baseInformation);
+      setLocalJobTypeInfo(jobTypeInformation);
+      setLocalSalaryInfo(salaryInformation);
+    }
+  }, [isDialog, baseInformation, jobTypeInformation, salaryInformation]);
 
   const handleContractTypeChange = (value: string, checked: boolean) => {
     const currentTypes = form.getValues("contractTypes") || [];
@@ -306,6 +353,31 @@ export function JobInformationStep({
     }
 
     if (isDialog) {
+      // Update the store with local state
+      setBaseInformation({
+        jobTitle: formData.jobTitle || "",
+        numberOfPeople: formData.numberOfPeople || "",
+        promotionLocation: formData.promotionLocation || "",
+      });
+
+      setJobTypeInformation({
+        contractTypes:
+          formData.contractTypes?.filter(
+            (type): type is string => type !== undefined
+          ) || [],
+        partTimeDetails: formData.partTimeDetails,
+        interimDetails: transformDurationDetails(formData.interimDetails),
+        cddDetails: transformDurationDetails(formData.cddDetails),
+        internshipDetails: transformDurationDetails(formData.internshipDetails),
+      });
+
+      setSalaryInformation({
+        displayType: formData.displayType,
+        minSalary: formData.minSalary || "",
+        maxSalary: formData.maxSalary || "",
+        frequency: formData.frequency,
+      });
+
       toast({
         title: "Modifications enregistrées",
         description: "Les détails de l'emploi ont été mis à jour avec succès.",
