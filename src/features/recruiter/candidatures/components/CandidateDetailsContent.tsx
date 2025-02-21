@@ -231,6 +231,7 @@ export function CandidateDetailsContent({
         onOpenChange={setIsEntretienPlanDialogOpen}
         candidat={{
           nom: candidate.nom,
+          telephone: candidate.telephone,
         }}
       />
       <ContactInterfaceChat

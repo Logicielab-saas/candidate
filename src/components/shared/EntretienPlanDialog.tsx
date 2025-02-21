@@ -43,6 +43,7 @@ interface EntretienPlanDialogProps {
   onOpenChange: (open: boolean) => void;
   candidat: {
     nom: string;
+    telephone?: string;
   };
 }
 
@@ -87,6 +88,7 @@ const formSchema = z
     }),
     videoUrl: z.string().optional(),
     address: z.string().optional(),
+    mapUrl: z.string().optional(),
     message: z.string().min(1, "Le message est requis"),
     teamMembers: z.string().optional(),
     date: z.date({
@@ -115,12 +117,21 @@ const formSchema = z
         path: ["videoUrl"],
       });
     }
-    if (data.format === "person" && !data.address) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "L'adresse est requise",
-        path: ["address"],
-      });
+    if (data.format === "person") {
+      if (!data.address) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "L'adresse est requise",
+          path: ["address"],
+        });
+      }
+      if (!data.mapUrl) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Le lien Google Maps est requis",
+          path: ["mapUrl"],
+        });
+      }
     }
   });
 
@@ -138,6 +149,7 @@ export function EntretienPlanDialog({
       format: "video",
       duration: "30",
       address: "",
+      mapUrl: "",
       message: "",
       teamMembers: "",
       timezone: "Europe/Paris",
@@ -150,6 +162,7 @@ export function EntretienPlanDialog({
     name: "alternateSlots",
   });
 
+  console.log(candidat);
   function onSubmit(values: FormValues) {
     console.log(values);
     // Handle form submission
@@ -259,30 +272,66 @@ export function EntretienPlanDialog({
                 )}
 
                 {form.watch("format") === "telephone" && (
-                  <div className="rounded-md bg-blue-50 dark:bg-blue-950 p-3 text-sm text-blue-600 dark:text-blue-400">
-                    Le numéro de téléphone du candidat sera partagé une fois
-                    qu&apos;il aura confirmé l&apos;entretien.
-                  </div>
+                  <FormItem className="space-y-2">
+                    <FormLabel>Numéro de téléphone du candidat</FormLabel>
+                    <div className="rounded-lg border bg-card p-4">
+                      {candidat.telephone ? (
+                        <div className="flex items-center gap-3">
+                          <Phone className="h-4 w-4 text-muted-foreground" />
+                          <span className="font-medium">
+                            {candidat.telephone}
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-3 text-muted-foreground">
+                          <Phone className="h-4 w-4" />
+                          <span>Numéro de téléphone non disponible</span>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-[0.8rem] text-muted-foreground">
+                      Ce numéro sera utilisé pour l&apos;entretien téléphonique
+                    </p>
+                  </FormItem>
                 )}
 
                 {form.watch("format") === "person" && (
-                  <FormField
-                    control={form.control}
-                    name="address"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Adresse de l&apos;entretien</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Saisissez l'adresse complète"
-                            {...field}
-                            value={field.value || ""}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <>
+                    <FormField
+                      control={form.control}
+                      name="address"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Adresse de l&apos;entretien</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Saisissez l'adresse complète"
+                              {...field}
+                              value={field.value || ""}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="mapUrl"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Lien Google Maps</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="https://maps.google.com/..."
+                              {...field}
+                              value={field.value || ""}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </>
                 )}
 
                 {/* Message Textarea */}

@@ -108,6 +108,7 @@ export function ActionCell({ candidate }: { candidate: Candidate }) {
         onOpenChange={setIsEntretienPlanDialogOpen}
         candidat={{
           nom: candidate.nom,
+          telephone: candidate.telephone,
         }}
       />
 
