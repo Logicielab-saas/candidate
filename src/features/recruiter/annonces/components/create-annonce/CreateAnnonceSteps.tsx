@@ -16,15 +16,11 @@ export function CreateAnnonceSteps() {
     return <CreateAnnonceType />;
   }
 
-  // Once type is selected, show the steps
+  // Once type is selected (either new or duplicate), show the steps
   const renderStep = () => {
     switch (currentStep) {
       case "job-information":
-        if (annonceType === "new") {
-          return <JobInformationStep />;
-        }
-        // We'll implement the existing annonce flow later
-        return <div>Existing Annonce Details Step</div>;
+        return <JobInformationStep />;
       case "description-annonce":
         return <DescriptionStep />;
       case "preferences":

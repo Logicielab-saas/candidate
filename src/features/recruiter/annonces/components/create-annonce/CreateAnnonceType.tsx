@@ -23,37 +23,46 @@ function ExistingAnnonceSelection({ onBack }: { onBack: () => void }) {
     setDescription,
     setPreferences,
     setQuestions,
+    reset,
   } = useCreateAnnonceStore();
   const [selectedAnnonceId, setSelectedAnnonceId] = useState<string | null>(
     null
   );
   const { toast } = useToast();
 
+  const handleBack = () => {
+    reset(); // Reset store when going back
+    onBack();
+  };
+
   const handleContinue = () => {
-    if (selectedAnnonceId) {
-      const selectedAnnonce = mockAnnonceData.find(
-        (annonce) => annonce.id === selectedAnnonceId
+    if (!selectedAnnonceId) return;
+
+    const selectedAnnonce = mockAnnonceData.find(
+      (annonce) => annonce.id === selectedAnnonceId
+    );
+
+    if (selectedAnnonce) {
+      // Reset store before initializing with new data
+      reset();
+
+      // Initialize the store with the selected annonce data
+      setAnnonceType("duplicate");
+      setBaseInformation(selectedAnnonce.baseInformation);
+      setJobTypeInformation(selectedAnnonce.jobTypeInformation);
+      setSalaryInformation(selectedAnnonce.salaryInformation);
+      setDescription(selectedAnnonce.description);
+      setPreferences(selectedAnnonce.preferences);
+      setQuestions(
+        convertAnnonceToSelectedQuestions(selectedAnnonce.questions)
       );
 
-      if (selectedAnnonce) {
-        // Initialize the store with the selected annonce data
-        setAnnonceType("duplicate");
-        setBaseInformation(selectedAnnonce.baseInformation);
-        setJobTypeInformation(selectedAnnonce.jobTypeInformation);
-        setSalaryInformation(selectedAnnonce.salaryInformation);
-        setDescription(selectedAnnonce.description);
-        setPreferences(selectedAnnonce.preferences);
-        setQuestions(
-          convertAnnonceToSelectedQuestions(selectedAnnonce.questions)
-        );
-
-        toast({
-          title: "Annonce sélectionnée",
-          description:
-            "Les informations de l'annonce ont été chargées avec succès.",
-          variant: "success",
-        });
-      }
+      toast({
+        title: "Annonce sélectionnée",
+        description:
+          "Les informations de l'annonce ont été chargées avec succès.",
+        variant: "success",
+      });
     }
   };
 
@@ -81,7 +90,7 @@ function ExistingAnnonceSelection({ onBack }: { onBack: () => void }) {
 
       {/* Navigation */}
       <div className="flex justify-between pt-6">
-        <Button onClick={onBack} variant="outline" className="gap-2">
+        <Button onClick={handleBack} variant="outline" className="gap-2">
           <ArrowLeft className="w-4 h-4" />
           Retour
         </Button>
@@ -94,7 +103,7 @@ function ExistingAnnonceSelection({ onBack }: { onBack: () => void }) {
 }
 
 export function CreateAnnonceType() {
-  const { setAnnonceType } = useCreateAnnonceStore();
+  const { setAnnonceType, reset } = useCreateAnnonceStore();
   const [selectedType, setSelectedType] = useState<"existing" | "new" | null>(
     null
   );
@@ -104,8 +113,14 @@ export function CreateAnnonceType() {
     if (selectedType === "existing") {
       setShowExistingSelection(true);
     } else if (selectedType === "new") {
+      reset(); // Reset store before creating new annonce
       setAnnonceType("new");
     }
+  };
+
+  const handleTypeChange = (value: string) => {
+    reset(); // Reset store when switching between types
+    setSelectedType(value as "existing" | "new");
   };
 
   if (showExistingSelection) {
@@ -131,7 +146,7 @@ export function CreateAnnonceType() {
       {/* Selection Cards */}
       <RadioGroup
         value={selectedType || ""}
-        onValueChange={(value) => setSelectedType(value as "existing" | "new")}
+        onValueChange={handleTypeChange}
         className="grid grid-cols-1 md:grid-cols-2 gap-6"
       >
         <div className="relative">
