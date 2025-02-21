@@ -185,7 +185,11 @@ export function EntretienDetails({
       <EntretienPlanDialog
         isOpen={isReprogramOpen}
         onOpenChange={setIsReprogramOpen}
-        candidat={{ nom: entretien.candidatName }}
+        candidat={{
+          id: entretien.id,
+          nom: entretien.candidatName,
+          telephone: entretien.telephone,
+        }}
       />
     </Card>
   );

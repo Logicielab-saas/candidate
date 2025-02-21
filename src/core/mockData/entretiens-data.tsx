@@ -1,6 +1,7 @@
 // Types
 export interface Entretien {
-  id: string;
+  id: number;
+  telephone: string;
   type: "Visioconférence" | "Téléphone" | "Présentiel";
   candidatName: string;
   isConfirmed: boolean;
@@ -95,7 +96,8 @@ const getRelativeDate = (days: number, hours: number = 10) => {
 export const MOCK_ENTRETIENS: Entretien[] = [
   // Upcoming interviews
   {
-    id: "1",
+    id: 1,
+    telephone: "06 06 06 06 06",
     type: "Visioconférence",
     candidatName: "Ayoub BOUKHANE",
     isConfirmed: true,
@@ -107,7 +109,8 @@ export const MOCK_ENTRETIENS: Entretien[] = [
     status: "upcoming",
   },
   {
-    id: "2",
+    id: 2,
+    telephone: "06 06 06 06 06",
     type: "Présentiel",
     candidatName: "Sara BOUHLAOUI",
     isConfirmed: true,
@@ -119,7 +122,8 @@ export const MOCK_ENTRETIENS: Entretien[] = [
     status: "upcoming",
   },
   {
-    id: "3",
+    id: 3,
+    telephone: "06 06 06 06 06",
     type: "Visioconférence",
     candidatName: "Omar BENJELLOUN",
     isConfirmed: true,
@@ -131,7 +135,8 @@ export const MOCK_ENTRETIENS: Entretien[] = [
     status: "upcoming",
   },
   {
-    id: "4",
+    id: 4,
+    telephone: "06 06 06 06 06",
     type: "Téléphone",
     candidatName: "Omar EL HADDADI",
     isConfirmed: true,
@@ -143,7 +148,8 @@ export const MOCK_ENTRETIENS: Entretien[] = [
     status: "upcoming",
   },
   {
-    id: "12",
+    id: 12,
+    telephone: "06 06 06 06 06",
     type: "Téléphone",
     candidatName: "Omar EL HADDADI",
     isConfirmed: true,
@@ -155,7 +161,8 @@ export const MOCK_ENTRETIENS: Entretien[] = [
     status: "upcoming",
   },
   {
-    id: "13",
+    id: 13,
+    telephone: "06 06 06 06 06",
     type: "Téléphone",
     candidatName: "Omar EL HADDADI",
     isConfirmed: true,
@@ -169,7 +176,8 @@ export const MOCK_ENTRETIENS: Entretien[] = [
 
   // Pending interviews
   {
-    id: "5",
+    id: 5,
+    telephone: "06 06 06 06 06",
     type: "Présentiel",
     candidatName: "Mariam Blanche",
     isConfirmed: false,
@@ -182,7 +190,8 @@ export const MOCK_ENTRETIENS: Entretien[] = [
     subStatus: "unique",
   },
   {
-    id: "6",
+    id: 6,
+    telephone: "06 06 06 06 06",
     type: "Visioconférence",
     candidatName: "Sofia LEMARCHAND",
     isConfirmed: false,
@@ -195,7 +204,8 @@ export const MOCK_ENTRETIENS: Entretien[] = [
     subStatus: "plusieurs",
   },
   {
-    id: "7",
+    id: 7,
+    telephone: "06 06 06 06 06",
     type: "Téléphone",
     candidatName: "Laila MOUSTAPHA",
     isConfirmed: false,
@@ -210,7 +220,8 @@ export const MOCK_ENTRETIENS: Entretien[] = [
 
   // Past interviews
   {
-    id: "8",
+    id: 8,
+    telephone: "06 06 06 06 06",
     type: "Visioconférence",
     candidatName: "Youssef EL AMRANI",
     isConfirmed: true,
@@ -223,7 +234,8 @@ export const MOCK_ENTRETIENS: Entretien[] = [
     subStatus: "termine",
   },
   {
-    id: "9",
+    id: 9,
+    telephone: "06 06 06 06 06",
     type: "Présentiel",
     candidatName: "Fatima ZAHRA",
     isConfirmed: true,
@@ -236,7 +248,8 @@ export const MOCK_ENTRETIENS: Entretien[] = [
     subStatus: "termine",
   },
   {
-    id: "10",
+    id: 10,
+    telephone: "06 06 06 06 06",
     type: "Téléphone",
     candidatName: "Hassan EL KHALED",
     isConfirmed: false,
@@ -249,7 +262,8 @@ export const MOCK_ENTRETIENS: Entretien[] = [
     subStatus: "expire",
   },
   {
-    id: "11",
+    id: 11,
+    telephone: "06 06 06 06 06",
     type: "Visioconférence",
     candidatName: "Nadia EL HASSANI",
     isConfirmed: false,

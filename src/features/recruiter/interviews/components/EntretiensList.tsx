@@ -196,7 +196,7 @@ export function EntretiensList({
                 key={entretien.id}
                 className={cn(
                   "flex cursor-pointer flex-col gap-2 p-4 transition-colors",
-                  selectedEntretienId === entretien.id
+                  selectedEntretienId === entretien.id.toString()
                     ? "bg-accent border border-border rounded-sm"
                     : "hover:bg-accent/50"
                 )}
