@@ -17,7 +17,7 @@ import { PredefinedQuestion } from "@/features/recruiter/annonces/common/interfa
 import { CustomQuestionDialog } from "./questions/dialogs/CustomQuestionDialog";
 import { useEffect, useRef, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { createPredefinedFromCustom } from "@/core/utils";
+import { createPredefinedFromCustom } from "@/features/recruiter/annonces/common";
 import type { CustomQuestionProps } from "./questions/dialogs/CustomQuestionDialog";
 import { FloatingScrollButton } from "./questions/FloatingScrollButton";
 import { SelectedQuestion } from "@/features/recruiter/annonces/common/types/questions.types";

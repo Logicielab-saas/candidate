@@ -1,5 +1,50 @@
+import { CustomQuestion, PredefinedQuestion } from "../interfaces/questions.interface";
 import { AnnonceQuestion } from "../types/annonce.types";
 import { SelectedQuestion, SubmissionQuestion } from "../types/questions.types";
+
+
+type CustomQuestionType = Exclude<CustomQuestion["type"], "experience">;
+
+/**
+ * Creates a predefined question from a custom question input
+ * @param customQuestion The custom question input
+ * @returns A properly typed PredefinedQuestion
+ */
+export const createPredefinedFromCustom = (
+  customQuestion: Omit<CustomQuestion, "type"> & { type: CustomQuestionType }
+): PredefinedQuestion => {
+  const baseQuestion = {
+    id: `custom-${Date.now()}`,
+    question: customQuestion.label,
+    isRequired: customQuestion.isRequired,
+    isMultiple: customQuestion.isMultipleChoices || false,
+  };
+
+  // Handle each type explicitly to satisfy TypeScript
+  switch (customQuestion.type) {
+    case "choice":
+      return {
+        ...baseQuestion,
+        type: "choice",
+        options: customQuestion.options || [],
+      } as PredefinedQuestion;
+    case "open":
+      return {
+        ...baseQuestion,
+        type: "open",
+      } as PredefinedQuestion;
+    case "yesno":
+      return {
+        ...baseQuestion,
+        type: "yesno",
+      } as PredefinedQuestion;
+    default: {
+      const exhaustiveCheck: never = customQuestion.type;
+      throw new Error(`Unhandled question type: ${exhaustiveCheck}`);
+    }
+  }
+};
+
 
 export const convertAnnonceToSelectedQuestions = (questions: AnnonceQuestion[]): SelectedQuestion[] => {
   return questions.map(q => {
@@ -42,7 +87,8 @@ export const formatQuestionsForSubmission = (questions: SelectedQuestion[]): Sub
       if (q.type === "experience") {
         return {
           ...baseSubmission,
-          label: q.answer as string, // For experience questions, answer is used as label
+          type: "experience",
+          question: q.answer as string, // Use answer as the question for experience type
         };
       }
 
@@ -58,7 +104,7 @@ export const formatQuestionsForSubmission = (questions: SelectedQuestion[]): Sub
       // For custom questions
       const baseSubmission: SubmissionQuestion = {
         type: q.type,
-        question: q.question,
+        question: q.type === "experience" ? (q.answer as string) : q.question,
         isRequired: q.isRequired,
       };
 

@@ -24,7 +24,7 @@ export * from './constants/steps.constants';
 
 // Utils
 export * from './utils/step-formatter.utils';
-
+export * from './utils/questions.utils';
 // Schemas
 export * from './schemas/job-information.schema';
 export * from './schemas/preferences.schema';
