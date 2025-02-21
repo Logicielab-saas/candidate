@@ -7,6 +7,7 @@ import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/toaster";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { NavBar } from "@/components/shared/Navbar";
+import { ThemeProvider } from "@/lib/providers/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "JobsApp",
@@ -39,12 +40,19 @@ export default function RootLayout({
         {/* <script src="https://unpkg.com/react-scan/dist/auto.global.js" async /> */}
       </head>
       <body className={cn("antialiased", roboto.className)}>
-        <ReactQueryProvider>
-          <NextTopLoader showSpinner={false} color="#F97316" />
-          <NavBar />
-          <NuqsAdapter>{children}</NuqsAdapter>
-          <Toaster />
-        </ReactQueryProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ReactQueryProvider>
+            <NextTopLoader showSpinner={false} color="#F97316" />
+            <NavBar />
+            <NuqsAdapter>{children}</NuqsAdapter>
+            <Toaster />
+          </ReactQueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

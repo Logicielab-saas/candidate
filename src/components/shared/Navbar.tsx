@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { ThemeButton } from "@/components/shared/ThemeButton";
 
 // interface NavItem {
 //   name: string;
@@ -97,6 +98,8 @@ export function NavBar() {
           <Button variant="ghost" size="icon">
             <Bell className="h-5 w-5" />
           </Button>
+
+          <ThemeButton />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
