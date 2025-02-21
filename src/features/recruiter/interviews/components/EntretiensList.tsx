@@ -22,7 +22,7 @@ import {
 interface EntretiensListProps {
   className?: string;
   onEntretienSelect?: (entretien: Entretien) => void;
-  selectedEntretienId?: string;
+  selectedEntretienId?: number;
   activeFilter: FilterType;
   onFilterChange: (filter: FilterType) => void;
   activeSubFilter: SubFilterType | null;
@@ -196,7 +196,7 @@ export function EntretiensList({
                 key={entretien.id}
                 className={cn(
                   "flex cursor-pointer flex-col gap-2 p-4 transition-colors",
-                  selectedEntretienId === entretien.id.toString()
+                  selectedEntretienId === entretien.id
                     ? "bg-accent border border-border rounded-sm"
                     : "hover:bg-accent/50"
                 )}

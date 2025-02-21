@@ -11,7 +11,7 @@ import {
   type SubFilterType,
 } from "@/core/mockData/entretiens-data";
 import { MOCK_ENTRETIENS } from "@/core/mockData/entretiens-data";
-import { useQueryState, parseAsString } from "nuqs";
+import { useQueryState, parseAsInteger } from "nuqs";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -20,7 +20,7 @@ export default function EntretiensContainer() {
   // URL state management with nuqs
   const [currentEntretienId, setCurrentEntretienId] = useQueryState(
     "entretien",
-    parseAsString
+    parseAsInteger
   );
   const [currentTab, setCurrentTab] = useQueryState<
     "Entretiens" | "Disponibilites"
