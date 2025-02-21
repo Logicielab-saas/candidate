@@ -22,7 +22,7 @@ export function EditJobDetailsDialog({
           <DialogTitle>Modifier les détails de l&apos;emploi</DialogTitle>
         </DialogHeader>
         <div className="mt-4">
-          <JobInformationStep isDialog />
+          <JobInformationStep isDialog onDialogClose={onClose} />
         </div>
       </DialogContent>
     </Dialog>
