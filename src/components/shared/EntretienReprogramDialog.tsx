@@ -12,7 +12,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
-import { WeekdayAvailability } from "@/core/mockData/dispo-data";
+import {
+  WeekdayAvailability,
+  WeekdayAvailabilities,
+} from "@/core/mockData/dispo-data";
 import { ArrowLeft } from "lucide-react";
 
 interface FormValues {
@@ -29,11 +32,17 @@ interface FormValues {
 interface EntretienReprogramDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
+  availabilities: WeekdayAvailabilities;
+  onAvailabilitiesChange: (availabilities: WeekdayAvailabilities) => void;
 }
 
 export function EntretienReprogramDialog({
   isOpen,
   onOpenChange,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  availabilities,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onAvailabilitiesChange,
 }: EntretienReprogramDialogProps) {
   const handleSubmit = async (data: FormValues) => {
     try {

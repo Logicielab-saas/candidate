@@ -22,6 +22,7 @@ import { ContactInterfaceChat } from "./ContactInterfaceChat";
 import { ActionButtons } from "./ActionButtons";
 
 interface Candidate {
+  id: number;
   nom: string;
   ville: string;
   profil: string;
@@ -107,6 +108,7 @@ export function ActionCell({ candidate }: { candidate: Candidate }) {
         isOpen={isEntretienPlanDialogOpen}
         onOpenChange={setIsEntretienPlanDialogOpen}
         candidat={{
+          id: candidate.id,
           nom: candidate.nom,
           telephone: candidate.telephone,
         }}

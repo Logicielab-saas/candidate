@@ -7,6 +7,7 @@ import Link from "next/link";
 import { ActionCell } from "./ActionCell";
 
 export interface Candidate {
+  id: number;
   nom: string;
   ville: string;
   profil: string;

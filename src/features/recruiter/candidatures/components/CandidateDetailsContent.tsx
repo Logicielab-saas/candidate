@@ -230,6 +230,7 @@ export function CandidateDetailsContent({
         isOpen={isEntretienPlanDialogOpen}
         onOpenChange={setIsEntretienPlanDialogOpen}
         candidat={{
+          id: candidate.id,
           nom: candidate.nom,
           telephone: candidate.telephone,
         }}

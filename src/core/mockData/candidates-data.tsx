@@ -4,6 +4,7 @@ interface CandidateActivity {
 }
 
 export interface Candidate {
+  id: number;
   nom: string;
   ville: string;
   profil: string;
@@ -19,6 +20,7 @@ export interface Candidate {
 
 export const mockCandidates: Candidate[] = [
   {
+    id: 1,
     nom: "Nadia Rozine",
     ville: "Casablanca",
     profil: "Gestion Marketing",
@@ -35,6 +37,7 @@ export const mockCandidates: Candidate[] = [
     annonceId: "1",
   },
   {
+    id: 2,
     nom: "Mariam Blanche",
     ville: "La Chapelle-des-Fougeretz",
     profil: "Social Head Marketing",
@@ -51,6 +54,7 @@ export const mockCandidates: Candidate[] = [
     annonceId: "1",
   },
   {
+    id: 3,
     nom: "Mohamed El MAIZI",
     ville: "Casablanca",
     profil: "Social Head Marketing",
@@ -67,6 +71,7 @@ export const mockCandidates: Candidate[] = [
     annonceId: "1",
   },
   {
+    id: 4,
     nom: "Ayoub BOUKHANE",
     ville: "Casablanca",
     profil: "Social Head Marketing",
@@ -83,6 +88,7 @@ export const mockCandidates: Candidate[] = [
     annonceId: "1",
   },
   {
+    id: 5,
     nom: "Sofia LEMARCHAND",
     ville: "Rabat",
     profil: "Développeur Full Stack",
@@ -99,6 +105,7 @@ export const mockCandidates: Candidate[] = [
     annonceId: "4",
   },
   {
+    id: 6,
     nom: "Khalid BENSAID",
     ville: "Marrakech",
     profil: "Designer UI/UX",
@@ -115,6 +122,7 @@ export const mockCandidates: Candidate[] = [
     annonceId: "3",
   },
   {
+    id: 7,
     nom: "Fatima ZAHRA",
     ville: "Tanger",
     profil: "Chef de Projet",
@@ -131,6 +139,7 @@ export const mockCandidates: Candidate[] = [
     annonceId: "4",
   },
   {
+    id: 8,
     nom: "Omar EL HADDADI",
     ville: "Fès",
     profil: "Analyste de Données",
@@ -147,6 +156,7 @@ export const mockCandidates: Candidate[] = [
     annonceId: "6",
   },
   {
+    id: 9,
     nom: "Laila MOUSTAPHA",
     ville: "Agadir",
     profil: "Responsable Marketing",
@@ -163,6 +173,7 @@ export const mockCandidates: Candidate[] = [
     annonceId: "10",
   },
   {
+    id: 10,
     nom: "Youssef EL AMRANI",
     ville: "Casablanca",
     profil: "Développeur Full Stack",
@@ -179,6 +190,7 @@ export const mockCandidates: Candidate[] = [
     annonceId: "4",
   },
   {
+    id: 11,
     nom: "Sara BOUHLAOUI",
     ville: "Rabat",
     profil: "Analyste Marketing",
@@ -195,6 +207,7 @@ export const mockCandidates: Candidate[] = [
     annonceId: "2",
   },
   {
+    id: 12,
     nom: "Hassan EL KHALED",
     ville: "Marrakech",
     profil: "Ingénieur Logiciel",
@@ -211,6 +224,7 @@ export const mockCandidates: Candidate[] = [
     annonceId: "4",
   },
   {
+    id: 13,
     nom: "Nadia EL HASSANI",
     ville: "Tanger",
     profil: "Chef de Produit",
@@ -227,6 +241,7 @@ export const mockCandidates: Candidate[] = [
     annonceId: "5",
   },
   {
+    id: 14,
     nom: "Omar BENJELLOUN",
     ville: "Fès",
     profil: "Consultant IT",

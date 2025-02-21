@@ -80,11 +80,35 @@ const formSchema = z
     }
   });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type FormValues = z.infer<typeof formSchema>;
 
+type FormType = {
+  format: "video" | "telephone" | "person";
+  duration: "15" | "30" | "45" | "60";
+  message: string;
+  alternateSlots: { time: string; date: Date }[];
+  availabilityMode: "specific" | "share";
+  date?: Date;
+  time?: string;
+  timezone?: string;
+  address?: string;
+  videoUrl?: string;
+  teamMembers?: string;
+  selectedWeek?: Date;
+  weeklyAvailability?: Record<
+    string,
+    {
+      isAvailable: boolean;
+      startTime: string;
+      endTime: string;
+    }
+  >;
+};
+
 interface EntretienChoisirHeureProps {
-  form: UseFormReturn<FormValues>;
-  fieldArray: UseFieldArrayReturn<FormValues, "alternateSlots", "id">;
+  form: UseFormReturn<FormType>;
+  fieldArray: UseFieldArrayReturn<FormType, "alternateSlots", "id">;
 }
 
 export function EntretienChoisirHeure({

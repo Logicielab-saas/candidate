@@ -29,12 +29,14 @@ interface CalendarViewProps {
     startTime?: string;
     endTime?: string;
   }>;
+  onWeekChange?: (week: Date) => void;
 }
 
 export function CalendarView({
   className,
   availabilities,
   exceptions = [],
+  onWeekChange,
 }: CalendarViewProps) {
   const [currentWeek, setCurrentWeek] = useState(() =>
     startOfWeek(new Date(), { weekStartsOn: 1 })
@@ -47,10 +49,27 @@ export function CalendarView({
     return () => clearInterval(timer);
   }, []);
 
+  // Update parent when week changes
+  useEffect(() => {
+    onWeekChange?.(currentWeek);
+  }, [currentWeek, onWeekChange]);
+
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(currentWeek, i));
 
-  const handlePrevWeek = () => setCurrentWeek((prev) => subWeeks(prev, 1));
-  const handleNextWeek = () => setCurrentWeek((prev) => addWeeks(prev, 1));
+  const handlePrevWeek = () => {
+    const newWeek = subWeeks(currentWeek, 1);
+    setCurrentWeek(newWeek);
+  };
+
+  const handleNextWeek = () => {
+    const newWeek = addWeeks(currentWeek, 1);
+    setCurrentWeek(newWeek);
+  };
+
+  const handleTodayClick = () => {
+    const newWeek = startOfWeek(new Date(), { weekStartsOn: 1 });
+    setCurrentWeek(newWeek);
+  };
 
   const getAvailabilityStyle = (day: Date, hour: number) => {
     // First check if this day has an exception
@@ -204,7 +223,11 @@ export function CalendarView({
               variant="outline"
               size="icon"
               className="h-8 w-8"
-              onClick={handlePrevWeek}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                handlePrevWeek();
+              }}
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
@@ -212,7 +235,11 @@ export function CalendarView({
               variant="outline"
               size="icon"
               className="h-8 w-8"
-              onClick={handleNextWeek}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNextWeek();
+              }}
             >
               <ChevronRight className="h-4 w-4" />
             </Button>
@@ -221,9 +248,11 @@ export function CalendarView({
         <Button
           variant="outline"
           size="sm"
-          onClick={() =>
-            setCurrentWeek(startOfWeek(new Date(), { weekStartsOn: 1 }))
-          }
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            handleTodayClick();
+          }}
         >
           Aujourd&apos;hui
         </Button>

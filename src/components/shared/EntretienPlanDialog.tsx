@@ -35,14 +35,24 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CalendarView } from "../../features/recruiter/interviews/components/CalendarView";
 import { Pencil } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { EntretienReprogramDialog } from "./EntretienReprogramDialog";
 import { toast } from "@/hooks/use-toast";
+import { startOfWeek } from "date-fns";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import {
+  WeekdayAvailability,
+  WeekdayAvailabilities,
+  DEFAULT_AVAILABILITIES,
+  WEEKDAYS,
+} from "@/core/mockData/dispo-data";
 
 interface EntretienPlanDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   candidat: {
+    id: number;
     nom: string;
     telephone?: string;
   };
@@ -92,15 +102,9 @@ const formSchema = z
     mapUrl: z.string().optional(),
     message: z.string().min(1, "Le message est requis"),
     teamMembers: z.string().optional(),
-    date: z.date({
-      required_error: "sélectionner date",
-    }),
-    time: z.string({
-      required_error: "select heure",
-    }),
-    timezone: z.string({
-      required_error: "Veuillez sélectionner un fuseau horaire",
-    }),
+    date: z.date().optional(),
+    time: z.string().optional(),
+    timezone: z.string().optional(),
     alternateSlots: z
       .array(
         z.object({
@@ -109,8 +113,59 @@ const formSchema = z
         })
       )
       .default([]),
+    selectedWeek: z.date().optional(),
+    availabilityMode: z.enum(["specific", "share"]).default("specific"),
+    weeklyAvailability: z
+      .record(
+        z.string(),
+        z.object({
+          isAvailable: z.boolean(),
+          startTime: z.string(),
+          endTime: z.string(),
+        })
+      )
+      .optional(),
   })
   .superRefine((data, ctx) => {
+    if (data.availabilityMode === "specific") {
+      if (!data.date) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "La date est requise",
+          path: ["date"],
+        });
+      }
+      if (!data.time) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "L'heure est requise",
+          path: ["time"],
+        });
+      }
+      if (!data.timezone) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Le fuseau horaire est requis",
+          path: ["timezone"],
+        });
+      }
+    } else if (data.availabilityMode === "share") {
+      if (!data.selectedWeek) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "La semaine est requise",
+          path: ["selectedWeek"],
+        });
+      }
+      if (!data.weeklyAvailability) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Les disponibilités sont requises",
+          path: ["weeklyAvailability"],
+        });
+      }
+    }
+
     if (data.format === "video" && !data.videoUrl) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -144,6 +199,16 @@ export function EntretienPlanDialog({
   candidat,
 }: EntretienPlanDialogProps) {
   const [isReprogramDialogOpen, setIsReprogramDialogOpen] = useState(false);
+  const [currentWeek, setCurrentWeek] = useState(() =>
+    startOfWeek(new Date(), { weekStartsOn: 1 })
+  );
+  const [availabilities, setAvailabilities] = useState<WeekdayAvailabilities>(
+    DEFAULT_AVAILABILITIES
+  );
+  const [currentTab, setCurrentTab] = useState<
+    "specific-time" | "share-availability"
+  >("specific-time");
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -155,8 +220,18 @@ export function EntretienPlanDialog({
       teamMembers: "",
       timezone: "Europe/Paris",
       alternateSlots: [],
+      availabilityMode: "specific",
+      selectedWeek: currentWeek,
+      weeklyAvailability: DEFAULT_AVAILABILITIES,
     },
   });
+  // Reset tab when dialog opens
+  useEffect(() => {
+    if (isOpen) {
+      setCurrentTab("specific-time");
+      form.setValue("availabilityMode", "specific");
+    }
+  }, [isOpen, form]);
 
   const fieldArray = useFieldArray({
     control: form.control,
@@ -164,8 +239,64 @@ export function EntretienPlanDialog({
   });
 
   function onSubmit(values: FormValues) {
-    console.log(values);
-    // Handle form submission
+    if (values.availabilityMode === "share") {
+      // Only include days that are actually available
+      const availableDays = WEEKDAYS.reduce((acc, day) => {
+        const dayAvailability = availabilities[day.id];
+        if (dayAvailability.isAvailable) {
+          acc[day.name] = dayAvailability;
+        }
+        return acc;
+      }, {} as Record<string, WeekdayAvailability>);
+
+      const availabilityData = {
+        candidatId: candidat.id,
+        format: values.format,
+        duration: values.duration,
+        message: values.message,
+        teamMembers: values.teamMembers,
+        selectedWeek: currentWeek,
+        weeklyAvailability: availableDays,
+      };
+
+      console.log("Availability submission:", availabilityData);
+      toast({
+        title: "Disponibilités partagées",
+        description: `Vos disponibilités pour la semaine du ${format(
+          currentWeek,
+          "d MMMM yyyy",
+          { locale: fr }
+        )} ont été partagées avec ${candidat.nom}`,
+      });
+    } else {
+      // For specific time mode, only send relevant data
+      const specificTimeData = {
+        candidatId: candidat.id,
+        format: values.format,
+        duration: values.duration,
+        message: values.message,
+        teamMembers: values.teamMembers,
+        date: values.date,
+        time: values.time,
+        timezone: values.timezone,
+        alternateSlots: values.alternateSlots,
+        // Only include format-specific fields
+        ...(values.format === "video" && { videoUrl: values.videoUrl }),
+        ...(values.format === "person" && {
+          address: values.address,
+          mapUrl: values.mapUrl,
+        }),
+      };
+
+      console.log("Specific time submission:", specificTimeData);
+      toast({
+        title: "Entretien programmé",
+        description: `L'entretien a été programmé avec ${candidat.nom}`,
+      });
+    }
+
+    form.reset();
+    onOpenChange(false);
   }
 
   return (
@@ -395,7 +526,20 @@ export function EntretienPlanDialog({
 
               {/* Right Side */}
               <div className="border-l border-zinc-200 dark:border-zinc-700 pl-6">
-                <Tabs defaultValue="specific-time" className="w-full">
+                <Tabs
+                  value={currentTab}
+                  defaultValue="specific-time"
+                  className="w-full"
+                  onValueChange={(value) => {
+                    setCurrentTab(
+                      value as "specific-time" | "share-availability"
+                    );
+                    form.setValue(
+                      "availabilityMode",
+                      value === "share-availability" ? "share" : "specific"
+                    );
+                  }}
+                >
                   <div className="w-full border-secondaryHex-200 dark:border-secondaryHex-800">
                     <TabsList className="flex h-12 w-full items-center bg-transparent p-0">
                       <TabsTrigger
@@ -415,19 +559,24 @@ export function EntretienPlanDialog({
                   <TabsContent value="share-availability" className="mt-4">
                     <div className="space-y-4">
                       <p className="text-sm text-muted-foreground">
-                        Indiquez vos disponibilités d&apos;entretien : ajoutez
-                        et supprimez des créneaux qui s&apos;appliqueront à
-                        l&apos;ensemble des candidat(e)s. Vous pourrez les
-                        mettre à jour à tout moment.
+                        Indiquez vos disponibilités d&apos;entretien pour la
+                        semaine du{" "}
+                        <span className="font-medium">
+                          {format(currentWeek, "d MMMM yyyy", { locale: fr })}
+                        </span>
                       </p>
                       <div className="rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900">
                         <div className="p-4 border-b border-zinc-200 dark:border-zinc-700">
                           <div className="flex items-center justify-between">
-                            <div className="text-sm text-muted-foreground flex items-center gap-2">
-                              <span>You are sharing</span>
-                              <span className="font-medium text-foreground">
-                                N/A time slots
-                              </span>
+                            <div className="text-sm text-muted-foreground">
+                              <span className="font-medium">
+                                {
+                                  Object.values(availabilities).filter(
+                                    (day) => day.isAvailable
+                                  ).length
+                                }
+                              </span>{" "}
+                              jours disponibles cette semaine
                             </div>
                             <Button
                               type="button"
@@ -450,44 +599,9 @@ export function EntretienPlanDialog({
                             className="h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-200 scrollbar-track-transparent hover:scrollbar-thumb-zinc-300"
                           >
                             <CalendarView
-                              availabilities={{
-                                1: {
-                                  isAvailable: true,
-                                  startTime: "09:00",
-                                  endTime: "17:00",
-                                },
-                                2: {
-                                  isAvailable: true,
-                                  startTime: "09:00",
-                                  endTime: "17:00",
-                                },
-                                3: {
-                                  isAvailable: true,
-                                  startTime: "09:00",
-                                  endTime: "17:00",
-                                },
-                                4: {
-                                  isAvailable: true,
-                                  startTime: "09:00",
-                                  endTime: "14:00",
-                                },
-                                5: {
-                                  isAvailable: false,
-                                  startTime: "09:00",
-                                  endTime: "17:00",
-                                },
-                                6: {
-                                  isAvailable: false,
-                                  startTime: "09:00",
-                                  endTime: "17:00",
-                                },
-                                7: {
-                                  isAvailable: false,
-                                  startTime: "09:00",
-                                  endTime: "17:00",
-                                },
-                              }}
+                              availabilities={availabilities}
                               className="border-none"
+                              onWeekChange={setCurrentWeek}
                             />
                           </div>
                         </div>
@@ -520,7 +634,14 @@ export function EntretienPlanDialog({
       </DialogContent>
       <EntretienReprogramDialog
         isOpen={isReprogramDialogOpen}
-        onOpenChange={setIsReprogramDialogOpen}
+        onOpenChange={(open) => {
+          setIsReprogramDialogOpen(open);
+          if (!open) {
+            form.setValue("weeklyAvailability", availabilities);
+          }
+        }}
+        availabilities={availabilities}
+        onAvailabilitiesChange={setAvailabilities}
       />
     </Dialog>
   );
