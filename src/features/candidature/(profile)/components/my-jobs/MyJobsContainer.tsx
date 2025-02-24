@@ -22,18 +22,18 @@ const jobTabs: JobTab[] = [
     count: 23,
   },
   {
-    id: "my-jobs",
-    label: "Mes emplois",
-    count: 0,
-  },
-  {
-    id: "applications",
+    id: "sent-applications",
     label: "Candidatures envoyées",
     count: 0,
   },
   {
     id: "interviews",
     label: "Entretiens",
+    count: 0,
+  },
+  {
+    id: "archived",
+    label: "Archivées",
     count: 0,
   },
 ];
