@@ -14,15 +14,28 @@ export interface StatusWithTimestamp {
   timestamp: number
 }
 
+export interface CandidateStatusWithTimestamp extends StatusWithTimestamp {
+  status: CandidateStatus
+}
+
+export interface EmployerJobStatusWithTimestamp extends StatusWithTimestamp {
+  status: EmployerJobStatus
+}
+
+export interface UserJobStatusWithTimestamp extends StatusWithTimestamp {
+  status: UserJobStatus
+}
+
 export interface JobStatuses {
-  candidateStatus: StatusWithTimestamp & { status: CandidateStatus }
-  selfReportedStatus: StatusWithTimestamp & { status: CandidateStatus }
-  employerJobStatus: StatusWithTimestamp & { status: EmployerJobStatus }
-  userJobStatus: StatusWithTimestamp & { status: UserJobStatus }
+  candidateStatus: CandidateStatusWithTimestamp
+  selfReportedStatus: CandidateStatusWithTimestamp
+  employerJobStatus: EmployerJobStatusWithTimestamp
+  userJobStatus: UserJobStatusWithTimestamp
 }
 
 export interface Company {
   name: string
+  // Add more company fields as needed
 }
 
 export interface Job {

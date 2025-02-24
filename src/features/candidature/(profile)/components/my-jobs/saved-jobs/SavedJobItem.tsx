@@ -17,17 +17,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
+import type { SavedJob } from "@/core/types";
 
-interface SavedJobItemProps {
-  title: string;
-  company: {
-    name: string;
-  };
-  location: string;
-  savedDate: string;
+interface SavedJobItemProps extends Omit<SavedJob, "id"> {
   onApply: () => void;
   onRemove: () => void;
-  jobUrl: string;
 }
 
 const getCompanyInitials = (name: string) => {

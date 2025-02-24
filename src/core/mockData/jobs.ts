@@ -1,6 +1,7 @@
 import type { Job } from '@/core/types/job'
+import type { SavedJob } from '@/core/types/saved-job'
 
-export const mockSavedJobs = [
+export const mockSavedJobs: SavedJob[] = [
   {
     id: '1',
     title: 'développement web',

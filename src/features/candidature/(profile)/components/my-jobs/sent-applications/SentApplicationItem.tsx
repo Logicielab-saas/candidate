@@ -24,11 +24,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import {
-  type Job,
-  type JobStatuses,
-  type CandidateStatus,
-} from "@/core/types/job";
+import type { Job, JobStatuses, CandidateStatus } from "@/core/types";
 import { statusStyles } from "@/core/styles/status-styles.style";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { UpdateStatusDialog } from "./UpdateStatusDialog";
