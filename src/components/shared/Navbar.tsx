@@ -15,6 +15,7 @@ import {
   Settings,
   Star,
   HelpCircle,
+  Menu,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -24,6 +25,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ThemeButton } from "@/components/shared/ThemeButton";
@@ -56,6 +65,47 @@ export function NavBar() {
           <div className="md:mx-auto md:max-w-7xl md:mt-4">
             <div className="md:rounded-xl bg-background/50 backdrop-blur-lg md:border md:shadow-sm border-b md:border-b">
               <div className="px-4 py-2 flex items-center justify-between">
+                {/* Mobile Menu Button */}
+                <Sheet>
+                  <SheetTrigger asChild className="md:hidden">
+                    <Button variant="ghost" size="icon">
+                      <Menu className="h-5 w-5" />
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="left">
+                    <SheetHeader>
+                      <SheetTitle className="text-primaryHex-500">
+                        Postuly
+                      </SheetTitle>
+                      <SheetDescription>
+                        Navigate through the app
+                      </SheetDescription>
+                    </SheetHeader>
+                    <div className="mt-4 space-y-2">
+                      {navItems.map((item) => {
+                        const Icon = item.icon;
+                        const isActive = activeTab === item.name;
+                        return (
+                          <Link
+                            key={item.name}
+                            href={item.url}
+                            onClick={() => setActiveTab(item.name)}
+                            className={cn(
+                              "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors",
+                              isActive
+                                ? "bg-primary/10 text-primary"
+                                : "text-foreground/60 hover:bg-muted"
+                            )}
+                          >
+                            <Icon className="h-5 w-5" />
+                            {item.name}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </SheetContent>
+                </Sheet>
+
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2">
                   <span className="text-xl font-bold text-primary">
@@ -177,31 +227,6 @@ export function NavBar() {
                   </DropdownMenu>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Navigation */}
-        <div className="hidden fixed bottom-0 left-0 right-0">
-          <div className="bg-background/50 backdrop-blur-lg border-t">
-            <div className="flex justify-around py-2">
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                const isActive = activeTab === item.name;
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.url}
-                    onClick={() => setActiveTab(item.name)}
-                    className={cn(
-                      "p-2 rounded-full",
-                      isActive ? "text-primary" : "text-foreground/60"
-                    )}
-                  >
-                    <Icon size={24} />
-                  </Link>
-                );
-              })}
             </div>
           </div>
         </div>
