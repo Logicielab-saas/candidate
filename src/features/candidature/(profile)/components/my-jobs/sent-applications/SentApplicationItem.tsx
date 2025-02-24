@@ -7,7 +7,6 @@ import {
   Building2,
   MapPin,
   Calendar,
-  Briefcase,
   AlertCircle,
   CheckCircle2,
   Clock,
@@ -23,6 +22,7 @@ import {
 import { cn } from "@/lib/utils";
 import { type Job, type JobStatuses } from "@/core/types/job";
 import { statusStyles } from "@/core/styles/status-styles.style";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface SentApplicationItemProps
   extends Pick<
@@ -38,6 +38,15 @@ const formatDate = (timestamp: number) => {
     day: "numeric",
     month: "short",
   }).format(new Date(timestamp));
+};
+
+const getCompanyInitials = (name: string) => {
+  return name
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
 };
 
 export function SentApplicationItem({
@@ -101,8 +110,16 @@ export function SentApplicationItem({
     <>
       <div className="py-4 flex items-start justify-between group">
         <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <Briefcase className="h-5 w-5 text-muted-foreground" />
+          <div className="flex items-center gap-3">
+            <Avatar className="h-10 w-10">
+              <AvatarImage
+                // src={`https://avatar.vercel.sh/${company.name}.png`}
+                alt={company.name}
+              />
+              <AvatarFallback className="text-xs font-medium">
+                {getCompanyInitials(company.name)}
+              </AvatarFallback>
+            </Avatar>
             <a
               href={jobUrl}
               target="_blank"
