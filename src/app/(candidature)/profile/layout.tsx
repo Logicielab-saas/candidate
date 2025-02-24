@@ -9,7 +9,9 @@ export default function ProfileLayout({
 }) {
   return (
     <div className={cn("min-h-screen bg-background pt-4 md:pt-8")}>
-      <div className={cn("mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-8")}>
+      <div
+        className={cn("mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-24 md:pb-8")}
+      >
         <div className={cn("flex flex-col md:flex-row gap-8")}>
           <aside className="md:w-64 flex-shrink-0">
             <div className="sticky top-20">

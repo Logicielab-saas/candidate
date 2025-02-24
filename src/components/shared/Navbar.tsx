@@ -182,7 +182,7 @@ export function NavBar() {
         </div>
 
         {/* Mobile Navigation */}
-        <div className="md:hidden fixed bottom-0 left-0 right-0">
+        <div className="hidden fixed bottom-0 left-0 right-0">
           <div className="bg-background/50 backdrop-blur-lg border-t">
             <div className="flex justify-around py-2">
               {navItems.map((item) => {
