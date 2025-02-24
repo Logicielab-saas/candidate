@@ -1,4 +1,4 @@
-import { EditProfileContainer } from "@/features/edit/profile/EditProfileContainer";
+import { EditProfileContainer } from "@/features/(edit)/profile/EditProfileContainer";
 import React from "react";
 import { Metadata } from "next";
 
