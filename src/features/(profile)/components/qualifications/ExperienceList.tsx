@@ -6,6 +6,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { type Experience } from "@/core/types/experience";
 import { AddExperienceDialog } from "./dialogs/add/AddExperienceDialog";
+import { DeleteExperienceDialog } from "./dialogs/delete/DeleteExperienceDialog";
 import { mockQualifications } from "@/core/mockData/qualifications";
 
 export function ExperienceList() {
@@ -13,6 +14,8 @@ export function ExperienceList() {
     mockQualifications.experiences
   );
   const [isAddExperienceOpen, setIsAddExperienceOpen] = useState(false);
+  const [experienceToDelete, setExperienceToDelete] =
+    useState<Experience | null>(null);
 
   const handleAdd = () => {
     setIsAddExperienceOpen(true);
@@ -22,8 +25,13 @@ export function ExperienceList() {
     console.log("Edit experience", id);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (experience: Experience) => {
+    setExperienceToDelete(experience);
+  };
+
+  const handleConfirmDelete = (id: string) => {
     setExperiences(experiences.filter((exp) => exp.id !== id));
+    setExperienceToDelete(null);
   };
 
   const handleSubmit = (values: Omit<Experience, "id">) => {
@@ -80,7 +88,7 @@ export function ExperienceList() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => handleDelete(experience.id)}
+                onClick={() => handleDelete(experience)}
                 className="text-destructive"
               >
                 <Trash2 className="h-4 w-4" />
@@ -97,6 +105,15 @@ export function ExperienceList() {
         onOpenChange={setIsAddExperienceOpen}
         onSubmit={handleSubmit}
       />
+
+      {experienceToDelete && (
+        <DeleteExperienceDialog
+          open={!!experienceToDelete}
+          onOpenChange={(open) => !open && setExperienceToDelete(null)}
+          onConfirm={handleConfirmDelete}
+          experience={experienceToDelete}
+        />
+      )}
     </>
   );
 }
