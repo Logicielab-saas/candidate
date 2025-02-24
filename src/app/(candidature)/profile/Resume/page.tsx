@@ -1,4 +1,4 @@
-import { ResumeContainer } from "@/features/(profile)/components/ResumeContainer";
+import { ResumeContainer } from "@/features/candidature/(profile)/components/ResumeContainer";
 
 const ResumePage = () => {
   return <ResumeContainer />;

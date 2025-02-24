@@ -23,8 +23,8 @@ const sidebarItems = [
     icon: MessageSquare,
   },
   {
-    title: "Applications",
-    href: "#1",
+    title: "Mes Emplois",
+    href: "/my-jobs",
     icon: Briefcase,
   },
   {
