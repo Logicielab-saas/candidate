@@ -2,9 +2,11 @@ import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { HideJobDetailsDialog } from "./HideJobDetailsDialog";
+import { AvailabilityStatusDialog } from "./AvailabilityStatusDialog";
 
 export function ProfilePreferencesSection() {
   const [showHideDetailsDialog, setShowHideDetailsDialog] = useState(false);
+  const [showAvailabilityDialog, setShowAvailabilityDialog] = useState(false);
 
   return (
     <div className="space-y-6">
@@ -44,11 +46,11 @@ export function ProfilePreferencesSection() {
         </button>
 
         {/* Availability Status */}
-        <Link
-          href="/profile/preferences/availability"
-          className="flex items-center justify-between py-4 hover:bg-muted/50 transition-colors"
+        <button
+          onClick={() => setShowAvailabilityDialog(true)}
+          className="w-full flex items-center justify-between py-4 hover:bg-muted/50 transition-colors"
         >
-          <div className="space-y-1">
+          <div className="space-y-1 text-left">
             <h4 className="text-base font-medium">Disponible maintenant</h4>
             <p className="text-sm text-muted-foreground">
               Indiquez aux employeurs que vous pouvez commencer dès que
@@ -56,12 +58,17 @@ export function ProfilePreferencesSection() {
             </p>
           </div>
           <ChevronRight className="h-5 w-5 text-muted-foreground" />
-        </Link>
+        </button>
       </div>
 
       <HideJobDetailsDialog
         open={showHideDetailsDialog}
         onOpenChange={setShowHideDetailsDialog}
+      />
+
+      <AvailabilityStatusDialog
+        open={showAvailabilityDialog}
+        onOpenChange={setShowAvailabilityDialog}
       />
     </div>
   );
