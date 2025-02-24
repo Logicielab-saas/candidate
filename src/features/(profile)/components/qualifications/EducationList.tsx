@@ -8,6 +8,7 @@ import { type Education } from "@/core/types/education";
 import { mockQualifications } from "@/core/mockData/qualifications";
 import { AddEducationDialog } from "./dialogs/add/AddEducationDialog";
 import { EditEducationDialog } from "./dialogs/edit/EditEducationDialog";
+import { DeleteEducationDialog } from "./dialogs/delete/DeleteEducationDialog";
 
 export function EducationList() {
   const [education, setEducation] = useState<Education[]>(
@@ -15,6 +16,9 @@ export function EducationList() {
   );
   const [isAddEducationOpen, setIsAddEducationOpen] = useState(false);
   const [educationToEdit, setEducationToEdit] = useState<Education | null>(
+    null
+  );
+  const [educationToDelete, setEducationToDelete] = useState<Education | null>(
     null
   );
 
@@ -26,8 +30,13 @@ export function EducationList() {
     setEducationToEdit(education);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (education: Education) => {
+    setEducationToDelete(education);
+  };
+
+  const handleConfirmDelete = (id: string) => {
     setEducation(education.filter((edu) => edu.id !== id));
+    setEducationToDelete(null);
   };
 
   const handleSubmit = (values: Omit<Education, "id">) => {
@@ -91,7 +100,7 @@ export function EducationList() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => handleDelete(edu.id)}
+                  onClick={() => handleDelete(edu)}
                   className="text-destructive"
                 >
                   <Trash2 className="h-4 w-4" />
@@ -116,6 +125,15 @@ export function EducationList() {
           onOpenChange={(open) => !open && setEducationToEdit(null)}
           onSubmit={handleEditSubmit}
           education={educationToEdit}
+        />
+      )}
+
+      {educationToDelete && (
+        <DeleteEducationDialog
+          open={!!educationToDelete}
+          onOpenChange={(open) => !open && setEducationToDelete(null)}
+          onConfirm={handleConfirmDelete}
+          education={educationToDelete}
         />
       )}
     </>
