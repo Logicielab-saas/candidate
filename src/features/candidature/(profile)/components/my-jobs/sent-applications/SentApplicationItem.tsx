@@ -61,6 +61,8 @@ const getCompanyInitials = (name: string) => {
     .slice(0, 2);
 };
 
+// TODO: Implement voir details view job application, archiver & retirer la candidature status change, signaler l'offre d'emploi
+
 export function SentApplicationItem({
   jobTitle,
   company,

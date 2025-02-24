@@ -3,40 +3,7 @@
 import { SavedJobItem } from "./SavedJobItem";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-// This would typically come from your API/state management
-const initialSavedJobs = [
-  {
-    id: "1",
-    title: "développement web",
-    company: {
-      name: "TECHWEB",
-    },
-    location: "Tanger",
-    savedDate: "aujourd'hui",
-    jobUrl: "#",
-  },
-  {
-    id: "2",
-    title: "Développeur Frontend React",
-    company: {
-      name: "Digital Agency",
-    },
-    location: "Casablanca",
-    savedDate: "hier",
-    jobUrl: "#",
-  },
-  {
-    id: "3",
-    title: "Full Stack Developer",
-    company: {
-      name: "Tech Solutions",
-    },
-    location: "Rabat",
-    savedDate: "20 Feb 2024",
-    jobUrl: "#",
-  },
-];
+import { mockSavedJobs } from "@/core/mockData/jobs";
 
 const container = {
   hidden: { opacity: 0 },
@@ -49,7 +16,7 @@ const container = {
 };
 
 export function SavedJobsList() {
-  const [savedJobs, setSavedJobs] = useState(initialSavedJobs);
+  const [savedJobs, setSavedJobs] = useState(mockSavedJobs);
 
   const handleApply = (jobId: string) => {
     console.log("Applying to job:", jobId);
