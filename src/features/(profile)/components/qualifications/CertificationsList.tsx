@@ -5,23 +5,35 @@ import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { type Certification } from "@/core/types/certification";
 import { mockQualifications } from "@/core/mockData/qualifications";
+import { AddCertificationDialog } from "./dialogs/add/AddCertificationDialog";
+import { DeleteCertificationDialog } from "./dialogs/delete/DeleteCertificationDialog";
+import { EditCertificationDialog } from "./dialogs/edit/EditCertificationDialog";
 
 export function CertificationsList() {
   const [certifications, setCertifications] = useState<Certification[]>(
     mockQualifications.certifications
   );
   const [isAddCertificationOpen, setIsAddCertificationOpen] = useState(false);
+  const [certificationToEdit, setCertificationToEdit] =
+    useState<Certification | null>(null);
+  const [certificationToDelete, setCertificationToDelete] =
+    useState<Certification | null>(null);
 
   const handleAdd = () => {
     setIsAddCertificationOpen(true);
   };
 
-  const handleEdit = (id: string) => {
-    console.log("Edit certification", id);
+  const handleEdit = (certification: Certification) => {
+    setCertificationToEdit(certification);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (certification: Certification) => {
+    setCertificationToDelete(certification);
+  };
+
+  const handleConfirmDelete = (id: string) => {
     setCertifications(certifications.filter((cert) => cert.id !== id));
+    setCertificationToDelete(null);
   };
 
   const handleSubmit = (values: Omit<Certification, "id">) => {
@@ -30,6 +42,19 @@ export function CertificationsList() {
       id: crypto.randomUUID(),
     };
     setCertifications([newCertification, ...certifications]);
+  };
+
+  const handleEditSubmit = (id: string, values: Omit<Certification, "id">) => {
+    setCertifications(
+      certifications.map((cert) =>
+        cert.id === id
+          ? {
+              ...values,
+              id,
+            }
+          : cert
+      )
+    );
   };
 
   if (!certifications?.length) {
@@ -82,14 +107,14 @@ export function CertificationsList() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => handleEdit(cert.id)}
+                onClick={() => handleEdit(cert)}
               >
                 <Pencil className="h-4 w-4" />
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => handleDelete(cert.id)}
+                onClick={() => handleDelete(cert)}
                 className="text-destructive"
               >
                 <Trash2 className="h-4 w-4" />
@@ -100,6 +125,30 @@ export function CertificationsList() {
       </div>
 
       <button className="hidden" data-add-button onClick={handleAdd} />
+
+      <AddCertificationDialog
+        open={isAddCertificationOpen}
+        onOpenChange={setIsAddCertificationOpen}
+        onSubmit={handleSubmit}
+      />
+
+      {certificationToEdit && (
+        <EditCertificationDialog
+          open={!!certificationToEdit}
+          onOpenChange={(open) => !open && setCertificationToEdit(null)}
+          onSubmit={handleEditSubmit}
+          certification={certificationToEdit}
+        />
+      )}
+
+      {certificationToDelete && (
+        <DeleteCertificationDialog
+          open={!!certificationToDelete}
+          onOpenChange={(open) => !open && setCertificationToDelete(null)}
+          onConfirm={handleConfirmDelete}
+          certification={certificationToDelete}
+        />
+      )}
     </>
   );
 }
