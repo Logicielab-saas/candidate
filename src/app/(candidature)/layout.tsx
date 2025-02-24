@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { ProfileSidebar } from "@/features/(profile)/components/profile-sidebar";
+import { ProfileSidebar } from "@/components/shared/profile-sidebar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
