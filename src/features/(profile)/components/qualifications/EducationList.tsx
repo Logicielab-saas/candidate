@@ -7,19 +7,23 @@ import { useState } from "react";
 import { type Education } from "@/core/types/education";
 import { mockQualifications } from "@/core/mockData/qualifications";
 import { AddEducationDialog } from "./dialogs/add/AddEducationDialog";
+import { EditEducationDialog } from "./dialogs/edit/EditEducationDialog";
 
 export function EducationList() {
   const [education, setEducation] = useState<Education[]>(
     mockQualifications.education
   );
   const [isAddEducationOpen, setIsAddEducationOpen] = useState(false);
+  const [educationToEdit, setEducationToEdit] = useState<Education | null>(
+    null
+  );
 
   const handleAdd = () => {
     setIsAddEducationOpen(true);
   };
 
-  const handleEdit = (id: string) => {
-    console.log("Edit education", id);
+  const handleEdit = (education: Education) => {
+    setEducationToEdit(education);
   };
 
   const handleDelete = (id: string) => {
@@ -32,6 +36,19 @@ export function EducationList() {
       id: crypto.randomUUID(),
     };
     setEducation([newEducation, ...education]);
+  };
+
+  const handleEditSubmit = (id: string, values: Omit<Education, "id">) => {
+    setEducation(
+      education.map((edu) =>
+        edu.id === id
+          ? {
+              ...values,
+              id,
+            }
+          : edu
+      )
+    );
   };
 
   return (
@@ -67,7 +84,7 @@ export function EducationList() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => handleEdit(edu.id)}
+                  onClick={() => handleEdit(edu)}
                 >
                   <Pencil className="h-4 w-4" />
                 </Button>
@@ -92,6 +109,15 @@ export function EducationList() {
         onOpenChange={setIsAddEducationOpen}
         onSubmit={handleSubmit}
       />
+
+      {educationToEdit && (
+        <EditEducationDialog
+          open={!!educationToEdit}
+          onOpenChange={(open) => !open && setEducationToEdit(null)}
+          onSubmit={handleEditSubmit}
+          education={educationToEdit}
+        />
+      )}
     </>
   );
 }
