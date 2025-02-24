@@ -8,6 +8,7 @@ import {
   tabCounterStyles,
 } from "@/core/styles/tabs";
 import { SavedJobsList } from "./saved-jobs/SavedJobsList";
+import { SentApplicationsList } from "./sent-applications/SentApplicationsList";
 
 interface JobTab {
   id: string;
@@ -24,7 +25,7 @@ const jobTabs: JobTab[] = [
   {
     id: "sent-applications",
     label: "Candidatures envoyées",
-    count: 0,
+    count: 4,
   },
   {
     id: "interviews",
@@ -74,21 +75,19 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
             <SavedJobsList />
           </TabsContent>
 
-          <TabsContent value="my-jobs">
-            <div className="min-h-[300px] flex items-center justify-center text-muted-foreground">
-              Contenu Mes emplois
-            </div>
-          </TabsContent>
-
-          <TabsContent value="applications">
-            <div className="min-h-[300px] flex items-center justify-center text-muted-foreground">
-              Contenu Candidatures envoyées
-            </div>
+          <TabsContent value="sent-applications">
+            <SentApplicationsList />
           </TabsContent>
 
           <TabsContent value="interviews">
             <div className="min-h-[300px] flex items-center justify-center text-muted-foreground">
               Contenu Entretiens
+            </div>
+          </TabsContent>
+
+          <TabsContent value="archived">
+            <div className="min-h-[300px] flex items-center justify-center text-muted-foreground">
+              Contenu Archivées
             </div>
           </TabsContent>
         </div>

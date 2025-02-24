@@ -1,0 +1,167 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import {
+  MoreVertical,
+  Building2,
+  MapPin,
+  Calendar,
+  Briefcase,
+  AlertCircle,
+  CheckCircle2,
+  Clock,
+  XCircle,
+  Ban,
+} from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
+import { type Job, type JobStatuses } from "@/core/types/job";
+import { statusStyles } from "@/core/styles/status-styles.style";
+
+interface SentApplicationItemProps
+  extends Pick<
+    Job,
+    "jobTitle" | "company" | "location" | "applyTime" | "jobExpired" | "jobUrl"
+  > {
+  statuses: JobStatuses;
+  onUpdateStatus: () => void;
+}
+
+const formatDate = (timestamp: number) => {
+  return new Intl.DateTimeFormat("fr-FR", {
+    day: "numeric",
+    month: "short",
+  }).format(new Date(timestamp));
+};
+
+export function SentApplicationItem({
+  jobTitle,
+  company,
+  location,
+  applyTime,
+  statuses,
+  jobExpired,
+  jobUrl,
+  onUpdateStatus,
+}: SentApplicationItemProps) {
+  const getStatusInfo = () => {
+    const { candidateStatus, employerJobStatus } = statuses;
+
+    if (jobExpired || employerJobStatus.status === "EXPIRED") {
+      return {
+        icon: <Ban className="h-3.5 w-3.5" />,
+        label: "Offre expirée",
+        style: statusStyles.expired,
+      };
+    }
+
+    switch (candidateStatus.status) {
+      case "APPLIED":
+        return {
+          icon: <Clock className="h-3.5 w-3.5" />,
+          label: "Candidature envoyée",
+          style: statusStyles.applied,
+        };
+      case "INTERVIEWED":
+        return {
+          icon: <CheckCircle2 className="h-3.5 w-3.5" />,
+          label: "Entretien programmé",
+          style: statusStyles.interviewed,
+        };
+      case "REJECTED":
+        return {
+          icon: <XCircle className="h-3.5 w-3.5" />,
+          label: "Candidature rejetée",
+          style: statusStyles.rejected,
+        };
+      case "HIRED":
+        return {
+          icon: <CheckCircle2 className="h-3.5 w-3.5" />,
+          label: "Candidature acceptée",
+          style: statusStyles.hired,
+        };
+      default:
+        return {
+          icon: <AlertCircle className="h-3.5 w-3.5" />,
+          label: "Statut inconnu",
+          style: statusStyles.expired,
+        };
+    }
+  };
+
+  const statusInfo = getStatusInfo();
+
+  return (
+    <>
+      <div className="py-4 flex items-start justify-between group">
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <Briefcase className="h-5 w-5 text-muted-foreground" />
+            <a
+              href={jobUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium hover:underline"
+            >
+              {jobTitle}
+            </a>
+          </div>
+
+          <div className="space-y-1 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <Building2 className="h-4 w-4" />
+              <span>{company.name}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <MapPin className="h-4 w-4" />
+              <span>{location}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              <span>Candidature envoyée le {formatDate(applyTime)}</span>
+            </div>
+            <div className="mt-2">
+              <div className={cn(statusStyles.base, statusInfo.style)}>
+                {statusInfo.icon}
+                <span>{statusInfo.label}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            onClick={onUpdateStatus}
+            disabled={jobExpired}
+          >
+            Mettre à jour le statut
+          </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <MoreVertical className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem asChild>
+                <a href={jobUrl} target="_blank" rel="noopener noreferrer">
+                  Voir les détails
+                </a>
+              </DropdownMenuItem>
+              <DropdownMenuItem>Archiver</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
+      <Separator />
+    </>
+  );
+}
