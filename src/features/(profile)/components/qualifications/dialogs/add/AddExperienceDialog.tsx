@@ -230,7 +230,7 @@ export function AddExperienceDialog({
                           selected={field.value}
                           onSelect={field.onChange}
                           disabled={(date) =>
-                            date <= new Date() ||
+                            date > new Date() ||
                             date < form.getValues("startDate")
                           }
                           initialFocus
