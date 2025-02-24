@@ -1,4 +1,11 @@
-export type CandidateStatus = 'APPLIED' | 'INTERVIEWED' | 'REJECTED' | 'HIRED'
+export type CandidateStatus =
+  | 'APPLIED'
+  | 'INTERVIEWED'
+  | 'OFFER_RECEIVED'
+  | 'HIRED'
+  | 'REJECTED'
+  | 'NOT_INTERESTED'
+
 export type EmployerJobStatus = 'OPEN' | 'CLOSED' | 'EXPIRED' | 'PAUSED'
 export type UserJobStatus = 'PRE_APPLY' | 'POST_APPLY' | 'VIEWED' | 'ARCHIVED'
 

@@ -12,6 +12,7 @@ import {
   Clock,
   XCircle,
   Ban,
+  ThumbsUp,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -20,9 +21,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { type Job, type JobStatuses } from "@/core/types/job";
+import {
+  type Job,
+  type JobStatuses,
+  type CandidateStatus,
+} from "@/core/types/job";
 import { statusStyles } from "@/core/styles/status-styles.style";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { UpdateStatusDialog } from "./UpdateStatusDialog";
+import { useState } from "react";
 
 interface SentApplicationItemProps
   extends Pick<
@@ -30,7 +37,8 @@ interface SentApplicationItemProps
     "jobTitle" | "company" | "location" | "applyTime" | "jobExpired" | "jobUrl"
   > {
   statuses: JobStatuses;
-  onUpdateStatus: () => void;
+  onUpdateStatus: (jobId: string, newStatus: CandidateStatus) => void;
+  jobId: string;
 }
 
 const formatDate = (timestamp: number) => {
@@ -58,7 +66,15 @@ export function SentApplicationItem({
   jobExpired,
   jobUrl,
   onUpdateStatus,
+  jobId,
 }: SentApplicationItemProps) {
+  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+
+  const handleStatusUpdate = (newStatus: CandidateStatus) => {
+    onUpdateStatus(jobId, newStatus);
+    setIsUpdateDialogOpen(false);
+  };
+
   const getStatusInfo = () => {
     const { candidateStatus, employerJobStatus } = statuses;
 
@@ -83,6 +99,12 @@ export function SentApplicationItem({
           label: "Entretien programmé",
           style: statusStyles.interviewed,
         };
+      case "OFFER_RECEIVED":
+        return {
+          icon: <ThumbsUp className="h-3.5 w-3.5" />,
+          label: "Offre reçue",
+          style: statusStyles.interviewed,
+        };
       case "REJECTED":
         return {
           icon: <XCircle className="h-3.5 w-3.5" />,
@@ -94,6 +116,12 @@ export function SentApplicationItem({
           icon: <CheckCircle2 className="h-3.5 w-3.5" />,
           label: "Candidature acceptée",
           style: statusStyles.hired,
+        };
+      case "NOT_INTERESTED":
+        return {
+          icon: <Ban className="h-3.5 w-3.5" />,
+          label: "Plus intéressé",
+          style: statusStyles.expired,
         };
       default:
         return {
@@ -112,10 +140,7 @@ export function SentApplicationItem({
         <div className="space-y-3">
           <div className="flex items-center gap-3">
             <Avatar className="h-10 w-10">
-              <AvatarImage
-                // src={`https://avatar.vercel.sh/${company.name}.png`}
-                alt={company.name}
-              />
+              <AvatarImage alt={company.name} />
               <AvatarFallback className="text-xs font-medium">
                 {getCompanyInitials(company.name)}
               </AvatarFallback>
@@ -153,13 +178,17 @@ export function SentApplicationItem({
         </div>
 
         <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            onClick={onUpdateStatus}
-            disabled={jobExpired}
-          >
-            Mettre à jour le statut
-          </Button>
+          <UpdateStatusDialog
+            onStatusUpdate={handleStatusUpdate}
+            currentStatus={statuses.candidateStatus.status}
+            open={isUpdateDialogOpen}
+            onOpenChange={setIsUpdateDialogOpen}
+            trigger={
+              <Button variant="outline" disabled={jobExpired}>
+                Mettre à jour le statut
+              </Button>
+            }
+          />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

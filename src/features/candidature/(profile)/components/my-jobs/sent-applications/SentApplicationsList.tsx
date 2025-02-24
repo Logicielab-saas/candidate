@@ -1,10 +1,11 @@
 "use client";
 
 import { SentApplicationItem } from "./SentApplicationItem";
-import type { Job } from "@/core/types/job";
+import type { Job, CandidateStatus } from "@/core/types/job";
+import { useState } from "react";
 
 // This would typically come from your API/state management
-const mockSentApplications: Job[] = [
+const initialMockSentApplications: Job[] = [
   {
     jobTitle:
       "Offre de Stage PFE ou Pré-Embauche – Développement Web et Maintenance Applicative",
@@ -137,16 +138,39 @@ const mockSentApplications: Job[] = [
 ];
 
 export function SentApplicationsList() {
-  const handleUpdateStatus = (jobKey: string) => {
-    console.log("Updating status for application:", jobKey);
-    // Implement status update logic
+  const [applications, setApplications] = useState(initialMockSentApplications);
+
+  const handleUpdateStatus = (jobId: string, newStatus: CandidateStatus) => {
+    setApplications((currentApplications) =>
+      currentApplications.map((app) => {
+        if (app.jobKey === jobId) {
+          const now = Date.now();
+          return {
+            ...app,
+            statuses: {
+              ...app.statuses,
+              candidateStatus: {
+                status: newStatus,
+                timestamp: now,
+              },
+              selfReportedStatus: {
+                status: newStatus,
+                timestamp: now,
+              },
+            },
+          };
+        }
+        return app;
+      })
+    );
   };
 
   return (
     <div className="divide-y divide-border">
-      {mockSentApplications.map((job) => (
+      {applications.map((job) => (
         <SentApplicationItem
           key={job.jobKey}
+          jobId={job.jobKey}
           jobTitle={job.jobTitle}
           company={job.company}
           location={job.location}
@@ -154,7 +178,7 @@ export function SentApplicationsList() {
           jobExpired={job.jobExpired}
           jobUrl={job.jobUrl}
           statuses={job.statuses}
-          onUpdateStatus={() => handleUpdateStatus(job.jobKey)}
+          onUpdateStatus={handleUpdateStatus}
         />
       ))}
     </div>
