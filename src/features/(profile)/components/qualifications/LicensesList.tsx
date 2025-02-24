@@ -5,23 +5,33 @@ import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { type License } from "@/core/types/license";
 import { mockQualifications } from "@/core/mockData/qualifications";
+import { AddLicenseDialog } from "./dialogs/add/AddLicenseDialog";
+import { DeleteLicenseDialog } from "./dialogs/delete/DeleteLicenseDialog";
+import { EditLicenseDialog } from "./dialogs/edit/EditLicenseDialog";
 
 export function LicensesList() {
   const [licenses, setLicenses] = useState<License[]>(
     mockQualifications.licenses
   );
   const [isAddLicenseOpen, setIsAddLicenseOpen] = useState(false);
+  const [licenseToEdit, setLicenseToEdit] = useState<License | null>(null);
+  const [licenseToDelete, setLicenseToDelete] = useState<License | null>(null);
 
   const handleAdd = () => {
     setIsAddLicenseOpen(true);
   };
 
-  const handleEdit = (id: string) => {
-    console.log("Edit license", id);
+  const handleEdit = (license: License) => {
+    setLicenseToEdit(license);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (license: License) => {
+    setLicenseToDelete(license);
+  };
+
+  const handleConfirmDelete = (id: string) => {
     setLicenses(licenses.filter((license) => license.id !== id));
+    setLicenseToDelete(null);
   };
 
   const handleSubmit = (values: Omit<License, "id">) => {
@@ -30,6 +40,19 @@ export function LicensesList() {
       id: crypto.randomUUID(),
     };
     setLicenses([newLicense, ...licenses]);
+  };
+
+  const handleEditSubmit = (id: string, values: Omit<License, "id">) => {
+    setLicenses(
+      licenses.map((license) =>
+        license.id === id
+          ? {
+              ...values,
+              id,
+            }
+          : license
+      )
+    );
   };
 
   if (!licenses?.length) {
@@ -72,14 +95,14 @@ export function LicensesList() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => handleEdit(license.id)}
+                onClick={() => handleEdit(license)}
               >
                 <Pencil className="h-4 w-4" />
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => handleDelete(license.id)}
+                onClick={() => handleDelete(license)}
                 className="text-destructive"
               >
                 <Trash2 className="h-4 w-4" />
@@ -90,6 +113,30 @@ export function LicensesList() {
       </div>
 
       <button className="hidden" data-add-button onClick={handleAdd} />
+
+      <AddLicenseDialog
+        open={isAddLicenseOpen}
+        onOpenChange={setIsAddLicenseOpen}
+        onSubmit={handleSubmit}
+      />
+
+      {licenseToEdit && (
+        <EditLicenseDialog
+          open={!!licenseToEdit}
+          onOpenChange={(open) => !open && setLicenseToEdit(null)}
+          onSubmit={handleEditSubmit}
+          license={licenseToEdit}
+        />
+      )}
+
+      {licenseToDelete && (
+        <DeleteLicenseDialog
+          open={!!licenseToDelete}
+          onOpenChange={(open) => !open && setLicenseToDelete(null)}
+          onConfirm={handleConfirmDelete}
+          license={licenseToDelete}
+        />
+      )}
     </>
   );
 }
