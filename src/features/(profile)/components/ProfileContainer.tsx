@@ -1,9 +1,76 @@
+"use client";
+
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Edit, FileText, MoreVertical } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Edit,
+  Eye,
+  FileText,
+  MoreVertical,
+  Download,
+  Upload,
+  Trash2,
+} from "lucide-react";
 import Link from "next/link";
 import Script from "next/script";
+import { handleDownloadCV } from "@/core/utils/download-cv";
+
+interface ResumeItemProps {
+  title: string;
+  subtitle: string;
+}
+
+function ResumeItem({ title, subtitle }: ResumeItemProps) {
+  const CV_URL = "/cvs/mycv.pdf";
+
+  return (
+    <div className="flex items-center justify-between rounded-lg border p-4">
+      <div className="flex items-center gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
+          <FileText className="h-5 w-5 text-muted-foreground" />
+        </div>
+        <div>
+          <p className="font-medium">{title}</p>
+          <p className="text-xs text-muted-foreground">{subtitle}</p>
+        </div>
+      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon">
+            <MoreVertical className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem className="flex items-center" asChild>
+            <Link href="/profile/resume">
+              <Eye className="mr-2 h-4 w-4" />
+              View CV
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleDownloadCV(CV_URL)}>
+            <Download className="mr-2 h-4 w-4" />
+            Download CV
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Upload className="mr-2 h-4 w-4" />
+            Change CV
+          </DropdownMenuItem>
+          <DropdownMenuItem className="text-destructive focus:text-destructive">
+            <Trash2 className="mr-2 h-4 w-4" />
+            Delete CV
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+}
 
 export function ProfileContainer() {
   // Add structured data for better SEO
@@ -126,41 +193,11 @@ export function ProfileContainer() {
             <div className="space-y-4">
               <h3 className="text-lg font-medium">CV</h3>
               <div className="space-y-3">
-                {/* Postuly CV */}
-                <div className="flex items-center justify-between rounded-lg border p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
-                      <FileText className="h-5 w-5 text-muted-foreground" />
-                    </div>
-                    <div>
-                      <p className="font-medium">IndeedCV</p>
-                      <p className="text-xs text-muted-foreground">
-                        Non validé
-                      </p>
-                    </div>
-                  </div>
-                  <Button variant="ghost" size="icon">
-                    <MoreVertical className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                {/* Personal Resume */}
-                <div className="flex items-center justify-between rounded-lg border p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
-                      <FileText className="h-5 w-5 text-muted-foreground" />
-                    </div>
-                    <div>
-                      <p className="font-medium">Resume_LASTNAME.pdf</p>
-                      <p className="text-xs text-muted-foreground">
-                        Ajouté le 19 Fev 2024
-                      </p>
-                    </div>
-                  </div>
-                  <Button variant="ghost" size="icon">
-                    <MoreVertical className="h-4 w-4" />
-                  </Button>
-                </div>
+                <ResumeItem title="IndeedCV" subtitle="Non validé" />
+                <ResumeItem
+                  title="Resume_LASTNAME.pdf"
+                  subtitle="Ajouté le 19 Fev 2024"
+                />
               </div>
             </div>
           </div>
