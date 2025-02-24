@@ -19,7 +19,7 @@ export function EditProfileView() {
       <div className="flex items-center justify-between">
         <Button variant="ghost" onClick={handleBack}>
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back
+          Retour
         </Button>
         <Button>Save Changes</Button>
       </div>

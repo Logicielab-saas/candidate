@@ -7,6 +7,9 @@ import { JobTypesSection } from "./JobTypesSection";
 import { RelocationSection } from "./RelocationSection";
 import { PreferenceSection } from "./PreferenceSection";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Préférences d'emploi | Mon Profil",
@@ -29,9 +32,18 @@ export const metadata: Metadata = {
 
 export function PreferencesContainer() {
   const [hasRelocation, setHasRelocation] = useState(false);
+  const router = useRouter();
+
+  const handleBack = () => {
+    router.back();
+  };
 
   return (
     <div className="space-y-6">
+      <Button variant="ghost" onClick={handleBack}>
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Retour
+      </Button>
       <PreferenceSection title="Intitulés de poste">
         <JobTitleSection />
       </PreferenceSection>
