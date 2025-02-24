@@ -24,7 +24,7 @@ const sidebarItems = [
   },
   {
     title: "Mes Emplois",
-    href: "/my-jobs",
+    href: "/profile/my-jobs",
     icon: Briefcase,
   },
   {
