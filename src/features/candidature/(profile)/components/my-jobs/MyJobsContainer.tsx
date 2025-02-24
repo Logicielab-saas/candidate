@@ -1,13 +1,13 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
   tabTriggerStyles,
   tabsListStyles,
   tabCounterStyles,
 } from "@/core/styles/tabs";
+import { SavedJobsList } from "./saved-jobs/SavedJobsList";
 
 interface JobTab {
   id: string;
@@ -69,16 +69,29 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
           </TabsList>
         </div>
 
-        {jobTabs.map((tab) => (
-          <TabsContent key={tab.id} value={tab.id}>
-            <Card className="p-6 mt-6">
-              <div className="min-h-[300px] flex items-center justify-center text-muted-foreground">
-                {/* Content for each tab will be implemented separately */}
-                Contenu {tab.label}
-              </div>
-            </Card>
+        <div className="mt-6">
+          <TabsContent value="saved-jobs">
+            <SavedJobsList />
           </TabsContent>
-        ))}
+
+          <TabsContent value="my-jobs">
+            <div className="min-h-[300px] flex items-center justify-center text-muted-foreground">
+              Contenu Mes emplois
+            </div>
+          </TabsContent>
+
+          <TabsContent value="applications">
+            <div className="min-h-[300px] flex items-center justify-center text-muted-foreground">
+              Contenu Candidatures envoyées
+            </div>
+          </TabsContent>
+
+          <TabsContent value="interviews">
+            <div className="min-h-[300px] flex items-center justify-center text-muted-foreground">
+              Contenu Entretiens
+            </div>
+          </TabsContent>
+        </div>
       </Tabs>
     </div>
   );
