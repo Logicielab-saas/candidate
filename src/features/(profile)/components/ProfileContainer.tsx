@@ -3,37 +3,16 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Edit, ChevronRight } from "lucide-react";
+import { Edit } from "lucide-react";
 import Link from "next/link";
-import Script from "next/script";
 import { ResumeItem } from "./ResumeItem";
+import { ProfilePreferencesSection } from "./ProfilePreferencesSection";
+import { ProfileContactInfo } from "./ProfileContactInfo";
+import { ProfileAboutInfo } from "./ProfileAboutInfo";
 
 export function ProfileContainer() {
-  // Add structured data for better SEO
-  const profileSchema = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: "Sarah Connor",
-    email: "sarah@example.com",
-    description:
-      "I am a software developer with a passion for building beautiful and functional web applications.",
-    jobTitle: "Software Developer",
-    skills: ["React", "TypeScript", "Node.js", "Next.js", "Tailwind CSS"],
-    location: {
-      "@type": "PostalAddress",
-      addressLocality: "San Francisco",
-      addressRegion: "CA",
-      addressCountry: "United States",
-    },
-  };
-
   return (
     <>
-      <Script
-        id="profile-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(profileSchema) }}
-      />
       <div className="w-full space-y-8">
         <div className="flex items-center justify-end">
           <Link href="/edit/profile">
@@ -63,66 +42,11 @@ export function ProfileContainer() {
           </div>
 
           <div className="space-y-8">
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-lg font-medium">About</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  I am a software developer with a passion for building
-                  beautiful and functional web applications.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-medium">Skills</h3>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {[
-                    "React",
-                    "TypeScript",
-                    "Node.js",
-                    "Next.js",
-                    "Tailwind CSS",
-                  ].map((skill) => (
-                    <span
-                      key={skill}
-                      className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary transition-colors hover:bg-primary/20"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <ProfileAboutInfo />
 
             <Separator />
 
-            <div className="grid gap-8 md:grid-cols-2">
-              <div>
-                <h3 className="text-lg font-medium">Contact Information</h3>
-                <div className="mt-2 space-y-2 text-sm text-muted-foreground">
-                  <p>+1 234 567 890</p>
-                  <p>San Francisco, CA</p>
-                  <p>United States</p>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-medium">Social Links</h3>
-                <div className="mt-2 space-y-2">
-                  <a
-                    href="#"
-                    className="block text-sm text-primary hover:underline"
-                  >
-                    LinkedIn
-                  </a>
-                  <a
-                    href="#"
-                    className="block text-sm text-primary hover:underline"
-                  >
-                    GitHub
-                  </a>
-                </div>
-              </div>
-            </div>
+            <ProfileContactInfo />
 
             <Separator />
 
@@ -140,62 +64,7 @@ export function ProfileContainer() {
             <Separator />
 
             {/* Preferences Section */}
-            <div className="space-y-6">
-              <h3 className="text-lg font-medium">Préférences</h3>
-
-              <div className="divide-y">
-                {/* Employment Preferences */}
-                <Link
-                  href="/profile/preferences"
-                  className="flex items-center justify-between py-4 hover:bg-muted/50 transition-colors"
-                >
-                  <div className="space-y-1">
-                    <h4 className="text-base font-medium">
-                      Préférences d&apos;emploi
-                    </h4>
-                    <p className="text-sm text-muted-foreground">
-                      Précisez certaines informations, telles que le salaire
-                      minimum et l&apos;horaire désirés.
-                    </p>
-                  </div>
-                  <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                </Link>
-
-                {/* Hidden Job Details */}
-                <Link
-                  href="/profile/preferences/hidden"
-                  className="flex items-center justify-between py-4 hover:bg-muted/50 transition-colors"
-                >
-                  <div className="space-y-1">
-                    <h4 className="text-base font-medium">
-                      Masquer les emplois avec ces détails
-                    </h4>
-                    <p className="text-sm text-muted-foreground">
-                      Gérez les qualifications et préférences à prendre en
-                      compte pour masquer certains emplois de votre recherche.
-                    </p>
-                  </div>
-                  <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                </Link>
-
-                {/* Availability Status */}
-                <Link
-                  href="/profile/preferences/availability"
-                  className="flex items-center justify-between py-4 hover:bg-muted/50 transition-colors"
-                >
-                  <div className="space-y-1">
-                    <h4 className="text-base font-medium">
-                      Disponible maintenant
-                    </h4>
-                    <p className="text-sm text-muted-foreground">
-                      Indiquez aux employeurs que vous pouvez commencer dès que
-                      possible.
-                    </p>
-                  </div>
-                  <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                </Link>
-              </div>
-            </div>
+            <ProfilePreferencesSection />
           </div>
         </div>
       </div>
