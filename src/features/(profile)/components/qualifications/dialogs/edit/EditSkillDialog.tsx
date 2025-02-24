@@ -91,7 +91,10 @@ export function EditSkillDialog({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nom de la compétence</FormLabel>
+                  <FormLabel>
+                    Nom de la compétence{" "}
+                    <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Ex: React.js" {...field} />
                   </FormControl>

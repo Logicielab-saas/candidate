@@ -106,7 +106,9 @@ export function AddLicenseDialog({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nom du permis</FormLabel>
+                  <FormLabel>
+                    Nom du permis <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Ex: Permis B" {...field} />
                   </FormControl>
@@ -120,7 +122,7 @@ export function AddLicenseDialog({
               name="number"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Numéro (optionnel)</FormLabel>
+                  <FormLabel>Numéro</FormLabel>
                   <FormControl>
                     <Input placeholder="Ex: 12345678" {...field} />
                   </FormControl>
@@ -134,7 +136,10 @@ export function AddLicenseDialog({
               name="issuingAuthority"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Autorité de délivrance</FormLabel>
+                  <FormLabel>
+                    Autorité de délivrance{" "}
+                    <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Ex: Préfecture de Police" {...field} />
                   </FormControl>
@@ -149,7 +154,10 @@ export function AddLicenseDialog({
                 name="issueDate"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Date de délivrance</FormLabel>
+                    <FormLabel>
+                      Date de délivrance{" "}
+                      <span className="text-destructive">*</span>
+                    </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -191,7 +199,7 @@ export function AddLicenseDialog({
                 name="expiryDate"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Date d&apos;expiration (optionnelle)</FormLabel>
+                    <FormLabel>Date d&apos;expiration</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>

@@ -139,7 +139,10 @@ export function EditCertificationDialog({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nom de la certification</FormLabel>
+                  <FormLabel>
+                    Nom de la certification{" "}
+                    <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Ex: AWS Certified Developer"
@@ -156,7 +159,9 @@ export function EditCertificationDialog({
               name="organization"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Organisation</FormLabel>
+                  <FormLabel>
+                    Organisation <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Ex: Amazon Web Services" {...field} />
                   </FormControl>
@@ -171,7 +176,10 @@ export function EditCertificationDialog({
                 name="issueDate"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Date de délivrance</FormLabel>
+                    <FormLabel>
+                      Date de délivrance{" "}
+                      <span className="text-destructive">*</span>
+                    </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -213,7 +221,7 @@ export function EditCertificationDialog({
                 name="expiryDate"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Date d&apos;expiration (optionnelle)</FormLabel>
+                    <FormLabel>Date d&apos;expiration</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -256,7 +264,7 @@ export function EditCertificationDialog({
               name="credentialId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>ID de la certification (optionnel)</FormLabel>
+                  <FormLabel>ID de la certification</FormLabel>
                   <FormControl>
                     <Input placeholder="Ex: AWS-DEV-123456" {...field} />
                   </FormControl>
@@ -270,7 +278,7 @@ export function EditCertificationDialog({
               name="credentialUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>URL de vérification (optionnel)</FormLabel>
+                  <FormLabel>URL de vérification</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Ex: https://aws.amazon.com/verification"

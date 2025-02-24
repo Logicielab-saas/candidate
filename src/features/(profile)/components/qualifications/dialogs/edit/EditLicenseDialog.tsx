@@ -129,9 +129,12 @@ export function EditLicenseDialog({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nom du permis</FormLabel>
+                  <FormLabel>
+                    Nom de la licence{" "}
+                    <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Ex: Permis B" {...field} />
+                    <Input placeholder="Ex: Permis de conduire" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -143,7 +146,7 @@ export function EditLicenseDialog({
               name="number"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Numéro (optionnel)</FormLabel>
+                  <FormLabel>Numéro de licence</FormLabel>
                   <FormControl>
                     <Input placeholder="Ex: 12345678" {...field} />
                   </FormControl>
@@ -157,9 +160,15 @@ export function EditLicenseDialog({
               name="issuingAuthority"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Autorité de délivrance</FormLabel>
+                  <FormLabel>
+                    Organisation émettrice{" "}
+                    <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Ex: Préfecture de Police" {...field} />
+                    <Input
+                      placeholder="Ex: Ministère de l'Intérieur"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -172,7 +181,10 @@ export function EditLicenseDialog({
                 name="issueDate"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Date de délivrance</FormLabel>
+                    <FormLabel>
+                      Date de délivrance{" "}
+                      <span className="text-destructive">*</span>
+                    </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -214,7 +226,7 @@ export function EditLicenseDialog({
                 name="expiryDate"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Date d&apos;expiration (optionnelle)</FormLabel>
+                    <FormLabel>Date d&apos;expiration</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>

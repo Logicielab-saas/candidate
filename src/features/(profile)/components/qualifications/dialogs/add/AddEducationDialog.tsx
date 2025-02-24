@@ -116,7 +116,9 @@ export function AddEducationDialog({
                 name="degree"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Diplôme</FormLabel>
+                    <FormLabel>
+                      Diplôme <span className="text-destructive">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Ex: Master en Informatique"
@@ -134,7 +136,10 @@ export function AddEducationDialog({
                   name="school"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Établissement</FormLabel>
+                      <FormLabel>
+                        Établissement{" "}
+                        <span className="text-destructive">*</span>
+                      </FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Ex: Université de Paris"
@@ -151,7 +156,9 @@ export function AddEducationDialog({
                   name="location"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Localisation</FormLabel>
+                      <FormLabel>
+                        Localisation <span className="text-destructive">*</span>
+                      </FormLabel>
                       <FormControl>
                         <Input placeholder="Ex: Paris, France" {...field} />
                       </FormControl>
@@ -166,7 +173,10 @@ export function AddEducationDialog({
                 name="field"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Domaine d&apos;études</FormLabel>
+                    <FormLabel>
+                      Domaine d&apos;études{" "}
+                      <span className="text-destructive">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Ex: Développement Web et Mobile"
@@ -184,7 +194,10 @@ export function AddEducationDialog({
                   name="startDate"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>Date de début</FormLabel>
+                      <FormLabel>
+                        Date de début{" "}
+                        <span className="text-destructive">*</span>
+                      </FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -294,7 +307,7 @@ export function AddEducationDialog({
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description (optionnelle)</FormLabel>
+                    <FormLabel>Description</FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="Décrivez votre formation, vos spécialisations..."

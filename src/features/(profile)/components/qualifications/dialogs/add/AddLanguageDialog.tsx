@@ -82,7 +82,9 @@ export function AddLanguageDialog({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nom de la langue</FormLabel>
+                  <FormLabel>
+                    Nom de la langue <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Ex: Anglais" {...field} />
                   </FormControl>
@@ -96,7 +98,7 @@ export function AddLanguageDialog({
               name="certification"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Certification (optionnelle)</FormLabel>
+                  <FormLabel>Certification</FormLabel>
                   <FormControl>
                     <Input placeholder="Ex: TOEIC 945" {...field} />
                   </FormControl>

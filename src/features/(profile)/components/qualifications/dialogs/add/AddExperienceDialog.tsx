@@ -115,7 +115,9 @@ export function AddExperienceDialog({
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Titre du poste</FormLabel>
+                    <FormLabel>
+                      Titre du poste <span className="text-destructive">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Ex: Développeur Full Stack"
@@ -133,7 +135,9 @@ export function AddExperienceDialog({
                   name="company"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Entreprise</FormLabel>
+                      <FormLabel>
+                        Entreprise <span className="text-destructive">*</span>
+                      </FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Ex: TechCorp Solutions"
@@ -150,7 +154,9 @@ export function AddExperienceDialog({
                   name="location"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Localisation</FormLabel>
+                      <FormLabel>
+                        Localisation <span className="text-destructive">*</span>
+                      </FormLabel>
                       <FormControl>
                         <Input placeholder="Ex: Paris, France" {...field} />
                       </FormControl>
@@ -166,7 +172,10 @@ export function AddExperienceDialog({
                   name="startDate"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>Date de début</FormLabel>
+                      <FormLabel>
+                        Date de début{" "}
+                        <span className="text-destructive">*</span>
+                      </FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -276,7 +285,9 @@ export function AddExperienceDialog({
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>
+                      Description <span className="text-destructive">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="Décrivez vos responsabilités et réalisations..."
