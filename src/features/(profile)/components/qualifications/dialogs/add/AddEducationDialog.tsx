@@ -98,14 +98,14 @@ export function AddEducationDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[600px]">
-        <DialogHeader className="p-6 pb-4">
-          <DialogTitle>Ajouter une formation</DialogTitle>
-          <DialogDescription>
-            Ajoutez une nouvelle formation à votre profil.
-          </DialogDescription>
-        </DialogHeader>
-
         <ScrollArea className="px-6 max-h-[60vh]">
+          <DialogHeader className="p-6 pb-4">
+            <DialogTitle>Ajouter une formation</DialogTitle>
+            <DialogDescription>
+              Ajoutez une nouvelle formation à votre profil.
+            </DialogDescription>
+          </DialogHeader>
+
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleSubmit)}

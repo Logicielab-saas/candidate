@@ -29,6 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const jobTypeFormSchema = z.object({
   type: z.nativeEnum(ContractType, {
@@ -82,61 +83,65 @@ export function EditJobTypeDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[400px]">
-        <DialogHeader>
-          <DialogTitle>Modifier le type de poste</DialogTitle>
-          <DialogDescription>
-            Modifiez le type de poste sélectionné.
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="max-h-[90vh] p-0 sm:max-w-[400px]">
+        <ScrollArea className="px-6 max-h-[60vh]">
+          <DialogHeader className="p-6 pb-4">
+            <DialogTitle>Modifier le type de poste</DialogTitle>
+            <DialogDescription>
+              Modifiez le type de poste sélectionné.
+            </DialogDescription>
+          </DialogHeader>
 
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-4"
-          >
-            <FormField
-              control={form.control}
-              name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Type de poste <span className="text-destructive">*</span>
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Sélectionnez un type de poste" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {availableTypes.map((type) => (
-                        <SelectItem key={type} value={type}>
-                          {type}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="space-y-4"
+            >
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Type de poste <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sélectionnez un type de poste" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {availableTypes.map((type) => (
+                          <SelectItem key={type} value={type}>
+                            {type}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </form>
+          </Form>
 
-        <DialogFooter>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-          >
-            Annuler
-          </Button>
-          <Button onClick={form.handleSubmit(handleSubmit)}>Enregistrer</Button>
-        </DialogFooter>
+          <DialogFooter className="p-6 pt-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+            >
+              Annuler
+            </Button>
+            <Button onClick={form.handleSubmit(handleSubmit)}>
+              Enregistrer
+            </Button>
+          </DialogFooter>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
