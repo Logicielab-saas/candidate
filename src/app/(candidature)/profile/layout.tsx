@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { ProfileSidebar } from "@/components/profile/profile-sidebar";
+import { ProfileSidebar } from "@/features/profile/profile-sidebar";
 
 export default function ProfileLayout({
   children,
