@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import {
   User,
   Settings,
-  Bell,
   FileText,
   Briefcase,
   MessageSquare,
@@ -19,6 +18,11 @@ const sidebarItems = [
     icon: User,
   },
   {
+    title: "Qualifications",
+    href: "#3",
+    icon: MessageSquare,
+  },
+  {
     title: "Applications",
     href: "#1",
     icon: Briefcase,
@@ -29,18 +33,8 @@ const sidebarItems = [
     icon: FileText,
   },
   {
-    title: "Messages",
-    href: "#3",
-    icon: MessageSquare,
-  },
-  {
-    title: "Notifications",
-    href: "#4",
-    icon: Bell,
-  },
-  {
     title: "Settings",
-    href: "#5",
+    href: "#4",
     icon: Settings,
   },
 ];
