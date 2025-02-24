@@ -1,6 +1,17 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { ProfileSidebar } from "@/features/profile/profile-sidebar";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Profile | Postuly",
+  description: "Manage your professional profile, CV, and job applications.",
+  openGraph: {
+    title: "Profile | Postuly",
+    description: "Manage your professional profile, CV, and job applications.",
+    type: "profile",
+  },
+};
 
 export default function ProfileLayout({
   children,

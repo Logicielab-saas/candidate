@@ -54,7 +54,10 @@ export function ProfileSidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <nav className="hidden md:block w-64 space-y-1">
+      <nav
+        className="hidden md:block w-64 space-y-1"
+        aria-label="Profile navigation"
+      >
         {sidebarItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
@@ -70,6 +73,7 @@ export function ProfileSidebar() {
                   ? "bg-primary/10 text-primary font-semibold before:absolute relative before:inset-y-1 before:left-0 before:w-1 before:rounded-r-md before:bg-primary"
                   : "text-muted-foreground"
               )}
+              aria-current={isActive ? "page" : undefined}
             >
               <Icon
                 className={cn(
@@ -78,6 +82,7 @@ export function ProfileSidebar() {
                     ? "text-primary"
                     : "text-muted-foreground group-hover:text-primary"
                 )}
+                aria-hidden="true"
               />
               <span>{item.title}</span>
             </Link>
@@ -86,7 +91,10 @@ export function ProfileSidebar() {
       </nav>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 border-t bg-background/80 backdrop-blur-lg z-50">
+      <nav
+        className="md:hidden fixed bottom-0 left-0 right-0 border-t bg-background/80 backdrop-blur-lg z-50"
+        aria-label="Mobile navigation"
+      >
         <div className="flex items-center justify-around px-2 py-2">
           {mobileNavItems.map((item) => {
             const isActive = pathname === item.href;
