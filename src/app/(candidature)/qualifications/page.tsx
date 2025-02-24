@@ -1,5 +1,5 @@
 import { QualificationsContainer } from "@/features/(profile)/components/qualifications/QualificationsContainer";
 
-export function QualificationsPage() {
+export default function QualificationsPage() {
   return <QualificationsContainer />;
 }

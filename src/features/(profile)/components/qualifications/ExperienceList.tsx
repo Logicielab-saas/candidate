@@ -1,0 +1,79 @@
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Pencil, Trash2 } from "lucide-react";
+
+interface Experience {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  startDate: string;
+  endDate?: string;
+  current: boolean;
+  description: string;
+}
+
+interface ExperienceListProps {
+  experiences: Experience[];
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+}
+
+export function ExperienceList({
+  experiences,
+  onEdit,
+  onDelete,
+}: ExperienceListProps) {
+  if (!experiences?.length) {
+    return (
+      <div className="text-center text-muted-foreground py-8">
+        Aucune expérience professionnelle ajoutée
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {experiences.map((experience) => (
+        <div
+          key={experience.id}
+          className="flex items-start justify-between border rounded-lg p-4"
+        >
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <h3 className="font-medium">{experience.title}</h3>
+              {experience.current && (
+                <Badge variant="secondary">En cours</Badge>
+              )}
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {experience.company} • {experience.location}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {experience.startDate} -{" "}
+              {experience.current ? "Présent" : experience.endDate}
+            </p>
+            <p className="text-sm mt-2">{experience.description}</p>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => onEdit(experience.id)}
+            >
+              <Pencil className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => onDelete(experience.id)}
+              className="text-destructive"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
