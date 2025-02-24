@@ -1,7 +1,11 @@
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { HideJobDetailsDialog } from "./HideJobDetailsDialog";
 
 export function ProfilePreferencesSection() {
+  const [showHideDetailsDialog, setShowHideDetailsDialog] = useState(false);
+
   return (
     <div className="space-y-6">
       <h3 className="text-lg font-medium">Préférences</h3>
@@ -23,11 +27,11 @@ export function ProfilePreferencesSection() {
         </Link>
 
         {/* Hidden Job Details */}
-        <Link
-          href="/profile/preferences/hidden"
-          className="flex items-center justify-between py-4 hover:bg-muted/50 transition-colors"
+        <button
+          onClick={() => setShowHideDetailsDialog(true)}
+          className="w-full flex items-center justify-between py-4 hover:bg-muted/50 transition-colors"
         >
-          <div className="space-y-1">
+          <div className="space-y-1 text-left">
             <h4 className="text-base font-medium">
               Masquer les emplois avec ces détails
             </h4>
@@ -37,7 +41,7 @@ export function ProfilePreferencesSection() {
             </p>
           </div>
           <ChevronRight className="h-5 w-5 text-muted-foreground" />
-        </Link>
+        </button>
 
         {/* Availability Status */}
         <Link
@@ -54,6 +58,11 @@ export function ProfilePreferencesSection() {
           <ChevronRight className="h-5 w-5 text-muted-foreground" />
         </Link>
       </div>
+
+      <HideJobDetailsDialog
+        open={showHideDetailsDialog}
+        onOpenChange={setShowHideDetailsDialog}
+      />
     </div>
   );
 }
