@@ -13,6 +13,9 @@ import {
   XCircle,
   Ban,
   ThumbsUp,
+  ExternalLink,
+  Archive,
+  AlertTriangle,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -214,13 +217,30 @@ export function SentApplicationItem({
                 <MoreVertical className="h-5 w-5" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem asChild>
-                <a href={jobUrl} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={jobUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2"
+                >
+                  <ExternalLink className="h-4 w-4" />
                   Voir les détails
                 </a>
               </DropdownMenuItem>
-              <DropdownMenuItem>Archiver</DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2">
+                <Archive className="h-4 w-4" />
+                Archiver
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2 text-destructive">
+                <XCircle className="h-4 w-4" />
+                Retirer la candidature
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2 text-destructive">
+                <AlertTriangle className="h-4 w-4" />
+                Signaler l&apos;offre d&apos;emploi
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -120,7 +120,7 @@ export function SavedJobItem({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem asChild>
+              <DropdownMenuItem asChild className="text-destructive">
                 <a href={jobUrl} target="_blank" rel="noopener noreferrer">
                   Signaler l&apos;offre d&apos;emploi
                 </a>
