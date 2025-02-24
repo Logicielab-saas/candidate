@@ -30,6 +30,7 @@ import { statusStyles } from "@/core/styles/status-styles.style";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { UpdateStatusDialog } from "./UpdateStatusDialog";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface SentApplicationItemProps
   extends Pick<
@@ -135,16 +136,26 @@ export function SentApplicationItem({
   const statusInfo = getStatusInfo();
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3 }}
+    >
       <div className="py-4 flex items-start justify-between group">
         <div className="space-y-3">
           <div className="flex items-center gap-3">
-            <Avatar className="h-10 w-10">
-              <AvatarImage alt={company.name} />
-              <AvatarFallback className="text-xs font-medium">
-                {getCompanyInitials(company.name)}
-              </AvatarFallback>
-            </Avatar>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <Avatar className="h-10 w-10">
+                <AvatarImage alt={company.name} />
+                <AvatarFallback className="text-xs font-medium">
+                  {getCompanyInitials(company.name)}
+                </AvatarFallback>
+              </Avatar>
+            </motion.div>
             <a
               href={jobUrl}
               target="_blank"
@@ -168,12 +179,21 @@ export function SentApplicationItem({
               <Calendar className="h-4 w-4" />
               <span>Candidature envoyée le {formatDate(applyTime)}</span>
             </div>
-            <div className="mt-2">
-              <div className={cn(statusStyles.base, statusInfo.style)}>
-                {statusInfo.icon}
-                <span>{statusInfo.label}</span>
-              </div>
-            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={statuses.candidateStatus.status}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.2 }}
+                className="mt-2"
+              >
+                <div className={cn(statusStyles.base, statusInfo.style)}>
+                  {statusInfo.icon}
+                  <span>{statusInfo.label}</span>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 
@@ -184,9 +204,7 @@ export function SentApplicationItem({
             open={isUpdateDialogOpen}
             onOpenChange={setIsUpdateDialogOpen}
             trigger={
-              <Button variant="outline" disabled={jobExpired}>
-                Mettre à jour le statut
-              </Button>
+              <Button disabled={jobExpired}>Mettre à jour le statut</Button>
             }
           />
 
@@ -208,6 +226,6 @@ export function SentApplicationItem({
         </div>
       </div>
       <Separator />
-    </>
+    </motion.div>
   );
 }

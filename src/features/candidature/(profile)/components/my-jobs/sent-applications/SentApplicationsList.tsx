@@ -3,6 +3,7 @@
 import { SentApplicationItem } from "./SentApplicationItem";
 import type { Job, CandidateStatus } from "@/core/types/job";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // This would typically come from your API/state management
 const initialMockSentApplications: Job[] = [
@@ -10,7 +11,7 @@ const initialMockSentApplications: Job[] = [
     jobTitle:
       "Offre de Stage PFE ou Pré-Embauche – Développement Web et Maintenance Applicative",
     jobKey: "1",
-    jobUrl: "https://ma.indeed.com/viewjob?jk=1",
+    jobUrl: "#",
     company: {
       name: "AB&MM Centre d'affaire",
     },
@@ -42,7 +43,7 @@ const initialMockSentApplications: Job[] = [
   {
     jobTitle: "Développeur full stack",
     jobKey: "2",
-    jobUrl: "https://ma.indeed.com/viewjob?jk=2",
+    jobUrl: "#",
     company: {
       name: "Vinca digital",
     },
@@ -74,7 +75,7 @@ const initialMockSentApplications: Job[] = [
   {
     jobTitle: "Offre de stage PFE développeur Flutter",
     jobKey: "3",
-    jobUrl: "https://ma.indeed.com/viewjob?jk=3",
+    jobUrl: "#",
     company: {
       name: "Logiciel Lab",
     },
@@ -106,7 +107,7 @@ const initialMockSentApplications: Job[] = [
   {
     jobTitle: "Développeur React.js / Node.js",
     jobKey: "4",
-    jobUrl: "https://ma.indeed.com/viewjob?jk=4",
+    jobUrl: "#",
     company: {
       name: "MyTeam Solution",
     },
@@ -137,6 +138,16 @@ const initialMockSentApplications: Job[] = [
   },
 ];
 
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
 export function SentApplicationsList() {
   const [applications, setApplications] = useState(initialMockSentApplications);
 
@@ -166,21 +177,28 @@ export function SentApplicationsList() {
   };
 
   return (
-    <div className="divide-y divide-border">
-      {applications.map((job) => (
-        <SentApplicationItem
-          key={job.jobKey}
-          jobId={job.jobKey}
-          jobTitle={job.jobTitle}
-          company={job.company}
-          location={job.location}
-          applyTime={job.applyTime}
-          jobExpired={job.jobExpired}
-          jobUrl={job.jobUrl}
-          statuses={job.statuses}
-          onUpdateStatus={handleUpdateStatus}
-        />
-      ))}
-    </div>
+    <motion.div
+      variants={container}
+      initial="hidden"
+      animate="show"
+      className="divide-y divide-border"
+    >
+      <AnimatePresence mode="wait">
+        {applications.map((job) => (
+          <SentApplicationItem
+            key={job.jobKey}
+            jobId={job.jobKey}
+            jobTitle={job.jobTitle}
+            company={job.company}
+            location={job.location}
+            applyTime={job.applyTime}
+            jobExpired={job.jobExpired}
+            jobUrl={job.jobUrl}
+            statuses={job.statuses}
+            onUpdateStatus={handleUpdateStatus}
+          />
+        ))}
+      </AnimatePresence>
+    </motion.div>
   );
 }
