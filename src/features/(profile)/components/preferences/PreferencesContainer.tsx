@@ -6,6 +6,7 @@ import { MinSalarySection } from "./MinSalarySection";
 import { JobTypesSection } from "./JobTypesSection";
 import { RelocationSection } from "./RelocationSection";
 import { PreferenceSection } from "./PreferenceSection";
+import { useState } from "react";
 
 export const metadata: Metadata = {
   title: "Préférences d'emploi | Mon Profil",
@@ -27,6 +28,8 @@ export const metadata: Metadata = {
 };
 
 export function PreferencesContainer() {
+  const [hasRelocation, setHasRelocation] = useState(false);
+
   return (
     <div className="space-y-6">
       <PreferenceSection title="Intitulés de poste">
@@ -41,8 +44,8 @@ export function PreferencesContainer() {
         <JobTypesSection />
       </PreferenceSection>
 
-      <PreferenceSection title="Relocalisation">
-        <RelocationSection />
+      <PreferenceSection title="Relocalisation" showAddButton={!hasRelocation}>
+        <RelocationSection onDataChange={setHasRelocation} />
       </PreferenceSection>
     </div>
   );
