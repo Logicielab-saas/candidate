@@ -42,63 +42,58 @@ export function ExperienceList() {
     setExperiences([newExperience, ...experiences]);
   };
 
-  if (!experiences?.length) {
-    return (
-      <>
+  return (
+    <>
+      {!experiences?.length ? (
         <div className="text-center text-muted-foreground py-8">
           Aucune expérience professionnelle ajoutée
         </div>
-        <button className="hidden" data-add-button onClick={handleAdd} />
-      </>
-    );
-  }
-
-  return (
-    <>
-      <div className="space-y-4">
-        {experiences.map((experience) => (
-          <div
-            key={experience.id}
-            className="flex items-start justify-between border rounded-lg p-4"
-          >
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <h3 className="font-medium">{experience.title}</h3>
-                {experience.current && (
-                  <Badge variant="secondary">En cours</Badge>
-                )}
+      ) : (
+        <div className="space-y-4">
+          {experiences.map((experience) => (
+            <div
+              key={experience.id}
+              className="flex items-start justify-between border rounded-lg p-4"
+            >
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-medium">{experience.title}</h3>
+                  {experience.current && (
+                    <Badge variant="secondary">En cours</Badge>
+                  )}
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  {experience.company} • {experience.location}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {experience.startDate} -{" "}
+                  {experience.current ? "Présent" : experience.endDate}
+                </p>
+                <p className="text-sm mt-2">{experience.description}</p>
               </div>
-              <p className="text-sm text-muted-foreground">
-                {experience.company} • {experience.location}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {experience.startDate} -{" "}
-                {experience.current ? "Présent" : experience.endDate}
-              </p>
-              <p className="text-sm mt-2">{experience.description}</p>
+              <div className="flex gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleEdit(experience.id)}
+                >
+                  <Pencil className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleDelete(experience)}
+                  className="text-destructive"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
-            <div className="flex gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleEdit(experience.id)}
-              >
-                <Pencil className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleDelete(experience)}
-                className="text-destructive"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
-      <button className="hidden" data-add-button onClick={handleAdd} />
+      <Button data-add-button onClick={handleAdd} className="sr-only" />
 
       <AddExperienceDialog
         open={isAddExperienceOpen}
