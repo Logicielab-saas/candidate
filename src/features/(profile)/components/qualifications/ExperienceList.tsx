@@ -7,6 +7,7 @@ import { useState } from "react";
 import { type Experience } from "@/core/types/experience";
 import { AddExperienceDialog } from "./dialogs/add/AddExperienceDialog";
 import { DeleteExperienceDialog } from "./dialogs/delete/DeleteExperienceDialog";
+import { EditExperienceDialog } from "./dialogs/edit/EditExperienceDialog";
 import { mockQualifications } from "@/core/mockData/qualifications";
 
 export function ExperienceList() {
@@ -16,13 +17,16 @@ export function ExperienceList() {
   const [isAddExperienceOpen, setIsAddExperienceOpen] = useState(false);
   const [experienceToDelete, setExperienceToDelete] =
     useState<Experience | null>(null);
+  const [experienceToEdit, setExperienceToEdit] = useState<Experience | null>(
+    null
+  );
 
   const handleAdd = () => {
     setIsAddExperienceOpen(true);
   };
 
-  const handleEdit = (id: string) => {
-    console.log("Edit experience", id);
+  const handleEdit = (experience: Experience) => {
+    setExperienceToEdit(experience);
   };
 
   const handleDelete = (experience: Experience) => {
@@ -40,6 +44,19 @@ export function ExperienceList() {
       id: crypto.randomUUID(),
     };
     setExperiences([newExperience, ...experiences]);
+  };
+
+  const handleEditSubmit = (id: string, values: Omit<Experience, "id">) => {
+    setExperiences(
+      experiences.map((exp) =>
+        exp.id === id
+          ? {
+              ...values,
+              id,
+            }
+          : exp
+      )
+    );
   };
 
   return (
@@ -75,7 +92,7 @@ export function ExperienceList() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => handleEdit(experience.id)}
+                  onClick={() => handleEdit(experience)}
                 >
                   <Pencil className="h-4 w-4" />
                 </Button>
@@ -93,7 +110,7 @@ export function ExperienceList() {
         </div>
       )}
 
-      <Button data-add-button onClick={handleAdd} className="sr-only" />
+      <button data-add-button onClick={handleAdd} className="sr-only" />
 
       <AddExperienceDialog
         open={isAddExperienceOpen}
@@ -107,6 +124,15 @@ export function ExperienceList() {
           onOpenChange={(open) => !open && setExperienceToDelete(null)}
           onConfirm={handleConfirmDelete}
           experience={experienceToDelete}
+        />
+      )}
+
+      {experienceToEdit && (
+        <EditExperienceDialog
+          open={!!experienceToEdit}
+          onOpenChange={(open) => !open && setExperienceToEdit(null)}
+          onSubmit={handleEditSubmit}
+          experience={experienceToEdit}
         />
       )}
     </>
