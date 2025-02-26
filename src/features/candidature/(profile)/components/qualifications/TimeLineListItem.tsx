@@ -1,49 +1,64 @@
 import React from "react";
 import { Experience } from "@/core/types/experience";
+import { Education } from "@/core/types/education";
 import CircleLineWrapper from "./CircleLineWrapper";
 import { Button } from "@/components/ui/button";
 import { PencilIcon, Trash } from "lucide-react";
 
 interface TimeLineListItemProps {
-  experience: Experience;
-  onEdit: (experience: Experience) => void;
+  data: Experience | Education;
+  onEdit: (data: Experience | Education) => void;
   onDelete: (id: string) => void;
 }
 
-const TimeLineListItem: React.FC<TimeLineListItemProps> = ({
-  experience,
+export default function TimeLineListItem({
+  data,
   onEdit,
   onDelete,
-}) => {
+}: TimeLineListItemProps) {
   return (
     <CircleLineWrapper>
       <h4 className="text-base font-bold flex justify-between items-center">
-        {experience.title}
+        {"title" in data
+          ? (data as Experience).title
+          : (data as Education).degree}
         <div className="flex ">
           <Button
             variant="ghost"
             className="cursor-pointer text-primaryHex-600 hover:bg-primaryHex-100 hover:text-primaryHex-600"
-            onClick={() => onEdit(experience)}
+            onClick={() => onEdit(data)}
           >
             <PencilIcon className="w-4 h-4" />
           </Button>
           <Button
             variant="ghost"
             className="cursor-pointer text-red-600 hover:bg-red-100 hover:text-red-600"
-            onClick={() => onDelete(experience.id)}
+            onClick={() => onDelete(data.id)}
           >
             <Trash className="w-4 h-4" />
           </Button>
         </div>
       </h4>
-      <p className="text-gray-600">{experience.company}</p>
-      <p className="text-gray-500">
-        {experience.startDate} -{" "}
-        {experience.endDate ? experience.endDate : "Present"}
+      <p className="text-gray-600">
+        {"company" in data
+          ? (data as Experience).company
+          : (data as Education).school}
       </p>
-      <p className="mt-2">{experience.description}</p>
+      <p>{"field" in data ? (data as Education).field : ""}</p>
+      <p className="text-gray-500">
+        {"startDate" in data
+          ? (data as Experience).startDate
+          : (data as Education).startDate}{" "}
+        -{" "}
+        {"endDate" in data
+          ? (data as Experience).endDate
+            ? (data as Experience).endDate
+            : "Present"
+          : (data as Education).endDate
+          ? (data as Education).endDate
+          : "Present"}
+      </p>
+      <p className="mt-2">{data.description}</p>
     </CircleLineWrapper>
   );
-};
-
-export default TimeLineListItem;
+}

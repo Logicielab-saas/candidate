@@ -1,139 +1,85 @@
-"use client";
-
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
-import { useState } from "react";
-import { type Education } from "@/core/types/education";
-import { mockQualifications } from "@/core/mockData/qualifications";
+import React, { useState } from "react";
+import { Education } from "@/core/types/education";
+import { Briefcase } from "lucide-react";
 import { AddEducationDialog } from "./dialogs/add/AddEducationDialog";
 import { EditEducationDialog } from "./dialogs/edit/EditEducationDialog";
 import { DeleteEducationDialog } from "./dialogs/delete/DeleteEducationDialog";
+import TimeLineListItem from "./TimeLineListItem";
+import { SectionHeader } from "./SectionHeader";
+import { mockQualifications } from "@/core/mockData/qualifications";
 
 export function EducationList() {
-  const [education, setEducation] = useState<Education[]>(
+  const [educations, setEducations] = useState<Education[]>(
     mockQualifications.education
   );
-  const [isAddEducationOpen, setIsAddEducationOpen] = useState(false);
-  const [educationToEdit, setEducationToEdit] = useState<Education | null>(
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedEducation, setSelectedEducation] = useState<Education | null>(
     null
   );
-  const [educationToDelete, setEducationToDelete] = useState<Education | null>(
-    null
-  );
 
-  const handleAdd = () => {
-    setIsAddEducationOpen(true);
+  const handleAddEducation = (newEducation: Omit<Education, "id">) => {
+    const newId = (educations.length + 1).toString(); // Simple ID generation
+    const educationToAdd = { ...newEducation, id: newId };
+    setEducations((prev) => [...prev, educationToAdd]);
   };
 
-  const handleEdit = (education: Education) => {
-    setEducationToEdit(education);
-  };
-
-  const handleDelete = (education: Education) => {
-    setEducationToDelete(education);
-  };
-
-  const handleConfirmDelete = (id: string) => {
-    setEducation(education.filter((edu) => edu.id !== id));
-    setEducationToDelete(null);
-  };
-
-  const handleSubmit = (values: Omit<Education, "id">) => {
-    const newEducation: Education = {
-      ...values,
-      id: crypto.randomUUID(),
-    };
-    setEducation([newEducation, ...education]);
-  };
-
-  const handleEditSubmit = (id: string, values: Omit<Education, "id">) => {
-    setEducation(
-      education.map((edu) =>
-        edu.id === id
-          ? {
-              ...values,
-              id,
-            }
-          : edu
-      )
+  const handleEditEducation = (
+    id: string,
+    updatedEducation: Omit<Education, "id">
+  ) => {
+    setEducations((prev) =>
+      prev.map((edu) => (edu.id === id ? { ...edu, ...updatedEducation } : edu))
     );
   };
 
+  const handleDeleteEducation = (id: string) => {
+    setEducations((prev) => prev.filter((edu) => edu.id !== id));
+  };
+
   return (
-    <>
-      {!education?.length ? (
-        <div className="text-center text-muted-foreground py-8">
-          Aucune formation ajoutée
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {education.map((edu) => (
-            <div
-              key={edu.id}
-              className="flex items-start justify-between border rounded-lg p-4"
-            >
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-medium">{edu.degree}</h3>
-                  {edu.current && <Badge variant="secondary">En cours</Badge>}
-                </div>
-                <p className="text-sm text-muted-foreground">{edu.school}</p>
-                <p className="text-sm text-muted-foreground">{edu.field}</p>
-                <p className="text-sm text-muted-foreground">
-                  {edu.startDate} - {edu.current ? "Présent" : edu.endDate}
-                </p>
-                {edu.description && (
-                  <p className="text-sm mt-2">{edu.description}</p>
-                )}
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleEdit(edu)}
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleDelete(edu)}
-                  className="text-destructive"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      <button data-add-button onClick={handleAdd} className="sr-only" />
-
-      <AddEducationDialog
-        open={isAddEducationOpen}
-        onOpenChange={setIsAddEducationOpen}
-        onSubmit={handleSubmit}
+    <div className="border p-4 rounded-lg shadow-sm">
+      <SectionHeader
+        title="Éducation"
+        icon={<Briefcase className="w-6 h-6 text-primaryHex-400 mr-2" />}
+        onAdd={() => setDialogOpen(true)}
       />
-
-      {educationToEdit && (
-        <EditEducationDialog
-          open={!!educationToEdit}
-          onOpenChange={(open) => !open && setEducationToEdit(null)}
-          onSubmit={handleEditSubmit}
-          education={educationToEdit}
-        />
-      )}
-
-      {educationToDelete && (
+      <div className="space-y-0">
+        {educations.map((edu) => (
+          <TimeLineListItem
+            key={edu.id}
+            data={edu}
+            onEdit={(education) => {
+              setSelectedEducation(education as Education);
+              setEditDialogOpen(true);
+            }}
+            onDelete={(_id) => {
+              setSelectedEducation(edu);
+              setDeleteDialogOpen(true);
+            }}
+          />
+        ))}
+      </div>
+      <AddEducationDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onSubmit={handleAddEducation}
+      />
+      <EditEducationDialog
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
+        onSubmit={handleEditEducation}
+        education={selectedEducation as Education}
+      />
+      {deleteDialogOpen && selectedEducation && (
         <DeleteEducationDialog
-          open={!!educationToDelete}
-          onOpenChange={(open) => !open && setEducationToDelete(null)}
-          onConfirm={handleConfirmDelete}
-          education={educationToDelete}
+          open={deleteDialogOpen}
+          onOpenChange={setDeleteDialogOpen}
+          onConfirm={handleDeleteEducation}
+          education={selectedEducation}
         />
       )}
-    </>
+    </div>
   );
 }

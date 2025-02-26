@@ -55,9 +55,9 @@ export function WorkExperienceList({
         {experiences.map((exp) => (
           <TimeLineListItem
             key={exp.id}
-            experience={exp}
+            data={exp}
             onEdit={(experience) => {
-              setSelectedExperience(experience);
+              setSelectedExperience(experience as Experience);
               setEditDialogOpen(true);
             }}
             onDelete={(_id) => {
