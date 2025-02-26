@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Experience } from "@/core/types/experience";
-import { Briefcase, Plus, Trash, PencilIcon } from "lucide-react";
+import { Briefcase } from "lucide-react";
 import { AddExperienceDialog } from "./dialogs/add/AddExperienceDialog";
 import { EditExperienceDialog } from "./dialogs/edit/EditExperienceDialog";
 import { DeleteExperienceDialog } from "./dialogs/delete/DeleteExperienceDialog";
-import { Button } from "@/components/ui/button";
+
+import TimeLineListItem from "./TimeLineListItem";
+import { SectionHeader } from "./SectionHeader";
 
 interface WorkExperienceListProps {
   initialExperiences: Experience[];
@@ -44,61 +46,25 @@ export function WorkExperienceList({
 
   return (
     <div className="border p-4 rounded-lg shadow-sm">
-      <h2 className="text-xl font-semibold mb-4 flex items-center justify-between">
-        <span className="flex items-center">
-          <Briefcase className="mr-2 text-primaryHex-400 w-6 h-6" />
-          Expériences professionnelles
-        </span>
-        <span
-          className="text-primaryHex-600 font-bold rounded-full p-2 bg-primaryHex-100 hover:bg-primaryHex-200 cursor-pointer"
-          onClick={() => setDialogOpen(true)}
-        >
-          <Plus className="w-5 h-5" />
-        </span>
-      </h2>
+      <SectionHeader
+        title="Expériences professionnelles"
+        icon={<Briefcase className="w-6 h-6 text-primaryHex-400 mr-2" />}
+        onAdd={() => setDialogOpen(true)}
+      />
       <div className="space-y-0">
         {experiences.map((exp) => (
-          <div
+          <TimeLineListItem
             key={exp.id}
-            className="relative flex flex-col items-start w-full pl-2"
-          >
-            <div
-              className="absolute w-4 h-4 bg-primaryHex-500 rounded-full"
-              style={{ left: "0.5px" }}
-            ></div>
-            <div className="border-l-2 border-primaryHex-400 pl-5 w-full mt-2">
-              <h4 className="text-base font-bold flex justify-between items-center">
-                {exp.title}
-                <div className="flex ">
-                  <Button
-                    variant="ghost"
-                    className="cursor-pointer text-primaryHex-600 hover:bg-primaryHex-100 hover:text-primaryHex-600"
-                    onClick={() => {
-                      setSelectedExperience(exp);
-                      setEditDialogOpen(true);
-                    }}
-                  >
-                    <PencilIcon className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="cursor-pointer text-red-600 hover:bg-red-100 hover:text-red-600"
-                    onClick={() => {
-                      setSelectedExperience(exp);
-                      setDeleteDialogOpen(true);
-                    }}
-                  >
-                    <Trash className="w-4 h-4" />
-                  </Button>
-                </div>
-              </h4>
-              <p className="text-gray-600">{exp.company}</p>
-              <p className="text-gray-500">
-                {exp.startDate} - {exp.endDate ? exp.endDate : "Present"}
-              </p>
-              <p className="mt-2">{exp.description}</p>
-            </div>
-          </div>
+            experience={exp}
+            onEdit={(experience) => {
+              setSelectedExperience(experience);
+              setEditDialogOpen(true);
+            }}
+            onDelete={(_id) => {
+              setSelectedExperience(exp);
+              setDeleteDialogOpen(true);
+            }}
+          />
         ))}
       </div>
       <AddExperienceDialog
