@@ -1,13 +1,14 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+import { Globe } from "lucide-react";
 import { useState } from "react";
 import { type Language } from "@/core/types/language";
 import { mockQualifications } from "@/core/mockData/qualifications";
 import { AddLanguageDialog } from "./dialogs/add/AddLanguageDialog";
 import { DeleteLanguageDialog } from "./dialogs/delete/DeleteLanguageDialog";
 import { EditLanguageDialog } from "./dialogs/edit/EditLanguageDialog";
+import { TagListItem } from "./TagListItem";
+import { SectionHeader } from "./SectionHeader";
 
 export function LanguagesList() {
   const [languages, setLanguages] = useState<Language[]>(
@@ -23,12 +24,12 @@ export function LanguagesList() {
     setIsAddLanguageOpen(true);
   };
 
-  const handleEdit = (language: Language) => {
-    setLanguageToEdit(language);
+  const handleEdit = (id: string) => {
+    setLanguageToEdit(languages.find((lang) => lang.id === id) || null);
   };
 
-  const handleDelete = (language: Language) => {
-    setLanguageToDelete(language);
+  const handleDelete = (id: string) => {
+    setLanguageToDelete(languages.find((lang) => lang.id === id) || null);
   };
 
   const handleConfirmDelete = (id: string) => {
@@ -69,40 +70,20 @@ export function LanguagesList() {
   }
 
   return (
-    <>
-      <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border rounded-lg p-2">
+    <div className="border p-4 rounded-lg shadow-sm">
+      <SectionHeader
+        title="Languages"
+        icon={<Globe className="w-6 h-6 text-primaryHex-400 mr-2" />}
+        onAdd={() => setIsAddLanguageOpen(true)}
+      />
+      <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 p-2">
         {languages.map((lang) => (
-          <div
+          <TagListItem
             key={lang.id}
-            className="group flex items-center justify-between hover:bg-accent/50 transition-colors rounded-lg px-3 py-2"
-          >
-            <div className="min-w-0 flex-1">
-              <span className="font-medium truncate block">{lang.name}</span>
-              {lang.level && (
-                <span className="text-xs text-muted-foreground truncate block">
-                  {lang.level}
-                </span>
-              )}
-            </div>
-            <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleEdit(lang)}
-                className="h-7 w-7"
-              >
-                <Pencil className="h-3.5 w-3.5" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleDelete(lang)}
-                className="h-7 w-7 text-destructive"
-              >
-                <Trash2 className="h-3.5 w-3.5" />
-              </Button>
-            </div>
-          </div>
+            skill={lang}
+            onDelete={handleDelete}
+            onEdit={handleEdit}
+          />
         ))}
       </div>
 
@@ -131,6 +112,6 @@ export function LanguagesList() {
           language={languageToDelete}
         />
       )}
-    </>
+    </div>
   );
 }

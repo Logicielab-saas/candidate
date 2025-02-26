@@ -8,14 +8,19 @@ import { AddSkillDialog } from "./dialogs/add/AddSkillDialog";
 import { DeleteSkillDialog } from "./dialogs/delete/DeleteSkillDialog";
 import { SectionHeader } from "./SectionHeader";
 import { TagListItem } from "./TagListItem";
+import { EditSkillDialog } from "./dialogs/edit/EditSkillDialog";
 
 export function SkillsList() {
   const [skills, setSkills] = useState<Skill[]>(mockQualifications.skills);
   const [isAddSkillOpen, setIsAddSkillOpen] = useState(false);
   const [skillToDelete, setSkillToDelete] = useState<Skill | null>(null);
-
+  const [skillToEdit, setSkillToEdit] = useState<Skill | null>(null);
   const handleAdd = () => {
     setIsAddSkillOpen(true);
+  };
+
+  const handleEdit = (id: string) => {
+    setSkillToEdit(skills.find((skill) => skill.id === id) || null);
   };
 
   const handleDelete = (id: string) => {
@@ -33,6 +38,14 @@ export function SkillsList() {
       id: crypto.randomUUID(),
     };
     setSkills([newSkill, ...skills]);
+  };
+
+  const handleEditSubmit = (id: string, values: Omit<Skill, "id">) => {
+    const updatedSkills = skills.map((skill) =>
+      skill.id === id ? { ...values, id: skill.id } : skill
+    );
+    setSkills(updatedSkills);
+    setSkillToEdit(null);
   };
 
   if (!skills?.length) {
@@ -53,9 +66,14 @@ export function SkillsList() {
         icon={<Star className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={() => setIsAddSkillOpen(true)}
       />
-      <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 p-2">
+      <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 p-2">
         {skills.map((skill) => (
-          <TagListItem key={skill.id} skill={skill} onDelete={handleDelete} />
+          <TagListItem
+            key={skill.id}
+            skill={skill}
+            onDelete={handleDelete}
+            onEdit={handleEdit}
+          />
         ))}
       </div>
 
@@ -71,6 +89,15 @@ export function SkillsList() {
           onOpenChange={(open) => !open && setSkillToDelete(null)}
           onConfirm={handleConfirmDelete}
           skill={skillToDelete}
+        />
+      )}
+
+      {skillToEdit && (
+        <EditSkillDialog
+          open={!!skillToEdit}
+          onOpenChange={(open) => !open && setSkillToEdit(null)}
+          onSubmit={handleEditSubmit}
+          skill={skillToEdit}
         />
       )}
     </div>

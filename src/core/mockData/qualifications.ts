@@ -99,17 +99,17 @@ export const mockQualifications: QualificationsData = {
 		{
 			id: '1',
 			name: 'Français',
-			level: 'Natif'
+			level: 'Basic'
 		},
 		{
 			id: '2',
 			name: 'Anglais',
-			level: 'C1'
+			level: 'Conversational'
 		},
 		{
 			id: '3',
 			name: 'Espagnol',
-			level: 'C2'
+			level: 'Fluent'
 		}
 	],
 	projects: [

@@ -24,11 +24,17 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { type Language } from "@/core/types/language";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Select, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectItem,
+  SelectContent,
+  SelectValue,
+  SelectTrigger,
+} from "@/components/ui/select";
 
 const languageFormSchema = z.object({
   name: z.string().min(1, "Le nom de la langue est requis"),
-  level: z.enum(["A1", "A2", "B1", "B2", "C1", "C2", "Natif"]),
+  level: z.enum(["Basic", "Conversational", "Proficient", "Fluent"]),
 });
 
 type LanguageFormValues = z.infer<typeof languageFormSchema>;
@@ -49,7 +55,7 @@ export function AddLanguageDialog({
     resolver: zodResolver(languageFormSchema),
     defaultValues: {
       name: "",
-      level: "A1",
+      level: "Basic",
     },
   });
 
@@ -107,14 +113,21 @@ export function AddLanguageDialog({
                   <FormItem>
                     <FormLabel>Niveau</FormLabel>
                     <FormControl>
-                      <Select {...field}>
-                        <SelectItem value="A1">A1</SelectItem>
-                        <SelectItem value="A2">A2</SelectItem>
-                        <SelectItem value="B1">B1</SelectItem>
-                        <SelectItem value="B2">B2</SelectItem>
-                        <SelectItem value="C1">C1</SelectItem>
-                        <SelectItem value="C2">C2</SelectItem>
-                        <SelectItem value="Natif">Natif</SelectItem>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sélectionnez un niveau" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Basic">Basic</SelectItem>
+                          <SelectItem value="Conversational">
+                            Conversational
+                          </SelectItem>
+                          <SelectItem value="Proficient">Proficient</SelectItem>
+                          <SelectItem value="Fluent">Fluent</SelectItem>
+                        </SelectContent>
                       </Select>
                     </FormControl>
                     <FormMessage />
