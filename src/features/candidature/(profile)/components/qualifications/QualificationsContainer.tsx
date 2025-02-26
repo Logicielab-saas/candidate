@@ -44,11 +44,11 @@ export function QualificationsContainer() {
       </QualificationSection>
 
       <QualificationSection>
-        <SkillsList />
+        <CertificationsList />
       </QualificationSection>
 
       <QualificationSection>
-        <CertificationsList />
+        <SkillsList />
       </QualificationSection>
 
       <QualificationSection>

@@ -1,13 +1,14 @@
 import React from "react";
 import { Experience } from "@/core/types/experience";
 import { Education } from "@/core/types/education";
+import { Certification } from "@/core/types/certification";
 import CircleLineWrapper from "./CircleLineWrapper";
 import { Button } from "@/components/ui/button";
 import { PencilIcon, Trash } from "lucide-react";
 
 interface TimeLineListItemProps {
-  data: Experience | Education;
-  onEdit: (data: Experience | Education) => void;
+  data: Experience | Education | Certification;
+  onEdit: (data: Experience | Education | Certification) => void;
   onDelete: (id: string) => void;
 }
 
@@ -21,7 +22,9 @@ export default function TimeLineListItem({
       <h4 className="text-base font-bold flex justify-between items-center">
         {"title" in data
           ? (data as Experience).title
-          : (data as Education).degree}
+          : "degree" in data
+          ? (data as Education).degree
+          : (data as Certification).name}
         <div className="flex ">
           <Button
             variant="ghost"
@@ -42,21 +45,21 @@ export default function TimeLineListItem({
       <p className="text-gray-600">
         {"company" in data
           ? (data as Experience).company
-          : (data as Education).school}
+          : "school" in data
+          ? (data as Education).school
+          : ""}
       </p>
-      <p>{"field" in data ? (data as Education).field : ""}</p>
       <p className="text-gray-500">
         {"startDate" in data
           ? (data as Experience).startDate
+          : "issueDate" in data
+          ? (data as Certification).issueDate
           : (data as Education).startDate}{" "}
-        -{" "}
         {"endDate" in data
-          ? (data as Experience).endDate
-            ? (data as Experience).endDate
-            : "Present"
-          : (data as Education).endDate
-          ? (data as Education).endDate
-          : "Present"}
+          ? " - " + (data as Experience).endDate
+          : "issueDate" in data
+          ? ""
+          : "- Present"}
       </p>
       <p className="mt-2">{data.description}</p>
     </CircleLineWrapper>

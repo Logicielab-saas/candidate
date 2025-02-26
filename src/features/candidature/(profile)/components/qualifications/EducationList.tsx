@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Education } from "@/core/types/education";
-import { Briefcase } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 import { AddEducationDialog } from "./dialogs/add/AddEducationDialog";
 import { EditEducationDialog } from "./dialogs/edit/EditEducationDialog";
 import { DeleteEducationDialog } from "./dialogs/delete/DeleteEducationDialog";
@@ -42,7 +42,7 @@ export function EducationList() {
     <div className="border p-4 rounded-lg shadow-sm">
       <SectionHeader
         title="Éducation"
-        icon={<Briefcase className="w-6 h-6 text-primaryHex-400 mr-2" />}
+        icon={<GraduationCap className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={() => setDialogOpen(true)}
       />
       <div className="space-y-0">
