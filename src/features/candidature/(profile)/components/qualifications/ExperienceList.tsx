@@ -80,7 +80,7 @@ export function ExperienceList() {
                   )}
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  {experience.company} • {experience.location}
+                  {experience.company}
                 </p>
                 <p className="text-sm text-muted-foreground">
                   {experience.startDate} -{" "}

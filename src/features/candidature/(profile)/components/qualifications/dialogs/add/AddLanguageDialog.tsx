@@ -24,10 +24,11 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { type Language } from "@/core/types/language";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Select, SelectItem } from "@/components/ui/select";
 
 const languageFormSchema = z.object({
   name: z.string().min(1, "Le nom de la langue est requis"),
-  certification: z.string().optional(),
+  level: z.enum(["A1", "A2", "B1", "B2", "C1", "C2", "Natif"]),
 });
 
 type LanguageFormValues = z.infer<typeof languageFormSchema>;
@@ -48,12 +49,15 @@ export function AddLanguageDialog({
     resolver: zodResolver(languageFormSchema),
     defaultValues: {
       name: "",
-      certification: "",
+      level: "A1",
     },
   });
 
   const handleSubmit = (values: LanguageFormValues) => {
-    onSubmit(values);
+    onSubmit({
+      name: values.name,
+      level: values.level,
+    });
     form.reset();
     onOpenChange(false);
     toast({
@@ -98,12 +102,20 @@ export function AddLanguageDialog({
 
               <FormField
                 control={form.control}
-                name="certification"
+                name="level"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Certification</FormLabel>
+                    <FormLabel>Niveau</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex: TOEIC 945" {...field} />
+                      <Select {...field}>
+                        <SelectItem value="A1">A1</SelectItem>
+                        <SelectItem value="A2">A2</SelectItem>
+                        <SelectItem value="B1">B1</SelectItem>
+                        <SelectItem value="B2">B2</SelectItem>
+                        <SelectItem value="C1">C1</SelectItem>
+                        <SelectItem value="C2">C2</SelectItem>
+                        <SelectItem value="Natif">Natif</SelectItem>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

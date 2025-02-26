@@ -3,7 +3,6 @@ export interface Education {
 	degree: string
 	school: string
 	field: string
-	location: string
 	startDate: string
 	endDate?: string
 	current: boolean

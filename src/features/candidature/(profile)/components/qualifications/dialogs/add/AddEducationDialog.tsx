@@ -41,7 +41,6 @@ const educationFormSchema = z.object({
   degree: z.string().min(1, "Le diplôme est requis"),
   school: z.string().min(1, "L'établissement est requis"),
   field: z.string().min(1, "Le domaine d'études est requis"),
-  location: z.string().min(1, "La localisation est requise"),
   startDate: z.date({
     required_error: "La date de début est requise",
   }),
@@ -70,7 +69,6 @@ export function AddEducationDialog({
       degree: "",
       school: "",
       field: "",
-      location: "",
       current: false,
       description: "",
     },
@@ -130,43 +128,21 @@ export function AddEducationDialog({
                 )}
               />
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <FormField
-                  control={form.control}
-                  name="school"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Établissement{" "}
-                        <span className="text-destructive">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Ex: Université de Paris"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="location"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Localisation <span className="text-destructive">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder="Ex: Paris, France" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+              <FormField
+                control={form.control}
+                name="school"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Établissement <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Ex: Université de Paris" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               <FormField
                 control={form.control}

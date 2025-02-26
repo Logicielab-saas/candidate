@@ -42,7 +42,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 const experienceFormSchema = z.object({
   title: z.string().min(1, "Le titre est requis"),
   company: z.string().min(1, "L'entreprise est requise"),
-  location: z.string().min(1, "La localisation est requise"),
   startDate: z.date({
     required_error: "La date de début est requise",
   }),
@@ -72,7 +71,6 @@ export function EditExperienceDialog({
     defaultValues: {
       title: "",
       company: "",
-      location: "",
       current: false,
       description: "",
     },
@@ -92,7 +90,6 @@ export function EditExperienceDialog({
       form.reset({
         title: experience.title,
         company: experience.company,
-        location: experience.location,
         startDate,
         endDate,
         current: experience.current,
@@ -154,42 +151,21 @@ export function EditExperienceDialog({
                 )}
               />
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <FormField
-                  control={form.control}
-                  name="company"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Entreprise <span className="text-destructive">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Ex: TechCorp Solutions"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="location"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Localisation <span className="text-destructive">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder="Ex: Paris, France" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+              <FormField
+                control={form.control}
+                name="company"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Entreprise <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Ex: TechCorp Solutions" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField

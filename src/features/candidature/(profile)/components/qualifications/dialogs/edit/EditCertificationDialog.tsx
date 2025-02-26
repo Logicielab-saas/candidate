@@ -35,16 +35,14 @@ import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Textarea } from "@/components/ui/textarea";
 
 const certificationFormSchema = z.object({
   name: z.string().min(1, "Le nom de la certification est requis"),
-  organization: z.string().min(1, "L'organisation est requise"),
   issueDate: z.date({
     required_error: "La date de délivrance est requise",
   }),
-  expiryDate: z.date().optional(),
-  credentialId: z.string().optional(),
-  credentialUrl: z.string().url("L'URL doit être valide").optional(),
+  description: z.string().optional(),
 });
 
 type CertificationFormValues = z.infer<typeof certificationFormSchema>;
@@ -67,9 +65,7 @@ export function EditCertificationDialog({
     resolver: zodResolver(certificationFormSchema),
     defaultValues: {
       name: "",
-      organization: "",
-      credentialId: "",
-      credentialUrl: "",
+      description: "",
     },
   });
 
@@ -85,19 +81,11 @@ export function EditCertificationDialog({
           locale: fr,
         }
       );
-      const expiryDate = certification.expiryDate
-        ? parse(certification.expiryDate, "MMMM yyyy", new Date(), {
-            locale: fr,
-          })
-        : undefined;
 
       form.reset({
         name: certification.name,
-        organization: certification.organization,
-        credentialId: certification.credentialId,
-        credentialUrl: certification.credentialUrl,
+        description: certification.description,
         issueDate,
-        expiryDate,
       });
     }
   }, [certification, form]);
@@ -107,9 +95,6 @@ export function EditCertificationDialog({
     const formattedValues: Omit<Certification, "id"> = {
       ...values,
       issueDate: format(values.issueDate, "MMMM yyyy", { locale: fr }),
-      expiryDate: values.expiryDate
-        ? format(values.expiryDate, "MMMM yyyy", { locale: fr })
-        : undefined,
     };
     onSubmit(certification.id, formattedValues);
     onOpenChange(false);
@@ -158,133 +143,61 @@ export function EditCertificationDialog({
 
               <FormField
                 control={form.control}
-                name="organization"
+                name="issueDate"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>
+                      Date de délivrance{" "}
+                      <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "MMMM yyyy", { locale: fr })
+                            ) : (
+                              <span>Sélectionnez une date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date) =>
+                            date > new Date() || date < new Date("1900-01-01")
+                          }
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="description"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Organisation <span className="text-destructive">*</span>
+                      Description <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex: Amazon Web Services" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <FormField
-                  control={form.control}
-                  name="issueDate"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>
-                        Date de délivrance{" "}
-                        <span className="text-destructive">*</span>
-                      </FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              className={cn(
-                                "w-full pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "MMMM yyyy", { locale: fr })
-                              ) : (
-                                <span>Sélectionnez une date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="expiryDate"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Date d&apos;expiration</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              className={cn(
-                                "w-full pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "MMMM yyyy", { locale: fr })
-                              ) : (
-                                <span>Sélectionnez une date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                              date < form.getValues("issueDate")
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <FormField
-                control={form.control}
-                name="credentialId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>ID de la certification</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Ex: AWS-DEV-123456" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="credentialUrl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>URL de vérification</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Ex: https://aws.amazon.com/verification"
-                        type="url"
+                      <Textarea
+                        placeholder="Décrivez vos responsabilités et réalisations..."
+                        className="min-h-[120px]"
                         {...field}
                       />
                     </FormControl>

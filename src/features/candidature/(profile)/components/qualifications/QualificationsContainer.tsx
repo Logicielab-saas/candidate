@@ -4,7 +4,6 @@ import { Metadata } from "next";
 import { ExperienceList } from "./ExperienceList";
 import { EducationList } from "./EducationList";
 import { SkillsList } from "./SkillsList";
-import { LicensesList } from "./LicensesList";
 import { CertificationsList } from "./CertificationsList";
 import { LanguagesList } from "./LanguagesList";
 import { QualificationSection } from "./QualificationSection";
@@ -18,7 +17,6 @@ export const metadata: Metadata = {
     "formation",
     "compétences",
     "certifications",
-    "permis",
     "langues",
     "CV",
     "profil professionnel",
@@ -44,10 +42,6 @@ export function QualificationsContainer() {
 
       <QualificationSection title="Compétences">
         <SkillsList />
-      </QualificationSection>
-
-      <QualificationSection title="Permis">
-        <LicensesList />
       </QualificationSection>
 
       <QualificationSection title="Certifications">
