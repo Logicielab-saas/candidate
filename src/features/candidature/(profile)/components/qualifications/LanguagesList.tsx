@@ -1,6 +1,6 @@
 "use client";
 
-import { Globe } from "lucide-react";
+import { Languages } from "lucide-react";
 import { useState } from "react";
 import { type Language } from "@/core/types/language";
 import { mockQualifications } from "@/core/mockData/qualifications";
@@ -73,7 +73,7 @@ export function LanguagesList() {
     <div className="border p-4 rounded-lg shadow-sm">
       <SectionHeader
         title="Languages"
-        icon={<Globe className="w-6 h-6 text-primaryHex-400 mr-2" />}
+        icon={<Languages className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={() => setIsAddLanguageOpen(true)}
       />
       <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 p-2">

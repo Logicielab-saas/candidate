@@ -1,6 +1,6 @@
 "use client";
 
-import { Star } from "lucide-react";
+import { Zap } from "lucide-react";
 import { useState } from "react";
 import { type Skill } from "@/core/types/skill";
 import { mockQualifications } from "@/core/mockData/qualifications";
@@ -63,7 +63,7 @@ export function SkillsList() {
     <div className="border p-4 rounded-lg shadow-sm">
       <SectionHeader
         title="Skills"
-        icon={<Star className="w-6 h-6 text-primaryHex-400 mr-2" />}
+        icon={<Zap className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={() => setIsAddSkillOpen(true)}
       />
       <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 p-2">
