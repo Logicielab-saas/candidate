@@ -87,7 +87,7 @@ export function AddLanguageDialog({
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleSubmit)}
-              className="space-y-4"
+              className="space-y-4 px-3"
             >
               <FormField
                 control={form.control}
