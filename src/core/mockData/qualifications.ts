@@ -1,8 +1,9 @@
-import { type Experience } from '../types/experience'
-import { type Education } from '../types/education'
-import { type Skill } from '../types/skill'
-import { type Certification } from '../types/certification'
-import { type Language } from '../types/language'
+import { Experience } from '../types/experience'
+import { Education } from '../types/education'
+import { Skill } from '../types/skill'
+import { Certification } from '../types/certification'
+import { Language } from '../types/language'
+import { Project } from '../types/project'
 
 interface QualificationsData {
 	experiences: Experience[]
@@ -10,6 +11,7 @@ interface QualificationsData {
 	skills: Skill[]
 	certifications: Certification[]
 	languages: Language[]
+	projects: Project[]
 }
 
 export const mockQualifications: QualificationsData = {
@@ -108,6 +110,22 @@ export const mockQualifications: QualificationsData = {
 			id: '3',
 			name: 'Espagnol',
 			level: 'C2'
+		}
+	],
+	projects: [
+		{
+			id: '1',
+			name: 'Projet 1',
+			description: 'Description du projet 1',
+			startDate: '2024-01-01',
+			link: 'https://www.example.com'
+		},
+		{
+			id: '2',
+			name: 'Projet 2',
+			description: 'Description du projet 2',
+			startDate: '2024-02-01',
+			link: 'https://www.example.com'
 		}
 	]
 }

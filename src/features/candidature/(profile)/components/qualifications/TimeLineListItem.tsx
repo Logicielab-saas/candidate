@@ -2,13 +2,14 @@ import React from "react";
 import { Experience } from "@/core/types/experience";
 import { Education } from "@/core/types/education";
 import { Certification } from "@/core/types/certification";
+import { Project } from "@/core/types/project";
 import CircleLineWrapper from "./CircleLineWrapper";
 import { Button } from "@/components/ui/button";
 import { PencilIcon, Trash } from "lucide-react";
 
 interface TimeLineListItemProps {
-  data: Experience | Education | Certification;
-  onEdit: (data: Experience | Education | Certification) => void;
+  data: Experience | Education | Certification | Project;
+  onEdit: (data: Experience | Education | Certification | Project) => void;
   onDelete: (id: string) => void;
 }
 
@@ -24,7 +25,7 @@ export default function TimeLineListItem({
           ? (data as Experience).title
           : "degree" in data
           ? (data as Education).degree
-          : (data as Certification).name}
+          : "name" in data && data.name}
         <div className="flex ">
           <Button
             variant="ghost"
@@ -59,7 +60,9 @@ export default function TimeLineListItem({
           ? " - " + (data as Experience).endDate
           : "issueDate" in data
           ? ""
-          : "- Present"}
+          : "current" in data && data.current
+          ? " - Present"
+          : ""}
       </p>
       <p className="mt-2">{data.description}</p>
     </CircleLineWrapper>
