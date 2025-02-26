@@ -1,7 +1,5 @@
-import { ResumeContainer } from "@/features/candidature/(profile)/components/ResumeContainer";
+import { QualificationsContainer } from "@/features/candidature/(profile)/components/qualifications/QualificationsContainer";
 
-const ResumePage = () => {
-  return <ResumeContainer />;
-};
-
-export default ResumePage;
+export default function ResumePage() {
+  return <QualificationsContainer />;
+}

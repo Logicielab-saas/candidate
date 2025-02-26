@@ -54,15 +54,15 @@ export function QualificationsContainer() {
       </QualificationSection>
 
       <QualificationSection>
+        <WatchedCoursesList />
+      </QualificationSection>
+
+      <QualificationSection>
         <SkillsList />
       </QualificationSection>
 
       <QualificationSection>
         <LanguagesList />
-      </QualificationSection>
-
-      <QualificationSection>
-        <WatchedCoursesList />
       </QualificationSection>
     </div>
   );

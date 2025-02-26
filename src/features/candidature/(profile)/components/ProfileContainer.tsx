@@ -53,7 +53,7 @@ export function ProfileContainer() {
             <div className="space-y-4">
               <h3 className="text-lg font-medium">CV</h3>
               <div className="space-y-3">
-                <ResumeItem title="IndeedCV" subtitle="Non validé" />
+                <ResumeItem title="Postuly CV" subtitle="Non validé" />
                 <ResumeItem
                   title="Resume_LASTNAME.pdf"
                   subtitle="Ajouté le 19 Fev 2024"

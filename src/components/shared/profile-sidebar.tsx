@@ -3,13 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import {
-  User,
-  Settings,
-  FileText,
-  Briefcase,
-  MessageSquare,
-} from "lucide-react";
+import { User, Settings, Briefcase, MessageSquare } from "lucide-react";
 
 const sidebarItems = [
   {
@@ -18,19 +12,14 @@ const sidebarItems = [
     icon: User,
   },
   {
-    title: "Qualifications",
-    href: "/profile/qualifications",
+    title: "Resume",
+    href: "/profile/resume",
     icon: MessageSquare,
   },
   {
     title: "Mes Emplois",
     href: "/profile/my-jobs",
     icon: Briefcase,
-  },
-  {
-    title: "Resume",
-    href: "#2",
-    icon: FileText,
   },
   {
     title: "Settings",
