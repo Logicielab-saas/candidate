@@ -4,7 +4,7 @@ import { Skill } from '../types/skill'
 import { Certification } from '../types/certification'
 import { Language } from '../types/language'
 import { Project } from '../types/project'
-
+import { Course } from '../types/course'
 interface QualificationsData {
 	experiences: Experience[]
 	education: Education[]
@@ -12,6 +12,7 @@ interface QualificationsData {
 	certifications: Certification[]
 	languages: Language[]
 	projects: Project[]
+	course: Course[]
 }
 
 export const mockQualifications: QualificationsData = {
@@ -126,6 +127,26 @@ export const mockQualifications: QualificationsData = {
 			description: 'Description du projet 2',
 			startDate: 'Janvier 2024',
 			link: 'https://www.example.com'
+		}
+	],
+	course: [
+		{
+			id: '1',
+			name: 'Laravel 10',
+			completion: '30%',
+			startDate: 'Janvier 2024',
+		},
+		{
+			id: '2',
+			name: 'React 18',
+			completion: '49%',
+			startDate: 'Février 2024',
+		},
+		{
+			id: '3',
+			name: 'Next.js 15',
+			completion: '100%',
+			startDate: 'Mars 2024',
 		}
 	]
 }
