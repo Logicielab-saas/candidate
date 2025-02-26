@@ -1,12 +1,13 @@
 "use client";
 
 import { Metadata } from "next";
-import { ExperienceList } from "./ExperienceList";
 import { EducationList } from "./EducationList";
 import { SkillsList } from "./SkillsList";
 import { CertificationsList } from "./CertificationsList";
 import { LanguagesList } from "./LanguagesList";
 import { QualificationSection } from "./QualificationSection";
+import { WorkExperienceList } from "./WorkExperienceList";
+import { mockQualifications } from "@/core/mockData/qualifications";
 
 export const metadata: Metadata = {
   title: "Qualifications et Compétences | Mon Profil",
@@ -32,23 +33,25 @@ export const metadata: Metadata = {
 export function QualificationsContainer() {
   return (
     <div className="space-y-6">
-      <QualificationSection title="Expériences Professionnelles">
-        <ExperienceList />
+      <QualificationSection>
+        <WorkExperienceList
+          initialExperiences={mockQualifications.experiences}
+        />
       </QualificationSection>
 
-      <QualificationSection title="Formations">
+      <QualificationSection>
         <EducationList />
       </QualificationSection>
 
-      <QualificationSection title="Compétences">
+      <QualificationSection>
         <SkillsList />
       </QualificationSection>
 
-      <QualificationSection title="Certifications">
+      <QualificationSection>
         <CertificationsList />
       </QualificationSection>
 
-      <QualificationSection title="Langues">
+      <QualificationSection>
         <LanguagesList />
       </QualificationSection>
     </div>
