@@ -80,28 +80,10 @@ export function CertificationsList() {
               <div className="flex items-center gap-2">
                 <h3 className="font-medium">{cert.name}</h3>
               </div>
+              <p className="text-sm text-muted-foreground">{cert.name}</p>
               <p className="text-sm text-muted-foreground">
-                {cert.organization}
+                {cert.description}
               </p>
-              <p className="text-sm text-muted-foreground">
-                Délivré le: {cert.issueDate}
-                {cert.expiryDate && ` • Expire le: ${cert.expiryDate}`}
-              </p>
-              {cert.credentialId && (
-                <p className="text-sm text-muted-foreground">
-                  ID: {cert.credentialId}
-                </p>
-              )}
-              {cert.credentialUrl && (
-                <a
-                  href={cert.credentialUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-primary hover:underline"
-                >
-                  Voir le certificat
-                </a>
-              )}
             </div>
             <div className="flex gap-2">
               <Button

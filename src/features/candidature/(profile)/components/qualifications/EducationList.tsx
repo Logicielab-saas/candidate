@@ -78,9 +78,7 @@ export function EducationList() {
                   <h3 className="font-medium">{edu.degree}</h3>
                   {edu.current && <Badge variant="secondary">En cours</Badge>}
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  {edu.school} • {edu.location}
-                </p>
+                <p className="text-sm text-muted-foreground">{edu.school}</p>
                 <p className="text-sm text-muted-foreground">{edu.field}</p>
                 <p className="text-sm text-muted-foreground">
                   {edu.startDate} - {edu.current ? "Présent" : edu.endDate}

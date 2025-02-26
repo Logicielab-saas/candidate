@@ -78,9 +78,9 @@ export function LanguagesList() {
           >
             <div className="min-w-0 flex-1">
               <span className="font-medium truncate block">{lang.name}</span>
-              {lang.certification && (
+              {lang.level && (
                 <span className="text-xs text-muted-foreground truncate block">
-                  {lang.certification}
+                  {lang.level}
                 </span>
               )}
             </div>
