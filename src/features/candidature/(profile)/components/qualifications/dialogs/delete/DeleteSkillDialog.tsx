@@ -44,7 +44,7 @@ export function DeleteSkillDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
           <AlertDialogDescription>
-            Vous êtes sur le point de supprimer la compétence &quot;{skill.name}
+            Vous êtes sur le point de retirer la compétence &quot;{skill.name}
             &quot;. Cette action est irréversible.
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -54,7 +54,7 @@ export function DeleteSkillDialog({
             onClick={handleConfirm}
             className="bg-destructive hover:bg-destructive/90"
           >
-            Supprimer
+            Retirer
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

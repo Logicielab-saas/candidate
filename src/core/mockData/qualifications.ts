@@ -117,14 +117,14 @@ export const mockQualifications: QualificationsData = {
 			id: '1',
 			name: 'Projet 1',
 			description: 'Description du projet 1',
-			startDate: '2024-01-01',
+			startDate: 'Juin 2023',
 			link: 'https://www.example.com'
 		},
 		{
 			id: '2',
 			name: 'Projet 2',
 			description: 'Description du projet 2',
-			startDate: '2024-02-01',
+			startDate: 'Janvier 2024',
 			link: 'https://www.example.com'
 		}
 	]

@@ -1,30 +1,25 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+import { Star } from "lucide-react";
 import { useState } from "react";
 import { type Skill } from "@/core/types/skill";
 import { mockQualifications } from "@/core/mockData/qualifications";
 import { AddSkillDialog } from "./dialogs/add/AddSkillDialog";
 import { DeleteSkillDialog } from "./dialogs/delete/DeleteSkillDialog";
-import { EditSkillDialog } from "./dialogs/edit/EditSkillDialog";
+import { SectionHeader } from "./SectionHeader";
+import { TagListItem } from "./TagListItem";
 
 export function SkillsList() {
   const [skills, setSkills] = useState<Skill[]>(mockQualifications.skills);
   const [isAddSkillOpen, setIsAddSkillOpen] = useState(false);
-  const [skillToEdit, setSkillToEdit] = useState<Skill | null>(null);
   const [skillToDelete, setSkillToDelete] = useState<Skill | null>(null);
 
   const handleAdd = () => {
     setIsAddSkillOpen(true);
   };
 
-  const handleEdit = (skill: Skill) => {
-    setSkillToEdit(skill);
-  };
-
-  const handleDelete = (skill: Skill) => {
-    setSkillToDelete(skill);
+  const handleDelete = (id: string) => {
+    setSkillToDelete(skills.find((skill) => skill.id === id) || null);
   };
 
   const handleConfirmDelete = (id: string) => {
@@ -40,19 +35,6 @@ export function SkillsList() {
     setSkills([newSkill, ...skills]);
   };
 
-  const handleEditSubmit = (id: string, values: Omit<Skill, "id">) => {
-    setSkills(
-      skills.map((skill) =>
-        skill.id === id
-          ? {
-              ...values,
-              id,
-            }
-          : skill
-      )
-    );
-  };
-
   if (!skills?.length) {
     return (
       <>
@@ -65,52 +47,23 @@ export function SkillsList() {
   }
 
   return (
-    <>
-      <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border rounded-lg p-2">
+    <div className="border p-4 rounded-lg shadow-sm">
+      <SectionHeader
+        title="Skills"
+        icon={<Star className="w-6 h-6 text-primaryHex-400 mr-2" />}
+        onAdd={() => setIsAddSkillOpen(true)}
+      />
+      <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 p-2">
         {skills.map((skill) => (
-          <div
-            key={skill.id}
-            className="group flex items-center justify-between hover:bg-accent/50 transition-colors rounded-lg px-3 py-2"
-          >
-            <span className="font-medium truncate">{skill.name}</span>
-            <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleEdit(skill)}
-                className="h-7 w-7"
-              >
-                <Pencil className="h-3.5 w-3.5" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleDelete(skill)}
-                className="h-7 w-7 text-destructive"
-              >
-                <Trash2 className="h-3.5 w-3.5" />
-              </Button>
-            </div>
-          </div>
+          <TagListItem key={skill.id} skill={skill} onDelete={handleDelete} />
         ))}
       </div>
-
-      <button className="hidden" data-add-button onClick={handleAdd} />
 
       <AddSkillDialog
         open={isAddSkillOpen}
         onOpenChange={setIsAddSkillOpen}
         onSubmit={handleSubmit}
       />
-
-      {skillToEdit && (
-        <EditSkillDialog
-          open={!!skillToEdit}
-          onOpenChange={(open) => !open && setSkillToEdit(null)}
-          onSubmit={handleEditSubmit}
-          skill={skillToEdit}
-        />
-      )}
 
       {skillToDelete && (
         <DeleteSkillDialog
@@ -120,6 +73,6 @@ export function SkillsList() {
           skill={skillToDelete}
         />
       )}
-    </>
+    </div>
   );
 }
