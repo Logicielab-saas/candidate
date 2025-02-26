@@ -45,8 +45,8 @@ export function DeleteExperienceDialog({
           <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
           <AlertDialogDescription>
             Vous êtes sur le point de supprimer l&apos;expérience suivante :{" "}
-            <span className="font-medium">{experience.title}</span> chez{" "}
-            <span className="font-medium">{experience.company}</span>.
+            <span className="font-bold">{experience.title}</span> chez{" "}
+            <span className="font-bold">{experience.company}</span>.
             <br />
             Cette action est irréversible.
           </AlertDialogDescription>
