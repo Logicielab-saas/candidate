@@ -89,7 +89,7 @@ export function ArchivedJobItem({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={onReport} className="text-destructive">
-                Signaler l&apos;emploi
+                Signaler l&apos;offre d&apos;emploi
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

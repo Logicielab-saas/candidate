@@ -30,6 +30,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { UpdateStatusDialog } from "./UpdateStatusDialog";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ReportJobDialog } from "../ReportJobDialog";
 
 interface SentApplicationItemProps
   extends Pick<
@@ -71,6 +72,7 @@ export function SentApplicationItem({
   onArchive,
 }: SentApplicationItemProps) {
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+  const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
 
   const handleStatusUpdate = (newStatus: CandidateStatus) => {
     onUpdateStatus(jobId, newStatus);
@@ -141,6 +143,11 @@ export function SentApplicationItem({
     console.log("Archiving job:", jobId);
     // Call a function to update the state in the parent component
     onArchive(jobId);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleReport = (reason: string, additionalInfo: string) => {
+    // TODO: Implement the logic to handle the report
   };
 
   return (
@@ -245,7 +252,10 @@ export function SentApplicationItem({
                 <XCircle className="h-4 w-4" />
                 Retirer la candidature
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 text-destructive">
+              <DropdownMenuItem
+                className="flex items-center gap-2 text-destructive"
+                onClick={() => setIsReportDialogOpen(true)}
+              >
                 <AlertTriangle className="h-4 w-4" />
                 Signaler l&apos;offre d&apos;emploi
               </DropdownMenuItem>
@@ -254,6 +264,11 @@ export function SentApplicationItem({
         </div>
       </div>
       <Separator />
+      <ReportJobDialog
+        open={isReportDialogOpen}
+        onOpenChange={setIsReportDialogOpen}
+        onReport={handleReport}
+      />
     </motion.div>
   );
 }
