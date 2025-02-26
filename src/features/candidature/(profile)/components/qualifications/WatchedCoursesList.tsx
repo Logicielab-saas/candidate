@@ -27,7 +27,7 @@ export function WatchedCoursesList() {
           <CircleLineWrapper key={course.id}>
             <Button
               variant="link"
-              className="text-base font-bold flex justify-between items-center p-0 text-black"
+              className="text-base font-bold flex justify-between items-center p-0 text-black dark:text-white"
             >
               <Link href="#">{course.name}</Link>
             </Button>

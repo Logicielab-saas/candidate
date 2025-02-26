@@ -15,7 +15,7 @@ export const TagListItem: React.FC<TagListItemProps> = ({
   onEdit,
 }) => {
   return (
-    <div className="group flex items-center justify-between hover:bg-accent/50 transition-colors px-3 py-2 bg-gray-100 text-gray-800 rounded-lg">
+    <div className="group flex items-center justify-between hover:bg-accent/50 transition-colors px-3 py-2 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100 rounded-lg">
       <span className="font-medium truncate">{skill.name}</span>
       <div className="flex gap-1">
         <Button
