@@ -18,8 +18,11 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
 import type { SavedJob } from "@/core/types";
+import { useState } from "react";
+import { ReportJobDialog } from "../ReportJobDialog";
 
 interface SavedJobItemProps extends Omit<SavedJob, "id"> {
+  jobId: string;
   onApply: () => void;
   onRemove: () => void;
 }
@@ -34,6 +37,7 @@ const getCompanyInitials = (name: string) => {
 };
 
 export function SavedJobItem({
+  jobId,
   title,
   company,
   location,
@@ -42,6 +46,13 @@ export function SavedJobItem({
   onRemove,
   jobUrl,
 }: SavedJobItemProps) {
+  const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleReport = (reason: string, additionalInfo: string) => {
+    // TODO: Implement the logic to handle the report
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -114,10 +125,11 @@ export function SavedJobItem({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem asChild className="text-destructive">
-                <a href={jobUrl} target="_blank" rel="noopener noreferrer">
-                  Signaler l&apos;offre d&apos;emploi
-                </a>
+              <DropdownMenuItem
+                className="text-destructive"
+                onClick={() => setIsReportDialogOpen(true)}
+              >
+                Signaler l&apos;offre d&apos;emploi
               </DropdownMenuItem>
               <DropdownMenuItem onClick={onRemove}>
                 Retirer des favoris
@@ -127,6 +139,11 @@ export function SavedJobItem({
         </div>
       </div>
       <Separator />
+      <ReportJobDialog
+        open={isReportDialogOpen}
+        onOpenChange={setIsReportDialogOpen}
+        jobId={jobId}
+      />
     </motion.div>
   );
 }

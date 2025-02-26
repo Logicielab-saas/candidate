@@ -19,7 +19,7 @@ const sidebarItems = [
   },
   {
     title: "Qualifications",
-    href: "/qualifications",
+    href: "/profile/qualifications",
     icon: MessageSquare,
   },
   {

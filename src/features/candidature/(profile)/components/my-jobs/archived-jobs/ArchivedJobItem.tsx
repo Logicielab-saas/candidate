@@ -12,11 +12,13 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
 import type { Job } from "@/core/types";
+import { ReportJobDialog } from "../ReportJobDialog";
+import { useState } from "react";
 
 interface ArchivedJobItemProps extends Omit<Job, "id"> {
   onUnarchive: () => void;
-  onReport: () => void;
   savedDate: string;
+  jobId: string;
 }
 
 const getCompanyInitials = (name: string) => {
@@ -35,8 +37,14 @@ export function ArchivedJobItem({
   savedDate,
   jobUrl,
   onUnarchive,
-  onReport,
+  jobId,
 }: ArchivedJobItemProps) {
+  const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleReport = (reason: string, additionalInfo: string) => {
+    // TODO: Implement the logic to handle the report
+  };
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -88,7 +96,10 @@ export function ArchivedJobItem({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={onReport} className="text-destructive">
+              <DropdownMenuItem
+                onClick={() => setIsReportDialogOpen(true)}
+                className="text-destructive"
+              >
                 Signaler l&apos;offre d&apos;emploi
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -96,6 +107,11 @@ export function ArchivedJobItem({
         </div>
       </div>
       <Separator />
+      <ReportJobDialog
+        open={isReportDialogOpen}
+        onOpenChange={setIsReportDialogOpen}
+        jobId={jobId}
+      />
     </motion.div>
   );
 }

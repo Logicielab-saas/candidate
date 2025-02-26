@@ -28,11 +28,6 @@ export function ArchivedJobsList() {
     );
   };
 
-  const handleReport = (jobId: string) => {
-    console.log("Reporting job:", jobId);
-    // Implement report logic
-  };
-
   return (
     <motion.div
       variants={container}
@@ -57,7 +52,7 @@ export function ArchivedJobsList() {
             applyTime={job.applyTime}
             statuses={job.statuses}
             onUnarchive={() => handleUnarchive(job.jobKey)}
-            onReport={() => handleReport(job.jobKey)}
+            jobId={job.jobKey}
           />
         ))}
       </AnimatePresence>

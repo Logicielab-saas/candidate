@@ -40,6 +40,7 @@ export function SavedJobsList() {
         {savedJobs.map((job) => (
           <SavedJobItem
             key={job.id}
+            jobId={job.id}
             title={job.title}
             company={job.company}
             location={job.location}

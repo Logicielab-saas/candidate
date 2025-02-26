@@ -145,11 +145,6 @@ export function SentApplicationItem({
     onArchive(jobId);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleReport = (reason: string, additionalInfo: string) => {
-    // TODO: Implement the logic to handle the report
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -267,7 +262,7 @@ export function SentApplicationItem({
       <ReportJobDialog
         open={isReportDialogOpen}
         onOpenChange={setIsReportDialogOpen}
-        onReport={handleReport}
+        jobId={jobId}
       />
     </motion.div>
   );

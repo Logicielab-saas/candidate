@@ -31,14 +31,14 @@ const reportSchema = z.object({
 
 interface ReportJobDialogProps {
   open: boolean;
+  jobId: string;
   onOpenChange: (open: boolean) => void;
-  onReport: (reason: string, additionalInfo: string) => void;
 }
 
 export function ReportJobDialog({
   open,
+  jobId,
   onOpenChange,
-  onReport,
 }: ReportJobDialogProps) {
   const {
     register,
@@ -50,8 +50,12 @@ export function ReportJobDialog({
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log("Reporting job with data:", data);
-    onReport(data.reason as string, data.additionalInfo as string);
+    const reportData = {
+      jobId,
+      reason: data.reason,
+      additionalInfo: data.additionalInfo,
+    };
+    console.log("Reporting job with data:", reportData);
     onOpenChange(false);
     reset();
   };
