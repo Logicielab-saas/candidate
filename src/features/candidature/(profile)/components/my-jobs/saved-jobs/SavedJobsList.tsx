@@ -36,7 +36,7 @@ export function SavedJobsList() {
       animate="show"
       className="divide-y divide-border"
     >
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="popLayout">
         {savedJobs.map((job) => (
           <SavedJobItem
             key={job.id}

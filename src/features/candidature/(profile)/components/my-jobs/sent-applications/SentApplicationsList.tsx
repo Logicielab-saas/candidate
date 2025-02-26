@@ -44,6 +44,16 @@ export function SentApplicationsList() {
     );
   };
 
+  const handleArchive = (jobId: string) => {
+    setApplications((currentApplications) =>
+      currentApplications.filter((app) => app.jobKey !== jobId)
+    );
+  };
+
+  const nonArchivedApplications = applications.filter(
+    (app) => app.statuses.userJobStatus.status !== "ARCHIVED"
+  );
+
   return (
     <motion.div
       variants={container}
@@ -51,8 +61,8 @@ export function SentApplicationsList() {
       animate="show"
       className="divide-y divide-border"
     >
-      <AnimatePresence mode="wait">
-        {applications.map((job) => (
+      <AnimatePresence mode="popLayout">
+        {nonArchivedApplications.map((job) => (
           <SentApplicationItem
             key={job.jobKey}
             jobId={job.jobKey}
@@ -64,6 +74,7 @@ export function SentApplicationsList() {
             jobUrl={job.jobUrl}
             statuses={job.statuses}
             onUpdateStatus={handleUpdateStatus}
+            onArchive={handleArchive}
           />
         ))}
       </AnimatePresence>

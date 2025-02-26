@@ -39,6 +39,7 @@ interface SentApplicationItemProps
   statuses: JobStatuses;
   onUpdateStatus: (jobId: string, newStatus: CandidateStatus) => void;
   jobId: string;
+  onArchive: (jobId: string) => void;
 }
 
 const formatDate = (timestamp: number) => {
@@ -57,8 +58,6 @@ const getCompanyInitials = (name: string) => {
     .slice(0, 2);
 };
 
-// TODO: Implement voir details view job application, archiver & retirer la candidature status change, signaler l'offre d'emploi
-
 export function SentApplicationItem({
   jobTitle,
   company,
@@ -69,6 +68,7 @@ export function SentApplicationItem({
   jobUrl,
   onUpdateStatus,
   jobId,
+  onArchive,
 }: SentApplicationItemProps) {
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
 
@@ -136,6 +136,13 @@ export function SentApplicationItem({
 
   const statusInfo = getStatusInfo();
 
+  const handleArchive = (jobId: string) => {
+    // Logic to archive the job application
+    console.log("Archiving job:", jobId);
+    // Call a function to update the state in the parent component
+    onArchive(jobId);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -180,7 +187,7 @@ export function SentApplicationItem({
               <Calendar className="h-4 w-4" />
               <span>Candidature envoyée le {formatDate(applyTime)}</span>
             </div>
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="popLayout">
               <motion.div
                 key={statuses.candidateStatus.status}
                 initial={{ opacity: 0, y: -10 }}
@@ -227,7 +234,10 @@ export function SentApplicationItem({
                   Voir les détails
                 </a>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2">
+              <DropdownMenuItem
+                className="flex items-center gap-2"
+                onClick={() => handleArchive(jobId)}
+              >
                 <Archive className="h-4 w-4" />
                 Archiver
               </DropdownMenuItem>

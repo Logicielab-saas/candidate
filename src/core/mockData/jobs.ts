@@ -162,5 +162,69 @@ export const mockSentApplications: Job[] = [
         timestamp: new Date('2024-01-28').getTime()
       }
     }
+  },
+  {
+    jobTitle: 'Développeur Full Stack',
+    jobKey: '5',
+    jobUrl: '#',
+    company: {
+      name: 'Tech Solutions'
+    },
+    location: 'Rabat',
+    jobExpired: false,
+    jobReported: false,
+    jobFraudulent: false,
+    withdrawn: false,
+    applyTime: new Date('2024-01-27').getTime(),
+    statuses: {
+      candidateStatus: {
+        status: 'ARCHIVED',
+        timestamp: new Date('2024-01-27').getTime()
+      },
+      selfReportedStatus: {
+        status: 'ARCHIVED',
+        timestamp: new Date('2024-01-27').getTime()
+      },
+      employerJobStatus: {
+        status: 'OPEN',
+        timestamp: new Date('2024-01-27').getTime()
+      },
+      userJobStatus: {
+        status: 'ARCHIVED',
+        timestamp: new Date('2024-01-27').getTime()
+      }
+    }
+  },
+  {
+    jobTitle: 'Développeur Backend',
+    jobKey: '6',
+    jobUrl: '#',
+    company: {
+      name: 'Backend Solutions'
+    },
+    location: 'Marrakech',
+    jobExpired: false,
+    jobReported: false,
+    jobFraudulent: false,
+    withdrawn: false,
+    applyTime: new Date('2024-01-26').getTime(),
+    statuses: {
+      candidateStatus: {
+        status: 'ARCHIVED',
+        timestamp: new Date('2024-01-26').getTime()
+      },
+      selfReportedStatus: {
+        status: 'ARCHIVED',
+        timestamp: new Date('2024-01-26').getTime()
+      },
+      employerJobStatus: {
+        status: 'OPEN',
+        timestamp: new Date('2024-01-26').getTime()
+      },
+      userJobStatus: {
+        status: 'ARCHIVED',
+        timestamp: new Date('2024-01-26').getTime()
+      }
+    }
   }
 ]
