@@ -31,10 +31,10 @@ import { handleDownloadCV } from "@/core/utils/download-cv";
 
 interface ResumeItemProps {
   title: string;
-  subtitle: string;
+  subtitle?: string;
 }
 
-export function ResumeItem({ title, subtitle }: ResumeItemProps) {
+export function ResumeItem({ title, subtitle = "" }: ResumeItemProps) {
   const CV_URL = "/cvs/mycv.pdf";
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();

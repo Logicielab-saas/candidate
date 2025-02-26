@@ -10,6 +10,9 @@ import { WorkExperienceList } from "./WorkExperienceList";
 import { mockQualifications } from "@/core/mockData/qualifications";
 import { ProjectsList } from "./ProjectsList";
 import { WatchedCoursesList } from "./WatchedCoursesList";
+import { ResumeItem } from "../ResumeItem";
+import { SectionHeader } from "./SectionHeader";
+import { File } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Qualifications et Compétences | Mon Profil",
@@ -55,6 +58,17 @@ export function QualificationsContainer() {
 
       <QualificationSection>
         <WatchedCoursesList />
+      </QualificationSection>
+
+      <QualificationSection>
+        <div className="border p-4 rounded-lg shadow-sm">
+          <SectionHeader
+            title="Resume"
+            icon={<File className="w-6 h-6 text-primaryHex-400 mr-2" />}
+            onAdd={() => {}}
+          />
+          <ResumeItem title="Bilal_Nnasser_CV" />
+        </div>
       </QualificationSection>
 
       <QualificationSection>
