@@ -9,6 +9,7 @@ import { QualificationSection } from "./QualificationSection";
 import { WorkExperienceList } from "./WorkExperienceList";
 import { mockQualifications } from "@/core/mockData/qualifications";
 import { ProjectsList } from "./ProjectsList";
+import { WatchedCoursesList } from "./WatchedCoursesList";
 
 export const metadata: Metadata = {
   title: "Qualifications et Compétences | Mon Profil",
@@ -58,6 +59,10 @@ export function QualificationsContainer() {
 
       <QualificationSection>
         <LanguagesList />
+      </QualificationSection>
+
+      <QualificationSection>
+        <WatchedCoursesList />
       </QualificationSection>
     </div>
   );
