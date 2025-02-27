@@ -11,6 +11,7 @@ import { SavedJobsList } from "./saved-jobs/SavedJobsList";
 import { SentApplicationsList } from "./sent-applications/SentApplicationsList";
 import { ArchivedJobsList } from "./archived-jobs/ArchivedJobsList";
 import { InterviewsList } from "./interviews/InterviewsList";
+import { useQueryState } from "nuqs";
 
 // TODO: Implement the nuqs manager URL, for active tab and default tab to access through the URL ?tab=sent-applications as example
 
@@ -52,13 +53,22 @@ interface MyJobsContainerProps {
 }
 
 export function MyJobsContainer({ className }: MyJobsContainerProps) {
+  const [activeTab, setActiveTab] = useQueryState<string>("tab", {
+    defaultValue: "saved-jobs",
+    parse: (value) => value || "saved-jobs",
+  });
+
   return (
     <div className={cn("space-y-6 w-full", className)}>
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight">Mes emplois</h1>
       </div>
 
-      <Tabs defaultValue="saved-jobs" className="w-full">
+      <Tabs
+        defaultValue={activeTab as string}
+        onValueChange={setActiveTab}
+        className="w-full"
+      >
         <div className={tabsListStyles.wrapper}>
           <TabsList className={tabsListStyles.base}>
             {jobTabs.map((tab) => (
