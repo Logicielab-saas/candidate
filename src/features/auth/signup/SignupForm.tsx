@@ -3,11 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Image from "next/image";
 import { ArrowLeft, CheckCircle } from "lucide-react";
 import { useForm, SubmitHandler, FieldError } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Illustration } from "../Illustration";
+import Link from "next/link";
 
 // TODO: Image should be in the center of the screen
 
@@ -139,24 +140,16 @@ export function SignupForm({ className, onSelect }: SignupFormProps) {
               </div>
               <div className="text-center text-sm">
                 Already have an account?{" "}
-                <a href="/login" className="underline underline-offset-4">
+                <Link href="/login" className="underline underline-offset-4">
                   Login
-                </a>
+                </Link>
               </div>
               <Button variant="outline" onClick={() => onSelect(null)}>
                 <ArrowLeft className="w-4 h-4 mr-2" /> Back
               </Button>
             </div>
           </form>
-          <div className="relative hidden md:flex justify-end mr-2 dark:brightness-[0.8]">
-            <Image
-              src="/login/ask_login.svg"
-              alt="Login Illustration"
-              layout="fill"
-              objectFit="contain"
-              className="mx-auto my-4"
-            />
-          </div>
+          <Illustration src="/login/ask_login.svg" alt="Signup Illustration" />
         </CardContent>
       </Card>
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">

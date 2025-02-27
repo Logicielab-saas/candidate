@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { CheckCircle2, CheckCircle } from "lucide-react";
 import { RecruiterSignupForm } from "@/features/auth/signup/RecruiterSignupForm";
 import { CandidateSignupForm } from "@/features/auth/signup/CandidateSignupForm";
+import { Illustration } from "../Illustration";
 
 interface SignupFirstStepProps {
   onSelect: (type: "recruiter" | "candidate" | null) => void;
@@ -140,16 +141,11 @@ export function SignupFirstStep({
               </div>
             </RadioGroup>
           </div>
-          <div className="relative hidden md:flex justify-end mr-2 dark:brightness-[0.8]">
-            <Image
-              src="/signup/question.svg"
-              alt="Signup Illustration"
-              height={400}
-              width={400}
-              objectFit="contain"
-              className=" mx-auto my-4"
-            />
-          </div>
+          <Illustration
+            src="/signup/question.svg"
+            alt="Signup Illustration"
+            isFixedDimension={true}
+          />
         </CardContent>
       </Card>
       {selectedType === "recruiter" && (
