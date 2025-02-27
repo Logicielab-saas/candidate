@@ -12,6 +12,8 @@ import { SentApplicationsList } from "./sent-applications/SentApplicationsList";
 import { ArchivedJobsList } from "./archived-jobs/ArchivedJobsList";
 import { InterviewsList } from "./interviews/InterviewsList";
 
+// TODO: Implement the nuqs manager URL, for active tab and default tab to access through the URL ?tab=sent-applications as example
+
 interface JobTab {
   id: string;
   label: string;

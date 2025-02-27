@@ -10,8 +10,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Illustration } from "../Illustration";
 import Link from "next/link";
 
-// TODO: Image should be in the center of the screen
-
 const signupSchema = z.object({
   name: z.string().min(6, "Name must be at least 6 characters"),
   email: z.string().email("Invalid email address"),
