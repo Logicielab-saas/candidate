@@ -1,5 +1,6 @@
 import { Job } from "@/core/types";
 import { ApplicationDetailsHeader } from "./ApplicationDetailsHeader";
+import { ApplicationDetailsBody } from "./ApplicationDetailsBody";
 
 interface ApplicationDetailsContainerProps {
   application: Job;
@@ -18,11 +19,15 @@ export function ApplicationDetailsContainer({
   const { jobTitle, company, location, applyTime } = application;
 
   return (
-    <ApplicationDetailsHeader
-      jobTitle={jobTitle}
-      company={company}
-      location={location}
-      applyTime={applyTime}
-    />
+    <div className="flex flex-col gap-4">
+      <ApplicationDetailsHeader
+        jobTitle={jobTitle}
+        company={company}
+        location={location}
+        applyTime={applyTime}
+      />
+
+      <ApplicationDetailsBody application={application} />
+    </div>
   );
 }
