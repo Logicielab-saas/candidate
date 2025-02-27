@@ -9,7 +9,7 @@ export function AboutMe() {
       <SectionHeader
         title="About Me"
         icon={<UserCircle className="w-6 h-6 text-primaryHex-400 mr-2" />}
-        onAdd={() => {}}
+        onEdit={() => {}}
       />
       <div className="p-2">
         <p>{aboutme}</p>

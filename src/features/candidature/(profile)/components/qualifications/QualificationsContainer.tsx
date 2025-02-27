@@ -14,12 +14,14 @@ import { ResumeItem } from "../ResumeItem";
 import { SectionHeader } from "./SectionHeader";
 import { File } from "lucide-react";
 import { AboutMe } from "./AboutMe";
+import { UserContactInfo } from "./UserContactInfo";
 
 export const metadata: Metadata = {
   title: "Qualifications et Compétences | Mon Profil",
   description:
-    "Découvrez mes expériences professionnelles, formations, compétences, certifications, permis et langues maîtrisées.",
+    "Découvrez mes expériences professionnelles, formations, compétences, certifications, courses et langues maîtrisées.",
   keywords: [
+    "about me",
     "expérience professionnelle",
     "formation",
     "compétences",
@@ -27,6 +29,7 @@ export const metadata: Metadata = {
     "langues",
     "CV",
     "profil professionnel",
+    "courses",
   ],
   openGraph: {
     title: "Qualifications et Compétences | Mon Profil",
@@ -40,8 +43,13 @@ export function QualificationsContainer() {
   return (
     <div className="space-y-6">
       <QualificationSection>
+        <UserContactInfo />
+      </QualificationSection>
+
+      <QualificationSection>
         <AboutMe />
       </QualificationSection>
+
       <QualificationSection>
         <WorkExperienceList
           initialExperiences={mockQualifications.experiences}
