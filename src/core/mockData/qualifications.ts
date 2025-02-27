@@ -6,6 +6,7 @@ import { Language } from '../types/language'
 import { Project } from '../types/project'
 import { Course } from '../types/course'
 interface QualificationsData {
+	aboutme: string
 	experiences: Experience[]
 	education: Education[]
 	skills: Skill[]
@@ -16,6 +17,7 @@ interface QualificationsData {
 }
 
 export const mockQualifications: QualificationsData = {
+	aboutme: "Développeur Mobile et Web dynamique et innovant, avec une solide expérience dans le développement d'applications mobiles et de sites web. Compétent dans la création d'applications et de sites web réactifs et conviviaux, offrant des expériences utilisateur fluides. Avec une capacité démontrée à s'adapter et à apprendre de nouvelles technologies.",
 	experiences: [
 		{
 			id: '1',

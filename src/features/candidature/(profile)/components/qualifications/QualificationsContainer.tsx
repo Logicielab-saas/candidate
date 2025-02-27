@@ -13,6 +13,7 @@ import { WatchedCoursesList } from "./WatchedCoursesList";
 import { ResumeItem } from "../ResumeItem";
 import { SectionHeader } from "./SectionHeader";
 import { File } from "lucide-react";
+import { AboutMe } from "./AboutMe";
 
 export const metadata: Metadata = {
   title: "Qualifications et Compétences | Mon Profil",
@@ -38,6 +39,9 @@ export const metadata: Metadata = {
 export function QualificationsContainer() {
   return (
     <div className="space-y-6">
+      <QualificationSection>
+        <AboutMe />
+      </QualificationSection>
       <QualificationSection>
         <WorkExperienceList
           initialExperiences={mockQualifications.experiences}
