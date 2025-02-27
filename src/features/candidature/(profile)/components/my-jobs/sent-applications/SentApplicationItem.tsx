@@ -227,7 +227,7 @@ export function SentApplicationItem({
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem asChild>
                 <a
-                  href={jobUrl}
+                  href={`/profile/my-jobs/application-details/${jobId}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2"
