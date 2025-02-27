@@ -1,12 +1,34 @@
 import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
 import { Job } from "@/core/types";
 import { FileText } from "lucide-react";
+interface Document {
+  id: number;
+  name: string;
+  type: string;
+  url: string;
+}
 
 interface ApplicationDetailsBodyProps {
   application: Job;
 }
 
+// const { documents } = {
+//   documents: [
+//     {
+//       id: 1,
+//       name: "Cover Letter",
+//       type: "cover-letter",
+//       url: "/documents/cover-letter.pdf",
+//     },
+//   ],
+// };
+
+const { documents }: { documents: Document[] | null } = {
+  documents: null,
+};
+
 export function ApplicationDetailsBody({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   application,
 }: ApplicationDetailsBodyProps) {
   return (
@@ -50,6 +72,37 @@ export function ApplicationDetailsBody({
             Bilal-Nnasser-fr.pdf
           </a>
         </div>
+
+        {/* Candidature Relevant Experience */}
+        <div className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md flex flex-col items-start gap-2">
+          <h6 className="text-muted-foreground font-semibold">
+            Relevant Experience
+          </h6>
+          <p className="text-base font-semibold">Front End Developer</p>
+          <p className="text-base font-medium">Logiciel Lab</p>
+        </div>
+
+        {/* Supporting Documents Cover Letter */}
+        {documents ? (
+          documents.map((document) => (
+            <div
+              key={document.id}
+              className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md flex flex-col items-start gap-2"
+            >
+              <h6 className="text-muted-foreground font-semibold">
+                {document.name}
+              </h6>
+              <p>{document.name}</p>
+            </div>
+          ))
+        ) : (
+          <div className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md flex flex-col items-start gap-2">
+            <h6 className="text-muted-foreground font-semibold">
+              Relevant Experience
+            </h6>
+            <p>No documents found</p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
