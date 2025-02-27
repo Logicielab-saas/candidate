@@ -10,10 +10,7 @@ import {
 import { SavedJobsList } from "./saved-jobs/SavedJobsList";
 import { SentApplicationsList } from "./sent-applications/SentApplicationsList";
 import { ArchivedJobsList } from "./archived-jobs/ArchivedJobsList";
-
-// TODO: Implement voir details view job application, archiver & retirer la candidature status change, signaler l'offre d'emploi in sent applications list
-// TODO: Implement Signaler l'offre d'emploi in saved jobs list
-// TODO: then implement archive tab
+import { InterviewsList } from "./interviews/InterviewsList";
 
 interface JobTab {
   id: string;
@@ -85,9 +82,7 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
           </TabsContent>
 
           <TabsContent value="interviews">
-            <div className="min-h-[300px] flex items-center justify-center text-muted-foreground">
-              Contenu Entretiens
-            </div>
+            <InterviewsList />
           </TabsContent>
 
           <TabsContent value="archived">

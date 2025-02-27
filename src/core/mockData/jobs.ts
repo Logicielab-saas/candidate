@@ -1,5 +1,6 @@
 import  { Job, JobQuestion } from '@/core/types/job'
 import  { SavedJob } from '@/core/types/saved-job'
+import { Interview } from '../types/interview'
 
 export const mockSavedJobs: SavedJob[] = [
   {
@@ -244,5 +245,50 @@ export const JobQuestions: JobQuestion[] = [
     id: '3',
     question: 'How would you describe your preferred working environment or culture?',
     answer: 'Collaborative and innovative'
+  }
+]
+
+export const mockInterviews: Interview[] = [
+  {
+    jobTitle: 'Développeur Full Stack',
+    jobKey: '7',
+    jobUrl: '#',
+    company: {
+      name: 'Tech Solutions'
+    },
+    location: 'Rabat',
+    interviewTime: "30 minutes",
+    interviewDate: "2024-02-28",
+    interviewType: "In-person",
+    interviewLocation: "Tanger",
+    interviewStatus: "INVITED",
+  },
+  {
+    jobTitle: 'Développeur Frontend',
+    jobKey: '8',
+    jobUrl: '#',
+    company: {
+      name: 'Vinca digital'
+    },
+    location: 'Casablanca',
+    interviewTime: "30 minutes",
+    interviewDate: "2024-02-28",
+    interviewType: "Video Call",
+    interviewLocation: "Casablanca",
+    interviewStatus: "PENDING",
+  },
+  {
+    jobTitle: 'Développeur Backend',
+    jobKey: '9',
+    jobUrl: '#',
+    company: {
+      name: 'Backend Solutions'
+    },
+    location: 'Marrakech',
+    interviewTime: "30 minutes",
+    interviewDate: "2024-02-28",
+    interviewType: "Phone Call",
+    interviewLocation: "Marrakech",
+    interviewStatus: "PASSED",
   }
 ]

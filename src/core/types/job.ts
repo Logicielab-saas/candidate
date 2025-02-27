@@ -45,6 +45,7 @@ export interface JobQuestion {
   answer: string
 }
 
+
 export interface Job {
   jobTitle: string
   jobKey: string
