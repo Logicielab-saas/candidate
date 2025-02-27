@@ -11,7 +11,7 @@ export function EditProfileView() {
   const router = useRouter();
 
   const handleBack = () => {
-    router.push("/profile");
+    router.back();
   };
 
   return (
@@ -52,14 +52,6 @@ export function EditProfileView() {
               defaultValue="I am a software developer with a passion for building beautiful and functional web applications."
               className="min-h-[100px]"
             />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Skills</label>
-            <Input defaultValue="React, TypeScript, Node.js, Next.js, Tailwind CSS" />
-            <p className="text-xs text-muted-foreground">
-              Separate skills with commas
-            </p>
           </div>
         </div>
 
