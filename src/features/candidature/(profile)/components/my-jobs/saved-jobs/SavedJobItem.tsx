@@ -131,9 +131,6 @@ export function SavedJobItem({
               >
                 Signaler l&apos;offre d&apos;emploi
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={onRemove}>
-                Retirer des favoris
-              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

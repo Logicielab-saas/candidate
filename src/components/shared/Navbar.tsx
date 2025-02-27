@@ -1,12 +1,10 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import {
   Briefcase,
-  FileText,
   Home,
   User,
   MessageSquare,
@@ -36,6 +34,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ThemeButton } from "@/components/shared/ThemeButton";
+import { usePathname } from "next/navigation";
 
 // interface NavItem {
 //   name: string;
@@ -47,16 +46,19 @@ import { ThemeButton } from "@/components/shared/ThemeButton";
 //   items: NavItem[];
 //   className?: string;
 // }
+const navItems = [
+  { name: "Home", url: "/", icon: Home },
+  { name: "Courses", url: "#", icon: User },
+  { name: "Profile", url: "/profile", icon: Briefcase },
+];
 
 export function NavBar() {
-  const [activeTab, setActiveTab] = React.useState("home");
+  const pathname = usePathname();
 
-  const navItems = [
-    { name: "Home", url: "#", icon: Home },
-    { name: "About", url: "#", icon: User },
-    { name: "Projects", url: "#", icon: Briefcase },
-    { name: "Resume", url: "#", icon: FileText },
-  ];
+  const activeTab =
+    navItems.find(
+      (item) => pathname === item.url || (item.url === "/" && pathname === "/")
+    )?.name || "";
 
   return (
     <header className={cn("flex h-14 items-center gap-2 px-4")}>
@@ -89,7 +91,6 @@ export function NavBar() {
                           <Link
                             key={item.name}
                             href={item.url}
-                            onClick={() => setActiveTab(item.name)}
                             className={cn(
                               "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors",
                               isActive
@@ -121,7 +122,6 @@ export function NavBar() {
                       <Link
                         key={item.name}
                         href={item.url}
-                        onClick={() => setActiveTab(item.name)}
                         className={cn(
                           "relative cursor-pointer text-sm font-semibold px-4 py-2 rounded-full transition-colors",
                           "text-foreground/80 hover:text-primary",
