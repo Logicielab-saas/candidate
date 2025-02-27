@@ -1,5 +1,5 @@
-import type { Job } from '@/core/types/job'
-import type { SavedJob } from '@/core/types/saved-job'
+import  { Job, JobQuestion } from '@/core/types/job'
+import  { SavedJob } from '@/core/types/saved-job'
 
 export const mockSavedJobs: SavedJob[] = [
   {
@@ -226,5 +226,23 @@ export const mockSentApplications: Job[] = [
         timestamp: new Date('2024-01-26').getTime()
       }
     }
+  }
+]
+
+export const JobQuestions: JobQuestion[] = [
+  {
+    id: '1',
+    question: 'How many years of experience do you have in the field of software development?',
+    answer: '2'
+  },
+  {
+    id: '2',
+    question: 'What do you think is the most important aspect of software development?',
+    answer: 'Quality and performance'
+  },
+  {
+    id: '3',
+    question: 'How would you describe your preferred working environment or culture?',
+    answer: 'Collaborative and innovative'
   }
 ]

@@ -39,6 +39,12 @@ export interface Company {
   // Add more company fields as needed
 }
 
+export interface JobQuestion {
+  id: string
+  question: string
+  answer: string
+}
+
 export interface Job {
   jobTitle: string
   jobKey: string

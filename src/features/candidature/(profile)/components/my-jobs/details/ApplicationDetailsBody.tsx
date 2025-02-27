@@ -1,6 +1,8 @@
 import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
-import { Job } from "@/core/types";
+import { Job, JobQuestion } from "@/core/types";
 import { FileText } from "lucide-react";
+import { JobQuestions } from "@/core/mockData/jobs";
+
 interface Document {
   id: number;
   name: string;
@@ -32,31 +34,37 @@ export function ApplicationDetailsBody({
   application,
 }: ApplicationDetailsBodyProps) {
   return (
-    <Card className="flex flex-col gap-2 shadow-md rounded-lg">
+    <Card className="flex flex-col gap-4 shadow-md rounded-lg">
       <CardHeader>
-        <CardTitle>Détails de la candidature</CardTitle>
+        <CardTitle className="text-2xl font-bold">
+          Détails de la candidature
+        </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-8">
+      <CardContent className="flex flex-col gap-6">
         {/* Candidate Informations */}
-        <div className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md">
-          <h6 className="text-muted-foreground font-semibold">
+        <div className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md flex flex-col gap-4">
+          <h6 className="text-muted-foreground font-semibold text-lg">
             Contact Information
           </h6>
-          <div className="flex gap-2">
-            <span className="font-medium">Full Name:</span>
-            <span>John Doe</span>
-          </div>
-          <div className="flex gap-2">
-            <span className="font-medium">Email Address:</span>
-            <span>john.doe@example.com</span>
-          </div>
-          <div className="flex gap-2">
-            <span className="font-medium">City, State:</span>
-            <span>Tanger</span>
-          </div>
-          <div className="flex gap-2">
-            <span className="font-medium">Phone Number:</span>
-            <span>+212 6 12 34 56 78</span>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-2">
+              <span className="font-semibold">Full Name:</span>
+              <span className="text-muted-foreground">John Doe</span>
+            </div>
+            <div className="flex gap-2">
+              <span className="font-semibold">Email Address:</span>
+              <span className="text-muted-foreground">
+                john.doe@example.com
+              </span>
+            </div>
+            <div className="flex gap-2">
+              <span className="font-semibold">City, State:</span>
+              <span className="text-muted-foreground">Tanger</span>
+            </div>
+            <div className="flex gap-2">
+              <span className="font-semibold">Phone Number:</span>
+              <span className="text-muted-foreground">+212 6 12 34 56 78</span>
+            </div>
           </div>
         </div>
 
@@ -66,7 +74,7 @@ export function ApplicationDetailsBody({
           <a
             href="/cvs/sample.pdf"
             download
-            className="text-primaryHex-500 hover:bg-accent p-2 rounded-lg flex items-center gap-2"
+            className="text-primaryHex-500 hover:bg-accent p-2 rounded-lg flex items-center gap-2 transition duration-200"
           >
             <FileText className="h-5 w-5 text-primaryHex-600" />
             Bilal-Nnasser-fr.pdf
@@ -80,6 +88,30 @@ export function ApplicationDetailsBody({
           </h6>
           <p className="text-base font-semibold">Front End Developer</p>
           <p className="text-base font-medium">Logiciel Lab</p>
+        </div>
+
+        {/* Candidature Questions */}
+        <div className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md flex flex-col items-start gap-4">
+          <h6 className="text-muted-foreground font-semibold text-lg">
+            Questions
+          </h6>
+          {JobQuestions.length > 0 ? (
+            JobQuestions.map((question: JobQuestion) => (
+              <div
+                key={question.id}
+                className="bg-gray-100 dark:bg-zinc-700 p-4 rounded-lg shadow-sm w-full"
+              >
+                <p className="font-semibold text-md text-primaryHex-600">
+                  {question.question}
+                </p>
+                <p className="text-base font-normal text-muted-foreground">
+                  {question.answer}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p>No questions available</p>
+          )}
         </div>
 
         {/* Supporting Documents Cover Letter */}
