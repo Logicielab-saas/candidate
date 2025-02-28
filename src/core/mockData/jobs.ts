@@ -260,8 +260,12 @@ export const mockInterviews: Interview[] = [
     interviewTime: "30 minutes",
     interviewDate: "2024-02-28",
     interviewType: "In-person",
+    interviewAddressMap: "https://www.google.com/maps/place/Tanger",
+    interviewAddress: "Tanger riad tetouan",
     interviewLocation: "Tanger",
     interviewStatus: "INVITED",
+    fixedInterviewDate: "2024-02-28",
+    fixedInterviewHour: "9:30-10:00",
   },
   {
     jobTitle: 'Développeur Frontend',
@@ -274,6 +278,7 @@ export const mockInterviews: Interview[] = [
     interviewTime: "30 minutes",
     interviewDate: "2024-02-28",
     interviewType: "Video Call",
+    interviewLink: "https://meet.google.com/new",
     interviewLocation: "Casablanca",
     interviewStatus: "PENDING",
   },
@@ -288,6 +293,7 @@ export const mockInterviews: Interview[] = [
     interviewTime: "30 minutes",
     interviewDate: "2024-02-28",
     interviewType: "Phone Call",
+    interviewPhone: "+212 625 106251",
     interviewLocation: "Marrakech",
     interviewStatus: "PASSED",
   }

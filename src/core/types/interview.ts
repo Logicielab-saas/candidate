@@ -11,4 +11,10 @@ export interface Interview {
   interviewType: "Phone Call" | "Video Call" | "In-person"
   interviewLocation: string
   interviewStatus: "INVITED" | "PENDING" | "PASSED"
+  interviewAddressMap?: string
+  interviewAddress?: string
+  interviewPhone?: string
+  interviewLink?: string
+  fixedInterviewDate?: string
+  fixedInterviewHour?: string
 }
