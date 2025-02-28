@@ -69,7 +69,7 @@ export function InterviewRefuser({ interview }: InterviewRefuserProps) {
       <Separator />
       {/* Program interview */}
       <h2 className="text-xl font-semibold mb-2">Refuser l&apos;entretien</h2>
-      <div className="shadow-md p-4 rounded-lg bg-accent/20 border border-primaryHex-500">
+      <div className="shadow p-4 rounded-lg bg-accent/20 border border-primaryHex-500">
         <p className="text-md text-gray-700 mb-4 font-semibold">
           {interviewType === "In-person" &&
             "Cette entretien se déroulera en personne."}
@@ -108,7 +108,7 @@ export function InterviewRefuser({ interview }: InterviewRefuserProps) {
       <Separator />
 
       {/* Reason selection section using shadcn/ui RadioGroup */}
-      <div className="p-4 rounded-lg bg-accent/20 border border-primaryHex-500">
+      <div className="p-4 rounded-lg bg-accent/20 shadow">
         <h3 className="text-lg font-semibold mb-2">
           Sélectionnez un motif <span className="text-red-500">*</span>
         </h3>
@@ -135,7 +135,7 @@ export function InterviewRefuser({ interview }: InterviewRefuserProps) {
       <Separator />
 
       {/* Message section using shadcn/ui Textarea */}
-      <div className="p-4 rounded-lg bg-accent/20 border border-primaryHex-500">
+      <div className="p-4 rounded-lg bg-accent/20 shadow">
         <h3 className="text-lg font-semibold mb-2">
           Ajouter un message pour l&apos;employeur (optionnel)
         </h3>
