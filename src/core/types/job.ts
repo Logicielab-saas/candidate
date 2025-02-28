@@ -58,4 +58,5 @@ export interface Job {
   company: Company
   statuses: JobStatuses
   applyTime: number
+  bookmarked: boolean
 }

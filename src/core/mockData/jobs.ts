@@ -1,39 +1,7 @@
 import  { Job, JobQuestion } from '@/core/types/job'
-import  { SavedJob } from '@/core/types/saved-job'
 import { Interview } from '../types/interview'
 
-export const mockSavedJobs: SavedJob[] = [
-  {
-    id: '1',
-    title: 'développement web',
-    company: {
-      name: 'TECHWEB'
-    },
-    location: 'Tanger',
-    savedDate: "aujourd'hui",
-    jobUrl: '#'
-  },
-  {
-    id: '2',
-    title: 'Développeur Frontend React',
-    company: {
-      name: 'Digital Agency'
-    },
-    location: 'Casablanca',
-    savedDate: 'hier',
-    jobUrl: '#'
-  },
-  {
-    id: '3',
-    title: 'Full Stack Developer',
-    company: {
-      name: 'Tech Solutions'
-    },
-    location: 'Rabat',
-    savedDate: '20 Feb 2024',
-    jobUrl: '#'
-  }
-]
+
 
 export const mockSentApplications: Job[] = [
   {
@@ -48,6 +16,7 @@ export const mockSentApplications: Job[] = [
     jobReported: false,
     jobFraudulent: false,
     withdrawn: false,
+    bookmarked: false,
     applyTime: new Date('2024-02-01').getTime(),
     statuses: {
       candidateStatus: {
@@ -72,6 +41,7 @@ export const mockSentApplications: Job[] = [
     jobTitle: 'Développeur full stack',
     jobKey: '2',
     jobUrl: '#',
+    bookmarked: true,
     company: {
       name: 'Vinca digital'
     },
@@ -104,6 +74,7 @@ export const mockSentApplications: Job[] = [
     jobTitle: 'Offre de stage PFE développeur Flutter',
     jobKey: '3',
     jobUrl: '#',
+    bookmarked: false,
     company: {
       name: 'Logiciel Lab'
     },
@@ -136,6 +107,7 @@ export const mockSentApplications: Job[] = [
     jobTitle: 'Développeur React.js / Node.js',
     jobKey: '4',
     jobUrl: '#',
+    bookmarked: true,
     company: {
       name: 'MyTeam Solution'
     },
@@ -168,6 +140,7 @@ export const mockSentApplications: Job[] = [
     jobTitle: 'Développeur Full Stack',
     jobKey: '5',
     jobUrl: '#',
+    bookmarked: false,
     company: {
       name: 'Tech Solutions'
     },
@@ -200,6 +173,7 @@ export const mockSentApplications: Job[] = [
     jobTitle: 'Développeur Backend',
     jobKey: '6',
     jobUrl: '#',
+    bookmarked: false,
     company: {
       name: 'Backend Solutions'
     },

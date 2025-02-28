@@ -7,4 +7,5 @@ export interface SavedJob {
   location: string
   savedDate: string
   jobUrl: string
+  bookmarked: boolean
 }

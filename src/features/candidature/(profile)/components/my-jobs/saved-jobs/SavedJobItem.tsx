@@ -7,6 +7,7 @@ import {
   Building2,
   MapPin,
   Calendar,
+  BookmarkCheck,
   Bookmark,
 } from "lucide-react";
 import {
@@ -25,6 +26,7 @@ interface SavedJobItemProps extends Omit<SavedJob, "id"> {
   jobId: string;
   onApply: () => void;
   onRemove: () => void;
+  bookmarked: boolean;
 }
 
 const getCompanyInitials = (name: string) => {
@@ -45,6 +47,7 @@ export function SavedJobItem({
   onApply,
   onRemove,
   jobUrl,
+  bookmarked,
 }: SavedJobItemProps) {
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
 
@@ -114,7 +117,11 @@ export function SavedJobItem({
               onClick={onRemove}
               className="text-muted-foreground hover:text-primary"
             >
-              <Bookmark className="h-5 w-5" />
+              {bookmarked ? (
+                <BookmarkCheck className="h-5 w-5 text-primaryHex-400" />
+              ) : (
+                <Bookmark className="h-5 w-5 text-gray-400" />
+              )}
             </Button>
           </motion.div>
 

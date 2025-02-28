@@ -3,7 +3,7 @@
 import { SavedJobItem } from "./SavedJobItem";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { mockSavedJobs } from "@/core/mockData/jobs";
+import { mockSentApplications } from "@/core/mockData/jobs";
 
 const container = {
   hidden: { opacity: 0 },
@@ -16,7 +16,9 @@ const container = {
 };
 
 export function SavedJobsList() {
-  const [savedJobs, setSavedJobs] = useState(mockSavedJobs);
+  const [savedJobs, setSavedJobs] = useState(
+    mockSentApplications.filter((job) => job.bookmarked)
+  );
 
   const handleApply = (jobId: string) => {
     console.log("Applying to job:", jobId);
@@ -25,7 +27,7 @@ export function SavedJobsList() {
 
   const handleRemove = (jobId: string) => {
     setSavedJobs((currentJobs) =>
-      currentJobs.filter((job) => job.id !== jobId)
+      currentJobs.filter((job) => job.jobKey !== jobId)
     );
   };
 
@@ -39,15 +41,16 @@ export function SavedJobsList() {
       <AnimatePresence mode="popLayout">
         {savedJobs.map((job) => (
           <SavedJobItem
-            key={job.id}
-            jobId={job.id}
-            title={job.title}
+            key={job.jobKey}
+            jobId={job.jobKey}
+            title={job.jobTitle}
             company={job.company}
             location={job.location}
-            savedDate={job.savedDate}
+            savedDate={new Date(job.applyTime).toLocaleDateString("fr-FR")}
             jobUrl={job.jobUrl}
-            onApply={() => handleApply(job.id)}
-            onRemove={() => handleRemove(job.id)}
+            onApply={() => handleApply(job.jobKey)}
+            onRemove={() => handleRemove(job.jobKey)}
+            bookmarked={job.bookmarked}
           />
         ))}
       </AnimatePresence>
