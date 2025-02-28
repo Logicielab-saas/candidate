@@ -32,6 +32,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ReportJobDialog } from "../ReportJobDialog";
 import { ConfirmWithdrawDialog } from "../ConfirmWithdrawDialog";
+import { useToast } from "@/hooks/use-toast";
 
 interface SentApplicationItemProps
   extends Pick<
@@ -76,9 +77,15 @@ export function SentApplicationItem({
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const [isWithdrawDialogOpen, setIsWithdrawDialogOpen] = useState(false);
 
+  const { toast } = useToast();
   const handleStatusUpdate = (newStatus: CandidateStatus) => {
     onUpdateStatus(jobId, newStatus);
     setIsUpdateDialogOpen(false);
+    toast({
+      variant: "success",
+      title: "Statut mis à jour",
+      description: "Le statut de la candidature a été mis à jour avec succès.",
+    });
   };
 
   const getStatusInfo = () => {
@@ -151,6 +158,11 @@ export function SentApplicationItem({
     console.log("Archiving job:", jobId);
     // Call a function to update the state in the parent component
     onArchive(jobId);
+    toast({
+      variant: "success",
+      title: "Candidature archivée",
+      description: "La candidature a été archivée avec succès.",
+    });
   };
 
   const handleWithdraw = () => {
