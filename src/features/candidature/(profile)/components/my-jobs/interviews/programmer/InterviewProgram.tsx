@@ -93,12 +93,28 @@ export function InterviewProgram({ job }: InterviewProgramProps) {
           </h2>
           <div className="shadow-md p-4 rounded-lg bg-accent/20 border border-primaryHex-500">
             <p className="text-md text-gray-700 mb-4 font-semibold">
-              {interviewType === "In-person" &&
-                "Cette entretien se déroulera en personne."}
-              {interviewType === "Video Call" &&
-                "Cette entretien se déroulera par appel vidéo."}
-              {interviewType === "Phone Call" &&
-                "Cette entretien se déroulera par téléphone."}
+              {interviewType === "In-person" && (
+                <>
+                  Cette entretien se déroulera
+                  <span className="text-primaryHex-500"> en personne.</span>
+                </>
+              )}
+              {interviewType === "Video Call" && (
+                <>
+                  Cette entretien se déroulera par appel vidéo.
+                  <span className="text-primaryHex-500">
+                    {interviewDetails.link}
+                  </span>
+                </>
+              )}
+              {interviewType === "Phone Call" && (
+                <>
+                  Cette entretien se déroulera par téléphone.
+                  <span className="text-primaryHex-500">
+                    {interviewDetails.phone}
+                  </span>
+                </>
+              )}
             </p>
             {interviewType === "In-person" &&
               interviewDetails.address &&
@@ -106,13 +122,15 @@ export function InterviewProgram({ job }: InterviewProgramProps) {
                 <>
                   <p className="text-md text-gray-700 mb-2">
                     Adresse:{" "}
-                    <span className="font-bold">
+                    <span className="font-bold text-primaryHex-600">
                       {interviewDetails.address}
                     </span>
                   </p>
                   <p className="text-md text-gray-700 mb-2">
                     Map:{" "}
-                    <span className="font-bold">{interviewDetails.map}</span>
+                    <span className="font-bold text-primaryHex-600">
+                      {interviewDetails.map}
+                    </span>
                   </p>
                 </>
               )}
