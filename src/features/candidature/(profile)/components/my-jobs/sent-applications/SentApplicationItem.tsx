@@ -31,6 +31,7 @@ import { UpdateStatusDialog } from "./UpdateStatusDialog";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ReportJobDialog } from "../ReportJobDialog";
+import { ConfirmWithdrawDialog } from "../ConfirmWithdrawDialog";
 
 interface SentApplicationItemProps
   extends Pick<
@@ -73,6 +74,7 @@ export function SentApplicationItem({
 }: SentApplicationItemProps) {
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
+  const [isWithdrawDialogOpen, setIsWithdrawDialogOpen] = useState(false);
 
   const handleStatusUpdate = (newStatus: CandidateStatus) => {
     onUpdateStatus(jobId, newStatus);
@@ -152,11 +154,7 @@ export function SentApplicationItem({
   };
 
   const handleWithdraw = () => {
-    if (
-      window.confirm("Êtes-vous sûr de vouloir retirer votre candidature ?")
-    ) {
-      onUpdateStatus(jobId, "WITHDRAWN"); // Update the status to WITHDRAWN
-    }
+    setIsWithdrawDialogOpen(true);
   };
 
   return (
@@ -257,14 +255,16 @@ export function SentApplicationItem({
                 <Archive className="h-4 w-4" />
                 Archiver
               </DropdownMenuItem>
-              <DropdownMenuItem
-                className="flex items-center gap-2 text-destructive"
-                onClick={jobExpired ? undefined : handleWithdraw}
-                disabled={jobExpired}
-              >
-                <XCircle className="h-4 w-4" />
-                Retirer la candidature
-              </DropdownMenuItem>
+              {statuses.candidateStatus.status !== "WITHDRAWN" && (
+                <DropdownMenuItem
+                  className="flex items-center gap-2 text-destructive"
+                  onClick={jobExpired ? undefined : handleWithdraw}
+                  disabled={jobExpired}
+                >
+                  <XCircle className="h-4 w-4" />
+                  Retirer la candidature
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem
                 className="flex items-center gap-2 text-destructive"
                 onClick={() => setIsReportDialogOpen(true)}
@@ -281,6 +281,11 @@ export function SentApplicationItem({
         open={isReportDialogOpen}
         onOpenChange={setIsReportDialogOpen}
         jobId={jobId}
+      />
+      <ConfirmWithdrawDialog
+        open={isWithdrawDialogOpen}
+        onOpenChange={setIsWithdrawDialogOpen}
+        onConfirm={() => onUpdateStatus(jobId, "WITHDRAWN")}
       />
     </motion.div>
   );
