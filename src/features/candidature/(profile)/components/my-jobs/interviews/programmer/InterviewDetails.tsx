@@ -11,6 +11,8 @@ interface InterviewDetailsProps {
   candidateEmail: string;
   candidatePhone: string;
   onModify: () => void;
+  jobTitle: string | undefined;
+  companyName: string | undefined;
 }
 
 export function InterviewDetails({
@@ -20,6 +22,8 @@ export function InterviewDetails({
   candidateEmail,
   candidatePhone,
   onModify,
+  jobTitle,
+  companyName,
 }: InterviewDetailsProps) {
   const handleConfirm = () => {
     const data = {
@@ -35,8 +39,8 @@ export function InterviewDetails({
   return (
     <div className="space-y-4">
       <div className="p-4 shadow rounded-lg mb-4 text-center">
-        <h1 className="text-2xl font-bold">Stage PFE - Social Media Manager</h1>
-        <p className="text-lg text-gray-600">Logical Lab</p>
+        <h1 className="text-2xl font-bold">{jobTitle}</h1>
+        <p className="text-lg text-gray-600">{companyName}</p>
       </div>
       <Separator />
       <h2 className="text-xl font-semibold mb-2">Informations</h2>

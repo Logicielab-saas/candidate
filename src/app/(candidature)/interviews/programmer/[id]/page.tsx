@@ -5,12 +5,12 @@ interface PageProps {
 }
 
 export default async function ProgrammerInterviewPage({ params }: PageProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   const { id } = await params;
 
   return (
     <>
-      <InterviewProgram />
+      <InterviewProgram jobKey={id} />
     </>
   );
 }

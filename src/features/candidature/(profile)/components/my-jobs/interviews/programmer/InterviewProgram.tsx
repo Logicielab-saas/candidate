@@ -7,12 +7,20 @@ import { CalendarIcon, ClockIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { InterviewDetails } from "./InterviewDetails";
 import SelectAvailabilityDate from "./SelectAvailabilityDate";
+import { mockInterviews } from "@/core/mockData/jobs";
 
-export function InterviewProgram() {
+interface InterviewProgramProps {
+  jobKey: string;
+}
+
+export function InterviewProgram({ jobKey }: InterviewProgramProps) {
   const [selectedDay, setSelectedDay] = useState<number>(1);
   const [selectedHour, setSelectedHour] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [isDetailsVisible, setIsDetailsVisible] = useState<boolean>(false);
+
+  // Fetch the job details based on jobKey
+  const job = mockInterviews.find((job) => job.jobKey === jobKey);
 
   // Candidate information (you can replace these with actual data)
   const candidateName = "Meryem AZELHAK";
@@ -25,7 +33,11 @@ export function InterviewProgram() {
   }, [selectedDay]);
 
   const handleContinue = () => {
-    setIsDetailsVisible(true);
+    if (selectedHour) {
+      setIsDetailsVisible(true);
+    } else {
+      alert("Please select an hour before continuing.");
+    }
   };
 
   const handleModify = () => {
@@ -42,15 +54,15 @@ export function InterviewProgram() {
           candidateEmail={candidateEmail}
           candidatePhone={candidatePhone}
           onModify={handleModify}
+          jobTitle={job?.jobTitle}
+          companyName={job?.company.name}
         />
       ) : (
         <>
           {/* Job details */}
           <div className="p-4 shadow rounded-lg mb-4 text-center">
-            <h1 className="text-2xl font-bold">
-              Stage PFE - Social Media Manager
-            </h1>
-            <p className="text-lg text-gray-600">Logical Lab</p>
+            <h1 className="text-2xl font-bold">{job?.jobTitle}</h1>
+            <p className="text-lg text-gray-600">{job?.company.name}</p>
           </div>
           <Separator />
           {/* Program interview */}
