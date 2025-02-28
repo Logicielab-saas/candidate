@@ -10,6 +10,7 @@ import SelectAvailabilityDate from "./SelectAvailabilityDate";
 import FixedInterviewDetails from "./FixedInterviewDetails";
 import { Interview } from "@/core/types/interview";
 import Link from "next/link";
+import { JobHeader } from "../jobHeader";
 
 interface InterviewProgramProps {
   job: Interview | undefined;
@@ -81,10 +82,10 @@ export function InterviewProgram({ job }: InterviewProgramProps) {
       ) : (
         <>
           {/* Job details */}
-          <div className="p-4 shadow rounded-lg mb-4 text-center">
-            <h1 className="text-2xl font-bold">{job?.jobTitle}</h1>
-            <p className="text-lg text-gray-600">{job?.company.name}</p>
-          </div>
+          <JobHeader
+            jobTitle={job?.jobTitle || ""}
+            companyName={job?.company.name || ""}
+          />
           <Separator />
           {/* Program interview */}
           <h2 className="text-xl font-semibold mb-2">

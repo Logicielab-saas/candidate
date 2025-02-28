@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { CalendarIcon, ClockIcon, Pencil } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { JobHeader } from "../jobHeader";
 
 interface InterviewDetailsProps {
   selectedDate: string | null;
@@ -38,10 +39,7 @@ export function InterviewDetails({
 
   return (
     <div className="space-y-4">
-      <div className="p-4 shadow rounded-lg mb-4 text-center">
-        <h1 className="text-2xl font-bold">{jobTitle}</h1>
-        <p className="text-lg text-gray-600">{companyName}</p>
-      </div>
+      <JobHeader jobTitle={jobTitle || ""} companyName={companyName || ""} />
       <Separator />
       <h2 className="text-xl font-semibold mb-2">Informations</h2>
       <div className="p-6 shadow-md rounded-lg border">
