@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Building2, MapPin, Calendar, Clock, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 // TODO: Implement the button confirmer to go into page confirmer selecting hour step then confirmer step
 // TODO: Implement the button refuser to go into page refuser
@@ -54,8 +55,16 @@ export function InvitedInterviews({ interviews }: InvitedInterviewsProps) {
               </div>
             </div>
             <div className="flex flex-row space-x-2 ml-4">
-              <Button className="mb-2">Programmer</Button>
-              <Button variant="outline">Refuser</Button>
+              <Button className="mb-2">
+                <Link href={`/interviews/programmer/${interview.jobKey}`}>
+                  Programmer
+                </Link>
+              </Button>
+              <Button variant="outline">
+                <Link href={`/interviews/refuser/${interview.jobKey}`}>
+                  Refuser
+                </Link>
+              </Button>
             </div>
           </motion.div>
         ))}
