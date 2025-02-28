@@ -137,7 +137,7 @@ export function ResumeItem({ title, subtitle = "" }: ResumeItemProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem className="flex items-center" asChild>
-            <Link href="/profile/resume">
+            <Link href="/profile/my-cv">
               <Eye className="mr-2 h-4 w-4" />
               View CV
             </Link>
