@@ -296,5 +296,20 @@ export const mockInterviews: Interview[] = [
     interviewPhone: "+212 625 106251",
     interviewLocation: "Marrakech",
     interviewStatus: "PASSED",
+  },
+  {
+    jobTitle: 'Développeur Backend',
+    jobKey: '10',
+    jobUrl: '#',
+    company: {
+      name: 'Backend Solutions'
+    },
+    location: 'Marrakech',
+    interviewTime: "30 minutes",
+    interviewDate: "2024-02-28",
+    interviewType: "Phone Call",
+    interviewPhone: "+212 625 106251",
+    interviewLocation: "Marrakech",
+    interviewStatus: "INVITED",
   }
 ]

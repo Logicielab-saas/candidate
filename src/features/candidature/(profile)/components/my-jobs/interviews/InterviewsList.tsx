@@ -14,13 +14,13 @@ export function InterviewsList() {
           (interview) => interview.interviewStatus === "INVITED"
         )}
       />
-      <Separator />
+      <Separator className="bg-primaryHex-700" />
       <PendingInterviews
         interviews={mockInterviews.filter(
           (interview) => interview.interviewStatus === "PENDING"
         )}
       />
-      <Separator />
+      <Separator className="bg-primaryHex-700" />
       <PastInterviews
         interviews={mockInterviews.filter(
           (interview) => interview.interviewStatus === "PASSED"
