@@ -9,3 +9,11 @@ export function isInterviewInvited(id: string) {
   }
   return true;
 }
+
+export function isInterviewPending(id: string) {
+  const job = mockInterviews.find((job) => job.jobKey === id);
+  if (!job || job.interviewStatus !== "PENDING") {
+    redirect("/not-found");
+  }
+  return true;
+}
