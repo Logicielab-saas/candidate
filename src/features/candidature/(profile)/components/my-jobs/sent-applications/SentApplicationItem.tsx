@@ -68,6 +68,7 @@ export function SentApplicationItem({
   applyTime,
   statuses,
   jobExpired,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   jobUrl,
   onUpdateStatus,
   jobId,
@@ -191,7 +192,7 @@ export function SentApplicationItem({
               </Avatar>
             </motion.div>
             <a
-              href={jobUrl}
+              href={`/profile/my-jobs/application-details/${jobId}`}
               target="_blank"
               rel="noopener noreferrer"
               className="font-medium hover:underline"
