@@ -177,7 +177,7 @@ export function InterviewProgram({ job }: InterviewProgramProps) {
           {/* Unavailability section */}
           <div className="p-4 rounded-lg shadow-md">
             <h4 className="text-lg font-semibold mb-2">Indisponible ?</h4>
-            <Button variant="outline" className="w-full">
+            <Button variant="outline" className="w-full" asChild>
               <Link href={`/interviews/refuser/${job?.jobKey}`}>
                 Refuser l&apos;entretien
               </Link>
