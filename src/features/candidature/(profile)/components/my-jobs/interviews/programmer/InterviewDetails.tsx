@@ -79,6 +79,9 @@ export function InterviewDetails({
       <Button className="mt-4 w-full" onClick={handleConfirm}>
         Confirmer
       </Button>
+      <Button variant="outline" className="mt-4 w-full" onClick={onModify}>
+        Modifier
+      </Button>
     </div>
   );
 }
