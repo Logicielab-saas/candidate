@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
 
 // Define Zod schema for form validation
 const formSchema = z.object({
@@ -33,6 +34,7 @@ const reasons = [
 ];
 
 export function InterviewRefuser({ interview }: InterviewRefuserProps) {
+  const { toast } = useToast();
   const {
     register,
     handleSubmit,
@@ -49,6 +51,11 @@ export function InterviewRefuser({ interview }: InterviewRefuserProps) {
 
   const onSubmit = (data: FormData) => {
     console.log("Interview refused with data:", data);
+    toast({
+      variant: "success",
+      title: "Entretien refusé",
+      description: "L'entretien a été refusé avec succès",
+    });
   };
 
   const interviewType = interview?.interviewType;

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { CalendarIcon, ClockIcon, Pencil } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { JobHeader } from "../jobHeader";
+import { useToast } from "@/hooks/use-toast";
 
 interface InterviewDetailsProps {
   selectedDate: string | null;
@@ -26,6 +27,7 @@ export function InterviewDetails({
   jobTitle,
   companyName,
 }: InterviewDetailsProps) {
+  const { toast } = useToast();
   const handleConfirm = () => {
     const data = {
       name: candidateName,
@@ -35,6 +37,11 @@ export function InterviewDetails({
       hour: selectedHour,
     };
     console.log("Submitted Data:", data);
+    toast({
+      variant: "success",
+      title: "Entretien programmé",
+      description: "L'entretien a été programmé avec succès",
+    });
   };
 
   return (
