@@ -6,6 +6,7 @@ export type CandidateStatus =
   | 'REJECTED'
   | 'NOT_INTERESTED'
   | 'ARCHIVED'
+  | 'WITHDRAWN'
 
 export type EmployerJobStatus = 'OPEN' | 'CLOSED' | 'EXPIRED' | 'PAUSED'
 export type UserJobStatus = 'PRE_APPLY' | 'POST_APPLY' | 'VIEWED' | 'ARCHIVED'

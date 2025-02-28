@@ -6,4 +6,5 @@ export const statusStyles = {
   rejected: "bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-400",
   hired: "bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-400",
   expired: "bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-400",
+  withdrawn: "bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-400",
 } as const;

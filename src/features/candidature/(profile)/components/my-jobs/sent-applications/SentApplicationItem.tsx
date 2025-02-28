@@ -127,6 +127,12 @@ export function SentApplicationItem({
           label: "Plus intéressé",
           style: statusStyles.expired,
         };
+      case "WITHDRAWN":
+        return {
+          icon: <XCircle className="h-3.5 w-3.5" />,
+          label: "Candidature retirée",
+          style: statusStyles.withdrawn,
+        };
       default:
         return {
           icon: <AlertCircle className="h-3.5 w-3.5" />,
@@ -143,6 +149,14 @@ export function SentApplicationItem({
     console.log("Archiving job:", jobId);
     // Call a function to update the state in the parent component
     onArchive(jobId);
+  };
+
+  const handleWithdraw = () => {
+    if (
+      window.confirm("Êtes-vous sûr de vouloir retirer votre candidature ?")
+    ) {
+      onUpdateStatus(jobId, "WITHDRAWN"); // Update the status to WITHDRAWN
+    }
   };
 
   return (
@@ -243,7 +257,11 @@ export function SentApplicationItem({
                 <Archive className="h-4 w-4" />
                 Archiver
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 text-destructive">
+              <DropdownMenuItem
+                className="flex items-center gap-2 text-destructive"
+                onClick={jobExpired ? undefined : handleWithdraw}
+                disabled={jobExpired}
+              >
                 <XCircle className="h-4 w-4" />
                 Retirer la candidature
               </DropdownMenuItem>
