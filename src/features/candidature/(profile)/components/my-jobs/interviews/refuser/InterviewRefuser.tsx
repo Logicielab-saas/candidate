@@ -23,6 +23,7 @@ type FormData = z.infer<typeof formSchema>;
 
 interface InterviewRefuserProps {
   interview: Interview | undefined;
+  source: "annuler" | "refuser";
 }
 
 const reasons = [
@@ -33,7 +34,10 @@ const reasons = [
   "Autre",
 ];
 
-export function InterviewRefuser({ interview }: InterviewRefuserProps) {
+export function InterviewRefuser({
+  interview,
+  source = "refuser",
+}: InterviewRefuserProps) {
   const { toast } = useToast();
   const {
     register,
@@ -51,11 +55,19 @@ export function InterviewRefuser({ interview }: InterviewRefuserProps) {
 
   const onSubmit = (data: FormData) => {
     console.log("Interview refused with data:", data);
-    toast({
-      variant: "success",
-      title: "Entretien refusé",
-      description: "L'entretien a été refusé avec succès",
-    });
+    if (source === "annuler") {
+      toast({
+        variant: "success",
+        title: "Entretien annulé",
+        description: "L'entretien a été annulé avec succès",
+      });
+    } else {
+      toast({
+        variant: "success",
+        title: "Entretien refusé",
+        description: "L'entretien a été refusé avec succès",
+      });
+    }
   };
 
   const interviewType = interview?.interviewType;
@@ -75,7 +87,9 @@ export function InterviewRefuser({ interview }: InterviewRefuserProps) {
       />
       <Separator />
       {/* Program interview */}
-      <h2 className="text-xl font-semibold mb-2">Refuser l&apos;entretien</h2>
+      <h2 className="text-xl font-semibold mb-2">
+        {source === "annuler" ? "Annuler l'entretien" : "Refuser l'entretien"}
+      </h2>
       <div className="shadow p-4 rounded-lg bg-accent/20 border border-primaryHex-500">
         <p className="text-md text-gray-700 mb-4 font-semibold">
           {interviewType === "In-person" &&
@@ -163,16 +177,27 @@ export function InterviewRefuser({ interview }: InterviewRefuserProps) {
       {/* Action buttons */}
       <div className="flex space-x-4">
         <Button type="submit" className="w-full">
-          Refuser l&apos;entretien
+          {source === "annuler" ? "Annuler l'entretien" : "Refuser l'entretien"}
         </Button>
-        <Button className="w-full" variant="outline" asChild>
-          <Link
-            href={`/interviews/programmer/${interview?.jobKey}`}
-            className="w-full"
-          >
-            Maintenir cet entretien
-          </Link>
-        </Button>
+        {source === "refuser" ? (
+          <Button className="w-full" variant="outline" asChild>
+            <Link
+              href={`/interviews/programmer/${interview?.jobKey}`}
+              className="w-full"
+            >
+              Maintenir cet entretien
+            </Link>
+          </Button>
+        ) : (
+          <Button className="w-full" variant="outline" asChild>
+            <Link
+              href={`/interviews/reporter/${interview?.jobKey}`}
+              className="w-full"
+            >
+              Suggérer un nouveau créneau
+            </Link>
+          </Button>
+        )}
       </div>
     </form>
   );
