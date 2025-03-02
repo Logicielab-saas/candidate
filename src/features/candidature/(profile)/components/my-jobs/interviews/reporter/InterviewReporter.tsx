@@ -16,6 +16,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 
 interface InterviewReporterProps {
   interview: Interview | undefined;
@@ -56,6 +57,7 @@ function getWeekTitle(days: { date: Date }[]): string {
 }
 
 export function InterviewReporter({ interview }: InterviewReporterProps) {
+  const { toast } = useToast();
   const {
     control,
     handleSubmit,
@@ -83,116 +85,127 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
       },
       message: data.message,
     });
+    toast({
+      variant: "success",
+      title: "Disponibilités envoyées",
+      description: "Vos disponibilités ont été envoyées avec succès",
+    });
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-4">
       <JobHeader
         jobTitle={interview?.jobTitle || ""}
         companyName={interview?.company.name || ""}
       />
-      <Separator className="my-6" />
+      <Separator />
 
-      <div className="space-y-8">
-        <h2 className="text-xl font-semibold">
-          Indiquez vos disponibilités à l&apos;employeur
-        </h2>
+      <h2 className="text-xl font-semibold mb-2">
+        Indiquez vos disponibilités à l&apos;employeur
+      </h2>
 
-        <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-8">
-          {/* This Week Section */}
-          <div className="rounded-lg shadow dark:border p-6">
-            <h3 className="text-lg font-medium mb-4">{thisWeekTitle}</h3>
-            <Controller
-              control={control}
-              name="thisWeek"
-              render={({ field }) => (
-                <div className="space-y-3">
-                  {thisWeekDays.map((day) => {
-                    const dayValue = day.date.toISOString();
-                    return (
-                      <label
-                        key={dayValue}
-                        className="flex items-center space-x-3 p-2 rounded-md cursor-pointer"
-                      >
-                        <Checkbox
-                          checked={field.value.includes(dayValue)}
-                          onCheckedChange={(checked) => {
-                            const updated = checked
-                              ? [...field.value, dayValue]
-                              : field.value.filter((v) => v !== dayValue);
-                            field.onChange(updated);
-                          }}
-                        />
-                        <span>
-                          {format(day.date, "EEEE d MMMM", { locale: fr })}
-                        </span>
-                      </label>
-                    );
-                  })}
-                </div>
-              )}
-            />
-
-            <Separator className="my-6" />
-            {/* Next Week Section */}
-            <h3 className="text-lg font-medium mb-4">{nextWeekTitle}</h3>
-            <Controller
-              control={control}
-              name="nextWeek"
-              render={({ field }) => (
-                <div className="space-y-3">
-                  {nextWeekDays.map((day) => {
-                    const dayValue = day.date.toISOString();
-                    return (
-                      <label
-                        key={dayValue}
-                        className="flex items-center space-x-3 p-2 rounded-md cursor-pointer"
-                      >
-                        <Checkbox
-                          checked={field.value.includes(dayValue)}
-                          onCheckedChange={(checked) => {
-                            const updated = checked
-                              ? [...field.value, dayValue]
-                              : field.value.filter((v) => v !== dayValue);
-                            field.onChange(updated);
-                          }}
-                        />
-                        <span>
-                          {format(day.date, "EEEE d MMMM", { locale: fr })}
-                        </span>
-                      </label>
-                    );
-                  })}
-                </div>
-              )}
-            />
-            {errors.nextWeek && (
-              <p className="mt-2 text-sm text-destructive">
-                {errors.nextWeek.message}
-              </p>
-            )}
-          </div>
-
-          <Separator className="my-6" />
-
-          <div className="space-y-4">
-            <Controller
-              control={control}
-              name="message"
-              render={({ field }) => (
-                <Textarea
-                  placeholder="Ajouter un message pour l'employeur"
-                  className="w-full min-h-[100px]"
-                  {...field}
-                />
-              )}
-            />
-            <Button type="submit" className="w-full">
-              Continuer
-            </Button>
-          </div>
-        </form>
+      {/* This Week Section */}
+      <div className="p-4 rounded-lg bg-accent/20 shadow">
+        <h3 className="text-lg font-semibold mb-2">{thisWeekTitle}</h3>
+        <Controller
+          control={control}
+          name="thisWeek"
+          render={({ field }) => (
+            <div className="space-y-3">
+              {thisWeekDays.map((day) => {
+                const dayValue = day.date.toISOString();
+                return (
+                  <label
+                    key={dayValue}
+                    className="flex items-center space-x-3 p-2 hover:bg-accent/30 rounded-md cursor-pointer"
+                  >
+                    <Checkbox
+                      checked={field.value.includes(dayValue)}
+                      onCheckedChange={(checked) => {
+                        const updated = checked
+                          ? [...field.value, dayValue]
+                          : field.value.filter((v) => v !== dayValue);
+                        field.onChange(updated);
+                      }}
+                    />
+                    <span className="text-md text-gray-700 dark:text-gray-300">
+                      {format(day.date, "EEEE d MMMM", { locale: fr })}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          )}
+        />
       </div>
-    </div>
+
+      <Separator />
+
+      {/* Next Week Section */}
+      <div className="p-4 rounded-lg bg-accent/20 shadow">
+        <h3 className="text-lg font-semibold mb-2">{nextWeekTitle}</h3>
+        <Controller
+          control={control}
+          name="nextWeek"
+          render={({ field }) => (
+            <div className="space-y-3">
+              {nextWeekDays.map((day) => {
+                const dayValue = day.date.toISOString();
+                return (
+                  <label
+                    key={dayValue}
+                    className="flex items-center space-x-3 p-2 hover:bg-accent/30 rounded-md cursor-pointer"
+                  >
+                    <Checkbox
+                      checked={field.value.includes(dayValue)}
+                      onCheckedChange={(checked) => {
+                        const updated = checked
+                          ? [...field.value, dayValue]
+                          : field.value.filter((v) => v !== dayValue);
+                        field.onChange(updated);
+                      }}
+                    />
+                    <span className="text-md text-gray-700 dark:text-gray-300">
+                      {format(day.date, "EEEE d MMMM", { locale: fr })}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          )}
+        />
+      </div>
+      {errors.nextWeek && (
+        <p className="mt-2 text-sm text-destructive">
+          {errors.nextWeek.message}
+        </p>
+      )}
+      <Separator />
+
+      {/* Message section */}
+      <div className="p-4 rounded-lg bg-accent/20 shadow">
+        <h3 className="text-lg font-semibold mb-2">
+          Ajouter un message pour l&apos;employeur (optionnel)
+        </h3>
+        <Controller
+          control={control}
+          name="message"
+          render={({ field }) => (
+            <Textarea
+              placeholder="Votre message ici..."
+              className="w-full p-2 border border-gray-300 rounded"
+              rows={4}
+              {...field}
+            />
+          )}
+        />
+      </div>
+
+      <Separator />
+
+      <Button type="submit" className="w-full">
+        Continuer
+      </Button>
+    </form>
   );
 }

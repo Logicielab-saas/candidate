@@ -91,7 +91,7 @@ export function InterviewRefuser({
         {source === "annuler" ? "Annuler l'entretien" : "Refuser l'entretien"}
       </h2>
       <div className="shadow p-4 rounded-lg bg-accent/20 border border-primaryHex-500">
-        <p className="text-md text-gray-700 mb-4 font-semibold">
+        <p className="text-md text-gray-700 dark:text-gray-300 mb-4 font-semibold">
           {interviewType === "In-person" &&
             "Cette entretien se déroulera en personne."}
           {interviewType === "Video Call" &&
@@ -103,23 +103,23 @@ export function InterviewRefuser({
           interviewDetails.address &&
           interviewDetails.map && (
             <>
-              <p className="text-md text-gray-700 mb-2">
+              <p className="text-md text-gray-700 dark:text-gray-300 mb-2">
                 Adresse:{" "}
                 <span className="font-bold">{interviewDetails.address}</span>
               </p>
-              <p className="text-md text-gray-700 mb-2">
+              <p className="text-md text-gray-700 dark:text-gray-300 mb-2">
                 Map: <span className="font-bold">{interviewDetails.map}</span>
               </p>
             </>
           )}
         {interviewType === "Video Call" && interviewDetails.link && (
-          <p className="text-md text-gray-700 mb-4">
+          <p className="text-md text-gray-700 dark:text-gray-300 mb-4">
             Lien de l&apos;appel:{" "}
             <span className="font-bold">{interviewDetails.link}</span>
           </p>
         )}
         {interviewType === "Phone Call" && interviewDetails.phone && (
-          <p className="text-md text-gray-700 mb-4">
+          <p className="text-md text-gray-700 dark:text-gray-300 mb-4">
             Numéro de téléphone:{" "}
             <span className="font-bold">{interviewDetails.phone}</span>
           </p>
@@ -142,7 +142,7 @@ export function InterviewRefuser({
               <RadioGroupItem value={reason} id={`reason-${index}`} />
               <label
                 htmlFor={`reason-${index}`}
-                className="text-md text-gray-700 ml-2"
+                className="text-md text-gray-700 dark:text-gray-300 ml-2"
               >
                 {reason}
               </label>
