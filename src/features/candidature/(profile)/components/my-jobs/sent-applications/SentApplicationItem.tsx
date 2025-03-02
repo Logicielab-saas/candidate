@@ -239,7 +239,13 @@ export function SentApplicationItem({
             open={isUpdateDialogOpen}
             onOpenChange={setIsUpdateDialogOpen}
             trigger={
-              <Button disabled={jobExpired}>Mettre à jour le statut</Button>
+              <Button
+                disabled={
+                  jobExpired || statuses.candidateStatus.status === "WITHDRAWN"
+                }
+              >
+                Mettre à jour le statut
+              </Button>
             }
           />
 
