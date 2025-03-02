@@ -17,6 +17,7 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { InterviewTypeDetails } from "@/components/shared/InterviewTypeDetails";
 
 interface InterviewReporterProps {
   interview: Interview | undefined;
@@ -98,11 +99,12 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
         jobTitle={interview?.jobTitle || ""}
         companyName={interview?.company.name || ""}
       />
-      <Separator />
-
       <h2 className="text-xl font-semibold mb-2">
         Indiquez vos disponibilités à l&apos;employeur
       </h2>
+      <InterviewTypeDetails interview={interview} />
+
+      <Separator />
 
       {/* This Week Section */}
       <div className="p-4 rounded-lg bg-accent/20 shadow">

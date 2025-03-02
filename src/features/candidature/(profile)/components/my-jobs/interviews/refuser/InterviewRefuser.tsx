@@ -11,6 +11,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
+import { InterviewTypeDetails } from "@/components/shared/InterviewTypeDetails";
 
 // Define Zod schema for form validation
 const formSchema = z.object({
@@ -70,14 +71,6 @@ export function InterviewRefuser({
     }
   };
 
-  const interviewType = interview?.interviewType;
-  const interviewDetails = {
-    address: interview?.interviewAddress,
-    link: interview?.interviewLink,
-    phone: interview?.interviewPhone,
-    map: interview?.interviewAddressMap,
-  };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       {/* Job details */}
@@ -86,45 +79,12 @@ export function InterviewRefuser({
         companyName={interview?.company.name || ""}
       />
       <Separator />
-      {/* Program interview */}
+      {/* Refuser/Annuler interview */}
       <h2 className="text-xl font-semibold mb-2">
         {source === "annuler" ? "Annuler l'entretien" : "Refuser l'entretien"}
       </h2>
-      <div className="shadow p-4 rounded-lg bg-accent/20 border border-primaryHex-500">
-        <p className="text-md text-gray-700 dark:text-gray-300 mb-4 font-semibold">
-          {interviewType === "In-person" &&
-            "Cette entretien se déroulera en personne."}
-          {interviewType === "Video Call" &&
-            "Cette entretien se déroulera par appel vidéo."}
-          {interviewType === "Phone Call" &&
-            "Cette entretien se déroulera par téléphone."}
-        </p>
-        {interviewType === "In-person" &&
-          interviewDetails.address &&
-          interviewDetails.map && (
-            <>
-              <p className="text-md text-gray-700 dark:text-gray-300 mb-2">
-                Adresse:{" "}
-                <span className="font-bold">{interviewDetails.address}</span>
-              </p>
-              <p className="text-md text-gray-700 dark:text-gray-300 mb-2">
-                Map: <span className="font-bold">{interviewDetails.map}</span>
-              </p>
-            </>
-          )}
-        {interviewType === "Video Call" && interviewDetails.link && (
-          <p className="text-md text-gray-700 dark:text-gray-300 mb-4">
-            Lien de l&apos;appel:{" "}
-            <span className="font-bold">{interviewDetails.link}</span>
-          </p>
-        )}
-        {interviewType === "Phone Call" && interviewDetails.phone && (
-          <p className="text-md text-gray-700 dark:text-gray-300 mb-4">
-            Numéro de téléphone:{" "}
-            <span className="font-bold">{interviewDetails.phone}</span>
-          </p>
-        )}
-      </div>
+
+      <InterviewTypeDetails interview={interview} />
 
       <Separator />
 

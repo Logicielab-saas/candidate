@@ -61,12 +61,12 @@ export function InvitedInterviews({ interviews }: InvitedInterviewsProps) {
                 </div>
               </div>
               <div className="flex flex-row space-x-2 ml-4">
-                <Button className="mb-2">
+                <Button className="mb-2" asChild>
                   <Link href={`/interviews/programmer/${interview.jobKey}`}>
                     Programmer
                   </Link>
                 </Button>
-                <Button variant="outline">
+                <Button variant="outline" asChild>
                   <Link href={`/interviews/refuser/${interview.jobKey}`}>
                     Refuser
                   </Link>

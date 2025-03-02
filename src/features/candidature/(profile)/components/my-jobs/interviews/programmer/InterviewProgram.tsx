@@ -11,6 +11,7 @@ import FixedInterviewDetails from "./FixedInterviewDetails";
 import { Interview } from "@/core/types/interview";
 import Link from "next/link";
 import { JobHeader } from "../jobHeader";
+import { InterviewTypeDetails } from "@/components/shared/InterviewTypeDetails";
 
 interface InterviewProgramProps {
   job: Interview | undefined;
@@ -55,16 +56,9 @@ export function InterviewProgram({ job }: InterviewProgramProps) {
 
   let fixedHour = false;
   // Determine the interview type and relevant details
-  const interviewType = job?.interviewType; // e.g., "In-person", "Video Call", "Phone Call"
   if (job?.fixedInterviewDate && job?.fixedInterviewHour) {
     fixedHour = true;
   }
-  const interviewDetails = {
-    address: job?.interviewAddress,
-    link: job?.interviewLink,
-    phone: job?.interviewPhone,
-    map: job?.interviewAddressMap,
-  };
 
   return (
     <div className="space-y-4">
@@ -91,62 +85,7 @@ export function InterviewProgram({ job }: InterviewProgramProps) {
           <h2 className="text-xl font-semibold mb-2">
             Programmez votre entretien
           </h2>
-          <div className="shadow-md p-4 rounded-lg bg-accent/20 border border-primaryHex-500">
-            <p className="text-md text-gray-700 mb-4 font-semibold">
-              {interviewType === "In-person" && (
-                <>
-                  Cette entretien se déroulera
-                  <span className="text-primaryHex-500"> en personne.</span>
-                </>
-              )}
-              {interviewType === "Video Call" && (
-                <>
-                  Cette entretien se déroulera par appel vidéo.
-                  <span className="text-primaryHex-500">
-                    {interviewDetails.link}
-                  </span>
-                </>
-              )}
-              {interviewType === "Phone Call" && (
-                <>
-                  Cette entretien se déroulera par téléphone.
-                  <span className="text-primaryHex-500">
-                    {interviewDetails.phone}
-                  </span>
-                </>
-              )}
-            </p>
-            {interviewType === "In-person" &&
-              interviewDetails.address &&
-              interviewDetails.map && (
-                <>
-                  <p className="text-md text-gray-700 mb-2">
-                    Adresse:{" "}
-                    <span className="font-bold text-primaryHex-600">
-                      {interviewDetails.address}
-                    </span>
-                  </p>
-                  <p className="text-md text-gray-700 mb-2">
-                    Map:{" "}
-                    <span className="font-bold text-primaryHex-600">
-                      {interviewDetails.map}
-                    </span>
-                  </p>
-                </>
-              )}
-            {interviewType === "Video Call" && interviewDetails.link && (
-              <p className="text-md text-gray-700 mb-4">
-                Lien de l&apos;appel:{" "}
-                <span className="font-bold">{interviewDetails.link}</span>
-              </p>
-            )}
-            {interviewType === "Phone Call" && interviewDetails.phone && (
-              <p className="text-md text-gray-700 mb-4">
-                Numéro de téléphone:{" "}
-                <span className="font-bold">{interviewDetails.phone}</span>
-              </p>
-            )}
-          </div>
+          <InterviewTypeDetails interview={job} />
           <Separator />
           {/* Show fixed interview details if applicable */}
           {fixedHour && (
