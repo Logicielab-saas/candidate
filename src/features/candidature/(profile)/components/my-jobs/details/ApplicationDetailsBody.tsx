@@ -2,6 +2,7 @@ import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
 import { Job, JobQuestion } from "@/core/types";
 import { FileText } from "lucide-react";
 import { JobQuestions } from "@/core/mockData/jobs";
+import { Separator } from "@/components/ui/separator";
 
 interface Document {
   id: number;
@@ -42,7 +43,7 @@ export function ApplicationDetailsBody({
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
         {/* Candidate Informations */}
-        <div className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md flex flex-col gap-4">
+        <div className="shadow dark:border p-4 rounded-lg shadow-md flex flex-col gap-4">
           <h6 className="text-muted-foreground font-semibold text-lg">
             Contact Information
           </h6>
@@ -68,8 +69,10 @@ export function ApplicationDetailsBody({
           </div>
         </div>
 
+        <Separator />
+
         {/* Candidature CV */}
-        <div className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md flex flex-col items-start gap-2">
+        <div className="shadow dark:border p-4 rounded-lg shadow-md flex flex-col items-start gap-2">
           <h6 className="text-muted-foreground font-semibold">CV</h6>
           <a
             href="/cvs/sample.pdf"
@@ -81,8 +84,10 @@ export function ApplicationDetailsBody({
           </a>
         </div>
 
+        <Separator />
+
         {/* Candidature Relevant Experience */}
-        <div className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md flex flex-col items-start gap-2">
+        <div className="shadow dark:border p-4 rounded-lg shadow-md flex flex-col items-start gap-2">
           <h6 className="text-muted-foreground font-semibold">
             Relevant Experience
           </h6>
@@ -90,8 +95,10 @@ export function ApplicationDetailsBody({
           <p className="text-base font-medium">Logiciel Lab</p>
         </div>
 
+        <Separator />
+
         {/* Candidature Questions */}
-        <div className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md flex flex-col items-start gap-4">
+        <div className="shadow dark:border p-4 rounded-lg shadow-md flex flex-col items-start gap-4">
           <h6 className="text-muted-foreground font-semibold text-lg">
             Questions
           </h6>
@@ -114,12 +121,14 @@ export function ApplicationDetailsBody({
           )}
         </div>
 
+        <Separator />
+
         {/* Supporting Documents Cover Letter */}
         {documents ? (
           documents.map((document) => (
             <div
               key={document.id}
-              className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md flex flex-col items-start gap-2"
+              className="shadow p-4 rounded-lg shadow-md flex flex-col items-start gap-2"
             >
               <h6 className="text-muted-foreground font-semibold">
                 {document.name}
@@ -128,7 +137,7 @@ export function ApplicationDetailsBody({
             </div>
           ))
         ) : (
-          <div className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md flex flex-col items-start gap-2">
+          <div className="shadow p-4 rounded-lg shadow-md flex flex-col items-start gap-2">
             <h6 className="text-muted-foreground font-semibold">
               Relevant Experience
             </h6>
