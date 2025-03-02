@@ -1,10 +1,20 @@
+/**
+ * ArchivedJobsList - Displays a list of archived job applications
+ *
+ * This component shows all archived job applications and provides
+ * functionality to unarchive them if needed.
+ *
+ * Props:
+ * - archivedJobs: Array of archived Job objects
+ * - onUnarchive: Function to unarchive a job application
+ */
 "use client";
 
 import { ArchivedJobItem } from "./ArchivedJobItem";
-import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { mockSentApplications } from "@/core/mockData/jobs";
+import type { Job } from "@/core/types";
 
+// Animation configuration for the container
 const container = {
   hidden: { opacity: 0 },
   show: {
@@ -15,19 +25,15 @@ const container = {
   },
 };
 
-export function ArchivedJobsList() {
-  const [archivedJobs, setArchivedJobs] = useState(
-    mockSentApplications.filter(
-      (job) => job.statuses.userJobStatus.status === "ARCHIVED"
-    )
-  );
+interface ArchivedJobsListProps {
+  archivedJobs: Job[];
+  onUnarchive: (jobId: string) => void;
+}
 
-  const handleUnarchive = (jobId: string) => {
-    setArchivedJobs((currentJobs) =>
-      currentJobs.filter((job) => job.jobKey !== jobId)
-    );
-  };
-
+export function ArchivedJobsList({
+  archivedJobs,
+  onUnarchive,
+}: ArchivedJobsListProps) {
   return (
     <motion.div
       variants={container}
@@ -35,6 +41,7 @@ export function ArchivedJobsList() {
       animate="show"
       className="divide-y divide-border"
     >
+      {/* AnimatePresence enables exit animations when items are removed */}
       <AnimatePresence mode="popLayout">
         {archivedJobs.map((job) => (
           <ArchivedJobItem
@@ -51,8 +58,9 @@ export function ArchivedJobsList() {
             withdrawn={job.withdrawn}
             applyTime={job.applyTime}
             statuses={job.statuses}
-            onUnarchive={() => handleUnarchive(job.jobKey)}
+            onUnarchive={() => onUnarchive(job.jobKey)}
             jobId={job.jobKey}
+            bookmarked={job.bookmarked}
           />
         ))}
       </AnimatePresence>

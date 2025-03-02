@@ -1,10 +1,20 @@
+/**
+ * SavedJobsList - Displays a list of bookmarked jobs
+ *
+ * This component receives jobs that have been bookmarked by the user
+ * and renders them in a list with animation effects.
+ *
+ * Props:
+ * - jobs: Array of bookmarked Job objects
+ * - onRemoveBookmark: Function to remove a job from bookmarks
+ */
 "use client";
 
 import { SavedJobItem } from "./SavedJobItem";
-import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { mockSentApplications } from "@/core/mockData/jobs";
+import type { Job } from "@/core/types";
 
+// Animation configuration for the container
 const container = {
   hidden: { opacity: 0 },
   show: {
@@ -15,20 +25,16 @@ const container = {
   },
 };
 
-export function SavedJobsList() {
-  const [savedJobs, setSavedJobs] = useState(
-    mockSentApplications.filter((job) => job.bookmarked)
-  );
+interface SavedJobsListProps {
+  jobs: Job[];
+  onRemoveBookmark: (jobId: string) => void;
+}
 
+export function SavedJobsList({ jobs, onRemoveBookmark }: SavedJobsListProps) {
+  // TODO: Implement actual apply logic when API is ready
   const handleApply = (jobId: string) => {
     console.log("Applying to job:", jobId);
     // Implement apply logic
-  };
-
-  const handleRemove = (jobId: string) => {
-    setSavedJobs((currentJobs) =>
-      currentJobs.filter((job) => job.jobKey !== jobId)
-    );
   };
 
   return (
@@ -38,8 +44,9 @@ export function SavedJobsList() {
       animate="show"
       className="divide-y divide-border"
     >
+      {/* AnimatePresence enables exit animations when items are removed */}
       <AnimatePresence mode="popLayout">
-        {savedJobs.map((job) => (
+        {jobs.map((job) => (
           <SavedJobItem
             key={job.jobKey}
             jobId={job.jobKey}
@@ -49,7 +56,7 @@ export function SavedJobsList() {
             savedDate={new Date(job.applyTime).toLocaleDateString("fr-FR")}
             jobUrl={job.jobUrl}
             onApply={() => handleApply(job.jobKey)}
-            onRemove={() => handleRemove(job.jobKey)}
+            onRemove={() => onRemoveBookmark(job.jobKey)}
             bookmarked={job.bookmarked}
           />
         ))}

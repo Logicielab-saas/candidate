@@ -1,11 +1,21 @@
+/**
+ * SentApplicationsList - Displays a list of active job applications
+ *
+ * This component shows all non-archived job applications and provides
+ * functionality to update their status or archive them.
+ *
+ * Props:
+ * - applications: Array of active Job applications
+ * - onUpdateStatus: Function to update the status of an application
+ * - onArchive: Function to archive an application
+ */
 "use client";
 
 import { SentApplicationItem } from "./SentApplicationItem";
-import type { CandidateStatus } from "@/core/types/job";
-import { useState } from "react";
+import type { CandidateStatus, Job } from "@/core/types";
 import { motion, AnimatePresence } from "framer-motion";
-import { mockSentApplications } from "@/core/mockData/jobs";
 
+// Animation configuration for the container
 const container = {
   hidden: { opacity: 0 },
   show: {
@@ -16,44 +26,17 @@ const container = {
   },
 };
 
-export function SentApplicationsList() {
-  const [applications, setApplications] = useState(mockSentApplications);
+interface SentApplicationsListProps {
+  applications: Job[];
+  onUpdateStatus: (jobId: string, newStatus: CandidateStatus) => void;
+  onArchive: (jobId: string) => void;
+}
 
-  const handleUpdateStatus = (jobId: string, newStatus: CandidateStatus) => {
-    setApplications((currentApplications) =>
-      currentApplications.map((app) => {
-        if (app.jobKey === jobId) {
-          const now = Date.now();
-          return {
-            ...app,
-            statuses: {
-              ...app.statuses,
-              candidateStatus: {
-                status: newStatus,
-                timestamp: now,
-              },
-              selfReportedStatus: {
-                status: newStatus,
-                timestamp: now,
-              },
-            },
-          };
-        }
-        return app;
-      })
-    );
-  };
-
-  const handleArchive = (jobId: string) => {
-    setApplications((currentApplications) =>
-      currentApplications.filter((app) => app.jobKey !== jobId)
-    );
-  };
-
-  const nonArchivedApplications = applications.filter(
-    (app) => app.statuses.userJobStatus.status !== "ARCHIVED"
-  );
-
+export function SentApplicationsList({
+  applications,
+  onUpdateStatus,
+  onArchive,
+}: SentApplicationsListProps) {
   return (
     <motion.div
       variants={container}
@@ -61,8 +44,9 @@ export function SentApplicationsList() {
       animate="show"
       className="divide-y divide-border"
     >
+      {/* AnimatePresence enables exit animations when items are removed */}
       <AnimatePresence mode="popLayout">
-        {nonArchivedApplications.map((job) => (
+        {applications.map((job) => (
           <SentApplicationItem
             key={job.jobKey}
             jobId={job.jobKey}
@@ -73,8 +57,8 @@ export function SentApplicationsList() {
             jobExpired={job.jobExpired}
             jobUrl={job.jobUrl}
             statuses={job.statuses}
-            onUpdateStatus={handleUpdateStatus}
-            onArchive={handleArchive}
+            onUpdateStatus={onUpdateStatus}
+            onArchive={onArchive}
           />
         ))}
       </AnimatePresence>
