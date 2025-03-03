@@ -1,16 +1,38 @@
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { type Annonce } from "@/core/mockData/annonces";
+import { spanBadgeStyle } from "@/core/styles/span-badge.style";
 import { Avatar } from "@radix-ui/react-avatar";
 import { Building2, MapPin, Share2, Users2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useCallback } from "react";
 
 interface AnnonceHeaderProps {
   annonce: Annonce;
 }
 
 export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
+  const { toast } = useToast();
+
+  const handleShare = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast({
+        variant: "success",
+        title: "URL copiée",
+        description: "L'URL de l'annonce a été copiée dans le presse-papiers",
+      });
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Impossible de copier l'URL",
+        variant: "destructive",
+      });
+      console.log(error);
+    }
+  }, [toast]);
+
   return (
     <Card className="p-6">
       <div className="flex items-start gap-6">
@@ -50,7 +72,7 @@ export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
 
             {/* Actions */}
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={handleShare}>
                 <Share2 className="h-4 w-4 mr-2" />
                 Partager
               </Button>
@@ -60,9 +82,9 @@ export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
           {/* Tags */}
           <div className="flex flex-wrap gap-2 mt-4">
             {annonce.jobTypeInformation.contractTypes.map((type) => (
-              <Badge key={type} variant="secondary">
+              <span key={type} className={spanBadgeStyle}>
                 {type}
-              </Badge>
+              </span>
             ))}
           </div>
         </div>

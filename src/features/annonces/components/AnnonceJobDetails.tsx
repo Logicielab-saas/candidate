@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SalaryDisplayType } from "@/core/enums/salary.enum";
 import { type Annonce } from "@/core/mockData/annonces";
+import { iconContainerStyle } from "@/core/styles/icon-container.style";
 import { BriefcaseIcon, CalendarIcon, ClockIcon, EuroIcon } from "lucide-react";
 
 interface AnnonceJobDetailsProps {
@@ -56,8 +57,8 @@ export function AnnonceJobDetails({ annonce }: AnnonceJobDetailsProps) {
       <CardContent className="space-y-6">
         {/* Salary */}
         <div className="flex items-start gap-4">
-          <div className="rounded-lg bg-primary/10 p-2">
-            <EuroIcon className="h-5 w-5 text-primary" />
+          <div className={iconContainerStyle}>
+            <EuroIcon className="h-5 w-5 text-primaryHex-600" />
           </div>
           <div>
             <h3 className="font-medium">Salaire</h3>
@@ -67,8 +68,8 @@ export function AnnonceJobDetails({ annonce }: AnnonceJobDetailsProps) {
 
         {/* Contract Type */}
         <div className="flex items-start gap-4">
-          <div className="rounded-lg bg-primary/10 p-2">
-            <BriefcaseIcon className="h-5 w-5 text-primary" />
+          <div className={iconContainerStyle}>
+            <BriefcaseIcon className="h-5 w-5 text-primaryHex-600" />
           </div>
           <div>
             <h3 className="font-medium">Type de contrat</h3>
@@ -80,8 +81,8 @@ export function AnnonceJobDetails({ annonce }: AnnonceJobDetailsProps) {
 
         {/* Duration */}
         <div className="flex items-start gap-4">
-          <div className="rounded-lg bg-primary/10 p-2">
-            <CalendarIcon className="h-5 w-5 text-primary" />
+          <div className={iconContainerStyle}>
+            <CalendarIcon className="h-5 w-5 text-primaryHex-600" />
           </div>
           <div>
             <h3 className="font-medium">Durée</h3>
@@ -91,8 +92,8 @@ export function AnnonceJobDetails({ annonce }: AnnonceJobDetailsProps) {
 
         {/* Schedule */}
         <div className="flex items-start gap-4">
-          <div className="rounded-lg bg-primary/10 p-2">
-            <ClockIcon className="h-5 w-5 text-primary" />
+          <div className={iconContainerStyle}>
+            <ClockIcon className="h-5 w-5 text-primaryHex-600" />
           </div>
           <div>
             <h3 className="font-medium">Horaires</h3>
