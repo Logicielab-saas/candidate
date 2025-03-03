@@ -92,7 +92,7 @@ export const MOCK_MESSAGES: Message[] = [
       { name: "Omar BENJELLOUN", role: "Candidat" },
       { name: "Marianne LAGARDE", role: "Recruteur" },
     ],
-    isArchived: false,
+    isArchived: true,
     isSpam: false,
   },
   {
@@ -114,7 +114,7 @@ export const MOCK_MESSAGES: Message[] = [
       { name: "Oussama EL HASSANI", role: "Recruteur" },
     ],
     isArchived: false,
-    isSpam: false,
+    isSpam: true,
   },
   {
     id: 5,
@@ -134,7 +134,7 @@ export const MOCK_MESSAGES: Message[] = [
       { name: "Nadia EL HASSANI", role: "Candidat" },
       { name: "Youssef EL AMRANI", role: "Recruteur" },
     ],
-    isArchived: false,
+    isArchived: true,
     isSpam: false,
   },
 ];

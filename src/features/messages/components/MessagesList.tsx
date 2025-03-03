@@ -130,8 +130,7 @@ export function MessagesList({
     // First apply status filter
     if (currentFilter === "archive" && !message.isArchived) return false;
     if (currentFilter === "spam" && !message.isSpam) return false;
-    if (currentFilter === "inbox" && (message.isArchived || message.isSpam))
-      return false;
+    if (currentFilter === "inbox") return true;
 
     // Then apply search filter
     const searchLower = searchQuery.toLowerCase();
