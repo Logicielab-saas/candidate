@@ -144,44 +144,44 @@ export interface MessageTemplate {
 export const MESSAGE_TEMPLATES: MessageTemplate[] = [
   {
     id: "template-1",
-    category: "Entretiens",
-    title: "Proposition d'entretien",
+    category: "Candidature",
+    title: "Réponse initiale",
     content:
-      "Bonjour,\n\nVotre profil a retenu toute notre attention. Nous aimerions vous rencontrer pour un entretien.\n\nQuelles seraient vos disponibilités pour la semaine prochaine ?\n\nCordialement",
+      "Bonjour,\n\nJe vous remercie pour votre message concernant le poste. Je suis très intéressé(e) par cette opportunité et je serais ravi(e) d'en discuter plus en détail.\n\nJe suis disponible pour un entretien aux créneaux suivants :\n- [PROPOSER CRÉNEAUX]\n\nCordialement",
   },
   {
     id: "template-2",
     category: "Entretiens",
     title: "Confirmation d'entretien",
     content:
-      "Bonjour,\n\nJe confirme notre entretien prévu le [DATE] à [HEURE].\n\nL'entretien se déroulera [en visioconférence/dans nos locaux].\n\nÀ bientôt",
+      "Bonjour,\n\nJe confirme ma présence à l'entretien prévu le [DATE] à [HEURE].\n\nJe me réjouis de pouvoir échanger avec vous sur cette opportunité.\n\nCordialement",
   },
   {
     id: "template-3",
-    category: "Suivi",
-    title: "Demande d'informations complémentaires",
+    category: "Entretiens",
+    title: "Demande de report",
     content:
-      "Bonjour,\n\nPourriez-vous nous faire parvenir les éléments suivants pour compléter votre dossier :\n- CV actualisé\n- Lettre de motivation\n- Références professionnelles\n\nCordialement",
+      "Bonjour,\n\nJe me permets de vous contacter concernant notre entretien prévu le [DATE].\n\nPour des raisons [RAISON], je souhaiterais savoir s'il serait possible de le reporter. Je vous propose les créneaux suivants :\n- [PROPOSER CRÉNEAUX]\n\nJe vous prie de m'excuser pour ce changement.\n\nCordialement",
   },
   {
     id: "template-4",
     category: "Suivi",
-    title: "Accusé de réception",
+    title: "Relance après entretien",
     content:
-      "Bonjour,\n\nNous accusons réception de votre candidature et vous en remercions.\n\nNous allons l'étudier avec attention et reviendrons vers vous dans les meilleurs délais.\n\nCordialement",
+      "Bonjour,\n\nJe fais suite à notre entretien du [DATE] pour le poste de [POSTE].\n\nJe tenais à réaffirmer mon vif intérêt pour ce poste et votre entreprise. Notre échange a renforcé ma motivation à rejoindre votre équipe.\n\nJe reste à votre disposition pour tout complément d'information.\n\nCordialement",
   },
   {
     id: "template-5",
-    category: "Décisions",
-    title: "Réponse positive",
+    category: "Documents",
+    title: "Envoi de documents",
     content:
-      "Bonjour,\n\nNous avons le plaisir de vous informer que votre candidature a été retenue.\n\nNous souhaiterions vous rencontrer pour discuter plus en détail des modalités.\n\nPouvez-vous nous indiquer vos disponibilités ?\n\nCordialement",
+      "Bonjour,\n\nComme demandé, je vous transmets les documents suivants :\n- [LISTE DES DOCUMENTS]\n\nN'hésitez pas si vous avez besoin d'informations complémentaires.\n\nCordialement",
   },
   {
     id: "template-6",
-    category: "Décisions",
-    title: "Réponse d'attente",
+    category: "Questions",
+    title: "Demande d'informations",
     content:
-      "Bonjour,\n\nNous avons bien étudié votre candidature qui a retenu notre attention.\n\nNous sommes actuellement en cours de recrutement et nous permettons de conserver votre dossier.\n\nNous ne manquerons pas de revenir vers vous dès que possible.\n\nCordialement",
+      "Bonjour,\n\nJe me permets de revenir vers vous concernant le poste de [POSTE].\n\nPourriez-vous me donner plus de précisions sur :\n- [QUESTIONS]\n\nCes informations m'aideront à mieux comprendre l'opportunité.\n\nCordialement",
   },
 ];
