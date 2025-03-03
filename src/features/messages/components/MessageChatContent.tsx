@@ -127,12 +127,12 @@ export function MessageChatContent({
     const newChatMessage: ChatMessage = {
       id: chatMessages.length + 1,
       content: newMessage,
-      sender: "Recruteur",
+      sender: "Candidat",
       timestamp: new Date().toLocaleTimeString("fr-FR", {
         hour: "2-digit",
         minute: "2-digit",
       }),
-      isRecruiter: true,
+      isRecruiter: false,
     };
 
     setChatMessages([...chatMessages, newChatMessage]);
@@ -360,12 +360,12 @@ export function MessageChatContent({
                 <div
                   key={msg.id}
                   className={`flex ${
-                    msg.isRecruiter ? "justify-end" : "justify-start"
+                    !msg.isRecruiter ? "justify-end" : "justify-start"
                   }`}
                 >
                   <div
                     className={`max-w-[80%] rounded-lg p-3 break-all overflow-hidden ${
-                      msg.isRecruiter
+                      !msg.isRecruiter
                         ? "bg-primaryHex-500 text-white ml-auto"
                         : "bg-accent"
                     }`}
