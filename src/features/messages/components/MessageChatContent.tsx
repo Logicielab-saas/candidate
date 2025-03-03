@@ -111,6 +111,23 @@ export function MessageChatContent({
     initialIndex: number;
   } | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    if (scrollAreaRef.current) {
+      const scrollContainer = scrollAreaRef.current.querySelector(
+        "[data-radix-scroll-area-viewport]"
+      );
+      if (scrollContainer) {
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      }
+    }
+  };
+
+  // Scroll to bottom on initial load and when messages change
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages]);
 
   // Auto-resize textarea
   useEffect(() => {
@@ -354,7 +371,7 @@ export function MessageChatContent({
 
         <CardContent className="flex-1 p-0 min-h-0 flex flex-col">
           {/* Messages Area */}
-          <ScrollArea className="flex-1 px-4 py-3">
+          <ScrollArea ref={scrollAreaRef} className="flex-1 px-4 py-3">
             <div className="space-y-3">
               {chatMessages.map((msg) => (
                 <div
