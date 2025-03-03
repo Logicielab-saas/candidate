@@ -77,7 +77,7 @@ const MESSAGE_FILTERS = [
 interface MessagesListProps {
   messages: Message[];
   onMessageSelect: (message: Message) => void;
-  onMessageDelete: () => void;
+  onMessageDelete: (message: Message) => void;
   selectedMessageId?: number;
   searchQuery: string;
   onSearch: (query: string) => void;
@@ -159,15 +159,7 @@ export function MessagesList({
 
   const handleConfirmDelete = () => {
     if (messageToDelete) {
-      if (selectedMessageId === messageToDelete.id) {
-        const nextMessage = messages.find(
-          (msg) => msg.id !== messageToDelete.id
-        );
-        if (nextMessage) {
-          onMessageSelect(nextMessage);
-        }
-      }
-      onMessageDelete();
+      onMessageDelete(messageToDelete);
     }
     setDeleteDialogOpen(false);
     setMessageToDelete(null);

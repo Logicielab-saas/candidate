@@ -13,7 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 interface MessageItemProps {
   message: Message;
   onClick?: () => void;
-  onDelete?: () => void;
+  onDelete?: (message: Message) => void;
   isSelected?: boolean;
 }
 
@@ -113,7 +113,7 @@ export function MessageItem({
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              onDelete?.();
+              onDelete?.(message);
             }}
             className={cn(
               "text-destructive hover:text-destructive/90 text-xs font-medium transition-colors flex items-center gap-1",

@@ -47,10 +47,15 @@ export function MessagesContainer() {
     setIsMobileView(true);
   };
 
-  const handleMessageDelete = () => {
-    // When a message is deleted, clear the message ID and return to list view in mobile
-    setMessageId(null);
-    setIsMobileView(false);
+  const handleMessageDelete = (messageToDelete: Message) => {
+    // Remove the message from the messages array
+    setMessages((prev) => prev.filter((msg) => msg.id !== messageToDelete.id));
+
+    // If the deleted message was selected, clear the message ID and return to list view in mobile
+    if (selectedMessage?.id === messageToDelete.id) {
+      setMessageId(null);
+      setIsMobileView(false);
+    }
   };
 
   const handleArchive = (message: Message) => {
