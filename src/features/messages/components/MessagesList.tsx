@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DeleteMessageDialog } from "./DeleteMessageDialog";
 import { MessageItem } from "./MessageItem";
-import { type Message, MOCK_MESSAGES } from "@/core/mockData/messages-data";
+import { type Message } from "@/core/mockData/messages-data";
 import { useState, useEffect } from "react";
 import {
   DropdownMenu,

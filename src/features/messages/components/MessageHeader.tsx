@@ -34,6 +34,7 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { useState } from "react";
 import { ArchiveMessageDialog } from "./ArchiveMessageDialog";
+import { SpamReportDialog } from "./SpamReportDialog";
 import { type Message } from "@/core/mockData/messages-data";
 
 interface MessageHeaderProps {
@@ -50,6 +51,7 @@ interface MessageHeaderProps {
     role: string;
   }>;
   onArchive?: () => void;
+  onReport?: (reason: string, details: string) => void;
   message: Message;
 }
 
@@ -58,10 +60,12 @@ export function MessageHeader({
   job,
   participants = [],
   onArchive,
+  onReport,
   message,
 }: MessageHeaderProps) {
   const [imageError, setImageError] = useState(false);
   const [isArchiveDialogOpen, setIsArchiveDialogOpen] = useState(false);
+  const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const recruiter = participants.find((p) => p.role === "Recruteur");
 
   const isArchived = message.status === "archived";
@@ -69,6 +73,12 @@ export function MessageHeader({
   const handleArchive = () => {
     if (onArchive) {
       onArchive();
+    }
+  };
+
+  const handleReport = (reason: string, details: string) => {
+    if (onReport) {
+      onReport(reason, details);
     }
   };
 
@@ -202,7 +212,10 @@ export function MessageHeader({
               {isArchived ? "Désarchiver" : "Archiver"} la conversation
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => setIsReportDialogOpen(true)}
+              className="text-destructive focus:text-destructive"
+            >
               <Flag className="h-4 w-4 mr-2" />
               Signaler comme spam
             </DropdownMenuItem>
@@ -214,6 +227,13 @@ export function MessageHeader({
           onOpenChange={setIsArchiveDialogOpen}
           messageToArchive={message}
           onConfirm={handleArchive}
+        />
+
+        <SpamReportDialog
+          isOpen={isReportDialogOpen}
+          onOpenChange={setIsReportDialogOpen}
+          messageToReport={message}
+          onConfirm={handleReport}
         />
       </div>
     </div>

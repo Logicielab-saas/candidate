@@ -71,6 +71,23 @@ export function MessagesContainer() {
     setSearchQuery(query || null);
   };
 
+  const handleReport = (message: Message, reason: string, details: string) => {
+    const data = {
+      messageId: message.id,
+      reason,
+      details,
+    };
+    console.log(data);
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg.id === message.id ? { ...msg, status: "spam" } : msg
+      )
+    );
+    // When a message is marked as spam, clear the message ID and return to list view in mobile
+    setMessageId(null);
+    setIsMobileView(false);
+  };
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 xl:grid-cols-[350px_1fr] gap-6 relative overflow-hidden">
@@ -116,6 +133,12 @@ export function MessagesContainer() {
             message={selectedMessage}
             onArchive={
               selectedMessage ? () => handleArchive(selectedMessage) : undefined
+            }
+            onReport={
+              selectedMessage
+                ? (reason, details) =>
+                    handleReport(selectedMessage, reason, details)
+                : undefined
             }
           />
         </div>

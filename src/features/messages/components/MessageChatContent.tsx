@@ -51,6 +51,7 @@ interface ChatMessage {
 interface MessageChatContentProps {
   message?: Message;
   onArchive?: () => void;
+  onReport?: (reason: string, details: string) => void;
 }
 
 // Mock chat messages
@@ -92,6 +93,7 @@ const MOCK_CHAT_MESSAGES: ChatMessage[] = [
 export function MessageChatContent({
   message,
   onArchive,
+  onReport,
 }: MessageChatContentProps) {
   const [newMessage, setNewMessage] = useState("");
   const [chatMessages, setChatMessages] = useState(MOCK_CHAT_MESSAGES);
@@ -338,6 +340,7 @@ export function MessageChatContent({
             job={message.job}
             participants={message.participants}
             onArchive={handleArchive}
+            onReport={onReport}
             message={message}
           />
         </CardHeader>
