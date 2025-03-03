@@ -36,6 +36,7 @@ import { useState } from "react";
 import { ArchiveMessageDialog } from "./ArchiveMessageDialog";
 import { SpamReportDialog } from "./SpamReportDialog";
 import { type Message } from "@/core/mockData/messages-data";
+import { cn } from "@/lib/utils";
 
 interface MessageHeaderProps {
   company: {
@@ -213,11 +214,28 @@ export function MessageHeader({
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => setIsReportDialogOpen(true)}
-              className="text-destructive focus:text-destructive"
+              onClick={() =>
+                message.status === "spam"
+                  ? onReport?.("restore", "")
+                  : setIsReportDialogOpen(true)
+              }
+              className={cn(
+                message.status === "spam"
+                  ? "text-primary focus:text-primary"
+                  : "text-destructive focus:text-destructive"
+              )}
             >
-              <Flag className="h-4 w-4 mr-2" />
-              Signaler comme spam
+              {message.status === "spam" ? (
+                <>
+                  <Archive className="h-4 w-4 mr-2" />
+                  Restaurer
+                </>
+              ) : (
+                <>
+                  <Flag className="h-4 w-4 mr-2" />
+                  Signaler comme spam
+                </>
+              )}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -72,6 +72,18 @@ export function MessagesContainer() {
   };
 
   const handleReport = (message: Message, reason: string, details: string) => {
+    if (reason === "restore") {
+      // Restore message from spam
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === message.id ? { ...msg, status: "inbox" } : msg
+        )
+      );
+      // When a message is restored, keep the current view
+      return;
+    }
+
+    // Regular spam report
     const data = {
       messageId: message.id,
       reason,
