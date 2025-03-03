@@ -16,6 +16,7 @@ import {
   Archive,
   Flag,
   User,
+  ExternalLink,
 } from "lucide-react";
 import {
   Tooltip,
@@ -31,7 +32,6 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
 import { useState } from "react";
 import { ArchiveMessageDialog } from "./ArchiveMessageDialog";
 import { SpamReportDialog } from "./SpamReportDialog";
@@ -202,8 +202,12 @@ export function MessageHeader({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-52">
-            <DropdownMenuItem>
-              <Link href={`/annonce-details/${message.job.id}`}>
+            <DropdownMenuItem asChild>
+              <Link
+                href={`/annonce-details/${message.job.id}`}
+                className="flex"
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
                 Voir l&apos;annonce
               </Link>
             </DropdownMenuItem>
