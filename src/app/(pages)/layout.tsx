@@ -30,13 +30,7 @@ export const metadata: Metadata = {
 
 export default function PagesLayout({ children }: PagesLayoutProps) {
   return (
-    <div
-      className={cn(
-        "min-h-screen bg-background",
-        "pt-4 md:pt-8",
-        "antialiased"
-      )}
-    >
+    <div className={cn("bg-background", "pt-4 md:pt-8", "antialiased")}>
       <div
         className={cn(
           "mx-auto max-w-7xl",
