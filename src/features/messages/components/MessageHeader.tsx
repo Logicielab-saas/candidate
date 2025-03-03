@@ -37,6 +37,7 @@ import { ArchiveMessageDialog } from "./ArchiveMessageDialog";
 import { SpamReportDialog } from "./SpamReportDialog";
 import { type Message } from "@/core/mockData/messages-data";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface MessageHeaderProps {
   company: {
@@ -208,6 +209,11 @@ export function MessageHeader({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-52">
+            <DropdownMenuItem>
+              <Link href={`/annonce-details/${message.job.id}`}>
+                Voir l&apos;annonce
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setIsArchiveDialogOpen(true)}>
               <Archive className="h-4 w-4 mr-2" />
               {isArchived ? "Désarchiver" : "Archiver"} la conversation

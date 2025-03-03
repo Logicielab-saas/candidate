@@ -11,6 +11,7 @@ export interface Message {
     logo: string;
   };
   job: {
+    id: string;
     name: string;
     type?: string;
   };
@@ -77,6 +78,7 @@ export const MOCK_MESSAGES: Message[] = [
       logo: "/companies/techcorp.png",
     },
     job: {
+      id: "1",
       name: "Social Media Manager",
       type: "social-media",
     },
@@ -97,6 +99,7 @@ export const MOCK_MESSAGES: Message[] = [
       logo: "/companies/marketpro.png",
     },
     job: {
+      id: "2",
       name: "Marketing Analyst",
       type: "marketing-analyst",
     },
@@ -117,6 +120,7 @@ export const MOCK_MESSAGES: Message[] = [
       logo: "/companies/consultit.png",
     },
     job: {
+      id: "3",
       name: "IT Consultant",
       type: "it-consultant",
     },
@@ -137,6 +141,7 @@ export const MOCK_MESSAGES: Message[] = [
       logo: "/companies/devhub.png",
     },
     job: {
+      id: "4",
       name: "Développeur Web",
       type: "dev-web",
     },
@@ -157,6 +162,7 @@ export const MOCK_MESSAGES: Message[] = [
       logo: "/companies/productpro.png",
     },
     job: {
+      id: "5",
       name: "Product Manager",
       type: "product-manager",
     },
