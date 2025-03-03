@@ -26,6 +26,7 @@ import { mockSentApplications } from "@/core/mockData/jobs";
 import { mockInterviews } from "@/core/mockData/jobs";
 import type { Job, CandidateStatus } from "@/core/types";
 import type { Interview } from "@/core/types/interview";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 // Types and interfaces
 interface JobTab {
@@ -184,20 +185,23 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
         onValueChange={setActiveTab}
         className="w-full"
       >
-        <div className={tabsListStyles.wrapper}>
-          <TabsList className={tabsListStyles.base}>
-            {jobTabs.map((tab) => (
-              <TabsTrigger
-                key={tab.id}
-                value={tab.id}
-                className={tabTriggerStyles.base}
-              >
-                {tab.label}
-                <TabCounter count={tab.count} />
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </div>
+        <ScrollArea className="w-full">
+          <div className={tabsListStyles.wrapper}>
+            <TabsList className={tabsListStyles.base}>
+              {jobTabs.map((tab) => (
+                <TabsTrigger
+                  key={tab.id}
+                  value={tab.id}
+                  className={tabTriggerStyles.base}
+                >
+                  {tab.label}
+                  <TabCounter count={tab.count} />
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
 
         <div className="mt-6">
           <TabsContent value="saved-jobs">
