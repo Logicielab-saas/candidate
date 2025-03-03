@@ -21,6 +21,7 @@ import Image from "next/image";
 import {
   type Message,
   type MessageTemplate,
+  ChatMessage,
   MESSAGE_TEMPLATES,
 } from "@/core/mockData/messages-data";
 import {
@@ -32,63 +33,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-interface ChatMessage {
-  id: number;
-  content: string;
-  sender: string;
-  timestamp: string;
-  isRecruiter: boolean;
-  attachments?: Array<{
-    name: string;
-    size: number;
-    type: string;
-    url?: string;
-    progress?: number;
-  }>;
-}
+import { MOCK_CHAT_MESSAGES } from "@/core/mockData/messages-data";
 
 interface MessageChatContentProps {
   message?: Message;
   onArchive?: () => void;
   onReport?: (reason: string, details: string) => void;
 }
-
-// Mock chat messages
-const MOCK_CHAT_MESSAGES: ChatMessage[] = [
-  {
-    id: 1,
-    content:
-      "Bonjour, Je suis très intéressé par le poste de Social Media Manager. J'ai une solide expérience dans le domaine et je souhaiterais discuter des opportunités...",
-    sender: "Ayoub BOUKHANE",
-    timestamp: "10:30",
-    isRecruiter: false,
-  },
-  {
-    id: 2,
-    content:
-      "Bonjour Ayoub, merci de votre intérêt ! J'ai bien reçu votre candidature. Votre profil est très intéressant. Pourrions-nous prévoir un entretien cette semaine ?",
-    sender: "Recruteur",
-    timestamp: "11:45",
-    isRecruiter: true,
-  },
-  {
-    id: 3,
-    content:
-      "Bien sûr, je suis disponible. Quels créneaux vous conviendraient le mieux ?",
-    sender: "Ayoub BOUKHANE",
-    timestamp: "12:15",
-    isRecruiter: false,
-  },
-  {
-    id: 4,
-    content:
-      "Je vous propose jeudi à 14h ou vendredi à 11h. Quelle option vous conviendrait le mieux ?",
-    sender: "Recruteur",
-    timestamp: "14:20",
-    isRecruiter: true,
-  },
-];
 
 export function MessageChatContent({
   message,
