@@ -18,28 +18,29 @@ import { useQueryState, parseAsString } from "nuqs";
 
 export function MessagesContainer() {
   const [isMobileView, setIsMobileView] = useState(false);
+  const [messages, setMessages] = useState<Message[]>(MOCK_MESSAGES);
 
   // URL state management with nuqs
   const [messageId, setMessageId] = useQueryState("message", parseAsString);
   const [searchQuery, setSearchQuery] = useQueryState("q", parseAsString);
 
   const selectedMessage = messageId
-    ? MOCK_MESSAGES.find((m) => m.id === Number(messageId))
+    ? messages.find((m) => m.id === Number(messageId))
     : undefined;
 
   // Effect to handle initial load and invalid message IDs
   useEffect(() => {
     if (messageId) {
-      const message = MOCK_MESSAGES.find((m) => m.id === Number(messageId));
+      const message = messages.find((m) => m.id === Number(messageId));
       if (!message) {
         // If message ID is invalid, clear it from URL
         setMessageId(null);
       }
-    } else if (MOCK_MESSAGES.length > 0) {
+    } else if (messages.length > 0) {
       // If no message is selected, select the first one
-      setMessageId(MOCK_MESSAGES[0].id.toString());
+      setMessageId(messages[0].id.toString());
     }
-  }, [messageId, setMessageId]);
+  }, [messageId, setMessageId, messages]);
 
   const handleMessageSelect = (message: Message) => {
     setMessageId(message.id.toString());
@@ -50,6 +51,16 @@ export function MessagesContainer() {
     // When a message is deleted, clear the message ID and return to list view in mobile
     setMessageId(null);
     setIsMobileView(false);
+  };
+
+  const handleArchive = (message: Message) => {
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg.id === message.id
+          ? { ...msg, status: msg.status === "archived" ? "inbox" : "archived" }
+          : msg
+      )
+    );
   };
 
   const handleBackToList = () => {
@@ -73,6 +84,7 @@ export function MessagesContainer() {
           )}
         >
           <MessagesList
+            messages={messages}
             onMessageSelect={handleMessageSelect}
             onMessageDelete={handleMessageDelete}
             selectedMessageId={selectedMessage?.id}
@@ -100,7 +112,12 @@ export function MessagesContainer() {
               Retour à la liste
             </Button>
           </div>
-          <MessageChatContent message={selectedMessage} />
+          <MessageChatContent
+            message={selectedMessage}
+            onArchive={
+              selectedMessage ? () => handleArchive(selectedMessage) : undefined
+            }
+          />
         </div>
       </div>
     </div>

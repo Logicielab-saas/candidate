@@ -33,6 +33,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { useState } from "react";
+import { ArchiveMessageDialog } from "./ArchiveMessageDialog";
+import { type Message } from "@/core/mockData/messages-data";
 
 interface MessageHeaderProps {
   company: {
@@ -47,15 +49,28 @@ interface MessageHeaderProps {
     name: string;
     role: string;
   }>;
+  onArchive?: () => void;
+  message: Message;
 }
 
 export function MessageHeader({
   company,
   job,
   participants = [],
+  onArchive,
+  message,
 }: MessageHeaderProps) {
   const [imageError, setImageError] = useState(false);
+  const [isArchiveDialogOpen, setIsArchiveDialogOpen] = useState(false);
   const recruiter = participants.find((p) => p.role === "Recruteur");
+
+  const isArchived = message.status === "archived";
+
+  const handleArchive = () => {
+    if (onArchive) {
+      onArchive();
+    }
+  };
 
   return (
     <div className="flex items-start justify-between gap-4 py-1">
@@ -182,9 +197,9 @@ export function MessageHeader({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-52">
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setIsArchiveDialogOpen(true)}>
               <Archive className="h-4 w-4 mr-2" />
-              Archiver la conversation
+              {isArchived ? "Désarchiver" : "Archiver"} la conversation
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
@@ -193,6 +208,13 @@ export function MessageHeader({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <ArchiveMessageDialog
+          isOpen={isArchiveDialogOpen}
+          onOpenChange={setIsArchiveDialogOpen}
+          messageToArchive={message}
+          onConfirm={handleArchive}
+        />
       </div>
     </div>
   );

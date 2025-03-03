@@ -75,6 +75,7 @@ const MESSAGE_FILTERS = [
 ] as const;
 
 interface MessagesListProps {
+  messages: Message[];
   onMessageSelect: (message: Message) => void;
   onMessageDelete: () => void;
   selectedMessageId?: number;
@@ -83,6 +84,7 @@ interface MessagesListProps {
 }
 
 export function MessagesList({
+  messages,
   onMessageSelect,
   onMessageDelete,
   selectedMessageId,
@@ -94,7 +96,6 @@ export function MessagesList({
   const [isSearching, setIsSearching] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [messageToDelete, setMessageToDelete] = useState<Message | null>(null);
-  const [messages, setMessages] = useState<Message[]>(MOCK_MESSAGES);
   const [currentStatus, setCurrentStatus] = useState<Status>(STATUSES[0]);
   const [currentFilter, setCurrentFilter] = useState<MessageFilter>("inbox");
 
@@ -131,9 +132,9 @@ export function MessagesList({
     if (currentFilter === "archive" && message.status !== "archived")
       return false;
     if (currentFilter === "spam" && message.status !== "spam") return false;
-    if (currentFilter === "inbox") return true;
+    if (currentFilter === "inbox" && message.status !== "inbox") return false;
 
-    // Then apply search filter
+    // Then apply search filter if there is a search query
     const searchLower = searchQuery.toLowerCase();
     return searchQuery
       ? message.job.name.toLowerCase().includes(searchLower) ||
@@ -158,9 +159,6 @@ export function MessagesList({
 
   const handleConfirmDelete = () => {
     if (messageToDelete) {
-      setMessages((prev) =>
-        prev.filter((msg) => msg.id !== messageToDelete.id)
-      );
       if (selectedMessageId === messageToDelete.id) {
         const nextMessage = messages.find(
           (msg) => msg.id !== messageToDelete.id

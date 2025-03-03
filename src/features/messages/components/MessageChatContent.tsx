@@ -50,6 +50,7 @@ interface ChatMessage {
 
 interface MessageChatContentProps {
   message?: Message;
+  onArchive?: () => void;
 }
 
 // Mock chat messages
@@ -88,7 +89,10 @@ const MOCK_CHAT_MESSAGES: ChatMessage[] = [
   },
 ];
 
-export function MessageChatContent({ message }: MessageChatContentProps) {
+export function MessageChatContent({
+  message,
+  onArchive,
+}: MessageChatContentProps) {
   const [newMessage, setNewMessage] = useState("");
   const [chatMessages, setChatMessages] = useState(MOCK_CHAT_MESSAGES);
   const [isTyping, setIsTyping] = useState(false);
@@ -309,6 +313,12 @@ export function MessageChatContent({ message }: MessageChatContentProps) {
     // Auto-resize will be handled by the useEffect
   };
 
+  const handleArchive = () => {
+    if (onArchive) {
+      onArchive();
+    }
+  };
+
   if (!message) {
     return (
       <Card className="h-[calc(100vh-180px)] overflow-hidden">
@@ -326,7 +336,9 @@ export function MessageChatContent({ message }: MessageChatContentProps) {
           <MessageHeader
             company={message.company}
             job={message.job}
-            participants={message.participants || []}
+            participants={message.participants}
+            onArchive={handleArchive}
+            message={message}
           />
         </CardHeader>
 
