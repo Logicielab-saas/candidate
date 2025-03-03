@@ -201,7 +201,7 @@ export const MOCK_CHAT_MESSAGES: ChatMessage[] = [
   {
     id: 4,
     content:
-      "Je vous propose un entretien pour le poste de Social Media Manager. Voici les détails :",
+      "Je vous propose un entretien pour le poste de Développeur Full Stack. Voici les détails :",
     sender: "Recruteur",
     timestamp: "14:20",
     isRecruiter: true,
