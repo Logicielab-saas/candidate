@@ -1,3 +1,10 @@
+/**
+ * MessagesContainer - Main container for the messages feature
+ *
+ * Manages the state and layout for the messages list and chat content,
+ * including responsive behavior for mobile views.
+ */
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -15,12 +22,6 @@ export function MessagesContainer() {
   // URL state management with nuqs
   const [messageId, setMessageId] = useQueryState("message", parseAsString);
   const [searchQuery, setSearchQuery] = useQueryState("q", parseAsString);
-  const [jobsFilter, setJobsFilter] = useQueryState<string[]>("jobs", {
-    defaultValue: [],
-    parse: (value: string | null) =>
-      value ? value.split(",").filter(Boolean) : [],
-    serialize: (value: string[]) => value.join(","),
-  });
 
   const selectedMessage = messageId
     ? MOCK_MESSAGES.find((m) => m.id === Number(messageId))
@@ -59,10 +60,6 @@ export function MessagesContainer() {
     setSearchQuery(query || null);
   };
 
-  const handleJobsFilter = (jobs: string[]) => {
-    setJobsFilter(jobs);
-  };
-
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 xl:grid-cols-[350px_1fr] gap-6 relative overflow-hidden">
@@ -81,8 +78,6 @@ export function MessagesContainer() {
             selectedMessageId={selectedMessage?.id}
             searchQuery={searchQuery || ""}
             onSearch={handleSearch}
-            selectedJobs={jobsFilter}
-            onJobsChange={handleJobsFilter}
           />
         </div>
 

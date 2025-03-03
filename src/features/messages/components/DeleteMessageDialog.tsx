@@ -25,6 +25,17 @@ export function DeleteMessageDialog({
   messageToDelete,
   onConfirm,
 }: DeleteMessageDialogProps) {
+  if (!messageToDelete) return null;
+
+  const recruiter = messageToDelete.participants.find(
+    (p) => p.role === "Recruteur"
+  );
+
+  const handleConfirm = () => {
+    onConfirm();
+    onOpenChange(false);
+  };
+
   return (
     <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
       <AlertDialogContent>
@@ -32,13 +43,26 @@ export function DeleteMessageDialog({
           <AlertDialogTitle>Supprimer la conversation</AlertDialogTitle>
           <AlertDialogDescription>
             Êtes-vous sûr de vouloir supprimer cette conversation avec{" "}
-            {messageToDelete?.candidate.name} ? Cette action est irréversible.
+            <span className="font-medium">{messageToDelete.company.name}</span>
+            {recruiter && (
+              <>
+                {" "}
+                concernant le poste de{" "}
+                <span className="font-medium">
+                  {messageToDelete.job.name}
+                </span>{" "}
+                ?
+              </>
+            )}
+            <br />
+            <br />
+            Cette action est irréversible.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Annuler</AlertDialogCancel>
           <AlertDialogAction
-            onClick={onConfirm}
+            onClick={handleConfirm}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
             Supprimer

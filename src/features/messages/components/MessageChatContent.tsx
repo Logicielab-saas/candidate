@@ -19,6 +19,7 @@ import { UploadDialog } from "@/components/shared/UploadDialog";
 import { ImageLightbox } from "@/components/shared/ImageLightbox";
 import Image from "next/image";
 import {
+  type Message,
   type MessageTemplate,
   MESSAGE_TEMPLATES,
 } from "@/core/mockData/messages-data";
@@ -48,24 +49,7 @@ interface ChatMessage {
 }
 
 interface MessageChatContentProps {
-  message?: {
-    id: number;
-    jobTitle: string;
-    jobType: string;
-    date: string;
-    candidate: {
-      name: string;
-      position: string;
-      city: string;
-      telephone?: string;
-    };
-    preview: string;
-    isUnread: boolean;
-    participants?: Array<{
-      name: string;
-      role: string;
-    }>;
-  };
+  message?: Message;
 }
 
 // Mock chat messages
@@ -340,9 +324,9 @@ export function MessageChatContent({ message }: MessageChatContentProps) {
       <div className="h-full flex flex-col">
         <CardHeader className="p-3 space-y-3 shrink-0 border-b">
           <MessageHeader
-            candidate={message.candidate}
-            jobTitle={message.jobTitle}
-            participants={message.participants}
+            company={message.company}
+            job={message.job}
+            participants={message.participants || []}
           />
         </CardHeader>
 
