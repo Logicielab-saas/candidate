@@ -2,7 +2,7 @@
  * MessagesList - Displays a list of messages with search functionality
  *
  * A simplified message list component that shows messages
- * with search functionality.
+ * with search functionality and status filtering.
  */
 
 "use client";
@@ -23,6 +23,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
 interface Status {
@@ -59,6 +66,14 @@ const STATUSES: Status[] = [
   },
 ];
 
+type MessageFilter = "inbox" | "archive" | "spam";
+
+const MESSAGE_FILTERS = [
+  { value: "inbox", label: "Boîte de réception" },
+  { value: "archive", label: "Archive" },
+  { value: "spam", label: "Spam" },
+] as const;
+
 interface MessagesListProps {
   onMessageSelect: (message: Message) => void;
   onMessageDelete: () => void;
@@ -81,6 +96,7 @@ export function MessagesList({
   const [messageToDelete, setMessageToDelete] = useState<Message | null>(null);
   const [messages, setMessages] = useState<Message[]>(MOCK_MESSAGES);
   const [currentStatus, setCurrentStatus] = useState<Status>(STATUSES[0]);
+  const [currentFilter, setCurrentFilter] = useState<MessageFilter>("inbox");
 
   // Sync local states with props when they change
   useEffect(() => {
@@ -111,6 +127,13 @@ export function MessagesList({
   }, [isSearching]);
 
   const filteredMessages = messages.filter((message) => {
+    // First apply status filter
+    if (currentFilter === "archive" && !message.isArchived) return false;
+    if (currentFilter === "spam" && !message.isSpam) return false;
+    if (currentFilter === "inbox" && (message.isArchived || message.isSpam))
+      return false;
+
+    // Then apply search filter
     const searchLower = searchQuery.toLowerCase();
     return searchQuery
       ? message.job.name.toLowerCase().includes(searchLower) ||
@@ -199,13 +222,15 @@ export function MessagesList({
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
+
           <Badge variant="secondary" className="bg-muted text-muted-foreground">
             {filteredMessages.length} messages
           </Badge>
         </div>
 
-        {/* Search Section */}
+        {/* Search and Filter Section */}
         <div className="space-y-2">
+          {/* Search Input */}
           <div className="relative">
             <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -230,6 +255,23 @@ export function MessagesList({
               )}
             </div>
           </div>
+
+          {/* Filter Select */}
+          <Select
+            value={currentFilter}
+            onValueChange={(value) => setCurrentFilter(value as MessageFilter)}
+          >
+            <SelectTrigger className="w-full h-8">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {MESSAGE_FILTERS.map((filter) => (
+                <SelectItem key={filter.value} value={filter.value}>
+                  {filter.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </CardHeader>
 
