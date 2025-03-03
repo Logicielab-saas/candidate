@@ -38,6 +38,7 @@ import { SpamReportDialog } from "./SpamReportDialog";
 import { type Message } from "@/core/mockData/messages-data";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface MessageHeaderProps {
   company: {
@@ -65,7 +66,6 @@ export function MessageHeader({
   onReport,
   message,
 }: MessageHeaderProps) {
-  const [imageError, setImageError] = useState(false);
   const [isArchiveDialogOpen, setIsArchiveDialogOpen] = useState(false);
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const recruiter = participants.find((p) => p.role === "Recruteur");
@@ -89,20 +89,13 @@ export function MessageHeader({
       {/* Left side - Company and Job info */}
       <div className="flex items-start gap-3 min-w-0 flex-1">
         {/* Company Logo */}
-        <div className="relative h-12 w-12 shrink-0 rounded-xl overflow-hidden border shadow-sm">
-          {company.logo && !imageError ? (
-            <Image
-              src={company.logo}
-              alt={company.name}
-              fill
-              className="object-cover transition-transform hover:scale-105"
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <div className="w-full h-full bg-muted/50 flex items-center justify-center">
+        <div className="relative h-12 w-12">
+          <Avatar>
+            <AvatarImage src={company.logo} alt={company.name} />
+            <AvatarFallback>
               <Building2 className="h-6 w-6 text-muted-foreground" />
-            </div>
-          )}
+            </AvatarFallback>
+          </Avatar>
         </div>
 
         {/* Company and Job Details */}

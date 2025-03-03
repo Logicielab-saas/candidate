@@ -4,14 +4,11 @@
  * Shows company avatar, recruiter name with unread count, date of last message, and message preview
  */
 
-"use client";
-
 import { cn } from "@/lib/utils";
 import { Building2, Trash2 } from "lucide-react";
 import { type Message } from "@/core/mockData/messages-data";
-import Image from "next/image";
-import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface MessageItemProps {
   message: Message;
@@ -26,7 +23,6 @@ export function MessageItem({
   onDelete,
   isSelected,
 }: MessageItemProps) {
-  const [imageError, setImageError] = useState(false);
   const recruiter = message.participants.find((p) => p.role === "Recruteur");
 
   return (
@@ -40,19 +36,15 @@ export function MessageItem({
       <div className="p-3 flex items-start gap-3">
         {/* Company Avatar */}
         <div className="relative h-10 w-10 shrink-0">
-          {message.company.logo && !imageError ? (
-            <Image
+          <Avatar>
+            <AvatarImage
               src={message.company.logo}
               alt={message.company.name}
-              fill
-              className="object-cover rounded-lg"
-              onError={() => setImageError(true)}
             />
-          ) : (
-            <div className="w-full h-full rounded-lg bg-muted flex items-center justify-center">
-              <Building2 className="h-5 w-5 text-muted-foreground" />
-            </div>
-          )}
+            <AvatarFallback>
+              <Building2 className="h-6 w-6 text-muted-foreground" />
+            </AvatarFallback>
+          </Avatar>
         </div>
 
         {/* Content */}
