@@ -16,8 +16,7 @@ export interface Message {
     name: string;
     role: string;
   }[];
-  isArchived: boolean;
-  isSpam: boolean;
+  status: "archived" | "spam" | "inbox";
   date: string;
 }
 
@@ -50,8 +49,7 @@ export const MOCK_MESSAGES: Message[] = [
       { name: "Ayoub BOUKHANE", role: "Candidat" },
       { name: "Soukaina EL HASSANI", role: "Recruteur" },
     ],
-    isArchived: false,
-    isSpam: false,
+    status: "inbox",
   },
   {
     id: 2,
@@ -71,8 +69,7 @@ export const MOCK_MESSAGES: Message[] = [
       { name: "Sara BOUHLAOUI", role: "Candidat" },
       { name: "Marianne LAGARDE", role: "Recruteur" },
     ],
-    isArchived: false,
-    isSpam: false,
+    status: "inbox",
   },
   {
     id: 3,
@@ -92,8 +89,7 @@ export const MOCK_MESSAGES: Message[] = [
       { name: "Omar BENJELLOUN", role: "Candidat" },
       { name: "Marianne LAGARDE", role: "Recruteur" },
     ],
-    isArchived: true,
-    isSpam: false,
+    status: "archived",
   },
   {
     id: 4,
@@ -113,8 +109,7 @@ export const MOCK_MESSAGES: Message[] = [
       { name: "Youssef EL AMRANI", role: "Candidat" },
       { name: "Oussama EL HASSANI", role: "Recruteur" },
     ],
-    isArchived: false,
-    isSpam: true,
+    status: "spam",
   },
   {
     id: 5,
@@ -134,8 +129,7 @@ export const MOCK_MESSAGES: Message[] = [
       { name: "Nadia EL HASSANI", role: "Candidat" },
       { name: "Youssef EL AMRANI", role: "Recruteur" },
     ],
-    isArchived: true,
-    isSpam: false,
+    status: "archived",
   },
 ];
 

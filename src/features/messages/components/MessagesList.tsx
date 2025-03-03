@@ -128,8 +128,9 @@ export function MessagesList({
 
   const filteredMessages = messages.filter((message) => {
     // First apply status filter
-    if (currentFilter === "archive" && !message.isArchived) return false;
-    if (currentFilter === "spam" && !message.isSpam) return false;
+    if (currentFilter === "archive" && message.status !== "archived")
+      return false;
+    if (currentFilter === "spam" && message.status !== "spam") return false;
     if (currentFilter === "inbox") return true;
 
     // Then apply search filter
