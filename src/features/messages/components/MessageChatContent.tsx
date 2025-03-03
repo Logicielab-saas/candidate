@@ -12,6 +12,11 @@ import {
   Download,
   ZoomIn,
   FileText,
+  Building2,
+  MapPin,
+  Calendar,
+  Clock,
+  Zap,
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
@@ -34,11 +39,62 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MOCK_CHAT_MESSAGES } from "@/core/mockData/messages-data";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 interface MessageChatContentProps {
   message?: Message;
   onArchive?: () => void;
   onReport?: (reason: string, details: string) => void;
+}
+
+function InterviewInvitation({
+  interview,
+}: {
+  interview: NonNullable<ChatMessage["interview"]>;
+}) {
+  return (
+    <div className="bg-card border rounded-lg p-4 mt-2">
+      <Badge variant="default" className="mb-2">
+        Invitation à un entretien
+      </Badge>
+      <h3 className="text-lg font-semibold text-foreground">
+        {interview.jobTitle}
+      </h3>
+      <div className="space-y-2 mt-3">
+        <div className="flex items-center text-sm text-muted-foreground">
+          <Building2 className="h-4 w-4 mr-2" />
+          <span>{interview.company.name}</span>
+        </div>
+        <div className="flex items-center text-sm text-muted-foreground">
+          <MapPin className="h-4 w-4 mr-2" />
+          <span>{interview.location}</span>
+        </div>
+        <div className="flex items-center text-sm text-muted-foreground">
+          <Calendar className="h-4 w-4 mr-2" />
+          <span>{interview.interviewDate}</span>
+        </div>
+        <div className="flex items-center text-sm text-muted-foreground">
+          <Clock className="h-4 w-4 mr-2" />
+          <span>{interview.interviewTime}</span>
+        </div>
+        <div className="flex items-center text-sm text-muted-foreground">
+          <Zap className="h-4 w-4 mr-2" />
+          <span>{interview.interviewType}</span>
+        </div>
+      </div>
+      <div className="flex gap-2 mt-4">
+        <Button asChild>
+          <Link href={`/interviews/programmer/${interview.jobKey}`}>
+            Programmer
+          </Link>
+        </Button>
+        <Button variant="outline" className="text-foreground" asChild>
+          <Link href={`/interviews/refuser/${interview.jobKey}`}>Refuser</Link>
+        </Button>
+      </div>
+    </div>
+  );
 }
 
 export function MessageChatContent({
@@ -325,6 +381,9 @@ export function MessageChatContent({
                     <p className="text-sm break-all whitespace-pre-wrap overflow-hidden">
                       {msg.content}
                     </p>
+                    {msg.interview && (
+                      <InterviewInvitation interview={msg.interview} />
+                    )}
                     {msg.attachments?.map((attachment, index) => (
                       <div key={index}>{renderFilePreview(attachment)}</div>
                     ))}

@@ -1,4 +1,3 @@
-
 import { mockInterviews } from "@/core/mockData/jobs";
 import { redirect } from "next/navigation";
 

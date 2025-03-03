@@ -1,3 +1,5 @@
+import { Interview } from "../types/interview";
+
 // Types
 export interface Message {
   id: number;
@@ -33,7 +35,29 @@ export interface ChatMessage {
     url?: string;
     progress?: number;
   }>;
+  interview?: Interview;
 }
+
+export const Interview_chat_notifie = [
+  {
+    jobTitle: "Développeur Full Stack",
+    jobKey: "7",
+    jobUrl: "#",
+    company: {
+      name: "Tech Solutions",
+    },
+    location: "Rabat",
+    interviewTime: "30 minutes",
+    interviewDate: "2024-02-28",
+    interviewType: "In-person",
+    interviewAddressMap: "https://www.google.com/maps/place/Tanger",
+    interviewAddress: "Tanger riad tetouan",
+    interviewLocation: "Tanger",
+    interviewStatus: "INVITED",
+    fixedInterviewDate: "2024-02-28",
+    fixedInterviewHour: "9:30-10:00",
+  },
+];
 
 // Mock data for jobs
 export const JOBS_OPTIONS = [
@@ -177,10 +201,28 @@ export const MOCK_CHAT_MESSAGES: ChatMessage[] = [
   {
     id: 4,
     content:
-      "Je vous propose jeudi à 14h ou vendredi à 11h. Quelle option vous conviendrait le mieux ?",
+      "Je vous propose un entretien pour le poste de Social Media Manager. Voici les détails :",
     sender: "Recruteur",
     timestamp: "14:20",
     isRecruiter: true,
+    interview: {
+      jobKey: "7",
+      jobUrl: "#",
+      jobTitle: "Développeur Full Stack",
+      company: {
+        name: "Tech Solutions",
+      },
+      location: "Paris, France (Présentiel)",
+      interviewDate: "24 Mars 2024",
+      interviewTime: "14:00",
+      interviewType: "In-person",
+      interviewAddressMap: "https://www.google.com/maps/place/Tanger",
+      interviewAddress: "Tanger riad tetouan",
+      interviewLocation: "Tanger",
+      interviewStatus: "INVITED",
+      fixedInterviewDate: "2024-02-28",
+      fixedInterviewHour: "9:30-10:00",
+    },
   },
 ];
 
