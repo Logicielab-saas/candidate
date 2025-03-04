@@ -59,7 +59,4 @@ export const mockCourses: Course[] = [
     review: 4.7,
     duration: 540, // 9 hours
   },
-] as const;
-
-// Add this for debugging
-console.log("Courses loaded:", mockCourses);
+];
