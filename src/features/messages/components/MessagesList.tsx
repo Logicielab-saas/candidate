@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { DeleteMessageDialog } from "./DeleteMessageDialog";
 import { MessageItem } from "./MessageItem";
 import { type Message } from "@/core/mockData/messages-data";
-import { useState, useEffect } from "react";
+import { ChangeEvent, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,6 +31,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { useDebouncedCallback } from "use-debounce";
+import { useQueryState, parseAsString } from "nuqs";
 
 interface Status {
   id: string;
@@ -79,8 +81,6 @@ interface MessagesListProps {
   onMessageSelect: (message: Message) => void;
   onMessageDelete: (message: Message) => void;
   selectedMessageId?: number;
-  searchQuery: string;
-  onSearch: (query: string) => void;
 }
 
 export function MessagesList({
@@ -88,44 +88,35 @@ export function MessagesList({
   onMessageSelect,
   onMessageDelete,
   selectedMessageId,
-  searchQuery,
-  onSearch,
 }: MessagesListProps) {
-  // Local states for immediate feedback
-  const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
+  // Manage the "q" URL parameter via nuqs.
+  const [query, setQuery] = useQueryState("q", parseAsString);
+  // Local state for immediate feedback in the input.
+  const [localQuery, setLocalQuery] = useState(query || "");
   const [isSearching, setIsSearching] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [messageToDelete, setMessageToDelete] = useState<Message | null>(null);
   const [currentStatus, setCurrentStatus] = useState<Status>(STATUSES[0]);
   const [currentFilter, setCurrentFilter] = useState<MessageFilter>("inbox");
 
-  // Sync local states with props when they change
-  useEffect(() => {
-    setLocalSearchQuery(searchQuery);
-  }, [searchQuery]);
+  const debouncedSetQuery = useDebouncedCallback((q: string) => {
+    // Remove the query param by setting it to null if q is empty or whitespace.
+    setQuery(q.trim() ? q : null);
+    setIsSearching(false);
+  }, 500);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setLocalSearchQuery(value); // Update local state immediately
-    setIsSearching(true); // Show loading indicator
-    onSearch(value); // Trigger debounced search
+    setLocalQuery(value);
+    setIsSearching(true);
+    debouncedSetQuery(value);
   };
 
   // Clear search
   const handleClearSearch = () => {
-    setLocalSearchQuery("");
-    onSearch("");
+    setLocalQuery("");
+    setQuery(null);
   };
-
-  // Effect to handle loading states
-  useEffect(() => {
-    if (isSearching) {
-      const timer = setTimeout(() => {
-        setIsSearching(false);
-      }, 300);
-      return () => clearTimeout(timer);
-    }
-  }, [isSearching]);
 
   const filteredMessages = messages.filter((message) => {
     // First apply status filter
@@ -134,9 +125,9 @@ export function MessagesList({
     if (currentFilter === "spam" && message.status !== "spam") return false;
     if (currentFilter === "inbox" && message.status !== "inbox") return false;
 
-    // Then apply search filter if there is a search query
-    const searchLower = searchQuery.toLowerCase();
-    return searchQuery
+    // Then apply search filter
+    const searchLower = localQuery.toLowerCase();
+    return localQuery
       ? message.job.name.toLowerCase().includes(searchLower) ||
           message.company.name.toLowerCase().includes(searchLower) ||
           message.participants.some((p) =>
@@ -150,9 +141,7 @@ export function MessagesList({
     message: Message,
     e?: React.MouseEvent<HTMLButtonElement>
   ) => {
-    if (e) {
-      e.stopPropagation(); // Prevent message selection
-    }
+    e?.stopPropagation();
     setMessageToDelete(message);
     setDeleteDialogOpen(true);
   };
@@ -177,7 +166,11 @@ export function MessagesList({
                 size="sm"
                 className="h-8 px-2 gap-2 -ml-2 hover:bg-accent"
               >
-                <div className="relative flex h-2.5 w-2.5 items-center justify-center">
+                <div
+                  className={cn(
+                    "relative flex h-2.5 w-2.5 items-center justify-center"
+                  )}
+                >
                   <span
                     className={cn(
                       "absolute inline-flex h-full w-full animate-ping rounded-full opacity-75",
@@ -225,7 +218,7 @@ export function MessagesList({
             <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Rechercher un message..."
-              value={localSearchQuery}
+              value={localQuery}
               onChange={handleSearchChange}
               className="h-8 pl-8 pr-16"
             />
@@ -233,7 +226,7 @@ export function MessagesList({
               {isSearching && (
                 <Loader2 className="h-4 w-4 animate-spin text-primaryHex-500" />
               )}
-              {localSearchQuery && !isSearching && (
+              {localQuery && !isSearching && (
                 <Button
                   variant="ghost"
                   size="icon"

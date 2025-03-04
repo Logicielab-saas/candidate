@@ -22,7 +22,6 @@ export function MessagesContainer() {
 
   // URL state management with nuqs
   const [messageId, setMessageId] = useQueryState("message", parseAsString);
-  const [searchQuery, setSearchQuery] = useQueryState("q", parseAsString);
 
   const selectedMessage = messageId
     ? messages.find((m) => m.id === Number(messageId))
@@ -72,10 +71,6 @@ export function MessagesContainer() {
     setIsMobileView(false);
   };
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query || null);
-  };
-
   const handleReport = (message: Message, reason: string, details: string) => {
     if (reason === "restore") {
       // Restore message from spam
@@ -122,8 +117,6 @@ export function MessagesContainer() {
             onMessageSelect={handleMessageSelect}
             onMessageDelete={handleMessageDelete}
             selectedMessageId={selectedMessage?.id}
-            searchQuery={searchQuery || ""}
-            onSearch={handleSearch}
           />
         </div>
 

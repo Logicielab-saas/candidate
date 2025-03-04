@@ -6,6 +6,7 @@ import { AnnonceDescription } from "./AnnonceDescription";
 import { AnnonceJobDetails } from "./AnnonceJobDetails";
 // import { AnnonceQuestions } from "./components/AnnonceQuestions";
 import { AnnonceActions } from "./AnnonceActions";
+import { useToast } from "@/hooks/use-toast";
 
 interface AnnonceDetailsContainerProps {
   annonce: Annonce;
@@ -14,6 +15,8 @@ interface AnnonceDetailsContainerProps {
 export function AnnonceDetailsContainer({
   annonce,
 }: AnnonceDetailsContainerProps) {
+  const { toast } = useToast();
+
   function handleApply() {
     // TODO: Implement apply logic
     console.log("Applying to job:", annonce.baseInformation.jobTitle);
@@ -22,6 +25,11 @@ export function AnnonceDetailsContainer({
   function handleSave() {
     // TODO: Implement save logic
     console.log("Saving job:", annonce.baseInformation.jobTitle);
+    toast({
+      title: "Offre sauvegardée",
+      description: "Vous pouvez la retrouver dans votre liste de favoris.",
+      variant: "success",
+    });
   }
 
   return (

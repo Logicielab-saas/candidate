@@ -19,6 +19,7 @@ import {
 } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useToast } from "@/hooks/use-toast";
 
 const reportReasons = [
   "Offre offensante ou discriminatoire",
@@ -44,6 +45,8 @@ export function ReportJobDialog({
   jobId,
   onOpenChange,
 }: ReportJobDialogProps) {
+  const { toast } = useToast();
+
   const {
     control,
     register,
@@ -67,6 +70,11 @@ export function ReportJobDialog({
     console.log("Reporting job with data:", reportData);
     reset();
     onOpenChange(false);
+    toast({
+      variant: "success",
+      title: "Offre signalée",
+      description: "Merci pour votre contribution à la communauté.",
+    });
   };
 
   return (
