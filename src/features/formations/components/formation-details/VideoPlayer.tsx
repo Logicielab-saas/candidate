@@ -66,6 +66,7 @@ export function VideoPlayer({
   startAt = 0,
 }: VideoPlayerProps) {
   const playerContainerRef = useRef<HTMLDivElement>(null);
+  const hasInitializedRef = useRef(false);
 
   const {
     playerRef,
@@ -89,6 +90,8 @@ export function VideoPlayer({
     handleProgress,
     handlePlaybackRateChange,
     setDuration,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    setIsPlaying,
   } = useVideoPlayer(videoUrl);
 
   const {
@@ -108,10 +111,9 @@ export function VideoPlayer({
     <div className="space-y-4">
       <div
         ref={playerContainerRef}
-        className="group relative aspect-video w-full overflow-hidden rounded-xl bg-black"
+        className="group/player relative aspect-video w-full overflow-hidden rounded-xl bg-black"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        onClick={handlePlayPause}
       >
         <Suspense
           fallback={
@@ -145,8 +147,13 @@ export function VideoPlayer({
             stopOnUnmount
             progressInterval={1000}
             onReady={() => {
-              if (startAt > 0 && playerRef.current) {
+              if (
+                startAt > 0 &&
+                playerRef.current &&
+                !hasInitializedRef.current
+              ) {
                 playerRef.current.seekTo(startAt, "seconds");
+                hasInitializedRef.current = true;
               }
             }}
           />
@@ -154,28 +161,34 @@ export function VideoPlayer({
 
         {/* Center play/pause button */}
         <div
-          className={cn(
-            "absolute inset-0 flex items-center justify-center transition-opacity duration-300",
-            isPlaying ? "bg-transparent" : "bg-black/40"
-          )}
+          className="absolute inset-0 flex items-center justify-center"
+          onClick={(e) => e.stopPropagation()}
         >
-          <div
+          <button
+            type="button"
             className={cn(
-              "flex h-20 w-20 items-center justify-center rounded-full bg-black/60 text-white transition-all duration-300 hover:scale-110",
-              isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"
+              "z-50 flex h-20 w-20 items-center justify-center rounded-full bg-black/60 text-white transition-all duration-300 hover:scale-110",
+              isPlaying ? "opacity-0" : "opacity-100",
+              isPlaying && isControlsVisible && "group-hover/player:opacity-100"
             )}
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent double triggering with container click
-              handlePlayPause();
-            }}
+            onClick={() => handlePlayPause()}
+            aria-label={isPlaying ? "Pause video" : "Play video"}
           >
             {isPlaying ? (
               <Pause className="h-10 w-10" />
             ) : (
               <Play className="h-10 w-10 pl-1" />
             )}
-          </div>
+          </button>
         </div>
+
+        {/* Background overlay - only for visual effect, not clickable */}
+        <div
+          className={cn(
+            "pointer-events-none absolute inset-0 transition-opacity duration-300",
+            isPlaying ? "opacity-0" : "opacity-100 bg-black/40"
+          )}
+        />
 
         {/* Custom controls overlay */}
         <div

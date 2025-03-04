@@ -16,6 +16,7 @@
  * - setQuality: Function to update video quality
  * - playbackSpeed: Current playback speed
  * - isPlaying: Whether video is currently playing
+ * - setIsPlaying: Function to update video play state
  * - volume: Current volume level (0-1)
  * - isMuted: Whether audio is muted
  * - progress: Current playback progress in seconds
@@ -181,6 +182,7 @@ export function useVideoPlayer(_videoUrl: string) {
     setQuality,
     playbackSpeed,
     isPlaying,
+    setIsPlaying,
     volume,
     isMuted,
     progress,
