@@ -5,7 +5,7 @@
  *
  * Props:
  * - videoUrl: string - The URL of the video to play
- * - title: string - The title of the video
+ * - description: string - The description of the video
  */
 
 "use client";
@@ -55,10 +55,10 @@ const ReactPlayerComponent = dynamic(() => import("react-player/lazy"), {
 
 interface VideoPlayerProps {
   videoUrl: string;
-  title: string;
+  description: string;
 }
 
-export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
+export function VideoPlayer({ videoUrl, description }: VideoPlayerProps) {
   const playerContainerRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -354,8 +354,8 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">{title}</h2>
+      <div className="prose prose-sm max-w-none dark:prose-invert">
+        {description}
       </div>
     </div>
   );

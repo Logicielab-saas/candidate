@@ -51,7 +51,7 @@ export function FormationDetailsContainer({
           {currentVideo && (
             <VideoPlayer
               videoUrl={currentVideo.videoUrl}
-              title={currentVideo.title}
+              description={course.description}
             />
           )}
         </div>

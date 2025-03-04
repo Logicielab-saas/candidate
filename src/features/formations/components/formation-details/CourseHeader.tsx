@@ -32,10 +32,6 @@ export function CourseHeader({ course }: CourseHeaderProps) {
         </div>
       </div>
 
-      <div className="prose prose-sm max-w-none dark:prose-invert">
-        {course.description}
-      </div>
-
       {course.progress !== undefined && (
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
