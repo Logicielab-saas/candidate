@@ -14,7 +14,7 @@ import { CourseHeader } from "./CourseHeader";
 import { VideoPlaylist } from "./VideoPlaylist";
 import { VideoPlayer } from "./VideoPlayer";
 import { mockCoursesDetails } from "@/core/mockData/courses";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 
 interface FormationDetailsContainerProps {
   courseId: string;
@@ -27,7 +27,7 @@ export function FormationDetailsContainer({
 
   // Redirect to 404 if course not found
   if (!course) {
-    notFound();
+    redirect("/notFound");
   }
 
   const [currentVideoId, setCurrentVideoId] = useState(
@@ -44,7 +44,12 @@ export function FormationDetailsContainer({
 
   return (
     <div className="container mx-auto space-y-8 px-4 py-8">
-      <CourseHeader course={course} />
+      <CourseHeader
+        title={course.title}
+        review={course.review}
+        viewersNum={course.viewersNum}
+        progress={course.progress}
+      />
 
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
