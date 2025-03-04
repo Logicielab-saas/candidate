@@ -11,10 +11,14 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
+import {
+  useForm,
+  SubmitHandler,
+  FieldValues,
+  Controller,
+} from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FieldError } from "react-hook-form";
 
 const reportReasons = [
   "Offre offensante ou discriminatoire",
@@ -41,12 +45,17 @@ export function ReportJobDialog({
   onOpenChange,
 }: ReportJobDialogProps) {
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm({
     resolver: zodResolver(reportSchema),
+    defaultValues: {
+      reason: "",
+      additionalInfo: "",
+    },
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -56,8 +65,8 @@ export function ReportJobDialog({
       additionalInfo: data.additionalInfo,
     };
     console.log("Reporting job with data:", reportData);
-    onOpenChange(false);
     reset();
+    onOpenChange(false);
   };
 
   return (
@@ -71,23 +80,29 @@ export function ReportJobDialog({
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <RadioGroup className="space-y-4 mb-4">
-            {reportReasons.map((reason) => (
-              <div key={reason} className="flex items-center space-x-3">
-                <RadioGroupItem
-                  value={reason}
-                  id={reason}
-                  {...register("reason")}
-                />
-                <Label htmlFor={reason} className="flex-1 cursor-pointer">
-                  <span className="font-medium break-words">{reason}</span>
-                </Label>
-              </div>
-            ))}
-          </RadioGroup>
+          <Controller
+            control={control}
+            name="reason"
+            render={({ field }) => (
+              <RadioGroup
+                value={field.value}
+                onValueChange={field.onChange}
+                className="space-y-4 mb-4"
+              >
+                {reportReasons.map((reason) => (
+                  <div key={reason} className="flex items-center space-x-3">
+                    <RadioGroupItem value={reason} id={reason} />
+                    <Label htmlFor={reason} className="flex-1 cursor-pointer">
+                      <span className="font-medium break-words">{reason}</span>
+                    </Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            )}
+          />
           {errors.reason && (
             <span className="text-red-500">
-              {(errors.reason as FieldError).message}
+              {errors.reason.message} <br />
             </span>
           )}
           <Label>Informations complémentaires</Label>
@@ -98,7 +113,14 @@ export function ReportJobDialog({
             {...register("additionalInfo")}
           />
           <div className="flex justify-end mt-4">
-            <Button variant="outline" onClick={() => onOpenChange(false)}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                reset();
+                onOpenChange(false);
+              }}
+            >
               Annuler
             </Button>
             <Button className="ml-2" type="submit">

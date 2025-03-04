@@ -4,9 +4,10 @@ import { Card } from "@/components/ui/card";
 import { type Annonce } from "@/core/mockData/annonces";
 import { spanBadgeStyle } from "@/core/styles/span-badge.style";
 import { Avatar } from "@radix-ui/react-avatar";
-import { Building2, MapPin, Share2, Users2 } from "lucide-react";
+import { Building2, Flag, MapPin, Share2, Users2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import { ReportJobDialog } from "@/features/candidature/(profile)/components/my-jobs/ReportJobDialog";
 
 interface AnnonceHeaderProps {
   annonce: Annonce;
@@ -14,6 +15,11 @@ interface AnnonceHeaderProps {
 
 export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
   const { toast } = useToast();
+  const [openReportDialog, setOpenReportDialog] = useState(false);
+
+  const handleReport = useCallback(() => {
+    setOpenReportDialog(true);
+  }, []);
 
   const handleShare = useCallback(async () => {
     try {
@@ -76,8 +82,18 @@ export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
                 <Share2 className="h-4 w-4 mr-2" />
                 Partager
               </Button>
+              <Button variant="outline" size="sm" onClick={handleReport}>
+                <Flag className="h-4 w-4 mr-2" />
+                Signaler
+              </Button>
             </div>
           </div>
+
+          <ReportJobDialog
+            open={openReportDialog}
+            onOpenChange={setOpenReportDialog}
+            jobId={annonce.id}
+          />
 
           {/* Tags */}
           <div className="flex flex-wrap gap-2 mt-4">
