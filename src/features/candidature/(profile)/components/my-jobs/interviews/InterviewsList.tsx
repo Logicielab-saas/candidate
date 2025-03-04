@@ -12,7 +12,7 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-import type { Interview } from "@/core/types/interview";
+import { Interview } from "@/core/interfaces/interview";
 import { InvitedInterviews } from "./InvitedInterviews";
 import { PendingInterviews } from "./PendingInterviews";
 import { PastInterviews } from "./PastInterviews";

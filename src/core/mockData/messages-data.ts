@@ -1,4 +1,4 @@
-import { Interview } from "../types/interview";
+import { Interview } from "../interfaces/interview.interface";
 
 // Types
 export interface Message {

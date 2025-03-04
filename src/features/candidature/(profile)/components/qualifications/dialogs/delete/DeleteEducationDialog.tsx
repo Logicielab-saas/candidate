@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { type Education } from "@/core/types/education";
+import { Education } from "@/core/interfaces/";
 
 interface DeleteEducationDialogProps {
   open: boolean;

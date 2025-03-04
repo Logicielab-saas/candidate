@@ -1,4 +1,4 @@
-import type { Company } from './job'
+import type { Company } from '../types/job'
 
 export interface SavedJob {
   id: string

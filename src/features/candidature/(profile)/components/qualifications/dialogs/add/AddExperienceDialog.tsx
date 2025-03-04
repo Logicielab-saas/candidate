@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { type Experience } from "@/core/types/experience";
+import { Experience } from "@/core/interfaces/";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 // Internal form schema uses Date objects for better date handling

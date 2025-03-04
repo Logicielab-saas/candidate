@@ -18,9 +18,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
-import type { SavedJob } from "@/core/types";
 import { useState } from "react";
 import { ReportJobDialog } from "../ReportJobDialog";
+import { SavedJob } from "@/core/interfaces/saved-job";
 
 interface SavedJobItemProps extends Omit<SavedJob, "id"> {
   jobId: string;

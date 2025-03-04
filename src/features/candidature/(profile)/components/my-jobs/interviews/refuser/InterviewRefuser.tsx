@@ -1,6 +1,6 @@
 "use client";
 
-import { Interview } from "@/core/types/interview";
+import { Interview } from "@/core/interfaces/interview";
 import { JobHeader } from "../jobHeader";
 import { Separator } from "@/components/ui/separator";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";

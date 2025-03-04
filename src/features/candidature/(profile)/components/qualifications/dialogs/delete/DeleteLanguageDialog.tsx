@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { type Language } from "@/core/types/language";
+import { type Language } from "@/core/interfaces/";
 
 interface DeleteLanguageDialogProps {
   open: boolean;
@@ -45,8 +45,7 @@ export function DeleteLanguageDialog({
           <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
           <AlertDialogDescription>
             Vous êtes sur le point de supprimer la langue &quot;{language.name}
-            &quot;{language.certification && ` (${language.certification})`}.
-            Cette action est irréversible.
+            &quot;. Cette action est irréversible.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

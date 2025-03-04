@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { type Certification } from "@/core/types/certification";
+import { Certification } from "@/core/interfaces/";
 
 interface DeleteCertificationDialogProps {
   open: boolean;
@@ -45,10 +45,7 @@ export function DeleteCertificationDialog({
           <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
           <AlertDialogDescription>
             Vous êtes sur le point de supprimer la certification &quot;
-            {certification.name}&quot; de {certification.organization}
-            {certification.credentialId &&
-              ` (ID: ${certification.credentialId})`}
-            . Cette action est irréversible.
+            {certification.name}&quot; . Cette action est irréversible.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

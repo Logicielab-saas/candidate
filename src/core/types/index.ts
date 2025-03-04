@@ -1,2 +1,2 @@
-export * from './job'
-export * from './saved-job'
+export * from "./job";
+export * from "../interfaces/saved-job.interface";

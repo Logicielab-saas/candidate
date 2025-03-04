@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Education } from "@/core/types/education";
+import { Education } from "@/core/interfaces/";
 import { GraduationCap } from "lucide-react";
 import { AddEducationDialog } from "./dialogs/add/AddEducationDialog";
 import { EditEducationDialog } from "./dialogs/edit/EditEducationDialog";

@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { type Education } from "@/core/types/education";
+import { Education } from "@/core/interfaces/";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const educationFormSchema = z.object({

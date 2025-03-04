@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Interview } from "@/core/types/interview";
+import { Interview } from "@/core/interfaces/interview";
 import { AnimatePresence, motion } from "framer-motion";
 import { Building2, MapPin, Calendar, Clock, Zap } from "lucide-react";
 import Link from "next/link";
