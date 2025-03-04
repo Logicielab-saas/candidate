@@ -6,6 +6,7 @@
  * Props:
  * - videoUrl: string - The URL of the video to play
  * - description: string - The description of the video
+ * - startAt?: number - Optional start time in seconds
  */
 
 "use client";
@@ -56,9 +57,14 @@ const ReactPlayerComponent = dynamic(() => import("react-player/lazy"), {
 interface VideoPlayerProps {
   videoUrl: string;
   description: string;
+  startAt?: number;
 }
 
-export function VideoPlayer({ videoUrl, description }: VideoPlayerProps) {
+export function VideoPlayer({
+  videoUrl,
+  description,
+  startAt = 0,
+}: VideoPlayerProps) {
   const playerContainerRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -132,10 +138,17 @@ export function VideoPlayer({ videoUrl, description }: VideoPlayerProps) {
                   controlsList: "nodownload",
                   disablePictureInPicture: true,
                 },
+                forceVideo: true,
               },
             }}
             pip={false}
             stopOnUnmount
+            progressInterval={1000}
+            onReady={() => {
+              if (startAt > 0 && playerRef.current) {
+                playerRef.current.seekTo(startAt, "seconds");
+              }
+            }}
           />
         </Suspense>
 

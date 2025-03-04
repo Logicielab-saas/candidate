@@ -107,8 +107,8 @@ const nestjsVideos: CourseVideo[] = [
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson1.mp4",
     duration: "10:36",
-    progress: 100,
-    // startAt: 10,
+    progress: 100, // Completed
+    startAt: 0, // No startAt needed as completed
   },
   {
     id: "4-2",
@@ -116,7 +116,8 @@ const nestjsVideos: CourseVideo[] = [
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson2.mp4",
     duration: "7:04",
-    progress: 45,
+    progress: 100, // Completed
+    startAt: 0, // No startAt needed as completed
   },
   {
     id: "4-3",
@@ -124,7 +125,8 @@ const nestjsVideos: CourseVideo[] = [
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson3.mp4",
     duration: "5:34",
-    progress: 0,
+    progress: 100, // Completed
+    startAt: 0, // No startAt needed as completed
   },
   {
     id: "4-4",
@@ -132,7 +134,8 @@ const nestjsVideos: CourseVideo[] = [
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson4.mp4",
     duration: "6:04",
-    progress: 0,
+    progress: 100, // Completed
+    startAt: 0, // No startAt needed as completed
   },
   {
     id: "4-5",
@@ -140,7 +143,8 @@ const nestjsVideos: CourseVideo[] = [
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson5.mp4",
     duration: "7:05",
-    progress: 0,
+    progress: 85, // Almost done
+    startAt: 360, // Resume at 6:00
   },
   {
     id: "4-6",
@@ -148,7 +152,8 @@ const nestjsVideos: CourseVideo[] = [
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson6.mp4",
     duration: "12:27",
-    progress: 0,
+    progress: 65, // More than half
+    startAt: 447, // Resume at 7:27
   },
   {
     id: "4-7",
@@ -156,7 +161,8 @@ const nestjsVideos: CourseVideo[] = [
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson7.mp4",
     duration: "9:54",
-    progress: 0,
+    progress: 40, // Started but not halfway
+    startAt: 237, // Resume at 3:57
   },
   {
     id: "4-8",
@@ -164,7 +170,8 @@ const nestjsVideos: CourseVideo[] = [
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson8.mp4",
     duration: "7:08",
-    progress: 0,
+    progress: 15, // Just started
+    startAt: 64, // Resume at 1:04
   },
   {
     id: "4-9",
@@ -172,7 +179,8 @@ const nestjsVideos: CourseVideo[] = [
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson9.mp4",
     duration: "10:04",
-    progress: 0,
+    progress: 0, // Not started
+    startAt: 0,
   },
   {
     id: "4-10",
@@ -180,7 +188,8 @@ const nestjsVideos: CourseVideo[] = [
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson10.mp4",
     duration: "2:16",
-    progress: 0,
+    progress: 0, // Not started
+    startAt: 0,
   },
   {
     id: "4-11",
@@ -188,7 +197,8 @@ const nestjsVideos: CourseVideo[] = [
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson11.mp4",
     duration: "11:17",
-    progress: 0,
+    progress: 0, // Not started
+    startAt: 0,
   },
   {
     id: "4-12",
@@ -196,7 +206,8 @@ const nestjsVideos: CourseVideo[] = [
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson12.mp4",
     duration: "6:38",
-    progress: 0,
+    progress: 0, // Not started
+    startAt: 0,
   },
   {
     id: "4-13",
@@ -204,7 +215,8 @@ const nestjsVideos: CourseVideo[] = [
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson13.mp4",
     duration: "7:37",
-    progress: 0,
+    progress: 0, // Not started
+    startAt: 0,
   },
   {
     id: "4-14",
@@ -212,7 +224,8 @@ const nestjsVideos: CourseVideo[] = [
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson14.mp4",
     duration: "11:05",
-    progress: 0,
+    progress: 0, // Not started
+    startAt: 0,
   },
 ];
 
