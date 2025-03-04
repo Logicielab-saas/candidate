@@ -7,3 +7,6 @@ export * from "./contract.interface";
 export * from "./salary.interface";
 export * from "./jwt-payload.interface";
 export * from "./certification.interface";
+export * from "./course.interface";
+export * from "./course-details.interface";
+export * from "./course-video.interface";
