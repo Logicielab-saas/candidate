@@ -29,7 +29,6 @@ export function VideoPlaylist({
   currentVideoId,
   onVideoSelect,
 }: VideoPlaylistProps) {
-  console.log(videos[0].imageUrl);
   return (
     <ScrollArea className="h-[600px] rounded-md border">
       <div className="p-4">
