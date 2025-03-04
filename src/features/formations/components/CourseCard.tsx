@@ -10,14 +10,19 @@
 import { Course } from "@/core/interfaces/course.interface";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Star } from "lucide-react";
+import { Bookmark, Star } from "lucide-react";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface CourseCardProps {
   course: Course;
 }
 
 export function CourseCard({ course }: CourseCardProps) {
+  const [isBookmarked, setIsBookmarked] = useState(false);
+
   return (
     <Card className="overflow-hidden transition-all hover:shadow-lg">
       <div className="relative h-48 w-full">
@@ -27,7 +32,24 @@ export function CourseCard({ course }: CourseCardProps) {
           fill
           className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority={false}
+          loading="lazy"
         />
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute right-2 top-2 z-10 h-8 w-8 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white/90"
+          onClick={() => setIsBookmarked(!isBookmarked)}
+        >
+          <Bookmark
+            className={cn(
+              "h-5 w-5 transition-colors",
+              isBookmarked
+                ? "fill-primaryHex-500 text-primaryHex-500"
+                : "text-gray-500"
+            )}
+          />
+        </Button>
       </div>
       <CardHeader className="space-y-1">
         <div className="flex items-center justify-between">

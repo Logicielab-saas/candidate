@@ -2,17 +2,18 @@
  * FormationsContainer - Main container for the formations page
  *
  * Manages course data, search functionality, and layout of the formations page
+ * Uses nuqs for URL-based search state management
  */
 
 "use client";
 
-import { useState } from "react";
 import { SearchCourses } from "./SearchCourses";
 import { CoursesList } from "./CoursesList";
 import { mockCourses } from "@/core/mockData/courses";
+import { useQueryState } from "nuqs";
 
 export function FormationsContainer() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useQueryState("q");
 
   // Ensure mockCourses exists and is an array before filtering
   const courses = Array.isArray(mockCourses) ? mockCourses : [];
@@ -21,7 +22,7 @@ export function FormationsContainer() {
   const filteredCourses = courses.filter((course) => {
     if (!course) return false;
 
-    const searchLower = searchQuery.toLowerCase();
+    const searchLower = (searchQuery || "").toLowerCase();
     return (
       course.title?.toLowerCase().includes(searchLower) ||
       course.description?.toLowerCase().includes(searchLower) ||
@@ -38,7 +39,7 @@ export function FormationsContainer() {
         </p>
       </div>
 
-      <SearchCourses onSearch={setSearchQuery} />
+      <SearchCourses value={searchQuery || ""} onSearch={setSearchQuery} />
 
       <CoursesList courses={filteredCourses} />
     </div>
