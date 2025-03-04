@@ -5,6 +5,7 @@
  */
 
 import { Course } from "@/core/interfaces/course.interface";
+import { CourseDetails } from "../interfaces";
 
 export const mockCourses: Course[] = [
   {
@@ -60,3 +61,5 @@ export const mockCourses: Course[] = [
     duration: 540, // 9 hours
   },
 ];
+
+export const mockCoursesDetails: CourseDetails[] = [];
