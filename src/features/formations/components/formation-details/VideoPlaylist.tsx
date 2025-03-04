@@ -77,7 +77,7 @@ export function VideoPlaylist({
                     <h3 className="font-medium leading-tight">{video.title}</h3>
                   </div>
                   <span className="text-sm text-muted-foreground shrink-0">
-                    {video.timing}
+                    {video.duration}
                   </span>
                 </div>
                 {video.progress !== undefined && video.progress > 0 && (

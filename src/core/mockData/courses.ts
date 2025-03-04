@@ -70,7 +70,7 @@ const laravelVideos: CourseVideo[] = [
     title: "Introduction to Laravel",
     imageUrl: "/courses/laravel-1.webp",
     videoUrl: "https://example.com/videos/laravel-1",
-    timing: "15:30",
+    duration: "15:30",
     progress: 100,
   },
   {
@@ -78,7 +78,7 @@ const laravelVideos: CourseVideo[] = [
     title: "Routing and Controllers",
     imageUrl: "/courses/laravel-2.webp",
     videoUrl: "https://example.com/videos/laravel-2",
-    timing: "20:45",
+    duration: "20:45",
     progress: 80,
   },
   {
@@ -86,7 +86,7 @@ const laravelVideos: CourseVideo[] = [
     title: "Eloquent ORM Basics",
     imageUrl: "/courses/laravel-3.webp",
     videoUrl: "https://example.com/videos/laravel-3",
-    timing: "25:15",
+    duration: "25:15",
     progress: 0,
   },
   {
@@ -94,7 +94,7 @@ const laravelVideos: CourseVideo[] = [
     title: "Authentication and Authorization",
     imageUrl: "/courses/laravel-4.webp",
     videoUrl: "https://example.com/videos/laravel-4",
-    timing: "30:20",
+    duration: "30:20",
     progress: 0,
   },
 ];
@@ -105,7 +105,7 @@ const nestjsVideos: CourseVideo[] = [
     title: "Introduction to NestJS",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson1.mp4",
-    timing: "25:00",
+    duration: "25:00",
     progress: 100,
   },
   {
@@ -113,7 +113,7 @@ const nestjsVideos: CourseVideo[] = [
     title: "Controllers and Routing",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson2.mp4",
-    timing: "28:15",
+    duration: "28:15",
     progress: 45,
   },
   {
@@ -121,7 +121,7 @@ const nestjsVideos: CourseVideo[] = [
     title: "Dependency Injection",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson3.mp4",
-    timing: "30:45",
+    duration: "30:45",
     progress: 0,
   },
   {
@@ -129,7 +129,7 @@ const nestjsVideos: CourseVideo[] = [
     title: "Modules and Services",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson4.mp4",
-    timing: "27:30",
+    duration: "27:30",
     progress: 0,
   },
   {
@@ -137,7 +137,7 @@ const nestjsVideos: CourseVideo[] = [
     title: "Database Integration",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson5.mp4",
-    timing: "32:15",
+    duration: "32:15",
     progress: 0,
   },
   {
@@ -145,7 +145,7 @@ const nestjsVideos: CourseVideo[] = [
     title: "Authentication Strategies",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson6.mp4",
-    timing: "35:00",
+    duration: "35:00",
     progress: 0,
   },
   {
@@ -153,7 +153,7 @@ const nestjsVideos: CourseVideo[] = [
     title: "Authorization and Guards",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson7.mp4",
-    timing: "29:45",
+    duration: "29:45",
     progress: 0,
   },
   {
@@ -161,7 +161,7 @@ const nestjsVideos: CourseVideo[] = [
     title: "Error Handling",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson8.mp4",
-    timing: "26:30",
+    duration: "26:30",
     progress: 0,
   },
   {
@@ -169,7 +169,7 @@ const nestjsVideos: CourseVideo[] = [
     title: "Validation and DTOs",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson9.mp4",
-    timing: "31:15",
+    duration: "31:15",
     progress: 0,
   },
   {
@@ -177,7 +177,7 @@ const nestjsVideos: CourseVideo[] = [
     title: "File Upload Handling",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson10.mp4",
-    timing: "33:20",
+    duration: "33:20",
     progress: 0,
   },
   {
@@ -185,7 +185,7 @@ const nestjsVideos: CourseVideo[] = [
     title: "WebSockets Integration",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson11.mp4",
-    timing: "34:45",
+    duration: "34:45",
     progress: 0,
   },
   {
@@ -193,7 +193,7 @@ const nestjsVideos: CourseVideo[] = [
     title: "Task Scheduling",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson12.mp4",
-    timing: "28:30",
+    duration: "28:30",
     progress: 0,
   },
   {
@@ -201,7 +201,7 @@ const nestjsVideos: CourseVideo[] = [
     title: "Testing Strategies",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson13.mp4",
-    timing: "36:15",
+    duration: "36:15",
     progress: 0,
   },
   {
@@ -209,7 +209,7 @@ const nestjsVideos: CourseVideo[] = [
     title: "Deployment Best Practices",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson14.mp4",
-    timing: "30:00",
+    duration: "30:00",
     progress: 0,
   },
 ];

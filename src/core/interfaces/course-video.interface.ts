@@ -3,7 +3,7 @@ export interface CourseVideo {
   title: string;
   imageUrl: string;
   videoUrl: string;
-  timing: string;
+  duration: string;
   startAt?: number; // Optional property
   progress?: number; // Optional property
 }
