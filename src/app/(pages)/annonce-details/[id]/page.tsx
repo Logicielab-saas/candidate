@@ -1,9 +1,9 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import { AnnonceDetailsContainer } from "@/features/annonces/components/AnnonceDetailsContainer";
 import { MOCK_ANNONCES } from "@/core/mockData/annonces";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Metadata } from "next";
+import { AnnonceDetailsContainer } from "@/features/annonces/components/details/AnnonceDetailsContainer";
 
 export const metadata: Metadata = {
   title: "Job Details | Postuly",
