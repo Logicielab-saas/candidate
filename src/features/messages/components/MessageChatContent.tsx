@@ -97,6 +97,16 @@ function InterviewInvitation({
   );
 }
 
+/**
+ * MessageChatContent - Displays the chat conversation for a selected message.
+ *
+ * If no message is selected, a placeholder message is shown.
+ *
+ * Props:
+ * - message: the current selected message (optional)
+ * - onArchive: callback for archiving a message
+ * - onReport: callback for reporting a message
+ */
 export function MessageChatContent({
   message,
   onArchive,
@@ -345,6 +355,7 @@ export function MessageChatContent({
     }
   };
 
+  // Early return with a placeholder if no message is selected.
   if (!message) {
     return (
       <Card className="h-[calc(100vh-180px)] overflow-hidden">

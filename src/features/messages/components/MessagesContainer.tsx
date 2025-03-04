@@ -3,6 +3,9 @@
  *
  * Manages the state and layout for the messages list and chat content,
  * including responsive behavior for mobile views.
+ *
+ * URL state for the selected message is managed using nuqs with a default value,
+ * eliminating the need for useEffect side-effects.
  */
 
 "use client";
@@ -11,35 +14,29 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { MessagesList } from "./MessagesList";
 import { MessageChatContent } from "./MessageChatContent";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { type Message, MOCK_MESSAGES } from "@/core/mockData/messages-data";
 import { cn } from "@/lib/utils";
-import { useQueryState, parseAsString } from "nuqs";
+import { useQueryState } from "nuqs";
 
+/**
+ * MessagesContainer - Manages the messages list and chat content display.
+ *
+ * Uses nuqs to manage the "message" URL state without defaulting to the first message.
+ */
 export function MessagesContainer() {
   const [isMobileView, setIsMobileView] = useState(false);
   const [messages, setMessages] = useState<Message[]>(MOCK_MESSAGES);
 
-  // URL state management with nuqs
-  const [messageId, setMessageId] = useQueryState("message", parseAsString);
+  // Manage the "message" URL parameter via nuqs without a default value.
+  const [messageId, setMessageId] = useQueryState("message", {
+    parse: (value) => value || null,
+  });
 
+  // Compute the selected message only if messageId exists.
   const selectedMessage = messageId
-    ? messages.find((m) => m.id === Number(messageId))
+    ? messages.find((m) => m.id.toString() === messageId)
     : undefined;
-
-  // Effect to handle initial load and invalid message IDs
-  useEffect(() => {
-    if (messageId) {
-      const message = messages.find((m) => m.id === Number(messageId));
-      if (!message) {
-        // If message ID is invalid, clear it from URL
-        setMessageId(null);
-      }
-    } else if (messages.length > 0) {
-      // If no message is selected, select the first one
-      setMessageId(messages[0].id.toString());
-    }
-  }, [messageId, setMessageId, messages]);
 
   const handleMessageSelect = (message: Message) => {
     setMessageId(message.id.toString());
