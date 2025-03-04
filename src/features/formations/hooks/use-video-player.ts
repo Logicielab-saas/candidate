@@ -6,6 +6,7 @@
  * - Progress tracking and seeking
  * - Quality and speed settings
  * - Volume controls
+ * - Keyboard shortcuts (space for play/pause)
  *
  * @param videoUrl - The URL of the video to play
  *
@@ -32,7 +33,7 @@
  * - setDuration: Update video duration
  */
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import type ReactPlayer from "react-player";
 
 // Available quality options
@@ -82,6 +83,26 @@ export function useVideoPlayer(_videoUrl: string) {
   const [played, setPlayed] = useState(0);
   const [seeking, setSeeking] = useState(false);
 
+  // Handle keyboard shortcuts
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Only handle space if not typing in an input/textarea
+      if (
+        e.code === "Space" &&
+        e.target instanceof Element &&
+        !["INPUT", "TEXTAREA"].includes(e.target.tagName)
+      ) {
+        e.preventDefault(); // Prevent page scroll
+        handlePlayPause();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyPress);
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
+
   /**
    * Get video URL with quality parameter
    * @param url - Base video URL
@@ -98,7 +119,7 @@ export function useVideoPlayer(_videoUrl: string) {
    * Toggle video play/pause state
    */
   const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
+    setIsPlaying((prev) => !prev);
   };
 
   /**

@@ -105,6 +105,7 @@ export function VideoPlayer({ videoUrl, description }: VideoPlayerProps) {
         className="group relative aspect-video w-full overflow-hidden rounded-xl bg-black"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
+        onClick={handlePlayPause}
       >
         <Suspense
           fallback={
@@ -137,6 +138,31 @@ export function VideoPlayer({ videoUrl, description }: VideoPlayerProps) {
             stopOnUnmount
           />
         </Suspense>
+
+        {/* Center play/pause button */}
+        <div
+          className={cn(
+            "absolute inset-0 flex items-center justify-center transition-opacity duration-300",
+            isPlaying ? "bg-transparent" : "bg-black/40"
+          )}
+        >
+          <div
+            className={cn(
+              "flex h-20 w-20 items-center justify-center rounded-full bg-black/60 text-white transition-all duration-300 hover:scale-110",
+              isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"
+            )}
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent double triggering with container click
+              handlePlayPause();
+            }}
+          >
+            {isPlaying ? (
+              <Pause className="h-10 w-10" />
+            ) : (
+              <Play className="h-10 w-10 pl-1" />
+            )}
+          </div>
+        </div>
 
         {/* Custom controls overlay */}
         <div
@@ -171,7 +197,10 @@ export function VideoPlayer({ videoUrl, description }: VideoPlayerProps) {
               variant="ghost"
               size="icon"
               className="h-8 w-8 rounded-full bg-white/10 text-white hover:bg-white/20"
-              onClick={handlePlayPause}
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePlayPause();
+              }}
             >
               {isPlaying ? (
                 <Pause className="h-4 w-4" />
@@ -354,7 +383,7 @@ export function VideoPlayer({ videoUrl, description }: VideoPlayerProps) {
           </div>
         </div>
       </div>
-      <div className="prose prose-sm max-w-none dark:prose-invert">
+      <div className="prose prose-lg max-w-none dark:prose-invert">
         {description}
       </div>
     </div>
