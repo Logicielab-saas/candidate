@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { SalaryDisplayType } from "@/core/enums/salary.enum";
+import { SalaryDisplayType } from "@/core/enums/";
 import { type Annonce } from "@/core/mockData/annonces";
 import { iconContainerStyle } from "@/core/styles/icon-container.style";
 import { BriefcaseIcon, CalendarIcon, ClockIcon, EuroIcon } from "lucide-react";
@@ -30,7 +30,7 @@ export function AnnonceJobDetails({ annonce }: AnnonceJobDetailsProps) {
     if (jobTypeInformation.partTimeDetails) {
       const { hoursPerWeek, scheduleType } = jobTypeInformation.partTimeDetails;
       return `${hoursPerWeek}h/semaine - ${
-        scheduleType === "FIXED" ? "Horaires fixes" : "Horaires flexibles"
+        scheduleType === "fixed" ? "Horaires fixes" : "Horaires flexibles"
       }`;
     }
     return "Temps plein";

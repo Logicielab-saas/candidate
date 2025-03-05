@@ -1,7 +1,4 @@
-import {
-  ContractDurationUnit,
-  ContractScheduleType,
-} from "../enums/contract.enum";
+import { ContractDurationUnit, ContractScheduleType } from "../enums/";
 
 export interface PartTimeDetails {
   scheduleType?: ContractScheduleType;

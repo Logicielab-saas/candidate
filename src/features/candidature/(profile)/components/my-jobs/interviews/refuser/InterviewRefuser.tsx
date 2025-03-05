@@ -24,7 +24,7 @@ type FormData = z.infer<typeof formSchema>;
 
 interface InterviewRefuserProps {
   interview: Interview | undefined;
-  source: "annuler" | "refuser";
+  source?: "annuler" | "refuser";
 }
 
 const reasons = [

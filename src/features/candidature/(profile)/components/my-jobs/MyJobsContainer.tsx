@@ -25,7 +25,7 @@ import { useState } from "react";
 import { mockSentApplications } from "@/core/mockData/jobs";
 import { mockInterviews } from "@/core/mockData/jobs";
 import type { Job, CandidateStatus } from "@/core/types";
-import type { Interview } from "@/core/interfaces/interview";
+import type { Interview } from "@/core/interfaces/";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 // Types and interfaces
