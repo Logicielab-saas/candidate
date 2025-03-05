@@ -94,7 +94,7 @@ export const mockCourses: Course[] = [
     title: "AWS Solutions Architect",
     description:
       "Comprehensive guide to AWS services, architecture best practices, and cloud solutions",
-    imageUrl: "/courses/aws.jpg",
+    imageUrl: "/courses/aws.png",
     author: "Cloud Expert",
     review: 4.9,
     category: "cloud",
@@ -105,7 +105,7 @@ export const mockCourses: Course[] = [
     title: "Docker & Kubernetes Mastery",
     description:
       "Learn container orchestration, microservices deployment, and DevOps practices",
-    imageUrl: "/courses/kubernetes.jpg",
+    imageUrl: "/courses/kubernetes.png",
     author: "DevOps Guru",
     progress: 60,
     review: 4.7,
@@ -118,7 +118,7 @@ export const mockCourses: Course[] = [
     title: "Deep Learning Fundamentals",
     description:
       "Build and train neural networks using TensorFlow and PyTorch for computer vision and NLP",
-    imageUrl: "/courses/deep-learning.jpg",
+    imageUrl: "/courses/deep-learning.png",
     author: "AI Researcher",
     review: 4.8,
     category: "ai",
@@ -129,7 +129,7 @@ export const mockCourses: Course[] = [
     title: "Machine Learning Engineering",
     description:
       "End-to-end ML pipeline development, model deployment, and MLOps best practices",
-    imageUrl: "/courses/ml-eng.jpg",
+    imageUrl: "/courses/ml-eng.webp",
     author: "ML Engineer",
     progress: 40,
     review: 4.6,
@@ -153,7 +153,7 @@ export const mockCourses: Course[] = [
     title: "Web Application Security",
     description:
       "Master OWASP top 10, secure coding practices, and web security testing",
-    imageUrl: "/courses/web-security.jpg",
+    imageUrl: "/courses/web-security.png",
     author: "Security Pro",
     progress: 55,
     review: 4.7,
@@ -166,7 +166,7 @@ export const mockCourses: Course[] = [
     title: "Unity Game Development",
     description:
       "Create 3D games with Unity, including gameplay mechanics, physics, and AI",
-    imageUrl: "/courses/unity-dev.jpg",
+    imageUrl: "/courses/unity-dev.webp",
     author: "Game Dev Pro",
     review: 4.6,
     category: "game",
@@ -177,7 +177,7 @@ export const mockCourses: Course[] = [
     title: "Unreal Engine 5 Masterclass",
     description:
       "Learn advanced game development with UE5, including blueprints and realistic graphics",
-    imageUrl: "/courses/unreal-engine.jpg",
+    imageUrl: "/courses/unreal-engine.avif",
     author: "Game Artist",
     progress: 20,
     review: 4.8,
@@ -214,7 +214,7 @@ export const mockCourses: Course[] = [
     title: "UI/UX Design Principles",
     description:
       "Master modern UI/UX design principles, wireframing, and prototyping with Figma",
-    imageUrl: "/courses/ui-ux.jpg",
+    imageUrl: "/courses/ui-ux.png",
     author: "Design Lead",
     review: 4.8,
     category: "design",
@@ -238,7 +238,7 @@ export const mockCourses: Course[] = [
     title: "Digital Marketing Strategy",
     description:
       "Comprehensive guide to SEO, content marketing, and social media strategy",
-    imageUrl: "/courses/digital-marketing.jpg",
+    imageUrl: "/courses/digital-marketing.png",
     author: "Marketing Expert",
     review: 4.6,
     category: "marketing",
@@ -249,7 +249,7 @@ export const mockCourses: Course[] = [
     title: "Growth Marketing Mastery",
     description:
       "Learn data-driven marketing, A/B testing, and user acquisition strategies",
-    imageUrl: "/courses/growth-marketing.jpg",
+    imageUrl: "/courses/growth-marketing.png",
     author: "Growth Hacker",
     progress: 45,
     review: 4.5,
@@ -273,7 +273,7 @@ export const mockCourses: Course[] = [
     title: "Product Management Essentials",
     description:
       "Master product strategy, roadmap planning, and agile product development",
-    imageUrl: "/courses/product-management.jpg",
+    imageUrl: "/courses/product-management.png",
     author: "Product Leader",
     progress: 80,
     review: 4.8,
