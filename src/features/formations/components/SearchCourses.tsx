@@ -51,11 +51,11 @@ export function SearchCourses({ value, onSearch }: SearchCoursesProps) {
         />
         <div className="absolute right-4 top-3 flex h-6 w-6 items-center justify-center">
           {isLoading ? (
-            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+            <Loader2 className="h-5 w-5 animate-spin text-primaryHex-500" />
           ) : (
             <Search
               className={cn(
-                "h-6 w-6 text-muted-foreground transition-opacity",
+                "h-6 w-6 text-muted-foreground transition-opacity ",
                 localValue ? "opacity-100" : "opacity-70"
               )}
             />
