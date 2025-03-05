@@ -4,7 +4,7 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Interview } from "@/core/interfaces/interview";
+import { Interview } from "@/core/interfaces/";
 import { JobHeader } from "../jobHeader";
 import { Separator } from "@/components/ui/separator";
 import {
