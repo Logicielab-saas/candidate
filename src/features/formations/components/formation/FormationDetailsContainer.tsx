@@ -10,25 +10,31 @@
 
 "use client";
 
-import { useState } from "react";
 import { VideoPlaylist } from "./VideoPlaylist";
 import { VideoPlayer } from "./VideoPlayer";
-import { ReviewsSection } from "../reviews/ReviewsSection";
 import type { CourseDetails } from "@/core/interfaces/course-details.interface";
 import type { CourseReview } from "@/core/interfaces/course-review.interface";
+import { VideoSectionTabs } from "./VideoSectionTabs";
+import { useQueryState } from "nuqs";
 
 interface FormationDetailsContainerProps {
   course: CourseDetails;
   reviews: CourseReview[];
+  startingEpId: string;
 }
 
 export function FormationDetailsContainer({
   course,
   reviews,
+  startingEpId,
 }: FormationDetailsContainerProps) {
-  const [currentVideoId, setCurrentVideoId] = useState(
-    course.startingEpId || course.playlist[0].id
-  );
+  //! TODO: Fix the issue with the videoId not being set correctly at beginning of the page
+  // URL state management for current video
+  const [currentVideoId, setCurrentVideoId] = useQueryState<string>("videoId", {
+    defaultValue: startingEpId,
+    parse: (value) => value || startingEpId,
+    clearOnDefault: false,
+  });
   const currentVideo = course.playlist.find(
     (video) => video.id === currentVideoId
   );
@@ -60,7 +66,14 @@ export function FormationDetailsContainer({
           </div>
 
           {/* Reviews section */}
-          <ReviewsSection courseId={course.id} initialReviews={reviews} />
+          {/* <ReviewsSection courseId={course.id} initialReviews={reviews} /> */}
+
+          {/* Video section tabs */}
+          <VideoSectionTabs
+            courseId={course.id}
+            currentVideoDescription={currentVideo?.description}
+            reviews={reviews}
+          />
         </div>
 
         {/* Right column: Video playlist - Only visible on desktop */}

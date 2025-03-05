@@ -10,3 +10,4 @@ export * from "./certification.interface";
 export * from "./course.interface";
 export * from "./course-details.interface";
 export * from "./course-video.interface";
+export * from "./course-review.interface";
