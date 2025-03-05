@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Experience } from "@/core/interfaces/";
+import type { Experience } from "@/core/interfaces/";
 import { useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 

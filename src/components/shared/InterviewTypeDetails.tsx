@@ -1,6 +1,6 @@
 "use client";
 
-import { Interview } from "@/core/interfaces/";
+import type { Interview } from "@/core/interfaces/";
 
 interface InterviewTypeDetailsProps {
   interview: Interview | undefined;

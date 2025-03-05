@@ -1,6 +1,6 @@
 "use client";
 
-import { Interview } from "@/core/interfaces/";
+import type { Interview } from "@/core/interfaces/";
 import { AnimatePresence, motion } from "framer-motion";
 import { Building2, MapPin, Calendar, Clock, Zap } from "lucide-react";
 

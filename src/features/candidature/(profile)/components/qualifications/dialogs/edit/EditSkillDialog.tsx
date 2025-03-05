@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { type Skill } from "@/core/types/skill";
+import type { Skill } from "@/core/types/skill";
 import { useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 

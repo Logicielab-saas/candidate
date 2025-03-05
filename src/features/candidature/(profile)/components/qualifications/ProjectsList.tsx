@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Project } from "@/core/types/project";
+import { useState } from "react";
+import type { Project } from "@/core/types/project";
 import { Lightbulb } from "lucide-react";
 import TimeLineListItem from "./TimeLineListItem";
 import { SectionHeader } from "./SectionHeader";

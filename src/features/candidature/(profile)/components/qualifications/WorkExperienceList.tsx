@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Experience } from "@/core/interfaces/";
+import { useState } from "react";
+import type { Experience } from "@/core/interfaces/";
 import { Briefcase } from "lucide-react";
 import { AddExperienceDialog } from "./dialogs/add/AddExperienceDialog";
 import { EditExperienceDialog } from "./dialogs/edit/EditExperienceDialog";

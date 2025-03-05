@@ -20,7 +20,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { ReportJobDialog } from "../ReportJobDialog";
-import { SavedJob } from "@/core/interfaces/";
+import type { SavedJob } from "@/core/interfaces/";
 
 interface SavedJobItemProps extends Omit<SavedJob, "id"> {
   jobId: string;

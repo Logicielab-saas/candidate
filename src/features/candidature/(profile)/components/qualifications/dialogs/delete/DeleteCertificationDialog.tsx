@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Certification } from "@/core/interfaces/";
+import type { Certification } from "@/core/interfaces/";
 
 interface DeleteCertificationDialogProps {
   open: boolean;

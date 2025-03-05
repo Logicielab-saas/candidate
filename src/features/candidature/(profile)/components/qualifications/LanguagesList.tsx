@@ -2,7 +2,7 @@
 
 import { Languages } from "lucide-react";
 import { useState } from "react";
-import { Language } from "@/core/interfaces/";
+import type { Language } from "@/core/interfaces/";
 import { mockQualifications } from "@/core/mockData/qualifications";
 import { AddLanguageDialog } from "./dialogs/add/AddLanguageDialog";
 import { DeleteLanguageDialog } from "./dialogs/delete/DeleteLanguageDialog";

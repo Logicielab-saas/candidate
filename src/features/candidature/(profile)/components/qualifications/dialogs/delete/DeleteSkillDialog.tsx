@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { type Skill } from "@/core/types/skill";
+import type { Skill } from "@/core/types/skill";
 
 interface DeleteSkillDialogProps {
   open: boolean;

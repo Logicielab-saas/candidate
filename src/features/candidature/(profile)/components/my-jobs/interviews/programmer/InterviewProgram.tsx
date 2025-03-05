@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { InterviewDetails } from "./InterviewDetails";
 import SelectAvailabilityDate from "./SelectAvailabilityDate";
 import FixedInterviewDetails from "./FixedInterviewDetails";
-import { Interview } from "@/core/interfaces/";
+import type { Interview } from "@/core/interfaces/";
 import Link from "next/link";
 import { JobHeader } from "../jobHeader";
 import { InterviewTypeDetails } from "@/components/shared/InterviewTypeDetails";

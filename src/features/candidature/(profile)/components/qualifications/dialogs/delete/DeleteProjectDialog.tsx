@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Project } from "@/core/types/project";
+import type { Project } from "@/core/types/project";
 
 interface DeleteProjectDialogProps {
   open: boolean;

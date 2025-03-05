@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { type Language } from "@/core/interfaces/";
+import type { Language } from "@/core/interfaces/";
 
 interface DeleteLanguageDialogProps {
   open: boolean;

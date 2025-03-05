@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Language } from "@/core/interfaces/";
+import type { Language } from "@/core/interfaces/";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,

@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Experience } from "@/core/interfaces/";
+import type { Experience } from "@/core/interfaces/";
 
 interface DeleteExperienceDialogProps {
   open: boolean;

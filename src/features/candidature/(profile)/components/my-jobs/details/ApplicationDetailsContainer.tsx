@@ -1,4 +1,4 @@
-import { Job } from "@/core/types";
+import type { Job } from "@/core/types";
 import { ApplicationDetailsHeader } from "./ApplicationDetailsHeader";
 import { ApplicationDetailsBody } from "./ApplicationDetailsBody";
 

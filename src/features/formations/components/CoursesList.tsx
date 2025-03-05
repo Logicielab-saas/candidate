@@ -7,7 +7,7 @@
  * - courses: Course[] - Array of courses to display
  */
 
-import { Course } from "@/core/interfaces/course.interface";
+import type { Course } from "@/core/interfaces/";
 import { CourseCard } from "./CourseCard";
 
 interface CoursesListProps {

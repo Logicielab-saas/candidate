@@ -1,5 +1,5 @@
-import { Job, JobQuestion } from "@/core/types/job";
-import { Interview } from "../interfaces/interview.interface";
+import type { Job, JobQuestion } from "@/core/types/job";
+import type { Interview } from "@/core/interfaces/";
 
 export const mockSentApplications: Job[] = [
   {

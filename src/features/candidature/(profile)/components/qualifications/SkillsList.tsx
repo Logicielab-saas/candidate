@@ -2,7 +2,7 @@
 
 import { Zap } from "lucide-react";
 import { useState } from "react";
-import { type Skill } from "@/core/types/skill";
+import type { Skill } from "@/core/types/skill";
 import { mockQualifications } from "@/core/mockData/qualifications";
 import { AddSkillDialog } from "./dialogs/add/AddSkillDialog";
 import { DeleteSkillDialog } from "./dialogs/delete/DeleteSkillDialog";

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Certification } from "@/core/interfaces/";
+import type { Certification } from "@/core/interfaces/";
 import { Award } from "lucide-react";
 import { AddCertificationDialog } from "./dialogs/add/AddCertificationDialog";
 import { EditCertificationDialog } from "./dialogs/edit/EditCertificationDialog";

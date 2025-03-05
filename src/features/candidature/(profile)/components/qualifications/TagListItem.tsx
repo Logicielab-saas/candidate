@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { X, Pencil } from "lucide-react";
-import { Skill } from "@/core/types/skill";
-import { Language } from "@/core/interfaces/";
+import type { Skill } from "@/core/types/skill";
+import type { Language } from "@/core/interfaces/";
 
 interface TagListItemProps {
   skill: Skill | Language;

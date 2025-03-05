@@ -11,7 +11,7 @@
 
 "use client";
 
-import { CourseVideo } from "@/core/interfaces/course-video.interface";
+import type { CourseVideo } from "@/core/interfaces/";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";

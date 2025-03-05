@@ -1,9 +1,9 @@
 import React from "react";
-import { Experience, Education, Certification } from "@/core/interfaces/";
+import type { Experience, Education, Certification } from "@/core/interfaces/";
 import CircleLineWrapper from "./CircleLineWrapper";
 import { Button } from "@/components/ui/button";
 import { PencilIcon, Trash } from "lucide-react";
-import { Project } from "@/core/types/project";
+import type { Project } from "@/core/types/project";
 
 interface TimeLineListItemProps {
   data: Experience | Education | Certification | Project;

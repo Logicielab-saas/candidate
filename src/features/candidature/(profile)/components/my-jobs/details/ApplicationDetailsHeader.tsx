@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Company } from "@/core/types";
+import type { Company } from "@/core/types";
 
 interface ApplicationDetailsHeaderProps {
   jobTitle: string;

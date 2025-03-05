@@ -7,7 +7,7 @@
  * - course: Course - The course data to display
  */
 
-import { Course } from "@/core/interfaces/course.interface";
+import type { Course } from "@/core/interfaces/";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";

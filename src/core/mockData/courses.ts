@@ -4,9 +4,7 @@
  * Contains sample course data for development and testing
  */
 
-import { Course } from "@/core/interfaces/course.interface";
-import { CourseDetails } from "../interfaces/course-details.interface";
-import { CourseVideo } from "../interfaces/course-video.interface";
+import type { Course, CourseDetails, CourseVideo } from "@/core/interfaces/";
 
 export const mockCourses: Course[] = [
   {
