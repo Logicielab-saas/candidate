@@ -30,7 +30,7 @@ export function VideoPlaylist({
   onVideoSelect,
 }: VideoPlaylistProps) {
   return (
-    <ScrollArea className="h-[600px] rounded-md border">
+    <ScrollArea className="h-[800px] max-md:h-[500px] rounded-md border">
       <div className="p-4">
         <h2 className="mb-4 text-lg font-semibold">Course Content</h2>
         <div className="space-y-1">
