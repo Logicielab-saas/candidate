@@ -62,7 +62,7 @@ export function NavBar() {
 
   return (
     <header className={cn("flex h-14 items-center gap-2 px-4")}>
-      <div className="fixed top-0 left-0 right-0 z-50">
+      <div className="fixed top-0 left-0 right-0  z-50">
         <div className="md:px-4">
           <div className="md:mx-auto md:max-w-7xl md:mt-4">
             <div className="md:rounded-xl bg-background/50 backdrop-blur-lg md:border md:shadow-sm border-b md:border-b">
@@ -189,21 +189,28 @@ export function NavBar() {
                       <DropdownMenuSeparator />
 
                       {/* User Section */}
-                      <DropdownMenuItem className="w-full">
-                        <Link href="/profile" className="flex space-x-4 w-full">
-                          <User className=" h-4 w-4" />
+                      <DropdownMenuItem className="w-full" asChild>
+                        <Link href="/profile" className="flex w-full">
+                          <User className="h-4 w-4" />
                           <span>Profile</span>
                         </Link>
                       </DropdownMenuItem>
 
                       {/* Jobs & Reviews Section */}
-                      <DropdownMenuItem>
-                        <Briefcase className="mr-2 h-4 w-4" />
-                        <span>Mes emplois</span>
+                      <DropdownMenuItem className="w-full" asChild>
+                        <Link href="/profile/my-jobs" className="flex  w-full">
+                          <Briefcase className=" h-4 w-4" />
+                          <span>Mes emplois</span>
+                        </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Star className="mr-2 h-4 w-4" />
-                        <span>Mes avis</span>
+                      <DropdownMenuItem className="w-full" asChild>
+                        <Link
+                          href="/profile/my-reviews"
+                          className="flex w-full"
+                        >
+                          <Star className="h-4 w-4" />
+                          <span>Mes avis</span>
+                        </Link>
                       </DropdownMenuItem>
 
                       <DropdownMenuSeparator />

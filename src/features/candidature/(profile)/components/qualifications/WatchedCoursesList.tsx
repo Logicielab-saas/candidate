@@ -29,7 +29,7 @@ export function WatchedCoursesList() {
               variant="link"
               className="text-base font-bold flex justify-between items-center p-0 text-black dark:text-white"
             >
-              <Link href="#">{course.name}</Link>
+              <Link href={`/formations/${course.id}`}>{course.name}</Link>
             </Button>
             <p className="text-gray-600">{course.completion}</p>
             <p className="text-gray-500">{course.startDate}</p>

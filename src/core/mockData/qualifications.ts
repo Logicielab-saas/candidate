@@ -138,21 +138,15 @@ export const mockQualifications: QualificationsData = {
   course: [
     {
       id: "1",
-      name: "Laravel 10",
-      completion: "30%",
+      name: "Laravel PHP Framework Tutorial",
+      completion: "45%",
       startDate: "Janvier 2024",
     },
     {
-      id: "2",
-      name: "React 18",
-      completion: "49%",
+      id: "4",
+      name: "NestJS Enterprise Development",
+      completion: "25%",
       startDate: "Février 2024",
-    },
-    {
-      id: "3",
-      name: "Next.js 15",
-      completion: "100%",
-      startDate: "Mars 2024",
     },
   ],
 };
