@@ -2,17 +2,20 @@
 
 import { Button } from "@/components/ui/button";
 import { CalendarIcon, ClockIcon } from "lucide-react";
+import Link from "next/link";
 
 interface FixedInterviewDetailsProps {
   fixedDate: string | null;
   fixedHour: string | null;
   onContinue: () => void;
+  jobKey: string | undefined;
 }
 
 const FixedInterviewDetails = ({
   fixedDate,
   fixedHour,
   onContinue,
+  jobKey,
 }: FixedInterviewDetailsProps) => {
   return (
     <div className="p-6 shadow-md rounded-lg border">
@@ -34,6 +37,11 @@ const FixedInterviewDetails = ({
 
       <Button className="w-full mt-4" onClick={onContinue}>
         Continue
+      </Button>
+      <Button variant="outline" className="w-full mt-2">
+        <Link href={`/interviews/reporter/${jobKey}`}>
+          Suggérer nouveaux créneaux
+        </Link>
       </Button>
     </div>
   );

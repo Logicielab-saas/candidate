@@ -93,6 +93,7 @@ export function InterviewProgram({ job }: InterviewProgramProps) {
               fixedDate={job?.fixedInterviewDate || null}
               fixedHour={job?.fixedInterviewHour || null}
               onContinue={handleContinue}
+              jobKey={job?.jobKey}
             />
           )}
           {/* Select date and hour */}

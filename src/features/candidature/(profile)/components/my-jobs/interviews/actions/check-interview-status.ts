@@ -11,8 +11,19 @@ export function isInterviewInvited(id: string) {
 
 export function isInterviewPending(id: string) {
   const job = mockInterviews.find((job) => job.jobKey === id);
-  if (!job || job.interviewStatus !== "PENDING") {
+  console.log(job);
+
+  if (!job || job.interviewStatus === "PASSED") {
     redirect("/not-found");
   }
+
+  if (
+    job.interviewStatus !== "PENDING" &&
+    job.fixedInterviewHour === undefined &&
+    job.fixedInterviewDate === undefined
+  ) {
+    redirect("/not-found");
+  }
+
   return true;
 }
