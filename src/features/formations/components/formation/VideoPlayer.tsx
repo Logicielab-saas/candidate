@@ -56,15 +56,10 @@ const ReactPlayerComponent = dynamic(() => import("react-player/lazy"), {
 
 interface VideoPlayerProps {
   videoUrl: string;
-  description: string;
   startAt?: number;
 }
 
-export function VideoPlayer({
-  videoUrl,
-  description,
-  startAt = 0,
-}: VideoPlayerProps) {
+export function VideoPlayer({ videoUrl, startAt = 0 }: VideoPlayerProps) {
   const playerContainerRef = useRef<HTMLDivElement>(null);
   const hasInitializedRef = useRef(false);
 
@@ -408,9 +403,6 @@ export function VideoPlayer({
             </Button>
           </div>
         </div>
-      </div>
-      <div className="prose prose-lg max-w-none dark:prose-invert">
-        {description}
       </div>
     </div>
   );

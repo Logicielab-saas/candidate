@@ -15,6 +15,7 @@ interface CourseHeaderProps {
   review: number;
   viewersNum: number;
   progress?: number;
+  description: string;
 }
 
 export function CourseHeader({
@@ -22,6 +23,7 @@ export function CourseHeader({
   review,
   viewersNum,
   progress,
+  description,
 }: CourseHeaderProps) {
   if (progress === undefined) {
     progress = 0;
@@ -41,6 +43,9 @@ export function CourseHeader({
             <span>{viewersNum.toLocaleString()} viewers</span>
           </div>
         </div>
+      </div>
+      <div className="prose prose-lg max-w-none dark:prose-invert">
+        {description}
       </div>
 
       <div className="space-y-2">

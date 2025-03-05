@@ -4,7 +4,7 @@
  * Displays detailed information about a specific course
  */
 
-import { FormationDetailsContainer } from "@/features/formations/components/formation-details/FormationDetailsContainer";
+import { FormationDetailsContainer } from "@/features/formations/components/formation/FormationDetailsContainer";
 import { Metadata } from "next";
 import { mockCoursesDetails } from "@/core/mockData/courses";
 
