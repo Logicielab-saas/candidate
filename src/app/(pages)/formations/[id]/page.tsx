@@ -4,9 +4,12 @@
  * Displays detailed information about a specific course
  */
 
+import { redirect } from "next/navigation";
+import { CourseHeader } from "@/features/formations/components/formation/CourseHeader";
 import { FormationDetailsContainer } from "@/features/formations/components/formation/FormationDetailsContainer";
 import { Metadata } from "next";
 import { mockCoursesDetails } from "@/core/mockData/courses";
+import { mockReviews } from "@/core/mockData/reviews";
 
 interface FormationDetailsPageProps {
   params: Promise<{
@@ -36,5 +39,20 @@ export default async function FormationDetailsPage({
   params,
 }: FormationDetailsPageProps) {
   const { id } = await params;
-  return <FormationDetailsContainer courseId={id} />;
+  const course = mockCoursesDetails.find((c) => c.id === id);
+  if (!course) redirect("/notFound");
+  const reviews = mockReviews[course.id] || [];
+
+  return (
+    <>
+      <CourseHeader
+        title={course.title}
+        review={course.review}
+        viewersNum={course.viewersNum}
+        progress={course.progress}
+        description={course.description}
+      />
+      <FormationDetailsContainer course={course} reviews={reviews} />
+    </>
+  );
 }
