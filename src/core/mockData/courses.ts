@@ -287,15 +287,18 @@ const laravelVideos: CourseVideo[] = [
   {
     id: "1-1",
     title: "Introduction to Laravel",
+    description:
+      "Get started with Laravel framework basics, installation, and project setup. Learn about MVC architecture and Laravel's core concepts.",
     imageUrl: "/courses/laravel-1.webp",
     videoUrl: "https://example.com/videos/laravel-1",
     duration: "10:36",
     progress: 100,
-    // startAt: ,
   },
   {
     id: "1-2",
     title: "Routing and Controllers",
+    description:
+      "Master Laravel's routing system and learn how to create controllers. Understand route parameters, middleware, and controller actions.",
     imageUrl: "/courses/laravel-2.webp",
     videoUrl: "https://example.com/videos/laravel-2",
     duration: "7:04",
@@ -304,6 +307,8 @@ const laravelVideos: CourseVideo[] = [
   {
     id: "1-3",
     title: "Eloquent ORM Basics",
+    description:
+      "Learn database management with Laravel's Eloquent ORM. Cover model creation, relationships, and basic CRUD operations.",
     imageUrl: "/courses/laravel-3.webp",
     videoUrl: "https://example.com/videos/laravel-3",
     duration: "5:34",
@@ -312,6 +317,8 @@ const laravelVideos: CourseVideo[] = [
   {
     id: "1-4",
     title: "Authentication and Authorization",
+    description:
+      "Implement user authentication and authorization in Laravel. Learn about guards, policies, and role-based access control.",
     imageUrl: "/courses/laravel-4.webp",
     videoUrl: "https://example.com/videos/laravel-4",
     duration: "6:04",
@@ -323,127 +330,155 @@ const nestjsVideos: CourseVideo[] = [
   {
     id: "4-1",
     title: "Introduction to NestJS",
+    description:
+      "Introduction to NestJS framework architecture, core concepts, and setting up your first NestJS application.",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson1.mp4",
     duration: "10:36",
-    progress: 100, // Completed
-    startAt: 0, // No startAt needed as completed
+    progress: 100,
+    startAt: 0,
   },
   {
     id: "4-2",
     title: "Controllers and Routing",
+    description:
+      "Deep dive into NestJS controllers, routing decorators, request handling, and response manipulation.",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson2.mp4",
     duration: "7:04",
-    progress: 100, // Completed
-    startAt: 0, // No startAt needed as completed
+    progress: 100,
+    startAt: 0,
   },
   {
     id: "4-3",
     title: "Dependency Injection",
+    description:
+      "Understanding dependency injection in NestJS, providers, services, and the NestJS DI container.",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson3.mp4",
     duration: "5:34",
-    progress: 100, // Completed
-    startAt: 0, // No startAt needed as completed
+    progress: 100,
+    startAt: 0,
   },
   {
     id: "4-4",
     title: "Modules and Services",
+    description:
+      "Learn about NestJS modules, services architecture, and how to structure your application effectively.",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson4.mp4",
     duration: "6:04",
-    progress: 100, // Completed
-    startAt: 0, // No startAt needed as completed
+    progress: 100,
+    startAt: 0,
   },
   {
     id: "4-5",
     title: "Database Integration",
+    description:
+      "Integrate databases with NestJS using TypeORM. Learn about repositories, entities, and database operations.",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson5.mp4",
     duration: "7:05",
-    progress: 85, // Almost done
-    startAt: 360, // Resume at 6:00
+    progress: 85,
+    startAt: 360,
   },
   {
     id: "4-6",
     title: "Authentication Strategies",
+    description:
+      "Implement various authentication strategies in NestJS including JWT, Passport, and session-based auth.",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson6.mp4",
     duration: "12:27",
-    progress: 65, // More than half
-    startAt: 447, // Resume at 7:27
+    progress: 65,
+    startAt: 447,
   },
   {
     id: "4-7",
     title: "Authorization and Guards",
+    description:
+      "Master NestJS guards for authorization, custom decorators, and role-based access control.",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson7.mp4",
     duration: "9:54",
-    progress: 40, // Started but not halfway
-    startAt: 237, // Resume at 3:57
+    progress: 40,
+    startAt: 237,
   },
   {
     id: "4-8",
     title: "Error Handling",
+    description:
+      "Learn comprehensive error handling in NestJS, custom exceptions, filters, and error responses.",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson8.mp4",
     duration: "7:08",
-    progress: 15, // Just started
-    startAt: 64, // Resume at 1:04
+    progress: 15,
+    startAt: 64,
   },
   {
     id: "4-9",
     title: "Validation and DTOs",
+    description:
+      "Implement request validation using DTOs, class-validator, and transformation pipes in NestJS.",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson9.mp4",
     duration: "10:04",
-    progress: 0, // Not started
+    progress: 0,
     startAt: 0,
   },
   {
     id: "4-10",
     title: "File Upload Handling",
+    description:
+      "Handle file uploads in NestJS, implement file storage strategies, and process uploaded files.",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson10.mp4",
     duration: "2:16",
-    progress: 0, // Not started
+    progress: 0,
     startAt: 0,
   },
   {
     id: "4-11",
     title: "WebSockets Integration",
+    description:
+      "Implement real-time features using WebSockets in NestJS, including gateways and event handling.",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson11.mp4",
     duration: "11:17",
-    progress: 0, // Not started
+    progress: 0,
     startAt: 0,
   },
   {
     id: "4-12",
     title: "Task Scheduling",
+    description:
+      "Learn how to implement scheduled tasks and background jobs in NestJS applications.",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson12.mp4",
     duration: "6:38",
-    progress: 0, // Not started
+    progress: 0,
     startAt: 0,
   },
   {
     id: "4-13",
     title: "Testing Strategies",
+    description:
+      "Master unit testing, integration testing, and e2e testing in NestJS applications.",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson13.mp4",
     duration: "7:37",
-    progress: 0, // Not started
+    progress: 0,
     startAt: 0,
   },
   {
     id: "4-14",
     title: "Deployment Best Practices",
+    description:
+      "Learn best practices for deploying NestJS applications, including CI/CD, containerization, and monitoring.",
     imageUrl: "/courses/nestjs.png",
     videoUrl: "/formations/lesson14.mp4",
     duration: "11:05",
-    progress: 0, // Not started
+    progress: 0,
     startAt: 0,
   },
 ];
