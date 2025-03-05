@@ -124,7 +124,7 @@ export function CategoryFilter({
 }: CategoryFilterProps) {
   return (
     <div className="relative">
-      <ScrollArea className="w-full whitespace-nowrap rounded-md">
+      <ScrollArea className="w-full whitespace-nowrap rounded-md pb-1">
         <div className="flex w-max space-x-4 p-2 pr-8">
           <button
             onClick={() => onCategoryChange(null)}
@@ -146,7 +146,7 @@ export function CategoryFilter({
               key={category.value}
               onClick={() => onCategoryChange(category.value)}
               className={cn(
-                "inline-flex items-center justify-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition-all",
+                "inline-flex items-center justify-center gap-2 rounded-lg border px-4 py-3 text-base font-medium transition-all",
                 "hover:bg-accent hover:text-accent-foreground",
                 selectedCategory === category.value
                   ? "border-primary bg-primary text-primary-foreground"

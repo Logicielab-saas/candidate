@@ -16,7 +16,10 @@ import { CourseCategory } from "@/core/types";
 import { useMemo } from "react";
 
 export function FormationsContainer() {
-  const [searchQuery, setSearchQuery] = useQueryState("q");
+  const [searchQuery, setSearchQuery] = useQueryState("q", {
+    defaultValue: null,
+    parse: (value) => value || null,
+  });
   const [categoryFilter, setCategoryFilter] = useQueryState("category");
 
   // Memoize the courses array initialization

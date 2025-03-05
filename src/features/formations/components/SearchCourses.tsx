@@ -18,8 +18,8 @@ import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface SearchCoursesProps {
-  value: string;
-  onSearch: (search: string) => void;
+  value: string | null;
+  onSearch: (search: string | null) => void;
 }
 
 export function SearchCourses({ value, onSearch }: SearchCoursesProps) {
@@ -30,7 +30,11 @@ export function SearchCourses({ value, onSearch }: SearchCoursesProps) {
   // Update search when debounced value changes
   useEffect(() => {
     if (debouncedValue !== value) {
-      onSearch(debouncedValue);
+      if (debouncedValue) {
+        onSearch(debouncedValue);
+      } else {
+        onSearch(null);
+      }
       setIsLoading(false);
     }
   }, [debouncedValue, onSearch, value]);
@@ -46,7 +50,7 @@ export function SearchCourses({ value, onSearch }: SearchCoursesProps) {
           type="text"
           placeholder="Search courses..."
           className="h-12 pl-4 pr-12"
-          value={localValue}
+          value={localValue || undefined}
           onChange={handleChange}
         />
         <div className="absolute right-4 top-3 flex h-6 w-6 items-center justify-center">
