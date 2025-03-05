@@ -15,6 +15,7 @@ export const mockCourses: Course[] = [
     author: "The Test Author",
     progress: 45,
     review: 4.3,
+    category: "web",
     duration: 480, // 8 hours
   },
   {
@@ -25,6 +26,7 @@ export const mockCourses: Course[] = [
     imageUrl: "/courses/flutter.webp",
     author: "The Test Author",
     review: 4.3,
+    category: "mobile",
     duration: 360, // 6 hours
   },
   {
@@ -36,6 +38,7 @@ export const mockCourses: Course[] = [
     author: "The Test Author",
     progress: 75,
     review: 4.3,
+    category: "mobile",
     duration: 300, // 5 hours
   },
   {
@@ -47,6 +50,7 @@ export const mockCourses: Course[] = [
     author: "The Test Author",
     progress: 25,
     review: 4.5,
+    category: "web",
     duration: 420, // 7 hours
   },
   {
@@ -57,7 +61,224 @@ export const mockCourses: Course[] = [
     imageUrl: "/courses/typescript.jpg",
     author: "The Test Author",
     review: 4.7,
+    category: "web",
     duration: 540, // 9 hours
+  },
+  // Data Science Courses
+  {
+    id: "6",
+    title: "Data Science with Python",
+    description:
+      "Learn data analysis, visualization, and machine learning with Python, pandas, and scikit-learn",
+    imageUrl: "/courses/python-data.jpg",
+    author: "Data Science Pro",
+    review: 4.8,
+    category: "data",
+    duration: 720, // 12 hours
+  },
+  {
+    id: "7",
+    title: "Advanced SQL for Data Analytics",
+    description:
+      "Master complex SQL queries, window functions, and database optimization for data analysis",
+    imageUrl: "/courses/sql-analytics.jpg",
+    author: "DB Master",
+    progress: 30,
+    review: 4.6,
+    category: "data",
+    duration: 360, // 6 hours
+  },
+  // Cloud & DevOps Courses
+  {
+    id: "8",
+    title: "AWS Solutions Architect",
+    description:
+      "Comprehensive guide to AWS services, architecture best practices, and cloud solutions",
+    imageUrl: "/courses/aws.jpg",
+    author: "Cloud Expert",
+    review: 4.9,
+    category: "cloud",
+    duration: 840, // 14 hours
+  },
+  {
+    id: "9",
+    title: "Docker & Kubernetes Mastery",
+    description:
+      "Learn container orchestration, microservices deployment, and DevOps practices",
+    imageUrl: "/courses/kubernetes.jpg",
+    author: "DevOps Guru",
+    progress: 60,
+    review: 4.7,
+    category: "cloud",
+    duration: 600, // 10 hours
+  },
+  // AI/ML Courses
+  {
+    id: "10",
+    title: "Deep Learning Fundamentals",
+    description:
+      "Build and train neural networks using TensorFlow and PyTorch for computer vision and NLP",
+    imageUrl: "/courses/deep-learning.jpg",
+    author: "AI Researcher",
+    review: 4.8,
+    category: "ai",
+    duration: 900, // 15 hours
+  },
+  {
+    id: "11",
+    title: "Machine Learning Engineering",
+    description:
+      "End-to-end ML pipeline development, model deployment, and MLOps best practices",
+    imageUrl: "/courses/ml-eng.jpg",
+    author: "ML Engineer",
+    progress: 40,
+    review: 4.6,
+    category: "ai",
+    duration: 780, // 13 hours
+  },
+  // Security Courses
+  {
+    id: "12",
+    title: "Ethical Hacking Bootcamp",
+    description:
+      "Learn penetration testing, vulnerability assessment, and security best practices",
+    imageUrl: "/courses/ethical-hacking.jpg",
+    author: "Security Expert",
+    review: 4.9,
+    category: "security",
+    duration: 720, // 12 hours
+  },
+  {
+    id: "13",
+    title: "Web Application Security",
+    description:
+      "Master OWASP top 10, secure coding practices, and web security testing",
+    imageUrl: "/courses/web-security.jpg",
+    author: "Security Pro",
+    progress: 55,
+    review: 4.7,
+    category: "security",
+    duration: 540, // 9 hours
+  },
+  // Game Development
+  {
+    id: "14",
+    title: "Unity Game Development",
+    description:
+      "Create 3D games with Unity, including gameplay mechanics, physics, and AI",
+    imageUrl: "/courses/unity-dev.jpg",
+    author: "Game Dev Pro",
+    review: 4.6,
+    category: "game",
+    duration: 840, // 14 hours
+  },
+  {
+    id: "15",
+    title: "Unreal Engine 5 Masterclass",
+    description:
+      "Learn advanced game development with UE5, including blueprints and realistic graphics",
+    imageUrl: "/courses/unreal-engine.jpg",
+    author: "Game Artist",
+    progress: 20,
+    review: 4.8,
+    category: "game",
+    duration: 960, // 16 hours
+  },
+  // Blockchain
+  {
+    id: "16",
+    title: "Blockchain Development",
+    description:
+      "Build decentralized applications with Ethereum, Solidity, and Web3.js",
+    imageUrl: "/courses/blockchain.jpg",
+    author: "Blockchain Dev",
+    review: 4.5,
+    category: "blockchain",
+    duration: 660, // 11 hours
+  },
+  {
+    id: "17",
+    title: "Smart Contract Security",
+    description:
+      "Learn secure smart contract development and auditing techniques",
+    imageUrl: "/courses/smart-contracts.jpg",
+    author: "DeFi Expert",
+    progress: 35,
+    review: 4.6,
+    category: "blockchain",
+    duration: 480, // 8 hours
+  },
+  // Design
+  {
+    id: "18",
+    title: "UI/UX Design Principles",
+    description:
+      "Master modern UI/UX design principles, wireframing, and prototyping with Figma",
+    imageUrl: "/courses/ui-ux.jpg",
+    author: "Design Lead",
+    review: 4.8,
+    category: "design",
+    duration: 600, // 10 hours
+  },
+  {
+    id: "19",
+    title: "Advanced Motion Design",
+    description:
+      "Create engaging animations and micro-interactions for web and mobile apps",
+    imageUrl: "/courses/motion-design.jpg",
+    author: "Motion Artist",
+    progress: 70,
+    review: 4.7,
+    category: "design",
+    duration: 420, // 7 hours
+  },
+  // Marketing
+  {
+    id: "20",
+    title: "Digital Marketing Strategy",
+    description:
+      "Comprehensive guide to SEO, content marketing, and social media strategy",
+    imageUrl: "/courses/digital-marketing.jpg",
+    author: "Marketing Expert",
+    review: 4.6,
+    category: "marketing",
+    duration: 540, // 9 hours
+  },
+  {
+    id: "21",
+    title: "Growth Marketing Mastery",
+    description:
+      "Learn data-driven marketing, A/B testing, and user acquisition strategies",
+    imageUrl: "/courses/growth-marketing.jpg",
+    author: "Growth Hacker",
+    progress: 45,
+    review: 4.5,
+    category: "marketing",
+    duration: 480, // 8 hours
+  },
+  // Business
+  {
+    id: "22",
+    title: "Startup Entrepreneurship",
+    description:
+      "Learn lean startup methodology, business model canvas, and pitch deck creation",
+    imageUrl: "/courses/startup.jpg",
+    author: "Startup Founder",
+    review: 4.7,
+    category: "business",
+    duration: 600, // 10 hours
+  },
+  {
+    id: "23",
+    title: "Product Management Essentials",
+    description:
+      "Master product strategy, roadmap planning, and agile product development",
+    imageUrl: "/courses/product-management.jpg",
+    author: "Product Leader",
+    progress: 80,
+    review: 4.8,
+    category: "business",
+    duration: 720, // 12 hours
   },
 ];
 
