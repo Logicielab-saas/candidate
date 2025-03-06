@@ -35,7 +35,7 @@ export function FormationDetailsContainer({
     parse: (value) => value || startingEpId,
     clearOnDefault: false,
   });
-  const currentVideo = course.playlist.find(
+  const currentVideo = course.playlist?.find(
     (video) => video.id === currentVideoId
   );
 
@@ -59,7 +59,7 @@ export function FormationDetailsContainer({
           {/* Playlist - Shown below video on mobile */}
           <div className="lg:hidden">
             <VideoPlaylist
-              videos={course.playlist}
+              videos={course.playlist || []}
               currentVideoId={currentVideoId}
               onVideoSelect={handleVideoSelect}
             />
@@ -80,7 +80,7 @@ export function FormationDetailsContainer({
         <div className="relative hidden lg:block lg:col-span-1">
           <div className="sticky top-4">
             <VideoPlaylist
-              videos={course.playlist}
+              videos={course.playlist || []}
               currentVideoId={currentVideoId}
               onVideoSelect={handleVideoSelect}
             />

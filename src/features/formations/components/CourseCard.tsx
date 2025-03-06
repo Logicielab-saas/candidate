@@ -13,7 +13,7 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Bookmark, Star } from "lucide-react";
-import { useState } from "react";
+import { useState, MouseEvent } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -24,7 +24,7 @@ interface CourseCardProps {
 export function CourseCard({ course }: CourseCardProps) {
   const [isBookmarked, setIsBookmarked] = useState(false);
 
-  const handleBookmarkClick = (e: React.MouseEvent) => {
+  const handleBookmarkClick = (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsBookmarked(!isBookmarked);
@@ -34,7 +34,7 @@ export function CourseCard({ course }: CourseCardProps) {
     <Card className="group overflow-hidden transition-all hover:shadow-lg">
       <div className="relative h-48 w-full">
         <Link
-          href={`/formations/${course.id}`}
+          href={`/formations/formation-details/${course.id}`}
           className="relative block h-full w-full"
           target="_blank"
         >
@@ -65,7 +65,11 @@ export function CourseCard({ course }: CourseCardProps) {
         </Button>
       </div>
 
-      <Link href={`/formations/${course.id}`} className="block" target="_blank">
+      <Link
+        href={`/formations/formation-details/${course.id}`}
+        className="block"
+        target="_blank"
+      >
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-between">
             <h3 className="line-clamp-1 text-lg font-semibold">
