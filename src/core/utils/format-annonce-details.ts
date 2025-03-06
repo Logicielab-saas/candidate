@@ -34,5 +34,5 @@ export function formatDuration(jobTypeInformation: JobTypeInformation) {
   if (jobTypeInformation.interimDetails) {
     return `${jobTypeInformation.interimDetails.duration} mois`;
   }
-  return "CDI";
+  return jobTypeInformation.contractTypes.join(" · ");
 }

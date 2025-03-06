@@ -9,7 +9,7 @@ export const mockJobsList: Job[] = [
     description: "We are looking for a full stack developer to join our team.",
     postedAt: "2024-01-15",
     applications: 10,
-    keyWords: ["JavaScript", "React", "Node.js"],
+    keyWords: ["JavaScript", "React", "Node.js", "Temps plein", "CDI"],
   },
   {
     id: "2",
@@ -19,7 +19,7 @@ export const mockJobsList: Job[] = [
     description: "We are looking for a frontend developer to join our team.",
     postedAt: "2024-01-20",
     applications: 5,
-    keyWords: ["HTML", "CSS", "Vue.js"],
+    keyWords: ["HTML", "CSS", "Vue.js", "CDI"],
   },
   {
     id: "3",
@@ -29,7 +29,7 @@ export const mockJobsList: Job[] = [
     description: "We are looking for a backend developer to join our team.",
     postedAt: "2024-01-25",
     applications: 3,
-    keyWords: ["Node.js", "Express", "MongoDB"],
+    keyWords: ["Node.js", "Express", "MongoDB", "Temps plein"],
   },
   {
     id: "4",
@@ -39,7 +39,7 @@ export const mockJobsList: Job[] = [
     description: "We are looking for a data scientist to join our team.",
     postedAt: "2024-01-10",
     applications: 8,
-    keyWords: ["Python", "Machine Learning", "Data Analysis"],
+    keyWords: ["Python", "Machine Learning", "Data Analysis", "CDI"],
   },
   {
     id: "5",
@@ -50,7 +50,7 @@ export const mockJobsList: Job[] = [
       "Join our team as a UX/UI Designer to create user-friendly interfaces.",
     postedAt: "2024-01-12",
     applications: 12,
-    keyWords: ["Figma", "Adobe XD", "User Research"],
+    keyWords: ["Figma", "Adobe XD", "User Research", "Temps plein"],
   },
   {
     id: "6",

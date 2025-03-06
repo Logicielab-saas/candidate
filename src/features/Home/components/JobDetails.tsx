@@ -16,6 +16,7 @@ import {
   Bookmark,
   XCircle,
   ArrowRight,
+  FileSignature,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { Separator } from "@/components/ui/separator";
@@ -33,14 +34,20 @@ import {
 } from "@/core/utils/format-annonce-details";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { mockJobsList } from "@/core/mockData/jobs-list";
 
 export function JobDetails() {
-  const [jobId, setJobId] = useQueryState("jobId");
-  const job = MOCK_ANNONCES.find((job) => job.id === jobId);
-  const { toast } = useToast();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isNotInterestedOpen, setIsNotInterestedOpen] = useState(false);
+  const [jobId, setJobId] = useQueryState("jobId");
   const { markAsNotInterested } = useNotInterestedStore();
+  const { toast } = useToast();
+
+  const job = MOCK_ANNONCES.find((job) => job.id === jobId);
+
+  const jobCompanyName = mockJobsList.find(
+    (job) => job.id === jobId
+  )?.companyName;
 
   const handleBookmark = () => {
     setIsBookmarked(!isBookmarked);
@@ -100,6 +107,10 @@ export function JobDetails() {
                   {job.baseInformation.jobTitle}
                 </h2>
                 <div className="flex items-center gap-2 text-muted-foreground">
+                  <Building2 className="h-4 w-4" />
+                  <span className="font-medium capitalize">
+                    {jobCompanyName}
+                  </span>
                   <MapPin className="h-4 w-4" />
                   <span className="font-medium capitalize">
                     {job.baseInformation.promotionLocation}
@@ -152,8 +163,8 @@ export function JobDetails() {
                 <span>{formatSchedule(job.jobTypeInformation)}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Building2 className="h-4 w-4" />
-                <span>{formatDuration(job.jobTypeInformation)}</span>
+                <FileSignature className="h-4 w-4" />
+                <span> {formatDuration(job.jobTypeInformation)}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <Euro className="h-4 w-4" />
