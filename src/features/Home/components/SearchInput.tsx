@@ -8,7 +8,7 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { useState, useEffect } from "react";
@@ -17,6 +17,7 @@ import { useDebounce } from "use-debounce";
 export function SearchInput() {
   // Local state for immediate input
   const [inputText, setInputText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [searchText, setSearchText] = useQueryState("q");
 
   // Debounce the search input
@@ -27,6 +28,7 @@ export function SearchInput() {
     if (debouncedSearchText !== searchText) {
       setSearchText(debouncedSearchText || null);
     }
+    setIsLoading(false);
   }, [debouncedSearchText, setSearchText, searchText]);
 
   return (
@@ -48,8 +50,21 @@ export function SearchInput() {
           placeholder="Search job titles or keywords..."
           className="pl-8"
           value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
+          onChange={(e) => {
+            setInputText(e.target.value);
+            setIsLoading(true);
+          }}
         />
+        <div className="absolute right-4 top-3 flex h-6 w-6 items-center justify-center">
+          {isLoading && (
+            <Loader2
+              className={cn(
+                "h-5 w-5 animate-spin text-primaryHex-500",
+                inputText ? "opacity-100" : "opacity-70"
+              )}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
