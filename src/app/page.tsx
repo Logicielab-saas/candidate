@@ -1,26 +1,29 @@
 import { cn } from "@/lib/utils";
 import { HomeHeader } from "@/features/Home/components/HomeHeader";
+import { JobsList } from "@/features/Home/components/JobsList";
 
 export default function Home() {
   return (
-    <div className={cn("bg-background", "pt-4 md:pt-8", "antialiased")}>
-      <div
-        className={cn(
-          "mx-auto max-w-7xl",
-          "px-4 sm:px-6 lg:px-8",
-          "pb-24 md:pb-8"
-        )}
-      >
-        <div className={cn("flex flex-col md:flex-row", "gap-8")}>
-          <main
-            className={cn(
-              "flex-1 min-w-0",
-              "relative",
-              "animate-in fade-in duration-500"
-            )}
-          >
-            <HomeHeader />
-          </main>
+    <div className={cn("bg-background", "min-h-screen", "antialiased")}>
+      <div className={cn("mx-auto max-w-7xl", "px-4 sm:px-6 lg:px-8 pt-10")}>
+        {/* Header Section */}
+        <HomeHeader />
+
+        {/* Split View Layout */}
+        <div className={cn("grid grid-cols-1 lg:grid-cols-2", "gap-8 pt-10")}>
+          {/* Jobs List Section */}
+          <div className="lg:border-r lg:pr-8">
+            <JobsList />
+          </div>
+
+          {/* Job Details Section - Will be implemented later */}
+          <div className="hidden lg:block">
+            <div className="rounded-lg border bg-card p-8 text-card-foreground">
+              <p className="text-sm text-muted-foreground text-center">
+                Select a job to view details
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
