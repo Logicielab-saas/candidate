@@ -15,6 +15,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { RecentSearches } from "./RecentSearches";
 import { tabsListStyles, tabTriggerStyles } from "@/core/styles/tabs";
 import { Separator } from "@/components/ui/separator";
+import { JobFilters } from "./JobFilters";
 
 export function JobsContainer() {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
@@ -32,7 +33,27 @@ export function JobsContainer() {
   // Determine if there are any active search filters
   const hasActiveSearch = searchText || selectedCity;
 
-  console.log(hasActiveSearch);
+  if (hasActiveSearch) {
+    return (
+      <div className="space-y-6 mt-5">
+        <JobFilters />
+        <Separator />
+        <div className={cn("grid grid-cols-1 lg:grid-cols-5", "gap-8")}>
+          {/* Jobs List Section - 40% width */}
+          <div className="lg:col-span-2 lg:border-r lg:pr-8">
+            <JobsList isDesktop={isDesktop} />
+          </div>
+
+          {/* Job Details Section - 60% width, Only shown on desktop */}
+          {isDesktop && (
+            <div className="hidden lg:block lg:col-span-3">
+              <JobDetails />
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 mt-5">

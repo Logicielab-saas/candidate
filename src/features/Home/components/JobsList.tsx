@@ -3,7 +3,7 @@
  *
  * Features:
  * - Responsive grid layout
- * - Filters jobs based on search text and city
+ * - Filters jobs based on search text, city, date, and multiple contract types
  * - Shows job details like company, location, and keywords
  * - Handles mobile navigation to detail pages
  */
@@ -15,6 +15,7 @@ import { useQueryState } from "nuqs";
 import { JobCard } from "./JobCard";
 import { useNotInterestedStore } from "../store/not-interested.store";
 import { useRouter } from "next/navigation";
+import { subDays } from "date-fns";
 
 interface JobsListProps {
   isDesktop: boolean;
@@ -24,11 +25,18 @@ export function JobsList({ isDesktop }: JobsListProps) {
   const [searchText] = useQueryState("q");
   const [selectedCity] = useQueryState("city");
   const [selectedJobId, setSelectedJobId] = useQueryState("jobId");
+  const [dateFilter] = useQueryState("date");
+  const [contractTypes] = useQueryState("contracts", {
+    parse: (value) => value.split(","),
+    serialize: (value) => value.join(","),
+    defaultValue: [],
+  });
   const { isNotInterested } = useNotInterestedStore();
   const router = useRouter();
 
-  // Filter jobs based on search params only
+  // Filter jobs based on all search params
   const filteredJobs = mockJobsList.filter((job) => {
+    // Text search filter
     const matchesSearch =
       !searchText ||
       job.jobTitle.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -36,10 +44,38 @@ export function JobsList({ isDesktop }: JobsListProps) {
         keyword.toLowerCase().includes(searchText.toLowerCase())
       );
 
+    // City filter
     const matchesCity =
       !selectedCity || job.city.toLowerCase() === selectedCity.toLowerCase();
 
-    return matchesSearch && matchesCity;
+    // Date filter
+    let matchesDate = true;
+    if (dateFilter) {
+      const jobDate = new Date(job.postedAt);
+      const now = new Date();
+      switch (dateFilter) {
+        case "24h":
+          matchesDate = jobDate >= subDays(now, 1);
+          break;
+        case "week":
+          matchesDate = jobDate >= subDays(now, 7);
+          break;
+        case "month":
+          matchesDate = jobDate >= subDays(now, 30);
+          break;
+      }
+    }
+
+    // Contract types filter - match if any selected contract type matches any job keyword
+    const matchesContract =
+      !contractTypes?.length ||
+      contractTypes.some((type) =>
+        job.keyWords.some(
+          (keyword) => keyword.toLowerCase() === type.toLowerCase()
+        )
+      );
+
+    return matchesSearch && matchesCity && matchesDate && matchesContract;
   });
 
   const handleJobSelect = (jobId: string) => {
