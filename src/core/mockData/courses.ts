@@ -710,7 +710,7 @@ Key Topics:
 - API Development
 - Testing and Deployment
     `,
-    imageUrl: "/courses/laravel-1.webp",
+    imageUrl: "/courses/laravel.webp",
     playlist: laravelVideos,
     modules: laravelModules,
     progress: 45,
