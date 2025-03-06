@@ -35,6 +35,8 @@ import {
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { mockJobsList } from "@/core/mockData/jobs-list";
+import parse from "html-react-parser";
+import DOMPurify from "isomorphic-dompurify";
 
 export function JobDetails() {
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -84,6 +86,8 @@ export function JobDetails() {
       variant: "default",
     });
   };
+
+  const sanitizedHTML = DOMPurify.sanitize(job?.description || "");
 
   if (!job) {
     return (
@@ -198,10 +202,8 @@ export function JobDetails() {
             <div className="space-y-6 px-4">
               <div>
                 <h3 className="font-semibold mb-2">Description du poste</h3>
-                <div
-                  className="text-sm text-muted-foreground leading-relaxed prose prose-sm max-w-none"
-                  dangerouslySetInnerHTML={{ __html: job.description }}
-                />
+                <div className="text-sm text-muted-foreground leading-relaxed prose prose-sm max-w-none" />
+                {parse(sanitizedHTML)}
               </div>
 
               {/* Questions */}
