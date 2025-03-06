@@ -15,6 +15,7 @@ import {
   Share2,
   Bookmark,
   XCircle,
+  ArrowRight,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { Separator } from "@/components/ui/separator";
@@ -31,6 +32,7 @@ import {
   formatDuration,
 } from "@/core/utils/format-annonce-details";
 import { cn } from "@/lib/utils";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function JobDetails() {
   const [jobId, setJobId] = useQueryState("jobId");
@@ -78,7 +80,7 @@ export function JobDetails() {
 
   if (!job) {
     return (
-      <Card className="h-full">
+      <Card className="sticky top-14">
         <CardContent className="flex items-center justify-center h-[300px] text-muted-foreground">
           Sélectionnez une offre pour voir les détails
         </CardContent>
@@ -88,7 +90,7 @@ export function JobDetails() {
 
   return (
     <>
-      <Card className="h-full">
+      <Card className="sticky top-14">
         <CardHeader>
           <div className="space-y-4">
             {/* Job Title, Location and Actions */}
@@ -107,9 +109,6 @@ export function JobDetails() {
 
               {/* Action Buttons */}
               <div className="flex items-center gap-2">
-                <Button size="sm" className="bg-primary">
-                  Postuler
-                </Button>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -174,24 +173,28 @@ export function JobDetails() {
                 </span>
               </div>
             )}
+            <Button size="sm" className="w-full">
+              Postuler <ArrowRight className="h-4 w-4" />
+            </Button>
           </div>
         </CardHeader>
 
         <Separator />
 
         <CardContent className="pt-6">
-          {/* Description */}
-          <div className="space-y-6">
-            <div>
-              <h3 className="font-semibold mb-2">Description du poste</h3>
-              <div
-                className="text-sm text-muted-foreground leading-relaxed prose prose-sm max-w-none"
-                dangerouslySetInnerHTML={{ __html: job.description }}
-              />
-            </div>
+          <ScrollArea className="h-[500px] md:h-[650px]" type="always">
+            {/* Description */}
+            <div className="space-y-6 px-4">
+              <div>
+                <h3 className="font-semibold mb-2">Description du poste</h3>
+                <div
+                  className="text-sm text-muted-foreground leading-relaxed prose prose-sm max-w-none"
+                  dangerouslySetInnerHTML={{ __html: job.description }}
+                />
+              </div>
 
-            {/* Questions */}
-            {/* {job.questions.length > 0 && (
+              {/* Questions */}
+              {/* {job.questions.length > 0 && (
               <div>
                 <h3 className="font-semibold mb-2">Questions de candidature</h3>
                 <ul className="list-disc list-inside text-sm text-muted-foreground space-y-2">
@@ -204,7 +207,8 @@ export function JobDetails() {
                 </ul>
               </div>
             )} */}
-          </div>
+            </div>
+          </ScrollArea>
         </CardContent>
       </Card>
 

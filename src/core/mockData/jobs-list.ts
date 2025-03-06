@@ -41,4 +41,48 @@ export const mockJobsList: Job[] = [
     applications: 8,
     keyWords: ["Python", "Machine Learning", "Data Analysis"],
   },
+  {
+    id: "5",
+    jobTitle: "UX/UI Designer",
+    city: "Fès",
+    companyName: "Creative Minds",
+    description:
+      "Join our team as a UX/UI Designer to create user-friendly interfaces.",
+    postedAt: "2024-01-12",
+    applications: 12,
+    keyWords: ["Figma", "Adobe XD", "User Research"],
+  },
+  {
+    id: "6",
+    jobTitle: "DevOps Engineer",
+    city: "Agadir",
+    companyName: "Cloud Innovations",
+    description:
+      "We are seeking a DevOps Engineer to streamline our development processes.",
+    postedAt: "2024-01-18",
+    applications: 7,
+    keyWords: ["Docker", "Kubernetes", "CI/CD"],
+  },
+  {
+    id: "7",
+    jobTitle: "Product Manager",
+    city: "Oujda",
+    companyName: "Tech Ventures",
+    description:
+      "Looking for a Product Manager to lead product development and strategy.",
+    postedAt: "2024-01-22",
+    applications: 4,
+    keyWords: ["Agile", "Scrum", "Market Research"],
+  },
+  {
+    id: "8",
+    jobTitle: "System Administrator",
+    city: "Tétouan",
+    companyName: "IT Solutions",
+    description:
+      "We need a System Administrator to manage our IT infrastructure.",
+    postedAt: "2024-01-30",
+    applications: 6,
+    keyWords: ["Linux", "Networking", "Security"],
+  },
 ];
