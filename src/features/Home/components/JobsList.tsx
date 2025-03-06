@@ -5,6 +5,7 @@
  * - Responsive grid layout
  * - Filters jobs based on search text and city
  * - Shows job details like company, location, and keywords
+ * - Handles mobile navigation to detail pages
  */
 
 "use client";
@@ -13,12 +14,18 @@ import { mockJobsList } from "@/core/mockData/jobs-list";
 import { useQueryState } from "nuqs";
 import { JobCard } from "./JobCard";
 import { useNotInterestedStore } from "../store/not-interested.store";
+import { useRouter } from "next/navigation";
 
-export function JobsList() {
+interface JobsListProps {
+  isDesktop: boolean;
+}
+
+export function JobsList({ isDesktop }: JobsListProps) {
   const [searchText] = useQueryState("q");
   const [selectedCity] = useQueryState("city");
   const [selectedJobId, setSelectedJobId] = useQueryState("jobId");
   const { isNotInterested } = useNotInterestedStore();
+  const router = useRouter();
 
   // Filter jobs based on search params only
   const filteredJobs = mockJobsList.filter((job) => {
@@ -38,7 +45,13 @@ export function JobsList() {
   const handleJobSelect = (jobId: string) => {
     // Don't select if job is marked as not interested
     if (!isNotInterested(jobId)) {
-      setSelectedJobId(jobId);
+      if (isDesktop) {
+        // On desktop, update the URL parameter for the side panel
+        setSelectedJobId(jobId);
+      } else {
+        // On mobile, navigate to the details page
+        router.push(`/annonce-details/${jobId}`);
+      }
     }
   };
 
