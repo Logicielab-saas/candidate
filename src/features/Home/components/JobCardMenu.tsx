@@ -17,9 +17,16 @@ import { NotInterestedDialog } from "./NotInterestedDialog";
 interface JobCardMenuProps {
   jobId: string;
   onNotInterested?: (jobId: string) => void;
+  isBookmarked?: boolean;
+  onBookmark?: () => void;
 }
 
-export function JobCardMenu({ jobId, onNotInterested }: JobCardMenuProps) {
+export function JobCardMenu({
+  jobId,
+  onNotInterested,
+  isBookmarked,
+  onBookmark,
+}: JobCardMenuProps) {
   const [isSignalerOpen, setIsSignalerOpen] = useState(false);
   const [isNotInterestedOpen, setIsNotInterestedOpen] = useState(false);
 
@@ -42,9 +49,19 @@ export function JobCardMenu({ jobId, onNotInterested }: JobCardMenuProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[200px]">
-          <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
-            <Bookmark className="h-4 w-4" />
-            <span>Bookmark l&apos;offre</span>
+          <DropdownMenuItem
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={onBookmark}
+          >
+            <Bookmark
+              className={cn(
+                "h-4 w-4",
+                isBookmarked && "fill-primaryHex-500 text-primaryHex-500"
+              )}
+            />
+            <span>
+              {isBookmarked ? "Retirer des favoris" : "Ajouter aux favoris"}
+            </span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

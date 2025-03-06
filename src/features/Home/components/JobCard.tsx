@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 
 export function JobCard({ job }: { job: Job }) {
   const [isNotInterested, setIsNotInterested] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
   const { toast } = useToast();
 
   const handleNotInterested = () => {
@@ -27,6 +28,19 @@ export function JobCard({ job }: { job: Job }) {
     toast({
       title: "Action annulée",
       description: "L'offre a été restaurée dans votre flux",
+      variant: "default",
+    });
+  };
+
+  const handleBookmark = () => {
+    setIsBookmarked(!isBookmarked);
+    toast({
+      title: isBookmarked
+        ? "Offre retirée des favoris"
+        : "Offre ajoutée aux favoris",
+      description: isBookmarked
+        ? "Cette offre a été retirée de vos favoris"
+        : "Cette offre a été ajoutée à vos favoris",
       variant: "default",
     });
   };
@@ -90,7 +104,12 @@ export function JobCard({ job }: { job: Job }) {
               <span>{job.applications} applied</span>
             </div>
 
-            <JobCardMenu jobId={job.id} onNotInterested={handleNotInterested} />
+            <JobCardMenu
+              jobId={job.id}
+              onNotInterested={handleNotInterested}
+              isBookmarked={isBookmarked}
+              onBookmark={handleBookmark}
+            />
           </div>
         </div>
       </CardHeader>
