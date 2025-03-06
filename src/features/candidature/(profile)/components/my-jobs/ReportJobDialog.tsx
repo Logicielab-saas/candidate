@@ -53,6 +53,7 @@ export function ReportJobDialog({
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm({
     resolver: zodResolver(reportSchema),
     defaultValues: {
@@ -131,7 +132,7 @@ export function ReportJobDialog({
             >
               Annuler
             </Button>
-            <Button className="ml-2" type="submit">
+            <Button className="ml-2" type="submit" disabled={!watch("reason")}>
               Envoyer
             </Button>
           </div>
