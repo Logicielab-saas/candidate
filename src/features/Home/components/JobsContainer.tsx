@@ -24,15 +24,15 @@ export function JobsContainer() {
   }, [isDesktop, setJobId]);
 
   return (
-    <div className={cn("grid grid-cols-1 lg:grid-cols-2", "gap-8 pt-10")}>
-      {/* Jobs List Section */}
-      <div className="lg:border-r lg:pr-8">
+    <div className={cn("grid grid-cols-1 lg:grid-cols-5", "gap-8 pt-10")}>
+      {/* Jobs List Section - 40% width */}
+      <div className="lg:col-span-2 lg:border-r lg:pr-8">
         <JobsList isDesktop={isDesktop} />
       </div>
 
-      {/* Job Details Section - Only shown on desktop */}
+      {/* Job Details Section - 60% width, Only shown on desktop */}
       {isDesktop && (
-        <div className="hidden lg:block">
+        <div className="hidden lg:block lg:col-span-3">
           <JobDetails />
         </div>
       )}
