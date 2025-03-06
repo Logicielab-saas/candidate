@@ -8,7 +8,6 @@ import { Building2, Flag, MapPin, Share2, Users2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCallback, useState } from "react";
 import { ReportJobDialog } from "@/features/candidature/(profile)/components/my-jobs/ReportJobDialog";
-import { cn } from "@/lib/utils";
 
 interface AnnonceHeaderProps {
   annonce: JobDetails;
