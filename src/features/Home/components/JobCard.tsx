@@ -2,11 +2,64 @@ import { cn } from "@/lib/utils";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Job } from "@/core/interfaces";
 import { formatDistanceToNow } from "date-fns";
-import { Building2, MapPin, Users } from "lucide-react";
+import { Building2, MapPin, Users, XCircle, Undo2 } from "lucide-react";
 import { spanBadgeStyle } from "@/core/styles/span-badge.style";
 import { JobCardMenu } from "./JobCardMenu";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 export function JobCard({ job }: { job: Job }) {
+  const [isNotInterested, setIsNotInterested] = useState(false);
+  const { toast } = useToast();
+
+  const handleNotInterested = () => {
+    setIsNotInterested(true);
+    toast({
+      title: "Offre masquée",
+      description: "Cette offre ne s'affichera plus dans votre flux",
+      variant: "default",
+    });
+  };
+
+  const handleUndo = () => {
+    setIsNotInterested(false);
+    toast({
+      title: "Action annulée",
+      description: "L'offre a été restaurée dans votre flux",
+      variant: "default",
+    });
+  };
+
+  if (isNotInterested) {
+    return (
+      <Card className="bg-muted/30 border-dashed">
+        <CardContent className="pt-6">
+          <div className="flex flex-col items-center justify-center text-center gap-2 py-4">
+            <XCircle className="h-8 w-8 text-yellow-600" />
+            <div className="space-y-1">
+              <h3 className="font-medium text-muted-foreground">
+                Pas intéressé(e)
+              </h3>
+              <p className="text-sm text-muted-foreground/80">
+                Cette offre a été masquée de votre flux
+              </p>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="mt-2 text-yellow-600 hover:text-yellow-700"
+                onClick={handleUndo}
+              >
+                <Undo2 className="h-3 w-3 mr-2" />
+                Annuler
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card
       className={cn(
@@ -37,7 +90,7 @@ export function JobCard({ job }: { job: Job }) {
               <span>{job.applications} applied</span>
             </div>
 
-            <JobCardMenu jobId={job.id} />
+            <JobCardMenu jobId={job.id} onNotInterested={handleNotInterested} />
           </div>
         </div>
       </CardHeader>

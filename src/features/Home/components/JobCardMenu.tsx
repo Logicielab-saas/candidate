@@ -12,9 +12,22 @@ import { MoreVertical, Bookmark, XCircle, Flag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { ReportJobDialog } from "@/features/candidature/(profile)/components/my-jobs/ReportJobDialog";
+import { NotInterestedDialog } from "./NotInterestedDialog";
 
-export function JobCardMenu({ jobId }: { jobId: string }) {
+interface JobCardMenuProps {
+  jobId: string;
+  onNotInterested?: (jobId: string) => void;
+}
+
+export function JobCardMenu({ jobId, onNotInterested }: JobCardMenuProps) {
   const [isSignalerOpen, setIsSignalerOpen] = useState(false);
+  const [isNotInterestedOpen, setIsNotInterestedOpen] = useState(false);
+
+  const handleNotInterested = (id: string) => {
+    onNotInterested?.(id);
+    setIsNotInterestedOpen(false);
+  };
+
   return (
     <>
       <DropdownMenu>
@@ -34,7 +47,10 @@ export function JobCardMenu({ jobId }: { jobId: string }) {
             <span>Bookmark l&apos;offre</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="flex items-center gap-2 cursor-pointer text-yellow-600">
+          <DropdownMenuItem
+            className="flex items-center gap-2 cursor-pointer text-yellow-600"
+            onClick={() => setIsNotInterestedOpen(true)}
+          >
             <XCircle className="h-4 w-4" />
             <span>Pas intéressé(e)</span>
           </DropdownMenuItem>
@@ -47,6 +63,14 @@ export function JobCardMenu({ jobId }: { jobId: string }) {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      <NotInterestedDialog
+        open={isNotInterestedOpen}
+        onOpenChange={setIsNotInterestedOpen}
+        jobId={jobId}
+        onConfirm={handleNotInterested}
+      />
+
       <ReportJobDialog
         open={isSignalerOpen}
         onOpenChange={setIsSignalerOpen}
