@@ -14,7 +14,6 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Separator } from "@/components/ui/separator";
 import { SearchInput } from "./SearchInput";
 import { CitySelector } from "./CitySelector";
 
@@ -59,7 +58,6 @@ export function HomeHeader() {
           Search
         </Button>
       </div>
-      <Separator className="my-8" />
     </div>
   );
 }
