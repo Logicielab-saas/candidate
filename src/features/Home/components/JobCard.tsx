@@ -8,14 +8,27 @@ import { JobCardMenu } from "./JobCardMenu";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useNotInterestedStore } from "../store/not-interested.store";
+import { useQueryState } from "nuqs";
 
-export function JobCard({ job }: { job: Job }) {
-  const [isNotInterested, setIsNotInterested] = useState(false);
+interface JobCardProps {
+  job: Job;
+  isSelected?: boolean;
+}
+
+export function JobCard({ job, isSelected }: JobCardProps) {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const { toast } = useToast();
+  const { isNotInterested, undoNotInterested, markAsNotInterested } =
+    useNotInterestedStore();
+  const isJobNotInterested = isNotInterested(job.id);
+  const [, setSelectedJobId] = useQueryState("jobId");
 
   const handleNotInterested = () => {
-    setIsNotInterested(true);
+    markAsNotInterested(job.id);
+    if (isSelected) {
+      setSelectedJobId(null);
+    }
     toast({
       title: "Offre masquée",
       description: "Cette offre ne s'affichera plus dans votre flux",
@@ -24,7 +37,7 @@ export function JobCard({ job }: { job: Job }) {
   };
 
   const handleUndo = () => {
-    setIsNotInterested(false);
+    undoNotInterested(job.id);
     toast({
       title: "Action annulée",
       description: "L'offre a été restaurée dans votre flux",
@@ -45,7 +58,7 @@ export function JobCard({ job }: { job: Job }) {
     });
   };
 
-  if (isNotInterested) {
+  if (isJobNotInterested) {
     return (
       <Card className="bg-muted/30 border-dashed">
         <CardContent className="pt-6">
@@ -79,7 +92,8 @@ export function JobCard({ job }: { job: Job }) {
       className={cn(
         "transition-all duration-200",
         "hover:border-primary/50 hover:shadow-md",
-        "cursor-pointer group"
+        "cursor-pointer group",
+        isSelected && "border-primary/50 shadow-md"
       )}
     >
       <CardHeader>

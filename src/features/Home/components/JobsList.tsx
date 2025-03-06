@@ -12,12 +12,15 @@
 import { mockJobsList } from "@/core/mockData/jobs-list";
 import { useQueryState } from "nuqs";
 import { JobCard } from "./JobCard";
+import { useNotInterestedStore } from "../store/not-interested.store";
 
 export function JobsList() {
   const [searchText] = useQueryState("q");
   const [selectedCity] = useQueryState("city");
+  const [selectedJobId, setSelectedJobId] = useQueryState("jobId");
+  const { isNotInterested } = useNotInterestedStore();
 
-  // Filter jobs based on search params
+  // Filter jobs based on search params only
   const filteredJobs = mockJobsList.filter((job) => {
     const matchesSearch =
       !searchText ||
@@ -32,6 +35,13 @@ export function JobsList() {
     return matchesSearch && matchesCity;
   });
 
+  const handleJobSelect = (jobId: string) => {
+    // Don't select if job is marked as not interested
+    if (!isNotInterested(jobId)) {
+      setSelectedJobId(jobId);
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -43,7 +53,9 @@ export function JobsList() {
 
       <div className="grid grid-cols-1 gap-4">
         {filteredJobs.map((job) => (
-          <JobCard key={job.id} job={job} />
+          <div key={job.id} onClick={() => handleJobSelect(job.id)}>
+            <JobCard job={job} isSelected={job.id === selectedJobId} />
+          </div>
         ))}
       </div>
     </div>

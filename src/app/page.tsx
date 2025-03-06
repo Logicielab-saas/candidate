@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { HomeHeader } from "@/features/Home/components/HomeHeader";
 import { JobsList } from "@/features/Home/components/JobsList";
+import { JobDetails } from "@/features/Home/components/JobDetails";
 
 export default function Home() {
   return (
@@ -18,11 +19,7 @@ export default function Home() {
 
           {/* Job Details Section - Will be implemented later */}
           <div className="hidden lg:block">
-            <div className="rounded-lg border bg-card p-8 text-card-foreground">
-              <p className="text-sm text-muted-foreground text-center">
-                Select a job to view details
-              </p>
-            </div>
+            <JobDetails />
           </div>
         </div>
       </div>
