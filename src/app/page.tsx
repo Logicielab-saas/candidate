@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
   return (
-    <div className={cn("bg-background", "min-h-screen", "antialiased")}>
+    <div className={cn("bg-background", "min-h-screen")}>
       <div className={cn("mx-auto max-w-7xl", "px-4 sm:px-6 lg:px-8 pt-10")}>
         {/* Header Section */}
         <Suspense
