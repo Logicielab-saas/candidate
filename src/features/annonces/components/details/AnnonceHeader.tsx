@@ -8,6 +8,7 @@ import { Building2, Flag, MapPin, Share2, Users2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCallback, useState } from "react";
 import { ReportJobDialog } from "@/features/candidature/(profile)/components/my-jobs/ReportJobDialog";
+import { cn } from "@/lib/utils";
 
 interface AnnonceHeaderProps {
   annonce: JobDetails;
@@ -78,13 +79,23 @@ export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
 
             {/* Actions */}
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={handleShare}>
-                <Share2 className="h-4 w-4 mr-2" />
-                Partager
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-9 w-9 md:w-auto md:px-4"
+                onClick={handleShare}
+              >
+                <Share2 className="h-4 w-4 md:mr-2" />
+                <span className="hidden md:inline">Partager</span>
               </Button>
-              <Button variant="outline" size="sm" onClick={handleReport}>
-                <Flag className="h-4 w-4 mr-2" />
-                Signaler
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-9 w-9 md:w-auto md:px-4"
+                onClick={handleReport}
+              >
+                <Flag className="h-4 w-4 md:mr-2" />
+                <span className="hidden md:inline">Signaler</span>
               </Button>
             </div>
           </div>
