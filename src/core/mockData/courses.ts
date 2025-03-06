@@ -4,7 +4,12 @@
  * Contains sample course data for development and testing
  */
 
-import type { Course, CourseDetails, CourseVideo } from "@/core/interfaces/";
+import type {
+  Course,
+  CourseDetails,
+  CourseVideo,
+  CourseModule,
+} from "@/core/interfaces/";
 
 export const mockCourses: Course[] = [
   {
@@ -483,6 +488,215 @@ const nestjsVideos: CourseVideo[] = [
   },
 ];
 
+// Mock modules data
+const laravelModules: CourseModule[] = [
+  {
+    id: "m1",
+    title: "Getting Started with Laravel",
+    description: "Introduction to Laravel framework, setup and basic concepts",
+    duration: 120, // 2 hours
+    videos: [
+      {
+        id: "1-1",
+        title: "Introduction to Laravel",
+        description:
+          "Get started with Laravel framework basics, installation, and project setup. Learn about MVC architecture and Laravel's core concepts.",
+        imageUrl: "/courses/laravel-1.webp",
+        videoUrl: "https://example.com/videos/laravel-1",
+        duration: "45:00",
+        progress: 100,
+      },
+      {
+        id: "1-2",
+        title: "Setting Up Your Development Environment",
+        description:
+          "Learn how to set up your local development environment for Laravel development",
+        imageUrl: "/courses/laravel-2.webp",
+        videoUrl: "https://example.com/videos/laravel-2",
+        duration: "35:00",
+        progress: 80,
+      },
+      {
+        id: "1-3",
+        title: "Understanding MVC Architecture",
+        description:
+          "Deep dive into Model-View-Controller architecture in Laravel",
+        imageUrl: "/courses/laravel-3.webp",
+        videoUrl: "https://example.com/videos/laravel-3",
+        duration: "40:00",
+        progress: 0,
+      },
+    ],
+  },
+  {
+    id: "m2",
+    title: "Routing and Controllers",
+    description:
+      "Master Laravel's routing system and controller implementation",
+    duration: 180, // 3 hours
+    videos: [
+      {
+        id: "2-1",
+        title: "Basic Routing",
+        description: "Learn how to define basic routes in Laravel",
+        imageUrl: "/courses/laravel-4.webp",
+        videoUrl: "https://example.com/videos/laravel-4",
+        duration: "50:00",
+        progress: 0,
+      },
+      {
+        id: "2-2",
+        title: "Route Parameters and Constraints",
+        description: "Working with route parameters and adding constraints",
+        imageUrl: "/courses/laravel-5.webp",
+        videoUrl: "https://example.com/videos/laravel-5",
+        duration: "45:00",
+        progress: 0,
+      },
+      {
+        id: "2-3",
+        title: "Controller Basics",
+        description: "Creating and using controllers in Laravel",
+        imageUrl: "/courses/laravel-6.webp",
+        videoUrl: "https://example.com/videos/laravel-6",
+        duration: "45:00",
+        progress: 0,
+      },
+      {
+        id: "2-4",
+        title: "Resource Controllers",
+        description: "Working with resource controllers for CRUD operations",
+        imageUrl: "/courses/laravel-7.webp",
+        videoUrl: "https://example.com/videos/laravel-7",
+        duration: "40:00",
+        progress: 0,
+      },
+    ],
+  },
+];
+
+const nestjsModules: CourseModule[] = [
+  {
+    id: "m1",
+    title: "NestJS Fundamentals",
+    description: "Learn the core concepts and fundamentals of NestJS framework",
+    duration: 180, // 3 hours
+    videos: [
+      {
+        id: "4-1",
+        title: "Introduction to NestJS",
+        description:
+          "Introduction to NestJS framework architecture, core concepts, and setting up your first NestJS application.",
+        imageUrl: "/courses/nestjs.png",
+        videoUrl: "/formations/lesson1.mp4",
+        duration: "60:00",
+        progress: 100,
+      },
+      {
+        id: "4-2",
+        title: "Controllers and Routing",
+        description:
+          "Deep dive into NestJS controllers, routing decorators, request handling, and response manipulation.",
+        imageUrl: "/courses/nestjs.png",
+        videoUrl: "/formations/lesson2.mp4",
+        duration: "60:00",
+        progress: 100,
+      },
+      {
+        id: "4-3",
+        title: "Dependency Injection",
+        description:
+          "Understanding dependency injection in NestJS, providers, services, and the NestJS DI container.",
+        imageUrl: "/courses/nestjs.png",
+        videoUrl: "/formations/lesson3.mp4",
+        duration: "60:00",
+        progress: 100,
+      },
+    ],
+  },
+  {
+    id: "m2",
+    title: "Database Integration",
+    description: "Master database integration with TypeORM in NestJS",
+    duration: 240, // 4 hours
+    videos: [
+      {
+        id: "4-4",
+        title: "TypeORM Setup",
+        description:
+          "Setting up TypeORM with NestJS and configuring database connection",
+        imageUrl: "/courses/nestjs.png",
+        videoUrl: "/formations/lesson4.mp4",
+        duration: "60:00",
+        progress: 100,
+      },
+      {
+        id: "4-5",
+        title: "Entities and Repositories",
+        description: "Working with TypeORM entities and repositories in NestJS",
+        imageUrl: "/courses/nestjs.png",
+        videoUrl: "/formations/lesson5.mp4",
+        duration: "60:00",
+        progress: 85,
+      },
+      {
+        id: "4-6",
+        title: "Relations and Eager Loading",
+        description: "Managing entity relations and implementing eager loading",
+        imageUrl: "/courses/nestjs.png",
+        videoUrl: "/formations/lesson6.mp4",
+        duration: "60:00",
+        progress: 65,
+      },
+      {
+        id: "4-7",
+        title: "Transactions and Query Builder",
+        description:
+          "Using transactions and query builder in NestJS with TypeORM",
+        imageUrl: "/courses/nestjs.png",
+        videoUrl: "/formations/lesson7.mp4",
+        duration: "60:00",
+        progress: 40,
+      },
+    ],
+  },
+  {
+    id: "m3",
+    title: "Authentication and Authorization",
+    description: "Implement secure authentication and authorization in NestJS",
+    duration: 180, // 3 hours
+    videos: [
+      {
+        id: "4-8",
+        title: "JWT Authentication",
+        description: "Implementing JWT-based authentication in NestJS",
+        imageUrl: "/courses/nestjs.png",
+        videoUrl: "/formations/lesson8.mp4",
+        duration: "60:00",
+        progress: 15,
+      },
+      {
+        id: "4-9",
+        title: "Guards and Strategies",
+        description: "Working with authentication guards and strategies",
+        imageUrl: "/courses/nestjs.png",
+        videoUrl: "/formations/lesson9.mp4",
+        duration: "60:00",
+        progress: 0,
+      },
+      {
+        id: "4-10",
+        title: "Role-based Authorization",
+        description: "Implementing role-based access control (RBAC)",
+        imageUrl: "/courses/nestjs.png",
+        videoUrl: "/formations/lesson10.mp4",
+        duration: "60:00",
+        progress: 0,
+      },
+    ],
+  },
+];
+
 export const mockCoursesDetails: CourseDetails[] = [
   {
     id: "1",
@@ -497,6 +711,7 @@ Key Topics:
 - Testing and Deployment
     `,
     playlist: laravelVideos,
+    modules: laravelModules,
     progress: 45,
     startingEpId: "1-2",
     review: 4.3,
@@ -518,6 +733,7 @@ Key Topics:
 - Task Scheduling and Background Jobs
     `,
     playlist: nestjsVideos,
+    modules: nestjsModules,
     progress: 25,
     startingEpId: "4-2",
     review: 4.5,
