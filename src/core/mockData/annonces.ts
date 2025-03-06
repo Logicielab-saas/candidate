@@ -61,7 +61,7 @@ export interface SubmissionQuestion {
 
 export type FinalQuestion = FormQuestion | SubmissionQuestion;
 
-export interface Annonce {
+export interface JobDetails {
   id: string;
   baseInformation: {
     jobTitle: string;
@@ -85,7 +85,7 @@ export interface Annonce {
 }
 
 // Example data
-export const MOCK_ANNONCES: Annonce[] = [
+export const MOCK_ANNONCES: JobDetails[] = [
   {
     id: "1",
     baseInformation: {

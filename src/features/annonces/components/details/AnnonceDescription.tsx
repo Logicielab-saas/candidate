@@ -1,10 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { type Annonce } from "@/core/mockData/annonces";
+import { type JobDetails } from "@/core/mockData/annonces";
 import parse from "html-react-parser";
 import DOMPurify from "isomorphic-dompurify";
 
 interface AnnonceDescriptionProps {
-  annonce: Annonce;
+  annonce: JobDetails;
 }
 
 export function AnnonceDescription({ annonce }: AnnonceDescriptionProps) {

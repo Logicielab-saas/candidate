@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { type Annonce } from "@/core/mockData/annonces";
+import { type JobDetails } from "@/core/mockData/annonces";
 import { iconContainerStyle } from "@/core/styles/icon-container.style";
 import {
   formatDuration,
@@ -9,7 +9,7 @@ import {
 import { BriefcaseIcon, CalendarIcon, ClockIcon, EuroIcon } from "lucide-react";
 
 interface AnnonceJobDetailsProps {
-  annonce: Annonce;
+  annonce: JobDetails;
 }
 
 export function AnnonceJobDetails({ annonce }: AnnonceJobDetailsProps) {

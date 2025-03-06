@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { type Annonce } from "@/core/mockData/annonces";
+import { type JobDetails } from "@/core/mockData/annonces";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,7 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
 
 interface AnnonceQuestionsProps {
-  annonce: Annonce;
+  annonce: JobDetails;
 }
 
 export function AnnonceQuestions({ annonce }: AnnonceQuestionsProps) {

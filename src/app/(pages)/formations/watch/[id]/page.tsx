@@ -42,7 +42,7 @@ export default async function FormationDetailsPage({
   const course = mockCoursesDetails.find((c) => c.id === id);
   if (!course) redirect("/notFound");
   const reviews = mockReviews[course.id] || [];
-  const startingEpId = course.startingEpId || course.playlist[0].id;
+  const startingEpId = course.startingEpId || course.playlist?.[0]?.id;
   return (
     <>
       <CourseHeader
@@ -55,7 +55,7 @@ export default async function FormationDetailsPage({
       <FormationDetailsContainer
         course={course}
         reviews={reviews}
-        startingEpId={startingEpId}
+        startingEpId={startingEpId || ""}
       />
     </>
   );

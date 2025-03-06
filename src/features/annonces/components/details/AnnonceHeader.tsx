@@ -1,7 +1,7 @@
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { type Annonce } from "@/core/mockData/annonces";
+import { type JobDetails } from "@/core/mockData/annonces";
 import { spanBadgeStyle } from "@/core/styles/span-badge.style";
 import { Avatar } from "@radix-ui/react-avatar";
 import { Building2, Flag, MapPin, Share2, Users2 } from "lucide-react";
@@ -10,7 +10,7 @@ import { useCallback, useState } from "react";
 import { ReportJobDialog } from "@/features/candidature/(profile)/components/my-jobs/ReportJobDialog";
 
 interface AnnonceHeaderProps {
-  annonce: Annonce;
+  annonce: JobDetails;
 }
 
 export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {

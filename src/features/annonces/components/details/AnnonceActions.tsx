@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { type Annonce } from "@/core/mockData/annonces";
+import { type JobDetails } from "@/core/mockData/annonces";
 import { ArrowRight, BookmarkPlus } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
 interface AnnonceActionsProps {
-  annonce: Annonce;
+  annonce: JobDetails;
   onApply: () => void;
   onSave?: () => void;
 }

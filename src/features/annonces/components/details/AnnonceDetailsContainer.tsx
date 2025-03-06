@@ -1,6 +1,6 @@
 "use client";
 
-import { type Annonce } from "@/core/mockData/annonces";
+import { type JobDetails } from "@/core/mockData/annonces";
 import { AnnonceHeader } from "./AnnonceHeader";
 import { AnnonceDescription } from "./AnnonceDescription";
 import { AnnonceJobDetails } from "./AnnonceJobDetails";
@@ -9,7 +9,7 @@ import { AnnonceActions } from "./AnnonceActions";
 import { useToast } from "@/hooks/use-toast";
 
 interface AnnonceDetailsContainerProps {
-  annonce: Annonce;
+  annonce: JobDetails;
 }
 
 export function AnnonceDetailsContainer({
