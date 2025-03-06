@@ -32,7 +32,7 @@ export function CourseModules({ modules }: CourseModulesProps) {
   };
 
   return (
-    <ScrollArea className="h-[600px] w-full rounded-md border">
+    <ScrollArea className="w-full rounded-md border">
       <div className="p-4">
         <h2 className="mb-4 text-lg font-semibold">Course Modules</h2>
         <Accordion type="single" collapsible className="w-full">

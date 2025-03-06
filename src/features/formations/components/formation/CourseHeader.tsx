@@ -44,8 +44,8 @@ export function CourseHeader({
           </div>
         </div>
       </div>
-      <div className="prose prose-lg max-w-none dark:prose-invert">
-        {description}
+      <div className="prose prose-gray dark:prose-invert max-w-none">
+        <p className="text-muted-foreground leading-relaxed">{description}</p>
       </div>
 
       <div className="space-y-2">

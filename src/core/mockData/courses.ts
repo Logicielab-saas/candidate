@@ -501,7 +501,7 @@ const laravelModules: CourseModule[] = [
         title: "Introduction to Laravel",
         description:
           "Get started with Laravel framework basics, installation, and project setup. Learn about MVC architecture and Laravel's core concepts.",
-        imageUrl: "/courses/laravel-1.webp",
+        imageUrl: "/courses/laravel.webp",
         videoUrl: "https://example.com/videos/laravel-1",
         duration: "45:00",
         progress: 100,
@@ -710,12 +710,14 @@ Key Topics:
 - API Development
 - Testing and Deployment
     `,
+    imageUrl: "/courses/laravel-1.webp",
     playlist: laravelVideos,
     modules: laravelModules,
     progress: 45,
     startingEpId: "1-2",
     review: 4.3,
     viewersNum: 1234,
+    duration: 150,
   },
   {
     id: "4",
@@ -732,11 +734,13 @@ Key Topics:
 - File Upload and Processing
 - Task Scheduling and Background Jobs
     `,
+    imageUrl: "/courses/nestjs.png",
     playlist: nestjsVideos,
     modules: nestjsModules,
     progress: 25,
     startingEpId: "4-2",
     review: 4.5,
     viewersNum: 2345,
+    duration: 125,
   },
 ];
