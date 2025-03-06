@@ -4,6 +4,7 @@ import { Job } from "@/core/interfaces";
 import { formatDistanceToNow } from "date-fns";
 import { Building2, MapPin, Users } from "lucide-react";
 import { spanBadgeStyle } from "@/core/styles/span-badge.style";
+import { JobCardMenu } from "./JobCardMenu";
 
 export function JobCard({ job }: { job: Job }) {
   return (
@@ -11,7 +12,7 @@ export function JobCard({ job }: { job: Job }) {
       className={cn(
         "transition-all duration-200",
         "hover:border-primary/50 hover:shadow-md",
-        "cursor-pointer"
+        "cursor-pointer group"
       )}
     >
       <CardHeader>
@@ -30,9 +31,13 @@ export function JobCard({ job }: { job: Job }) {
             </div>
           </div>
 
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <Users className="h-3 w-3" />
-            <span>{job.applications} applied</span>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+              <Users className="h-3 w-3" />
+              <span>{job.applications} applied</span>
+            </div>
+
+            <JobCardMenu jobId={job.id} />
           </div>
         </div>
       </CardHeader>
