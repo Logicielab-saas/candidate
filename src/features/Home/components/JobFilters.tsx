@@ -6,6 +6,7 @@
  * - Date and contract type filtering
  * - Multi-select capability for contract types
  * - Advanced filters drawer for additional options
+ * - Save search alerts functionality
  */
 
 "use client";
@@ -23,6 +24,7 @@ import { useQueryState } from "nuqs";
 import { Calendar, Briefcase } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { AdvancedFiltersDrawer } from "./AdvancedFiltersDrawer";
+import { SaveSearchAlert } from "./SaveSearchAlert";
 
 // Filter options
 const DATE_FILTERS = [
@@ -121,6 +123,11 @@ export function JobFilters() {
 
         {/* Advanced Filters Drawer */}
         <AdvancedFiltersDrawer />
+
+        {/* Save Search Alert */}
+        <div className="ml-auto">
+          <SaveSearchAlert />
+        </div>
       </div>
     </div>
   );
