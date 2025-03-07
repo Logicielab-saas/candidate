@@ -18,10 +18,20 @@ export function SearchInput() {
   // Local state for immediate input
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [searchText, setSearchText] = useQueryState("q");
+  const [searchText, setSearchText] = useQueryState("q", {
+    history: "push",
+  });
 
   // Debounce the search input
   const [debouncedSearchText] = useDebounce(inputText, 500);
+
+  // Sync local input state with URL query parameter
+  useEffect(() => {
+    if (searchText && searchText !== inputText) {
+      setInputText(searchText);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchText]);
 
   // Update URL params when debounced value changes
   useEffect(() => {
@@ -30,6 +40,25 @@ export function SearchInput() {
     }
     setIsLoading(false);
   }, [debouncedSearchText, setSearchText, searchText]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      // Get the current URL search params
+      const params = new URLSearchParams(window.location.search);
+      const currentSearchText = params.get("q") || "";
+
+      // Update the input text to match the URL
+      setInputText(currentSearchText);
+    };
+
+    // Add event listener for popstate (browser back/forward)
+    window.addEventListener("popstate", handlePopState);
+
+    // Clean up
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   return (
     <div className="w-full sm:w-[500px] space-y-1.5">

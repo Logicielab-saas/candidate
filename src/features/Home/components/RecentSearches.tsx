@@ -12,26 +12,27 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Search, MapPin, Clock, X } from "lucide-react";
+import { Search, MapPin, Clock, X, ArrowRight } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
-import { useRouter } from "next/navigation";
+import { useQueryState } from "nuqs";
 import { useRecentSearchesStore } from "../store/recent-searches.store";
 
 export function RecentSearches() {
-  const router = useRouter();
+  const [, setSearchText] = useQueryState("q", {
+    history: "push",
+  });
+  const [, setSelectedCity] = useQueryState("city", {
+    history: "push",
+  });
   const { searches, removeSearch } = useRecentSearchesStore();
 
   const handleSearchClick = (search: {
     searchText?: string;
     city?: string;
   }) => {
-    // Construct the search URL
-    const params = new URLSearchParams();
-    if (search.searchText) params.set("q", search.searchText);
-    if (search.city) params.set("city", search.city);
-
-    // Navigate to the search
-    router.push(`/?${params.toString()}`);
+    // Update search parameters using nuqs
+    setSearchText(search.searchText || null);
+    setSelectedCity(search.city || null);
   };
 
   if (searches.length === 0) {
@@ -76,6 +77,7 @@ export function RecentSearches() {
                     {formatDistanceToNow(search.timestamp, { addSuffix: true })}
                   </span>
                 </div>
+                <ArrowRight className="h-4 w-4 text-primary" />
               </div>
             </div>
             <Button
