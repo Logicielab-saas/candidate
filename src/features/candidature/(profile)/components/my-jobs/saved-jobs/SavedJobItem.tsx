@@ -2,13 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import {
-  MoreVertical,
-  Building2,
-  MapPin,
-  Calendar,
-  ScanHeart,
-} from "lucide-react";
+import { MoreVertical, Building2, MapPin, Calendar, Heart } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -117,9 +111,9 @@ export function SavedJobItem({
               className="text-muted-foreground hover:text-primary"
             >
               {bookmarked ? (
-                <ScanHeart className="h-5 w-5 text-primaryHex-400 fill-primaryHex-400" />
+                <Heart className="h-5 w-5 text-primaryHex-400 fill-primaryHex-400" />
               ) : (
-                <ScanHeart className="h-5 w-5 text-gray-400" />
+                <Heart className="h-5 w-5 text-gray-400" />
               )}
             </Button>
           </motion.div>

@@ -1,43 +1,24 @@
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { type JobDetails } from "@/core/mockData/annonces";
 import { spanBadgeStyle } from "@/core/styles/span-badge.style";
 import { Avatar } from "@radix-ui/react-avatar";
-import { Building2, Flag, MapPin, Share2, Users2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Building2, Flag, MapPin, Users2 } from "lucide-react";
 import { useCallback, useState } from "react";
 import { ReportJobDialog } from "@/features/candidature/(profile)/components/my-jobs/ReportJobDialog";
+import { ShareJobPopover } from "@/features/Home/components/ShareJobPopover";
+import { cn } from "@/lib/utils";
 
 interface AnnonceHeaderProps {
   annonce: JobDetails;
 }
 
 export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
-  const { toast } = useToast();
   const [openReportDialog, setOpenReportDialog] = useState(false);
 
   const handleReport = useCallback(() => {
     setOpenReportDialog(true);
   }, []);
-
-  const handleShare = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      toast({
-        variant: "success",
-        title: "URL copiée",
-        description: "L'URL de l'annonce a été copiée dans le presse-papiers",
-      });
-    } catch (error) {
-      toast({
-        title: "Erreur",
-        description: "Impossible de copier l'URL",
-        variant: "destructive",
-      });
-      console.log(error);
-    }
-  }, [toast]);
 
   return (
     <Card className="p-6">
@@ -78,24 +59,22 @@ export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
 
             {/* Actions */}
             <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-9 w-9 md:w-auto md:px-4"
-                onClick={handleShare}
-              >
-                <Share2 className="h-4 w-4 md:mr-2" />
-                <span className="hidden md:inline">Partager</span>
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-9 w-9 md:w-auto md:px-4"
+              <div className="h-9 w-9 md:w-auto md:px-4 flex items-center justify-center">
+                <ShareJobPopover
+                  jobTitle={annonce.baseInformation.jobTitle}
+                  companyName="Company Name" // TODO: Add company name from data
+                  jobLocation={annonce.baseInformation.promotionLocation}
+                />
+              </div>
+              <div
+                className={cn(
+                  "h-9 w-9 flex items-center justify-center cursor-pointer",
+                  "text-destructive hover:text-destructive/80 hover:bg-accent rounded-full"
+                )}
                 onClick={handleReport}
               >
-                <Flag className="h-4 w-4 md:mr-2" />
-                <span className="hidden md:inline">Signaler</span>
-              </Button>
+                <Flag className="h-6 w-6" />
+              </div>
             </div>
           </div>
 

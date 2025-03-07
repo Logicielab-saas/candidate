@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreVertical, ScanHeart, XCircle, Flag } from "lucide-react";
+import { MoreVertical, Heart, XCircle, Flag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { ReportJobDialog } from "@/features/candidature/(profile)/components/my-jobs/ReportJobDialog";
@@ -53,7 +53,7 @@ export function JobCardMenu({
             className="flex items-center gap-2 cursor-pointer"
             onClick={onBookmark}
           >
-            <ScanHeart
+            <Heart
               className={cn(
                 "h-4 w-4",
                 isBookmarked && "fill-primaryHex-500 text-primaryHex-500"

@@ -55,7 +55,7 @@ export function JobsContainer() {
   }, [hasActiveSearch, setActiveTab]);
 
   return (
-    <div className="space-y-6 mt-5">
+    <div className="space-y-6 mt-5 mb-5">
       {hasActiveSearch ? (
         <>
           <JobFilters />

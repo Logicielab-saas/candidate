@@ -12,8 +12,7 @@ import {
   Calendar,
   Clock,
   Euro,
-  Share2,
-  ScanHeart,
+  Heart,
   XCircle,
   ArrowRight,
   FileSignature,
@@ -38,6 +37,7 @@ import { mockJobsList } from "@/core/mockData/jobs-list";
 import parse from "html-react-parser";
 import DOMPurify from "isomorphic-dompurify";
 import { ReportJobDialog } from "@/features/candidature/(profile)/components/my-jobs/ReportJobDialog";
+import { ShareJobPopover } from "./ShareJobPopover";
 
 export function JobDetails() {
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -77,16 +77,6 @@ export function JobDetails() {
       });
       setIsNotInterestedOpen(false);
     }
-  };
-
-  const handleShare = () => {
-    // Copy current URL to clipboard
-    navigator.clipboard.writeText(window.location.href);
-    toast({
-      title: "Lien copié",
-      description: "Le lien de l'offre a été copié dans le presse-papier",
-      variant: "default",
-    });
   };
 
   const sanitizedHTML = DOMPurify.sanitize(job?.description || "");
@@ -133,19 +123,16 @@ export function JobDetails() {
                   )}
                   onClick={handleBookmark}
                 >
-                  <ScanHeart
+                  <Heart
                     className={cn("h-6 w-6", isBookmarked && "fill-current")}
                   />
                 </span>
-                <span
-                  className={cn(
-                    "h-9 w-9 flex items-center justify-center cursor-pointer",
-                    "text-yellow-600 hover:text-yellow-700 hover:bg-accent rounded-full"
-                  )}
-                  onClick={() => setIsNotInterestedOpen(true)}
-                >
-                  <XCircle className="h-6 w-6" />
-                </span>
+                <ShareJobPopover
+                  jobTitle={job.baseInformation.jobTitle}
+                  companyName={jobCompanyName || ""}
+                  jobLocation={job.baseInformation.promotionLocation}
+                />
+
                 <span
                   className={cn(
                     "h-9 w-9 flex items-center justify-center cursor-pointer",
@@ -158,11 +145,11 @@ export function JobDetails() {
                 <span
                   className={cn(
                     "h-9 w-9 flex items-center justify-center cursor-pointer",
-                    "text-current hover:text-current/80 hover:bg-accent rounded-full"
+                    "text-yellow-600 hover:text-yellow-700 hover:bg-accent rounded-full"
                   )}
-                  onClick={handleShare}
+                  onClick={() => setIsNotInterestedOpen(true)}
                 >
-                  <Share2 className="h-6 w-6" />
+                  <XCircle className="h-6 w-6" />
                 </span>
               </div>
             </div>

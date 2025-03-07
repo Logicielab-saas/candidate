@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { ScanHeart, Star } from "lucide-react";
+import { Heart, Star } from "lucide-react";
 import { useState, MouseEvent } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -54,7 +54,7 @@ export function CourseCard({ course }: CourseCardProps) {
           className="absolute right-2 top-2 z-10 h-8 w-8 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white/90"
           onClick={handleBookmarkClick}
         >
-          <ScanHeart
+          <Heart
             className={cn(
               "h-5 w-5 transition-colors",
               isBookmarked
