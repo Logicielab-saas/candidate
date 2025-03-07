@@ -18,6 +18,7 @@ import { JobFilters } from "./JobFilters";
 import { useRecentSearchesStore } from "../store/recent-searches.store";
 import { FileText, Pin, Zap } from "lucide-react";
 import { tabsListStyles, tabTriggerStyles } from "@/core/styles/tabs";
+import { ResumeUpload } from "./ResumeUpload";
 
 export function JobsContainer() {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
@@ -119,7 +120,9 @@ export function JobsContainer() {
             </div>
           </TabsContent>
 
-          <TabsContent value="resume" className="mt-6"></TabsContent>
+          <TabsContent value="resume" className="mt-6">
+            <ResumeUpload />
+          </TabsContent>
         </Tabs>
       )}
     </div>
