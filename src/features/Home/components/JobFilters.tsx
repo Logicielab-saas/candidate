@@ -5,6 +5,7 @@
  * - Clean, modern design with icons
  * - Date and contract type filtering
  * - Multi-select capability for contract types
+ * - Advanced filters drawer for additional options
  */
 
 "use client";
@@ -21,6 +22,7 @@ import { MultiSelect } from "@/components/ui/multi-select";
 import { useQueryState } from "nuqs";
 import { Calendar, Briefcase } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { AdvancedFiltersDrawer } from "./AdvancedFiltersDrawer";
 
 // Filter options
 const DATE_FILTERS = [
@@ -116,6 +118,9 @@ export function JobFilters() {
           />
           <Briefcase className="absolute left-3 top-3 h-4 w-4 text-muted-foreground pointer-events-none" />
         </div>
+
+        {/* Advanced Filters Drawer */}
+        <AdvancedFiltersDrawer />
       </div>
     </div>
   );
