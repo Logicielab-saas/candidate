@@ -33,7 +33,6 @@ import {
   formatDuration,
 } from "@/core/utils/format-annonce-details";
 import { cn } from "@/lib/utils";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { mockJobsList } from "@/core/mockData/jobs-list";
 import parse from "html-react-parser";
 import DOMPurify from "isomorphic-dompurify";
@@ -197,17 +196,17 @@ export function JobDetails() {
         <Separator />
 
         <CardContent className="pt-6">
-          <ScrollArea className="h-[500px] md:h-[650px]" type="always">
-            {/* Description */}
-            <div className="space-y-6 px-4">
-              <div>
-                <h3 className="font-semibold mb-2">Description du poste</h3>
-                <div className="text-sm text-muted-foreground leading-relaxed prose prose-sm max-w-none" />
-                {parse(sanitizedHTML)}
-              </div>
+          {/* <ScrollArea> */}
+          {/* Description */}
+          <div className="space-y-6 px-4">
+            <div>
+              <h3 className="font-semibold mb-2">Description du poste</h3>
+              <div className="text-sm text-muted-foreground leading-relaxed prose prose-sm max-w-none" />
+              {parse(sanitizedHTML)}
+            </div>
 
-              {/* Questions */}
-              {/* {job.questions.length > 0 && (
+            {/* Questions */}
+            {/* {job.questions.length > 0 && (
               <div>
                 <h3 className="font-semibold mb-2">Questions de candidature</h3>
                 <ul className="list-disc list-inside text-sm text-muted-foreground space-y-2">
@@ -220,8 +219,8 @@ export function JobDetails() {
                 </ul>
               </div>
             )} */}
-            </div>
-          </ScrollArea>
+          </div>
+          {/* </ScrollArea> */}
         </CardContent>
       </Card>
 
