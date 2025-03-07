@@ -7,8 +7,7 @@ import {
   Building2,
   MapPin,
   Calendar,
-  BookmarkCheck,
-  Bookmark,
+  ScanHeart,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -118,9 +117,9 @@ export function SavedJobItem({
               className="text-muted-foreground hover:text-primary"
             >
               {bookmarked ? (
-                <BookmarkCheck className="h-5 w-5 text-primaryHex-400" />
+                <ScanHeart className="h-5 w-5 text-primaryHex-400 fill-primaryHex-400" />
               ) : (
-                <Bookmark className="h-5 w-5 text-gray-400" />
+                <ScanHeart className="h-5 w-5 text-gray-400" />
               )}
             </Button>
           </motion.div>

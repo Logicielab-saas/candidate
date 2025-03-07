@@ -13,7 +13,7 @@ import {
   Clock,
   Euro,
   Share2,
-  Bookmark,
+  ScanHeart,
   XCircle,
   ArrowRight,
   FileSignature,
@@ -123,35 +123,35 @@ export function JobDetails() {
 
               {/* Action Buttons */}
               <div className="flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
+                <span
                   className={cn(
-                    "h-9 w-9",
+                    "h-9 w-9 flex items-center justify-center cursor-pointer hover:bg-accent rounded-full",
                     isBookmarked && "text-primary hover:text-primary/80"
                   )}
                   onClick={handleBookmark}
                 >
-                  <Bookmark
-                    className={cn("h-4 w-4", isBookmarked && "fill-current")}
+                  <ScanHeart
+                    className={cn("h-6 w-6", isBookmarked && "fill-current")}
                   />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-9 w-9 text-yellow-600 hover:text-yellow-700"
+                </span>
+                <span
+                  className={cn(
+                    "h-9 w-9 flex items-center justify-center cursor-pointer",
+                    "text-yellow-600 hover:text-yellow-700 hover:bg-accent rounded-full"
+                  )}
                   onClick={() => setIsNotInterestedOpen(true)}
                 >
-                  <XCircle className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-9 w-9"
+                  <XCircle className="h-6 w-6" />
+                </span>
+                <span
+                  className={cn(
+                    "h-9 w-9 flex items-center justify-center cursor-pointer",
+                    "text-current hover:text-current/80 hover:bg-accent rounded-full"
+                  )}
                   onClick={handleShare}
                 >
-                  <Share2 className="h-4 w-4" />
-                </Button>
+                  <Share2 className="h-6 w-6" />
+                </span>
               </div>
             </div>
 
