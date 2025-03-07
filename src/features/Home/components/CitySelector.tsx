@@ -92,19 +92,19 @@ export function CitySelector({ value, onChange }: CitySelectorProps) {
             aria-expanded={open}
             className="w-full justify-between"
           >
-            {currentCity?.label ?? "Select city..."}
+            {currentCity?.label ?? "Toutes les villes..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[250px] p-0">
           <Command>
             <CommandInput
-              placeholder="Search city..."
+              placeholder="Rechercher une ville..."
               value={citySearch}
               onValueChange={setCitySearch}
             />
             <CommandList>
-              <CommandEmpty>No city found.</CommandEmpty>
+              <CommandEmpty>Aucune ville trouvée.</CommandEmpty>
               <CommandGroup>
                 {filteredCities.map((city) => (
                   <CommandItem
