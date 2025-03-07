@@ -9,13 +9,32 @@ export default function Home() {
     <div className={cn("bg-background", "min-h-screen")}>
       <div className={cn("mx-auto max-w-7xl", "px-4 sm:px-6 lg:px-8 pt-10")}>
         {/* Header Section */}
+        <div className="text-center space-y-3 mb-6">
+          <h1
+            className={cn(
+              "text-4xl md:text-5xl font-bold",
+              "tracking-tight",
+              "bg-gradient-to-r from-primary to-primary/70 text-transparent bg-clip-text",
+              "animate-in fade-in duration-1000"
+            )}
+          >
+            Discover Your Dream Career
+          </h1>
+          <p
+            className={cn(
+              "text-lg text-muted-foreground",
+              "max-w-2xl mx-auto",
+              "animate-in fade-in duration-1000 delay-200"
+            )}
+          >
+            Explore thousands of job opportunities and find the perfect role
+            that matches your skills and aspirations
+          </p>
+        </div>
+
         <Suspense
           fallback={
             <div className="space-y-4">
-              <div className="text-center space-y-3 mb-6">
-                <Skeleton className="h-12 w-96 mx-auto" />
-                <Skeleton className="h-6 w-[500px] mx-auto" />
-              </div>
               <div className="max-w-5xl mx-auto flex flex-col sm:flex-row gap-4 items-end justify-center">
                 <Skeleton className="h-10 w-[500px]" />
                 <Skeleton className="h-10 w-[200px]" />

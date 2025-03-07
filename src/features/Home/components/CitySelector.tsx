@@ -1,8 +1,8 @@
 /**
  * CitySelector - Searchable city selection component
  *
- * Provides a searchable dropdown for city selection with URL state management
- * Uses debounced search for filtering cities
+ * Provides a searchable dropdown for city selection
+ * Exposes current city selection to parent component for search button handling
  */
 
 "use client";
@@ -24,7 +24,7 @@ import {
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDebounce } from "use-debounce";
 
 // Available cities data
@@ -41,11 +41,25 @@ const cities = [
   { value: "prague", label: "Prague" },
 ] as const;
 
-export function CitySelector() {
+// Define props interface to expose city value and setter
+interface CitySelectorProps {
+  value: string | null;
+  onChange: (value: string | null) => void;
+}
+
+export function CitySelector({ value, onChange }: CitySelectorProps) {
   // Local state
   const [citySearch, setCitySearch] = useState("");
   const [open, setOpen] = useState(false);
-  const [selectedCity, setSelectedCity] = useQueryState("city");
+  const [urlCity] = useQueryState("city");
+
+  // Sync with URL on initial load and navigation
+  useEffect(() => {
+    if (urlCity !== value) {
+      onChange(urlCity);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlCity]);
 
   // Debounce the city search
   const [debouncedCitySearch] = useDebounce(citySearch, 300);
@@ -56,7 +70,7 @@ export function CitySelector() {
   );
 
   // Get the current city label
-  const currentCity = cities.find((city) => city.value === selectedCity);
+  const currentCity = cities.find((city) => city.value === value);
 
   return (
     <div className="w-full sm:w-[250px] space-y-1.5">
@@ -97,9 +111,7 @@ export function CitySelector() {
                     key={city.value}
                     value={city.value}
                     onSelect={(currentValue) => {
-                      setSelectedCity(
-                        currentValue === selectedCity ? null : currentValue
-                      );
+                      onChange(currentValue === value ? null : currentValue);
                       setCitySearch("");
                       setOpen(false);
                     }}
@@ -107,9 +119,7 @@ export function CitySelector() {
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        selectedCity === city.value
-                          ? "opacity-100"
-                          : "opacity-0"
+                        value === city.value ? "opacity-100" : "opacity-0"
                       )}
                     />
                     {city.label}

@@ -1,13 +1,14 @@
 /**
- * HomeHeader - Job search header component with text and city search functionality
+ * HomeHeader - Job search input controls component
  *
- * A server component that renders the main search interface for the job dashboard.
+ * A client component that renders the search interface for the job dashboard.
  * Includes a search input for job titles/keywords and a searchable city selector.
+ * Search is only triggered when the search button is clicked.
  *
  * State Management:
  * - Uses nuqs for URL-based state management
  * - Maintains search text and selected city in URL parameters
- * - Uses debounced search to optimize performance
+ * - Only updates URL parameters when search button is clicked
  */
 
 "use client";
@@ -16,48 +17,49 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { SearchInput } from "./SearchInput";
 import { CitySelector } from "./CitySelector";
+import { useState } from "react";
+import { useQueryState } from "nuqs";
 
 export function HomeHeader() {
-  return (
-    <div className={cn("w-full", "space-y-4")}>
-      <div className="text-center space-y-3 mb-6">
-        <h1
-          className={cn(
-            "text-4xl md:text-5xl font-bold",
-            "tracking-tight",
-            "bg-gradient-to-r from-primary to-primary/70 text-transparent bg-clip-text",
-            "animate-in fade-in duration-1000"
-          )}
-        >
-          Discover Your Dream Career
-        </h1>
-        <p
-          className={cn(
-            "text-lg text-muted-foreground",
-            "max-w-2xl mx-auto",
-            "animate-in fade-in duration-1000 delay-200"
-          )}
-        >
-          Explore thousands of job opportunities and find the perfect role that
-          matches your skills and aspirations
-        </p>
-      </div>
+  // Local state for form inputs
+  const [inputText, setInputText] = useState("");
+  const [selectedCity, setSelectedCity] = useState<string | null>(null);
 
-      <div
-        className={cn(
-          "max-w-5xl mx-auto",
-          "flex flex-col sm:flex-row",
-          "gap-4",
-          "items-end",
-          "justify-center"
-        )}
+  // URL state setters
+  const [, setSearchText] = useQueryState("q", {
+    history: "push",
+  });
+  const [, setUrlCity] = useQueryState("city", {
+    history: "push",
+  });
+
+  // Handle search button click
+  const handleSearch = () => {
+    // Update URL parameters
+    setSearchText(inputText || null);
+    setUrlCity(selectedCity);
+  };
+
+  return (
+    <div
+      className={cn(
+        "max-w-5xl mx-auto",
+        "flex flex-col sm:flex-row",
+        "gap-4",
+        "items-end",
+        "justify-center"
+      )}
+    >
+      <SearchInput value={inputText} onChange={setInputText} />
+      <CitySelector value={selectedCity} onChange={setSelectedCity} />
+      <Button
+        type="button"
+        size="lg"
+        className="sm:w-[120px]"
+        onClick={handleSearch}
       >
-        <SearchInput />
-        <CitySelector />
-        <Button type="submit" size="lg" className="sm:w-[120px]">
-          Search
-        </Button>
-      </div>
+        Search
+      </Button>
     </div>
   );
 }

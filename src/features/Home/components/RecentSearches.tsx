@@ -12,7 +12,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Search, MapPin, Clock, X, ArrowRight } from "lucide-react";
+import { Search, MapPin, Clock, X } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useQueryState } from "nuqs";
 import { useRecentSearchesStore } from "../store/recent-searches.store";
@@ -77,7 +77,6 @@ export function RecentSearches() {
                     {formatDistanceToNow(search.timestamp, { addSuffix: true })}
                   </span>
                 </div>
-                <ArrowRight className="h-4 w-4 text-primary" />
               </div>
             </div>
             <Button

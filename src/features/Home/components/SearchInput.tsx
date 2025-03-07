@@ -1,45 +1,34 @@
 /**
- * SearchInput - Job search input component with debounced search
+ * SearchInput - Job search input component
  *
- * Handles job title and keyword search with URL state management
- * Uses debounced input to optimize performance
+ * Handles job title and keyword search with controlled input
+ * Exposes current input value to parent component for search button handling
  */
 
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { Loader2, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
-import { useState, useEffect } from "react";
-import { useDebounce } from "use-debounce";
+import { useEffect } from "react";
 
-export function SearchInput() {
-  // Local state for immediate input
-  const [inputText, setInputText] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [searchText, setSearchText] = useQueryState("q", {
-    history: "push",
-  });
+// Define props interface to expose input value and setter
+interface SearchInputProps {
+  value: string;
+  onChange: (value: string) => void;
+}
 
-  // Debounce the search input
-  const [debouncedSearchText] = useDebounce(inputText, 500);
+export function SearchInput({ value, onChange }: SearchInputProps) {
+  const [searchText] = useQueryState("q");
 
-  // Sync local input state with URL query parameter
+  // Sync local input state with URL query parameter on initial load and navigation
   useEffect(() => {
-    if (searchText && searchText !== inputText) {
-      setInputText(searchText);
+    if (searchText && searchText !== value) {
+      onChange(searchText);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchText]);
-
-  // Update URL params when debounced value changes
-  useEffect(() => {
-    if (debouncedSearchText !== searchText) {
-      setSearchText(debouncedSearchText || null);
-    }
-    setIsLoading(false);
-  }, [debouncedSearchText, setSearchText, searchText]);
 
   useEffect(() => {
     const handlePopState = () => {
@@ -48,7 +37,7 @@ export function SearchInput() {
       const currentSearchText = params.get("q") || "";
 
       // Update the input text to match the URL
-      setInputText(currentSearchText);
+      onChange(currentSearchText);
     };
 
     // Add event listener for popstate (browser back/forward)
@@ -58,7 +47,7 @@ export function SearchInput() {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, []);
+  }, [onChange]);
 
   return (
     <div className="w-full sm:w-[500px] space-y-1.5">
@@ -78,22 +67,9 @@ export function SearchInput() {
           id="search"
           placeholder="Search job titles or keywords..."
           className="pl-8"
-          value={inputText}
-          onChange={(e) => {
-            setInputText(e.target.value);
-            setIsLoading(true);
-          }}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
         />
-        <div className="absolute right-4 top-3 flex h-6 w-6 items-center justify-center">
-          {isLoading && (
-            <Loader2
-              className={cn(
-                "h-5 w-5 animate-spin text-primaryHex-500",
-                inputText ? "opacity-100" : "opacity-70"
-              )}
-            />
-          )}
-        </div>
       </div>
     </div>
   );
