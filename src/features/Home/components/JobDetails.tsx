@@ -17,6 +17,7 @@ import {
   XCircle,
   ArrowRight,
   FileSignature,
+  Flag,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { Separator } from "@/components/ui/separator";
@@ -36,10 +37,12 @@ import { cn } from "@/lib/utils";
 import { mockJobsList } from "@/core/mockData/jobs-list";
 import parse from "html-react-parser";
 import DOMPurify from "isomorphic-dompurify";
+import { ReportJobDialog } from "@/features/candidature/(profile)/components/my-jobs/ReportJobDialog";
 
 export function JobDetails() {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isNotInterestedOpen, setIsNotInterestedOpen] = useState(false);
+  const [isSignalerOpen, setIsSignalerOpen] = useState(false);
   const [jobId, setJobId] = useQueryState("jobId");
   const { markAsNotInterested } = useNotInterestedStore();
   const { toast } = useToast();
@@ -146,6 +149,15 @@ export function JobDetails() {
                 <span
                   className={cn(
                     "h-9 w-9 flex items-center justify-center cursor-pointer",
+                    "text-destructive hover:bg-accent rounded-full"
+                  )}
+                  onClick={() => setIsSignalerOpen(true)}
+                >
+                  <Flag className="h-6 w-6" />
+                </span>
+                <span
+                  className={cn(
+                    "h-9 w-9 flex items-center justify-center cursor-pointer",
                     "text-current hover:text-current/80 hover:bg-accent rounded-full"
                   )}
                   onClick={handleShare}
@@ -229,6 +241,12 @@ export function JobDetails() {
         onOpenChange={setIsNotInterestedOpen}
         jobId={job.id}
         onConfirm={handleNotInterested}
+      />
+
+      <ReportJobDialog
+        open={isSignalerOpen}
+        onOpenChange={setIsSignalerOpen}
+        jobId={job.id}
       />
     </>
   );
