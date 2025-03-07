@@ -5,7 +5,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Search, Euro, BellRing, Clock } from "lucide-react";
+import { Search, BellRing } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -13,14 +13,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 
 interface AlertViewDialogProps {
   isOpen: boolean;
   onClose: () => void;
   searchText: string;
   salaryRange: string | null;
-  frequency: "daily" | "weekly";
   onEdit: () => void;
 }
 
@@ -29,7 +27,6 @@ export function AlertViewDialog({
   onClose,
   searchText,
   salaryRange,
-  frequency,
   onEdit,
 }: AlertViewDialogProps) {
   return (
@@ -54,7 +51,9 @@ export function AlertViewDialog({
                 <span className="text-sm text-muted-foreground">
                   Recherche:
                 </span>
-                <span className="text-sm font-medium">{searchText}</span>
+                <span className="text-sm font-medium text-primaryHex-500">
+                  {searchText}
+                </span>
               </div>
               {salaryRange && (
                 <div className="flex items-center gap-2">
@@ -62,32 +61,12 @@ export function AlertViewDialog({
                     Salaire:
                   </span>
                   <div className="flex items-center gap-1">
-                    <Euro className="h-3 w-3 text-muted-foreground" />
-                    <span className="text-sm font-medium">
+                    <span className="text-sm font-medium text-primaryHex-500">
                       {salaryRange.split(",").join("K€ - ")}K€
                     </span>
                   </div>
                 </div>
               )}
-            </div>
-          </div>
-
-          {/* Alert Settings */}
-          <div className="mt-6 space-y-4">
-            <div className="space-y-6 pl-6">
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-muted-foreground" />
-                  <Label>Fréquence des notifications</Label>
-                </div>
-                <div className="pl-6">
-                  <p className="text-sm text-muted-foreground">
-                    {frequency === "daily"
-                      ? "Une fois par jour"
-                      : "Une fois par semaine"}
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </div>

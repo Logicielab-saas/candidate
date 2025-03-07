@@ -5,7 +5,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Search, BellRing, Clock } from "lucide-react";
+import { Search, BellRing } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -13,21 +13,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-
-const FREQUENCY_OPTIONS = [
-  { value: "daily", label: "Une fois par jour" },
-  { value: "weekly", label: "Une fois par semaine" },
-] as const;
 
 interface AlertEditDialogProps {
   isOpen: boolean;
   onClose: () => void;
   searchText: string;
   salaryRange: string | null;
-  frequency: "daily" | "weekly";
-  onFrequencyChange: (value: "daily" | "weekly") => void;
   onSave: () => void;
 }
 
@@ -36,8 +27,6 @@ export function AlertEditDialog({
   onClose,
   searchText,
   salaryRange,
-  frequency,
-  onFrequencyChange,
   onSave,
 }: AlertEditDialogProps) {
   return (
@@ -78,36 +67,6 @@ export function AlertEditDialog({
                   </div>
                 </div>
               )}
-            </div>
-          </div>
-
-          {/* Notification Settings */}
-          <div className="mt-6 space-y-4">
-            <div className="space-y-6 pl-6">
-              {/* Frequency Selection */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-muted-foreground" />
-                  <Label>Fréquence des notifications</Label>
-                </div>
-                <RadioGroup
-                  value={frequency}
-                  onValueChange={onFrequencyChange as (value: string) => void}
-                  className="pl-6"
-                >
-                  {FREQUENCY_OPTIONS.map((option) => (
-                    <div
-                      key={option.value}
-                      className="flex items-center space-x-2"
-                    >
-                      <RadioGroupItem value={option.value} id={option.value} />
-                      <Label htmlFor={option.value} className="text-sm">
-                        {option.label}
-                      </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </div>
             </div>
           </div>
         </div>

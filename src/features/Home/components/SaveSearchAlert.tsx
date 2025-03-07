@@ -31,7 +31,6 @@ export function SaveSearchAlert() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [frequency, setFrequency] = useState<"daily" | "weekly">("daily");
   const { toast } = useToast();
 
   // Don't show the button if there's no search query
@@ -75,7 +74,7 @@ export function SaveSearchAlert() {
                   className="h-8 w-8 p-0"
                   onClick={handleView}
                 >
-                  <Eye className="h-4 w-4" />
+                  <Eye className="h-4 w-4 text-primaryHex-600" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Voir l&apos;alerte</TooltipContent>
@@ -90,7 +89,7 @@ export function SaveSearchAlert() {
                   className="h-8 w-8 p-0"
                   onClick={() => setIsEditDialogOpen(true)}
                 >
-                  <Edit2 className="h-4 w-4" />
+                  <Edit2 className="h-4 w-4 text-primaryHex-600" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Modifier l&apos;alerte</TooltipContent>
@@ -104,7 +103,6 @@ export function SaveSearchAlert() {
           onClose={() => setIsViewDialogOpen(false)}
           searchText={searchText}
           salaryRange={salaryRange}
-          frequency={frequency}
           onEdit={handleEdit}
         />
 
@@ -114,8 +112,6 @@ export function SaveSearchAlert() {
           onClose={() => setIsEditDialogOpen(false)}
           searchText={searchText}
           salaryRange={salaryRange}
-          frequency={frequency}
-          onFrequencyChange={setFrequency}
           onSave={handleSaveAlert}
         />
       </>
@@ -137,8 +133,6 @@ export function SaveSearchAlert() {
         onClose={() => setIsCreateDialogOpen(false)}
         searchText={searchText}
         salaryRange={salaryRange}
-        frequency={frequency}
-        onFrequencyChange={setFrequency}
         onSave={handleSaveAlert}
       />
     </Dialog>

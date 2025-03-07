@@ -16,6 +16,7 @@ import { RecentSearches } from "./RecentSearches";
 import { Separator } from "@/components/ui/separator";
 import { JobFilters } from "./JobFilters";
 import { useRecentSearchesStore } from "../store/recent-searches.store";
+import { Pin, Zap } from "lucide-react";
 
 // TODO: Maybe Export styles of the tabs and the tabs list
 
@@ -94,7 +95,7 @@ export function JobsContainer() {
                 "dark:data-[state=active]:border-primaryHex-400 dark:data-[state=active]:text-primaryHex-400"
               )}
             >
-              Recommended Jobs
+              <Zap className="h-4 w-4 mr-2" /> Pour vous
             </TabsTrigger>
             <TabsTrigger
               value="recent"
@@ -108,7 +109,8 @@ export function JobsContainer() {
                 "dark:data-[state=active]:border-primaryHex-400 dark:data-[state=active]:text-primaryHex-400"
               )}
             >
-              Recent Searches
+              <Pin className="h-4 w-4 mr-2" />
+              Les Recherches Récentes
             </TabsTrigger>
           </TabsList>
           <Separator />
