@@ -16,9 +16,8 @@ import { RecentSearches } from "./RecentSearches";
 import { Separator } from "@/components/ui/separator";
 import { JobFilters } from "./JobFilters";
 import { useRecentSearchesStore } from "../store/recent-searches.store";
-import { Pin, Zap } from "lucide-react";
-
-// TODO: Maybe Export styles of the tabs and the tabs list
+import { FileText, Pin, Zap } from "lucide-react";
+import { tabsListStyles, tabTriggerStyles } from "@/core/styles/tabs";
 
 export function JobsContainer() {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
@@ -77,40 +76,20 @@ export function JobsContainer() {
         </>
       ) : (
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList
-            className={cn(
-              "w-full border-secondaryHex-200 dark:border-secondaryHex-800",
-              "bg-transparent p-0"
-            )}
-          >
+          <TabsList className={cn(tabsListStyles.home)}>
             <TabsTrigger
               value="recommended"
-              className={cn(
-                "relative h-full rounded-none border-b-4 border-transparent",
-                "px-4 font-medium",
-                "text-secondaryHex-700 dark:text-secondaryHex-400",
-                "outline-none ring-offset-background transition-colors",
-                "hover:text-primaryHex-600 dark:hover:text-primaryHex-400",
-                "data-[state=active]:border-primaryHex-500 data-[state=active]:text-primaryHex-600",
-                "dark:data-[state=active]:border-primaryHex-400 dark:data-[state=active]:text-primaryHex-400"
-              )}
+              className={cn(tabTriggerStyles.home)}
             >
               <Zap className="h-4 w-4 mr-2" /> Pour vous
             </TabsTrigger>
-            <TabsTrigger
-              value="recent"
-              className={cn(
-                "relative h-full rounded-none border-b-4 border-transparent",
-                "px-4 font-medium",
-                "text-secondaryHex-700 dark:text-secondaryHex-400",
-                "outline-none ring-offset-background transition-colors",
-                "hover:text-primaryHex-600 dark:hover:text-primaryHex-400",
-                "data-[state=active]:border-primaryHex-500 data-[state=active]:text-primaryHex-600",
-                "dark:data-[state=active]:border-primaryHex-400 dark:data-[state=active]:text-primaryHex-400"
-              )}
-            >
+            <TabsTrigger value="recent" className={cn(tabTriggerStyles.home)}>
               <Pin className="h-4 w-4 mr-2" />
               Les Recherches Récentes
+            </TabsTrigger>
+            <TabsTrigger value="resume" className={cn(tabTriggerStyles.home)}>
+              <FileText className="h-4 w-4 mr-2" />
+              Télécharger votre CV
             </TabsTrigger>
           </TabsList>
           <Separator />
@@ -139,6 +118,8 @@ export function JobsContainer() {
               </div>
             </div>
           </TabsContent>
+
+          <TabsContent value="resume" className="mt-6"></TabsContent>
         </Tabs>
       )}
     </div>
