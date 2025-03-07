@@ -9,6 +9,7 @@
  * - Uses nuqs for URL-based state management
  * - Maintains search text and selected city in URL parameters
  * - Only updates URL parameters when search button is clicked
+ * - Clears any selected job (jobId) when a new search is performed
  */
 
 "use client";
@@ -32,12 +33,16 @@ export function HomeHeader() {
   const [, setUrlCity] = useQueryState("city", {
     history: "push",
   });
+  const [, setJobId] = useQueryState("jobId");
 
   // Handle search button click
   const handleSearch = () => {
     // Update URL parameters
     setSearchText(inputText || null);
     setUrlCity(selectedCity);
+
+    // Clear any selected job when performing a new search
+    setJobId(null);
   };
 
   return (

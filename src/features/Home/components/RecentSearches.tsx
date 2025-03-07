@@ -24,12 +24,15 @@ export function RecentSearches() {
   const [, setSelectedCity] = useQueryState("city", {
     history: "push",
   });
+  const [, setJobId] = useQueryState("jobId");
   const { searches, removeSearch } = useRecentSearchesStore();
 
   const handleSearchClick = (search: {
     searchText?: string;
     city?: string;
   }) => {
+    setJobId(null);
+
     // Update search parameters using nuqs
     setSearchText(search.searchText || null);
     setSelectedCity(search.city || null);
