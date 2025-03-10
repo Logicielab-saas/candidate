@@ -19,7 +19,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent, DragEvent } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import {
@@ -46,6 +46,7 @@ interface ResumeFile {
   size: number;
   type: string;
   lastModified: number;
+  content?: File; // Add content to store the actual file
 }
 
 interface UploadState {
@@ -61,7 +62,7 @@ export function ResumeUpload() {
   const [uploadState, setUploadState] = useState<UploadState>({
     status: "idle",
   });
-  // Simulated existing CV - in real app, fetch from backend
+  //*  Simulated existing CV - in real app, fetch from backend
   const [existingCV, setExistingCV] = useState<ResumeFile | null>({
     name: "mon_cv.pdf",
     size: 1024 * 1024 * 2.5, // 2.5MB
@@ -69,6 +70,8 @@ export function ResumeUpload() {
     lastModified: Date.now(),
   });
   const { toast } = useToast();
+  //* const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   // Handle toast notifications based on upload state changes
   useEffect(() => {
@@ -87,17 +90,17 @@ export function ResumeUpload() {
     }
   }, [uploadState, toast]);
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = (e: DragEvent) => {
     e.preventDefault();
     setIsDragging(true);
   };
 
-  const handleDragLeave = (e: React.DragEvent) => {
+  const handleDragLeave = (e: DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
   };
 
-  const handleDrop = async (e: React.DragEvent) => {
+  const handleDrop = async (e: DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
@@ -106,7 +109,7 @@ export function ResumeUpload() {
     }
   };
 
-  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       await handleFileUpload(file);
@@ -131,6 +134,9 @@ export function ResumeUpload() {
       });
       return;
     }
+
+    // Store the uploaded file
+    setUploadedFile(file);
 
     // Simulate upload
     setIsUploading(true);
@@ -169,10 +175,45 @@ export function ResumeUpload() {
   };
 
   const handleDownload = () => {
-    toast({
-      title: "Téléchargement démarré",
-      description: "Votre CV est en cours de téléchargement",
-    });
+    if (!uploadedFile) {
+      toast({
+        title: "Erreur",
+        description: "Aucun CV n'est disponible pour le téléchargement",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      // Create a URL for the file
+      const fileUrl = URL.createObjectURL(uploadedFile);
+
+      // Create a temporary anchor element
+      const downloadLink = document.createElement("a");
+      downloadLink.href = fileUrl;
+      downloadLink.download = uploadedFile.name; // Set the download filename
+
+      // Append to document, click, and cleanup
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+
+      // Revoke the URL to free up memory
+      URL.revokeObjectURL(fileUrl);
+
+      toast({
+        title: "Téléchargement démarré",
+        description: "Votre CV est en cours de téléchargement",
+        variant: "success",
+      });
+    } catch (error) {
+      console.error("Download error:", error);
+      toast({
+        title: "Erreur de téléchargement",
+        description: "Une erreur est survenue lors du téléchargement du CV",
+        variant: "destructive",
+      });
+    }
   };
 
   const formatFileSize = (bytes: number) => {

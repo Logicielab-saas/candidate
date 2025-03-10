@@ -19,6 +19,7 @@ import { useRecentSearchesStore } from "../store/recent-searches.store";
 import { FileText, Pin, Zap } from "lucide-react";
 import { tabsListStyles, tabTriggerStyles } from "@/core/styles/tabs";
 import { ResumeUpload } from "./ResumeUpload";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export function JobsContainer() {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
@@ -77,22 +78,28 @@ export function JobsContainer() {
         </>
       ) : (
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className={cn(tabsListStyles.home)}>
-            <TabsTrigger
-              value="recommended"
-              className={cn(tabTriggerStyles.home)}
-            >
-              <Zap className="h-4 w-4 mr-2" /> Pour vous
-            </TabsTrigger>
-            <TabsTrigger value="recent" className={cn(tabTriggerStyles.home)}>
-              <Pin className="h-4 w-4 mr-2" />
-              Les Recherches Récentes
-            </TabsTrigger>
-            <TabsTrigger value="resume" className={cn(tabTriggerStyles.home)}>
-              <FileText className="h-4 w-4 mr-2" />
-              Télécharger votre CV
-            </TabsTrigger>
-          </TabsList>
+          <ScrollArea className="w-full max-sm:pb-2 pb-0">
+            <TabsList className={cn(tabsListStyles.home)}>
+              <TabsTrigger
+                value="recommended"
+                className={cn(tabTriggerStyles.home)}
+              >
+                <Zap className="h-4 w-4 mr-2" /> Pour vous
+              </TabsTrigger>
+              <TabsTrigger value="recent" className={cn(tabTriggerStyles.home)}>
+                <Pin className="h-4 w-4 mr-2" />
+                Les Recherches Récentes
+              </TabsTrigger>
+              <TabsTrigger value="resume" className={cn(tabTriggerStyles.home)}>
+                <FileText className="h-4 w-4 mr-2" />
+                Télécharger votre CV
+              </TabsTrigger>
+            </TabsList>
+            <ScrollBar
+              orientation="horizontal"
+              className="flex h-2.5 touch-none select-none transition-colors ease-out hover:bg-accent"
+            />
+          </ScrollArea>
           <Separator />
 
           <TabsContent value="recommended" className="mt-6">
