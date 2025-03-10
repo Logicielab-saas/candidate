@@ -46,14 +46,8 @@ const personalInfoSchema = z.object({
 type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
 
 export function PersonalInfoStep() {
-  const {
-    personalInfo,
-    setPersonalInfo,
-    nextStep,
-    prevStep,
-    resumeData,
-    experienceData,
-  } = useJobApplyStore();
+  const { personalInfo, setPersonalInfo, nextStep, prevStep, resumeData } =
+    useJobApplyStore();
 
   const form = useForm<PersonalInfoFormData>({
     resolver: zodResolver(personalInfoSchema),
@@ -93,10 +87,6 @@ export function PersonalInfoStep() {
           }),
       // Include all fields from current step as they are all required
       personalInfo: data,
-      // Only include experience data if it has any positions
-      ...(experienceData.positions.length > 0 && {
-        experience: experienceData,
-      }),
     };
 
     // Log filtered global application data

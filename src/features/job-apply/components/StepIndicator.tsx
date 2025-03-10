@@ -19,7 +19,7 @@ interface StepConfig {
 const steps: StepConfig[] = [
   { id: "resume", label: "CV" },
   { id: "personal-info", label: "Informations" },
-  { id: "experience", label: "Expérience" },
+  { id: "questions", label: "Questions" },
   { id: "review", label: "Révision" },
 ];
 

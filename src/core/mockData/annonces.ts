@@ -127,7 +127,7 @@ export const MOCK_ANNONCES: JobDetails[] = [
         id: "choice-1",
         type: "choice",
         isRequired: true,
-        isMultipleChoices: false,
+        isMultipleChoices: true,
         options: ["Facebook", "Instagram", "Twitter", "LinkedIn"],
         question: "Quelle est votre plateforme de prédilection ?",
       },

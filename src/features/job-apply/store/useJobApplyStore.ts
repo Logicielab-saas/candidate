@@ -12,7 +12,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { MOCK_USER } from "@/core/mockData/user";
 
-export type JobApplyStep = "resume" | "personal-info" | "experience" | "review";
+export type JobApplyStep = "resume" | "personal-info" | "questions" | "review";
 
 interface ResumeData {
   resumePath: string;
@@ -31,9 +31,13 @@ interface PersonalInfoData {
   address: string;
 }
 
-interface ExperienceData {
-  // Will be implemented in future steps
-  positions: string[]; // Placeholder property to avoid empty interface error
+interface QuestionAnswer {
+  id: string;
+  answer: string | string[];
+}
+
+interface QuestionsData {
+  answers: QuestionAnswer[];
 }
 
 export interface JobApplyState {
@@ -43,7 +47,7 @@ export interface JobApplyState {
   // Form data for each step
   resumeData: ResumeData;
   personalInfo: PersonalInfoData;
-  experienceData: ExperienceData;
+  questionsData: QuestionsData;
 
   // Form status
   isSubmitting: boolean;
@@ -55,7 +59,7 @@ export interface JobApplyState {
   prevStep: () => void;
   setResumeData: (data: Partial<ResumeData>) => void;
   setPersonalInfo: (data: Partial<PersonalInfoData>) => void;
-  setExperienceData: (data: Partial<ExperienceData>) => void;
+  setQuestionsData: (data: Partial<QuestionsData>) => void;
   resetForm: () => void;
 }
 
@@ -63,7 +67,7 @@ export interface JobApplyState {
 const stepOrder: JobApplyStep[] = [
   "resume",
   "personal-info",
-  "experience",
+  "questions",
   "review",
 ];
 
@@ -85,6 +89,9 @@ export const useJobApplyStore = create<JobApplyState>()(
       email: MOCK_USER.email || "",
       phone: MOCK_USER.phone || "",
       address: MOCK_USER.address || "",
+    },
+    questionsData: {
+      answers: [],
     },
     experienceData: {
       positions: [],
@@ -123,9 +130,9 @@ export const useJobApplyStore = create<JobApplyState>()(
         personalInfo: { ...state.personalInfo, ...data },
       })),
 
-    setExperienceData: (data) =>
+    setQuestionsData: (data) =>
       set((state) => ({
-        experienceData: { ...state.experienceData, ...data },
+        questionsData: { ...state.questionsData, ...data },
       })),
 
     resetForm: () =>
@@ -146,8 +153,8 @@ export const useJobApplyStore = create<JobApplyState>()(
           phone: MOCK_USER.phone || "",
           address: MOCK_USER.address || "",
         },
-        experienceData: {
-          positions: [],
+        questionsData: {
+          answers: [],
         },
         isSubmitting: false,
         isSubmitted: false,

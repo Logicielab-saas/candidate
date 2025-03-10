@@ -40,7 +40,7 @@ interface ResumeStepProps {
 }
 
 export function ResumeStep({ isCVRequired = true }: ResumeStepProps) {
-  const { resumeData, setResumeData, nextStep, personalInfo, experienceData } =
+  const { resumeData, setResumeData, nextStep, personalInfo } =
     useJobApplyStore();
   const [selectedCVType, setSelectedCVType] = useState<"postuly" | "user">(
     resumeData.userCVPath ? "user" : "postuly"
@@ -132,10 +132,6 @@ export function ResumeStep({ isCVRequired = true }: ResumeStepProps) {
         },
         {}
       ),
-      // Only include experience data if it has any positions
-      ...(experienceData.positions.length > 0 && {
-        experience: experienceData,
-      }),
     };
 
     // Log current step data
@@ -167,10 +163,6 @@ export function ResumeStep({ isCVRequired = true }: ResumeStepProps) {
         },
         {}
       ),
-      // Only include experience data if it has any positions
-      ...(experienceData.positions.length > 0 && {
-        experience: experienceData,
-      }),
     };
 
     // Log current step data
