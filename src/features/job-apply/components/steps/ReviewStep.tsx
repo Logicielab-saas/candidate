@@ -17,11 +17,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, FileText, Send, User, MessageSquare } from "lucide-react";
-import { PDFViewer } from "@/features/candidature/(profile)/components/PDFViewer";
+import { ArrowLeft, Send, User, MessageSquare } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { type JobDetails } from "@/core/mockData/annonces";
+import { CVSection } from "./review/CVSection";
 
 interface ReviewStepProps {
   jobDetails: JobDetails;
@@ -86,30 +86,7 @@ export function ReviewStep({ jobDetails }: ReviewStepProps) {
 
       <CardContent className="space-y-6">
         {/* Resume Section */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <FileText className="h-5 w-5 text-primary" />
-            <h3 className="text-lg font-semibold">CV</h3>
-          </div>
-          <Separator />
-          {resumeData.skipped ? (
-            <p className="text-muted-foreground italic">CV non requis</p>
-          ) : (
-            <>
-              <p className="text-sm text-muted-foreground mb-4">
-                Type de CV:{" "}
-                <span className="font-medium text-foreground">
-                  {resumeData.selectedCVType === "postuly"
-                    ? "CV Postuly"
-                    : "CV Personnel"}
-                </span>
-              </p>
-              <div className="max-h-[300px] overflow-hidden rounded-lg border">
-                <PDFViewer url={resumeData.resumePath} />
-              </div>
-            </>
-          )}
-        </div>
+        <CVSection isCVRequired={jobDetails.preferences.requireResume} />
 
         {/* Personal Information Section */}
         <div className="space-y-4">

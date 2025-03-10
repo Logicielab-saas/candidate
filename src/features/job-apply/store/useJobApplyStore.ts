@@ -14,7 +14,7 @@ import { MOCK_USER } from "@/core/mockData/user";
 
 export type JobApplyStep = "resume" | "personal-info" | "questions" | "review";
 
-interface ResumeData {
+export interface ResumeData {
   resumePath: string;
   isUploaded: boolean;
   postulyCVPath?: string;
