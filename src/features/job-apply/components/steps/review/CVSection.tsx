@@ -9,7 +9,6 @@
 import { FileText, Pencil } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { PDFViewer } from "@/features/candidature/(profile)/components/PDFViewer";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { EditCVDialog } from "./EditCVDialog";
 import { useJobApplyStore } from "@/features/job-apply/store/useJobApplyStore";
@@ -30,15 +29,12 @@ export function CVSection({ isCVRequired }: CVSectionProps) {
           <FileText className="h-5 w-5 text-primary" />
           <h3 className="text-lg font-semibold">CV</h3>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+        <span
+          className="text-primaryHex-600 font-bold rounded-full p-2 bg-primaryHex-100 hover:bg-primaryHex-200 hover:text-primaryHex-600 cursor-pointer"
           onClick={() => setIsDialogOpen(true)}
         >
-          <Pencil className="h-4 w-4" />
-          Modifier
-        </Button>
+          <Pencil className="h-5 w-5" />
+        </span>
       </div>
       <Separator />
       {resumeData.skipped ? (

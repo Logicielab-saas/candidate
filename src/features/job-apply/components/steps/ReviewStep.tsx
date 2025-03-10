@@ -17,11 +17,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Send, User, MessageSquare } from "lucide-react";
+import { ArrowLeft, Send, MessageSquare } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { type JobDetails } from "@/core/mockData/annonces";
 import { CVSection } from "./review/CVSection";
+import { PersonalInfoSection } from "./review/PersonalInfoSection";
 
 interface ReviewStepProps {
   jobDetails: JobDetails;
@@ -89,33 +90,7 @@ export function ReviewStep({ jobDetails }: ReviewStepProps) {
         <CVSection isCVRequired={jobDetails.preferences.requireResume} />
 
         {/* Personal Information Section */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <User className="h-5 w-5 text-primary" />
-            <h3 className="text-lg font-semibold">Informations personnelles</h3>
-          </div>
-          <Separator />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <p className="text-sm text-muted-foreground">Nom complet</p>
-              <p className="font-medium">
-                {personalInfo.firstName} {personalInfo.lastName}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Email</p>
-              <p className="font-medium">{personalInfo.email}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Téléphone</p>
-              <p className="font-medium">{personalInfo.phone}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Adresse</p>
-              <p className="font-medium">{personalInfo.address}</p>
-            </div>
-          </div>
-        </div>
+        <PersonalInfoSection />
 
         {/* Questions Section */}
         <div className="space-y-4">
