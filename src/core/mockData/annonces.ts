@@ -120,7 +120,7 @@ export const MOCK_ANNONCES: JobDetails[] = [
       {
         id: "open-1",
         type: "open",
-        isRequired: true,
+        isRequired: false,
         question: "Décrivez votre expérience en gestion des réseaux sociaux",
       },
       {
