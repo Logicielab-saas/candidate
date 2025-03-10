@@ -46,8 +46,14 @@ const personalInfoSchema = z.object({
 type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
 
 export function PersonalInfoStep() {
-  const { personalInfo, setPersonalInfo, nextStep, prevStep } =
-    useJobApplyStore();
+  const {
+    personalInfo,
+    setPersonalInfo,
+    nextStep,
+    prevStep,
+    resumeData,
+    experienceData,
+  } = useJobApplyStore();
 
   const form = useForm<PersonalInfoFormData>({
     resolver: zodResolver(personalInfoSchema),
@@ -61,7 +67,19 @@ export function PersonalInfoStep() {
   });
 
   const onSubmit = (data: PersonalInfoFormData) => {
+    // Log current step data
+    console.log("Current Step (Personal Info):", data);
+
+    // Update store
     setPersonalInfo(data);
+
+    // Log global application data
+    console.log("Global Application Data:", {
+      resume: resumeData,
+      personalInfo: data,
+      experience: experienceData,
+    });
+
     nextStep();
   };
 

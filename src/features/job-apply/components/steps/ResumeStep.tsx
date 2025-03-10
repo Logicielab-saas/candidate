@@ -40,7 +40,8 @@ interface ResumeStepProps {
 }
 
 export function ResumeStep({ isCVRequired = true }: ResumeStepProps) {
-  const { resumeData, setResumeData, nextStep } = useJobApplyStore();
+  const { resumeData, setResumeData, nextStep, personalInfo, experienceData } =
+    useJobApplyStore();
   const [selectedCVType, setSelectedCVType] = useState<"postuly" | "user">(
     resumeData.userCVPath ? "user" : "postuly"
   );
@@ -100,24 +101,56 @@ export function ResumeStep({ isCVRequired = true }: ResumeStepProps) {
 
   // Handle continue to next step
   const handleContinue = () => {
-    // If user has selected a CV, mark it as uploaded
-    if (selectedCVType === "user" && userCVPath) {
-      setResumeData({
-        ...resumeData,
+    // Prepare resume data based on selection
+    let updatedResumeData = {};
+
+    if (selectedCVType === "postuly") {
+      updatedResumeData = {
+        selectedCVType,
+        postulyCVPath: resumeData.postulyCVPath,
+        isUploaded: false,
+      };
+    } else if (selectedCVType === "user" && userCVPath) {
+      updatedResumeData = {
+        selectedCVType,
+        resumePath: userCVPath,
         isUploaded: true,
-      });
+      };
     }
+
+    // Update store with only necessary data
+    setResumeData(updatedResumeData);
+
+    // Log current step data
+    console.log("Current Step (Resume):", updatedResumeData);
+
+    // Log global application data
+    console.log("Global Application Data:", {
+      resume: updatedResumeData,
+      personalInfo,
+      experience: experienceData,
+    });
 
     nextStep();
   };
 
   // Handle skipping the CV step
   const handleSkip = () => {
-    // Mark that user chose to skip CV
-    setResumeData({
-      ...resumeData,
-      isUploaded: false,
+    // Only include skipped flag when skipping
+    const updatedResumeData = {
       skipped: true,
+    };
+
+    setResumeData(updatedResumeData);
+
+    // Log current step data
+    console.log("Current Step (Resume - Skipped):", updatedResumeData);
+
+    // Log global application data
+    console.log("Global Application Data:", {
+      resume: updatedResumeData,
+      personalInfo,
+      experience: experienceData,
     });
 
     nextStep();
