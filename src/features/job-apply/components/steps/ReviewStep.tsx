@@ -23,6 +23,7 @@ import { type JobDetails } from "@/core/mockData/annonces";
 import { CVSection } from "./review/CVSection";
 import { PersonalInfoSection } from "./review/PersonalInfoSection";
 import { QuestionsSection } from "./review/QuestionsSection";
+import { DocumentsSection } from "./review/DocumentsSection";
 
 interface ReviewStepProps {
   jobDetails: JobDetails;
@@ -80,6 +81,9 @@ export function ReviewStep({ jobDetails }: ReviewStepProps) {
 
         {/* Questions Section */}
         <QuestionsSection questions={jobDetails.questions} />
+
+        {/* Documents Section */}
+        <DocumentsSection />
       </CardContent>
 
       <CardFooter className="flex flex-col sm:flex-row gap-4 sm:justify-between">

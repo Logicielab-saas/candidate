@@ -40,6 +40,14 @@ interface QuestionsData {
   answers: QuestionAnswer[];
 }
 
+export interface Document {
+  id: string;
+  name: string;
+  type: string;
+  url: string;
+  size: number;
+}
+
 export interface JobApplyState {
   // Current step in the application process
   currentStep: JobApplyStep;
@@ -48,6 +56,7 @@ export interface JobApplyState {
   resumeData: ResumeData;
   personalInfo: PersonalInfoData;
   questionsData: QuestionsData;
+  documents: Document[];
 
   // Form status
   isSubmitting: boolean;
@@ -60,6 +69,8 @@ export interface JobApplyState {
   setResumeData: (data: Partial<ResumeData>) => void;
   setPersonalInfo: (data: Partial<PersonalInfoData>) => void;
   setQuestionsData: (data: Partial<QuestionsData>) => void;
+  addDocument: (document: Document) => void;
+  removeDocument: (id: string) => void;
   resetForm: () => void;
 }
 
@@ -93,9 +104,7 @@ export const useJobApplyStore = create<JobApplyState>()(
     questionsData: {
       answers: [],
     },
-    experienceData: {
-      positions: [],
-    },
+    documents: [],
     isSubmitting: false,
     isSubmitted: false,
 
@@ -135,6 +144,16 @@ export const useJobApplyStore = create<JobApplyState>()(
         questionsData: { ...state.questionsData, ...data },
       })),
 
+    addDocument: (document) =>
+      set((state) => ({
+        documents: [...state.documents, document],
+      })),
+
+    removeDocument: (id) =>
+      set((state) => ({
+        documents: state.documents.filter((doc) => doc.id !== id),
+      })),
+
     resetForm: () =>
       set({
         currentStep: "resume",
@@ -156,6 +175,7 @@ export const useJobApplyStore = create<JobApplyState>()(
         questionsData: {
           answers: [],
         },
+        documents: [],
         isSubmitting: false,
         isSubmitted: false,
       }),
