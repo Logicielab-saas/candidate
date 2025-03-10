@@ -38,6 +38,7 @@ import parse from "html-react-parser";
 import DOMPurify from "isomorphic-dompurify";
 import { ReportJobDialog } from "@/features/candidature/(profile)/components/my-jobs/ReportJobDialog";
 import { ShareJobPopover } from "./ShareJobPopover";
+import Link from "next/link";
 
 export function JobDetails() {
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -186,8 +187,10 @@ export function JobDetails() {
                 </span>
               </div>
             )}
-            <Button size="sm" className="w-full">
-              Postuler <ArrowRight className="h-4 w-4" />
+            <Button size="sm" className="w-full" asChild>
+              <Link href={`/job-apply?jobId=${job.id}`}>
+                Postuler <ArrowRight className="h-4 w-4" />
+              </Link>
             </Button>
           </div>
         </CardHeader>
