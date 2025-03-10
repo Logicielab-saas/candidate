@@ -19,7 +19,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useState, useEffect, ChangeEvent, DragEvent } from "react";
+import { useState, useEffect, ChangeEvent, DragEvent, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import {
@@ -30,6 +30,8 @@ import {
   Trash2,
   AlertCircle,
   CheckCircle2,
+  Eye,
+  MoreVertical,
 } from "lucide-react";
 import {
   Dialog,
@@ -39,7 +41,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Progress } from "@/components/ui/progress";
+import Link from "next/link";
 
 interface ResumeFile {
   name: string;
@@ -59,6 +69,7 @@ export function ResumeUpload() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [isReplacing, setIsReplacing] = useState(false);
   const [uploadState, setUploadState] = useState<UploadState>({
     status: "idle",
   });
@@ -70,7 +81,7 @@ export function ResumeUpload() {
     lastModified: Date.now(),
   });
   const { toast } = useToast();
-  //* const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   // Handle toast notifications based on upload state changes
@@ -116,6 +127,13 @@ export function ResumeUpload() {
     }
   };
 
+  const handleReplace = () => {
+    setIsReplacing(true);
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   const handleFileUpload = async (file: File) => {
     // Validate file type
     if (!file.type.includes("pdf")) {
@@ -155,7 +173,13 @@ export function ResumeUpload() {
             type: file.type,
             lastModified: file.lastModified,
           });
-          setUploadState({ status: "success" });
+          setUploadState({
+            status: "success",
+            message: isReplacing
+              ? "CV remplacé avec succès"
+              : "CV téléchargé avec succès",
+          });
+          setIsReplacing(false);
           return 100;
         }
         return prev + 5;
@@ -253,23 +277,54 @@ export function ResumeUpload() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="gap-2"
-                    onClick={handleDownload}
-                  >
-                    <FileDown className="h-4 w-4" />
-                    Télécharger
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-destructive hover:text-destructive"
-                    onClick={() => setShowDeleteDialog(true)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm" className="gap-2">
+                        <MoreVertical className="h-4 w-4" />
+                        Actions
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-[200px]">
+                      <DropdownMenuItem
+                        className="flex items-center gap-2 cursor-pointer"
+                        onClick={handleDownload}
+                      >
+                        <FileDown className="h-4 w-4" />
+                        <span>Télécharger</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="flex items-center gap-2 cursor-pointer"
+                        onClick={handleReplace}
+                      >
+                        <FileUp className="h-4 w-4" />
+                        <span>Remplacer</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link
+                          href="/profile/my-cv"
+                          className="flex items-center gap-2 cursor-pointer"
+                        >
+                          <Eye className="h-4 w-4" />
+                          <span>Voir CV</span>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive"
+                        onClick={() => setShowDeleteDialog(true)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        <span>Supprimer</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <Input
+                    ref={fileInputRef}
+                    type="file"
+                    className="hidden"
+                    accept=".pdf"
+                    onChange={handleFileSelect}
+                  />
                 </div>
               </div>
 
@@ -277,6 +332,16 @@ export function ResumeUpload() {
                 <CheckCircle2 className="h-4 w-4 text-green-500" />
                 <span>CV prêt pour les candidatures</span>
               </div>
+
+              {isUploading && (
+                <div className="w-full space-y-2 mt-4">
+                  <Progress value={uploadProgress} className="h-2" />
+                  <p className="text-sm text-center text-muted-foreground">
+                    {isReplacing ? "Remplacement" : "Téléchargement"} en
+                    cours... {uploadProgress}%
+                  </p>
+                </div>
+              )}
             </div>
           ) : (
             // Upload Area
