@@ -25,6 +25,7 @@ import { PersonalInfoSection } from "./review/PersonalInfoSection";
 import { QuestionsSection } from "./review/QuestionsSection";
 import { DocumentsSection } from "./review/DocumentsSection";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 interface ReviewStepProps {
   jobDetails: JobDetails;
@@ -35,6 +36,7 @@ export function ReviewStep({ jobDetails }: ReviewStepProps) {
     useJobApplyStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   // Handle application submission
   const handleSubmit = async () => {
@@ -87,7 +89,8 @@ export function ReviewStep({ jobDetails }: ReviewStepProps) {
         description: "Votre candidature a été envoyée avec succès",
       });
 
-      // TODO: Handle successful submission (redirect to success page, show confirmation, etc.)
+      // Navigate to success page
+      router.push("/job-apply/success");
     } catch (error) {
       console.error("Error submitting application:", error);
 
