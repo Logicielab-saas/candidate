@@ -111,7 +111,7 @@ export const MOCK_ANNONCES: JobDetails[] = [
     preferences: {
       notificationEmails: [{ value: "recrutement@company.com" }],
       notifyOnNewApplication: true,
-      requireResume: true,
+      requireResume: false,
       allowCandidateContact: true,
       hasDeadline: true,
       deadline: "2025-03-10T23:59:59.999Z",

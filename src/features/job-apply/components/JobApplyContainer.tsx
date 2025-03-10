@@ -61,11 +61,14 @@ export function JobApplyContainer() {
       );
     }
 
+    // Check if CV is required for this job
+    const isCVRequired = jobDetails.preferences?.requireResume ?? true;
+
     switch (currentStep) {
       case "resume":
         return (
           <Suspense fallback={<StepSkeleton />}>
-            <ResumeStep />
+            <ResumeStep isCVRequired={isCVRequired} />
           </Suspense>
         );
       case "personal-info":
@@ -106,9 +109,7 @@ export function JobApplyContainer() {
         <h1 className="text-3xl font-bold text-center mb-2">
           {jobDetails ? (
             <>
-              <span className="text-muted-foreground">
-                Bonjour {MOCK_USER.name},
-              </span>{" "}
+              Bonjour <span className="text-primary">{MOCK_USER.name},</span>{" "}
               <div className="mt-1">
                 Postuler pour:{" "}
                 <span className="text-primary">

@@ -19,6 +19,7 @@ interface ResumeData {
   isUploaded: boolean;
   postulyCVPath?: string;
   userCVPath?: string;
+  skipped?: boolean;
 }
 
 interface PersonalInfoData {

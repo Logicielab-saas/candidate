@@ -4,6 +4,7 @@
  * Displays the user's resume using the PDFViewer component
  * Allows users to select between Postuly CV and their own uploaded CV
  * Provides preview capabilities for both options
+ * Allows skipping if CV is not required for the job
  */
 
 "use client";
@@ -21,11 +22,11 @@ import {
 } from "@/components/ui/card";
 import {
   ArrowRight,
-  CheckCircle,
   Upload,
   FileText,
   User,
   RefreshCw,
+  ArrowRightCircle,
 } from "lucide-react";
 import { useState, useRef } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -34,9 +35,12 @@ import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { tabsListStyles, tabTriggerStyles } from "@/core/styles/tabs";
 
-export function ResumeStep() {
+interface ResumeStepProps {
+  isCVRequired: boolean;
+}
+
+export function ResumeStep({ isCVRequired = true }: ResumeStepProps) {
   const { resumeData, setResumeData, nextStep } = useJobApplyStore();
-  const [isConfirmed, setIsConfirmed] = useState(resumeData.isUploaded);
   const [selectedCVType, setSelectedCVType] = useState<"postuly" | "user">(
     resumeData.userCVPath ? "user" : "postuly"
   );
@@ -56,14 +60,11 @@ export function ResumeStep() {
         resumePath: resumeData.postulyCVPath || "/cvs/mycv.pdf",
         isUploaded: false,
       });
-      setIsConfirmed(false);
     } else if (value === "user" && userCVPath) {
       setResumeData({
         resumePath: userCVPath,
         isUploaded: true,
       });
-      // Auto-confirm when selecting user CV that was already uploaded
-      setIsConfirmed(true);
     }
   };
 
@@ -87,9 +88,6 @@ export function ResumeStep() {
       // Switch to user CV type
       setSelectedCVType("user");
 
-      // Auto-confirm when uploading a new CV
-      setIsConfirmed(true);
-
       // Switch to preview tab
       setActiveTab("preview");
     }
@@ -100,15 +98,28 @@ export function ResumeStep() {
     fileInputRef.current?.click();
   };
 
-  const handleConfirmResume = () => {
-    setResumeData({
-      ...resumeData,
-      isUploaded: true,
-    });
-    setIsConfirmed(true);
+  // Handle continue to next step
+  const handleContinue = () => {
+    // If user has selected a CV, mark it as uploaded
+    if (selectedCVType === "user" && userCVPath) {
+      setResumeData({
+        ...resumeData,
+        isUploaded: true,
+      });
+    }
+
+    nextStep();
   };
 
-  const handleContinue = () => {
+  // Handle skipping the CV step
+  const handleSkip = () => {
+    // Mark that user chose to skip CV
+    setResumeData({
+      ...resumeData,
+      isUploaded: false,
+      skipped: true,
+    });
+
     nextStep();
   };
 
@@ -117,7 +128,9 @@ export function ResumeStep() {
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Votre CV</CardTitle>
         <CardDescription>
-          Sélectionnez et vérifiez votre CV avant de continuer
+          {isCVRequired
+            ? "Sélectionnez et vérifiez votre CV avant de continuer"
+            : "Vous pouvez ajouter un CV ou passer cette étape"}
         </CardDescription>
       </CardHeader>
 
@@ -232,33 +245,28 @@ export function ResumeStep() {
         </Tabs>
       </CardContent>
 
-      <CardFooter className="flex flex-col sm:flex-row gap-4 sm:justify-between">
-        {!isConfirmed ? (
-          <Button
-            variant="default"
-            className="flex items-center gap-2 w-full sm:w-auto"
-            onClick={handleConfirmResume}
-            disabled={selectedCVType === "user" && !userCVPath}
-          >
-            <CheckCircle className="h-4 w-4" />
-            Confirmer ce CV
-          </Button>
-        ) : (
-          <div className="flex items-center gap-2 text-primary">
-            <CheckCircle className="h-5 w-5" />
-            <span className="font-medium">CV confirmé</span>
-          </div>
-        )}
+      <CardFooter className="flex flex-col sm:flex-row gap-4 sm:justify-end">
+        <div className="flex flex-col sm:flex-row gap-4">
+          {!isCVRequired && (
+            <Button
+              variant="outline"
+              className="flex items-center gap-2 w-full sm:w-auto"
+              onClick={handleSkip}
+            >
+              <ArrowRightCircle className="h-4 w-4" />
+              Passer cette étape
+            </Button>
+          )}
 
-        {isConfirmed && (
           <Button
             onClick={handleContinue}
             className="flex items-center gap-2 w-full sm:w-auto"
+            disabled={isCVRequired && selectedCVType === "user" && !userCVPath}
           >
-            Continuer vers les informations personnelles
+            Continuer
             <ArrowRight className="h-4 w-4" />
           </Button>
-        )}
+        </div>
       </CardFooter>
     </Card>
   );
