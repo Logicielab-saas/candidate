@@ -24,38 +24,80 @@ import { CVSection } from "./review/CVSection";
 import { PersonalInfoSection } from "./review/PersonalInfoSection";
 import { QuestionsSection } from "./review/QuestionsSection";
 import { DocumentsSection } from "./review/DocumentsSection";
+import { useToast } from "@/hooks/use-toast";
 
 interface ReviewStepProps {
   jobDetails: JobDetails;
 }
 
 export function ReviewStep({ jobDetails }: ReviewStepProps) {
-  const { resumeData, personalInfo, questionsData, prevStep } =
+  const { resumeData, personalInfo, questionsData, documents, prevStep } =
     useJobApplyStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   // Handle application submission
   const handleSubmit = async () => {
     setIsSubmitting(true);
 
     try {
+      // Prepare the cleaned up resume data
+      const cleanedResumeData = resumeData.skipped
+        ? { skipped: true }
+        : {
+            selectedCVType: resumeData.selectedCVType,
+            ...(resumeData.selectedCVType === "postuly"
+              ? { postulyCVPath: resumeData.postulyCVPath }
+              : { resumePath: resumeData.resumePath }),
+          };
+
+      // Prepare the complete application data
+      const applicationData = {
+        jobId: jobDetails.id,
+        jobTitle: jobDetails.baseInformation.jobTitle,
+        resume: cleanedResumeData,
+        personalInfo: {
+          firstName: personalInfo.firstName,
+          lastName: personalInfo.lastName,
+          email: personalInfo.email,
+          phone: personalInfo.phone,
+          address: personalInfo.address,
+        },
+        questions: questionsData.answers,
+        documents: documents.map(({ id, name, type, url, size }) => ({
+          id,
+          name,
+          type,
+          url,
+          size,
+        })),
+      };
+
       // Here you would typically send the application data to your backend
       // For now, we'll just simulate an API call
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // Log the complete application data
-      console.log("Submitting application:", {
-        jobId: jobDetails.id,
-        jobTitle: jobDetails.baseInformation.jobTitle,
-        resume: resumeData,
-        personalInfo,
-        questions: questionsData,
+      console.log("Application submitted successfully:", applicationData);
+
+      // Show success notification
+      toast({
+        variant: "success",
+        title: "Candidature envoyée",
+        description: "Votre candidature a été envoyée avec succès",
       });
 
       // TODO: Handle successful submission (redirect to success page, show confirmation, etc.)
     } catch (error) {
       console.error("Error submitting application:", error);
-      // TODO: Handle submission error (show error message, etc.)
+
+      // Show error notification
+      toast({
+        variant: "destructive",
+        title: "Erreur",
+        description:
+          "Une erreur est survenue lors de l'envoi de votre candidature",
+      });
     } finally {
       setIsSubmitting(false);
     }
