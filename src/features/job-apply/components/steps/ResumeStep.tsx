@@ -36,7 +36,7 @@ import { tabsListStyles, tabTriggerStyles } from "@/core/styles/tabs";
 
 export function ResumeStep() {
   const { resumeData, setResumeData, nextStep } = useJobApplyStore();
-  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(resumeData.isUploaded);
   const [selectedCVType, setSelectedCVType] = useState<"postuly" | "user">(
     resumeData.userCVPath ? "user" : "postuly"
   );
@@ -56,15 +56,15 @@ export function ResumeStep() {
         resumePath: resumeData.postulyCVPath || "/cvs/mycv.pdf",
         isUploaded: false,
       });
+      setIsConfirmed(false);
     } else if (value === "user" && userCVPath) {
       setResumeData({
         resumePath: userCVPath,
         isUploaded: true,
       });
+      // Auto-confirm when selecting user CV that was already uploaded
+      setIsConfirmed(true);
     }
-
-    // Reset confirmation when changing CV type
-    setIsConfirmed(false);
   };
 
   // Handle file upload
@@ -87,8 +87,8 @@ export function ResumeStep() {
       // Switch to user CV type
       setSelectedCVType("user");
 
-      // Reset confirmation
-      setIsConfirmed(false);
+      // Auto-confirm when uploading a new CV
+      setIsConfirmed(true);
 
       // Switch to preview tab
       setActiveTab("preview");

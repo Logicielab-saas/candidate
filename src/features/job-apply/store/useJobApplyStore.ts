@@ -69,8 +69,9 @@ export const useJobApplyStore = create<JobApplyState>()(
     // Initial state
     currentStep: "resume",
     resumeData: {
-      resumePath: MOCK_USER.postulyCVPath || "/cvs/mycv.pdf", // Default to Postuly CV
-      isUploaded: false,
+      resumePath:
+        MOCK_USER.resumePath || MOCK_USER.postulyCVPath || "/cvs/mycv.pdf",
+      isUploaded: !!MOCK_USER.resumePath,
       postulyCVPath: MOCK_USER.postulyCVPath || "/cvs/mycv.pdf",
       userCVPath: MOCK_USER.resumePath || undefined,
     },
@@ -126,8 +127,9 @@ export const useJobApplyStore = create<JobApplyState>()(
       set({
         currentStep: "resume",
         resumeData: {
-          resumePath: MOCK_USER.postulyCVPath || "/cvs/mycv.pdf",
-          isUploaded: false,
+          resumePath:
+            MOCK_USER.resumePath || MOCK_USER.postulyCVPath || "/cvs/mycv.pdf",
+          isUploaded: !!MOCK_USER.resumePath,
           postulyCVPath: MOCK_USER.postulyCVPath || "/cvs/mycv.pdf",
           userCVPath: MOCK_USER.resumePath || undefined,
         },
