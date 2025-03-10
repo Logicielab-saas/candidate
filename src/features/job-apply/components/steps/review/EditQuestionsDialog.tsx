@@ -33,6 +33,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Label } from "@/components/ui/label";
 import { type SubmissionQuestion } from "@/core/mockData/annonces";
 import { isChoiceQuestion, type ChoiceQuestionWithId } from "@/core/types";
+import { useToast } from "@/hooks/use-toast";
 
 interface EditQuestionsDialogProps {
   open: boolean;
@@ -46,6 +47,7 @@ export function EditQuestionsDialog({
   questions,
 }: EditQuestionsDialogProps) {
   const { questionsData, setQuestionsData } = useJobApplyStore();
+  const { toast } = useToast();
 
   // Filter out questions without IDs - memoized to prevent recreation
   const validQuestions = useMemo(
@@ -117,6 +119,12 @@ export function EditQuestionsDialog({
     }));
 
     setQuestionsData({ answers });
+    toast({
+      variant: "success",
+      title: "Réponses modifiées",
+      description:
+        "Vos réponses aux questions ont été mises à jour avec succès",
+    });
     onOpenChange(false);
   };
 

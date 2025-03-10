@@ -32,6 +32,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useToast } from "@/hooks/use-toast";
 
 interface EditPersonalInfoDialogProps {
   open: boolean;
@@ -57,6 +58,7 @@ export function EditPersonalInfoDialog({
 }: EditPersonalInfoDialogProps) {
   const { personalInfo, setPersonalInfo } = useJobApplyStore();
   const [_localInfo, setLocalInfo] = useState(personalInfo);
+  const { toast } = useToast();
 
   const form = useForm<PersonalInfoFormData>({
     resolver: zodResolver(personalInfoSchema),
@@ -73,6 +75,12 @@ export function EditPersonalInfoDialog({
 
   const onSubmit = (data: PersonalInfoFormData) => {
     setPersonalInfo(data);
+    toast({
+      variant: "success",
+      title: "Informations modifiées",
+      description:
+        "Vos informations personnelles ont été mises à jour avec succès",
+    });
     onOpenChange(false);
   };
 

@@ -34,6 +34,7 @@ import { useRef, useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { tabsListStyles, tabTriggerStyles } from "@/core/styles/tabs";
+import { useToast } from "@/hooks/use-toast";
 
 interface EditCVDialogProps {
   open: boolean;
@@ -55,6 +56,7 @@ export function EditCVDialog({
   isCVRequired,
 }: EditCVDialogProps) {
   const { resumeData, setResumeData } = useJobApplyStore();
+  const { toast } = useToast();
 
   // Local state for temporary changes
   const [localState, setLocalState] = useState<LocalCVState>({
@@ -136,6 +138,11 @@ export function EditCVDialog({
       selectedCVType: undefined,
       skipped: true,
     });
+    toast({
+      variant: "success",
+      title: "CV ignoré",
+      description: "Vous avez choisi de ne pas fournir de CV",
+    });
     onOpenChange(false);
   };
 
@@ -151,6 +158,11 @@ export function EditCVDialog({
     };
 
     setResumeData(updatedData);
+    toast({
+      variant: "success",
+      title: "CV modifié",
+      description: "Votre CV a été mis à jour avec succès",
+    });
     onOpenChange(false);
   };
 
