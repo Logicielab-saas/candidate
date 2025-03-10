@@ -20,6 +20,7 @@ interface ResumeData {
   postulyCVPath?: string;
   userCVPath?: string;
   skipped?: boolean;
+  selectedCVType?: "postuly" | "user";
 }
 
 interface PersonalInfoData {
@@ -76,6 +77,7 @@ export const useJobApplyStore = create<JobApplyState>()(
       isUploaded: !!MOCK_USER.resumePath,
       postulyCVPath: MOCK_USER.postulyCVPath || "/cvs/mycv.pdf",
       userCVPath: MOCK_USER.resumePath || undefined,
+      selectedCVType: MOCK_USER.resumePath ? "user" : "postuly",
     },
     personalInfo: {
       firstName: MOCK_USER.name.split(" ")[0] || "",
@@ -135,6 +137,7 @@ export const useJobApplyStore = create<JobApplyState>()(
           isUploaded: !!MOCK_USER.resumePath,
           postulyCVPath: MOCK_USER.postulyCVPath || "/cvs/mycv.pdf",
           userCVPath: MOCK_USER.resumePath || undefined,
+          selectedCVType: MOCK_USER.resumePath ? "user" : "postuly",
         },
         personalInfo: {
           firstName: MOCK_USER.name.split(" ")[0] || "",

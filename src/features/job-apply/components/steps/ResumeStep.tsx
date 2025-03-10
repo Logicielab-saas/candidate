@@ -121,15 +121,28 @@ export function ResumeStep({ isCVRequired = true }: ResumeStepProps) {
     // Update store with only necessary data
     setResumeData(updatedResumeData);
 
+    // Log global application data with only necessary fields
+    const globalData = {
+      resume: updatedResumeData,
+      // Only include filled fields from personalInfo
+      personalInfo: Object.entries(personalInfo).reduce(
+        (acc: Record<string, string>, [key, value]) => {
+          if (value) acc[key] = value;
+          return acc;
+        },
+        {}
+      ),
+      // Only include experience data if it has any positions
+      ...(experienceData.positions.length > 0 && {
+        experience: experienceData,
+      }),
+    };
+
     // Log current step data
     console.log("Current Step (Resume):", updatedResumeData);
 
-    // Log global application data
-    console.log("Global Application Data:", {
-      resume: updatedResumeData,
-      personalInfo,
-      experience: experienceData,
-    });
+    // Log filtered global application data
+    console.log("Global Application Data:", globalData);
 
     nextStep();
   };
@@ -143,15 +156,28 @@ export function ResumeStep({ isCVRequired = true }: ResumeStepProps) {
 
     setResumeData(updatedResumeData);
 
+    // Log global application data with only necessary fields
+    const globalData = {
+      resume: updatedResumeData,
+      // Only include filled fields from personalInfo
+      personalInfo: Object.entries(personalInfo).reduce(
+        (acc: Record<string, string>, [key, value]) => {
+          if (value) acc[key] = value;
+          return acc;
+        },
+        {}
+      ),
+      // Only include experience data if it has any positions
+      ...(experienceData.positions.length > 0 && {
+        experience: experienceData,
+      }),
+    };
+
     // Log current step data
     console.log("Current Step (Resume - Skipped):", updatedResumeData);
 
-    // Log global application data
-    console.log("Global Application Data:", {
-      resume: updatedResumeData,
-      personalInfo,
-      experience: experienceData,
-    });
+    // Log filtered global application data
+    console.log("Global Application Data:", globalData);
 
     nextStep();
   };

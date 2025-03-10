@@ -73,12 +73,34 @@ export function PersonalInfoStep() {
     // Update store
     setPersonalInfo(data);
 
-    // Log global application data
-    console.log("Global Application Data:", {
-      resume: resumeData,
+    // Log global application data with only necessary fields
+    const globalData = {
+      // Include resume data based on its state
+      ...(resumeData.skipped
+        ? { resume: { skipped: true } }
+        : resumeData.selectedCVType === "postuly"
+        ? {
+            resume: {
+              selectedCVType: "postuly",
+              postulyCVPath: resumeData.postulyCVPath,
+            },
+          }
+        : {
+            resume: {
+              selectedCVType: "user",
+              resumePath: resumeData.resumePath,
+            },
+          }),
+      // Include all fields from current step as they are all required
       personalInfo: data,
-      experience: experienceData,
-    });
+      // Only include experience data if it has any positions
+      ...(experienceData.positions.length > 0 && {
+        experience: experienceData,
+      }),
+    };
+
+    // Log filtered global application data
+    console.log("Global Application Data:", globalData);
 
     nextStep();
   };
