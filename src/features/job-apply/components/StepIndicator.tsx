@@ -17,10 +17,10 @@ interface StepConfig {
 }
 
 const steps: StepConfig[] = [
-  { id: "resume", label: "Resume" },
-  { id: "personal-info", label: "Personal Info" },
-  { id: "experience", label: "Experience" },
-  { id: "review", label: "Review" },
+  { id: "resume", label: "CV" },
+  { id: "personal-info", label: "Informations" },
+  { id: "experience", label: "Expérience" },
+  { id: "review", label: "Révision" },
 ];
 
 export function StepIndicator() {

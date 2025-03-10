@@ -10,12 +10,15 @@
 
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import { MOCK_USER } from "@/core/mockData/user";
 
 export type JobApplyStep = "resume" | "personal-info" | "experience" | "review";
 
 interface ResumeData {
   resumePath: string;
   isUploaded: boolean;
+  postulyCVPath?: string;
+  userCVPath?: string;
 }
 
 interface PersonalInfoData {
@@ -66,14 +69,16 @@ export const useJobApplyStore = create<JobApplyState>()(
     // Initial state
     currentStep: "resume",
     resumeData: {
-      resumePath: "/cvs/mycv.pdf", // Default static path as requested
+      resumePath: MOCK_USER.postulyCVPath || "/cvs/mycv.pdf", // Default to Postuly CV
       isUploaded: false,
+      postulyCVPath: MOCK_USER.postulyCVPath || "/cvs/mycv.pdf",
+      userCVPath: MOCK_USER.resumePath || undefined,
     },
     personalInfo: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
+      firstName: MOCK_USER.name.split(" ")[0] || "",
+      lastName: MOCK_USER.name.split(" ")[1] || "",
+      email: MOCK_USER.email || "",
+      phone: MOCK_USER.phone || "",
     },
     experienceData: {
       positions: [],
@@ -121,14 +126,16 @@ export const useJobApplyStore = create<JobApplyState>()(
       set({
         currentStep: "resume",
         resumeData: {
-          resumePath: "/cvs/mycv.pdf",
+          resumePath: MOCK_USER.postulyCVPath || "/cvs/mycv.pdf",
           isUploaded: false,
+          postulyCVPath: MOCK_USER.postulyCVPath || "/cvs/mycv.pdf",
+          userCVPath: MOCK_USER.resumePath || undefined,
         },
         personalInfo: {
-          firstName: "",
-          lastName: "",
-          email: "",
-          phone: "",
+          firstName: MOCK_USER.name.split(" ")[0] || "",
+          lastName: MOCK_USER.name.split(" ")[1] || "",
+          email: MOCK_USER.email || "",
+          phone: MOCK_USER.phone || "",
         },
         experienceData: {
           positions: [],

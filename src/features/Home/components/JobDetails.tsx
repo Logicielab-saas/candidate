@@ -188,7 +188,7 @@ export function JobDetails() {
               </div>
             )}
             <Button size="sm" className="w-full" asChild>
-              <Link href={`/job-apply?jobId=${job.id}`}>
+              <Link target="_blank" href={`/job-apply?jobId=${job.id}`}>
                 Postuler <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>

@@ -139,7 +139,8 @@ export function JobDescriptionPanel({ jobDetails }: JobDescriptionPanelProps) {
               className="text-xs flex items-center gap-1"
             >
               <Calendar className="h-3 w-3" />
-              Apply by {new Date(preferences.deadline).toLocaleDateString()}
+              Postuler avant le{" "}
+              {new Date(preferences.deadline).toLocaleDateString()}
             </Badge>
           )}
         </div>
@@ -170,12 +171,12 @@ export function JobDescriptionPanel({ jobDetails }: JobDescriptionPanelProps) {
           >
             {isExpanded ? (
               <>
-                <span>Show Less</span>
+                <span>Voir moins</span>
                 <ChevronUp className="ml-1 h-4 w-4" />
               </>
             ) : (
               <>
-                <span>View More</span>
+                <span>Voir plus</span>
                 <ChevronDown className="ml-1 h-4 w-4" />
               </>
             )}

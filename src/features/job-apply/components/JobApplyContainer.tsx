@@ -17,6 +17,7 @@ import { Card } from "@/components/ui/card";
 import { useSearchParams } from "next/navigation";
 import { MOCK_ANNONCES } from "@/core/mockData/annonces";
 import { JobDescriptionPanel } from "./JobDescriptionPanel";
+import { MOCK_USER } from "@/core/mockData/user";
 
 // Using the same type as in MOCK_ANNONCES
 type JobDetails = (typeof MOCK_ANNONCES)[0];
@@ -105,10 +106,15 @@ export function JobApplyContainer() {
         <h1 className="text-3xl font-bold text-center mb-2">
           {jobDetails ? (
             <>
-              Postuler pour:{" "}
-              <span className="text-primary">
-                {jobDetails.baseInformation.jobTitle}
-              </span>
+              <span className="text-muted-foreground">
+                Bonjour {MOCK_USER.name},
+              </span>{" "}
+              <div className="mt-1">
+                Postuler pour:{" "}
+                <span className="text-primary">
+                  {jobDetails.baseInformation.jobTitle}
+                </span>
+              </div>
             </>
           ) : (
             "Postuler pour un emploi"
