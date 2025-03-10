@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { EditCVDialog } from "./EditCVDialog";
 import { useJobApplyStore } from "@/features/job-apply/store/useJobApplyStore";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface CVSectionProps {
   isCVRequired: boolean;
@@ -52,9 +53,9 @@ export function CVSection({ isCVRequired }: CVSectionProps) {
                 : "CV Personnel"}
             </span>
           </p>
-          <div className="max-h-[300px] overflow-hidden rounded-lg border">
+          <ScrollArea className="h-[300px] overflow-hidden rounded-lg border">
             <PDFViewer url={resumeData.resumePath} />
-          </div>
+          </ScrollArea>
         </>
       )}
 
