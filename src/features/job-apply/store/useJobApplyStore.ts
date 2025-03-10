@@ -27,6 +27,7 @@ interface PersonalInfoData {
   lastName: string;
   email: string;
   phone: string;
+  address: string;
 }
 
 interface ExperienceData {
@@ -81,6 +82,7 @@ export const useJobApplyStore = create<JobApplyState>()(
       lastName: MOCK_USER.name.split(" ")[1] || "",
       email: MOCK_USER.email || "",
       phone: MOCK_USER.phone || "",
+      address: MOCK_USER.address || "",
     },
     experienceData: {
       positions: [],
@@ -139,6 +141,7 @@ export const useJobApplyStore = create<JobApplyState>()(
           lastName: MOCK_USER.name.split(" ")[1] || "",
           email: MOCK_USER.email || "",
           phone: MOCK_USER.phone || "",
+          address: MOCK_USER.address || "",
         },
         experienceData: {
           positions: [],

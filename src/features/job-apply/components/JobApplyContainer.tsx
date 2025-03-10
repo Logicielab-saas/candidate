@@ -11,7 +11,8 @@
 import { useJobApplyStore } from "../store/useJobApplyStore";
 import { StepIndicator } from "./StepIndicator";
 import { ResumeStep } from "./steps/ResumeStep";
-import { Suspense, useEffect, useState } from "react";
+import { PersonalInfoStep } from "./steps/PersonalInfoStep";
+import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 import { useSearchParams } from "next/navigation";
@@ -66,20 +67,9 @@ export function JobApplyContainer() {
 
     switch (currentStep) {
       case "resume":
-        return (
-          <Suspense fallback={<StepSkeleton />}>
-            <ResumeStep isCVRequired={isCVRequired} />
-          </Suspense>
-        );
+        return <ResumeStep isCVRequired={isCVRequired} />;
       case "personal-info":
-        // Will be implemented in future steps
-        return (
-          <Card className="w-full max-w-4xl mx-auto p-8 flex items-center justify-center">
-            <p className="text-lg text-muted-foreground">
-              Informations personnelles (Prochainement)
-            </p>
-          </Card>
-        );
+        return <PersonalInfoStep />;
       case "experience":
         // Will be implemented in future steps
         return (
