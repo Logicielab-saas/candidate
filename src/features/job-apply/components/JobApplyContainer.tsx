@@ -13,6 +13,7 @@ import { StepIndicator } from "./StepIndicator";
 import { ResumeStep } from "./steps/ResumeStep";
 import { PersonalInfoStep } from "./steps/PersonalInfoStep";
 import { QuestionStep } from "./steps/questions/QuestionStep";
+import { ReviewStep } from "./steps/ReviewStep";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
@@ -74,14 +75,7 @@ export function JobApplyContainer() {
       case "questions":
         return <QuestionStep questions={jobDetails.questions} />;
       case "review":
-        // Will be implemented in future steps
-        return (
-          <Card className="w-full max-w-4xl mx-auto p-8 flex items-center justify-center">
-            <p className="text-lg text-muted-foreground">
-              Révision de la candidature (Prochainement)
-            </p>
-          </Card>
-        );
+        return <ReviewStep jobDetails={jobDetails} />;
       default:
         return <div>Étape inconnue</div>;
     }
