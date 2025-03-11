@@ -3,6 +3,7 @@
  *
  * A client component that provides a form to change the user's email address
  * with validation and loading states using React Hook Form and Zod.
+ * The verification step can be skipped if the user is already verified.
  */
 
 "use client";
@@ -37,6 +38,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { useToast } from "@/hooks/use-toast";
+import { StepIndicator } from "@/components/shared/StepIndicator";
 
 // Static verification code (this will be replaced with real email verification later)
 const VERIFICATION_CODE = "111111";
@@ -61,19 +63,27 @@ const emailChangeSchema = z
 type VerificationForm = z.infer<typeof verificationSchema>;
 type EmailChangeForm = z.infer<typeof emailChangeSchema>;
 
+type Step = "verify" | "change";
+
 interface EmailChangeDialogProps {
   currentEmail: string;
   onEmailChange: (newEmail: string) => Promise<void>;
   trigger?: React.ReactNode;
+  skipInitialVerification?: boolean;
 }
+
+const STEPS = [{ title: "Vérification" }, { title: "Nouvel email" }];
 
 export function EmailChangeDialog({
   currentEmail,
   onEmailChange,
   trigger,
+  skipInitialVerification = false,
 }: EmailChangeDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [step, setStep] = useState<"verify" | "change">("verify");
+  const [step, setStep] = useState<Step>(
+    skipInitialVerification ? "change" : "verify"
+  );
   const [isVerifying, setIsVerifying] = useState(false);
   const { toast } = useToast();
 
@@ -97,7 +107,7 @@ export function EmailChangeDialog({
     if (!open) {
       verificationForm.reset();
       changeForm.reset();
-      setStep("verify");
+      setStep(skipInitialVerification ? "change" : "verify");
     }
   };
 
@@ -161,26 +171,41 @@ export function EmailChangeDialog({
     }
   };
 
-  return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
-        {trigger || <Button variant="outline">Changer</Button>}
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>
-            {step === "verify"
-              ? "Vérification de l'email"
-              : "Changer l'adresse email"}
-          </DialogTitle>
-          <DialogDescription>
-            {step === "verify"
-              ? "Nous allons envoyer un code de vérification à votre adresse email actuelle."
-              : "Entrez votre nouvelle adresse email."}
-          </DialogDescription>
-        </DialogHeader>
+  const getCurrentStepIndex = () => {
+    if (skipInitialVerification) {
+      return step === "change" ? 0 : 0;
+    }
 
-        {step === "verify" ? (
+    switch (step) {
+      case "verify":
+        return 0;
+      case "change":
+        return 1;
+    }
+  };
+
+  const getStepTitle = () => {
+    switch (step) {
+      case "verify":
+        return "Vérification de l'email";
+      case "change":
+        return "Changer l'adresse email";
+    }
+  };
+
+  const getStepDescription = () => {
+    switch (step) {
+      case "verify":
+        return "Nous allons envoyer un code de vérification à votre adresse email actuelle.";
+      case "change":
+        return "Entrez votre nouvelle adresse email.";
+    }
+  };
+
+  const getStepContent = () => {
+    switch (step) {
+      case "verify":
+        return (
           <Form {...verificationForm}>
             <form
               onSubmit={verificationForm.handleSubmit(handleVerificationSubmit)}
@@ -252,7 +277,9 @@ export function EmailChangeDialog({
               </DialogFooter>
             </form>
           </Form>
-        ) : (
+        );
+      case "change":
+        return (
           <Form {...changeForm}>
             <form
               onSubmit={changeForm.handleSubmit(handleEmailChangeSubmit)}
@@ -311,7 +338,25 @@ export function EmailChangeDialog({
               </DialogFooter>
             </form>
           </Form>
-        )}
+        );
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <DialogTrigger asChild>
+        {trigger || <Button variant="outline">Changer</Button>}
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>{getStepTitle()}</DialogTitle>
+          <DialogDescription>{getStepDescription()}</DialogDescription>
+        </DialogHeader>
+        <StepIndicator
+          currentStep={getCurrentStepIndex()}
+          steps={skipInitialVerification ? [STEPS[1]] : STEPS}
+        />
+        {getStepContent()}
       </DialogContent>
     </Dialog>
   );

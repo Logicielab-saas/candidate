@@ -2,8 +2,8 @@
  * PhoneChangeDialog - Dialog for changing user phone number
  *
  * A client component that provides a form to change the user's phone number
- * with a three-step verification process:
- * 1. Verify current phone via OTP
+ * with a verification process that can be either two or three steps:
+ * 1. Verify current phone via OTP (optional, can be skipped if already verified)
  * 2. Enter new phone number
  * 3. Verify new phone via OTP
  */
@@ -40,9 +40,8 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
-import { CheckCircle2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { StepIndicator } from "@/components/shared/StepIndicator";
 
 // Static verification code (this will be replaced with real SMS verification later)
 const VERIFICATION_CODE = "111111";
@@ -67,58 +66,7 @@ interface PhoneChangeDialogProps {
   currentPhone: string;
   onPhoneChange: (newPhone: string) => Promise<void>;
   trigger?: React.ReactNode;
-}
-
-interface StepIndicatorProps {
-  currentStep: number;
-  steps: { title: string }[];
-}
-
-function StepIndicator({ currentStep, steps }: StepIndicatorProps) {
-  return (
-    <div className="relative mb-8">
-      <div className="absolute top-5 left-1 right-1">
-        <div className="h-[2px] bg-muted" />
-      </div>
-      <div className="relative flex justify-between">
-        {steps.map((step, index) => {
-          const isCompleted = index < currentStep;
-          const isCurrent = index === currentStep;
-
-          return (
-            <div key={step.title} className="flex flex-col items-center gap-2">
-              <div
-                className={cn(
-                  "z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 transition-colors",
-                  isCompleted
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : isCurrent
-                    ? "border-primary bg-background text-primary"
-                    : "border-muted bg-muted text-muted-foreground"
-                )}
-              >
-                {isCompleted ? (
-                  <CheckCircle2 className="h-5 w-5" />
-                ) : (
-                  <span className="text-sm font-medium">{index + 1}</span>
-                )}
-              </div>
-              <span
-                className={cn(
-                  "text-xs font-medium",
-                  isCompleted || isCurrent
-                    ? "text-primary"
-                    : "text-muted-foreground"
-                )}
-              >
-                {step.title}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
+  skipInitialVerification?: boolean;
 }
 
 const STEPS = [
@@ -131,9 +79,12 @@ export function PhoneChangeDialog({
   currentPhone,
   onPhoneChange,
   trigger,
+  skipInitialVerification = false,
 }: PhoneChangeDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [step, setStep] = useState<Step>("verify-current");
+  const [step, setStep] = useState<Step>(
+    skipInitialVerification ? "change" : "verify-current"
+  );
   const [isVerifying, setIsVerifying] = useState(false);
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const { toast } = useToast();
@@ -155,7 +106,7 @@ export function PhoneChangeDialog({
   const resetDialog = () => {
     verificationForm.reset();
     changeForm.reset();
-    setStep("verify-current");
+    setStep(skipInitialVerification ? "change" : "verify-current");
     setNewPhoneNumber("");
     setIsVerifying(false);
   };
@@ -387,6 +338,19 @@ export function PhoneChangeDialog({
   };
 
   const getCurrentStepIndex = () => {
+    if (skipInitialVerification) {
+      // If skipping initial verification, adjust step indices
+      switch (step) {
+        case "change":
+          return 0;
+        case "verify-new":
+          return 1;
+        default:
+          return 0;
+      }
+    }
+
+    // Original step indices when not skipping
     switch (step) {
       case "verify-current":
         return 0;
@@ -409,7 +373,10 @@ export function PhoneChangeDialog({
               <DialogTitle>{getStepTitle()}</DialogTitle>
               <DialogDescription>{getStepDescription()}</DialogDescription>
             </DialogHeader>
-            <StepIndicator currentStep={getCurrentStepIndex()} steps={STEPS} />
+            <StepIndicator
+              currentStep={getCurrentStepIndex()}
+              steps={skipInitialVerification ? STEPS.slice(1) : STEPS}
+            />
             {getStepContent()}
           </div>
         </ScrollArea>
