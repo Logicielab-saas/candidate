@@ -13,37 +13,7 @@ import { MOCK_USER } from "@/core/mockData/user";
 import { EmailChangeDialog } from "./EmailChangeDialog";
 import { PhoneChangeDialog } from "./PhoneChangeDialog";
 import { useToast } from "@/hooks/use-toast";
-
-interface InfoItemProps {
-  label: string;
-  value: string;
-  onChangeClick?: () => void;
-  changeButton?: React.ReactNode;
-  showChangeButton?: boolean;
-}
-
-function InfoItem({
-  label,
-  value,
-  onChangeClick,
-  changeButton,
-  showChangeButton = true,
-}: InfoItemProps) {
-  return (
-    <div className="flex items-center justify-between py-4">
-      <div className="space-y-1">
-        <p className="text-sm font-medium leading-none">{label}</p>
-        <p className="text-sm text-muted-foreground">{value}</p>
-      </div>
-      {showChangeButton &&
-        (changeButton || (
-          <Button variant="outline" size="sm" onClick={onChangeClick}>
-            Changer
-          </Button>
-        ))}
-    </div>
-  );
-}
+import { InfoItem } from "./InfoItem";
 
 export function AccountInfo() {
   const [isUpdating, setIsUpdating] = useState(false);
