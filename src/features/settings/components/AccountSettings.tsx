@@ -5,7 +5,7 @@
  *
  * A client component that provides functionality for logging out
  * and deleting the user account. Uses client-side interactivity
- * for handling these sensitive operations.
+ * for handling these sensitive operations with additional confirmation steps.
  */
 
 import { useState } from "react";
@@ -22,11 +22,19 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { MOCK_USER } from "@/core/mockData/user";
+import { useToast } from "@/hooks/use-toast";
+
+const DELETE_CONFIRMATION = "SUPPRIMER MON COMPTE";
 
 export function AccountActions() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [showDeleteError, setShowDeleteError] = useState(false);
+  const { toast } = useToast();
   const user = MOCK_USER;
 
   const handleLogout = async () => {
@@ -35,23 +43,58 @@ export function AccountActions() {
       // TODO: Implement actual logout logic
       console.log("Logging out user:", user.id);
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
+      toast({
+        variant: "success",
+        title: "Déconnexion réussie",
+        description: "Vous avez été déconnecté avec succès",
+      });
     } catch (error) {
       console.error("Logout failed:", error);
+      toast({
+        variant: "destructive",
+        title: "Erreur",
+        description: "Impossible de déconnecter",
+      });
     } finally {
       setIsLoggingOut(false);
     }
   };
 
   const handleDeleteAccount = async () => {
+    if (deleteConfirmation !== DELETE_CONFIRMATION) {
+      setShowDeleteError(true);
+      return;
+    }
+
     try {
       setIsDeleting(true);
+      setShowDeleteError(false);
       // TODO: Implement actual account deletion logic
       console.log("Deleting account:", user.id);
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
+      toast({
+        variant: "success",
+        title: "Compte supprimé",
+        description: "Votre compte a été supprimé avec succès",
+      });
+      // TODO: Redirect to logout or home page after successful deletion
     } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Erreur",
+        description: "Impossible de supprimer le compte",
+      });
       console.error("Account deletion failed:", error);
     } finally {
       setIsDeleting(false);
+      setDeleteConfirmation("");
+    }
+  };
+
+  const handleDeleteDialogOpenChange = (open: boolean) => {
+    if (!open) {
+      setDeleteConfirmation("");
+      setShowDeleteError(false);
     }
   };
 
@@ -84,7 +127,7 @@ export function AccountActions() {
               Supprimez définitivement votre compte et toutes vos données
             </p>
           </div>
-          <AlertDialog>
+          <AlertDialog onOpenChange={handleDeleteDialogOpenChange}>
             <AlertDialogTrigger asChild>
               <Button variant="destructive" disabled={isDeleting}>
                 Supprimer le compte
@@ -95,19 +138,50 @@ export function AccountActions() {
                 <AlertDialogTitle>
                   Êtes-vous sûr de vouloir supprimer votre compte ?
                 </AlertDialogTitle>
-                <AlertDialogDescription>
-                  Cette action est irréversible. Toutes vos données seront
-                  définitivement supprimées.
+                <AlertDialogDescription asChild>
+                  <div className="space-y-4">
+                    <span className="block">
+                      Cette action est irréversible. Toutes vos données seront
+                      définitivement supprimées.
+                    </span>
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="confirmation"
+                        className="text-sm font-medium"
+                      >
+                        Pour confirmer, écrivez &quot;{DELETE_CONFIRMATION}
+                        &quot; ci-dessous :
+                      </Label>
+                      <Input
+                        id="confirmation"
+                        value={deleteConfirmation}
+                        onChange={(e) => {
+                          setDeleteConfirmation(e.target.value);
+                          setShowDeleteError(false);
+                        }}
+                        className={showDeleteError ? "border-destructive" : ""}
+                        placeholder={DELETE_CONFIRMATION}
+                      />
+                      {showDeleteError && (
+                        <span className="block text-sm text-destructive">
+                          Veuillez écrire exactement &quot;{DELETE_CONFIRMATION}
+                          &quot; pour confirmer
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Annuler</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handleDeleteAccount}
-                  className="bg-destructive hover:bg-destructive/90"
-                  disabled={isDeleting}
+                  className="bg-destructive hover:bg-destructive/90 disabled:opacity-50"
+                  disabled={
+                    isDeleting || deleteConfirmation !== DELETE_CONFIRMATION
+                  }
                 >
-                  {isDeleting ? "Suppression..." : "Supprimer"}
+                  {isDeleting ? "Suppression..." : "Supprimer définitivement"}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
