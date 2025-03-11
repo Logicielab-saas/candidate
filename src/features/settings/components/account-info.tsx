@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { MOCK_USER } from "@/core/mockData/user";
 import { EmailChangeDialog } from "./email-change-dialog";
+import { PhoneChangeDialog } from "./PhoneChangeDialog";
 import { useToast } from "@/hooks/use-toast";
 
 interface InfoItemProps {
@@ -76,8 +77,29 @@ export function AccountInfo() {
     }
   };
 
-  const handlePhoneChange = () => {
-    console.log("Change phone");
+  const handlePhoneChange = async (newPhone: string) => {
+    try {
+      setIsUpdating(true);
+      // TODO: Implement actual phone change logic
+      console.log("Changing phone to:", newPhone);
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
+      user.phone = newPhone;
+      toast({
+        variant: "success",
+        title: "Numéro modifié avec succès",
+        description: "Votre numéro de téléphone a été modifié avec succès",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Échec de la modification du numéro",
+        description:
+          "Une erreur est survenue lors de la modification de votre numéro",
+      });
+      throw error; // Re-throw to be handled by the dialog
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   return (
@@ -107,7 +129,17 @@ export function AccountInfo() {
         <InfoItem
           label="Numéro de téléphone"
           value={user.phone}
-          onChangeClick={handlePhoneChange}
+          changeButton={
+            <PhoneChangeDialog
+              currentPhone={user.phone}
+              onPhoneChange={handlePhoneChange}
+              trigger={
+                <Button variant="outline" size="sm" disabled={isUpdating}>
+                  Changer
+                </Button>
+              }
+            />
+          }
         />
       </div>
     </Card>
