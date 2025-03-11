@@ -34,31 +34,15 @@ import {
   EmailChangeForm as EmailChangeFormType,
   emailChangeSchema,
 } from "./EmailChangeForm";
+import {
+  EmailVerificationForm,
+  OtpVerificationForm,
+  otpVerificationSchema,
+} from "./EmailVerificationForm";
 import { MOCK_USER } from "@/core/mockData/user";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
-import * as z from "zod";
 
 // Static verification code (this will be replaced with real email verification later)
 const VERIFICATION_CODE = "111111";
-
-const otpVerificationSchema = z.object({
-  verificationCode: z.string().length(6, "Le code doit contenir 6 chiffres"),
-});
-
-type OtpVerificationForm = z.infer<typeof otpVerificationSchema>;
 
 type Step = "verify-password" | "change" | "confirm";
 
@@ -224,81 +208,14 @@ export function EmailChangeDialog({
         );
       case "confirm":
         return (
-          <div className="space-y-6">
-            <div className="text-center space-y-2">
-              <p className="text-sm font-medium">
-                Vérification du nouvel email
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Un code de vérification a été envoyé à{" "}
-                <span className="font-medium text-foreground">
-                  {newEmailAddress}
-                </span>
-              </p>
-            </div>
-            <Form {...otpForm}>
-              <form
-                onSubmit={otpForm.handleSubmit(handleOtpSubmit)}
-                className="space-y-6"
-              >
-                <FormField
-                  control={otpForm.control}
-                  name="verificationCode"
-                  render={({ field }) => (
-                    <FormItem className="space-y-3">
-                      <FormLabel className="text-center block">
-                        Code de vérification
-                      </FormLabel>
-                      <FormControl>
-                        <div className="flex justify-center">
-                          <InputOTP
-                            maxLength={6}
-                            value={field.value}
-                            onChange={(value) => field.onChange(value)}
-                          >
-                            <InputOTPGroup>
-                              <InputOTPSlot index={0} />
-                              <InputOTPSlot index={1} />
-                              <InputOTPSlot index={2} />
-                            </InputOTPGroup>
-                            <InputOTPSeparator />
-                            <InputOTPGroup>
-                              <InputOTPSlot index={3} />
-                              <InputOTPSlot index={4} />
-                              <InputOTPSlot index={5} />
-                            </InputOTPGroup>
-                          </InputOTP>
-                        </div>
-                      </FormControl>
-                      <FormMessage className="text-center" />
-                    </FormItem>
-                  )}
-                />
-                <div className="space-y-4">
-                  <Button
-                    type="button"
-                    variant="link"
-                    onClick={handleSendVerification}
-                    disabled={isVerifying}
-                    className="block mx-auto"
-                  >
-                    Renvoyer le code
-                  </Button>
-                  <div className="flex justify-end gap-2">
-                    <Button type="button" variant="ghost" onClick={handleBack}>
-                      Retour
-                    </Button>
-                    <Button
-                      type="submit"
-                      disabled={otpForm.formState.isSubmitting || isVerifying}
-                    >
-                      Vérifier
-                    </Button>
-                  </div>
-                </div>
-              </form>
-            </Form>
-          </div>
+          <EmailVerificationForm
+            form={otpForm}
+            newEmailAddress={newEmailAddress}
+            isVerifying={isVerifying}
+            onBack={handleBack}
+            onSubmit={handleOtpSubmit}
+            onResendCode={handleSendVerification}
+          />
         );
     }
   };
