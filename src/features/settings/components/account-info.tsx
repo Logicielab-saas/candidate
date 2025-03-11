@@ -6,40 +6,74 @@
  */
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { MOCK_USER } from "@/core/mockData/user";
+import { EmailChangeDialog } from "./email-change-dialog";
+import { useToast } from "@/hooks/use-toast";
 
 interface InfoItemProps {
   label: string;
   value: string;
-  onChangeClick: () => void;
+  onChangeClick?: () => void;
+  changeButton?: React.ReactNode;
 }
 
-function InfoItem({ label, value, onChangeClick }: InfoItemProps) {
+function InfoItem({
+  label,
+  value,
+  onChangeClick,
+  changeButton,
+}: InfoItemProps) {
   return (
     <div className="flex items-center justify-between py-4">
       <div className="space-y-1">
         <p className="text-sm font-medium leading-none">{label}</p>
         <p className="text-sm text-muted-foreground">{value}</p>
       </div>
-      <Button variant="outline" size="sm" onClick={onChangeClick}>
-        Changer
-      </Button>
+      {changeButton || (
+        <Button variant="outline" size="sm" onClick={onChangeClick}>
+          Changer
+        </Button>
+      )}
     </div>
   );
 }
 
 export function AccountInfo() {
-  // TODO: Replace with actual user data and handlers
+  const [isUpdating, setIsUpdating] = useState(false);
+  const { toast } = useToast();
+
   const user = MOCK_USER;
 
   const handleTypeChange = () => {
     console.log("Change account type");
   };
 
-  const handleEmailChange = () => {
-    console.log("Change email");
+  const handleEmailChange = async (newEmail: string) => {
+    try {
+      setIsUpdating(true);
+      // TODO: Implement actual email change logic
+      console.log("Changing email to:", newEmail);
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
+      user.email = newEmail;
+      toast({
+        variant: "success",
+        title: "Adresse email modifiée avec succès",
+        description: "Votre adresse email a été modifiée avec succès",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Échec de la modification de l'email",
+        description:
+          "Une erreur est survenue lors de la modification de votre adresse email",
+      });
+      throw error; // Re-throw to be handled by the dialog
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   const handlePhoneChange = () => {
@@ -58,7 +92,17 @@ export function AccountInfo() {
         <InfoItem
           label="Email"
           value={user.email}
-          onChangeClick={handleEmailChange}
+          changeButton={
+            <EmailChangeDialog
+              currentEmail={user.email}
+              onEmailChange={handleEmailChange}
+              trigger={
+                <Button variant="outline" size="sm" disabled={isUpdating}>
+                  Changer
+                </Button>
+              }
+            />
+          }
         />
         <InfoItem
           label="Numéro de téléphone"
