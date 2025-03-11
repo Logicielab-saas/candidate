@@ -2,7 +2,7 @@
  * AccountInfo - Displays user account information with modification options
  *
  * A server component that renders user account details including account type,
- * email, and phone number, with buttons to modify each field.
+ * email, and phone number, with buttons to modify email and phone number.
  */
 "use client";
 
@@ -19,6 +19,7 @@ interface InfoItemProps {
   value: string;
   onChangeClick?: () => void;
   changeButton?: React.ReactNode;
+  showChangeButton?: boolean;
 }
 
 function InfoItem({
@@ -26,6 +27,7 @@ function InfoItem({
   value,
   onChangeClick,
   changeButton,
+  showChangeButton = true,
 }: InfoItemProps) {
   return (
     <div className="flex items-center justify-between py-4">
@@ -33,11 +35,12 @@ function InfoItem({
         <p className="text-sm font-medium leading-none">{label}</p>
         <p className="text-sm text-muted-foreground">{value}</p>
       </div>
-      {changeButton || (
-        <Button variant="outline" size="sm" onClick={onChangeClick}>
-          Changer
-        </Button>
-      )}
+      {showChangeButton &&
+        (changeButton || (
+          <Button variant="outline" size="sm" onClick={onChangeClick}>
+            Changer
+          </Button>
+        ))}
     </div>
   );
 }
@@ -47,10 +50,6 @@ export function AccountInfo() {
   const { toast } = useToast();
 
   const user = MOCK_USER;
-
-  const handleTypeChange = () => {
-    console.log("Change account type");
-  };
 
   const handleEmailChange = async (newEmail: string) => {
     try {
@@ -109,7 +108,7 @@ export function AccountInfo() {
         <InfoItem
           label="Type de compte"
           value={user.accountType}
-          onChangeClick={handleTypeChange}
+          showChangeButton={false}
         />
         <InfoItem
           label="Email"
