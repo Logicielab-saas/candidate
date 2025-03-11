@@ -102,7 +102,7 @@ export function AccountActions() {
     <Card className="p-6">
       <h4 className="text-sm font-medium mb-4">Actions du compte</h4>
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-2">
           <div className="space-y-1">
             <p className="text-sm font-medium leading-none">Déconnexion</p>
             <p className="text-sm text-muted-foreground">
@@ -113,12 +113,13 @@ export function AccountActions() {
             variant="outline"
             onClick={handleLogout}
             disabled={isLoggingOut}
+            className="w-full sm:w-auto"
           >
             {isLoggingOut ? "Déconnexion..." : "Déconnexion"}
           </Button>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-2">
           <div className="space-y-1">
             <p className="text-sm font-medium leading-none text-destructive">
               Supprimer le compte
@@ -129,7 +130,11 @@ export function AccountActions() {
           </div>
           <AlertDialog onOpenChange={handleDeleteDialogOpenChange}>
             <AlertDialogTrigger asChild>
-              <Button variant="destructive" disabled={isDeleting}>
+              <Button
+                variant="destructive"
+                disabled={isDeleting}
+                className="w-full sm:w-auto"
+              >
                 Supprimer le compte
               </Button>
             </AlertDialogTrigger>
