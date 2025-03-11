@@ -13,54 +13,31 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { StepIndicator } from "@/components/shared/StepIndicator";
-import { CountryCodeSelect } from "@/components/shared/CountryCodeSelect";
+import {
+  PhoneVerificationForm,
+  VerificationForm,
+  verificationSchema,
+} from "./PhoneVerificationForm";
+import {
+  PhoneChangeForm,
+  PhoneChangeForm as PhoneChangeFormType,
+  phoneChangeSchema,
+} from "./PhoneChangeForm";
 
 // Static verification code (this will be replaced with real SMS verification later)
 const VERIFICATION_CODE = "111111";
-
-const verificationSchema = z.object({
-  verificationCode: z.string().length(6, "Le code doit contenir 6 caractères"),
-});
-
-const phoneChangeSchema = z.object({
-  countryCode: z.string(),
-  newPhone: z
-    .string()
-    .min(9, "Le numéro doit contenir au moins 9 chiffres")
-    .regex(/^[0-9]+$/, "Format de numéro invalide"),
-});
-
-type VerificationForm = z.infer<typeof verificationSchema>;
-type PhoneChangeForm = z.infer<typeof phoneChangeSchema>;
 
 type Step = "verify-current" | "change" | "verify-new";
 
@@ -98,7 +75,7 @@ export function PhoneChangeDialog({
     },
   });
 
-  const changeForm = useForm<PhoneChangeForm>({
+  const changeForm = useForm<PhoneChangeFormType>({
     resolver: zodResolver(phoneChangeSchema),
     defaultValues: {
       countryCode: "+212",
@@ -173,7 +150,7 @@ export function PhoneChangeDialog({
     }
   };
 
-  const handlePhoneChangeSubmit = async (data: PhoneChangeForm) => {
+  const handlePhoneChangeSubmit = async (data: PhoneChangeFormType) => {
     const fullPhoneNumber = `${data.countryCode}${data.newPhone}`;
 
     if (fullPhoneNumber === currentPhone) {
@@ -197,148 +174,40 @@ export function PhoneChangeDialog({
     verificationForm.reset();
   };
 
-  const renderVerificationStep = (phoneNumber: string) => (
-    <Form {...verificationForm}>
-      <form
-        onSubmit={verificationForm.handleSubmit(handleVerificationSubmit)}
-        className="space-y-4"
-      >
-        <div className="flex flex-col items-center gap-4">
-          <FormField
-            control={verificationForm.control}
-            name="verificationCode"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel className="text-center w-full block">
-                  Code de vérification
-                </FormLabel>
-                <FormControl>
-                  <div className="flex justify-center gap-2">
-                    <InputOTP
-                      maxLength={6}
-                      value={field.value}
-                      onChange={field.onChange}
-                    >
-                      <InputOTPGroup>
-                        <InputOTPSlot index={0} />
-                        <InputOTPSlot index={1} />
-                        <InputOTPSlot index={2} />
-                      </InputOTPGroup>
-                      <InputOTPSeparator />
-                      <InputOTPGroup>
-                        <InputOTPSlot index={3} />
-                        <InputOTPSlot index={4} />
-                        <InputOTPSlot index={5} />
-                      </InputOTPGroup>
-                    </InputOTP>
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="flex flex-col w-full gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => handleSendVerification(phoneNumber)}
-              disabled={isVerifying}
-            >
-              {isVerifying
-                ? "Envoi en cours..."
-                : "Envoyer le code de vérification"}
-            </Button>
-            {step === "verify-new" && (
-              <Button type="button" variant="ghost" onClick={handleBack}>
-                Retour à la modification
-              </Button>
-            )}
-          </div>
-        </div>
-        <DialogFooter className="mt-6">
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={handleCancel}
-            className="max-sm:mt-2 mt-0"
-          >
-            Annuler
-          </Button>
-          <Button
-            type="submit"
-            disabled={
-              !verificationForm.getValues("verificationCode") ||
-              verificationForm.formState.isSubmitting
-            }
-          >
-            Vérifier
-          </Button>
-        </DialogFooter>
-      </form>
-    </Form>
-  );
-
-  const renderChangeStep = () => (
-    <Form {...changeForm}>
-      <form
-        onSubmit={changeForm.handleSubmit(handlePhoneChangeSubmit)}
-        className="space-y-4"
-      >
-        <FormField
-          control={changeForm.control}
-          name="newPhone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nouveau numéro</FormLabel>
-              <FormControl>
-                <div className="flex">
-                  <FormField
-                    control={changeForm.control}
-                    name="countryCode"
-                    render={({ field }) => (
-                      <CountryCodeSelect
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      />
-                    )}
-                  />
-                  <Input
-                    placeholder="612345678"
-                    type="tel"
-                    className="rounded-l-none"
-                    {...field}
-                    onChange={(e) => {
-                      // Remove any non-digit characters
-                      const value = e.target.value.replace(/\D/g, "");
-                      field.onChange(value);
-                    }}
-                  />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <DialogFooter>
-          <Button type="button" variant="ghost" onClick={handleCancel}>
-            Annuler
-          </Button>
-          <Button type="submit" disabled={changeForm.formState.isSubmitting}>
-            Continuer
-          </Button>
-        </DialogFooter>
-      </form>
-    </Form>
-  );
-
   const getStepContent = () => {
     switch (step) {
       case "verify-current":
-        return renderVerificationStep(currentPhone);
+        return (
+          <PhoneVerificationForm
+            form={verificationForm}
+            phone={currentPhone}
+            isVerifying={isVerifying}
+            onSendVerification={handleSendVerification}
+            onCancel={handleCancel}
+            onSubmit={handleVerificationSubmit}
+          />
+        );
       case "change":
-        return renderChangeStep();
+        return (
+          <PhoneChangeForm
+            form={changeForm}
+            onCancel={handleCancel}
+            onSubmit={handlePhoneChangeSubmit}
+          />
+        );
       case "verify-new":
-        return renderVerificationStep(newPhoneNumber);
+        return (
+          <PhoneVerificationForm
+            form={verificationForm}
+            phone={newPhoneNumber}
+            isVerifying={isVerifying}
+            showBackButton
+            onSendVerification={handleSendVerification}
+            onCancel={handleCancel}
+            onBack={handleBack}
+            onSubmit={handleVerificationSubmit}
+          />
+        );
     }
   };
 
@@ -394,8 +263,8 @@ export function PhoneChangeDialog({
         {trigger || <Button variant="outline">Changer</Button>}
       </DialogTrigger>
       <DialogContent className="sm:max-w-md max-h-[90vh] overflow-hidden p-0">
-        <ScrollArea className="h-full max-h-[90vh] ">
-          <div className="p-6 ">
+        <ScrollArea className="h-full max-h-[90vh]">
+          <div className="p-6">
             <DialogHeader>
               <DialogTitle>{getStepTitle()}</DialogTitle>
               <DialogDescription>{getStepDescription()}</DialogDescription>
