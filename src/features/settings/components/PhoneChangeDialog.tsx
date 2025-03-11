@@ -42,6 +42,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { StepIndicator } from "@/components/shared/StepIndicator";
+import { CountryCodeSelect } from "@/components/shared/country-code-select";
 
 // Static verification code (this will be replaced with real SMS verification later)
 const VERIFICATION_CODE = "111111";
@@ -51,10 +52,11 @@ const verificationSchema = z.object({
 });
 
 const phoneChangeSchema = z.object({
+  countryCode: z.string(),
   newPhone: z
     .string()
-    .min(10, "Le numéro doit contenir au moins 10 chiffres")
-    .regex(/^\+?[0-9]+$/, "Format de numéro invalide"),
+    .min(9, "Le numéro doit contenir au moins 9 chiffres")
+    .regex(/^[0-9]+$/, "Format de numéro invalide"),
 });
 
 type VerificationForm = z.infer<typeof verificationSchema>;
@@ -99,6 +101,7 @@ export function PhoneChangeDialog({
   const changeForm = useForm<PhoneChangeForm>({
     resolver: zodResolver(phoneChangeSchema),
     defaultValues: {
+      countryCode: "+212",
       newPhone: "",
     },
   });
@@ -171,14 +174,16 @@ export function PhoneChangeDialog({
   };
 
   const handlePhoneChangeSubmit = async (data: PhoneChangeForm) => {
-    if (data.newPhone === currentPhone) {
+    const fullPhoneNumber = `${data.countryCode}${data.newPhone}`;
+
+    if (fullPhoneNumber === currentPhone) {
       changeForm.setError("newPhone", {
         message: "Le nouveau numéro doit être différent de l'actuel",
       });
       return;
     }
 
-    setNewPhoneNumber(data.newPhone);
+    setNewPhoneNumber(fullPhoneNumber);
     setStep("verify-new");
   };
 
@@ -286,7 +291,29 @@ export function PhoneChangeDialog({
             <FormItem>
               <FormLabel>Nouveau numéro</FormLabel>
               <FormControl>
-                <Input placeholder="+33612345678" type="tel" {...field} />
+                <div className="flex">
+                  <FormField
+                    control={changeForm.control}
+                    name="countryCode"
+                    render={({ field }) => (
+                      <CountryCodeSelect
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      />
+                    )}
+                  />
+                  <Input
+                    placeholder="612345678"
+                    type="tel"
+                    className="rounded-l-none"
+                    {...field}
+                    onChange={(e) => {
+                      // Remove any non-digit characters
+                      const value = e.target.value.replace(/\D/g, "");
+                      field.onChange(value);
+                    }}
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
