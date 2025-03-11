@@ -72,7 +72,7 @@ export function AccountInfo() {
     }
   };
 
-  const handlePasswordChange = async (newPassword: string) => {
+  const handlePasswordChange = async (_newPassword: string) => {
     try {
       setIsUpdating(true);
       // TODO: Implement actual password change logic

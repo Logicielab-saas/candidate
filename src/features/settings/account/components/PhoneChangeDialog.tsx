@@ -2,10 +2,9 @@
  * PhoneChangeDialog - Dialog for changing user phone number
  *
  * A client component that provides a form to change the user's phone number
- * with a verification process that can be either two or three steps:
- * 1. Verify current phone via OTP (optional, can be skipped if already verified)
+ * with a two-step process:
+ * 1. Enter current password for verification
  * 2. Enter new phone number
- * 3. Verify new phone via OTP
  */
 
 "use client";
@@ -23,55 +22,42 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { StepIndicator } from "@/components/shared/StepIndicator";
 import {
-  PhoneVerificationForm,
+  PasswordVerificationForm,
   VerificationForm,
   verificationSchema,
-} from "./PhoneVerificationForm";
+} from "./PasswordVerificationForm";
 import {
   PhoneChangeForm,
   PhoneChangeForm as PhoneChangeFormType,
   phoneChangeSchema,
 } from "./PhoneChangeForm";
+import { MOCK_USER } from "@/core/mockData/user";
 
-// Static verification code (this will be replaced with real SMS verification later)
-const VERIFICATION_CODE = "111111";
-
-type Step = "verify-current" | "change" | "verify-new";
+type Step = "verify-current" | "change";
 
 interface PhoneChangeDialogProps {
   currentPhone: string;
   onPhoneChange: (newPhone: string) => Promise<void>;
   trigger?: React.ReactNode;
-  skipInitialVerification?: boolean;
 }
 
-const STEPS = [
-  { title: "Vérification" },
-  { title: "Nouveau numéro" },
-  { title: "Confirmation" },
-];
+const STEPS = [{ title: "Vérification" }, { title: "Nouveau numéro" }];
 
 export function PhoneChangeDialog({
   currentPhone,
   onPhoneChange,
   trigger,
-  skipInitialVerification = false,
 }: PhoneChangeDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [step, setStep] = useState<Step>(
-    skipInitialVerification ? "change" : "verify-current"
-  );
-  const [isVerifying, setIsVerifying] = useState(false);
-  const [newPhoneNumber, setNewPhoneNumber] = useState("");
+  const [step, setStep] = useState<Step>("verify-current");
   const { toast } = useToast();
 
   const verificationForm = useForm<VerificationForm>({
     resolver: zodResolver(verificationSchema),
     defaultValues: {
-      verificationCode: "",
+      currentPassword: "",
     },
   });
 
@@ -83,71 +69,28 @@ export function PhoneChangeDialog({
     },
   });
 
-  const resetDialog = () => {
+  const resetForms = () => {
     verificationForm.reset();
     changeForm.reset();
-    setStep(skipInitialVerification ? "change" : "verify-current");
-    setNewPhoneNumber("");
-    setIsVerifying(false);
   };
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
     if (!open) {
-      resetDialog();
-    }
-  };
-
-  const handleSendVerification = async (phoneNumber: string) => {
-    try {
-      setIsVerifying(true);
-      // Simulate SMS sending delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      toast({
-        title: "Code de vérification envoyé",
-        description: `Un code de vérification a été envoyé au ${phoneNumber}. Pour le test, utilisez le code: ${VERIFICATION_CODE}`,
-      });
-    } catch (_error) {
-      toast({
-        variant: "destructive",
-        title: "Erreur",
-        description: "Impossible d'envoyer le code de vérification",
-      });
-    } finally {
-      setIsVerifying(false);
+      resetForms();
     }
   };
 
   const handleVerificationSubmit = async (data: VerificationForm) => {
-    if (data.verificationCode !== VERIFICATION_CODE) {
-      verificationForm.setError("verificationCode", {
-        message: "Code de vérification incorrect",
+    if (data.currentPassword !== MOCK_USER.password) {
+      verificationForm.setError("currentPassword", {
+        message: "Mot de passe incorrect",
       });
       return;
     }
 
-    if (step === "verify-current") {
-      setStep("change");
-      verificationForm.reset();
-    } else if (step === "verify-new") {
-      try {
-        await onPhoneChange(newPhoneNumber);
-        setIsOpen(false);
-        resetDialog();
-        toast({
-          variant: "success",
-          title: "Numéro modifié",
-          description: "Votre numéro de téléphone a été modifié avec succès",
-        });
-      } catch (_error) {
-        toast({
-          variant: "destructive",
-          title: "Erreur",
-          description: "Impossible de modifier le numéro de téléphone",
-        });
-      }
-    }
+    setStep("change");
+    verificationForm.reset();
   };
 
   const handlePhoneChangeSubmit = async (data: PhoneChangeFormType) => {
@@ -160,29 +103,37 @@ export function PhoneChangeDialog({
       return;
     }
 
-    setNewPhoneNumber(fullPhoneNumber);
-    setStep("verify-new");
+    try {
+      await onPhoneChange(fullPhoneNumber);
+      setIsOpen(false);
+      resetForms();
+      setStep("verify-current"); // Reset step only after successful phone change
+      toast({
+        variant: "success",
+        title: "Numéro modifié",
+        description: "Votre numéro de téléphone a été modifié avec succès",
+      });
+    } catch (_error) {
+      toast({
+        variant: "destructive",
+        title: "Erreur",
+        description: "Impossible de modifier le numéro de téléphone",
+      });
+    }
   };
 
   const handleCancel = () => {
     setIsOpen(false);
-    resetDialog();
-  };
-
-  const handleBack = () => {
-    setStep("change");
-    verificationForm.reset();
+    resetForms();
+    setStep("verify-current"); // Reset step when user explicitly cancels
   };
 
   const getStepContent = () => {
     switch (step) {
       case "verify-current":
         return (
-          <PhoneVerificationForm
+          <PasswordVerificationForm
             form={verificationForm}
-            phone={currentPhone}
-            isVerifying={isVerifying}
-            onSendVerification={handleSendVerification}
             onCancel={handleCancel}
             onSubmit={handleVerificationSubmit}
           />
@@ -195,65 +146,24 @@ export function PhoneChangeDialog({
             onSubmit={handlePhoneChangeSubmit}
           />
         );
-      case "verify-new":
-        return (
-          <PhoneVerificationForm
-            form={verificationForm}
-            phone={newPhoneNumber}
-            isVerifying={isVerifying}
-            showBackButton
-            onSendVerification={handleSendVerification}
-            onCancel={handleCancel}
-            onBack={handleBack}
-            onSubmit={handleVerificationSubmit}
-          />
-        );
     }
   };
 
   const getStepTitle = () => {
     switch (step) {
       case "verify-current":
-        return "Vérification du numéro actuel";
+        return "Vérification du mot de passe";
       case "change":
         return "Changer le numéro de téléphone";
-      case "verify-new":
-        return "Vérification du nouveau numéro";
     }
   };
 
   const getStepDescription = () => {
     switch (step) {
       case "verify-current":
-        return "Nous allons envoyer un code de vérification à votre numéro actuel.";
+        return "Entrez votre mot de passe pour continuer.";
       case "change":
         return "Entrez votre nouveau numéro de téléphone.";
-      case "verify-new":
-        return "Nous allons envoyer un code de vérification au nouveau numéro.";
-    }
-  };
-
-  const getCurrentStepIndex = () => {
-    if (skipInitialVerification) {
-      // If skipping initial verification, adjust step indices
-      switch (step) {
-        case "change":
-          return 0;
-        case "verify-new":
-          return 1;
-        default:
-          return 0;
-      }
-    }
-
-    // Original step indices when not skipping
-    switch (step) {
-      case "verify-current":
-        return 0;
-      case "change":
-        return 1;
-      case "verify-new":
-        return 2;
     }
   };
 
@@ -262,20 +172,16 @@ export function PhoneChangeDialog({
       <DialogTrigger asChild>
         {trigger || <Button variant="outline">Changer</Button>}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-hidden p-0">
-        <ScrollArea className="h-full max-h-[90vh]">
-          <div className="p-6">
-            <DialogHeader>
-              <DialogTitle>{getStepTitle()}</DialogTitle>
-              <DialogDescription>{getStepDescription()}</DialogDescription>
-            </DialogHeader>
-            <StepIndicator
-              currentStep={getCurrentStepIndex()}
-              steps={skipInitialVerification ? STEPS.slice(1) : STEPS}
-            />
-            {getStepContent()}
-          </div>
-        </ScrollArea>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>{getStepTitle()}</DialogTitle>
+          <DialogDescription>{getStepDescription()}</DialogDescription>
+        </DialogHeader>
+        <StepIndicator
+          currentStep={step === "verify-current" ? 0 : 1}
+          steps={STEPS}
+        />
+        {getStepContent()}
       </DialogContent>
     </Dialog>
   );
