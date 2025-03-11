@@ -13,7 +13,6 @@ import {
   Briefcase,
   User,
   File,
-  Lock,
   MessageSquare,
   Smartphone,
 } from "lucide-react";
@@ -52,11 +51,6 @@ export const sidebarSettingsNav: SidebarNavItem[] = [
     title: "Account Settings",
     href: "/settings/account",
     icon: Settings,
-  },
-  {
-    title: "Advanced Security",
-    href: "/settings/security",
-    icon: Lock,
   },
   {
     title: "Connected Communication",
