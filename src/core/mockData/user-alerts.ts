@@ -1,4 +1,4 @@
-import { UserAlert } from "../interfaces/";
+import type { UserAlert, UserCompanyAlert } from "../interfaces/";
 
 export const userAlerts: UserAlert[] = [
   {
@@ -17,6 +17,29 @@ export const userAlerts: UserAlert[] = [
   {
     id: "3",
     post: "Full Stack Developer",
+    isEnabled: true,
+  },
+];
+
+export const userCompanyAlerts: UserCompanyAlert[] = [
+  {
+    id: "1",
+    company: "Google",
+    isEnabled: true,
+  },
+  {
+    id: "2",
+    company: "Microsoft",
+    isEnabled: true,
+  },
+  {
+    id: "3",
+    company: "Amazon",
+    isEnabled: false,
+  },
+  {
+    id: "4",
+    company: "Apple",
     isEnabled: true,
   },
 ];

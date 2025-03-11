@@ -5,3 +5,9 @@ export interface UserAlert {
   salaryRange?: string;
   isEnabled: boolean;
 }
+
+export interface UserCompanyAlert {
+  id: string;
+  company: string;
+  isEnabled: boolean;
+}
