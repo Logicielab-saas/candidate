@@ -139,7 +139,7 @@ export function JobAlertsList() {
                       variant="ghost"
                       onClick={() => handleEditClick(alert)}
                     >
-                      <Pencil className="h-4 w-4" />
+                      <Pencil className="h-4 w-4 text-primaryHex-600" />
                       <span className="sr-only">Modifier</span>
                     </Button>
                     <Button
@@ -147,7 +147,7 @@ export function JobAlertsList() {
                       variant="ghost"
                       onClick={() => handleDeleteClick(alert)}
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="h-4 w-4 text-destructive" />
                       <span className="sr-only">Supprimer</span>
                     </Button>
                   </div>

@@ -33,7 +33,6 @@ const formSchema = z.object({
   isEnabled: z.boolean(),
 });
 
-// TODO: get from backend or implement static values
 // Constants for salary range
 const MIN_SALARY = 20000;
 const MAX_SALARY = 150000;
@@ -50,6 +49,9 @@ export function JobAlertForm({
   onSave,
   onCancel,
 }: JobAlertFormProps) {
+  // Track whether the user has moved the salary slider
+  const [hasMovedSalarySlider, setHasMovedSalarySlider] = useState(false);
+
   // Parse initial salary range to array of [min, max] for the slider
   const parseSalaryRange = (rangeString?: string): [number, number] => {
     if (!rangeString) return [MIN_SALARY, MAX_SALARY];
@@ -76,22 +78,24 @@ export function JobAlertForm({
       id: initialValues.id,
       post: initialValues.post || "",
       city: initialValues.city || "",
-      salaryRange:
-        initialValues.salaryRange ||
-        `${MIN_SALARY / 1000},${MAX_SALARY / 1000}`,
+      salaryRange: initialValues.salaryRange || undefined,
       isEnabled: initialValues.isEnabled,
     },
   });
 
   const onSubmit = (data: UserAlert) => {
-    // Format salary range as "min,max" in K€ format
-    data.salaryRange = `${Math.round(sliderValues[0] / 1000)},${Math.round(
-      sliderValues[1] / 1000
-    )}`;
+    // Only update the salary range if the user has moved the slider
+    if (hasMovedSalarySlider) {
+      data.salaryRange = `${Math.round(sliderValues[0] / 1000)},${Math.round(
+        sliderValues[1] / 1000
+      )}`;
+    }
+
     onSave(data);
   };
 
   const handleSliderChange = (value: number[]) => {
+    setHasMovedSalarySlider(true);
     setSliderValues([value[0], value[1]]);
     form.setValue(
       "salaryRange",
@@ -164,6 +168,11 @@ export function JobAlertForm({
               </div>
               <FormDescription>
                 Fourchette de salaire annuel brut souhaité en euros
+                {!hasMovedSalarySlider && initialValues.salaryRange && (
+                  <span className="block text-xs text-muted-foreground mt-1">
+                    Déplacez le curseur pour modifier la fourchette de salaire
+                  </span>
+                )}
               </FormDescription>
               <FormMessage />
             </FormItem>

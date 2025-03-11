@@ -1,35 +1,43 @@
 /**
  * AlertSection - A reusable section component for displaying alert settings
  *
- * A server component that renders a collapsible section for alert settings
- * with a title and children content.
+ * A server component that renders a section for alert settings
+ * with a title, description, and a link to manage the settings.
+ * The entire section is clickable and navigates to the specified href.
  *
  * Props:
  * - title: string - The title of the alert section
- * - children: ReactNode - The content to be displayed when expanded
+ * - description: string - Optional description text for the alert section
+ * - href: string - The link to the management page
  */
 
-import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 interface AlertSectionProps {
   title: string;
+  description?: string;
   href: string;
 }
 
-export function AlertSection({ title, href }: AlertSectionProps) {
+export function AlertSection({ title, description, href }: AlertSectionProps) {
   return (
-    <div className="rounded-lg border border-border p-4 mb-4">
+    <Link
+      href={href}
+      className="block p-4 hover:bg-accent/50 transition-colors group"
+    >
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-medium">{title}</h3>
-        <Button variant="ghost" size="sm" asChild>
-          <Link href={href} className="flex items-center gap-2">
-            Gérer
-            <ChevronRight className="h-4 w-4" />
-          </Link>
-        </Button>
+        <div>
+          <h3 className="text-lg font-medium">{title}</h3>
+          {description && (
+            <p className="text-sm text-muted-foreground mt-1">{description}</p>
+          )}
+        </div>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground">
+          Gérer
+          <ChevronRight className="h-4 w-4" />
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }

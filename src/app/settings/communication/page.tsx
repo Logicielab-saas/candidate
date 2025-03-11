@@ -5,26 +5,39 @@
  * job alerts and company alerts.
  */
 
+import { Separator } from "@/components/ui/separator";
 import { AlertSection } from "@/features/settings/communication/components/AlertSection";
 
 export default function CommunicationSettingsPage() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-semibold mb-6">
-          Paramètres de communication
-        </h2>
+        <h1 className="text-2xl font-semibold">Paramètres de communication</h1>
+        <p className="text-muted-foreground mt-1">
+          Gérez les paramètres de communication et vos préférences
+          d&apos;alertes.
+        </p>
+      </div>
 
-        <div className="space-y-4">
-          <AlertSection
-            title="Alertes d'emploi"
-            href="/settings/communication/job-alerts"
-          />
+      <Separator className="my-6" />
 
-          <AlertSection
-            title="Alertes d'entreprise"
-            href="/settings/communication/company-alerts"
-          />
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-xl font-medium mb-4">Alertes Configuration</h2>
+
+          <div className="rounded-lg border border-border">
+            <AlertSection
+              title="Alertes d'emploi"
+              description="Recevez des notifications pour les nouveaux emplois correspondant à vos critères."
+              href="/settings/communication/job-alerts"
+            />
+            <Separator />
+            <AlertSection
+              title="Alertes d'entreprise"
+              description="Suivez les mises à jour des entreprises qui vous intéressent."
+              href="/settings/communication/company-alerts"
+            />
+          </div>
         </div>
       </div>
     </div>
