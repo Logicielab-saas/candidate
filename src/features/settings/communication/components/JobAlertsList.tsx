@@ -108,7 +108,7 @@ export function JobAlertsList() {
                 <div className="flex justify-between items-center">
                   <div className="space-y-1 flex-1">
                     <h4 className="font-medium text-base">{alert.post}</h4>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex flex-col items-start gap-2 text-sm text-muted-foreground">
                       {alert.city && (
                         <div className="flex items-center">
                           <MapPin className="h-3.5 w-3.5 mr-1" />
