@@ -68,13 +68,15 @@ export function ProfileSidebar({ navItems }: ProfileSidebarProps) {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors",
+                  "flex flex-col items-center justify-center min-w-[4.5rem] gap-1 px-3 py-2 rounded-lg transition-colors",
                   "hover:text-primary",
                   isActive ? "text-primary" : "text-muted-foreground"
                 )}
               >
                 <Icon className={cn("h-5 w-5", isActive && "text-primary")} />
-                <span className="text-xs font-medium">{item.title}</span>
+                <span className="text-xs font-medium text-center line-clamp-1 w-full">
+                  {item.title}
+                </span>
               </Link>
             );
           })}
