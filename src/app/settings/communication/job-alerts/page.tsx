@@ -7,6 +7,9 @@
 
 import { Metadata } from "next";
 import { JobAlertsList } from "@/features/settings/communication/components/JobAlertsList";
+import { ChevronLeft } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Alertes d'emploi | Paramètres",
@@ -17,7 +20,16 @@ export const metadata: Metadata = {
 export default function JobAlertsPage() {
   return (
     <div className="space-y-6">
-      <div>
+      <div className="shadow rounded-lg p-4 dark:border">
+        <Button variant="ghost" size="sm" asChild>
+          <Link
+            href="/settings/communication"
+            className="flex items-center gap-2"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Retour
+          </Link>
+        </Button>
         <h2 className="text-2xl font-semibold mb-2">Alertes d&apos;emploi</h2>
         <p className="text-muted-foreground">
           Configurez vos alertes d&apos;emploi pour recevoir des notifications
