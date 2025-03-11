@@ -3,36 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { User, Settings, Briefcase, File } from "lucide-react";
+import { SidebarNavItem } from "@/core/constants/sidebar-nav";
 
-const sidebarItems = [
-  {
-    title: "Overview",
-    href: "/profile",
-    icon: User,
-  },
-  {
-    title: "Resume",
-    href: "/profile/resume",
-    icon: File,
-  },
-  {
-    title: "Mes Emplois",
-    href: "/profile/my-jobs",
-    icon: Briefcase,
-  },
-  {
-    title: "Settings",
-    href: "#4",
-    icon: Settings,
-  },
-];
+interface ProfileSidebarProps {
+  navItems: SidebarNavItem[];
+}
 
-// Mobile navigation items (limited to 4-5 items for better UX)
-const mobileNavItems = sidebarItems.slice(0, 4);
-
-export function ProfileSidebar() {
+export function ProfileSidebar({ navItems }: ProfileSidebarProps) {
   const pathname = usePathname();
+  // Mobile navigation items (limited to 4-5 items for better UX)
+  const mobileNavItems = navItems.slice(0, 4);
 
   return (
     <>
@@ -41,7 +21,7 @@ export function ProfileSidebar() {
         className="hidden md:block w-64 space-y-1"
         aria-label="Profile navigation"
       >
-        {sidebarItems.map((item) => {
+        {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
 

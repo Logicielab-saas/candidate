@@ -2,19 +2,19 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { ProfileSidebar } from "@/components/shared/profile-sidebar";
 import { Metadata } from "next";
-import { sidebarProfileNav } from "@/core/constants/sidebar-nav";
+import { sidebarSettingsNav } from "@/core/constants/sidebar-nav";
 
 export const metadata: Metadata = {
-  title: "Profile | Postuly",
-  description: "Manage your professional profile, CV, and job applications.",
+  title: "Settings | Postuly",
+  description: "Manage your settings.",
   openGraph: {
-    title: "Profile | Postuly",
-    description: "Manage your professional profile, CV, and job applications.",
+    title: "Settings | Postuly",
+    description: "Manage your settings.",
     type: "profile",
   },
 };
 
-export default function ProfileLayout({
+export default function SettingsLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -27,7 +27,7 @@ export default function ProfileLayout({
         <div className={cn("flex flex-col md:flex-row gap-8")}>
           <aside className="md:w-64 flex-shrink-0">
             <div className="sticky top-20">
-              <ProfileSidebar navItems={sidebarProfileNav} />
+              <ProfileSidebar navItems={sidebarSettingsNav} />
             </div>
           </aside>
           <main className={cn("flex-1 min-w-0")}>{children}</main>
