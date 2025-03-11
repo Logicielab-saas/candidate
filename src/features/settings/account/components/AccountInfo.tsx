@@ -2,7 +2,7 @@
  * AccountInfo - Displays user account information with modification options
  *
  * A server component that renders user account details including account type,
- * email, and phone number, with buttons to modify email and phone number.
+ * email, phone number, and password, with buttons to modify each field.
  */
 "use client";
 
@@ -12,6 +12,7 @@ import { Card } from "@/components/ui/card";
 import { MOCK_USER } from "@/core/mockData/user";
 import { EmailChangeDialog } from "./EmailChangeDialog";
 import { PhoneChangeDialog } from "./PhoneChangeDialog";
+import { PasswordChangeDialog } from "./PasswordChangeDialog";
 import { useToast } from "@/hooks/use-toast";
 import { InfoItem } from "./InfoItem";
 
@@ -71,6 +72,30 @@ export function AccountInfo() {
     }
   };
 
+  const handlePasswordChange = async (newPassword: string) => {
+    try {
+      setIsUpdating(true);
+      // TODO: Implement actual password change logic
+      console.log("Changing password...");
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
+      toast({
+        variant: "success",
+        title: "Mot de passe modifié avec succès",
+        description: "Votre mot de passe a été modifié avec succès",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Échec de la modification du mot de passe",
+        description:
+          "Une erreur est survenue lors de la modification de votre mot de passe",
+      });
+      throw error; // Re-throw to be handled by the dialog
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   return (
     <Card className="p-6">
       <h4 className="text-sm font-medium mb-4">Informations du compte</h4>
@@ -102,6 +127,20 @@ export function AccountInfo() {
             <PhoneChangeDialog
               currentPhone={user.phone}
               onPhoneChange={handlePhoneChange}
+              trigger={
+                <Button variant="outline" size="sm" disabled={isUpdating}>
+                  Changer
+                </Button>
+              }
+            />
+          }
+        />
+        <InfoItem
+          label="Mot de passe"
+          value="••••••••"
+          changeButton={
+            <PasswordChangeDialog
+              onPasswordChange={handlePasswordChange}
               trigger={
                 <Button variant="outline" size="sm" disabled={isUpdating}>
                   Changer

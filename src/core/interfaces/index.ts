@@ -14,3 +14,4 @@ export * from "./course-review.interface";
 export * from "./course-module.interface";
 export * from "./job.interface";
 export * from "./form.interface";
+export * from "./user.inteface";

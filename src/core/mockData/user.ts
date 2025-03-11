@@ -1,26 +1,10 @@
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  accountType: "Candidat" | "Recruteur";
-  address: string;
-  birthDate: string;
-  gender: string;
-  resumePath: string;
-  postulyCVPath: string;
-  experience: {
-    company: string;
-    position: string;
-    startDate: string;
-    endDate: string;
-  }[];
-}
+import { User } from "../interfaces/user.inteface";
 
 export const MOCK_USER: User = {
   id: "1",
   name: "John Doe",
   email: "john.doe@example.com",
+  password: "123456",
   phone: "+33612345678",
   accountType: "Candidat",
   address: "123 Rue de la Paix, 75000 Paris, France",
