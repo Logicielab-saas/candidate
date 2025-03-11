@@ -10,7 +10,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { MOCK_USER } from "@/core/mockData/user";
-import { EmailChangeDialog } from "./email-change-dialog";
+import { EmailChangeDialog } from "./EmailChangeDialog";
 import { PhoneChangeDialog } from "./PhoneChangeDialog";
 import { useToast } from "@/hooks/use-toast";
 

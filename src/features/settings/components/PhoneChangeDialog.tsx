@@ -42,7 +42,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { StepIndicator } from "@/components/shared/StepIndicator";
-import { CountryCodeSelect } from "@/components/shared/country-code-select";
+import { CountryCodeSelect } from "@/components/shared/CountryCodeSelect";
 
 // Static verification code (this will be replaced with real SMS verification later)
 const VERIFICATION_CODE = "111111";

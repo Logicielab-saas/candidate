@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator";
-import { AccountInfo } from "@/features/settings/components/account-info";
-import { AccountActions } from "@/features/settings/components/account-actions";
+import { AccountInfo } from "@/features/settings/components/AccountInfo";
+import { AccountActions } from "@/features/settings/components/AccountSettings";
 
 export default function AccountPage() {
   return (
