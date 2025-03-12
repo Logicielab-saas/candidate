@@ -1,4 +1,8 @@
-import type { UserAlert, UserCompanyAlert } from "../interfaces/";
+import type {
+  UserAlert,
+  UserAlertPreferences,
+  UserCompanyAlert,
+} from "../interfaces/";
 
 export const userAlerts: UserAlert[] = [
   {
@@ -40,6 +44,23 @@ export const userCompanyAlerts: UserCompanyAlert[] = [
   {
     id: "4",
     company: "Apple",
+    isEnabled: true,
+  },
+];
+
+export const userAlertsPreferences: UserAlertPreferences[] = [
+  {
+    id: "1",
+    title: "Nouvelles offres d'emploi",
+    description:
+      "Recevoir des notifications lorsqu'une nouvelle offre d'emploi est publiée",
+    isEnabled: true,
+  },
+  {
+    id: "2",
+    title: "Nouvelles entreprises",
+    description:
+      "Recevoir des notifications lorsqu'une nouvelle entreprise est ajoutée",
     isEnabled: true,
   },
 ];

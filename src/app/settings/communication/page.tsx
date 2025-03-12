@@ -2,11 +2,12 @@
  * CommunicationSettingsPage - Communication preferences and alert settings
  *
  * Server component that displays various communication settings including
- * job alerts and company alerts.
+ * job alerts, company alerts, and notification preferences.
  */
 
 import { Separator } from "@/components/ui/separator";
 import { AlertSection } from "@/features/settings/communication/components/AlertSection";
+import { AlertPreferences } from "@/features/settings/communication/components/AlertPreferences";
 
 export default function CommunicationSettingsPage() {
   return (
@@ -38,6 +39,13 @@ export default function CommunicationSettingsPage() {
               href="/settings/communication/company-alerts"
             />
           </div>
+        </div>
+
+        <div>
+          <h2 className="text-xl font-medium mb-4">
+            Préférences de notification
+          </h2>
+          <AlertPreferences />
         </div>
       </div>
     </div>

@@ -11,3 +11,10 @@ export interface UserCompanyAlert {
   company: string;
   isEnabled: boolean;
 }
+
+export interface UserAlertPreferences {
+  id: string;
+  title: string;
+  description: string;
+  isEnabled: boolean;
+}
