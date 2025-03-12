@@ -64,3 +64,20 @@ export const userAlertsPreferences: UserAlertPreferences[] = [
     isEnabled: true,
   },
 ];
+
+export const privacyPreferences = [
+  {
+    id: "online_status",
+    title: "Visibilité de votre statut en ligne",
+    description:
+      "Contrôlez si les autres utilisateurs peuvent voir votre statut en ligne.",
+    isEnabled: true,
+  },
+  {
+    id: "read_receipts",
+    title: "Accusés de lecture",
+    description:
+      "Les autres utilisateurs peuvent voir quand vous avez lu leurs messages",
+    isEnabled: true,
+  },
+];

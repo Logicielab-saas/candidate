@@ -8,6 +8,7 @@
 import { Separator } from "@/components/ui/separator";
 import { AlertSection } from "@/features/settings/communication/components/AlertSection";
 import { AlertPreferences } from "@/features/settings/communication/components/AlertPreferences";
+import { PrivacyPreferences } from "@/features/settings/communication/components/PrivacyPreferences";
 
 export default function CommunicationSettingsPage() {
   return (
@@ -46,6 +47,11 @@ export default function CommunicationSettingsPage() {
             Préférences de notification
           </h2>
           <AlertPreferences />
+        </div>
+
+        <div>
+          <h2 className="text-xl font-medium mb-4">Confidentialité</h2>
+          <PrivacyPreferences />
         </div>
       </div>
     </div>

@@ -216,13 +216,17 @@ export function NavBar() {
                       <DropdownMenuSeparator />
 
                       {/* Settings & Help Section */}
-                      <DropdownMenuItem>
-                        <Settings className="mr-2 h-4 w-4" />
-                        <span>Paramètres</span>
+                      <DropdownMenuItem className="w-full" asChild>
+                        <Link href="/settings/account" className="flex w-full">
+                          <Settings className="h-4 w-4" />
+                          <span>Paramètres</span>
+                        </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <HelpCircle className="mr-2 h-4 w-4" />
-                        <span>Help</span>
+                      <DropdownMenuItem className="w-full" asChild>
+                        <Link href="/help" className="flex w-full">
+                          <HelpCircle className="h-4 w-4" />
+                          <span>Aide</span>
+                        </Link>
                       </DropdownMenuItem>
 
                       <DropdownMenuSeparator />
