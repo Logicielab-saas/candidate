@@ -50,6 +50,11 @@ const navItems = [
   { name: "Home", url: "/", icon: Home },
   { name: "Formations", url: "/formations", icon: User },
   { name: "Profile", url: "/profile", icon: Briefcase },
+  {
+    name: "Retours Entreprises",
+    url: "/companies-reviews",
+    icon: Star,
+  },
 ];
 
 export function NavBar() {
