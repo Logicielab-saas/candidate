@@ -121,7 +121,7 @@ export const companyDetails: CompanyDetails[] = [
     dateFounded: "2020-01-01",
     siteUrl: "https://www.techsolutions.com",
     description:
-      "Tech Solutions is a leading provider of innovative tech solutions and services.",
+      "Tech Solutions is a leading provider of innovative tech solutions and services, specializing in cutting-edge software development, cloud computing infrastructure, cybersecurity solutions, and digital transformation consulting. With a track record of successful implementations across various industries, we deliver enterprise-grade solutions that help businesses scale and thrive in the digital age. Our team of expert engineers and consultants work tirelessly to ensure our clients receive the highest quality technological solutions tailored to their specific needs.",
     industry: "Technology",
     salaryRange: "100,000 - 150,000",
     rating: 4.5,
