@@ -84,7 +84,7 @@ export function CompanyCard({ company }: CompanyCardProps) {
           href={`/?q=${company.name}`}
           className="text-sm text-muted-foreground hover:text-primary transition-colors"
         >
-          <span className="text-secondaryHex-800 font-semibold">
+          <span className="text-secondaryHex-800 dark:text-secondaryHex-100 font-semibold">
             {jobsTotal}{" "}
           </span>
           <span className="text-primary">offres d&apos;emploi</span>
