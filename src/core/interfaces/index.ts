@@ -17,3 +17,4 @@ export * from "./form.interface";
 export * from "./user.inteface";
 export * from "./user-alert.interface";
 export * from "./user-device.interface";
+export * from "./company-reviews.interface";
