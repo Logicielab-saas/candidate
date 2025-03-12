@@ -8,7 +8,7 @@
  * - Company description
  */
 
-import { CompanyReviews } from "@/core/interfaces";
+import { Company } from "@/core/interfaces";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Star, MapPin } from "lucide-react";
@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 interface CompanyCardProps {
-  company: CompanyReviews;
+  company: Company;
 }
 
 export function CompanyCard({ company }: CompanyCardProps) {

@@ -6,7 +6,7 @@
  */
 
 import { CompanyCard } from "./CompanyCard";
-import { companyReviews } from "@/core/mockData/company";
+import { companies } from "@/core/mockData/company";
 import { cn } from "@/lib/utils";
 
 export function CompaniesGrid() {
@@ -18,7 +18,7 @@ export function CompaniesGrid() {
           "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         )}
       >
-        {companyReviews.map((company) => (
+        {companies.map((company) => (
           <CompanyCard key={company.id} company={company} />
         ))}
       </div>

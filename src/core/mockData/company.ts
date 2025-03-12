@@ -1,6 +1,6 @@
-import { CompanyReviews } from "../interfaces";
+import { Company, CompanyDetails } from "../interfaces";
 
-export const companyReviews: CompanyReviews[] = [
+export const companies: Company[] = [
   {
     id: "1",
     name: "Tech Solutions",
@@ -104,5 +104,82 @@ export const companyReviews: CompanyReviews[] = [
     rating: 4.5,
     reviewsNum: 90,
     jobsTotal: 30,
+  },
+];
+
+/**
+ * A diverse list of company details demonstrating different scenarios.
+ * Some entries include all optional fields while others omit a few.
+ */
+export const companyDetails: CompanyDetails[] = [
+  {
+    id: "1",
+    name: "Tech Solutions",
+    location: "Rabat",
+    avatarUrl: "https://placehold.co/150",
+    emloyers: 100,
+    dateFounded: "2020-01-01",
+    siteUrl: "https://www.techsolutions.com",
+    description:
+      "Tech Solutions is a leading provider of innovative tech solutions and services.",
+    industry: "Technology",
+    salaryRange: "100,000 - 150,000",
+    rating: 4.5,
+    reviewsNum: 120,
+    jobsTotal: 80,
+  },
+  {
+    id: "2",
+    name: "Vinca Digital",
+    location: "Casablanca",
+    // Omitting avatarUrl and salaryRange
+    emloyers: 150,
+    dateFounded: "2018-05-15",
+    siteUrl: "https://www.vincadigital.com",
+    description:
+      "Vinca Digital specializes in digital marketing strategies and online brand building.",
+    industry: "Marketing",
+    rating: 4.7,
+    reviewsNum: 95,
+    jobsTotal: 60,
+  },
+  {
+    id: "3",
+    name: "Eco Innovators",
+    location: "Marrakech",
+    avatarUrl: "https://placehold.co/150",
+    // Omitting description and siteUrl
+    emloyers: 50,
+    dateFounded: "2015-07-20",
+    industry: "Renewable Energy",
+    rating: 4.2,
+    reviewsNum: 80,
+    jobsTotal: 45,
+  },
+  {
+    id: "4",
+    name: "Health Connect",
+    location: "Tanger",
+    avatarUrl: "https://placehold.co/150",
+    emloyers: 200,
+    dateFounded: "2010-03-10",
+    siteUrl: "https://www.healthconnect.com",
+    description:
+      "Health Connect delivers cutting-edge solutions in healthcare connectivity and logistics.",
+    industry: "Healthcare",
+    salaryRange: "90,000 - 140,000",
+    rating: 4.8,
+    reviewsNum: 150,
+    jobsTotal: 110,
+  },
+  {
+    id: "5",
+    name: "FinCorp Finance",
+    location: "Fès",
+    // Omitting multiple optional fields (avatarUrl, description, siteUrl, salaryRange, reviewsNum, jobsTotal)
+    emloyers: 80,
+    dateFounded: "2012-09-25",
+    industry: "Finance",
+    rating: 4.0,
   },
 ];
