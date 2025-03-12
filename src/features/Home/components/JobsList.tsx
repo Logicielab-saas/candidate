@@ -40,6 +40,7 @@ export function JobsList({ isDesktop }: JobsListProps) {
     const matchesSearch =
       !searchText ||
       job.jobTitle.toLowerCase().includes(searchText.toLowerCase()) ||
+      job.companyName.toLowerCase().includes(searchText.toLowerCase()) ||
       job.keyWords.some((keyword) =>
         keyword.toLowerCase().includes(searchText.toLowerCase())
       );

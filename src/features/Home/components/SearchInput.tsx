@@ -1,7 +1,7 @@
 /**
  * SearchInput - Job search input component
  *
- * Handles job title and keyword search with controlled input
+ * Handles job title, company name, and keyword search with controlled input
  * Exposes current input value to parent component for search button handling
  */
 
@@ -65,7 +65,7 @@ export function SearchInput({ value, onChange }: SearchInputProps) {
         <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           id="search"
-          placeholder="Search job titles or keywords..."
+          placeholder="Search by job title, company name, or keywords..."
           className="pl-8"
           value={value}
           onChange={(e) => onChange(e.target.value)}
