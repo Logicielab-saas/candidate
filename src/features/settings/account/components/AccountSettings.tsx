@@ -26,6 +26,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MOCK_USER } from "@/core/mockData/user";
 import { useToast } from "@/hooks/use-toast";
+import { Separator } from "@/components/ui/separator";
 
 const DELETE_CONFIRMATION = "SUPPRIMER MON COMPTE";
 
@@ -100,7 +101,9 @@ export function AccountActions() {
 
   return (
     <Card className="p-6">
-      <h4 className="text-sm font-medium mb-4">Actions du compte</h4>
+      <h4 className="tracking-tight text-lg font-medium mb-4">
+        Actions du compte
+      </h4>
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-2">
           <div className="space-y-1">
@@ -119,6 +122,8 @@ export function AccountActions() {
           </Button>
         </div>
 
+        <Separator />
+
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-2">
           <div className="space-y-1">
             <p className="text-sm font-medium leading-none text-destructive">
@@ -128,6 +133,8 @@ export function AccountActions() {
               Supprimez définitivement votre compte et toutes vos données
             </p>
           </div>
+
+          {/* Delete Account Dialog */}
           <AlertDialog onOpenChange={handleDeleteDialogOpenChange}>
             <AlertDialogTrigger asChild>
               <Button

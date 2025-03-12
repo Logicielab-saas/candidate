@@ -98,7 +98,9 @@ export function AccountInfo() {
 
   return (
     <Card className="p-6">
-      <h4 className="text-sm font-medium mb-4">Informations du compte</h4>
+      <h4 className="tracking-tight text-lg font-medium mb-4">
+        Informations du compte
+      </h4>
       <div className="divide-y">
         <InfoItem
           label="Type de compte"

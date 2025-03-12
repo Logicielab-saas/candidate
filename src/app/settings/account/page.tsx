@@ -6,14 +6,16 @@ export default function AccountPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium">Paramètres du compte</h3>
-        <p className="text-sm text-muted-foreground">
+        <h1 className="text-2xl font-semibold">Paramètres du compte</h1>
+        <p className="text-muted-foreground mt-1">
           Gérez les paramètres de votre compte et vos préférences.
         </p>
       </div>
-      <Separator />
+
+      <Separator className="my-6" />
+
       <AccountInfo />
-      <Separator />
+      <Separator className="my-6" />
       <AccountActions />
     </div>
   );

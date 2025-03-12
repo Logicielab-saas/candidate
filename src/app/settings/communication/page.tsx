@@ -12,7 +12,7 @@ import { PrivacyPreferences } from "@/features/settings/communication/components
 
 export default function CommunicationSettingsPage() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold">Paramètres de communication</h1>
         <p className="text-muted-foreground mt-1">
@@ -23,7 +23,7 @@ export default function CommunicationSettingsPage() {
 
       <Separator className="my-6" />
 
-      <div className="space-y-8">
+      <div className="space-y-6">
         <div>
           <h2 className="text-xl font-medium mb-4">Alertes Configuration</h2>
 
@@ -42,12 +42,16 @@ export default function CommunicationSettingsPage() {
           </div>
         </div>
 
+        <Separator className="my-6" />
+
         <div>
           <h2 className="text-xl font-medium mb-4">
             Préférences de notification
           </h2>
           <AlertPreferences />
         </div>
+
+        <Separator className="my-6" />
 
         <div>
           <h2 className="text-xl font-medium mb-4">Confidentialité</h2>

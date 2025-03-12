@@ -13,6 +13,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { UserAlertPreferences } from "@/core/interfaces/user-alert.interface";
 import { userAlertsPreferences as initialPreferences } from "@/core/mockData/user-alerts";
 import { useToast } from "@/hooks/use-toast";
+import { Separator } from "@/components/ui/separator";
+import React from "react";
 
 export function AlertPreferences() {
   const [preferences, setPreferences] =
@@ -39,29 +41,29 @@ export function AlertPreferences() {
     <div className="space-y-4">
       <Card>
         <CardContent className="p-0">
-          {preferences.map((preference) => (
-            <div
-              key={preference.id}
-              className="flex items-center justify-between p-4 hover:bg-accent/50 transition-colors"
-            >
-              <div>
-                <h3 className="font-medium">{preference.title}</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  {preference.description}
-                </p>
+          {preferences.map((preference, index) => (
+            <React.Fragment key={preference.id}>
+              <div className="flex items-center justify-between p-4 hover:bg-accent/50 transition-colors">
+                <div>
+                  <h3 className="font-medium">{preference.title}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {preference.description}
+                  </p>
+                </div>
+                <Switch
+                  checked={preference.isEnabled}
+                  onCheckedChange={(checked) =>
+                    handleTogglePreference(preference.id, checked)
+                  }
+                  aria-label={
+                    preference.isEnabled
+                      ? `Désactiver ${preference.title}`
+                      : `Activer ${preference.title}`
+                  }
+                />
               </div>
-              <Switch
-                checked={preference.isEnabled}
-                onCheckedChange={(checked) =>
-                  handleTogglePreference(preference.id, checked)
-                }
-                aria-label={
-                  preference.isEnabled
-                    ? `Désactiver ${preference.title}`
-                    : `Activer ${preference.title}`
-                }
-              />
-            </div>
+              {index < preferences.length - 1 && <Separator />}
+            </React.Fragment>
           ))}
         </CardContent>
       </Card>
