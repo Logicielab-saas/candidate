@@ -15,6 +15,7 @@ import {
   File,
   MessageSquare,
   Smartphone,
+  ShieldEllipsis,
 } from "lucide-react";
 
 export interface SidebarNavItem {
@@ -48,18 +49,23 @@ export const sidebarProfileNav: SidebarNavItem[] = [
 
 export const sidebarSettingsNav: SidebarNavItem[] = [
   {
-    title: "Account Settings",
+    title: "Paramètres du compte",
     href: "/settings/account",
     icon: Settings,
   },
   {
-    title: "Connected Communication",
+    title: "Communication connectée",
     href: "/settings/communication",
     icon: MessageSquare,
   },
   {
-    title: "Device Supervision",
+    title: "Supervision des appareils",
     href: "/settings/devices",
     icon: Smartphone,
+  },
+  {
+    title: "Réglages de confidentialité",
+    href: "/settings/privacy",
+    icon: ShieldEllipsis,
   },
 ];
