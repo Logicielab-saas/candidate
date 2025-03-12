@@ -3,10 +3,11 @@
 import { useQueryState } from "nuqs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Settings2 } from "lucide-react";
+import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
+import { CompanyFiltersDrawer } from "./CompanyFiltersDrawer";
 
 /**
  * CompaniesSearch - Client component for company search functionality
@@ -62,14 +63,7 @@ export function CompaniesSearch() {
           >
             Rechercher
           </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            type="button"
-            className="h-11 px-8 border-dashed"
-          >
-            <Settings2 className="h-4 w-4" />
-          </Button>
+          <CompanyFiltersDrawer />
         </div>
       </div>
     </form>

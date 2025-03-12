@@ -90,11 +90,6 @@ export function AdvancedFiltersDrawer() {
     setSalaryRange(null);
   };
 
-  // Handle salary range changes
-  const handleSalaryChange = (value: number[]) => {
-    setSalaryRange(value.join(","));
-  };
-
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
@@ -102,8 +97,7 @@ export function AdvancedFiltersDrawer() {
           variant="outline"
           size="icon"
           className={cn(
-            "relative",
-            "border-dashed",
+            "relative h-11 px-8 border-dashed",
             activeFiltersCount > 0 && "border-primary"
           )}
         >
@@ -118,7 +112,10 @@ export function AdvancedFiltersDrawer() {
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
+      <SheetContent
+        side="right"
+        className="w-full sm:max-w-md p-4 sm:p-6 overflow-y-auto"
+      >
         <SheetHeader className="space-y-2.5">
           <SheetTitle>Advanced Filters</SheetTitle>
           <SheetDescription>
@@ -126,7 +123,7 @@ export function AdvancedFiltersDrawer() {
           </SheetDescription>
         </SheetHeader>
 
-        <div className="mt-8 space-y-8">
+        <div className="mt-6 sm:mt-8 space-y-6 sm:space-y-8">
           {/* Salary Range */}
           <div className="space-y-4">
             <Label>Salary Range (K€/year)</Label>
@@ -135,7 +132,7 @@ export function AdvancedFiltersDrawer() {
               max={DEFAULT_MAX_SALARY}
               step={5}
               value={parsedSalaryRange}
-              onValueChange={handleSalaryChange}
+              onValueChange={(value) => setSalaryRange(value.join(","))}
               className="w-full"
             />
             <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -188,15 +185,18 @@ export function AdvancedFiltersDrawer() {
           </div>
         </div>
 
-        <SheetFooter className="mt-8">
+        <SheetFooter className="flex-row gap-2 mt-6 sm:mt-8">
           <Button
             variant="outline"
             onClick={handleReset}
-            className="w-full sm:w-auto"
+            className="flex-1 sm:flex-none"
           >
             Reset Filters
           </Button>
-          <Button onClick={() => setIsOpen(false)} className="w-full sm:w-auto">
+          <Button
+            onClick={() => setIsOpen(false)}
+            className="flex-1 sm:flex-none"
+          >
             Apply Filters
           </Button>
         </SheetFooter>

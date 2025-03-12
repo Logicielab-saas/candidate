@@ -45,9 +45,14 @@ const cities = [
 interface CitySelectorProps {
   value: string | null;
   onChange: (value: string | null) => void;
+  label?: string;
 }
 
-export function CitySelector({ value, onChange }: CitySelectorProps) {
+export function CitySelector({
+  value,
+  onChange,
+  label = "City",
+}: CitySelectorProps) {
   // Local state
   const [citySearch, setCitySearch] = useState("");
   const [open, setOpen] = useState(false);
@@ -82,7 +87,7 @@ export function CitySelector({ value, onChange }: CitySelectorProps) {
           "peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         )}
       >
-        City
+        {label}
       </label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
