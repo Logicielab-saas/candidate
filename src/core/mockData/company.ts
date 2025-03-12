@@ -145,7 +145,7 @@ export const companyDetails: CompanyDetails[] = [
   },
   {
     id: "3",
-    name: "Eco Innovators",
+    name: "Backend Solutions",
     location: "Marrakech",
     avatarUrl: "https://placehold.co/150",
     // Omitting description and siteUrl
@@ -158,7 +158,7 @@ export const companyDetails: CompanyDetails[] = [
   },
   {
     id: "4",
-    name: "Health Connect",
+    name: "Data Insights",
     location: "Tanger",
     avatarUrl: "https://placehold.co/150",
     emloyers: 200,
@@ -174,12 +174,56 @@ export const companyDetails: CompanyDetails[] = [
   },
   {
     id: "5",
-    name: "FinCorp Finance",
+    name: "Creative Minds",
     location: "Fès",
     // Omitting multiple optional fields (avatarUrl, description, siteUrl, salaryRange, reviewsNum, jobsTotal)
     emloyers: 80,
     dateFounded: "2012-09-25",
     industry: "Finance",
     rating: 4.0,
+  },
+  {
+    id: "7",
+    name: "Innovative Solutions",
+    location: "Oujda",
+    avatarUrl: "https://placehold.co/150",
+    emloyers: 120,
+    dateFounded: "2019-11-30",
+    siteUrl: "https://www.futuretech.com",
+    description:
+      "Future Tech is at the forefront of emerging technologies, specializing in AI, machine learning, and blockchain solutions. Our innovative approach helps businesses leverage cutting-edge technology to stay ahead of the competition.",
+    industry: "Technology",
+    salaryRange: "110,000 - 160,000",
+    rating: 4.6,
+    reviewsNum: 130,
+    jobsTotal: 70,
+  },
+  {
+    id: "8",
+    name: "Future Tech",
+    location: "Tétouan",
+    avatarUrl: "https://placehold.co/150",
+    emloyers: 75,
+    dateFounded: "2021-03-15",
+    siteUrl: "https://www.nextgeninnovations.com",
+    description:
+      "NextGen Innovations focuses on developing next-generation software solutions and digital transformation services. We help businesses modernize their technology stack and improve operational efficiency.",
+    industry: "Technology",
+    salaryRange: "95,000 - 145,000",
+    rating: 4.3,
+    reviewsNum: 90,
+    jobsTotal: 30,
+  },
+  {
+    id: "9",
+    name: "NextGen Innovations",
+    location: "Kenitra",
+    // Omitting some optional fields to maintain diversity
+    emloyers: 60,
+    dateFounded: "2022-01-10",
+    industry: "Technology",
+    rating: 4.1,
+    reviewsNum: 45,
+    jobsTotal: 25,
   },
 ];

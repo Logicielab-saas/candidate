@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { CompanyDetails } from "@/core/interfaces";
 import {
   Building2,
@@ -16,20 +15,9 @@ interface CompanyOverviewProps {
 }
 
 export function CompanyOverview({ company }: CompanyOverviewProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const maxLength = 250;
-
-  const toggleReadMore = () => {
-    setIsExpanded(!isExpanded);
-  };
-
   const renderDescription = () => {
     if (!company.description) return "No description available.";
-    if (company.description.length <= maxLength) return company.description;
-
-    return isExpanded
-      ? company.description
-      : `${company.description.slice(0, maxLength)}...`;
+    if (company.description.length) return company.description;
   };
 
   return (
