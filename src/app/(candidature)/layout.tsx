@@ -26,7 +26,7 @@ export default function ProfileLayout({
       >
         <div className={cn("flex flex-col md:flex-row gap-8")}>
           <aside className="md:w-64 flex-shrink-0">
-            <div className="sticky top-20">
+            <div className="sm:sticky sm:top-20">
               <ProfileSidebar navItems={sidebarProfileNav} />
             </div>
           </aside>
