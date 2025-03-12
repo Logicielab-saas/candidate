@@ -52,7 +52,7 @@ const navItems = [
   { name: "Profile", url: "/profile", icon: Briefcase },
   {
     name: "Retours Entreprises",
-    url: "/companies-reviews",
+    url: "/companies/reviews",
     icon: Star,
   },
 ];

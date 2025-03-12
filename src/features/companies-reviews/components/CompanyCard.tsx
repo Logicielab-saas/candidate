@@ -43,7 +43,7 @@ export function CompanyCard({ company }: CompanyCardProps) {
   return (
     <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardContent className="p-6">
-        <Link href={`/company/${companySlug}`} className="block">
+        <Link href={`/companies/${companySlug}`} className="block">
           <div className="flex items-start gap-4">
             {/* Avatar */}
             <Avatar className="h-16 w-16">
