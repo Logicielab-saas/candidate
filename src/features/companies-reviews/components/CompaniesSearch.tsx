@@ -39,7 +39,7 @@ export function CompaniesSearch() {
           "items-end justify-center"
         )}
       >
-        <div className="sm:w-[700px] space-y-2">
+        <div className="w-full sm:w-[700px] space-y-2">
           <Label htmlFor="company-search" className="text-sm font-medium">
             Recherche Entreprise
           </Label>
