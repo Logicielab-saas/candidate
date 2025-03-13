@@ -2,8 +2,14 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { CompanyDetails } from "@/core/interfaces";
-import { Star } from "lucide-react";
+import { Bell, BellOff, Star } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { redirect } from "next/navigation";
@@ -19,10 +25,12 @@ export function CompanyDetailsHeader({ company }: CompanyDetailsHeaderProps) {
   const handleFollowClick = () => {
     setIsFollowing(!isFollowing);
     toast({
-      title: isFollowing ? "Unfollowed Company" : "Following Company",
+      title: isFollowing
+        ? "Notifications désactivées"
+        : "Notifications activées",
       description: isFollowing
-        ? `You are no longer following ${company.name}`
-        : `You are now following ${company.name}`,
+        ? `Vous ne recevrez plus de notifications pour ${company.name}`
+        : `Vous recevrez des notifications pour les nouveaux postes et actualités de ${company.name}`,
     });
   };
 
@@ -44,24 +52,51 @@ export function CompanyDetailsHeader({ company }: CompanyDetailsHeaderProps) {
               <span>{company.rating || 0}</span>
             </div>
             <span className="shrink-0">•</span>
-            <span className="shrink-0">{company.reviewsNum || 0} reviews</span>
+            <span className="shrink-0">{company.reviewsNum || 0} avis</span>
           </div>
         </div>
       </div>
       <div className="flex gap-3 shrink-0">
-        <Button
-          variant={isFollowing ? "secondary" : "outline"}
-          onClick={handleFollowClick}
-          className={isFollowing ? "bg-primary/10 hover:bg-primary/20" : ""}
-          size="sm"
-        >
-          {isFollowing ? "Following" : "Follow Company"}
-        </Button>
+        <TooltipProvider>
+          <Tooltip delayDuration={50}>
+            <TooltipTrigger asChild>
+              <Button
+                variant={isFollowing ? "secondary" : "outline"}
+                onClick={handleFollowClick}
+                className={
+                  isFollowing ? "bg-primary/10 hover:bg-primary/20" : ""
+                }
+                size="sm"
+              >
+                <span className="flex items-center gap-2">
+                  {isFollowing ? (
+                    <>
+                      <BellOff className="h-4 w-4" />
+                      Ne plus suivre
+                    </>
+                  ) : (
+                    <>
+                      <Bell className="h-4 w-4" />
+                      Suivre
+                    </>
+                  )}
+                </span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent className="max-w-[300px] p-3">
+              <p>
+                {isFollowing
+                  ? "Désactiver les notifications pour les nouveaux postes et actualités de cette entreprise"
+                  : "Recevez des notifications par email pour les nouveaux postes, événements et actualités de cette entreprise"}
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <Button
           size="sm"
           onClick={() => redirect(`/companies/${company.slug}/write-review`)}
         >
-          Write a Review
+          Écrire un avis
         </Button>
       </div>
     </div>
