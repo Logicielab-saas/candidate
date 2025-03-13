@@ -10,8 +10,8 @@ export const companies: Company[] = [
       "Tech Solutions is a leading provider of technology solutions, offering innovative products and services to businesses and individuals.",
     industry: "Technology",
     salaryRange: "100,000 - 150,000",
-    rating: 4.5,
-    reviewsNum: 120,
+    rating: 3.7,
+    reviewsNum: 3,
     jobsTotal: 80,
   },
   {
@@ -23,8 +23,8 @@ export const companies: Company[] = [
       "Vinca Digital is a digital marketing agency that specializes in creating effective online strategies for businesses.",
     industry: "Technology",
     salaryRange: "100,000 - 150,000",
-    rating: 4.5,
-    reviewsNum: 95,
+    rating: 5.0,
+    reviewsNum: 1,
     jobsTotal: 60,
   },
   {
@@ -125,8 +125,8 @@ export const companyDetails: CompanyDetails[] = [
       "Tech Solutions is a leading provider of innovative tech solutions and services, specializing in cutting-edge software development, cloud computing infrastructure, cybersecurity solutions, and digital transformation consulting. With a track record of successful implementations across various industries, we deliver enterprise-grade solutions that help businesses scale and thrive in the digital age. Our team of expert engineers and consultants work tirelessly to ensure our clients receive the highest quality technological solutions tailored to their specific needs.",
     industry: "Technology",
     salaryRange: "100,000 - 150,000",
-    rating: 4.5,
-    reviewsNum: 120,
+    rating: 3.7,
+    reviewsNum: 3,
     jobsTotal: 80,
   },
   {
@@ -141,8 +141,8 @@ export const companyDetails: CompanyDetails[] = [
     description:
       "Vinca Digital specializes in digital marketing strategies and online brand building.",
     industry: "Marketing",
-    rating: 4.7,
-    reviewsNum: 95,
+    rating: 5.0,
+    reviewsNum: 1,
     jobsTotal: 60,
   },
   {
@@ -239,36 +239,42 @@ export const companyDetails: CompanyDetails[] = [
 export const companyReviews: CompanyReview[] = [
   {
     id: "1",
-    companyId: "1",
+    companySlug: "tech-solutions-1",
     userId: "1",
     rating: 4.5,
-    comment: "Great company with a positive work culture.",
-    positivePoints: ["Great work culture", "Positive environment"],
-    negativePoints: ["Long working hours", "High stress levels"],
+    summary: "A fantastic workplace with a supportive atmosphere.",
+    comment:
+      "Tech Solutions fosters a collaborative environment that encourages growth. The team is always ready to help each other, and the management is very approachable. Employees feel valued and appreciated, which contributes to a positive work culture. The company also invests in employee development, providing various training programs and opportunities for career advancement. Overall, it's a place where you can grow both personally and professionally.",
+    positivePoints: ["Supportive management", "Collaborative team"],
+    negativePoints: ["Occasional tight deadlines", "High expectations"],
   },
   {
     id: "2",
-    companyId: "1",
+    companySlug: "tech-solutions-1",
     userId: "2",
     rating: 4.0,
-    comment: "Good company with a good work culture.",
-    positivePoints: ["Good work culture", "Positive environment"],
-    negativePoints: ["Long working hours", "High stress levels"],
+    summary: "Great place for software developers to thrive.",
+    comment:
+      "The company offers a solid work-life balance and a positive culture. Employees are encouraged to take breaks and maintain a healthy work-life balance. The office environment is friendly and inclusive, making it easy to collaborate with colleagues. There are also regular team-building activities that help strengthen relationships among team members. However, during peak project times, the workload can become intense, which may lead to longer hours. Overall, it's a great place for developers to enhance their skills and work on exciting projects.",
   },
   {
     id: "3",
-    companyId: "1",
+    companySlug: "tech-solutions-1",
     userId: "3",
-    rating: 3.5,
-    comment: "Average company with a good work culture.",
-    positivePoints: ["Good work culture", "Positive environment"],
-    negativePoints: ["Long working hours", "High stress levels"],
+    rating: 2.5,
+    summary: "An average experience with room for improvement.",
+    comment:
+      "While the work culture is decent, there are significant areas that need attention. Communication between departments can be lacking, leading to misunderstandings and delays in project timelines. Additionally, some employees feel that their contributions are not recognized, which can affect morale. The company has potential, but it needs to address these issues to create a more cohesive and supportive environment for all employees.",
+    positivePoints: ["Decent work culture", "Good team spirit"],
+    negativePoints: ["High stress levels", "Lack of clear direction"],
   },
   {
     id: "4",
-    companyId: "1",
+    companySlug: "vinca-digital-2",
     userId: "4",
     rating: 5.0,
-    comment: "Excellent company with a great work culture.",
+    summary: "An exemplary company with a vibrant culture.",
+    comment:
+      "Vinca Digital stands out for its innovative approach and employee satisfaction. The company fosters creativity and encourages employees to think outside the box. There are numerous opportunities for professional development, and the leadership team is genuinely invested in the well-being of their staff. The collaborative atmosphere and the focus on innovation make it a fantastic place to work. Employees feel empowered to share their ideas and contribute to the company's success.",
   },
 ];

@@ -1,8 +1,9 @@
 export interface CompanyReview {
   id: string;
-  companyId: string;
+  companySlug: string;
   userId: string;
   rating: number;
+  summary: string;
   comment: string;
   positivePoints?: string[];
   negativePoints?: string[];

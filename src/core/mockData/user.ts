@@ -1,4 +1,4 @@
-import { User } from "../interfaces/user.inteface";
+import { User } from "../interfaces";
 
 export const MOCK_USER: User = {
   id: "1",
