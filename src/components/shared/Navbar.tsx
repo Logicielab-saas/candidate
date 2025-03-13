@@ -51,7 +51,7 @@ const navItems = [
   { name: "Formations", url: "/formations", icon: User },
   { name: "Profile", url: "/profile", icon: Briefcase },
   {
-    name: "Retours Entreprises",
+    name: "Entreprises",
     url: "/companies/reviews",
     icon: Star,
   },
