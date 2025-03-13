@@ -4,6 +4,6 @@ export interface CompanyReview {
   userId: string;
   rating: number;
   comment: string;
-  positivePoints: string[];
-  negativePoints: string[];
+  positivePoints?: string[];
+  negativePoints?: string[];
 }

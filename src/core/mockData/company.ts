@@ -1,4 +1,4 @@
-import { Company, CompanyDetails } from "../interfaces";
+import { Company, CompanyDetails, CompanyReview } from "../interfaces";
 
 export const companies: Company[] = [
   {
@@ -233,5 +233,42 @@ export const companyDetails: CompanyDetails[] = [
     rating: 4.1,
     reviewsNum: 45,
     jobsTotal: 25,
+  },
+];
+
+export const companyReviews: CompanyReview[] = [
+  {
+    id: "1",
+    companyId: "1",
+    userId: "1",
+    rating: 4.5,
+    comment: "Great company with a positive work culture.",
+    positivePoints: ["Great work culture", "Positive environment"],
+    negativePoints: ["Long working hours", "High stress levels"],
+  },
+  {
+    id: "2",
+    companyId: "1",
+    userId: "2",
+    rating: 4.0,
+    comment: "Good company with a good work culture.",
+    positivePoints: ["Good work culture", "Positive environment"],
+    negativePoints: ["Long working hours", "High stress levels"],
+  },
+  {
+    id: "3",
+    companyId: "1",
+    userId: "3",
+    rating: 3.5,
+    comment: "Average company with a good work culture.",
+    positivePoints: ["Good work culture", "Positive environment"],
+    negativePoints: ["Long working hours", "High stress levels"],
+  },
+  {
+    id: "4",
+    companyId: "1",
+    userId: "4",
+    rating: 5.0,
+    comment: "Excellent company with a great work culture.",
   },
 ];
