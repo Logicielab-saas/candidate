@@ -47,7 +47,7 @@ import { usePathname } from "next/navigation";
 //   className?: string;
 // }
 const navItems = [
-  { name: "Home", url: "/", icon: Home },
+  { name: "Home", url: "/home", icon: Home },
   { name: "Formations", url: "/formations", icon: User },
   { name: "Profile", url: "/profile", icon: Briefcase },
   {
