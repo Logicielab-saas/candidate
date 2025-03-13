@@ -26,6 +26,8 @@ export function JobsContainer() {
   const [, setJobId] = useQueryState("jobId");
   const [searchText] = useQueryState("q");
   const [selectedCity] = useQueryState("city");
+  const [keywords] = useQueryState("keyword");
+  const [contractTypes] = useQueryState("contracts");
   const [activeTab, setActiveTab] = useQueryState("tab", {
     defaultValue: "recommended",
   });
@@ -47,7 +49,8 @@ export function JobsContainer() {
   }, [searchText, selectedCity, addSearch]);
 
   // Determine if there are any active search filters
-  const hasActiveSearch = searchText || selectedCity;
+  const hasActiveSearch =
+    searchText || selectedCity || keywords || contractTypes;
 
   // Switch to recommended tab when searching
   useEffect(() => {

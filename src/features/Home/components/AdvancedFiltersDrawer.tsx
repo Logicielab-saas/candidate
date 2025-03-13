@@ -97,7 +97,7 @@ export function AdvancedFiltersDrawer() {
           variant="outline"
           size="icon"
           className={cn(
-            "relative h-11 px-8 border-dashed",
+            "relative h-10 px-8 border-dashed",
             activeFiltersCount > 0 && "border-primary"
           )}
         >

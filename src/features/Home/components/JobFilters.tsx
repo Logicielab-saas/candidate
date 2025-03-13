@@ -4,7 +4,7 @@
  * Features:
  * - Clean, modern design with icons
  * - Date and contract type filtering
- * - Multi-select capability for contract types
+ * - Multi-select capability for contract types and keywords
  * - Advanced filters drawer for additional options
  * - Save search alerts functionality
  */
@@ -25,6 +25,7 @@ import { Calendar, Briefcase } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { AdvancedFiltersDrawer } from "./AdvancedFiltersDrawer";
 import { SaveSearchAlert } from "./SaveSearchAlert";
+import { KeywordFilter } from "./KeywordFilter";
 
 // Filter options
 const DATE_FILTERS = [
@@ -52,11 +53,13 @@ export function JobFilters() {
     serialize: (value) => value.join(","),
     defaultValue: [],
   });
+  const [urlKeywords] = useQueryState("keyword");
 
   // Count active filters
   const activeFiltersCount = [
     dateFilter && dateFilter !== "all",
     contractTypes && contractTypes.length > 0,
+    urlKeywords,
   ].filter(Boolean).length;
 
   return (
@@ -72,7 +75,7 @@ export function JobFilters() {
       )}
 
       {/* Filters Row */}
-      <div className={cn("flex flex-wrap items-center gap-3")}>
+      <div className="flex flex-wrap items-center gap-4">
         {/* Date Filter */}
         <Select
           value={dateFilter || "all"}
@@ -101,7 +104,10 @@ export function JobFilters() {
           </SelectContent>
         </Select>
 
-        {/* Contract Type Multi-Select Filter */}
+        {/* Keywords Filter */}
+        <KeywordFilter />
+
+        {/* Contract Type Filter */}
         <div className="relative">
           <MultiSelect
             options={CONTRACT_TYPES}
@@ -112,13 +118,13 @@ export function JobFilters() {
             }
             placeholder="Filter by contract type"
             className={cn(
-              "w-[220px] bg-background pl-5",
+              "w-[220px] bg-background pl-8",
               "border-dashed",
               contractTypes?.length && "border-primary"
             )}
             contentClassName="w-[220px]"
           />
-          <Briefcase className="absolute left-3 top-3 h-4 w-4 text-muted-foreground pointer-events-none" />
+          <Briefcase className="absolute left-2.5 top-3 h-4 w-4 text-muted-foreground pointer-events-none" />
         </div>
 
         {/* Advanced Filters Drawer */}
