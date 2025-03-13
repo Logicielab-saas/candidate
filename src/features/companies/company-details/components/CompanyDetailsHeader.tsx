@@ -26,36 +26,37 @@ export function CompanyDetailsHeader({ company }: CompanyDetailsHeaderProps) {
   };
 
   return (
-    <div className="flex items-center justify-between p-6 border bg-card text-card-foreground rounded-lg shadow-sm">
-      <div className="flex items-center gap-4">
-        <Avatar className="w-16 h-16">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-6 border bg-card text-card-foreground rounded-lg shadow-sm gap-4">
+      <div className="flex items-center gap-4 min-w-0">
+        <Avatar className="w-16 h-16 shrink-0">
           <AvatarImage
             src={company.avatarUrl || "https://placehold.co/150"}
             alt={company.name}
           />
           <AvatarFallback>{company.name.charAt(0)}</AvatarFallback>
         </Avatar>
-        <div>
-          <h1 className="text-2xl font-semibold">{company.name}</h1>
+        <div className="min-w-0">
+          <h1 className="text-2xl font-semibold truncate">{company.name}</h1>
           <div className="flex items-center gap-2 text-sm text-gray-600">
-            <div className="flex items-center">
+            <div className="flex items-center shrink-0">
               <Star className="h-5 w-5 fill-primary text-primary mr-1" />
               <span>{company.rating || 0}</span>
             </div>
-            <span>•</span>
-            <span>{company.reviewsNum || 0} reviews</span>
+            <span className="shrink-0">•</span>
+            <span className="shrink-0">{company.reviewsNum || 0} reviews</span>
           </div>
         </div>
       </div>
-      <div className="flex gap-3">
+      <div className="flex gap-3 shrink-0">
         <Button
           variant={isFollowing ? "secondary" : "outline"}
           onClick={handleFollowClick}
           className={isFollowing ? "bg-primary/10 hover:bg-primary/20" : ""}
+          size="sm"
         >
           {isFollowing ? "Following" : "Follow Company"}
         </Button>
-        <Button>Write a Review</Button>
+        <Button size="sm">Write a Review</Button>
       </div>
     </div>
   );

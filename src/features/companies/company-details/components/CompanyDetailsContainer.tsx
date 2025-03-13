@@ -3,9 +3,11 @@
 import { CompanyDetails } from "@/core/interfaces";
 import { CompanyDetailsHeader } from "./CompanyDetailsHeader";
 import { CompanyOverview } from "./CompanyOverview";
+import { CompanyJobs } from "./CompanyJobs";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { tabsListStyles, tabTriggerStyles } from "@/core/styles/tabs";
+import { tabTriggerStyles } from "@/core/styles/tabs";
 import { cn } from "@/lib/utils";
+import { useQueryState } from "nuqs";
 
 interface CompanyDetailsContainerProps {
   company: CompanyDetails;
@@ -14,10 +16,17 @@ interface CompanyDetailsContainerProps {
 export function CompanyDetailsContainer({
   company,
 }: CompanyDetailsContainerProps) {
+  const [selectedTab, setSelectedTab] = useQueryState("tab", {
+    defaultValue: "overview",
+  });
   return (
     <div className="space-y-6 py-8">
       <CompanyDetailsHeader company={company} />
-      <Tabs defaultValue="overview" className="w-full">
+      <Tabs
+        value={selectedTab}
+        onValueChange={setSelectedTab}
+        className="w-full"
+      >
         <TabsList className="grid w-full grid-cols-3 bg-transparent">
           <TabsTrigger value="overview" className={cn(tabTriggerStyles.home)}>
             Overview
@@ -34,8 +43,8 @@ export function CompanyDetailsContainer({
           <CompanyOverview company={company} />
         </TabsContent>
 
-        <TabsContent value="jobs">
-          <div className="p-4">Jobs content coming soon...</div>
+        <TabsContent value="jobs" className="mt-6">
+          <CompanyJobs company={company} />
         </TabsContent>
 
         <TabsContent value="reviews">
