@@ -6,6 +6,7 @@ import { CompanyDetails } from "@/core/interfaces";
 import { Star } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { redirect } from "next/navigation";
 
 interface CompanyDetailsHeaderProps {
   company: CompanyDetails;
@@ -56,7 +57,12 @@ export function CompanyDetailsHeader({ company }: CompanyDetailsHeaderProps) {
         >
           {isFollowing ? "Following" : "Follow Company"}
         </Button>
-        <Button size="sm">Write a Review</Button>
+        <Button
+          size="sm"
+          onClick={() => redirect(`/companies/${company.slug}/write-review`)}
+        >
+          Write a Review
+        </Button>
       </div>
     </div>
   );

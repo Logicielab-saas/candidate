@@ -1,6 +1,7 @@
 export interface CompanyDetails {
   id: string;
   name: string;
+  slug: string;
   avatarUrl?: string;
   location: string;
   description?: string;

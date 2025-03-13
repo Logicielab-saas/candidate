@@ -115,6 +115,7 @@ export const companyDetails: CompanyDetails[] = [
   {
     id: "1",
     name: "Tech Solutions",
+    slug: "tech-solutions-1",
     location: "Rabat",
     avatarUrl: "https://placehold.co/150",
     emloyers: 100,
@@ -131,6 +132,7 @@ export const companyDetails: CompanyDetails[] = [
   {
     id: "2",
     name: "Vinca Digital",
+    slug: "vinca-digital-2",
     location: "Casablanca",
     // Omitting avatarUrl and salaryRange
     emloyers: 150,
@@ -146,6 +148,7 @@ export const companyDetails: CompanyDetails[] = [
   {
     id: "3",
     name: "Backend Solutions",
+    slug: "backend-solutions-3",
     location: "Marrakech",
     avatarUrl: "https://placehold.co/150",
     // Omitting description and siteUrl
@@ -159,6 +162,7 @@ export const companyDetails: CompanyDetails[] = [
   {
     id: "4",
     name: "Data Insights",
+    slug: "data-insights-4",
     location: "Tanger",
     avatarUrl: "https://placehold.co/150",
     emloyers: 200,
@@ -175,6 +179,7 @@ export const companyDetails: CompanyDetails[] = [
   {
     id: "5",
     name: "Creative Minds",
+    slug: "creative-minds-5",
     location: "Fès",
     // Omitting multiple optional fields (avatarUrl, description, siteUrl, salaryRange, reviewsNum, jobsTotal)
     emloyers: 80,
@@ -185,6 +190,7 @@ export const companyDetails: CompanyDetails[] = [
   {
     id: "7",
     name: "Innovative Solutions",
+    slug: "innovative-solutions-7",
     location: "Oujda",
     avatarUrl: "https://placehold.co/150",
     emloyers: 120,
@@ -201,6 +207,7 @@ export const companyDetails: CompanyDetails[] = [
   {
     id: "8",
     name: "Future Tech",
+    slug: "future-tech-8",
     location: "Tétouan",
     avatarUrl: "https://placehold.co/150",
     emloyers: 75,
@@ -217,6 +224,7 @@ export const companyDetails: CompanyDetails[] = [
   {
     id: "9",
     name: "NextGen Innovations",
+    slug: "next-gen-innovations-9",
     location: "Kenitra",
     // Omitting some optional fields to maintain diversity
     emloyers: 60,

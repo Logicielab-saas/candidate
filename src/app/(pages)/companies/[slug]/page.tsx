@@ -12,9 +12,7 @@ export default async function CompanyDetailsPage({
   params,
 }: CompanyDetailsPageProps) {
   const { slug } = await params;
-  const companyId = slug.split('-').pop();
-
-  const company = companyDetails.find((company) => company.id === companyId);
+  const company = companyDetails.find((company) => company.slug === slug);
 
   if (!company) {
     return notFound();
