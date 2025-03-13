@@ -19,3 +19,4 @@ export * from "./user-alert.interface";
 export * from "./user-device.interface";
 export * from "./company.interface";
 export * from "./company-details.interface";
+export * from "./company-review.interface";
