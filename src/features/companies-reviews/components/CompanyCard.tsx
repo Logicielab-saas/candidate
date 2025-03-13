@@ -81,7 +81,7 @@ export function CompanyCard({ company }: CompanyCardProps) {
         className={cn("flex items-center justify-between", "p-6 pt-0")}
       >
         <Link
-          href={`/?q=${company.name}`}
+          href={`/home?q=${company.name}`}
           className="text-sm text-muted-foreground hover:text-primary transition-colors"
         >
           <span className="text-secondaryHex-800 dark:text-secondaryHex-100 font-semibold">
