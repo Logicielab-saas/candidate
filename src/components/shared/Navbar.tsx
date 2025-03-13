@@ -113,7 +113,7 @@ export function NavBar() {
                 </Sheet>
 
                 {/* Logo */}
-                <Link href="/" className="flex items-center gap-2">
+                <Link href="/home" className="flex items-center gap-2">
                   <span className="text-xl font-bold text-primary">
                     Postuly
                   </span>
