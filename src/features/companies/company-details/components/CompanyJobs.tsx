@@ -61,7 +61,12 @@ export function CompanyJobs({ company }: CompanyJobsProps) {
     );
   });
 
-  const handleJobSelect = (jobId: string) => {
+  const handleJobSelect = (e: React.MouseEvent, jobId: string) => {
+    // Check if the click originated from the menu or its children
+    const target = e.target as HTMLElement;
+    if (target.closest('[data-menu="true"]')) {
+      return; // Don't navigate if clicking on menu
+    }
     router.push(`/annonce-details/${jobId}`);
   };
 
@@ -108,7 +113,7 @@ export function CompanyJobs({ company }: CompanyJobsProps) {
             {companyJobs.map((job) => (
               <div
                 key={job.id}
-                onClick={() => handleJobSelect(job.id)}
+                onClick={(e) => handleJobSelect(e, job.id)}
                 className="cursor-pointer"
               >
                 <JobCard job={job} />

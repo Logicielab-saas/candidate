@@ -35,10 +35,29 @@ export function JobCardMenu({
     setIsNotInterestedOpen(false);
   };
 
+  const handleBookmarkClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onBookmark?.();
+  };
+
+  const handleNotInterestedClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsNotInterestedOpen(true);
+  };
+
+  const handleSignalerClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsSignalerOpen(true);
+  };
+
+  const handleDialogClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+        <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
           <Button
             variant="ghost"
             size="icon"
@@ -51,7 +70,7 @@ export function JobCardMenu({
         <DropdownMenuContent align="end" className="w-[200px]">
           <DropdownMenuItem
             className="flex items-center gap-2 cursor-pointer"
-            onClick={onBookmark}
+            onClick={handleBookmarkClick}
           >
             <Heart
               className={cn(
@@ -66,14 +85,14 @@ export function JobCardMenu({
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="flex items-center gap-2 cursor-pointer text-yellow-600"
-            onClick={() => setIsNotInterestedOpen(true)}
+            onClick={handleNotInterestedClick}
           >
             <XCircle className="h-4 w-4" />
             <span>Pas intéressé(e)</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             className="flex items-center gap-2 cursor-pointer text-destructive"
-            onClick={() => setIsSignalerOpen(true)}
+            onClick={handleSignalerClick}
           >
             <Flag className="h-4 w-4" />
             <span>Signaler cette offre</span>
@@ -81,18 +100,20 @@ export function JobCardMenu({
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <NotInterestedDialog
-        open={isNotInterestedOpen}
-        onOpenChange={setIsNotInterestedOpen}
-        jobId={jobId}
-        onConfirm={handleNotInterested}
-      />
+      <div onClick={handleDialogClick}>
+        <NotInterestedDialog
+          open={isNotInterestedOpen}
+          onOpenChange={setIsNotInterestedOpen}
+          jobId={jobId}
+          onConfirm={handleNotInterested}
+        />
 
-      <ReportJobDialog
-        open={isSignalerOpen}
-        onOpenChange={setIsSignalerOpen}
-        jobId={jobId}
-      />
+        <ReportJobDialog
+          open={isSignalerOpen}
+          onOpenChange={setIsSignalerOpen}
+          jobId={jobId}
+        />
+      </div>
     </>
   );
 }

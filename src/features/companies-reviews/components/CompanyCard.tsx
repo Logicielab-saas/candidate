@@ -41,7 +41,7 @@ export function CompanyCard({ company }: CompanyCardProps) {
     name.toLowerCase().replace(/\s+/g, "-") + "-" + company.id;
 
   return (
-    <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 hover:border-primary hover:border-2">
       <CardContent className="p-6">
         <Link href={`/companies/${companySlug}`} className="block">
           <div className="flex items-start gap-4">

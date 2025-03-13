@@ -36,7 +36,8 @@ export function JobCard({ job, isSelected }: JobCardProps) {
     });
   };
 
-  const handleUndo = () => {
+  const handleUndo = (e: React.MouseEvent) => {
+    e.stopPropagation();
     undoNotInterested(job.id);
     toast({
       title: "Action annulée",
@@ -60,7 +61,10 @@ export function JobCard({ job, isSelected }: JobCardProps) {
 
   if (isJobNotInterested) {
     return (
-      <Card className="bg-muted/30 border-dashed">
+      <Card
+        className="bg-muted/30 border-dashed"
+        onClick={(e) => e.stopPropagation()}
+      >
         <CardContent className="pt-6">
           <div className="flex flex-col items-center justify-center text-center gap-2 py-4">
             <XCircle className="h-8 w-8 text-yellow-600" />
