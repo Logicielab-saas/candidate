@@ -29,14 +29,15 @@ export function ReviewComment({ form }: ReviewCommentProps) {
       render={({ field }) => (
         <FormItem>
           <FormLabel className="text-lg font-semibold">
-            Detailed Review <span className="text-destructive">*</span>
+            Avis détaillé <span className="text-destructive">*</span>
           </FormLabel>
           <div className="text-sm text-muted-foreground mb-2">
-            Share your experience working at or interviewing with this company
+            Partagez votre expérience de travail ou d&apos;entretien avec cette
+            entreprise (30 caractères minimum, 200 caractères maximum)
           </div>
           <FormControl>
             <Textarea
-              placeholder="Tell us about your experience..."
+              placeholder="Racontez-nous votre expérience..."
               className="min-h-[150px]"
               {...field}
             />

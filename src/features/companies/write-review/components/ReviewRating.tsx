@@ -33,10 +33,11 @@ export function ReviewRating({ form }: ReviewRatingProps) {
       render={({ field }) => (
         <FormItem className="text-center">
           <FormLabel className="text-lg font-semibold">
-            Overall Rating <span className="text-destructive">*</span>
+            Note globale <span className="text-destructive">*</span>
           </FormLabel>
           <div className="text-sm text-muted-foreground mb-2">
-            How would you rate your overall experience with this company?
+            Comment évalueriez-vous votre expérience globale avec cette
+            entreprise ?
           </div>
           <FormControl>
             <div

@@ -29,14 +29,14 @@ export function ReviewSummary({ form }: ReviewSummaryProps) {
       render={({ field }) => (
         <FormItem>
           <FormLabel className="text-lg font-semibold">
-            Review Summary <span className="text-destructive">*</span>
+            Résumé de l&apos;avis <span className="text-destructive">*</span>
           </FormLabel>
           <div className="text-sm text-muted-foreground mb-2">
-            Provide a brief headline that captures your main thoughts
+            Donnez un bref titre qui résume vos principales impressions
           </div>
           <FormControl>
             <Input
-              placeholder="Great company culture and work-life balance"
+              placeholder="Excellente culture d'entreprise et équilibre travail-vie personnelle"
               {...field}
             />
           </FormControl>

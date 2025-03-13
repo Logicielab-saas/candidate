@@ -59,10 +59,11 @@ export function ReviewPoints({ form }: ReviewPointsProps) {
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-lg font-semibold">
-              Positive Points
+              Points positifs
             </FormLabel>
             <div className="text-sm text-muted-foreground mb-2">
-              What did you like most about working here? (Optional)
+              Qu&apos;avez-vous le plus apprécié en travaillant ici ?
+              (Optionnel)
             </div>
             <FormControl>
               <div className="space-y-2">
@@ -70,7 +71,7 @@ export function ReviewPoints({ form }: ReviewPointsProps) {
                   <Input
                     value={positiveInput}
                     onChange={(e) => setPositiveInput(e.target.value)}
-                    placeholder="Add a positive point..."
+                    placeholder="Ajouter un point positif..."
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         e.preventDefault();
@@ -130,10 +131,10 @@ export function ReviewPoints({ form }: ReviewPointsProps) {
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-lg font-semibold">
-              Areas for Improvement
+              Points à améliorer
             </FormLabel>
             <div className="text-sm text-muted-foreground mb-2">
-              What could be improved about working here? (Optional)
+              Que pourrait-on améliorer dans cette entreprise ? (Optionnel)
             </div>
             <FormControl>
               <div className="space-y-2">
@@ -141,7 +142,7 @@ export function ReviewPoints({ form }: ReviewPointsProps) {
                   <Input
                     value={negativeInput}
                     onChange={(e) => setNegativeInput(e.target.value)}
-                    placeholder="Add an area for improvement..."
+                    placeholder="Ajouter un point à améliorer..."
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         e.preventDefault();

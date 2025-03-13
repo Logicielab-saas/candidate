@@ -39,13 +39,14 @@ export function WriteReviewForm() {
       // TODO: Implement API call to submit review
       console.log("Form data:", { ...data, companySlug });
       toast({
-        title: "Review submitted successfully",
-        description: "Thank you for sharing your experience!",
+        variant: "success",
+        title: "Avis soumis avec succès",
+        description: "Merci d'avoir partagé votre expérience !",
       });
     } catch (_error) {
       toast({
-        title: "Error submitting review",
-        description: "Please try again later",
+        title: "Erreur lors de la soumission",
+        description: "Veuillez réessayer plus tard",
         variant: "destructive",
       });
     }
@@ -62,7 +63,7 @@ export function WriteReviewForm() {
         </div>
 
         <Button type="submit" className="w-full">
-          Submit Review
+          Soumettre l&apos;avis
         </Button>
       </form>
     </Form>
