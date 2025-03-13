@@ -9,6 +9,7 @@ import {
   Briefcase,
   Calendar,
 } from "lucide-react";
+import Link from "next/link";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -40,14 +41,14 @@ export function CompanyOverview({ company }: CompanyOverviewProps) {
           <Globe className="h-4 w-4 text-muted-foreground" />
           <span className="text-muted-foreground">Website:</span>
           {company.siteUrl ? (
-            <a
+            <Link
               href={company.siteUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline"
             >
-              Visit website
-            </a>
+              {company.siteUrl}
+            </Link>
           ) : (
             <span>Not available</span>
           )}

@@ -20,13 +20,28 @@ export function CompanyDetailsContainer({
   const [selectedTab, setSelectedTab] = useQueryState("tab", {
     defaultValue: "overview",
   });
+  const [, setSearchQuery] = useQueryState("search");
+  const [, setCity] = useQueryState("city");
+  const [, setSort] = useQueryState("sort");
+  const [, setQ] = useQueryState("q");
+
+  const handleTabChange = async (value: string) => {
+    // Reset all query parameters when changing tabs
+    await Promise.all([
+      setSelectedTab(value),
+      setSearchQuery(null),
+      setCity(null),
+      setSort(null),
+      setQ(null),
+    ]);
+  };
 
   return (
     <div className="space-y-6 py-8">
       <CompanyDetailsHeader company={company} />
       <Tabs
         value={selectedTab}
-        onValueChange={setSelectedTab}
+        onValueChange={handleTabChange}
         className="w-full"
       >
         <TabsList className="grid w-full grid-cols-3 bg-transparent">
