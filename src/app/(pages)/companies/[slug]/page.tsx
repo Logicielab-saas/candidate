@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 import { CompanyDetailsContainer } from "@/features/companies/company-details/components/CompanyDetailsContainer";
 import { companyDetails } from "@/core/mockData/company";
 
@@ -15,7 +15,7 @@ export default async function CompanyDetailsPage({
   const company = companyDetails.find((company) => company.slug === slug);
 
   if (!company) {
-    return notFound();
+    redirect("/notFound");
   }
 
   return <CompanyDetailsContainer company={company} />;

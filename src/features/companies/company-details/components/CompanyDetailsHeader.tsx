@@ -12,8 +12,7 @@ import { CompanyDetails } from "@/core/interfaces";
 import { Bell, BellOff, Star } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { redirect } from "next/navigation";
-
+import { useRouter } from "next/navigation";
 interface CompanyDetailsHeaderProps {
   company: CompanyDetails;
 }
@@ -21,6 +20,7 @@ interface CompanyDetailsHeaderProps {
 export function CompanyDetailsHeader({ company }: CompanyDetailsHeaderProps) {
   const [isFollowing, setIsFollowing] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const handleFollowClick = () => {
     setIsFollowing(!isFollowing);
@@ -94,7 +94,7 @@ export function CompanyDetailsHeader({ company }: CompanyDetailsHeaderProps) {
         </TooltipProvider>
         <Button
           size="sm"
-          onClick={() => redirect(`/companies/${company.slug}/write-review`)}
+          onClick={() => router.push(`/companies/${company.slug}/write-review`)}
         >
           Écrire un avis
         </Button>

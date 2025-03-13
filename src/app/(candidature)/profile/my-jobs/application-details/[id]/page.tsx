@@ -1,5 +1,5 @@
 import { mockSentApplications } from "@/core/mockData/jobs";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 import { ApplicationDetailsContainer } from "@/features/candidature/(profile)/components/my-jobs/details/ApplicationDetailsContainer";
 
 interface PageProps {
@@ -12,7 +12,7 @@ export default async function ApplicationDetailsPage({ params }: PageProps) {
   const application = mockSentApplications.find((app) => app.jobKey === id);
 
   if (!application) {
-    return notFound();
+    redirect("/notFound");
   }
 
   return <ApplicationDetailsContainer application={application} />;
