@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useNotInterestedStore } from "../store/not-interested.store";
 import { useQueryState } from "nuqs";
+import { redirect } from "next/navigation";
 
 interface JobCardProps {
   job: Job;
@@ -57,6 +58,11 @@ export function JobCard({ job, isSelected }: JobCardProps) {
         : "Cette offre a été ajoutée à vos favoris",
       variant: "default",
     });
+  };
+
+  const handleKeywordClick = (e: React.MouseEvent, keyword: string) => {
+    e.stopPropagation(); // Prevent job card click
+    redirect(`/home?keyword=${encodeURIComponent(keyword)}`);
   };
 
   if (isJobNotInterested) {
@@ -136,9 +142,17 @@ export function JobCard({ job, isSelected }: JobCardProps) {
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
             <span>{job.description}</span>
           </div>
+
           <div className="flex flex-wrap gap-2">
             {job.keyWords.map((keyword) => (
-              <span key={keyword} className={spanBadgeStyle}>
+              <span
+                key={keyword}
+                onClick={(e) => handleKeywordClick(e, keyword)}
+                className={cn(
+                  spanBadgeStyle,
+                  "cursor-pointer hover:bg-secondary/50 transition-colors"
+                )}
+              >
                 {keyword}
               </span>
             ))}
