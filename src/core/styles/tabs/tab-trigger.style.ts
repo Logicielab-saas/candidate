@@ -9,7 +9,7 @@ export const tabTriggerStyles = {
     "bg-background/50 hover:bg-accent/50",
     "hover:text-primaryHex-600 dark:hover:text-primaryHex-400",
     "data-[state=active]:border-primaryHex-500 data-[state=active]:text-primaryHex-500",
-    "data-[state=active]:bg-accent/80 data-[state=active]:shadow-sm",
+    "data-[state=active]:bg-accent/40 data-[state=active]:shadow-sm",
     "dark:data-[state=active]:border-primaryHex-400 dark:data-[state=active]:text-primaryHex-400",
     "dark:data-[state=active]:bg-accent/20"
   ),
@@ -21,7 +21,7 @@ export const tabTriggerStyles = {
     "bg-background/50 hover:bg-accent/50",
     "hover:text-primaryHex-600 dark:hover:text-primaryHex-400",
     "data-[state=active]:border-primaryHex-500 data-[state=active]:text-primaryHex-600",
-    "data-[state=active]:bg-accent/80 data-[state=active]:shadow-sm",
+    "data-[state=active]:bg-accent/40 data-[state=active]:shadow-sm",
     "dark:data-[state=active]:border-primaryHex-400 dark:data-[state=active]:text-primaryHex-400",
     "dark:data-[state=active]:bg-accent/20"
   ),

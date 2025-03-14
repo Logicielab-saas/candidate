@@ -122,7 +122,7 @@ export const companyDetails: CompanyDetails[] = [
     dateFounded: "2020-01-01",
     siteUrl: "https://www.techsolutions.com",
     description:
-      "Tech Solutions is a leading provider of innovative tech solutions and services, specializing in cutting-edge software development, cloud computing infrastructure, cybersecurity solutions, and digital transformation consulting. With a track record of successful implementations across various industries, we deliver enterprise-grade solutions that help businesses scale and thrive in the digital age. Our team of expert engineers and consultants work tirelessly to ensure our clients receive the highest quality technological solutions tailored to their specific needs.",
+      "Tech Solutions excels in delivering comprehensive and innovative technology solutions, focusing on advanced software development, robust cloud computing infrastructures, and effective cybersecurity measures. Our expertise extends to digital transformation consulting, where we guide businesses through their technological evolution. With a proven history of successful project implementations across diverse sectors, we provide enterprise-level solutions designed to empower organizations to grow and succeed in the digital landscape. Our dedicated team of skilled engineers and consultants is committed to ensuring that our clients receive tailored, high-quality technological solutions that meet their unique requirements.",
     industry: "Technology",
     salaryRange: "100,000 - 150,000",
     rating: 3.7,
@@ -139,7 +139,7 @@ export const companyDetails: CompanyDetails[] = [
     dateFounded: "2018-05-15",
     siteUrl: "https://www.vincadigital.com",
     description:
-      "Vinca Digital specializes in digital marketing strategies and online brand building.",
+      "Vinca Digital is a leading agency focused on crafting innovative digital marketing strategies that enhance online visibility and foster brand growth. Our team of experts leverages data-driven insights to create tailored campaigns that resonate with target audiences. We specialize in search engine optimization (SEO), pay-per-click (PPC) advertising, social media marketing, and content creation, ensuring a comprehensive approach to digital branding. By utilizing the latest tools and technologies, we help businesses navigate the complexities of the digital landscape, driving engagement and conversions. Our commitment to excellence and client satisfaction sets us apart in the competitive marketing industry.",
     industry: "Marketing",
     rating: 5.0,
     reviewsNum: 1,
@@ -247,6 +247,7 @@ export const companyReviews: CompanyReview[] = [
       "Tech Solutions fosters a collaborative environment that encourages growth. The team is always ready to help each other, and the management is very approachable. Employees feel valued and appreciated, which contributes to a positive work culture. The company also invests in employee development, providing various training programs and opportunities for career advancement. Overall, it's a place where you can grow both personally and professionally.",
     positivePoints: ["Supportive management", "Collaborative team"],
     negativePoints: ["Occasional tight deadlines", "High expectations"],
+    createdAt: "2025-01-15",
   },
   {
     id: "2",
@@ -256,6 +257,7 @@ export const companyReviews: CompanyReview[] = [
     summary: "Great place for software developers to thrive.",
     comment:
       "The company offers a solid work-life balance and a positive culture. Employees are encouraged to take breaks and maintain a healthy work-life balance. The office environment is friendly and inclusive, making it easy to collaborate with colleagues. There are also regular team-building activities that help strengthen relationships among team members. However, during peak project times, the workload can become intense, which may lead to longer hours. Overall, it's a great place for developers to enhance their skills and work on exciting projects.",
+    createdAt: "2025-02-22",
   },
   {
     id: "3",
@@ -267,6 +269,7 @@ export const companyReviews: CompanyReview[] = [
       "While the work culture is decent, there are significant areas that need attention. Communication between departments can be lacking, leading to misunderstandings and delays in project timelines. Additionally, some employees feel that their contributions are not recognized, which can affect morale. The company has potential, but it needs to address these issues to create a more cohesive and supportive environment for all employees.",
     positivePoints: ["Decent work culture", "Good team spirit"],
     negativePoints: ["High stress levels", "Lack of clear direction"],
+    createdAt: "2025-03-14",
   },
   {
     id: "4",
@@ -276,5 +279,6 @@ export const companyReviews: CompanyReview[] = [
     summary: "An exemplary company with a vibrant culture.",
     comment:
       "Vinca Digital stands out for its innovative approach and employee satisfaction. The company fosters creativity and encourages employees to think outside the box. There are numerous opportunities for professional development, and the leadership team is genuinely invested in the well-being of their staff. The collaborative atmosphere and the focus on innovation make it a fantastic place to work. Employees feel empowered to share their ideas and contribute to the company's success.",
+    createdAt: "2024-11-11",
   },
 ];

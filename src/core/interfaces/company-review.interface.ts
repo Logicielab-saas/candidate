@@ -7,4 +7,5 @@ export interface CompanyReview {
   comment: string;
   positivePoints?: string[];
   negativePoints?: string[];
+  createdAt: string;
 }
