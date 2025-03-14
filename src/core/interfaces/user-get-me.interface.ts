@@ -1,3 +1,5 @@
+import { Skill } from "../types/skill";
+
 export interface GetMeResponse {
   uuid: string;
   email: string;
@@ -21,6 +23,6 @@ export interface GetMeResponse {
     resumeCertifications: []; // TODO: Define a more Certification type if available
     resumeLanguages: []; // TODO: Define a more Language type if available
     resumeFiles: []; // TODO: Define a more File type if available
-    skills: []; // TODO: Define a more Skill type if available
+    skills: Skill[];
   };
 }

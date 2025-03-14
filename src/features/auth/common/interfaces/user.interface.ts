@@ -1,3 +1,5 @@
+import { Skill } from "@/core/types/skill";
+
 export interface LoginCredentials {
   email: string;
   password: string;
@@ -35,6 +37,6 @@ export interface AuthResponse {
     resumeCertifications: []; // TODO: Define a more Certification type if available
     resumeLanguages: []; // TODO: Define a more Language type if available
     resumeFiles: []; // TODO: Define a more File type if available
-    skills: []; // TODO: Define a more Skill type if available
+    skills: Skill[];
   };
 }
