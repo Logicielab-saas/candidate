@@ -14,7 +14,7 @@ import { GhostLinkStyle } from "@/core/styles/links";
 export const metadata: Metadata = {
   title: "Alertes d'emploi | Paramètres",
   description:
-    "Gérez vos alertes d&apos;emploi pour recevoir des notifications sur les nouvelles offres correspondant à vos critères.",
+    "Gérez vos alertes d'emploi pour recevoir des notifications sur les nouvelles offres correspondant à vos critères.",
 };
 
 export default function JobAlertsPage() {
