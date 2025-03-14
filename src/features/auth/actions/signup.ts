@@ -21,6 +21,7 @@ import { signup } from "../services/auth";
 import { SignupCredentials } from "../common/interfaces";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
+import { getUserAgentAndIp } from "@/core/utils/get-user-agent-n-ip";
 
 /**
  * SignupActionResponse interface - Defines the response shape of signupAction.
@@ -28,30 +29,6 @@ import { headers } from "next/headers";
 export interface SignupActionResponse {
   error?: string;
   success?: boolean;
-}
-
-/**
- * getUserAgentAndIp - Retrieves user agent and IP address from request headers and returns a combined string.
- *
- * @param headersList - The HTTP headers object from Next.js.
- * @returns A string in the format "useragent/ip" combining the user agent and IP address.
- */
-function getUserAgentAndIp(headersList: Headers): string {
-  // Retrieve the user agent from headers; default to "unknown" if not provided.
-  const userAgentHeader = headersList.get("user-agent") || "unknown";
-  // Retrieve the raw IP address from "x-forwarded-for", split and trim if multiple values exist,
-  // or fallback to "x-real-ip"; default to "unknown" if neither is provided.
-  const rawIpAddress =
-    headersList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    headersList.get("x-real-ip") ||
-    "unknown";
-
-  // Normalize the IP to remove the IPv6 prefix if it exists.
-  const normalizedIpAddress = rawIpAddress.startsWith("::ffff:")
-    ? rawIpAddress.substring(7)
-    : rawIpAddress;
-
-  return `${userAgentHeader}/${normalizedIpAddress}`;
 }
 
 /**
@@ -69,7 +46,7 @@ export async function signupAction(
 ): Promise<SignupActionResponse> {
   try {
     const headersList = await headers();
-    const combinedUA = getUserAgentAndIp(headersList);
+    const combinedUA = await getUserAgentAndIp(headersList);
     // console.log("Combined UA/IP:", combinedUA);
 
     // Transform the signup form data to match the API expectations.
