@@ -3,6 +3,9 @@ interface ProfileContactInfoProps {
   address: string | null;
   birthdate: string | null;
   isMale: boolean | null;
+  postalCode: string | null;
+  city: string | null;
+  country: string | null;
 }
 
 export function ProfileContactInfo({
@@ -10,14 +13,21 @@ export function ProfileContactInfo({
   address,
   birthdate,
   isMale,
+  postalCode,
+  city,
+  country,
 }: ProfileContactInfoProps) {
+  const fullAddress = [address, city, postalCode, country]
+    .filter(Boolean)
+    .join(", ");
+
   return (
     <div className="grid gap-8 md:grid-cols-2">
       <div>
         <h3 className="text-lg font-medium">Contact Information</h3>
         <div className="mt-2 space-y-2 text-sm text-muted-foreground">
           <p>{phone || "No phone number provided"}</p>
-          <p>{address || "No address provided"}</p>
+          <p>{fullAddress || "No address provided"}</p>
           <p>
             {birthdate
               ? new Date(birthdate).toLocaleDateString()

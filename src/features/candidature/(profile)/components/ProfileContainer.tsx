@@ -18,7 +18,7 @@ import {
 } from "./skeletons";
 
 export function ProfileContainer() {
-  const { data: user, isLoading } = useProfile();
+  const { data: profile, isLoading } = useProfile();
 
   return (
     <div className="w-full space-y-8">
@@ -36,23 +36,34 @@ export function ProfileContainer() {
         {/* Profile Header Section */}
         {isLoading ? (
           <ProfileHeaderSkeleton />
-        ) : user ? (
+        ) : profile ? (
           <div className="flex items-center gap-6">
             <Avatar className="h-20 w-20 sm:h-24 sm:w-24">
-              {user.image ? (
-                <AvatarImage src={user.image} alt={user.name} />
+              {profile.profile_picture ? (
+                <AvatarImage
+                  src={URL.createObjectURL(profile.profile_picture)}
+                  alt={`${profile.first_name} ${profile.last_name}`}
+                />
               ) : null}
               <AvatarFallback>
-                {user.name
-                  .split(" ")
-                  .map((n) => n[0])
+                {[profile.first_name, profile.last_name]
+                  .filter(Boolean)
+                  .map((n) => n?.[0])
                   .join("")
-                  .toUpperCase()}
+                  .toUpperCase() || "?"}
               </AvatarFallback>
             </Avatar>
             <div className="space-y-1">
-              <h3 className="text-xl sm:text-2xl font-semibold">{user.name}</h3>
-              <p className="text-sm text-muted-foreground">{user.email}</p>
+              <h3 className="text-xl sm:text-2xl font-semibold">
+                {[profile.first_name, profile.last_name]
+                  .filter(Boolean)
+                  .join(" ") || "No name provided"}
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                {profile.city_uuid && profile.country
+                  ? `${profile.city_uuid}, ${profile.country}`
+                  : "No location provided"}
+              </p>
             </div>
           </div>
         ) : null}
@@ -61,8 +72,8 @@ export function ProfileContainer() {
           {/* About Section */}
           {isLoading ? (
             <ProfileAboutSkeleton />
-          ) : user ? (
-            <ProfileAboutInfo />
+          ) : profile ? (
+            <ProfileAboutInfo bio={profile.bio} skills={profile.skills} />
           ) : null}
 
           <Separator />
@@ -70,12 +81,15 @@ export function ProfileContainer() {
           {/* Contact Section */}
           {isLoading ? (
             <ProfileContactSkeleton />
-          ) : user ? (
+          ) : profile ? (
             <ProfileContactInfo
-              phone={user.phone}
-              address={user.address}
-              birthdate={user.birthdate}
-              isMale={user.isMale}
+              phone={profile.phone}
+              address={profile.address}
+              birthdate={profile.birthdate}
+              isMale={profile.is_male}
+              postalCode={profile.postal_code}
+              city={profile.city_uuid}
+              country={profile.country}
             />
           ) : null}
 
@@ -84,7 +98,7 @@ export function ProfileContainer() {
           {/* Resume Section */}
           {isLoading ? (
             <ProfileResumeSkeleton />
-          ) : user ? (
+          ) : profile ? (
             <div className="space-y-4">
               <h3 className="text-lg font-medium">CV</h3>
               <div className="space-y-3">
