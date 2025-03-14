@@ -10,11 +10,11 @@ import { WorkExperienceList } from "./WorkExperienceList";
 import { mockQualifications } from "@/core/mockData/qualifications";
 import { ProjectsList } from "./ProjectsList";
 import { WatchedCoursesList } from "./WatchedCoursesList";
-import { ResumeItem } from "../ResumeItem";
 import { SectionHeader } from "./SectionHeader";
 import { File } from "lucide-react";
 import { AboutMe } from "./AboutMe";
 import { UserContactInfo } from "./UserContactInfo";
+import { ResumeItem } from "../components/ResumeItem";
 
 export const metadata: Metadata = {
   title: "Qualifications et Compétences | Mon Profil",
