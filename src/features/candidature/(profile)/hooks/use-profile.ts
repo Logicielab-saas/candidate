@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCurrentUser } from "../services/profile";
+import { getProfile } from "../services/profile";
 
 export const profileKeys = {
   all: ["profile"] as const,
@@ -9,6 +9,6 @@ export const profileKeys = {
 export function useProfile() {
   return useQuery({
     queryKey: profileKeys.me(),
-    queryFn: getCurrentUser,
+    queryFn: getProfile,
   });
 }
