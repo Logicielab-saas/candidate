@@ -1,4 +1,4 @@
-import { PreferencesContainer } from "@/features/candidature/(profile)/components/preferences/PreferencesContainer";
+import { PreferencesContainer } from "@/features/candidature/(profile)/preferences/PreferencesContainer";
 
 export default function PreferencesPage() {
   return <PreferencesContainer />;
