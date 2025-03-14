@@ -12,7 +12,7 @@ interface ProfileSidebarProps {
 export function ProfileSidebar({ navItems }: ProfileSidebarProps) {
   const pathname = usePathname();
   // Mobile navigation items (limited to 4-5 items for better UX)
-  const mobileNavItems = navItems.slice(0, 4);
+  const mobileNavItems = navItems.slice(0, 5);
 
   return (
     <>

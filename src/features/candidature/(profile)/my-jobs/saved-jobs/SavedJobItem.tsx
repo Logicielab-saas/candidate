@@ -14,10 +14,11 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { ReportJobDialog } from "../ReportJobDialog";
 import type { SavedJob } from "@/core/interfaces/";
+import Link from "next/link";
+import { linkLikeButtonStyle } from "@/core/styles/links";
 
 interface SavedJobItemProps extends Omit<SavedJob, "id"> {
   jobId: string;
-  onApply: () => void;
   onRemove: () => void;
   bookmarked: boolean;
 }
@@ -37,17 +38,11 @@ export function SavedJobItem({
   company,
   location,
   savedDate,
-  onApply,
   onRemove,
   jobUrl,
   bookmarked,
 }: SavedJobItemProps) {
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleReport = (reason: string, additionalInfo: string) => {
-    // TODO: Implement the logic to handle the report
-  };
 
   return (
     <motion.div
@@ -98,9 +93,14 @@ export function SavedJobItem({
 
         <div className="flex items-center gap-2">
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-            <Button onClick={onApply} size="sm">
+            <Link
+              href={`/job-apply?jobId=${jobId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={linkLikeButtonStyle}
+            >
               Postuler
-            </Button>
+            </Link>
           </motion.div>
 
           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>

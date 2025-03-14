@@ -16,6 +16,7 @@ import {
   MessageSquare,
   Smartphone,
   ShieldEllipsis,
+  Star,
 } from "lucide-react";
 
 export interface SidebarNavItem {
@@ -39,6 +40,11 @@ export const sidebarProfileNav: SidebarNavItem[] = [
     title: "Mes Emplois",
     href: "/profile/my-jobs",
     icon: Briefcase,
+  },
+  {
+    title: "Mes avis",
+    href: "/profile/my-reviews",
+    icon: Star,
   },
   {
     title: "Settings",

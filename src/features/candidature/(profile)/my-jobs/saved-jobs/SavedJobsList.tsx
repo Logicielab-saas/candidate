@@ -31,12 +31,6 @@ interface SavedJobsListProps {
 }
 
 export function SavedJobsList({ jobs, onRemoveBookmark }: SavedJobsListProps) {
-  // TODO: Implement actual apply logic when API is ready
-  const handleApply = (jobId: string) => {
-    console.log("Applying to job:", jobId);
-    // Implement apply logic
-  };
-
   return (
     <motion.div
       variants={container}
@@ -55,7 +49,6 @@ export function SavedJobsList({ jobs, onRemoveBookmark }: SavedJobsListProps) {
             location={job.location}
             savedDate={new Date(job.applyTime).toLocaleDateString("fr-FR")}
             jobUrl={job.jobUrl}
-            onApply={() => handleApply(job.jobKey)}
             onRemove={() => onRemoveBookmark(job.jobKey)}
             bookmarked={job.bookmarked}
           />
