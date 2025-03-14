@@ -21,3 +21,4 @@ export * from "./company.interface";
 export * from "./company-details.interface";
 export * from "./company-review.interface";
 export * from "./user.interface";
+export * from "./user-get-me.interface";

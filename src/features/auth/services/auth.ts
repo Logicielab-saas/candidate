@@ -67,19 +67,6 @@ export async function logout() {
   }
 }
 
-export async function getCurrentUser() {
-  try {
-    const response = await api.get<AuthResponse>(`/me`);
-    return response.data;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      const apiError = error.response?.data as ApiError;
-      throw new Error(apiError?.message || "Failed to get current user");
-    }
-    throw error;
-  }
-}
-
 export async function forgotPassword(email: string) {
   try {
     await api.post(`/forgot-password`, { email });
