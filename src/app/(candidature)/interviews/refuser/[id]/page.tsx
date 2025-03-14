@@ -1,6 +1,6 @@
-import { InterviewRefuser } from "@/features/candidature/(profile)/components/my-jobs/interviews/refuser/InterviewRefuser";
+import { InterviewRefuser } from "@/features/candidature/(profile)/my-jobs/interviews/refuser/InterviewRefuser";
 import { mockInterviews } from "@/core/mockData/jobs";
-import { isInterviewInvited } from "@/features/candidature/(profile)/components/my-jobs/interviews/actions/check-interview-status";
+import { isInterviewInvited } from "@/features/candidature/(profile)/my-jobs/interviews/actions/check-interview-status";
 
 interface PageProps {
   params: Promise<{ id: string }>;

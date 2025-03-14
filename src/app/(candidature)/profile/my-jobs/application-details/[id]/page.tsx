@@ -1,6 +1,6 @@
 import { mockSentApplications } from "@/core/mockData/jobs";
 import { redirect } from "next/navigation";
-import { ApplicationDetailsContainer } from "@/features/candidature/(profile)/components/my-jobs/details/ApplicationDetailsContainer";
+import { ApplicationDetailsContainer } from "@/features/candidature/(profile)/my-jobs/details/ApplicationDetailsContainer";
 
 interface PageProps {
   params: Promise<{ id: string }>;

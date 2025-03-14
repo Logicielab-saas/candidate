@@ -36,7 +36,7 @@ import { cn } from "@/lib/utils";
 import { mockJobsList } from "@/core/mockData/jobs-list";
 import parse from "html-react-parser";
 import DOMPurify from "isomorphic-dompurify";
-import { ReportJobDialog } from "@/features/candidature/(profile)/components/my-jobs/ReportJobDialog";
+import { ReportJobDialog } from "@/features/candidature/(profile)/my-jobs/ReportJobDialog";
 import { ShareJobPopover } from "./ShareJobPopover";
 import Link from "next/link";
 

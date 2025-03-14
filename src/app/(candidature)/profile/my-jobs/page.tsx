@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { MyJobsContainer } from "@/features/candidature/(profile)/components/my-jobs/MyJobsContainer";
+import { MyJobsContainer } from "@/features/candidature/(profile)/my-jobs/MyJobsContainer";
 import { Loader2 } from "lucide-react";
 
 export default function MyJobsPage() {

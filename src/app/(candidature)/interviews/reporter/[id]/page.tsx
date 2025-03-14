@@ -1,6 +1,6 @@
 import { mockInterviews } from "@/core/mockData/jobs";
-import { isInterviewPending } from "@/features/candidature/(profile)/components/my-jobs/interviews/actions/check-interview-status";
-import { InterviewReporter } from "@/features/candidature/(profile)/components/my-jobs/interviews/reporter/InterviewReporter";
+import { isInterviewPending } from "@/features/candidature/(profile)/my-jobs/interviews/actions/check-interview-status";
+import { InterviewReporter } from "@/features/candidature/(profile)/my-jobs/interviews/reporter/InterviewReporter";
 
 interface PageProps {
   params: Promise<{ id: string }>;
