@@ -8,6 +8,7 @@ export interface SignupCredentials {
   email: string;
   password: string;
   user_type: "recruiter" | "employee";
+  device_name: string;
 }
 
 export interface AuthResponse {
@@ -16,6 +17,7 @@ export interface AuthResponse {
     name: string;
     email: string;
     user_type: "recruiter" | "employee";
+    device_name: string;
   };
   token: string;
 }

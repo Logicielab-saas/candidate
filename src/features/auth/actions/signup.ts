@@ -7,7 +7,7 @@
  * the necessary paths and redirects the user based on their type (employee or recruiter).
  *
  * Props:
- * - data (SignupCredentials): The signup form fields including name, email, password, and user_type.
+ * - data (SignupCredentials): The signup form fields including name, email, password, and type.
  *
  * Additional notes:
  * - Retrieves user agent from the "user-agent" header.
@@ -40,13 +40,19 @@ export interface SignupActionResponse {
 function getUserAgentAndIp(headersList: Headers): string {
   // Retrieve the user agent from headers; default to "unknown" if not provided.
   const userAgentHeader = headersList.get("user-agent") || "unknown";
-  // Retrieve the IP address from "x-forwarded-for", split and trim if multiple values exist,
+  // Retrieve the raw IP address from "x-forwarded-for", split and trim if multiple values exist,
   // or fallback to "x-real-ip"; default to "unknown" if neither is provided.
-  const ipAddress =
+  const rawIpAddress =
     headersList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     headersList.get("x-real-ip") ||
     "unknown";
-  return `${userAgentHeader}/${ipAddress}`;
+
+  // Normalize the IP to remove the IPv6 prefix if it exists.
+  const normalizedIpAddress = rawIpAddress.startsWith("::ffff:")
+    ? rawIpAddress.substring(7)
+    : rawIpAddress;
+
+  return `${userAgentHeader}/${normalizedIpAddress}`;
 }
 
 /**
@@ -56,7 +62,7 @@ function getUserAgentAndIp(headersList: Headers): string {
  * This server action transforms the incoming signup data, logs the combined user agent and IP address,
  * calls the signup service, revalidates static paths, and redirects the user based on their type.
  *
- * @param data - SignupCredentials containing name, email, password, and user_type.
+ * @param data - SignupCredentials containing name, email, password, and type.
  * @returns A promise that resolves to SignupActionResponse indicating success or an error.
  */
 export async function signupAction(
@@ -66,14 +72,15 @@ export async function signupAction(
     const headersList = await headers();
     const combinedUA = getUserAgentAndIp(headersList);
     console.log("Combined UA/IP:", combinedUA);
-
     // Transform the signup form data to match the API expectations.
     const signupData: SignupCredentials = {
       name: data.name,
       email: data.email,
       password: data.password,
       user_type: data.user_type,
+      device_name: combinedUA,
     };
+    console.log(signupData);
 
     // Call the signup service.
     const result = await signup(signupData);
@@ -84,8 +91,8 @@ export async function signupAction(
     revalidatePath("/signup");
 
     // Redirect based on user type.
-    if (result.user.user_type === "employee") redirect("/home");
-    else if (result.user.user_type === "recruiter") redirect("/recruiter");
+    if (result.user?.user_type === "employee") redirect("/home");
+    else if (result.user?.user_type === "recruiter") redirect("/recruiter");
 
     return { success: true };
   } catch (error) {

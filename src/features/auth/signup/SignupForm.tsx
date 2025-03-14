@@ -12,6 +12,7 @@ import Link from "next/link";
 import { signupAction } from "../actions/signup";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { SignupCredentials } from "../common/interfaces";
 
 const signupSchema = z.object({
   name: z.string().min(6, "Name must be at least 6 characters"),
@@ -52,7 +53,7 @@ export function SignupForm({
   const onSubmit: SubmitHandler<SignupFormData> = async (data) => {
     try {
       setIsLoading(true);
-      const result = await signupAction(data);
+      const result = await signupAction(data as SignupCredentials);
 
       if (result.error) {
         toast({
@@ -61,7 +62,14 @@ export function SignupForm({
           description: result.error,
         });
       }
-    } catch (error) {
+      if (result.success) {
+        toast({
+          variant: "success",
+          title: "Success",
+          description: "Signup successful",
+        });
+      }
+    } catch (_error) {
       toast({
         variant: "destructive",
         title: "Error",
