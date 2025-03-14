@@ -168,7 +168,7 @@ export function NavBar() {
                     <DropdownMenuTrigger asChild>
                       <Button
                         variant="ghost"
-                        className="relative h-8 w-8 rounded-full"
+                        className="relative h-8 w-8 rounded-full hover:cursor-pointer"
                       >
                         <Avatar className="h-8 w-8">
                           <AvatarImage
@@ -197,7 +197,10 @@ export function NavBar() {
                       <DropdownMenuSeparator />
 
                       {/* User Section */}
-                      <DropdownMenuItem className="w-full" asChild>
+                      <DropdownMenuItem
+                        className="w-full hover:cursor-pointer"
+                        asChild
+                      >
                         <Link href="/profile" className="flex w-full">
                           <User className="h-4 w-4" />
                           <span>Profile</span>
@@ -205,13 +208,19 @@ export function NavBar() {
                       </DropdownMenuItem>
 
                       {/* Jobs & Reviews Section */}
-                      <DropdownMenuItem className="w-full" asChild>
+                      <DropdownMenuItem
+                        className="w-full hover:cursor-pointer"
+                        asChild
+                      >
                         <Link href="/profile/my-jobs" className="flex  w-full">
                           <Briefcase className=" h-4 w-4" />
                           <span>Mes emplois</span>
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="w-full" asChild>
+                      <DropdownMenuItem
+                        className="w-full hover:cursor-pointer"
+                        asChild
+                      >
                         <Link
                           href="/profile/my-reviews"
                           className="flex w-full"
@@ -224,13 +233,19 @@ export function NavBar() {
                       <DropdownMenuSeparator />
 
                       {/* Settings & Help Section */}
-                      <DropdownMenuItem className="w-full" asChild>
+                      <DropdownMenuItem
+                        className="w-full hover:cursor-pointer"
+                        asChild
+                      >
                         <Link href="/settings/account" className="flex w-full">
                           <Settings className="h-4 w-4" />
                           <span>Paramètres</span>
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="w-full" asChild>
+                      <DropdownMenuItem
+                        className="w-full hover:cursor-pointer"
+                        asChild
+                      >
                         <Link href="/help" className="flex w-full">
                           <HelpCircle className="h-4 w-4" />
                           <span>Aide</span>
@@ -240,7 +255,7 @@ export function NavBar() {
                       <DropdownMenuSeparator />
 
                       {/* Logout Section */}
-                      <DropdownMenuItem className="text-destructive">
+                      <DropdownMenuItem className="text-destructive hover:cursor-pointer">
                         <LogOut className="mr-2 h-4 w-4" />
                         <span>Déconnexion</span>
                       </DropdownMenuItem>
