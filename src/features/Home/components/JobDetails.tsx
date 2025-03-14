@@ -39,6 +39,12 @@ import DOMPurify from "isomorphic-dompurify";
 import { ReportJobDialog } from "@/features/candidature/(profile)/my-jobs/ReportJobDialog";
 import { ShareJobPopover } from "./ShareJobPopover";
 import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export function JobDetails() {
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -117,41 +123,73 @@ export function JobDetails() {
 
               {/* Action Buttons */}
               <div className="flex items-center gap-2">
-                <span
-                  className={cn(
-                    "h-9 w-9 flex items-center justify-center cursor-pointer hover:bg-accent rounded-full",
-                    isBookmarked && "text-primary hover:text-primary/80"
-                  )}
-                  onClick={handleBookmark}
-                >
-                  <Heart
-                    className={cn("h-6 w-6", isBookmarked && "fill-current")}
-                  />
-                </span>
-                <ShareJobPopover
-                  jobTitle={job.baseInformation.jobTitle}
-                  companyName={jobCompanyName || ""}
-                  jobLocation={job.baseInformation.promotionLocation}
-                />
-
-                <span
-                  className={cn(
-                    "h-9 w-9 flex items-center justify-center cursor-pointer",
-                    "text-destructive hover:bg-accent rounded-full"
-                  )}
-                  onClick={() => setIsSignalerOpen(true)}
-                >
-                  <Flag className="h-6 w-6" />
-                </span>
-                <span
-                  className={cn(
-                    "h-9 w-9 flex items-center justify-center cursor-pointer",
-                    "text-yellow-600 hover:text-yellow-700 hover:bg-accent rounded-full"
-                  )}
-                  onClick={() => setIsNotInterestedOpen(true)}
-                >
-                  <XCircle className="h-6 w-6" />
-                </span>
+                <TooltipProvider delayDuration={100}>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <span
+                        className={cn(
+                          "h-9 w-9 flex items-center justify-center cursor-pointer hover:bg-accent rounded-full",
+                          isBookmarked && "text-primary hover:text-primary/80"
+                        )}
+                        onClick={handleBookmark}
+                      >
+                        <Heart
+                          className={cn(
+                            "h-6 w-6",
+                            isBookmarked && "fill-current"
+                          )}
+                        />
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Ajouter aux favoris</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <ShareJobPopover
+                        jobTitle={job.baseInformation.jobTitle}
+                        companyName={jobCompanyName || ""}
+                        jobLocation={job.baseInformation.promotionLocation}
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Partager l&apos;offre</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <span
+                        className={cn(
+                          "h-9 w-9 flex items-center justify-center cursor-pointer",
+                          "text-destructive hover:bg-accent rounded-full"
+                        )}
+                        onClick={() => setIsSignalerOpen(true)}
+                      >
+                        <Flag className="h-6 w-6" />
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Signaler l&apos;offre</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <span
+                        className={cn(
+                          "h-9 w-9 flex items-center justify-center cursor-pointer",
+                          "text-yellow-600 hover:text-yellow-700 hover:bg-accent rounded-full"
+                        )}
+                        onClick={() => setIsNotInterestedOpen(true)}
+                      >
+                        <XCircle className="h-6 w-6" />
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Écarter l&apos;offre</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
             </div>
 
