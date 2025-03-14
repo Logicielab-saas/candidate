@@ -55,7 +55,7 @@ export function ReviewCard({ review, user }: ReviewCardProps) {
             </div>
           </div>
           <p className="text-sm text-muted-foreground">
-            {format(new Date(), "d MMMM yyyy", { locale: fr })}
+            {format(new Date(review.createdAt), "d MMMM yyyy", { locale: fr })}
           </p>
         </div>
 
