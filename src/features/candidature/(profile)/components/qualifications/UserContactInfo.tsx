@@ -7,7 +7,7 @@ export function UserContactInfo() {
     <div className="flex items-start justify-between border p-4 rounded-lg shadow-sm">
       <div className="flex items-center">
         <Avatar className="h-24 w-24 mr-4">
-          <AvatarImage src="/useravatar.jpg" alt="@USER" />
+          <AvatarImage src="https://placehold.co/150" alt="@USER" />
           <AvatarFallback>SC</AvatarFallback>
         </Avatar>
         <div className="space-y-1">

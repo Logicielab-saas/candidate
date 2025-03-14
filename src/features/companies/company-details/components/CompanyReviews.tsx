@@ -73,9 +73,13 @@ export function CompanyReviews({ company }: CompanyReviewsProps) {
         case "rating_low":
           return a.rating - b.rating;
         case "oldest":
-          return -1; // For mock data, we don't have dates
+          return (
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
         default: // recent
-          return 1;
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
       }
     });
 
@@ -86,12 +90,12 @@ export function CompanyReviews({ company }: CompanyReviewsProps) {
   return (
     <div className="space-y-6">
       {/* Header with search and filters */}
-      <div className="border rounded-lg p-6 bg-background">
+      <div className="border rounded-lg p-4 bg-background">
         <div
           className={cn(
             "max-w-5xl mx-auto",
             "flex flex-col sm:flex-row",
-            "gap-4",
+            "gap-3",
             "items-end",
             "justify-center"
           )}
@@ -132,8 +136,8 @@ export function CompanyReviews({ company }: CompanyReviewsProps) {
             <Label>&nbsp;</Label>
             <Button
               onClick={handleSearch}
-              size="lg"
-              className="w-full bg-primary hover:bg-primary/90 sm:w-[120px]"
+              size="default"
+              className="w-full bg-primary hover:bg-primary/90"
             >
               Rechercher
             </Button>

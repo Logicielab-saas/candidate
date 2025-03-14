@@ -171,7 +171,10 @@ export function NavBar() {
                         className="relative h-8 w-8 rounded-full"
                       >
                         <Avatar className="h-8 w-8">
-                          <AvatarImage src="/avatars/01.png" alt="@USER" />
+                          <AvatarImage
+                            src="https://placehold.co/64x64"
+                            alt="@USER"
+                          />
                           <AvatarFallback>SC</AvatarFallback>
                         </Avatar>
                       </Button>

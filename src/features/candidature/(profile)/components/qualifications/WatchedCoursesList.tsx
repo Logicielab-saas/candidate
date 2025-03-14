@@ -4,7 +4,8 @@ import { mockQualifications } from "@/core/mockData/qualifications";
 import { Course } from "@/core/types/course";
 import CircleLineWrapper from "./CircleLineWrapper";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { LinkStyle } from "@/core/styles/links";
+import { cn } from "@/lib/utils";
 
 export function WatchedCoursesList() {
   const [courses, _setCourses] = useState<Course[]>(mockQualifications.course);
@@ -25,12 +26,12 @@ export function WatchedCoursesList() {
       <div className="space-y-0">
         {courses.map((course) => (
           <CircleLineWrapper key={course.id}>
-            <Button
-              variant="link"
-              className="text-base font-bold flex justify-between items-center p-0 text-black dark:text-white"
+            <Link
+              href={`/formations/${course.id}`}
+              className={cn(LinkStyle, "text-base font-bold underline")}
             >
-              <Link href={`/formations/${course.id}`}>{course.name}</Link>
-            </Button>
+              {course.name}
+            </Link>
             <p className="text-gray-600">{course.completion}</p>
             <p className="text-gray-500">{course.startDate}</p>
           </CircleLineWrapper>
