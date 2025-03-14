@@ -13,6 +13,7 @@ import { signupAction } from "../actions/signup";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { SignupCredentials } from "../common/interfaces";
+import { useRouter } from "next/navigation";
 
 const signupSchema = z.object({
   name: z.string().min(6, "Name must be at least 6 characters"),
@@ -36,6 +37,7 @@ export function SignupForm({
 }: SignupFormProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -68,6 +70,7 @@ export function SignupForm({
           title: "Success",
           description: "Signup successful",
         });
+        router.replace("/login");
       }
     } catch (_error) {
       toast({

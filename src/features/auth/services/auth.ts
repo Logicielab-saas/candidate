@@ -41,9 +41,6 @@ export async function signup(
   try {
     const response = await api.post<AuthResponse>(`/register`, credentials);
 
-    // Set the token in an HTTP-only cookie
-    await setAuthToken(response.data.token);
-
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -72,7 +69,7 @@ export async function logout() {
 
 export async function getCurrentUser() {
   try {
-    const response = await api.get<AuthResponse["user"]>(`/me`);
+    const response = await api.get<AuthResponse>(`/me`);
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {

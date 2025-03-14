@@ -17,7 +17,6 @@
 
 "use server";
 
-import { redirect } from "next/navigation";
 import { signup } from "../services/auth";
 import { SignupCredentials } from "../common/interfaces";
 import { revalidatePath } from "next/cache";
@@ -71,7 +70,8 @@ export async function signupAction(
   try {
     const headersList = await headers();
     const combinedUA = getUserAgentAndIp(headersList);
-    console.log("Combined UA/IP:", combinedUA);
+    // console.log("Combined UA/IP:", combinedUA);
+
     // Transform the signup form data to match the API expectations.
     const signupData: SignupCredentials = {
       name: data.name,
@@ -80,10 +80,9 @@ export async function signupAction(
       user_type: data.user_type,
       device_name: combinedUA,
     };
-    console.log(signupData);
 
     // Call the signup service.
-    const result = await signup(signupData);
+    await signup(signupData);
 
     // Revalidate relevant paths.
     revalidatePath("/");
@@ -91,8 +90,6 @@ export async function signupAction(
     revalidatePath("/signup");
 
     // Redirect based on user type.
-    if (result.user?.user_type === "employee") redirect("/home");
-    else if (result.user?.user_type === "recruiter") redirect("/recruiter");
 
     return { success: true };
   } catch (error) {
