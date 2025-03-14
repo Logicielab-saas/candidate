@@ -10,8 +10,8 @@ import { CandidateSignupForm } from "@/features/auth/signup/CandidateSignupForm"
 import { Illustration } from "../Illustration";
 
 interface SignupFirstStepProps {
-  onSelect: (type: "recruiter" | "candidate" | null) => void;
-  selectedType: "recruiter" | "candidate" | null;
+  onSelect: (type: "recruiter" | "employee" | null) => void;
+  selectedType: "recruiter" | "employee" | null;
 }
 
 export function SignupFirstStep({
@@ -32,18 +32,18 @@ export function SignupFirstStep({
             <RadioGroup className="grid grid-cols-1 md:grid-cols-1 gap-6">
               <div className="relative">
                 <RadioGroupItem
-                  value="candidate"
-                  id="candidate"
+                  value="employee"
+                  id="employee"
                   className="peer sr-only"
-                  onClick={() => onSelect("candidate")}
+                  onClick={() => onSelect("employee")}
                 />
                 <Label
-                  htmlFor="candidate"
+                  htmlFor="employee"
                   className={cn(
                     "flex flex-col h-full cursor-pointer rounded-lg border-2 transition-all",
                     "hover:border-primaryHex-500 hover:shadow-md",
                     "peer-checked:border-primaryHex-500 peer-checked:shadow-md",
-                    selectedType === "candidate"
+                    selectedType === "employee"
                       ? "border-primaryHex-500"
                       : "border-transparent"
                   )}
@@ -59,7 +59,7 @@ export function SignupFirstStep({
                     <div
                       className={cn(
                         "absolute top-1 right-4 transition-opacity",
-                        selectedType === "candidate"
+                        selectedType === "employee"
                           ? "opacity-100"
                           : "opacity-0"
                       )}
@@ -151,7 +151,7 @@ export function SignupFirstStep({
       {selectedType === "recruiter" && (
         <RecruiterSignupForm onSelect={onSelect} />
       )}
-      {selectedType === "candidate" && (
+      {selectedType === "employee" && (
         <CandidateSignupForm onSelect={onSelect} />
       )}
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">

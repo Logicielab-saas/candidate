@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
 interface CandidateSignupFormProps {
-  onSelect: (type: "recruiter" | "candidate" | null) => void;
+  onSelect: (type: "recruiter" | "employee" | null) => void;
 }
 
 export const CandidateSignupForm: React.FC<CandidateSignupFormProps> = ({

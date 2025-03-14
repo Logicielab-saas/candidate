@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
 interface RecruiterSignupFormProps {
-  onSelect: (type: "recruiter" | "candidate" | null) => void;
+  onSelect: (type: "recruiter" | "employee" | null) => void;
 }
 
 export const RecruiterSignupForm: React.FC<RecruiterSignupFormProps> = ({
@@ -20,7 +20,7 @@ export const RecruiterSignupForm: React.FC<RecruiterSignupFormProps> = ({
       <input type="text" placeholder="Email" className="input" />
       <input type="password" placeholder="Password" className="input" />
       <Button onClick={handleLogin}>Login</Button>
-      <Button variant="outline" onClick={() => onSelect("candidate")}>
+      <Button variant="outline" onClick={() => onSelect("employee")}>
         Switch to Candidate Login
       </Button>
       <Button variant="outline" onClick={() => onSelect(null)}>

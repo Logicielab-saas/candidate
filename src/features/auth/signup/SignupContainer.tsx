@@ -5,11 +5,11 @@ import { SignupForm } from "./SignupForm";
 import { SignupFirstStep } from "./SignupFirstStep";
 
 export function SignupContainer() {
-  const [signupType, setSignupType] = useState<
-    "recruiter" | "candidate" | null
-  >(null);
+  const [signupType, setSignupType] = useState<"recruiter" | "employee" | null>(
+    null
+  );
 
-  const handleSelect = (type: "recruiter" | "candidate" | null) => {
+  const handleSelect = (type: "recruiter" | "employee" | null) => {
     setSignupType(type);
   };
 
@@ -18,7 +18,7 @@ export function SignupContainer() {
       <div className="w-full max-w-sm md:max-w-6xl">
         {signupType ? (
           <div className="flex flex-col gap-4">
-            <SignupForm onSelect={handleSelect} />
+            <SignupForm onSelect={handleSelect} selectedType={signupType} />
           </div>
         ) : (
           <SignupFirstStep onSelect={handleSelect} selectedType={signupType} />
