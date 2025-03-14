@@ -16,7 +16,7 @@ export type CookieOptions = {
 };
 
 const defaultOptions: CookieOptions = {
-  httpOnly: true,
+  httpOnly: false,
   secure: process.env.NODE_ENV === "production",
   sameSite: "strict",
   path: "/",
