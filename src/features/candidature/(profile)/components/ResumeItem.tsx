@@ -32,10 +32,11 @@ import { handleDownloadCV } from "@/core/utils/download-cv";
 interface ResumeItemProps {
   title: string;
   subtitle?: string;
+  type?: 'postuly' | 'custom';
 }
 
-export function ResumeItem({ title, subtitle = "" }: ResumeItemProps) {
-  const CV_URL = "/cvs/mycv.pdf";
+export function ResumeItem({ title, subtitle = "", type = 'custom' }: ResumeItemProps) {
+  const CV_URL = type === 'postuly' ? '/profile/postuly-cv' : "/cvs/mycv.pdf";
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -137,53 +138,59 @@ export function ResumeItem({ title, subtitle = "" }: ResumeItemProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem className="flex items-center" asChild>
-            <Link href="/profile/my-cv">
+            <Link href={type === 'postuly' ? '/profile/postuly-cv' : '/profile/my-cv'}>
               <Eye className="mr-2 h-4 w-4" />
               View CV
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleDownloadCV(CV_URL)}>
-            <Download className="mr-2 h-4 w-4" />
-            Download CV
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleChangeCV}>
-            <Upload className="mr-2 h-4 w-4" />
-            Change CV
-          </DropdownMenuItem>
-          <AlertDialog
-            open={isDeleteDialogOpen}
-            onOpenChange={setIsDeleteDialogOpen}
-          >
-            <AlertDialogTrigger asChild>
-              <DropdownMenuItem
-                className="text-destructive focus:text-destructive"
-                onSelect={(e) => {
-                  e.preventDefault();
-                }}
-              >
-                <Trash2 className="mr-2 h-4 w-4" />
-                Delete CV
+          {type === 'custom' && (
+            <DropdownMenuItem onClick={() => handleDownloadCV(CV_URL)}>
+              <Download className="mr-2 h-4 w-4" />
+              Download CV
+            </DropdownMenuItem>
+          )}
+          {type === 'custom' && (
+            <>
+              <DropdownMenuItem onClick={handleChangeCV}>
+                <Upload className="mr-2 h-4 w-4" />
+                Change CV
               </DropdownMenuItem>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete
-                  your CV.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={handleDelete}
-                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                >
-                  Delete
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+              <AlertDialog
+                open={isDeleteDialogOpen}
+                onOpenChange={setIsDeleteDialogOpen}
+              >
+                <AlertDialogTrigger asChild>
+                  <DropdownMenuItem
+                    className="text-destructive focus:text-destructive"
+                    onSelect={(e) => {
+                      e.preventDefault();
+                    }}
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete CV
+                  </DropdownMenuItem>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      your CV.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleDelete}
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

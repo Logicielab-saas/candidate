@@ -36,80 +36,92 @@ export function ProfileContainer() {
         {/* Profile Header Section */}
         {isLoading ? (
           <ProfileHeaderSkeleton />
-        ) : profile ? (
+        ) : (
           <div className="flex items-center gap-6">
             <Avatar className="h-20 w-20 sm:h-24 sm:w-24">
-              {profile.profile_picture ? (
+              {profile?.profile_picture ? (
                 <AvatarImage
                   src={URL.createObjectURL(profile.profile_picture)}
-                  alt={`${profile.first_name} ${profile.last_name}`}
+                  alt={`${profile?.first_name} ${profile?.last_name}`}
                 />
               ) : null}
               <AvatarFallback>
-                {[profile.first_name, profile.last_name]
-                  .filter(Boolean)
-                  .map((n) => n?.[0])
-                  .join("")
-                  .toUpperCase() || "?"}
+                {profile
+                  ? [profile.first_name, profile.last_name]
+                      .filter(Boolean)
+                      .map((n) => n?.[0])
+                      .join("")
+                      .toUpperCase()
+                  : "?"}
               </AvatarFallback>
             </Avatar>
             <div className="space-y-1">
               <h3 className="text-xl sm:text-2xl font-semibold">
-                {[profile.first_name, profile.last_name]
-                  .filter(Boolean)
-                  .join(" ") || "No name provided"}
+                {profile
+                  ? [profile.first_name, profile.last_name]
+                      .filter(Boolean)
+                      .join(" ") || "No name provided"
+                  : "No name provided"}
               </h3>
               <p className="text-sm text-muted-foreground">
-                {profile.city_uuid && profile.country
+                {profile?.city_uuid && profile?.country
                   ? `${profile.city_uuid}, ${profile.country}`
                   : "No location provided"}
               </p>
             </div>
           </div>
-        ) : null}
+        )}
 
         <div className="space-y-8">
           {/* About Section */}
           {isLoading ? (
             <ProfileAboutSkeleton />
-          ) : profile ? (
-            <ProfileAboutInfo bio={profile.bio} skills={profile.skills} />
-          ) : null}
+          ) : (
+            <ProfileAboutInfo
+              bio={profile?.bio || "No biography provided"}
+              skills={profile?.skills || []}
+            />
+          )}
 
           <Separator />
 
           {/* Contact Section */}
           {isLoading ? (
             <ProfileContactSkeleton />
-          ) : profile ? (
+          ) : (
             <ProfileContactInfo
-              phone={profile.phone}
-              address={profile.address}
-              birthdate={profile.birthdate}
-              isMale={profile.is_male}
-              postalCode={profile.postal_code}
-              city={profile.city_uuid}
-              country={profile.country}
+              phone={profile?.phone || "Phone not provided"}
+              address={profile?.address || "Address not provided"}
+              birthdate={profile?.birthdate || "Birthdate not provided"}
+              isMale={profile?.is_male || null}
+              postalCode={profile?.postal_code || "Postal code not provided"}
+              city={profile?.city_uuid || "City not provided"}
+              country={profile?.country || "Country not provided"}
             />
-          ) : null}
+          )}
 
           <Separator />
 
           {/* Resume Section */}
           {isLoading ? (
             <ProfileResumeSkeleton />
-          ) : profile ? (
+          ) : (
             <div className="space-y-4">
               <h3 className="text-lg font-medium">CV</h3>
               <div className="space-y-3">
-                <ResumeItem title="Postuly CV" subtitle="Non validé" />
+                <ResumeItem
+                  title="Postuly CV"
+                  subtitle="Non validé"
+                  type="postuly"
+                />
                 <ResumeItem
                   title="Resume_LASTNAME.pdf"
                   subtitle="Ajouté le 19 Fev 2024"
+                  type="custom"
                 />
               </div>
             </div>
-          ) : null}
+          )}
 
           <Separator />
 
