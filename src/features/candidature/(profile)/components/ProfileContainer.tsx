@@ -39,9 +39,15 @@ export function ProfileContainer() {
         ) : (
           <div className="flex items-center gap-6">
             <Avatar className="h-20 w-20 sm:h-24 sm:w-24">
-              {profile?.profile_picture ? (
+              {profile?.image ? (
                 <AvatarImage
-                  src={URL.createObjectURL(profile.profile_picture)}
+                  src={
+                    profile.image instanceof File
+                      ? URL.createObjectURL(profile.image)
+                      : typeof profile.image === "string"
+                      ? profile.image
+                      : undefined
+                  }
                   alt={`${profile?.first_name} ${profile?.last_name}`}
                 />
               ) : null}

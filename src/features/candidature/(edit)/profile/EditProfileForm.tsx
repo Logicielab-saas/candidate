@@ -18,6 +18,15 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useUpdateProfile } from "../../(profile)/hooks/use-profile";
 import { Profile } from "../../(profile)/common/interface";
 import { useRouter } from "next/navigation";
+import { ImageUpload } from "./components/ImageUpload";
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/gif",
+];
 
 const formSchema = z.object({
   first_name: z.string().min(2, "First name must be at least 2 characters"),
@@ -48,10 +57,21 @@ const formSchema = z.object({
     .nullish()
     .transform((v) => v || null),
   is_male: z.boolean().nullable(),
-  birthdate: z
+  birth_date: z
     .string()
     .nullish()
     .transform((v) => v || null),
+  image: z
+    .instanceof(File)
+    .nullable()
+    .refine(
+      (file) => !file || file.size <= MAX_FILE_SIZE,
+      "File size should be less than 5MB"
+    )
+    .refine(
+      (file) => !file || ACCEPTED_IMAGE_TYPES.includes(file.type),
+      "Only .jpg, .jpeg, .png and .gif formats are accepted"
+    ),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -63,6 +83,12 @@ interface EditProfileFormProps {
 export function EditProfileForm({ profile }: EditProfileFormProps) {
   const router = useRouter();
   const { mutate: updateProfile, isPending } = useUpdateProfile();
+
+  // Format the date from ISO to YYYY-MM-DD for the input
+  const formatDateForInput = (dateString: string | null) => {
+    if (!dateString) return "";
+    return dateString.split("T")[0];
+  };
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -76,7 +102,8 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
       postal_code: profile.postal_code || "",
       bio: profile.bio || "",
       is_male: profile.is_male,
-      birthdate: profile.birthdate || "",
+      birth_date: formatDateForInput(profile.birthdate),
+      image: null, // Don't set the File object initially
     },
   });
 
@@ -88,9 +115,42 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
     });
   }
 
+  const userInitials =
+    [form.watch("first_name"), form.watch("last_name")]
+      .filter(Boolean)
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase() || "?";
+
+  function handleCancel() {
+    form.reset(); // Reset form to initial values
+    router.push("/profile");
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field }) => (
+            <FormItem className="flex justify-center">
+              <FormControl>
+                <ImageUpload
+                  value={field.value}
+                  onChange={field.onChange}
+                  initials={userInitials}
+                  disabled={isPending}
+                  existingImage={
+                    typeof profile.image === "string" ? profile.image : null
+                  }
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <div className="grid gap-4 md:grid-cols-2">
           <FormField
             control={form.control}
@@ -149,7 +209,7 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
 
         <FormField
           control={form.control}
-          name="birthdate"
+          name="birth_date"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Birth Date</FormLabel>
@@ -295,7 +355,8 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
           <Button
             type="button"
             variant="outline"
-            onClick={() => router.push("/profile")}
+            onClick={handleCancel}
+            disabled={isPending}
           >
             Cancel
           </Button>

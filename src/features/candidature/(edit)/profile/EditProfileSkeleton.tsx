@@ -3,6 +3,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 export function EditProfileSkeleton() {
   return (
     <div className="space-y-8">
+      {/* Image Upload */}
+      <div className="flex justify-center">
+        <div className="relative">
+          <Skeleton className="h-24 w-24 rounded-full" />
+          <Skeleton className="absolute bottom-0 right-0 h-8 w-8 rounded-full" />
+        </div>
+      </div>
+
       {/* Name Fields */}
       <div className="grid gap-4 md:grid-cols-2">
         {[1, 2].map((i) => (
@@ -16,13 +24,13 @@ export function EditProfileSkeleton() {
       {/* Phone Field */}
       <div className="space-y-2">
         <Skeleton className="h-4 w-24" />
-        <Skeleton className="h-10 w-full" />
+        <Skeleton className="h-10 w-full md:w-1/2" />
       </div>
 
       {/* Birth Date Field */}
       <div className="space-y-2">
         <Skeleton className="h-4 w-20" />
-        <Skeleton className="h-10 w-full" />
+        <Skeleton className="h-10 w-full md:w-1/3" />
       </div>
 
       {/* Gender Field */}

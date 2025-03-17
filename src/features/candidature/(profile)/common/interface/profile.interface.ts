@@ -12,7 +12,7 @@ export interface Profile {
   country: string | null;
   postal_code: string | null;
   phone: string | null;
-  profile_picture: File | null;
+  image: File | null;
   bio: string | null;
   skills: Skill[] | null;
   deleted_at: string | null;
