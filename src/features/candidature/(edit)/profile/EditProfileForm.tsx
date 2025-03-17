@@ -90,6 +90,10 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
     return dateString.split("T")[0];
   };
 
+  // Keep track of the original image state
+  const originalImage =
+    typeof profile.image === "string" ? profile.image : null;
+
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -141,9 +145,7 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
                   onChange={field.onChange}
                   initials={userInitials}
                   disabled={isPending}
-                  existingImage={
-                    typeof profile.image === "string" ? profile.image : null
-                  }
+                  existingImage={originalImage}
                 />
               </FormControl>
               <FormMessage />

@@ -19,7 +19,7 @@ interface ImageUploadProps {
   onChange: (file: File | null) => void;
   initials: string;
   disabled?: boolean;
-  existingImage?: string | null; // URL of the existing image
+  existingImage?: string | null;
 }
 
 export function ImageUpload({
@@ -30,8 +30,10 @@ export function ImageUpload({
   existingImage,
 }: ImageUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const imageUrl = value ? URL.createObjectURL(value) : existingImage || null;
   const { toast } = useToast();
+
+  // Use either the new uploaded file or fall back to existing image
+  const imageUrl = value ? URL.createObjectURL(value) : existingImage || null;
 
   // Cleanup URL when component unmounts or when image changes
   useEffect(() => {
@@ -73,6 +75,7 @@ export function ImageUpload({
   }
 
   function handleRemove() {
+    // Just clear the new upload and fall back to existing image
     onChange(null);
     if (inputRef.current) {
       inputRef.current.value = "";
@@ -99,7 +102,7 @@ export function ImageUpload({
           >
             <Camera className="h-4 w-4" />
           </Button>
-          {(value || existingImage) && (
+          {value && ( // Only show remove button for new uploads
             <Button
               type="button"
               variant="destructive"
