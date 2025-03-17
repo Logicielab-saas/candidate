@@ -1,6 +1,5 @@
 import { spanBadgeStyle } from "@/core/styles/span-badge.style";
-import { Skill } from "../common/interface";
-
+import type { Skill } from "@/core/interfaces";
 interface ProfileAboutInfoProps {
   bio: string | null;
   skills: Skill[] | null;

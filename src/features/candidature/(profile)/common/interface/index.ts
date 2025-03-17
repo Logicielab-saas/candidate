@@ -1,2 +1,2 @@
 export * from "./profile.interface";
-export * from "./skill.interface";
+export * from "../../../../../core/interfaces/skill.interface";

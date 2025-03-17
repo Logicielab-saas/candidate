@@ -1,4 +1,4 @@
-import { Skill } from "./skill.interface";
+import { Skill } from "@/core/interfaces/skill.interface";
 
 export interface Profile {
   uuid: string;

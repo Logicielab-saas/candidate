@@ -1,4 +1,4 @@
-import { Skill } from "../types/skill";
+import { Skill } from "./skill.interface";
 
 export interface GetMeResponse {
   uuid: string;
