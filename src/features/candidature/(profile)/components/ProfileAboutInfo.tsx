@@ -1,8 +1,8 @@
 import { spanBadgeStyle } from "@/core/styles/span-badge.style";
-import type { Skill } from "@/core/interfaces";
+
 interface ProfileAboutInfoProps {
   bio: string | null;
-  skills: Skill[] | null;
+  skills: string[] | null;
 }
 
 export function ProfileAboutInfo({ bio, skills }: ProfileAboutInfoProps) {
@@ -21,8 +21,8 @@ export function ProfileAboutInfo({ bio, skills }: ProfileAboutInfoProps) {
         {skills && skills.length > 0 ? (
           <div className="mt-2 flex flex-wrap gap-2">
             {skills.map((skill) => (
-              <span key={skill.uuid} className={spanBadgeStyle}>
-                {skill.name}
+              <span key={skill} className={spanBadgeStyle}>
+                {skill}
               </span>
             ))}
           </div>

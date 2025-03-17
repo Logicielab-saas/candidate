@@ -1,5 +1,3 @@
-import { Skill } from "@/core/interfaces/skill.interface";
-
 export interface Profile {
   uuid: string;
   user_id: string;
@@ -14,6 +12,6 @@ export interface Profile {
   phone: string | null;
   image: File | null;
   bio: string | null;
-  skills: Skill[] | null;
+  skills: string[] | null;
   deleted_at: string | null;
 }
