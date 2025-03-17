@@ -6,7 +6,6 @@ import { CertificationsList } from "./CertificationsList";
 import { LanguagesList } from "./LanguagesList";
 import { QualificationSection } from "./QualificationSection";
 import { WorkExperienceList } from "./WorkExperienceList";
-import { mockQualifications } from "@/core/mockData/qualifications";
 import { ProjectsList } from "./ProjectsList";
 import { WatchedCoursesList } from "./WatchedCoursesList";
 import { SectionHeader } from "./SectionHeader";
@@ -15,6 +14,7 @@ import { AboutMe } from "./AboutMe";
 import { ResumeItem } from "../components/ResumeItem";
 import { useProfileResume } from "./hooks/use-profile-resume";
 import { AboutMeSkeleton } from "./skeletons/AboutMeSkeleton";
+import { WorkExperienceSkeleton } from "./skeletons/WorkExperienceSkeleton";
 
 export function QualificationsContainer() {
   const { data: resume, isLoading, error } = useProfileResume();
@@ -37,6 +37,9 @@ export function QualificationsContainer() {
         <QualificationSection>
           <AboutMeSkeleton />
         </QualificationSection>
+        <QualificationSection>
+          <WorkExperienceSkeleton />
+        </QualificationSection>
       </div>
     );
   }
@@ -56,7 +59,7 @@ export function QualificationsContainer() {
 
       <QualificationSection>
         <WorkExperienceList
-          initialExperiences={mockQualifications.experiences}
+          experiences={resume?.resume?.resumeExperiences ?? null}
         />
       </QualificationSection>
 

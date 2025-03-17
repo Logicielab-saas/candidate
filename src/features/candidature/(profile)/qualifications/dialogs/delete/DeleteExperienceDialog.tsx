@@ -10,54 +10,78 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useToast } from "@/hooks/use-toast";
-import type { Experience } from "@/core/interfaces/";
+import { ResumeExperience } from "@/core/interfaces/resume-experience.interface";
+import { useDeleteResumeExperience } from "../../hooks/use-resume-experience";
+import { useState } from "react";
 
 interface DeleteExperienceDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onConfirm: (id: string) => void;
-  experience: Experience;
+  experience: ResumeExperience;
 }
 
 export function DeleteExperienceDialog({
   open,
   onOpenChange,
-  onConfirm,
   experience,
 }: DeleteExperienceDialogProps) {
-  const { toast } = useToast();
+  const { mutate: deleteExperience, isPending } = useDeleteResumeExperience();
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleConfirm = () => {
-    onConfirm(experience.id);
-    onOpenChange(false);
-    toast({
-      variant: "success",
-      title: "Expérience supprimée",
-      description: "L'expérience a été supprimée avec succès.",
-    });
+  const handleConfirm = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    setIsDeleting(true);
+    try {
+      await new Promise<void>((resolve, reject) => {
+        deleteExperience(experience.uuid, {
+          onSuccess: () => {
+            resolve();
+          },
+          onError: (error) => {
+            reject(error);
+          },
+        });
+      });
+
+      setIsDeleting(false);
+      onOpenChange(false);
+    } catch (_error) {
+      setIsDeleting(false);
+    }
   };
 
+  const isLoading = isPending || isDeleting;
+
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
+    <AlertDialog
+      open={open}
+      onOpenChange={(newOpen) => {
+        if (!isLoading) {
+          onOpenChange(newOpen);
+        }
+      }}
+    >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            Vous êtes sur le point de supprimer l&apos;expérience suivante :{" "}
-            <span className="font-bold">{experience.title}</span> chez{" "}
-            <span className="font-bold">{experience.company}</span>.
+            You are about to delete the experience:{" "}
+            <span className="font-bold">{experience.job_title}</span> at{" "}
+            <span className="font-bold">{experience.company_name}</span>.
             <br />
-            Cette action est irréversible.
+            This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Annuler</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             className="bg-destructive hover:bg-destructive/90"
+            disabled={isLoading}
           >
-            Supprimer
+            {isLoading ? "Deleting..." : "Delete"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

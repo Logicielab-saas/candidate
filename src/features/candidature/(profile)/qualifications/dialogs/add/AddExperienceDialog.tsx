@@ -21,9 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "@/hooks/use-toast";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -34,19 +32,18 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { Experience } from "@/core/interfaces/";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useCreateResumeExperience } from "../../hooks/use-resume-experience";
 
 // Internal form schema uses Date objects for better date handling
 const experienceFormSchema = z.object({
-  title: z.string().min(1, "Le titre est requis"),
-  company: z.string().min(1, "L'entreprise est requise"),
-  startDate: z.date({
-    required_error: "La date de début est requise",
+  job_title: z.string().min(1, "Job title is required"),
+  company_name: z.string().min(1, "Company name is required"),
+  date_start: z.date({
+    required_error: "Start date is required",
   }),
-  endDate: z.date().optional(),
-  current: z.boolean().default(false),
-  description: z.string().min(1, "La description est requise"),
+  date_end: z.date().optional(),
+  current_time: z.boolean().default(false),
 });
 
 type ExperienceFormValues = z.infer<typeof experienceFormSchema>;
@@ -54,73 +51,69 @@ type ExperienceFormValues = z.infer<typeof experienceFormSchema>;
 interface AddExperienceDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (values: Omit<Experience, "id">) => void;
 }
 
 export function AddExperienceDialog({
   open,
   onOpenChange,
-  onSubmit,
 }: AddExperienceDialogProps) {
-  const { toast } = useToast();
+  const { mutate: createExperience, isPending } = useCreateResumeExperience();
+
   const form = useForm<ExperienceFormValues>({
     resolver: zodResolver(experienceFormSchema),
     defaultValues: {
-      title: "",
-      company: "",
-      current: false,
-      description: "",
+      job_title: "",
+      company_name: "",
+      current_time: false,
     },
   });
 
-  const handleSubmit = (values: ExperienceFormValues) => {
-    // Convert Date objects to formatted strings before submitting
-    const formattedValues: Omit<Experience, "id"> = {
-      ...values,
-      startDate: format(values.startDate, "MMMM yyyy", { locale: fr }),
-      endDate: values.endDate
-        ? format(values.endDate, "MMMM yyyy", { locale: fr })
-        : undefined,
-    };
-    onSubmit(formattedValues);
-    form.reset();
-    onOpenChange(false);
-    toast({
-      variant: "success",
-      title: "Expérience ajoutée",
-      description: "L'expérience a été ajoutée avec succès.",
-    });
-  };
+  function onSubmit(values: ExperienceFormValues) {
+    createExperience(
+      {
+        ...values,
+        date_start: format(values.date_start, "yyyy-MM-dd"),
+        date_end: values.current_time
+          ? format(new Date(), "yyyy-MM-dd")
+          : values.date_end
+          ? format(values.date_end, "yyyy-MM-dd")
+          : format(new Date(), "yyyy-MM-dd"),
+      },
+      {
+        onSuccess: () => {
+          form.reset();
+          onOpenChange(false);
+        },
+      }
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[600px]">
         <DialogHeader className="p-6 pb-4">
-          <DialogTitle>Ajouter une expérience professionnelle</DialogTitle>
+          <DialogTitle>Add Work Experience</DialogTitle>
           <DialogDescription>
-            Ajoutez une nouvelle expérience professionnelle à votre profil.
+            Add your professional experience to your profile.
           </DialogDescription>
         </DialogHeader>
 
         <ScrollArea className="px-6 max-h-[60vh]">
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(handleSubmit)}
+              onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-4 px-3"
             >
               <FormField
                 control={form.control}
-                name="title"
+                name="job_title"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Titre du poste <span className="text-destructive">*</span>
+                      Job Title <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Ex: Développeur Full Stack"
-                        {...field}
-                      />
+                      <Input placeholder="e.g. Frontend Developer" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -129,14 +122,14 @@ export function AddExperienceDialog({
 
               <FormField
                 control={form.control}
-                name="company"
+                name="company_name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Entreprise <span className="text-destructive">*</span>
+                      Company <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex: TechCorp Solutions" {...field} />
+                      <Input placeholder="e.g. Acme Inc." {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -146,12 +139,11 @@ export function AddExperienceDialog({
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
-                  name="startDate"
+                  name="date_start"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>
-                        Date de début{" "}
-                        <span className="text-destructive">*</span>
+                        Start Date <span className="text-destructive">*</span>
                       </FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -164,9 +156,11 @@ export function AddExperienceDialog({
                               )}
                             >
                               {field.value ? (
-                                format(field.value, "MMMM yyyy", { locale: fr })
+                                format(field.value, "d MMMM yyyy", {
+                                  locale: fr,
+                                })
                               ) : (
-                                <span>Sélectionnez une date</span>
+                                <span>Pick a date</span>
                               )}
                               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                             </Button>
@@ -191,10 +185,10 @@ export function AddExperienceDialog({
 
                 <FormField
                   control={form.control}
-                  name="endDate"
+                  name="date_end"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>Date de fin</FormLabel>
+                      <FormLabel>End Date</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -204,12 +198,14 @@ export function AddExperienceDialog({
                                 "w-full pl-3 text-left font-normal",
                                 !field.value && "text-muted-foreground"
                               )}
-                              disabled={form.watch("current")}
+                              disabled={form.watch("current_time")}
                             >
                               {field.value ? (
-                                format(field.value, "MMMM yyyy", { locale: fr })
+                                format(field.value, "d MMMM yyyy", {
+                                  locale: fr,
+                                })
                               ) : (
-                                <span>Sélectionnez une date</span>
+                                <span>Pick a date</span>
                               )}
                               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                             </Button>
@@ -222,7 +218,7 @@ export function AddExperienceDialog({
                             onSelect={field.onChange}
                             disabled={(date) =>
                               date > new Date() ||
-                              date < form.getValues("startDate")
+                              date < form.getValues("date_start")
                             }
                             initialFocus
                           />
@@ -236,7 +232,7 @@ export function AddExperienceDialog({
 
               <FormField
                 control={form.control}
-                name="current"
+                name="current_time"
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                     <FormControl>
@@ -245,51 +241,37 @@ export function AddExperienceDialog({
                         onCheckedChange={(checked) => {
                           field.onChange(checked);
                           if (checked) {
-                            form.setValue("endDate", undefined);
+                            form.setValue("date_end", undefined);
                           }
                         }}
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel>Poste actuel</FormLabel>
+                      <FormLabel>Current Position</FormLabel>
                     </div>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Description <span className="text-destructive">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Décrivez vos responsabilités et réalisations..."
-                        className="min-h-[120px]"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
             </form>
           </Form>
-
-          <DialogFooter className="p-6 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
-              Annuler
-            </Button>
-            <Button onClick={form.handleSubmit(handleSubmit)}>Ajouter</Button>
-          </DialogFooter>
         </ScrollArea>
+
+        <DialogFooter className="p-6 pt-4">
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={isPending}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            onClick={form.handleSubmit(onSubmit)}
+            disabled={isPending}
+          >
+            {isPending ? "Adding..." : "Add Experience"}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

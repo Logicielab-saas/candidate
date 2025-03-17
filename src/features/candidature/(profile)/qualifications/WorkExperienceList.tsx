@@ -1,90 +1,81 @@
 import { useState } from "react";
-import type { Experience } from "@/core/interfaces/";
 import { Briefcase } from "lucide-react";
+import { ResumeExperience } from "@/core/interfaces/resume-experience.interface";
+import TimeLineListItem from "./TimeLineListItem";
+import { SectionHeader } from "./SectionHeader";
 import { AddExperienceDialog } from "./dialogs/add/AddExperienceDialog";
 import { EditExperienceDialog } from "./dialogs/edit/EditExperienceDialog";
 import { DeleteExperienceDialog } from "./dialogs/delete/DeleteExperienceDialog";
-
-import TimeLineListItem from "./TimeLineListItem";
-import { SectionHeader } from "./SectionHeader";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 interface WorkExperienceListProps {
-  initialExperiences: Experience[];
+  experiences: ResumeExperience[] | null;
 }
 
-export function WorkExperienceList({
-  initialExperiences,
-}: WorkExperienceListProps) {
+export function WorkExperienceList({ experiences }: WorkExperienceListProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [experiences, setExperiences] =
-    useState<Experience[]>(initialExperiences);
   const [selectedExperience, setSelectedExperience] =
-    useState<Experience | null>(null);
+    useState<ResumeExperience | null>(null);
 
-  const handleAddExperience = (newExperience: Omit<Experience, "id">) => {
-    const newId = (experiences.length + 1).toString(); // Simple ID generation
-    const experienceToAdd = { ...newExperience, id: newId };
-    setExperiences((prev) => [...prev, experienceToAdd]);
-  };
-
-  const handleEditExperience = (
-    id: string,
-    updatedExperience: Omit<Experience, "id">
-  ) => {
-    setExperiences((prev) =>
-      prev.map((exp) =>
-        exp.id === id ? { ...exp, ...updatedExperience } : exp
-      )
-    );
-  };
-
-  const handleDeleteExperience = (id: string) => {
-    setExperiences((prev) => prev.filter((exp) => exp.id !== id));
-  };
+  // Convert ResumeExperience to the format expected by TimeLineListItem
+  const mapExperienceToTimelineData = (exp: ResumeExperience) => ({
+    id: exp.uuid,
+    title: exp.job_title,
+    company: exp.company_name,
+    startDate: format(new Date(exp.date_start), "d MMMM yyyy", { locale: fr }),
+    endDate: exp.current_time
+      ? "Present"
+      : format(new Date(exp.date_end), "d MMMM yyyy", { locale: fr }),
+    current: exp.current_time,
+    description: "", // TODO: Add description field to ResumeExperience interface if needed
+  });
 
   return (
     <div className="border p-4 rounded-lg shadow-sm">
       <SectionHeader
-        title="Expériences professionnelles"
+        title="Work Experience"
         icon={<Briefcase className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={() => setDialogOpen(true)}
       />
       <div className="space-y-0">
-        {experiences.map((exp) => (
+        {experiences?.map((exp) => (
           <TimeLineListItem
-            key={exp.id}
-            data={exp}
-            onEdit={(experience) => {
-              setSelectedExperience(experience as Experience);
+            key={exp.uuid}
+            data={mapExperienceToTimelineData(exp)}
+            onEdit={() => {
+              setSelectedExperience(exp);
               setEditDialogOpen(true);
             }}
-            onDelete={(_id) => {
+            onDelete={() => {
               setSelectedExperience(exp);
               setDeleteDialogOpen(true);
             }}
           />
         ))}
+        {!experiences?.length && (
+          <p className="text-muted-foreground text-center py-4">
+            No work experience added yet
+          </p>
+        )}
       </div>
-      <AddExperienceDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        onSubmit={handleAddExperience}
-      />
-      <EditExperienceDialog
-        open={editDialogOpen}
-        onOpenChange={setEditDialogOpen}
-        onSubmit={handleEditExperience}
-        experience={selectedExperience as Experience}
-      />
-      {deleteDialogOpen && selectedExperience && (
-        <DeleteExperienceDialog
-          open={deleteDialogOpen}
-          onOpenChange={setDeleteDialogOpen}
-          onConfirm={handleDeleteExperience}
-          experience={selectedExperience}
-        />
+
+      <AddExperienceDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+      {selectedExperience && (
+        <>
+          <EditExperienceDialog
+            open={editDialogOpen}
+            onOpenChange={setEditDialogOpen}
+            experience={selectedExperience}
+          />
+          <DeleteExperienceDialog
+            open={deleteDialogOpen}
+            onOpenChange={setDeleteDialogOpen}
+            experience={selectedExperience}
+          />
+        </>
       )}
     </div>
   );
