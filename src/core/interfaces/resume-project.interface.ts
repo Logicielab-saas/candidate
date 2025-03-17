@@ -6,5 +6,12 @@ export interface ResumeProject {
   image: string | null;
   date_start: string;
   date_end: string;
-  project_tasks: []; // TODO: add project task interface
+  project_tasks: ProjectTask[];
+}
+
+export interface ProjectTask {
+  uuid: string;
+  name: string;
+  description: string | null;
+  status: "in_progress" | "completed";
 }
