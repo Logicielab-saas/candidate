@@ -15,3 +15,8 @@ export async function getProfileResume() {
     throw error;
   }
 }
+
+export async function updateProfileResume(description: string) {
+  const response = await api.post("/employee/resume", { description });
+  return response.data;
+}

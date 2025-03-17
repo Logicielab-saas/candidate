@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useUpdateProfile } from "../../(profile)/hooks/use-profile";
+import { useUpdateProfileResume } from "../../(profile)/qualifications/hooks/use-profile-resume";
 import { Profile } from "../../(profile)/common/interface";
 import { useRouter } from "next/navigation";
 import { ImageUpload } from "./components/ImageUpload";
@@ -56,6 +57,10 @@ const formSchema = z.object({
     .string()
     .nullish()
     .transform((v) => v || null),
+  description: z
+    .string()
+    .nullish()
+    .transform((v) => v || null),
   is_male: z.boolean().nullable(),
   birth_date: z
     .string()
@@ -78,11 +83,20 @@ type FormData = z.infer<typeof formSchema>;
 
 interface EditProfileFormProps {
   profile: Profile;
+  resumeDescription?: string | null;
 }
 
-export function EditProfileForm({ profile }: EditProfileFormProps) {
+export function EditProfileForm({
+  profile,
+  resumeDescription,
+}: EditProfileFormProps) {
   const router = useRouter();
-  const { mutate: updateProfile, isPending } = useUpdateProfile();
+  const { mutate: updateProfile, isPending: isProfileUpdating } =
+    useUpdateProfile();
+  const { mutate: updateResume, isPending: isResumeUpdating } =
+    useUpdateProfileResume();
+
+  const isPending = isProfileUpdating || isResumeUpdating;
 
   // Format the date from ISO to YYYY-MM-DD for the input
   const formatDateForInput = (dateString: string | null) => {
@@ -105,18 +119,32 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
       country: profile.country || "",
       postal_code: profile.postal_code || "",
       bio: profile.bio || "",
+      description: resumeDescription || "",
       is_male: profile.is_male,
       birth_date: formatDateForInput(profile.birthdate),
-      image: null, // Don't set the File object initially
+      image: null,
     },
   });
 
-  function onSubmit(values: FormData) {
-    updateProfile(values, {
-      onSuccess: () => {
-        router.push("/profile");
-      },
-    });
+  async function onSubmit(values: FormData) {
+    // Update profile and resume concurrently
+    await Promise.all([
+      new Promise((resolve) => {
+        //* Use object destructuring to omit description
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { description, ...profileData } = values;
+        updateProfile(profileData, { onSuccess: resolve });
+      }),
+      new Promise((resolve) => {
+        if (values.description) {
+          updateResume(values.description, { onSuccess: resolve });
+        } else {
+          resolve(null);
+        }
+      }),
+    ]);
+
+    router.push("/profile");
   }
 
   const userInitials =
@@ -339,11 +367,30 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
           name="bio"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>About</FormLabel>
+              <FormLabel>Bio</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Tell us about yourself"
                   className="min-h-[100px]"
+                  {...field}
+                  value={field.value || ""}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Resume Description</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Describe your professional experience and goals"
+                  className="min-h-[150px]"
                   {...field}
                   value={field.value || ""}
                 />

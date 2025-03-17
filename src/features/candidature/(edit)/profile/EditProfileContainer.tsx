@@ -3,13 +3,17 @@
 import { EditProfileForm } from "./EditProfileForm";
 import { EditProfileSkeleton } from "./EditProfileSkeleton";
 import { useProfile } from "../../(profile)/hooks/use-profile";
+import { useProfileResume } from "../../(profile)/qualifications/hooks/use-profile-resume";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export function EditProfileContainer() {
   const router = useRouter();
-  const { data: profile, isLoading } = useProfile();
+  const { data: profile, isLoading: isProfileLoading } = useProfile();
+  const { data: resume, isLoading: isResumeLoading } = useProfileResume();
+
+  const isLoading = isProfileLoading || isResumeLoading;
 
   return (
     <div className="container py-10 space-y-8">
@@ -34,7 +38,10 @@ export function EditProfileContainer() {
       {isLoading ? (
         <EditProfileSkeleton />
       ) : profile ? (
-        <EditProfileForm profile={profile} />
+        <EditProfileForm
+          profile={profile}
+          resumeDescription={resume?.resume?.description}
+        />
       ) : null}
     </div>
   );
