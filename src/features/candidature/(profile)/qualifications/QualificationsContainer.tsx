@@ -1,6 +1,5 @@
 "use client";
 
-import { Metadata } from "next";
 import { EducationList } from "./EducationList";
 import { SkillsList } from "./SkillsList";
 import { CertificationsList } from "./CertificationsList";
@@ -13,39 +12,11 @@ import { WatchedCoursesList } from "./WatchedCoursesList";
 import { SectionHeader } from "./SectionHeader";
 import { File } from "lucide-react";
 import { AboutMe } from "./AboutMe";
-import { UserContactInfo } from "./UserContactInfo";
 import { ResumeItem } from "../components/ResumeItem";
-
-export const metadata: Metadata = {
-  title: "Qualifications et Compétences | Mon Profil",
-  description:
-    "Découvrez mes expériences professionnelles, formations, compétences, certifications, courses et langues maîtrisées.",
-  keywords: [
-    "about me",
-    "expérience professionnelle",
-    "formation",
-    "compétences",
-    "certifications",
-    "langues",
-    "CV",
-    "profil professionnel",
-    "courses",
-  ],
-  openGraph: {
-    title: "Qualifications et Compétences | Mon Profil",
-    description:
-      "Découvrez mes expériences professionnelles, formations, compétences, certifications, permis et langues maîtrisées.",
-    type: "profile",
-  },
-};
 
 export function QualificationsContainer() {
   return (
     <div className="space-y-6">
-      <QualificationSection>
-        <UserContactInfo />
-      </QualificationSection>
-
       <QualificationSection>
         <AboutMe />
       </QualificationSection>
