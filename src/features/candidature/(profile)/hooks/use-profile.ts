@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getProfile, updateProfile } from "../services/profile";
 import { useToast } from "@/hooks/use-toast";
+import { PROFILE_RESUME_QUERY_KEY } from "../qualifications/hooks/use-profile-resume";
 
 export const profileKeys = {
   all: ["profile"] as const,
@@ -22,6 +23,9 @@ export function useUpdateProfile() {
     mutationFn: updateProfile,
     onSuccess: (data) => {
       queryClient.setQueryData(profileKeys.me(), data);
+      queryClient.invalidateQueries({ queryKey: profileKeys.me() });
+      queryClient.invalidateQueries({ queryKey: PROFILE_RESUME_QUERY_KEY });
+
       toast.toast({
         variant: "success",
         title: "Profile updated successfully",
