@@ -13,12 +13,45 @@ import { SectionHeader } from "./SectionHeader";
 import { File } from "lucide-react";
 import { AboutMe } from "./AboutMe";
 import { ResumeItem } from "../components/ResumeItem";
+import { useProfileResume } from "./hooks/use-profile-resume";
+import { AboutMeSkeleton } from "./skeletons/AboutMeSkeleton";
 
 export function QualificationsContainer() {
+  const { data: resume, isLoading, error } = useProfileResume();
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <div className="border p-4 rounded-lg shadow-sm">
+          <p className="text-red-500">
+            Failed to load profile data. Please try again later.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <QualificationSection>
+          <AboutMeSkeleton />
+        </QualificationSection>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <QualificationSection>
-        <AboutMe />
+        <AboutMe
+          firstName={resume?.first_name ?? null}
+          lastName={resume?.last_name ?? null}
+          email={resume?.email ?? ""}
+          phone={resume?.phone ?? null}
+          image={resume?.image ?? null}
+          description={resume?.resume?.description ?? null}
+        />
       </QualificationSection>
 
       <QualificationSection>
