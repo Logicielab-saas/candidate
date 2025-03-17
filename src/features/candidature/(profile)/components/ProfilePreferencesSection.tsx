@@ -60,12 +60,12 @@ export function ProfilePreferencesSection() {
           <ChevronRight className="h-5 w-5 text-muted-foreground" />
         </button>
       </div>
-
-      <HideJobDetailsDialog
-        open={showHideDetailsDialog}
-        onOpenChange={setShowHideDetailsDialog}
-      />
-
+      {showHideDetailsDialog && (
+        <HideJobDetailsDialog
+          open={showHideDetailsDialog}
+          onOpenChange={setShowHideDetailsDialog}
+        />
+      )}
       <AvailabilityStatusDialog
         open={showAvailabilityDialog}
         onOpenChange={setShowAvailabilityDialog}

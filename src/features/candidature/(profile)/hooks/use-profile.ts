@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import { getProfile } from "../services/profile";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getProfile, updateProfile } from "../services/profile";
+import { useToast } from "@/hooks/use-toast";
 
 export const profileKeys = {
   all: ["profile"] as const,
@@ -10,5 +11,29 @@ export function useProfile() {
   return useQuery({
     queryKey: profileKeys.me(),
     queryFn: getProfile,
+  });
+}
+
+export function useUpdateProfile() {
+  const queryClient = useQueryClient();
+  const toast = useToast();
+
+  return useMutation({
+    mutationFn: updateProfile,
+    onSuccess: (data) => {
+      queryClient.setQueryData(profileKeys.me(), data);
+      toast.toast({
+        variant: "success",
+        title: "Profile updated successfully",
+        description: "Your profile has been updated successfully",
+      });
+    },
+    onError: (error) => {
+      toast.toast({
+        variant: "destructive",
+        title: "Failed to update profile",
+        description: error.message || "Failed to update profile",
+      });
+    },
   });
 }

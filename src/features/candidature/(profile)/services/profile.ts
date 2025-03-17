@@ -29,3 +29,20 @@ export async function getProfile() {
     throw error;
   }
 }
+
+export type UpdateProfileData = Partial<
+  Omit<Profile, "uuid" | "user_id" | "deleted_at">
+>;
+
+export async function updateProfile(data: UpdateProfileData) {
+  try {
+    const response = await api.post<Profile>(`/employee/user-profile`, data);
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      const apiError = error.response?.data as ApiError;
+      throw new Error(apiError?.message || "Failed to update profile");
+    }
+    throw error;
+  }
+}
