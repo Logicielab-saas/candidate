@@ -5,7 +5,7 @@ export interface ResumeProject {
   url: string | null;
   image: string | null;
   date_start: string;
-  date_end: string;
+  date_end: string | null;
   project_tasks: ProjectTask[];
 }
 
