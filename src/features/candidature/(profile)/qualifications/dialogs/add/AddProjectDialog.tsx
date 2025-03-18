@@ -29,12 +29,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CalendarIcon, X, Upload } from "lucide-react";
+import { CalendarIcon, X, ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateResumeProject } from "../../hooks/use-resume-project";
 import type { CreateTaskDTO } from "../../services/resume-project";
+import React from "react";
+import Image from "next/image";
 
 // Internal form schema uses Date objects for better date handling
 const projectFormSchema = z.object({
@@ -75,6 +77,8 @@ export function AddProjectDialog({
   onOpenChange,
 }: AddProjectDialogProps) {
   const { mutate: createProject, isPending } = useCreateResumeProject();
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const previewUrlsRef = React.useRef<string[]>([]);
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectFormSchema),
@@ -86,6 +90,12 @@ export function AddProjectDialog({
       image: null,
     },
   });
+
+  React.useEffect(() => {
+    return () => {
+      previewUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, []);
 
   function onSubmit(values: ProjectFormValues) {
     createProject(
@@ -131,80 +141,164 @@ export function AddProjectDialog({
               onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-4 px-3"
             >
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Project Name <span className="text-destructive">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="e.g. E-commerce Platform"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid gap-4 sm:grid-cols-2">
+              {/* Basic Information Section */}
+              <div className="space-y-4">
                 <FormField
                   control={form.control}
-                  name="date_start"
+                  name="name"
                   render={({ field }) => (
-                    <FormItem className="flex flex-col">
+                    <FormItem>
                       <FormLabel>
-                        Start Date <span className="text-destructive">*</span>
+                        Project Name <span className="text-destructive">*</span>
                       </FormLabel>
-                      <div className="flex gap-2">
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <FormControl>
-                              <Button
-                                variant="outline"
-                                className={cn(
-                                  "w-full pl-3 text-left font-normal",
-                                  !field.value && "text-muted-foreground"
-                                )}
-                              >
-                                {field.value ? (
-                                  format(field.value, "d MMMM yyyy", {
-                                    locale: fr,
-                                  })
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
-                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                              </Button>
-                            </FormControl>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                              mode="single"
-                              selected={field.value}
-                              onSelect={field.onChange}
-                              disabled={(date) =>
-                                date > new Date() ||
-                                date < new Date("1900-01-01")
-                              }
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
-                        {field.value && (
-                          <Button
-                            variant="outline"
-                            className="w-10"
-                            type="button"
-                            onClick={() => field.onChange(undefined)}
-                          >
-                            <X className="w-4 h-4" />
-                          </Button>
-                        )}
-                      </div>
+                      <FormControl>
+                        <Input
+                          placeholder="e.g. E-commerce Platform"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <FormField
+                    control={form.control}
+                    name="date_start"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>
+                          Start Date <span className="text-destructive">*</span>
+                        </FormLabel>
+                        <div className="flex gap-2">
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant="outline"
+                                  className={cn(
+                                    "w-full pl-3 text-left font-normal",
+                                    !field.value && "text-muted-foreground"
+                                  )}
+                                >
+                                  {field.value ? (
+                                    format(field.value, "d MMMM yyyy", {
+                                      locale: fr,
+                                    })
+                                  ) : (
+                                    <span>Pick a date</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
+                              <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                disabled={(date) =>
+                                  date > new Date() ||
+                                  date < new Date("1900-01-01")
+                                }
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          {field.value && (
+                            <Button
+                              variant="outline"
+                              className="w-10"
+                              type="button"
+                              onClick={() => field.onChange(undefined)}
+                            >
+                              <X className="w-4 h-4" />
+                            </Button>
+                          )}
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="date_end"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>End Date</FormLabel>
+                        <div className="flex gap-2">
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant="outline"
+                                  className={cn(
+                                    "w-full pl-3 text-left font-normal",
+                                    !field.value && "text-muted-foreground"
+                                  )}
+                                >
+                                  {field.value ? (
+                                    format(field.value, "d MMMM yyyy", {
+                                      locale: fr,
+                                    })
+                                  ) : (
+                                    <span>Pick a date</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
+                              <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                disabled={(date) =>
+                                  date < form.getValues("date_start")
+                                }
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          {field.value && (
+                            <Button
+                              variant="outline"
+                              className="w-10"
+                              type="button"
+                              onClick={() => field.onChange(undefined)}
+                            >
+                              <X className="w-4 h-4" />
+                            </Button>
+                          )}
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Description</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Describe your project, technologies used..."
+                          className="min-h-[120px]"
+                          {...field}
+                          value={field.value || ""}
+                        />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -212,127 +306,131 @@ export function AddProjectDialog({
 
                 <FormField
                   control={form.control}
-                  name="date_end"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>End Date</FormLabel>
-                      <div className="flex gap-2">
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <FormControl>
-                              <Button
-                                variant="outline"
-                                className={cn(
-                                  "w-full pl-3 text-left font-normal",
-                                  !field.value && "text-muted-foreground"
-                                )}
-                              >
-                                {field.value ? (
-                                  format(field.value, "d MMMM yyyy", {
-                                    locale: fr,
-                                  })
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
-                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                              </Button>
-                            </FormControl>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                              mode="single"
-                              selected={field.value}
-                              onSelect={field.onChange}
-                              disabled={(date) =>
-                                date < form.getValues("date_start")
+                  name="image"
+                  render={({ field: { onChange, value } }) => (
+                    <FormItem>
+                      <FormLabel>Project Images</FormLabel>
+                      <FormControl>
+                        <div
+                          role="button"
+                          tabIndex={0}
+                          className="border-2 border-dashed rounded-lg p-6 hover:border-primary/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                          onClick={() => fileInputRef.current?.click()}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              fileInputRef.current?.click();
+                            }
+                          }}
+                        >
+                          <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                            <ImageIcon className="h-8 w-8" />
+                            <p className="text-sm font-medium">
+                              Click to upload project images
+                            </p>
+                            <p className="text-xs">
+                              Supported formats: PNG, JPG, JPEG
+                            </p>
+                          </div>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            className="hidden"
+                            onChange={(e) => {
+                              const files = e.target.files;
+                              if (files) {
+                                // Create preview URLs for the selected files
+                                const previewUrls = Array.from(files).map(
+                                  (file) => URL.createObjectURL(file)
+                                );
+                                // Store the preview URLs in a ref to clean up later
+                                previewUrlsRef.current = previewUrls;
+                                onChange(files);
                               }
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
-                        {field.value && (
-                          <Button
-                            variant="outline"
-                            className="w-10"
-                            type="button"
-                            onClick={() => field.onChange(undefined)}
-                          >
-                            <X className="w-4 h-4" />
-                          </Button>
-                        )}
-                      </div>
+                            }}
+                            ref={fileInputRef}
+                          />
+                          {value && value.length > 0 && (
+                            <>
+                              <div className="mt-4 text-center">
+                                <p className="text-sm text-muted-foreground">
+                                  {value.length}{" "}
+                                  {value.length === 1 ? "image" : "images"}{" "}
+                                  selected
+                                </p>
+                              </div>
+                              <div className="mt-4 grid grid-cols-2 gap-4">
+                                {Array.from(value).map((file, index) => (
+                                  <div
+                                    key={index}
+                                    className="group relative aspect-video rounded-lg overflow-hidden bg-muted"
+                                  >
+                                    <Image
+                                      src={URL.createObjectURL(file)}
+                                      alt={`Preview ${index + 1}`}
+                                      className="object-cover"
+                                      fill
+                                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                      priority={index === 0}
+                                    />
+                                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/50">
+                                      <Button
+                                        type="button"
+                                        variant="destructive"
+                                        size="sm"
+                                        className="h-8"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          const newFiles = Array.from(
+                                            value
+                                          ).filter((_, i) => i !== index);
+                                          const dataTransfer =
+                                            new DataTransfer();
+                                          newFiles.forEach((file) =>
+                                            dataTransfer.items.add(file)
+                                          );
+                                          onChange(dataTransfer.files);
+                                        }}
+                                      >
+                                        <X className="h-4 w-4" />
+                                      </Button>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="url"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Project URL</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="e.g. https://github.com/your-project"
+                          {...field}
+                          value={field.value || ""}
+                        />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
 
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Describe your project, technologies used..."
-                        className="min-h-[120px]"
-                        {...field}
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="image"
-                render={({ field: { onChange, value, ...field } }) => (
-                  <FormItem>
-                    <FormLabel>Project Images</FormLabel>
-                    <FormControl>
-                      <div className="flex items-center gap-2">
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          multiple
-                          onChange={(e) => {
-                            onChange(e.target.files);
-                          }}
-                          {...field}
-                          className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="url"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Project URL</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="e.g. https://github.com/your-project"
-                        {...field}
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               {/* Tasks Section */}
-              <div className="space-y-4">
+              <div className="space-y-4 pt-4">
                 <div className="flex items-center justify-between">
-                  <FormLabel>Tasks</FormLabel>
+                  <FormLabel className="text-base">Tasks</FormLabel>
                   <Button
                     type="button"
                     variant="outline"
