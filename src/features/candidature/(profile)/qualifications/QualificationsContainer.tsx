@@ -71,7 +71,7 @@ export function QualificationsContainer() {
       </QualificationSection>
 
       <QualificationSection>
-        <ProjectsList />
+        <ProjectsList projects={resume?.resume?.resumeProjects ?? null} />
       </QualificationSection>
 
       <QualificationSection>

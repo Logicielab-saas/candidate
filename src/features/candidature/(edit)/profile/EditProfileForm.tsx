@@ -20,14 +20,10 @@ import { useUpdateProfileResume } from "../../(profile)/qualifications/hooks/use
 import { Profile } from "../../(profile)/common/interface";
 import { useRouter } from "next/navigation";
 import { ImageUpload } from "./components/ImageUpload";
-
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/gif",
-];
+import {
+  MAX_FILE_SIZE,
+  ACCEPTED_IMAGE_TYPES,
+} from "@/core/constants/image-constraints";
 
 const formSchema = z.object({
   first_name: z.string().min(2, "First name must be at least 2 characters"),

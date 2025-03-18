@@ -1,85 +1,155 @@
-import { useState } from "react";
-import type { Project } from "@/core/types/project";
-import { Lightbulb } from "lucide-react";
-import TimeLineListItem from "./TimeLineListItem";
-import { SectionHeader } from "./SectionHeader";
-import { mockQualifications } from "@/core/mockData/qualifications";
-import { AddProjectDialog } from "./dialogs/add/AddProjectDialog";
-import { DeleteProjectDialog } from "./dialogs/delete/DeleteProjectDialog";
-import { EditProjectDialog } from "./dialogs/edit/EditProjectDialog";
+"use client";
 
-export function ProjectsList() {
-  const [projects, setProjects] = useState<Project[]>(
-    mockQualifications.projects
-  );
+import { useState } from "react";
+import { Code2 } from "lucide-react";
+import { SectionHeader } from "./SectionHeader";
+import CircleLineWrapper from "./CircleLineWrapper";
+import { Button } from "@/components/ui/button";
+import { PencilIcon, Trash } from "lucide-react";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import type { ResumeProject } from "@/core/interfaces/resume-project.interface";
+import Image from "next/image";
+import { AddProjectDialog } from "./dialogs/add/AddProjectDialog";
+
+interface ProjectsListProps {
+  projects: ResumeProject[] | null;
+}
+
+export function ProjectsList({ projects }: ProjectsListProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedProject, setSelectedProject] = useState<ResumeProject | null>(
+    null
+  );
 
-  const handleAddProject = (newProject: Omit<Project, "id">) => {
-    const newId = (projects.length + 1).toString(); // Simple ID generation
-    const projectToAdd = { ...newProject, id: newId };
-    setProjects((prev) => [...prev, projectToAdd]);
-  };
-
-  const handleEditProject = (
-    id: string,
-    updatedProject: Omit<Project, "id">
-  ) => {
-    setProjects((prev) =>
-      prev.map((project) =>
-        project.id === id ? { ...project, ...updatedProject } : project
-      )
-    );
-  };
-
-  const handleDeleteProject = (id: string) => {
-    setProjects((prev) => prev.filter((project) => project.id !== id));
+  const formatDate = (dateString: string) => {
+    return format(new Date(dateString), "d MMMM yyyy", { locale: fr });
   };
 
   return (
     <div className="border p-4 rounded-lg shadow-sm">
       <SectionHeader
         title="Projects"
-        icon={<Lightbulb className="w-6 h-6 text-primaryHex-400 mr-2" />}
+        icon={<Code2 className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={() => setDialogOpen(true)}
       />
       <div className="space-y-0">
-        {projects.map((project) => (
-          <TimeLineListItem
-            key={project.id}
-            data={project}
-            onEdit={(project) => {
-              setSelectedProject(project as Project);
-              setEditDialogOpen(true);
-            }}
-            onDelete={(_id) => {
-              setSelectedProject(project);
-              setDeleteDialogOpen(true);
-            }}
-          />
+        {projects?.map((project) => (
+          <CircleLineWrapper key={project.uuid}>
+            <div className="space-y-2">
+              <h4 className="text-base font-bold flex justify-between items-center">
+                {project.name}
+                <div className="flex">
+                  <Button
+                    variant="ghost"
+                    className="cursor-pointer text-primaryHex-600 hover:bg-primaryHex-100 hover:text-primaryHex-600"
+                    onClick={() => {
+                      setSelectedProject(project);
+                      setEditDialogOpen(true);
+                    }}
+                  >
+                    <PencilIcon className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="cursor-pointer text-red-600 hover:bg-red-100 hover:text-red-600"
+                    onClick={() => {
+                      setSelectedProject(project);
+                      setDeleteDialogOpen(true);
+                    }}
+                  >
+                    <Trash className="w-4 h-4" />
+                  </Button>
+                </div>
+              </h4>
+              {project.image && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {Array.isArray(project.image) ? (
+                    project.image.map((imageUrl, index) => (
+                      <div
+                        key={index}
+                        className="relative aspect-video rounded-lg overflow-hidden hover:opacity-90 transition-opacity cursor-pointer"
+                      >
+                        <Image
+                          src={imageUrl as unknown as string}
+                          alt={`${project.name} - Image ${index + 1}`}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      </div>
+                    ))
+                  ) : (
+                    <div className="relative aspect-video rounded-lg overflow-hidden hover:opacity-90 transition-opacity cursor-pointer">
+                      <Image
+                        src={project.image}
+                        alt={`${project.name} - Image`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
+              <p className="text-gray-500">
+                {formatDate(project.date_start)}
+                {project.date_end
+                  ? ` - ${formatDate(project.date_end)}`
+                  : " - Present"}
+              </p>
+              {project.description && (
+                <p className="mt-2">{project.description}</p>
+              )}
+              {project.url && (
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primaryHex-600 hover:underline block mt-2 w-fit"
+                >
+                  View Project
+                </a>
+              )}
+              {project.tasks && project.tasks.length > 0 && (
+                <div className="mt-4">
+                  <h5 className="font-semibold mb-2">Tasks</h5>
+                  <ul className="list-disc list-inside space-y-1">
+                    {project.tasks.map((task) => (
+                      <li key={task.uuid} className="text-sm">
+                        <span className="font-medium">{task.name}</span>
+                        {task.description && (
+                          <span className="text-gray-600">
+                            {" "}
+                            - {task.description}
+                          </span>
+                        )}
+                        <span
+                          className={`ml-2 text-xs px-2 py-1 rounded-full ${
+                            task.status === "Completed"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-yellow-100 text-yellow-800"
+                          }`}
+                        >
+                          {task.status}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </CircleLineWrapper>
         ))}
+        {!projects?.length && (
+          <p className="text-muted-foreground text-center py-4">
+            No projects added yet
+          </p>
+        )}
       </div>
-      <AddProjectDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        onSubmit={handleAddProject}
-      />
-      <EditProjectDialog
-        open={editDialogOpen}
-        onOpenChange={setEditDialogOpen}
-        onSubmit={handleEditProject}
-        project={selectedProject as Project}
-      />
-      {deleteDialogOpen && selectedProject && (
-        <DeleteProjectDialog
-          open={deleteDialogOpen}
-          onOpenChange={setDeleteDialogOpen}
-          onConfirm={handleDeleteProject}
-          project={selectedProject}
-        />
-      )}
+      <AddProjectDialog open={dialogOpen} onOpenChange={setDialogOpen} />
     </div>
   );
 }
