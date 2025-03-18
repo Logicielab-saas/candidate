@@ -1,6 +1,5 @@
-import { ResumeExperience } from "@/core/interfaces";
+import type { ResumeExperience } from "@/core/interfaces";
 import { ApiError } from "next/dist/server/api-utils";
-
 import api from "@/lib/axios";
 import { AxiosError } from "axios";
 
