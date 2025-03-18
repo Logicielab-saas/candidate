@@ -30,7 +30,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -44,7 +44,7 @@ const experienceFormSchema = z.object({
   date_start: z.date({
     required_error: "Start date is required",
   }),
-  date_end: z.date().optional(),
+  date_end: z.date().nullable(),
   current_time: z.boolean().default(false),
 });
 
@@ -98,7 +98,7 @@ export function EditExperienceDialog({
             ? format(new Date(), "yyyy-MM-dd")
             : values.date_end
             ? format(values.date_end, "yyyy-MM-dd")
-            : format(new Date(), "yyyy-MM-dd"),
+            : null,
         },
       },
       {
@@ -112,8 +112,8 @@ export function EditExperienceDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] p-0 sm:max-w-[425px]">
-        <ScrollArea className="px-6 max-h-[60vh]">
+      <DialogContent className="max-h-[90vh] p-0 sm:max-w-[500px]">
+        <ScrollArea className="px-3 max-h-[60vh]">
           <DialogHeader className="p-6 pb-4">
             <DialogTitle>Edit Work Experience</DialogTitle>
             <DialogDescription>
@@ -167,39 +167,58 @@ export function EditExperienceDialog({
                       <FormLabel>
                         Start Date <span className="text-destructive">*</span>
                       </FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              className={cn(
-                                "w-full pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "d MMMM yyyy", {
-                                  locale: fr,
-                                })
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <div className="flex gap-2">
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "w-full pl-3 text-left font-normal",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value ? (
+                                  format(field.value, "d MMMM yyyy", {
+                                    locale: fr,
+                                  })
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={
+                                field.value instanceof Date
+                                  ? field.value
+                                  : undefined
+                              }
+                              onSelect={(date: Date | undefined) =>
+                                field.onChange(date || null)
+                              }
+                              disabled={(date) =>
+                                date > new Date() ||
+                                date < new Date("1900-01-01")
+                              }
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        {/* {field.value && (
+                          <Button
+                            variant="outline"
+                            className="w-10"
+                            type="button"
+                            onClick={() => field.onChange(undefined)}
+                          >
+                            <X className="w-4 h-4" />
+                          </Button>
+                        )} */}
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -211,41 +230,55 @@ export function EditExperienceDialog({
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>End Date</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              className={cn(
-                                "w-full pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                              disabled={form.watch("current_time")}
-                            >
-                              {field.value ? (
-                                format(field.value, "d MMMM yyyy", {
-                                  locale: fr,
-                                })
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                              date > new Date() ||
-                              date < form.getValues("date_start")
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <div className="flex gap-2">
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "w-full pl-3 text-left font-normal",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                                disabled={form.watch("current_time")}
+                              >
+                                {field.value ? (
+                                  format(field.value, "d MMMM yyyy", {
+                                    locale: fr,
+                                  })
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={
+                                field.value instanceof Date
+                                  ? field.value
+                                  : undefined
+                              }
+                              onSelect={(date: Date | undefined) =>
+                                field.onChange(date || null)
+                              }
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        {field.value && !form.watch("current_time") && (
+                          <Button
+                            variant="outline"
+                            className="w-10"
+                            type="button"
+                            onClick={() => field.onChange(null)}
+                          >
+                            <X className="w-4 h-4" />
+                          </Button>
+                        )}
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -263,7 +296,7 @@ export function EditExperienceDialog({
                         onCheckedChange={(checked) => {
                           field.onChange(checked);
                           if (checked) {
-                            form.setValue("date_end", undefined);
+                            form.setValue("date_end", null);
                           }
                         }}
                       />

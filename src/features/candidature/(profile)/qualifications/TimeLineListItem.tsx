@@ -1,5 +1,5 @@
 import React from "react";
-import type { Certification } from "@/core/interfaces/";
+import type { ResumeCertifications } from "@/core/interfaces/";
 import type { ResumeEducation } from "@/core/interfaces/resume-education.interface";
 import type { ResumeExperience } from "@/core/interfaces/resume-experience.interface";
 import CircleLineWrapper from "./CircleLineWrapper";
@@ -10,9 +10,9 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
 interface TimeLineListItemProps {
-  data: ResumeEducation | ResumeExperience | Certification | Project;
+  data: ResumeEducation | ResumeExperience | ResumeCertifications | Project;
   onEdit: (
-    data: ResumeEducation | ResumeExperience | Certification | Project
+    data: ResumeEducation | ResumeExperience | ResumeCertifications | Project
   ) => void;
   onDelete: (id: string) => void;
 }
@@ -54,10 +54,12 @@ export default function TimeLineListItem({
         endDate = data.date_end ? formatDate(data.date_end) : "";
       }
     } else if ("issueDate" in data) {
-      startDate = data.issueDate;
+      startDate = data.issueDate as string;
     }
 
-    if (!startDate) return "";
+    if ("date" in data) startDate = formatDate(data.date as string);
+    if ("expiration_date" in data)
+      endDate = formatDate(data.expiration_date as string);
 
     if (isCurrent) return `${startDate} - Present`;
     if (endDate) return `${startDate} - ${endDate}`;

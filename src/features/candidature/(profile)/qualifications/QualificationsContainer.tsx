@@ -76,7 +76,9 @@ export function QualificationsContainer() {
       </QualificationSection>
 
       <QualificationSection>
-        <CertificationsList />
+        <CertificationsList
+          certifications={resume?.resume?.resumeCertifications ?? null}
+        />
       </QualificationSection>
 
       <QualificationSection>

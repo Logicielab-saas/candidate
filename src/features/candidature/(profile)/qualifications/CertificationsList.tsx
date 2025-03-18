@@ -1,45 +1,26 @@
-import React, { useState } from "react";
-import type { Certification } from "@/core/interfaces/";
+"use client";
+
 import { Award } from "lucide-react";
 import { AddCertificationDialog } from "./dialogs/add/AddCertificationDialog";
 import { EditCertificationDialog } from "./dialogs/edit/EditCertificationDialog";
 import { DeleteCertificationDialog } from "./dialogs/delete/DeleteCertificationDialog";
 import TimeLineListItem from "./TimeLineListItem";
 import { SectionHeader } from "./SectionHeader";
-import { mockQualifications } from "@/core/mockData/qualifications";
+import { useState } from "react";
+import type { ResumeCertifications } from "@/core/interfaces";
 
-export function CertificationsList() {
-  const [certifications, setCertifications] = useState<Certification[]>(
-    mockQualifications.certifications
-  );
+interface CertificationsListProps {
+  certifications: ResumeCertifications[] | null;
+}
+
+export function CertificationsList({
+  certifications,
+}: CertificationsListProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedCertification, setSelectedCertification] =
-    useState<Certification | null>(null);
-
-  const handleAddCertification = (
-    newCertification: Omit<Certification, "id">
-  ) => {
-    const newId = (certifications.length + 1).toString(); // Simple ID generation
-    const certificationToAdd = { ...newCertification, id: newId };
-    setCertifications((prev) => [...prev, certificationToAdd]);
-  };
-
-  const handleEditCertification = (
-    id: string,
-    updatedCertification: Omit<Certification, "id">
-  ) => {
-    setCertifications((prev) =>
-      prev.map((cert) =>
-        cert.id === id ? { ...cert, ...updatedCertification } : cert
-      )
-    );
-  };
-
-  const handleDeleteCertification = (id: string) => {
-    setCertifications((prev) => prev.filter((cert) => cert.id !== id));
-  };
+    useState<ResumeCertifications | null>(null);
 
   return (
     <div className="border p-4 rounded-lg shadow-sm">
@@ -49,39 +30,40 @@ export function CertificationsList() {
         onAdd={() => setDialogOpen(true)}
       />
       <div className="space-y-0">
-        {certifications.map((cert) => (
+        {certifications?.map((cert) => (
           <TimeLineListItem
-            key={cert.id}
+            key={cert.uuid}
             data={cert}
             onEdit={(certification) => {
-              setSelectedCertification(certification as Certification);
+              setSelectedCertification(certification as ResumeCertifications);
               setEditDialogOpen(true);
             }}
-            onDelete={(_id) => {
+            onDelete={() => {
               setSelectedCertification(cert);
               setDeleteDialogOpen(true);
             }}
           />
         ))}
+        {!certifications?.length && (
+          <p className="text-muted-foreground text-center py-4">
+            No certifications added yet
+          </p>
+        )}
       </div>
-      <AddCertificationDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        onSubmit={handleAddCertification}
-      />
-      <EditCertificationDialog
-        open={editDialogOpen}
-        onOpenChange={setEditDialogOpen}
-        onSubmit={handleEditCertification}
-        certification={selectedCertification as Certification}
-      />
-      {deleteDialogOpen && selectedCertification && (
-        <DeleteCertificationDialog
-          open={deleteDialogOpen}
-          onOpenChange={setDeleteDialogOpen}
-          onConfirm={handleDeleteCertification}
-          certification={selectedCertification}
-        />
+      <AddCertificationDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+      {selectedCertification && (
+        <>
+          <EditCertificationDialog
+            open={editDialogOpen}
+            onOpenChange={setEditDialogOpen}
+            certification={selectedCertification}
+          />
+          <DeleteCertificationDialog
+            open={deleteDialogOpen}
+            onOpenChange={setDeleteDialogOpen}
+            certification={selectedCertification}
+          />
+        </>
       )}
     </div>
   );

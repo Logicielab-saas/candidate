@@ -16,7 +16,7 @@ export async function createResumeCertification(data: CreateCertificationDTO) {
   } catch (error) {
     if (error instanceof AxiosError) {
       const apiError = error.response?.data as ApiError;
-      throw new Error(apiError?.message || "Failed to create Certification");
+      throw new Error(apiError?.message || "Failed to create certification");
     }
     throw error;
   }
@@ -28,7 +28,7 @@ export async function deleteResumeCertification(uuid: string) {
   } catch (error) {
     if (error instanceof AxiosError) {
       const apiError = error.response?.data as ApiError;
-      throw new Error(apiError?.message || "Failed to delete Certification");
+      throw new Error(apiError?.message || "Failed to delete certification");
     }
     throw error;
   }
@@ -47,7 +47,7 @@ export async function updateResumeCertification(
   } catch (error) {
     if (error instanceof AxiosError) {
       const apiError = error.response?.data as ApiError;
-      throw new Error(apiError?.message || "Failed to update Certification");
+      throw new Error(apiError?.message || "Failed to update certification");
     }
     throw error;
   }

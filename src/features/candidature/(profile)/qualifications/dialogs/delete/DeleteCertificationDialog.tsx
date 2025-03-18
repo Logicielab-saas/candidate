@@ -10,51 +10,67 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useToast } from "@/hooks/use-toast";
-import type { Certification } from "@/core/interfaces/";
+import type { ResumeCertifications } from "@/core/interfaces";
+import { useDeleteResumeCertification } from "../../hooks/use-resume-certification";
+import { useState } from "react";
 
 interface DeleteCertificationDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onConfirm: (id: string) => void;
-  certification: Certification;
+  certification: ResumeCertifications;
 }
 
 export function DeleteCertificationDialog({
   open,
   onOpenChange,
-  onConfirm,
   certification,
 }: DeleteCertificationDialogProps) {
-  const { toast } = useToast();
+  const { mutate: deleteCertification, isPending } =
+    useDeleteResumeCertification();
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleConfirm = () => {
-    onConfirm(certification.id);
-    onOpenChange(false);
-    toast({
-      variant: "success",
-      title: "Certification supprimée",
-      description: "La certification a été supprimée avec succès.",
-    });
+  const handleConfirm = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    setIsDeleting(true);
+    try {
+      await new Promise<void>((resolve, reject) => {
+        deleteCertification(certification.uuid, {
+          onSuccess: () => {
+            resolve();
+          },
+          onError: (error) => {
+            reject(error);
+          },
+        });
+      });
+
+      setIsDeleting(false);
+      onOpenChange(false);
+    } catch (_error) {
+      setIsDeleting(false);
+    }
   };
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            Vous êtes sur le point de supprimer la certification &quot;
-            {certification.name}&quot; . Cette action est irréversible.
+            You are about to delete the certification &quot;{certification.name}
+            &quot;. This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Annuler</AlertDialogCancel>
+          <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             className="bg-destructive hover:bg-destructive/90"
+            disabled={isPending || isDeleting}
           >
-            Supprimer
+            {isDeleting ? "Deleting..." : "Delete"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

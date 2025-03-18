@@ -21,27 +21,29 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
-import type { Certification } from "@/core/interfaces/";
 import { Calendar } from "@/components/ui/calendar";
-import { format, parse } from "date-fns";
+import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
+import { useUpdateResumeCertification } from "../../hooks/use-resume-certification";
+import type { ResumeCertifications } from "@/core/interfaces";
 
 const certificationFormSchema = z.object({
-  name: z.string().min(1, "Le nom de la certification est requis"),
-  issueDate: z.date({
-    required_error: "La date de délivrance est requise",
+  name: z.string().min(1, "Certification name is required"),
+  organization: z.string().min(1, "Organization name is required"),
+  date: z.date({
+    required_error: "Issue date is required",
   }),
+  expiration_date: z.date().optional(),
   description: z.string().optional(),
 });
 
@@ -50,21 +52,22 @@ type CertificationFormValues = z.infer<typeof certificationFormSchema>;
 interface EditCertificationDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (id: string, values: Omit<Certification, "id">) => void;
-  certification: Certification;
+  certification: ResumeCertifications;
 }
 
 export function EditCertificationDialog({
   open,
   onOpenChange,
-  onSubmit,
   certification,
 }: EditCertificationDialogProps) {
-  const { toast } = useToast();
+  const { mutate: updateCertification, isPending } =
+    useUpdateResumeCertification();
+
   const form = useForm<CertificationFormValues>({
     resolver: zodResolver(certificationFormSchema),
     defaultValues: {
       name: "",
+      organization: "",
       description: "",
     },
   });
@@ -72,53 +75,55 @@ export function EditCertificationDialog({
   // Update form when certification changes
   useEffect(() => {
     if (certification) {
-      // Parse string dates back to Date objects for the form
-      const issueDate = parse(
-        certification.issueDate,
-        "MMMM yyyy",
-        new Date(),
-        {
-          locale: fr,
-        }
-      );
-
       form.reset({
         name: certification.name,
-        description: certification.description,
-        issueDate,
+        organization: certification.organization,
+        date: new Date(certification.date),
+        expiration_date: certification.expiration_date
+          ? new Date(certification.expiration_date)
+          : undefined,
+        description: certification.description || "",
       });
     }
   }, [certification, form]);
 
-  const handleSubmit = (values: CertificationFormValues) => {
-    // Convert Date objects to formatted strings before submitting
-    const formattedValues: Omit<Certification, "id"> = {
-      ...values,
-      issueDate: format(values.issueDate, "MMMM yyyy", { locale: fr }),
-    };
-    onSubmit(certification.id, formattedValues);
-    onOpenChange(false);
-    toast({
-      variant: "success",
-      title: "Certification modifiée",
-      description: "La certification a été modifiée avec succès.",
-    });
-  };
+  function onSubmit(values: CertificationFormValues) {
+    updateCertification(
+      {
+        uuid: certification.uuid,
+        data: {
+          ...values,
+          date: format(values.date, "yyyy-MM-dd"),
+          expiration_date: values.expiration_date
+            ? format(values.expiration_date, "yyyy-MM-dd")
+            : null,
+          description: values.description || null,
+        },
+      },
+      {
+        onSuccess: () => {
+          onOpenChange(false);
+          form.reset();
+        },
+      }
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[425px]">
-        <ScrollArea className="px-6 max-h-[60vh]">
+        <ScrollArea className="px-3 max-h-[60vh]">
           <DialogHeader className="p-6 pb-4">
-            <DialogTitle>Modifier la certification</DialogTitle>
+            <DialogTitle>Edit Certification</DialogTitle>
             <DialogDescription>
-              Modifiez les informations de votre certification.
+              Update your certification details. Click save when you&apos;re
+              done.
             </DialogDescription>
           </DialogHeader>
 
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(handleSubmit)}
+              onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-4 px-3"
             >
               <FormField
@@ -127,12 +132,12 @@ export function EditCertificationDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Nom de la certification{" "}
+                      Certification Name{" "}
                       <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Ex: AWS Certified Developer"
+                        placeholder="e.g. AWS Certified Developer"
                         {...field}
                       />
                     </FormControl>
@@ -143,62 +148,148 @@ export function EditCertificationDialog({
 
               <FormField
                 control={form.control}
-                name="issueDate"
+                name="organization"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col">
+                  <FormItem>
                     <FormLabel>
-                      Date de délivrance{" "}
-                      <span className="text-destructive">*</span>
+                      Organization <span className="text-destructive">*</span>
                     </FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            className={cn(
-                              "w-full pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "MMMM yyyy", { locale: fr })
-                            ) : (
-                              <span>Sélectionnez une date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
+                    <FormControl>
+                      <Input
+                        placeholder="e.g. Amazon Web Services"
+                        {...field}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="date"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>
+                        Issue Date <span className="text-destructive">*</span>
+                      </FormLabel>
+                      <div className="flex gap-2">
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "w-full pl-3 text-left font-normal",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value ? (
+                                  format(field.value, "d MMMM yyyy", {
+                                    locale: fr,
+                                  })
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              onSelect={field.onChange}
+                              disabled={(date) =>
+                                date > new Date() ||
+                                date < new Date("1900-01-01")
+                              }
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        {/* {field.value && (
+                          <Button
+                            variant="outline"
+                            className="w-10"
+                            onClick={() => field.onChange(undefined)}
+                          >
+                            <X className="w-4 h-4" />
+                          </Button>
+                        )} */}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="expiration_date"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Expiration Date</FormLabel>
+                      <div className="flex gap-2">
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "w-full pl-3 text-left font-normal",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value ? (
+                                  format(field.value, "d MMMM yyyy", {
+                                    locale: fr,
+                                  })
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              onSelect={field.onChange}
+                              disabled={(date) => date < form.getValues("date")}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        {field.value && (
+                          <Button
+                            variant="outline"
+                            className="w-10"
+                            onClick={() => field.onChange(undefined)}
+                          >
+                            <X className="w-4 h-4" />
+                          </Button>
+                        )}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               <FormField
                 control={form.control}
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
-                      Description <span className="text-destructive">*</span>
-                    </FormLabel>
+                    <FormLabel>Description</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Décrivez vos responsabilités et réalisations..."
+                        placeholder="Describe your certification, skills covered..."
                         className="min-h-[120px]"
                         {...field}
+                        value={field.value || ""}
                       />
                     </FormControl>
                     <FormMessage />
@@ -210,14 +301,18 @@ export function EditCertificationDialog({
 
           <DialogFooter className="p-6 pt-4">
             <Button
-              type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
+              disabled={isPending}
             >
-              Annuler
+              Cancel
             </Button>
-            <Button onClick={form.handleSubmit(handleSubmit)}>
-              Enregistrer
+            <Button
+              type="submit"
+              onClick={form.handleSubmit(onSubmit)}
+              disabled={isPending}
+            >
+              {isPending ? "Saving..." : "Save Changes"}
             </Button>
           </DialogFooter>
         </ScrollArea>

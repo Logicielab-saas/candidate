@@ -10,26 +10,25 @@ import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
 
 export function useCreateResumeCertification() {
   const queryClient = useQueryClient();
-  const toast = useToast();
+  const { toast } = useToast();
 
   return useMutation({
     mutationFn: createResumeCertification,
     onSuccess: async () => {
-      // Wait for the query invalidation to complete
       await queryClient.invalidateQueries({
         queryKey: PROFILE_RESUME_QUERY_KEY,
       });
 
-      toast.toast({
+      toast({
         variant: "success",
-        title: "Education added",
-        description: "Your education has been added successfully.",
+        title: "Certification added",
+        description: "Your certification has been added successfully.",
       });
     },
     onError: (error: Error) => {
-      toast.toast({
+      toast({
         variant: "destructive",
-        title: "Failed to add education",
+        title: "Failed to add certification",
         description:
           error.message || "An unexpected error occurred. Please try again.",
       });
@@ -39,26 +38,25 @@ export function useCreateResumeCertification() {
 
 export function useDeleteResumeCertification() {
   const queryClient = useQueryClient();
-  const toast = useToast();
+  const { toast } = useToast();
 
   return useMutation({
     mutationFn: deleteResumeCertification,
     onSuccess: async () => {
-      // Wait for the query invalidation to complete
       await queryClient.invalidateQueries({
         queryKey: PROFILE_RESUME_QUERY_KEY,
       });
 
-      toast.toast({
+      toast({
         variant: "success",
-        title: "Education deleted",
-        description: "Your education has been deleted successfully.",
+        title: "Certification deleted",
+        description: "Your certification has been deleted successfully.",
       });
     },
     onError: (error: Error) => {
-      toast.toast({
+      toast({
         variant: "destructive",
-        title: "Failed to delete education",
+        title: "Failed to delete certification",
         description:
           error.message || "An unexpected error occurred. Please try again.",
       });
@@ -68,7 +66,7 @@ export function useDeleteResumeCertification() {
 
 export function useUpdateResumeCertification() {
   const queryClient = useQueryClient();
-  const toast = useToast();
+  const { toast } = useToast();
 
   return useMutation({
     mutationFn: ({
@@ -79,21 +77,20 @@ export function useUpdateResumeCertification() {
       data: UpdateCertificationDTO;
     }) => updateResumeCertification(uuid, data),
     onSuccess: async () => {
-      // Wait for the query invalidation to complete
       await queryClient.invalidateQueries({
         queryKey: PROFILE_RESUME_QUERY_KEY,
       });
 
-      toast.toast({
+      toast({
         variant: "success",
-        title: "Education updated",
-        description: "Your education has been updated successfully.",
+        title: "Certification updated",
+        description: "Your certification has been updated successfully.",
       });
     },
     onError: (error: Error) => {
-      toast.toast({
+      toast({
         variant: "destructive",
-        title: "Failed to update education",
+        title: "Failed to update certification",
         description:
           error.message || "An unexpected error occurred. Please try again.",
       });
