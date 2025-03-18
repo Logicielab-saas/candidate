@@ -2,9 +2,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   createResumeEducation,
   deleteResumeEducation,
-  UpdateEducationDTO,
   updateResumeEducation,
 } from "../services/resume-education";
+import type { UpdateEducationDTO } from "../services/resume-education";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
 

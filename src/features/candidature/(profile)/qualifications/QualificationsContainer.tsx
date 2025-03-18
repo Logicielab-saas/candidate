@@ -7,7 +7,6 @@ import { LanguagesList } from "./LanguagesList";
 import { QualificationSection } from "./QualificationSection";
 import { WorkExperienceList } from "./WorkExperienceList";
 import { ProjectsList } from "./ProjectsList";
-import { WatchedCoursesList } from "./WatchedCoursesList";
 import { SectionHeader } from "./SectionHeader";
 import { File } from "lucide-react";
 import { AboutMe } from "./AboutMe";
@@ -81,9 +80,9 @@ export function QualificationsContainer() {
         />
       </QualificationSection>
 
-      <QualificationSection>
+      {/* <QualificationSection>
         <WatchedCoursesList />
-      </QualificationSection>
+      </QualificationSection> */}
 
       <QualificationSection>
         <div className="border p-4 rounded-lg shadow-sm">

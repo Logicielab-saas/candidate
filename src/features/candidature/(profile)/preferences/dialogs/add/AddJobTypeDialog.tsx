@@ -75,8 +75,8 @@ export function AddJobTypeDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] p-0 sm:max-w-[425px]">
-        <ScrollArea className="px-6 max-h-[60vh]">
+      <DialogContent className="max-h-[90vh] p-0 sm:max-w-[500px]">
+        <ScrollArea className="px-3 max-h-[60vh]">
           <DialogHeader className="p-6 pb-4">
             <DialogTitle className="text-xl">
               Ajouter des types de postes

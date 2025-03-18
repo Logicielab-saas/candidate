@@ -1,35 +1,34 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  createResumeExperience,
-  deleteResumeExperience,
-  updateResumeExperience,
-} from "../services/resume-experience";
-import type { UpdateExperienceDTO } from "../services/resume-experience";
+  createResumeProject,
+  deleteResumeProject,
+  updateResumeProject,
+} from "../services/resume-project";
+import type { UpdateProjectDTO } from "../services/resume-project";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
 
-export function useCreateResumeExperience() {
+export function useCreateResumeProject() {
   const queryClient = useQueryClient();
-  const toast = useToast();
+  const { toast } = useToast();
 
   return useMutation({
-    mutationFn: createResumeExperience,
+    mutationFn: createResumeProject,
     onSuccess: async () => {
-      // Wait for the query invalidation to complete
       await queryClient.invalidateQueries({
         queryKey: PROFILE_RESUME_QUERY_KEY,
       });
 
-      toast.toast({
+      toast({
         variant: "success",
-        title: "Experience added",
-        description: "Your experience has been added successfully.",
+        title: "Project added",
+        description: "Your project has been added successfully.",
       });
     },
     onError: (error: Error) => {
-      toast.toast({
+      toast({
         variant: "destructive",
-        title: "Failed to add experience",
+        title: "Failed to add project",
         description:
           error.message || "An unexpected error occurred. Please try again.",
       });
@@ -37,28 +36,27 @@ export function useCreateResumeExperience() {
   });
 }
 
-export function useDeleteResumeExperience() {
+export function useDeleteResumeProject() {
   const queryClient = useQueryClient();
-  const toast = useToast();
+  const { toast } = useToast();
 
   return useMutation({
-    mutationFn: deleteResumeExperience,
+    mutationFn: deleteResumeProject,
     onSuccess: async () => {
-      // Wait for the query invalidation to complete
       await queryClient.invalidateQueries({
         queryKey: PROFILE_RESUME_QUERY_KEY,
       });
 
-      toast.toast({
+      toast({
         variant: "success",
-        title: "Experience deleted",
-        description: "Your experience has been deleted successfully.",
+        title: "Project deleted",
+        description: "Your project has been deleted successfully.",
       });
     },
     onError: (error: Error) => {
-      toast.toast({
+      toast({
         variant: "destructive",
-        title: "Failed to delete experience",
+        title: "Failed to delete project",
         description:
           error.message || "An unexpected error occurred. Please try again.",
       });
@@ -66,29 +64,28 @@ export function useDeleteResumeExperience() {
   });
 }
 
-export function useUpdateResumeExperience() {
+export function useUpdateResumeProject() {
   const queryClient = useQueryClient();
-  const toast = useToast();
+  const { toast } = useToast();
 
   return useMutation({
-    mutationFn: ({ uuid, data }: { uuid: string; data: UpdateExperienceDTO }) =>
-      updateResumeExperience(uuid, data),
+    mutationFn: ({ uuid, data }: { uuid: string; data: UpdateProjectDTO }) =>
+      updateResumeProject(uuid, data),
     onSuccess: async () => {
-      // Wait for the query invalidation to complete
       await queryClient.invalidateQueries({
         queryKey: PROFILE_RESUME_QUERY_KEY,
       });
 
-      toast.toast({
+      toast({
         variant: "success",
-        title: "Experience updated",
-        description: "Your experience has been updated successfully.",
+        title: "Project updated",
+        description: "Your project has been updated successfully.",
       });
     },
     onError: (error: Error) => {
-      toast.toast({
+      toast({
         variant: "destructive",
-        title: "Failed to update experience",
+        title: "Failed to update project",
         description:
           error.message || "An unexpected error occurred. Please try again.",
       });

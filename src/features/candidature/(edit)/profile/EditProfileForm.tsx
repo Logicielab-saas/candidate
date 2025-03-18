@@ -144,7 +144,7 @@ export function EditProfileForm({
       }),
     ]);
 
-    router.push("/profile");
+    router.back();
   }
 
   const userInitials =
@@ -156,7 +156,7 @@ export function EditProfileForm({
 
   function handleCancel() {
     form.reset(); // Reset form to initial values
-    router.push("/profile");
+    router.back();
   }
 
   return (

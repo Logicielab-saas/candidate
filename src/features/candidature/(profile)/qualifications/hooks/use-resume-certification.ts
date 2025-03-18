@@ -2,9 +2,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   createResumeCertification,
   deleteResumeCertification,
-  UpdateCertificationDTO,
   updateResumeCertification,
 } from "../services/resume-certification";
+import type { UpdateCertificationDTO } from "../services/resume-certification";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
 

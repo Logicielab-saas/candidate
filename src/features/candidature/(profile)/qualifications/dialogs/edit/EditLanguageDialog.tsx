@@ -85,7 +85,7 @@ export function EditLanguageDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[400px]">
-        <ScrollArea className="px-6 max-h-[60vh]">
+        <ScrollArea className="px-3 max-h-[60vh]">
           <DialogHeader className="p-6 pb-4">
             <DialogTitle>Modifier la langue</DialogTitle>
             <DialogDescription>
