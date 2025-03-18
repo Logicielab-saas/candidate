@@ -90,16 +90,14 @@ export function EditExperienceDialog({
   function onSubmit(values: ExperienceFormValues) {
     updateExperience(
       {
+        ...values,
         uuid: experience.uuid,
-        data: {
-          ...values,
-          date_start: format(values.date_start, "yyyy-MM-dd"),
-          date_end: values.current_time
-            ? format(new Date(), "yyyy-MM-dd")
-            : values.date_end
-            ? format(values.date_end, "yyyy-MM-dd")
-            : null,
-        },
+        date_start: format(values.date_start, "yyyy-MM-dd"),
+        date_end: values.current_time
+          ? format(new Date(), "yyyy-MM-dd")
+          : values.date_end
+          ? format(values.date_end, "yyyy-MM-dd")
+          : null,
       },
       {
         onSuccess: () => {

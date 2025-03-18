@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  createResumeExperience,
+  handleResumeExperience,
   deleteResumeExperience,
-  updateResumeExperience,
+  type CreateExperienceDTO,
+  type UpdateExperienceDTO,
 } from "../services/resume-experience";
-import type { UpdateExperienceDTO } from "../services/resume-experience";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
 
@@ -13,7 +13,7 @@ export function useCreateResumeExperience() {
   const toast = useToast();
 
   return useMutation({
-    mutationFn: createResumeExperience,
+    mutationFn: (data: CreateExperienceDTO) => handleResumeExperience(data),
     onSuccess: async () => {
       // Wait for the query invalidation to complete
       await queryClient.invalidateQueries({
@@ -71,8 +71,7 @@ export function useUpdateResumeExperience() {
   const toast = useToast();
 
   return useMutation({
-    mutationFn: ({ uuid, data }: { uuid: string; data: UpdateExperienceDTO }) =>
-      updateResumeExperience(uuid, data),
+    mutationFn: (data: UpdateExperienceDTO) => handleResumeExperience(data),
     onSuccess: async () => {
       // Wait for the query invalidation to complete
       await queryClient.invalidateQueries({
