@@ -15,6 +15,8 @@ import { useProfileResume } from "./hooks/use-profile-resume";
 import { AboutMeSkeleton } from "./skeletons/AboutMeSkeleton";
 import { WorkExperienceSkeleton } from "./skeletons/WorkExperienceSkeleton";
 import { EducationSkeleton } from "./skeletons/EducationSkeleton";
+import { ProjectsSkeleton } from "./skeletons/ProjectsSkeleton";
+import { CertificationsSkeleton } from "./skeletons/CertificationsSkeleton";
 
 export function QualificationsContainer() {
   const { data: resume, isLoading, error } = useProfileResume();
@@ -42,6 +44,12 @@ export function QualificationsContainer() {
         </QualificationSection>
         <QualificationSection>
           <EducationSkeleton />
+        </QualificationSection>
+        <QualificationSection>
+          <ProjectsSkeleton />
+        </QualificationSection>
+        <QualificationSection>
+          <CertificationsSkeleton />
         </QualificationSection>
       </div>
     );

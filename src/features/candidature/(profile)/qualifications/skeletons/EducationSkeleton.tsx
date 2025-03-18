@@ -11,7 +11,7 @@ export function EducationSkeleton() {
       />
 
       <div className="space-y-0">
-        {[1, 2, 3].map((i) => (
+        {[1].map((i) => (
           <div
             key={i}
             className="relative flex flex-col items-start w-full pl-2"
