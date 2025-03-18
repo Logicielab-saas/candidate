@@ -91,17 +91,15 @@ export function EditEducationDialog({
   function onSubmit(values: EducationFormValues) {
     updateEducation(
       {
+        ...values,
         uuid: education.uuid,
-        data: {
-          ...values,
-          date_start: format(values.date_start, "yyyy-MM-dd"),
-          date_end: values.is_current
-            ? format(new Date(), "yyyy-MM-dd")
-            : values.date_end
-            ? format(values.date_end, "yyyy-MM-dd")
-            : null,
-          description: values.description || null,
-        },
+        date_start: format(values.date_start, "yyyy-MM-dd"),
+        date_end: values.is_current
+          ? format(new Date(), "yyyy-MM-dd")
+          : values.date_end
+          ? format(values.date_end, "yyyy-MM-dd")
+          : null,
+        description: values.description || null,
       },
       {
         onSuccess: () => {

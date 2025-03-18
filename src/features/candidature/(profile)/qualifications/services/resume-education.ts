@@ -6,17 +6,21 @@ import { AxiosError } from "axios";
 const endpoint = "/employee/resume/education";
 
 export type CreateEducationDTO = Omit<ResumeEducation, "uuid">;
+export type UpdateEducationDTO = Partial<CreateEducationDTO> & {
+  uuid: string;
+};
 
-export type UpdateEducationDTO = Partial<CreateEducationDTO>;
+export type EducationDTO = CreateEducationDTO | UpdateEducationDTO;
 
-export async function createResumeEducation(data: CreateEducationDTO) {
+export async function handleResumeEducation(data: EducationDTO) {
   try {
     const response = await api.post<ResumeEducation>(endpoint, data);
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
       const apiError = error.response?.data as ApiError;
-      throw new Error(apiError?.message || "Failed to create Education");
+      const action = "uuid" in data ? "update" : "create";
+      throw new Error(apiError?.message || `Failed to ${action} education`);
     }
     throw error;
   }
@@ -29,25 +33,6 @@ export async function deleteResumeEducation(uuid: string) {
     if (error instanceof AxiosError) {
       const apiError = error.response?.data as ApiError;
       throw new Error(apiError?.message || "Failed to delete Education");
-    }
-    throw error;
-  }
-}
-
-export async function updateResumeEducation(
-  uuid: string,
-  data: UpdateEducationDTO
-) {
-  try {
-    const response = await api.post<ResumeEducation>(
-      `${endpoint}/${uuid}`,
-      data
-    );
-    return response.data;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      const apiError = error.response?.data as ApiError;
-      throw new Error(apiError?.message || "Failed to update Education");
     }
     throw error;
   }

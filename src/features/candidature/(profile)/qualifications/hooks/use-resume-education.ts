@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  createResumeEducation,
+  handleResumeEducation,
   deleteResumeEducation,
-  updateResumeEducation,
+  type CreateEducationDTO,
+  type UpdateEducationDTO,
 } from "../services/resume-education";
-import type { UpdateEducationDTO } from "../services/resume-education";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
 
@@ -13,7 +13,7 @@ export function useCreateResumeEducation() {
   const toast = useToast();
 
   return useMutation({
-    mutationFn: createResumeEducation,
+    mutationFn: (data: CreateEducationDTO) => handleResumeEducation(data),
     onSuccess: async () => {
       // Wait for the query invalidation to complete
       await queryClient.invalidateQueries({
@@ -71,8 +71,7 @@ export function useUpdateResumeEducation() {
   const toast = useToast();
 
   return useMutation({
-    mutationFn: ({ uuid, data }: { uuid: string; data: UpdateEducationDTO }) =>
-      updateResumeEducation(uuid, data),
+    mutationFn: (data: UpdateEducationDTO) => handleResumeEducation(data),
     onSuccess: async () => {
       // Wait for the query invalidation to complete
       await queryClient.invalidateQueries({
