@@ -20,7 +20,10 @@ export async function login(
   credentials: LoginCredentials
 ): Promise<AuthResponse> {
   try {
-    const response = await api.post<AuthResponse>(`/login`, credentials);
+    const response = await api.post<AuthResponse>(
+      `employee/login`,
+      credentials
+    );
 
     // Set the token in an HTTP-only cookie
     await setAuthToken(response.data.token);
@@ -39,7 +42,10 @@ export async function signup(
   credentials: SignupCredentials
 ): Promise<AuthResponse> {
   try {
-    const response = await api.post<AuthResponse>(`/register`, credentials);
+    const response = await api.post<AuthResponse>(
+      `employee/register`,
+      credentials
+    );
 
     return response.data;
   } catch (error) {
@@ -67,28 +73,28 @@ export async function logout() {
   }
 }
 
-export async function forgotPassword(email: string) {
-  try {
-    await api.post(`/forgot-password`, { email });
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      const apiError = error.response?.data as ApiError;
-      throw new Error(
-        apiError?.message || "Failed to send reset password email"
-      );
-    }
-    throw error;
-  }
-}
+// export async function forgotPassword(email: string) {
+//   try {
+//     await api.post(`employee/forgot-password`, { email });
+//   } catch (error) {
+//     if (error instanceof AxiosError) {
+//       const apiError = error.response?.data as ApiError;
+//       throw new Error(
+//         apiError?.message || "Failed to send reset password email"
+//       );
+//     }
+//     throw error;
+//   }
+// }
 
-export async function resetPassword(token: string, password: string) {
-  try {
-    await api.post(`/reset-password`, { token, password });
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      const apiError = error.response?.data as ApiError;
-      throw new Error(apiError?.message || "Failed to reset password");
-    }
-    throw error;
-  }
-}
+// export async function resetPassword(token: string, password: string) {
+//   try {
+//     await api.post(`employee/reset-password`, { token, password });
+//   } catch (error) {
+//     if (error instanceof AxiosError) {
+//       const apiError = error.response?.data as ApiError;
+//       throw new Error(apiError?.message || "Failed to reset password");
+//     }
+//     throw error;
+//   }
+// }

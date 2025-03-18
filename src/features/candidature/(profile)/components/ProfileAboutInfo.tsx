@@ -9,7 +9,7 @@ export function ProfileAboutInfo({ bio, skills }: ProfileAboutInfoProps) {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="text-lg font-medium">About</h3>
+        <h3 className="text-lg font-medium">Bio</h3>
         <p className="mt-2 text-sm text-muted-foreground">
           {bio ||
             "No about information provided yet. Click edit to add your description."}
