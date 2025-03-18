@@ -37,6 +37,11 @@ import { useCreateResumeProject } from "../../hooks/use-resume-project";
 import type { CreateTaskDTO } from "../../services/resume-project";
 import React from "react";
 import Image from "next/image";
+import {
+  MAX_FILE_SIZE,
+  ACCEPTED_IMAGE_TYPES,
+} from "@/core/constants/image-constraints";
+import { useToast } from "@/hooks/use-toast";
 
 // Internal form schema uses Date objects for better date handling
 const projectFormSchema = z.object({
@@ -79,6 +84,7 @@ export function AddProjectDialog({
   const { mutate: createProject, isPending } = useCreateResumeProject();
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const previewUrlsRef = React.useRef<string[]>([]);
+  const { toast } = useToast();
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectFormSchema),
@@ -96,6 +102,31 @@ export function AddProjectDialog({
       previewUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
     };
   }, []);
+
+  const validateFiles = (files: FileList | null): boolean => {
+    if (!files || files.length === 0) return true;
+
+    for (const file of Array.from(files)) {
+      if (file.size > MAX_FILE_SIZE) {
+        toast({
+          variant: "destructive",
+          title: "File too large",
+          description: `${file.name} is larger than 5MB`,
+        });
+        return false;
+      }
+
+      if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
+        toast({
+          variant: "destructive",
+          title: "Invalid file type",
+          description: `${file.name} is not a supported image type`,
+        });
+        return false;
+      }
+    }
+    return true;
+  };
 
   function onSubmit(values: ProjectFormValues) {
     createProject(
@@ -329,17 +360,17 @@ export function AddProjectDialog({
                               Click to upload project images
                             </p>
                             <p className="text-xs">
-                              Supported formats: PNG, JPG, JPEG
+                              Maximum size: 5MB. Formats: PNG, JPEG, GIF
                             </p>
                           </div>
                           <input
                             type="file"
-                            accept="image/*"
+                            accept={ACCEPTED_IMAGE_TYPES.join(",")}
                             multiple
                             className="hidden"
                             onChange={(e) => {
                               const files = e.target.files;
-                              if (files) {
+                              if (files && validateFiles(files)) {
                                 // Create preview URLs for the selected files
                                 const previewUrls = Array.from(files).map(
                                   (file) => URL.createObjectURL(file)
@@ -347,6 +378,9 @@ export function AddProjectDialog({
                                 // Store the preview URLs in a ref to clean up later
                                 previewUrlsRef.current = previewUrls;
                                 onChange(files);
+                              } else if (files) {
+                                // Reset the input if validation fails
+                                e.target.value = "";
                               }
                             }}
                             ref={fileInputRef}
