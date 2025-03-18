@@ -91,14 +91,14 @@ export function AddExperienceDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[600px]">
-        <DialogHeader className="p-6 pb-4">
-          <DialogTitle>Add Work Experience</DialogTitle>
-          <DialogDescription>
-            Add your professional experience to your profile.
-          </DialogDescription>
-        </DialogHeader>
-
         <ScrollArea className="px-6 max-h-[60vh]">
+          <DialogHeader className="p-6 pb-4">
+            <DialogTitle>Add Work Experience</DialogTitle>
+            <DialogDescription>
+              Add your professional experience to your profile.
+            </DialogDescription>
+          </DialogHeader>
+
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -254,24 +254,24 @@ export function AddExperienceDialog({
               />
             </form>
           </Form>
-        </ScrollArea>
 
-        <DialogFooter className="p-6 pt-4">
-          <Button
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-            disabled={isPending}
-          >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            onClick={form.handleSubmit(onSubmit)}
-            disabled={isPending}
-          >
-            {isPending ? "Adding..." : "Add Experience"}
-          </Button>
-        </DialogFooter>
+          <DialogFooter className="p-6 pt-4">
+            <Button
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+              disabled={isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              onClick={form.handleSubmit(onSubmit)}
+              disabled={isPending}
+            >
+              {isPending ? "Adding..." : "Add Experience"}
+            </Button>
+          </DialogFooter>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

@@ -10,54 +10,78 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useToast } from "@/hooks/use-toast";
-import type { Education } from "@/core/interfaces/";
+import { ResumeEducation } from "@/core/interfaces/resume-education.interface";
+import { useDeleteResumeEducation } from "../../hooks/use-resume-education";
+import { useState } from "react";
 
 interface DeleteEducationDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onConfirm: (id: string) => void;
-  education: Education;
+  education: ResumeEducation;
 }
 
 export function DeleteEducationDialog({
   open,
   onOpenChange,
-  onConfirm,
   education,
 }: DeleteEducationDialogProps) {
-  const { toast } = useToast();
+  const { mutate: deleteEducation, isPending } = useDeleteResumeEducation();
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleConfirm = () => {
-    onConfirm(education.id);
-    onOpenChange(false);
-    toast({
-      variant: "success",
-      title: "Formation supprimée",
-      description: "La formation a été supprimée avec succès.",
-    });
+  const handleConfirm = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    setIsDeleting(true);
+    try {
+      await new Promise<void>((resolve, reject) => {
+        deleteEducation(education.uuid, {
+          onSuccess: () => {
+            resolve();
+          },
+          onError: (error) => {
+            reject(error);
+          },
+        });
+      });
+
+      setIsDeleting(false);
+      onOpenChange(false);
+    } catch (_error) {
+      setIsDeleting(false);
+    }
   };
 
+  const isLoading = isPending || isDeleting;
+
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
+    <AlertDialog
+      open={open}
+      onOpenChange={(newOpen) => {
+        if (!isLoading) {
+          onOpenChange(newOpen);
+        }
+      }}
+    >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            Vous êtes sur le point de supprimer la formation suivante :{" "}
-            <span className="font-medium">{education.degree}</span> à{" "}
-            <span className="font-medium">{education.school}</span>.
+            You are about to delete the education:{" "}
+            <span className="font-bold">{education.degree}</span> at{" "}
+            <span className="font-bold">{education.title}</span>.
             <br />
-            Cette action est irréversible.
+            This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Annuler</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             className="bg-destructive hover:bg-destructive/90"
+            disabled={isLoading}
           >
-            Supprimer
+            {isLoading ? "Deleting..." : "Delete"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

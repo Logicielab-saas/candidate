@@ -15,6 +15,7 @@ import { ResumeItem } from "../components/ResumeItem";
 import { useProfileResume } from "./hooks/use-profile-resume";
 import { AboutMeSkeleton } from "./skeletons/AboutMeSkeleton";
 import { WorkExperienceSkeleton } from "./skeletons/WorkExperienceSkeleton";
+import { EducationSkeleton } from "./skeletons/EducationSkeleton";
 
 export function QualificationsContainer() {
   const { data: resume, isLoading, error } = useProfileResume();
@@ -40,6 +41,9 @@ export function QualificationsContainer() {
         <QualificationSection>
           <WorkExperienceSkeleton />
         </QualificationSection>
+        <QualificationSection>
+          <EducationSkeleton />
+        </QualificationSection>
       </div>
     );
   }
@@ -64,11 +68,11 @@ export function QualificationsContainer() {
       </QualificationSection>
 
       <QualificationSection>
-        <ProjectsList />
+        <EducationList educations={resume?.resume?.resumeEducations ?? null} />
       </QualificationSection>
 
       <QualificationSection>
-        <EducationList />
+        <ProjectsList />
       </QualificationSection>
 
       <QualificationSection>

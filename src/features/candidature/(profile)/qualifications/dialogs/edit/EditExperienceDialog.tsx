@@ -34,8 +34,8 @@ import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ResumeExperience } from "@/core/interfaces/resume-experience.interface";
 import { useUpdateResumeExperience } from "../../hooks/use-resume-experience";
+import type { ResumeExperience } from "@/core/interfaces";
 
 // Internal form schema uses Date objects for better date handling
 const experienceFormSchema = z.object({
@@ -112,15 +112,15 @@ export function EditExperienceDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] p-0 sm:max-w-[600px]">
-        <DialogHeader className="p-6 pb-4">
-          <DialogTitle>Edit Work Experience</DialogTitle>
-          <DialogDescription>
-            Update your professional experience information.
-          </DialogDescription>
-        </DialogHeader>
-
+      <DialogContent className="max-h-[90vh] p-0 sm:max-w-[425px]">
         <ScrollArea className="px-6 max-h-[60vh]">
+          <DialogHeader className="p-6 pb-4">
+            <DialogTitle>Edit Work Experience</DialogTitle>
+            <DialogDescription>
+              Update your professional experience information.
+            </DialogDescription>
+          </DialogHeader>
+
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -276,24 +276,24 @@ export function EditExperienceDialog({
               />
             </form>
           </Form>
-        </ScrollArea>
 
-        <DialogFooter className="p-6 pt-4">
-          <Button
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-            disabled={isPending}
-          >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            onClick={form.handleSubmit(onSubmit)}
-            disabled={isPending}
-          >
-            {isPending ? "Saving..." : "Save Changes"}
-          </Button>
-        </DialogFooter>
+          <DialogFooter className="p-6 pt-4">
+            <Button
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+              disabled={isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              onClick={form.handleSubmit(onSubmit)}
+              disabled={isPending}
+            >
+              {isPending ? "Saving..." : "Save Changes"}
+            </Button>
+          </DialogFooter>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

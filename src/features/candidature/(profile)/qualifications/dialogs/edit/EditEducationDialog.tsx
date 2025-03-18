@@ -21,11 +21,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "@/hooks/use-toast";
 import { Calendar } from "@/components/ui/calendar";
-import { format, parse } from "date-fns";
+import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
   Popover,
@@ -34,19 +32,20 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { Education } from "@/core/interfaces/";
 import { useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import type { ResumeEducation } from "@/core/interfaces/resume-education.interface";
+import { useUpdateResumeEducation } from "../../hooks/use-resume-education";
 
+// Internal form schema uses Date objects for better date handling
 const educationFormSchema = z.object({
-  degree: z.string().min(1, "Le diplôme est requis"),
-  school: z.string().min(1, "L'établissement est requis"),
-  field: z.string().min(1, "Le domaine d'études est requis"),
-  startDate: z.date({
-    required_error: "La date de début est requise",
+  title: z.string().min(1, "School name is required"),
+  degree: z.string().min(1, "Degree is required"),
+  date_start: z.date({
+    required_error: "Start date is required",
   }),
-  endDate: z.date().optional(),
-  current: z.boolean().default(false),
+  date_end: z.date().optional(),
+  is_current: z.boolean().default(false),
   description: z.string().optional(),
 });
 
@@ -55,24 +54,22 @@ type EducationFormValues = z.infer<typeof educationFormSchema>;
 interface EditEducationDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (id: string, values: Omit<Education, "id">) => void;
-  education: Education;
+  education: ResumeEducation;
 }
 
 export function EditEducationDialog({
   open,
   onOpenChange,
-  onSubmit,
   education,
 }: EditEducationDialogProps) {
-  const { toast } = useToast();
+  const { mutate: updateEducation, isPending } = useUpdateResumeEducation();
+
   const form = useForm<EducationFormValues>({
     resolver: zodResolver(educationFormSchema),
     defaultValues: {
+      title: "",
       degree: "",
-      school: "",
-      field: "",
-      current: false,
+      is_current: false,
       description: "",
     },
   });
@@ -80,71 +77,68 @@ export function EditEducationDialog({
   // Update form when education changes
   useEffect(() => {
     if (education) {
-      // Parse string dates back to Date objects for the form
-      const startDate = parse(education.startDate, "MMMM yyyy", new Date(), {
-        locale: fr,
-      });
-      const endDate = education.endDate
-        ? parse(education.endDate, "MMMM yyyy", new Date(), { locale: fr })
-        : undefined;
-
       form.reset({
+        title: education.title,
         degree: education.degree,
-        school: education.school,
-        field: education.field,
-        startDate,
-        endDate,
-        current: education.current,
-        description: education.description,
+        date_start: new Date(education.date_start),
+        date_end: education.date_end ? new Date(education.date_end) : undefined,
+        is_current: education.is_current,
+        description: education.description || "",
       });
     }
   }, [education, form]);
 
-  const handleSubmit = (values: EducationFormValues) => {
-    // Convert Date objects to formatted strings before submitting
-    const formattedValues: Omit<Education, "id"> = {
-      ...values,
-      startDate: format(values.startDate, "MMMM yyyy", { locale: fr }),
-      endDate: values.endDate
-        ? format(values.endDate, "MMMM yyyy", { locale: fr })
-        : undefined,
-    };
-    onSubmit(education.id, formattedValues);
-    onOpenChange(false);
-    toast({
-      variant: "success",
-      title: "Formation modifiée",
-      description: "La formation a été modifiée avec succès.",
-    });
-  };
+  function onSubmit(values: EducationFormValues) {
+    updateEducation(
+      {
+        uuid: education.uuid,
+        data: {
+          ...values,
+          date_start: format(values.date_start, "yyyy-MM-dd"),
+          date_end: values.is_current
+            ? format(new Date(), "yyyy-MM-dd")
+            : values.date_end
+            ? format(values.date_end, "yyyy-MM-dd")
+            : null,
+          description: values.description || null,
+        },
+      },
+      {
+        onSuccess: () => {
+          onOpenChange(false);
+          form.reset();
+        },
+      }
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[600px]">
-        <DialogHeader className="p-6 pb-4">
-          <DialogTitle>Modifier la formation</DialogTitle>
-          <DialogDescription>
-            Modifiez les informations de votre formation.
-          </DialogDescription>
-        </DialogHeader>
-
         <ScrollArea className="px-6 max-h-[60vh]">
+          <DialogHeader className="p-6 pb-4">
+            <DialogTitle>Edit Education</DialogTitle>
+            <DialogDescription>
+              Update your education information.
+            </DialogDescription>
+          </DialogHeader>
+
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(handleSubmit)}
+              onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-4 px-3"
             >
               <FormField
                 control={form.control}
-                name="degree"
+                name="title"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Diplôme <span className="text-destructive">*</span>
+                      School <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Ex: Master en Informatique"
+                        placeholder="e.g. University of Paris"
                         {...field}
                       />
                     </FormControl>
@@ -155,32 +149,15 @@ export function EditEducationDialog({
 
               <FormField
                 control={form.control}
-                name="school"
+                name="degree"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Établissement <span className="text-destructive">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder="Ex: Université de Paris" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="field"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Domaine d&apos;études{" "}
-                      <span className="text-destructive">*</span>
+                      Degree <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Ex: Développement Web et Mobile"
+                        placeholder="e.g. Master in Computer Science"
                         {...field}
                       />
                     </FormControl>
@@ -192,12 +169,11 @@ export function EditEducationDialog({
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
-                  name="startDate"
+                  name="date_start"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>
-                        Date de début{" "}
-                        <span className="text-destructive">*</span>
+                        Start Date <span className="text-destructive">*</span>
                       </FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -210,9 +186,11 @@ export function EditEducationDialog({
                               )}
                             >
                               {field.value ? (
-                                format(field.value, "MMMM yyyy", { locale: fr })
+                                format(field.value, "d MMMM yyyy", {
+                                  locale: fr,
+                                })
                               ) : (
-                                <span>Sélectionnez une date</span>
+                                <span>Pick a date</span>
                               )}
                               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                             </Button>
@@ -237,10 +215,10 @@ export function EditEducationDialog({
 
                 <FormField
                   control={form.control}
-                  name="endDate"
+                  name="date_end"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>Date de fin</FormLabel>
+                      <FormLabel>End Date</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -250,12 +228,14 @@ export function EditEducationDialog({
                                 "w-full pl-3 text-left font-normal",
                                 !field.value && "text-muted-foreground"
                               )}
-                              disabled={form.watch("current")}
+                              disabled={form.watch("is_current")}
                             >
                               {field.value ? (
-                                format(field.value, "MMMM yyyy", { locale: fr })
+                                format(field.value, "d MMMM yyyy", {
+                                  locale: fr,
+                                })
                               ) : (
-                                <span>Sélectionnez une date</span>
+                                <span>Pick a date</span>
                               )}
                               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                             </Button>
@@ -268,7 +248,7 @@ export function EditEducationDialog({
                             onSelect={field.onChange}
                             disabled={(date) =>
                               date > new Date() ||
-                              date < form.getValues("startDate")
+                              date < form.getValues("date_start")
                             }
                             initialFocus
                           />
@@ -282,7 +262,7 @@ export function EditEducationDialog({
 
               <FormField
                 control={form.control}
-                name="current"
+                name="is_current"
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                     <FormControl>
@@ -291,13 +271,13 @@ export function EditEducationDialog({
                         onCheckedChange={(checked) => {
                           field.onChange(checked);
                           if (checked) {
-                            form.setValue("endDate", undefined);
+                            form.setValue("date_end", undefined);
                           }
                         }}
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel>Formation en cours</FormLabel>
+                      <FormLabel>Currently studying here</FormLabel>
                     </div>
                   </FormItem>
                 )}
@@ -310,10 +290,10 @@ export function EditEducationDialog({
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder="Décrivez votre formation, vos spécialisations..."
-                        className="min-h-[120px]"
+                      <Input
+                        placeholder="Describe your education, specializations..."
                         {...field}
+                        value={field.value || ""}
                       />
                     </FormControl>
                     <FormMessage />
@@ -325,14 +305,18 @@ export function EditEducationDialog({
 
           <DialogFooter className="p-6 pt-4">
             <Button
-              type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
+              disabled={isPending}
             >
-              Annuler
+              Cancel
             </Button>
-            <Button onClick={form.handleSubmit(handleSubmit)}>
-              Enregistrer
+            <Button
+              type="submit"
+              onClick={form.handleSubmit(onSubmit)}
+              disabled={isPending}
+            >
+              {isPending ? "Saving..." : "Save Changes"}
             </Button>
           </DialogFooter>
         </ScrollArea>

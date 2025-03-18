@@ -1,84 +1,66 @@
 import { useState } from "react";
-import type { Education } from "@/core/interfaces/";
 import { GraduationCap } from "lucide-react";
 import { AddEducationDialog } from "./dialogs/add/AddEducationDialog";
 import { EditEducationDialog } from "./dialogs/edit/EditEducationDialog";
 import { DeleteEducationDialog } from "./dialogs/delete/DeleteEducationDialog";
 import TimeLineListItem from "./TimeLineListItem";
 import { SectionHeader } from "./SectionHeader";
-import { mockQualifications } from "@/core/mockData/qualifications";
+import type { ResumeEducation } from "@/core/interfaces/resume-education.interface";
 
-export function EducationList() {
-  const [educations, setEducations] = useState<Education[]>(
-    mockQualifications.education
-  );
+interface EducationListProps {
+  educations: ResumeEducation[] | null;
+}
+
+export function EducationList({ educations }: EducationListProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedEducation, setSelectedEducation] = useState<Education | null>(
-    null
-  );
-
-  const handleAddEducation = (newEducation: Omit<Education, "id">) => {
-    const newId = (educations.length + 1).toString(); // Simple ID generation
-    const educationToAdd = { ...newEducation, id: newId };
-    setEducations((prev) => [...prev, educationToAdd]);
-  };
-
-  const handleEditEducation = (
-    id: string,
-    updatedEducation: Omit<Education, "id">
-  ) => {
-    setEducations((prev) =>
-      prev.map((edu) => (edu.id === id ? { ...edu, ...updatedEducation } : edu))
-    );
-  };
-
-  const handleDeleteEducation = (id: string) => {
-    setEducations((prev) => prev.filter((edu) => edu.id !== id));
-  };
+  const [selectedEducation, setSelectedEducation] =
+    useState<ResumeEducation | null>(null);
 
   return (
     <div className="border p-4 rounded-lg shadow-sm">
       <SectionHeader
-        title="Éducation"
+        title="Education"
         icon={<GraduationCap className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={() => setDialogOpen(true)}
       />
       <div className="space-y-0">
-        {educations.map((edu) => (
+        {educations?.map((edu) => (
           <TimeLineListItem
-            key={edu.id}
+            key={edu.uuid}
             data={edu}
-            onEdit={(education) => {
-              setSelectedEducation(education as Education);
+            onEdit={() => {
+              setSelectedEducation(edu);
               setEditDialogOpen(true);
             }}
-            onDelete={(_id) => {
+            onDelete={() => {
               setSelectedEducation(edu);
               setDeleteDialogOpen(true);
             }}
           />
         ))}
+        {!educations?.length && (
+          <p className="text-muted-foreground text-center py-4">
+            No education added yet
+          </p>
+        )}
       </div>
-      <AddEducationDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        onSubmit={handleAddEducation}
-      />
-      <EditEducationDialog
-        open={editDialogOpen}
-        onOpenChange={setEditDialogOpen}
-        onSubmit={handleEditEducation}
-        education={selectedEducation as Education}
-      />
-      {deleteDialogOpen && selectedEducation && (
-        <DeleteEducationDialog
-          open={deleteDialogOpen}
-          onOpenChange={setDeleteDialogOpen}
-          onConfirm={handleDeleteEducation}
-          education={selectedEducation}
-        />
+
+      <AddEducationDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+      {selectedEducation && (
+        <>
+          <EditEducationDialog
+            open={editDialogOpen}
+            onOpenChange={setEditDialogOpen}
+            education={selectedEducation}
+          />
+          <DeleteEducationDialog
+            open={deleteDialogOpen}
+            onOpenChange={setDeleteDialogOpen}
+            education={selectedEducation}
+          />
+        </>
       )}
     </div>
   );
