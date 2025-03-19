@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon, X, ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { useUpdateResumeProject } from "../../hooks/use-resume-project";
@@ -44,7 +44,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 
 const projectFormSchema = z.object({
-  name: z.string().min(1, "Project name is required"),
+  name: z.string().min(2, "Project name is required"),
   description: z.string().optional(),
   url: z.string().url("Must be a valid URL").optional().or(z.literal("")),
   date_start: z.date({
@@ -54,8 +54,8 @@ const projectFormSchema = z.object({
   tasks: z
     .array(
       z.object({
-        name: z.string().min(1, "Task name is required"),
-        description: z.string().min(1, "Task description is required"),
+        name: z.string().min(2, "Task name is required"),
+        description: z.string().optional(),
         status: z.enum(["In Progress", "Completed"]),
       })
     )
@@ -85,6 +85,8 @@ export function EditProjectDialog({
   const { mutate: updateProject, isPending } = useUpdateResumeProject();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const previewUrlsRef = useRef<string[]>([]);
+  const [startDateOpen, setStartDateOpen] = useState(false);
+  const [endDateOpen, setEndDateOpen] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<ProjectFormValues>({
@@ -159,6 +161,12 @@ export function EditProjectDialog({
           : null,
         description: values.description || null,
         url: values.url || null,
+        tasks: values.tasks.map((task) => ({
+          name: task.name,
+          description: task.description || "",
+          status: task.status,
+        })),
+        image: values.image || null,
       },
       {
         onSuccess: () => {
@@ -206,6 +214,7 @@ export function EditProjectDialog({
                   )}
                 />
 
+                {/* Start Date Section */}
                 <div className="grid gap-4 sm:grid-cols-2">
                   <FormField
                     control={form.control}
@@ -216,7 +225,10 @@ export function EditProjectDialog({
                           Start Date <span className="text-destructive">*</span>
                         </FormLabel>
                         <div className="flex gap-2">
-                          <Popover>
+                          <Popover
+                            open={startDateOpen}
+                            onOpenChange={setStartDateOpen}
+                          >
                             <PopoverTrigger asChild>
                               <FormControl>
                                 <Button
@@ -244,7 +256,10 @@ export function EditProjectDialog({
                               <Calendar
                                 mode="single"
                                 selected={field.value}
-                                onSelect={field.onChange}
+                                onSelect={(date) => {
+                                  field.onChange(date);
+                                  setStartDateOpen(false);
+                                }}
                                 disabled={(date) =>
                                   date > new Date() ||
                                   date < new Date("1900-01-01")
@@ -269,6 +284,7 @@ export function EditProjectDialog({
                     )}
                   />
 
+                  {/* End Date Section */}
                   <FormField
                     control={form.control}
                     name="date_end"
@@ -276,7 +292,10 @@ export function EditProjectDialog({
                       <FormItem className="flex flex-col">
                         <FormLabel>End Date</FormLabel>
                         <div className="flex gap-2">
-                          <Popover>
+                          <Popover
+                            open={endDateOpen}
+                            onOpenChange={setEndDateOpen}
+                          >
                             <PopoverTrigger asChild>
                               <FormControl>
                                 <Button
@@ -304,7 +323,10 @@ export function EditProjectDialog({
                               <Calendar
                                 mode="single"
                                 selected={field.value}
-                                onSelect={field.onChange}
+                                onSelect={(date) => {
+                                  field.onChange(date);
+                                  setEndDateOpen(false);
+                                }}
                                 disabled={(date) =>
                                   date < form.getValues("date_start")
                                 }
@@ -329,6 +351,7 @@ export function EditProjectDialog({
                   />
                 </div>
 
+                {/* Description Section */}
                 <FormField
                   control={form.control}
                   name="description"
@@ -348,6 +371,7 @@ export function EditProjectDialog({
                   )}
                 />
 
+                {/* Project Images Section */}
                 <FormField
                   control={form.control}
                   name="image"
@@ -455,6 +479,7 @@ export function EditProjectDialog({
                   )}
                 />
 
+                {/* Project URL Section */}
                 <FormField
                   control={form.control}
                   name="url"
@@ -515,6 +540,7 @@ export function EditProjectDialog({
                       <X className="h-4 w-4" />
                     </Button>
 
+                    {/* Task Name Section */}
                     <FormField
                       control={form.control}
                       name={`tasks.${index}.name`}
@@ -535,6 +561,7 @@ export function EditProjectDialog({
                       )}
                     />
 
+                    {/* Task Description Section */}
                     <FormField
                       control={form.control}
                       name={`tasks.${index}.description`}
@@ -553,6 +580,7 @@ export function EditProjectDialog({
                       )}
                     />
 
+                    {/* Task Status Section */}
                     <FormField
                       control={form.control}
                       name={`tasks.${index}.status`}
@@ -591,7 +619,7 @@ export function EditProjectDialog({
             <Button
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={isPending}
+              disabled={isPending || !form.formState.isValid}
             >
               {isPending ? "Saving..." : "Save Changes"}
             </Button>
