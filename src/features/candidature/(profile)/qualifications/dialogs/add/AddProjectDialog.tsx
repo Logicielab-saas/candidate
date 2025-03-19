@@ -34,7 +34,6 @@ import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateResumeProject } from "../../hooks/use-resume-project";
-import type { CreateTaskDTO } from "../../services/resume-project";
 import React from "react";
 import Image from "next/image";
 import {
@@ -56,18 +55,19 @@ const projectFormSchema = z.object({
     .array(
       z.object({
         name: z.string().min(1, "Task name is required"),
-        description: z.string().optional(),
+        description: z.string().min(1, "Task description is required"),
         status: z.enum(["In Progress", "Completed"]),
       })
     )
     .default([]),
   // We'll handle image upload separately
   image: z
-    .instanceof(FileList)
+    .custom<FileList>()
     .optional()
-    .transform((files) =>
-      files && files.length > 0 ? Array.from(files) : null
-    ),
+    .transform((files) => {
+      if (!files) return null;
+      return Array.from(files);
+    }),
 });
 
 type ProjectFormValues = z.infer<typeof projectFormSchema>;
@@ -93,12 +93,13 @@ export function AddProjectDialog({
       description: "",
       url: "",
       tasks: [],
-      image: null,
+      image: undefined,
     },
   });
 
   React.useEffect(() => {
     return () => {
+      // Cleanup preview URLs when component unmounts
       previewUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
     };
   }, []);
@@ -129,31 +130,43 @@ export function AddProjectDialog({
   };
 
   function onSubmit(values: ProjectFormValues) {
-    createProject(
-      {
-        ...values,
-        date_start: format(values.date_start, "yyyy-MM-dd"),
-        date_end: values.date_end
-          ? format(values.date_end, "yyyy-MM-dd")
-          : null,
-        description: values.description || null,
-        url: values.url || null,
-        image: values.image,
-        tasks: values.tasks.map(
-          (task): CreateTaskDTO => ({
-            name: task.name,
-            description: task.description || null,
-            status: task.status,
-          })
-        ),
-      },
-      {
-        onSuccess: () => {
-          form.reset();
-          onOpenChange(false);
-        },
+    const formData = new FormData();
+
+    // Add basic fields
+    formData.append("name", values.name);
+    formData.append("date_start", format(values.date_start, "yyyy-MM-dd"));
+    if (values.date_end) {
+      formData.append("date_end", format(values.date_end, "yyyy-MM-dd"));
+    }
+    if (values.description) {
+      formData.append("description", values.description);
+    }
+    if (values.url) {
+      formData.append("url", values.url);
+    }
+
+    // Add tasks
+    values.tasks.forEach((task, index) => {
+      formData.append(`tasks[${index}][name]`, task.name);
+      if (task.description) {
+        formData.append(`tasks[${index}][description]`, task.description);
       }
-    );
+      formData.append(`tasks[${index}][status]`, task.status);
+    });
+
+    // Add images
+    if (values.image) {
+      Array.from(values.image).forEach((file, index) => {
+        formData.append(`images[${index}]`, file);
+      });
+    }
+
+    createProject(formData, {
+      onSuccess: () => {
+        form.reset();
+        onOpenChange(false);
+      },
+    });
   }
 
   return (
@@ -401,7 +414,7 @@ export function AddProjectDialog({
                                     className="group relative aspect-video rounded-lg overflow-hidden bg-muted"
                                   >
                                     <Image
-                                      src={URL.createObjectURL(file)}
+                                      src={URL.createObjectURL(file as Blob)}
                                       alt={`Preview ${index + 1}`}
                                       className="object-cover"
                                       fill
@@ -422,7 +435,7 @@ export function AddProjectDialog({
                                           const dataTransfer =
                                             new DataTransfer();
                                           newFiles.forEach((file) =>
-                                            dataTransfer.items.add(file)
+                                            dataTransfer.items.add(file as File)
                                           );
                                           onChange(dataTransfer.files);
                                         }}

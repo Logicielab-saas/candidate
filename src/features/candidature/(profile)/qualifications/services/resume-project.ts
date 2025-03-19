@@ -19,33 +19,8 @@ export type CreateProjectDTO = Omit<
 
 export type UpdateProjectDTO = Partial<CreateProjectDTO>;
 
-export async function createResumeProject(data: CreateProjectDTO) {
+export async function createResumeProject(formData: FormData) {
   try {
-    const formData = new FormData();
-
-    // Add basic project fields
-    formData.append("name", data.name);
-    formData.append("date_start", data.date_start);
-    if (data.date_end) formData.append("date_end", data.date_end);
-    if (data.description) formData.append("description", data.description);
-    if (data.url) formData.append("url", data.url);
-
-    // Append each task in the form data
-    data.tasks.forEach((task, index) => {
-      formData.append(`tasks[${index}][name]`, task.name);
-      if (task.description) {
-        formData.append(`tasks[${index}][description]`, task.description);
-      }
-      formData.append(`tasks[${index}][status]`, task.status);
-    });
-
-    // Add images if they exist
-    if (data.image && data.image.length > 0) {
-      data.image.forEach((file) => {
-        formData.append("image", file);
-      });
-    }
-
     const response = await api.post<ResumeProject>(endpoint, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
