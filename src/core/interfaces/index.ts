@@ -30,3 +30,4 @@ export * from "./resume.interface";
 export * from "./resume-file.interface";
 export * from "./resume-language.interface";
 export * from "./skill.interface";
+export * from "./languages.interface";
