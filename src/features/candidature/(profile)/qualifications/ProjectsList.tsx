@@ -13,6 +13,7 @@ import Image from "next/image";
 import { AddProjectDialog } from "./dialogs/add/AddProjectDialog";
 import { EditProjectDialog } from "./dialogs/edit/EditProjectDialog";
 import { DeleteProjectDialog } from "./dialogs/delete/DeleteProjectDialog";
+import { ImageLightbox } from "@/components/shared/ImageLightbox";
 
 interface ProjectsListProps {
   projects: ResumeProject[] | null;
@@ -25,9 +26,38 @@ export function ProjectsList({ projects }: ProjectsListProps) {
   const [selectedProject, setSelectedProject] = useState<ResumeProject | null>(
     null
   );
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [selectedImages, setSelectedImages] = useState<
+    Array<{ src: string; alt: string }>
+  >([]);
+  const [initialImageIndex, setInitialImageIndex] = useState(0);
 
   const formatDate = (dateString: string) => {
     return format(new Date(dateString), "d MMMM yyyy", { locale: fr });
+  };
+
+  const handleImageClick = (project: ResumeProject, index: number) => {
+    const images = Array.isArray(project.image)
+      ? project.image.map((url, i) => ({
+          src:
+            typeof url === "string"
+              ? url
+              : URL.createObjectURL(url as unknown as Blob),
+          alt: `${project.name} - Image ${i + 1}`,
+        }))
+      : [
+          {
+            src:
+              typeof project.image === "string"
+                ? project.image
+                : URL.createObjectURL(project.image as unknown as Blob),
+            alt: `${project.name} - Image`,
+          },
+        ];
+
+    setSelectedImages(images);
+    setInitialImageIndex(index);
+    setLightboxOpen(true);
   };
 
   return (
@@ -73,6 +103,7 @@ export function ProjectsList({ projects }: ProjectsListProps) {
                       <div
                         key={index}
                         className="relative aspect-video rounded-lg overflow-hidden hover:opacity-90 transition-opacity cursor-pointer"
+                        onClick={() => handleImageClick(project, index)}
                       >
                         <Image
                           src={imageUrl as unknown as string}
@@ -84,7 +115,10 @@ export function ProjectsList({ projects }: ProjectsListProps) {
                       </div>
                     ))
                   ) : (
-                    <div className="relative aspect-video rounded-lg overflow-hidden hover:opacity-90 transition-opacity cursor-pointer">
+                    <div
+                      className="relative aspect-video rounded-lg overflow-hidden hover:opacity-90 transition-opacity cursor-pointer"
+                      onClick={() => handleImageClick(project, 0)}
+                    >
                       <Image
                         src={project.image}
                         alt={`${project.name} - Image`}
@@ -166,6 +200,12 @@ export function ProjectsList({ projects }: ProjectsListProps) {
           />
         </>
       )}
+      <ImageLightbox
+        isOpen={lightboxOpen}
+        onOpenChange={setLightboxOpen}
+        images={selectedImages}
+        initialIndex={initialImageIndex}
+      />
     </div>
   );
 }

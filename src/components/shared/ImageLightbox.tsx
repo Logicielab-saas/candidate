@@ -132,18 +132,31 @@ export function ImageLightbox({
             </>
           )}
 
-          <div className="relative w-full h-full p-4">
-            <Image
-              src={currentImage.src}
-              alt={currentImage.alt}
-              fill
-              className="object-contain transition-all duration-200"
-              style={{
-                transform: `scale(${scale}) rotate(${rotation}deg)`,
-              }}
-              sizes="90vw"
-              quality={100}
-            />
+          <div className="relative w-full h-full p-4 overflow-auto">
+            <div className="min-h-full min-w-full flex items-center justify-center">
+              <div
+                className="relative transition-transform duration-200"
+                style={{
+                  transform: `scale(${scale}) rotate(${rotation}deg)`,
+                }}
+              >
+                <Image
+                  src={currentImage.src}
+                  alt={currentImage.alt}
+                  width={1200}
+                  height={800}
+                  className="object-contain max-w-none"
+                  style={{
+                    maxHeight: `calc(90vh - ${
+                      images.length > 1 ? "200px" : "120px"
+                    })`,
+                    width: "auto",
+                  }}
+                  sizes="90vw"
+                  quality={100}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
