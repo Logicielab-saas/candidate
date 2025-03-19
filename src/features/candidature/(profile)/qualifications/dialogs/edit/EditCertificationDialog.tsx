@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { useUpdateResumeCertification } from "../../hooks/use-resume-certification";
@@ -62,6 +62,9 @@ export function EditCertificationDialog({
 }: EditCertificationDialogProps) {
   const { mutate: updateCertification, isPending } =
     useUpdateResumeCertification();
+
+  const [startDateOpen, setStartDateOpen] = useState(false);
+  const [endDateOpen, setEndDateOpen] = useState(false);
 
   const form = useForm<CertificationFormValues>({
     resolver: zodResolver(certificationFormSchema),
@@ -124,6 +127,7 @@ export function EditCertificationDialog({
               onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-4 px-3"
             >
+              {/* Certification Name Section */}
               <FormField
                 control={form.control}
                 name="name"
@@ -144,6 +148,7 @@ export function EditCertificationDialog({
                 )}
               />
 
+              {/* Organization Section */}
               <FormField
                 control={form.control}
                 name="organization"
@@ -163,6 +168,7 @@ export function EditCertificationDialog({
                 )}
               />
 
+              {/* Date Section */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
@@ -173,7 +179,10 @@ export function EditCertificationDialog({
                         Issue Date <span className="text-destructive">*</span>
                       </FormLabel>
                       <div className="flex gap-2">
-                        <Popover>
+                        <Popover
+                          open={startDateOpen}
+                          onOpenChange={setStartDateOpen}
+                        >
                           <PopoverTrigger asChild>
                             <FormControl>
                               <Button
@@ -198,7 +207,10 @@ export function EditCertificationDialog({
                             <Calendar
                               mode="single"
                               selected={field.value}
-                              onSelect={field.onChange}
+                              onSelect={(date) => {
+                                field.onChange(date);
+                                setStartDateOpen(false);
+                              }}
                               disabled={(date) =>
                                 date > new Date() ||
                                 date < new Date("1900-01-01")
@@ -222,6 +234,7 @@ export function EditCertificationDialog({
                   )}
                 />
 
+                {/* Expiration Date Section */}
                 <FormField
                   control={form.control}
                   name="expiration_date"
@@ -229,7 +242,10 @@ export function EditCertificationDialog({
                     <FormItem className="flex flex-col">
                       <FormLabel>Expiration Date</FormLabel>
                       <div className="flex gap-2">
-                        <Popover>
+                        <Popover
+                          open={endDateOpen}
+                          onOpenChange={setEndDateOpen}
+                        >
                           <PopoverTrigger asChild>
                             <FormControl>
                               <Button
@@ -254,7 +270,10 @@ export function EditCertificationDialog({
                             <Calendar
                               mode="single"
                               selected={field.value}
-                              onSelect={field.onChange}
+                              onSelect={(date) => {
+                                field.onChange(date);
+                                setEndDateOpen(false);
+                              }}
                               disabled={(date) => date < form.getValues("date")}
                               initialFocus
                             />
@@ -276,6 +295,7 @@ export function EditCertificationDialog({
                 />
               </div>
 
+              {/* Description Section */}
               <FormField
                 control={form.control}
                 name="description"
@@ -308,7 +328,7 @@ export function EditCertificationDialog({
             <Button
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={isPending}
+              disabled={isPending || !form.formState.isValid}
             >
               {isPending ? "Saving..." : "Save Changes"}
             </Button>

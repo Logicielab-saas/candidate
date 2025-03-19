@@ -34,6 +34,7 @@ import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateResumeCertification } from "../../hooks/use-resume-certification";
+import { useState } from "react";
 
 const certificationFormSchema = z.object({
   name: z.string().min(1, "Certification name is required"),
@@ -58,6 +59,9 @@ export function AddCertificationDialog({
 }: AddCertificationDialogProps) {
   const { mutate: createCertification, isPending } =
     useCreateResumeCertification();
+
+  const [startDateOpen, setStartDateOpen] = useState(false);
+  const [endDateOpen, setEndDateOpen] = useState(false);
 
   const form = useForm<CertificationFormValues>({
     resolver: zodResolver(certificationFormSchema),
@@ -103,6 +107,7 @@ export function AddCertificationDialog({
               onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-4 px-3"
             >
+              {/* Certification Name Section */}
               <FormField
                 control={form.control}
                 name="name"
@@ -123,6 +128,7 @@ export function AddCertificationDialog({
                 )}
               />
 
+              {/* Organization Section */}
               <FormField
                 control={form.control}
                 name="organization"
@@ -142,6 +148,7 @@ export function AddCertificationDialog({
                 )}
               />
 
+              {/* Date Section */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
@@ -152,7 +159,10 @@ export function AddCertificationDialog({
                         Issue Date <span className="text-destructive">*</span>
                       </FormLabel>
                       <div className="flex gap-2">
-                        <Popover>
+                        <Popover
+                          open={startDateOpen}
+                          onOpenChange={setStartDateOpen}
+                        >
                           <PopoverTrigger asChild>
                             <FormControl>
                               <Button
@@ -177,7 +187,10 @@ export function AddCertificationDialog({
                             <Calendar
                               mode="single"
                               selected={field.value}
-                              onSelect={field.onChange}
+                              onSelect={(date) => {
+                                field.onChange(date);
+                                setStartDateOpen(false);
+                              }}
                               disabled={(date) =>
                                 date > new Date() ||
                                 date < new Date("1900-01-01")
@@ -201,6 +214,7 @@ export function AddCertificationDialog({
                   )}
                 />
 
+                {/* Expiration Date Section */}
                 <FormField
                   control={form.control}
                   name="expiration_date"
@@ -208,7 +222,10 @@ export function AddCertificationDialog({
                     <FormItem className="flex flex-col">
                       <FormLabel>Expiration Date</FormLabel>
                       <div className="flex gap-2">
-                        <Popover>
+                        <Popover
+                          open={endDateOpen}
+                          onOpenChange={setEndDateOpen}
+                        >
                           <PopoverTrigger asChild>
                             <FormControl>
                               <Button
@@ -233,7 +250,10 @@ export function AddCertificationDialog({
                             <Calendar
                               mode="single"
                               selected={field.value}
-                              onSelect={field.onChange}
+                              onSelect={(date) => {
+                                field.onChange(date);
+                                setEndDateOpen(false);
+                              }}
                               disabled={(date) => date < form.getValues("date")}
                               initialFocus
                             />
@@ -256,6 +276,7 @@ export function AddCertificationDialog({
                 />
               </div>
 
+              {/* Description Section */}
               <FormField
                 control={form.control}
                 name="description"
@@ -288,7 +309,7 @@ export function AddCertificationDialog({
             <Button
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={isPending}
+              disabled={isPending || !form.formState.isValid}
             >
               {isPending ? "Adding..." : "Add Certification"}
             </Button>
