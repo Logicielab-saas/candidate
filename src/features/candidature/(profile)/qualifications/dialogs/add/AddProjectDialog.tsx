@@ -34,7 +34,7 @@ import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateResumeProject } from "../../hooks/use-resume-project";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
   MAX_FILE_SIZE,
@@ -89,9 +89,11 @@ export function AddProjectDialog({
   onOpenChange,
 }: AddProjectDialogProps) {
   const { mutate: createProject, isPending } = useCreateResumeProject();
-  const fileInputRef = React.useRef<HTMLInputElement>(null);
-  const previewUrlsRef = React.useRef<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const previewUrlsRef = useRef<string[]>([]);
   const { toast } = useToast();
+  const [startDateOpen, setStartDateOpen] = useState(false);
+  const [endDateOpen, setEndDateOpen] = useState(false);
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectFormSchema),
@@ -104,7 +106,7 @@ export function AddProjectDialog({
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     return () => {
       // Cleanup preview URLs when component unmounts
       previewUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
@@ -206,9 +208,14 @@ export function AddProjectDialog({
                     name="date_start"
                     render={({ field }) => (
                       <FormItem className="flex flex-col">
-                        <FormLabel>Start Date</FormLabel>
+                        <FormLabel>
+                          Start Date <span className="text-destructive">*</span>
+                        </FormLabel>
                         <div className="flex gap-2">
-                          <Popover>
+                          <Popover
+                            open={startDateOpen}
+                            onOpenChange={setStartDateOpen}
+                          >
                             <PopoverTrigger asChild>
                               <FormControl>
                                 <Button
@@ -236,7 +243,10 @@ export function AddProjectDialog({
                               <Calendar
                                 mode="single"
                                 selected={field.value}
-                                onSelect={field.onChange}
+                                onSelect={(date) => {
+                                  field.onChange(date);
+                                  setStartDateOpen(false);
+                                }}
                                 disabled={(date) =>
                                   date > new Date() ||
                                   date < new Date("1900-01-01")
@@ -269,7 +279,10 @@ export function AddProjectDialog({
                       <FormItem className="flex flex-col">
                         <FormLabel>End Date</FormLabel>
                         <div className="flex gap-2">
-                          <Popover>
+                          <Popover
+                            open={endDateOpen}
+                            onOpenChange={setEndDateOpen}
+                          >
                             <PopoverTrigger asChild>
                               <FormControl>
                                 <Button
@@ -297,7 +310,10 @@ export function AddProjectDialog({
                               <Calendar
                                 mode="single"
                                 selected={field.value}
-                                onSelect={field.onChange}
+                                onSelect={(date) => {
+                                  field.onChange(date);
+                                  setEndDateOpen(false);
+                                }}
                                 disabled={(date) =>
                                   date < form.getValues("date_start")
                                 }
