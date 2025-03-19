@@ -1,11 +1,56 @@
 import { useState } from "react";
 import { GraduationCap } from "lucide-react";
-import { AddEducationDialog } from "./dialogs/add/AddEducationDialog";
-import { EditEducationDialog } from "./dialogs/edit/EditEducationDialog";
-import { DeleteEducationDialog } from "./dialogs/delete/DeleteEducationDialog";
 import TimeLineListItem from "./TimeLineListItem";
 import { SectionHeader } from "./SectionHeader";
 import type { ResumeEducation } from "@/core/interfaces/resume-education.interface";
+import dynamic from "next/dynamic";
+import LoaderOne from "@/components/ui/loader-one";
+
+// Dynamically import dialogs with loading states
+const AddEducationDialog = dynamic(
+  () =>
+    import("./dialogs/add/AddEducationDialog").then(
+      (mod) => mod.AddEducationDialog
+    ),
+  {
+    loading: () => (
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <LoaderOne />
+      </div>
+    ),
+    ssr: false,
+  }
+);
+
+const EditEducationDialog = dynamic(
+  () =>
+    import("./dialogs/edit/EditEducationDialog").then(
+      (mod) => mod.EditEducationDialog
+    ),
+  {
+    loading: () => (
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <LoaderOne />
+      </div>
+    ),
+    ssr: false,
+  }
+);
+
+const DeleteEducationDialog = dynamic(
+  () =>
+    import("./dialogs/delete/DeleteEducationDialog").then(
+      (mod) => mod.DeleteEducationDialog
+    ),
+  {
+    loading: () => (
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <LoaderOne />
+      </div>
+    ),
+    ssr: false,
+  }
+);
 
 interface EducationListProps {
   educations: ResumeEducation[] | null;
@@ -47,19 +92,25 @@ export function EducationList({ educations }: EducationListProps) {
         )}
       </div>
 
-      <AddEducationDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+      {dialogOpen && (
+        <AddEducationDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+      )}
       {selectedEducation && (
         <>
-          <EditEducationDialog
-            open={editDialogOpen}
-            onOpenChange={setEditDialogOpen}
-            education={selectedEducation}
-          />
-          <DeleteEducationDialog
-            open={deleteDialogOpen}
-            onOpenChange={setDeleteDialogOpen}
-            education={selectedEducation}
-          />
+          {editDialogOpen && (
+            <EditEducationDialog
+              open={editDialogOpen}
+              onOpenChange={setEditDialogOpen}
+              education={selectedEducation}
+            />
+          )}
+          {deleteDialogOpen && (
+            <DeleteEducationDialog
+              open={deleteDialogOpen}
+              onOpenChange={setDeleteDialogOpen}
+              education={selectedEducation}
+            />
+          )}
         </>
       )}
     </div>

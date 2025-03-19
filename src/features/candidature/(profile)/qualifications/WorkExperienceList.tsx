@@ -3,9 +3,54 @@ import { Briefcase } from "lucide-react";
 import { ResumeExperience } from "@/core/interfaces/resume-experience.interface";
 import TimeLineListItem from "./TimeLineListItem";
 import { SectionHeader } from "./SectionHeader";
-import { AddExperienceDialog } from "./dialogs/add/AddExperienceDialog";
-import { EditExperienceDialog } from "./dialogs/edit/EditExperienceDialog";
-import { DeleteExperienceDialog } from "./dialogs/delete/DeleteExperienceDialog";
+import dynamic from "next/dynamic";
+import LoaderOne from "@/components/ui/loader-one";
+
+// Dynamically import dialogs with loading states
+const AddExperienceDialog = dynamic(
+  () =>
+    import("./dialogs/add/AddExperienceDialog").then(
+      (mod) => mod.AddExperienceDialog
+    ),
+  {
+    loading: () => (
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <LoaderOne />
+      </div>
+    ),
+    ssr: false,
+  }
+);
+
+const EditExperienceDialog = dynamic(
+  () =>
+    import("./dialogs/edit/EditExperienceDialog").then(
+      (mod) => mod.EditExperienceDialog
+    ),
+  {
+    loading: () => (
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <LoaderOne />
+      </div>
+    ),
+    ssr: false,
+  }
+);
+
+const DeleteExperienceDialog = dynamic(
+  () =>
+    import("./dialogs/delete/DeleteExperienceDialog").then(
+      (mod) => mod.DeleteExperienceDialog
+    ),
+  {
+    loading: () => (
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <LoaderOne />
+      </div>
+    ),
+    ssr: false,
+  }
+);
 
 interface WorkExperienceListProps {
   experiences: ResumeExperience[] | null;
@@ -47,19 +92,25 @@ export function WorkExperienceList({ experiences }: WorkExperienceListProps) {
         )}
       </div>
 
-      <AddExperienceDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+      {dialogOpen && (
+        <AddExperienceDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+      )}
       {selectedExperience && (
         <>
-          <EditExperienceDialog
-            open={editDialogOpen}
-            onOpenChange={setEditDialogOpen}
-            experience={selectedExperience}
-          />
-          <DeleteExperienceDialog
-            open={deleteDialogOpen}
-            onOpenChange={setDeleteDialogOpen}
-            experience={selectedExperience}
-          />
+          {editDialogOpen && (
+            <EditExperienceDialog
+              open={editDialogOpen}
+              onOpenChange={setEditDialogOpen}
+              experience={selectedExperience}
+            />
+          )}
+          {deleteDialogOpen && (
+            <DeleteExperienceDialog
+              open={deleteDialogOpen}
+              onOpenChange={setDeleteDialogOpen}
+              experience={selectedExperience}
+            />
+          )}
         </>
       )}
     </div>

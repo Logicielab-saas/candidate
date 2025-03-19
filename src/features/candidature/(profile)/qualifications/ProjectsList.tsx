@@ -11,6 +11,7 @@ import { fr } from "date-fns/locale";
 import type { ResumeProject } from "@/core/interfaces/resume-project.interface";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import LoaderOne from "@/components/ui/loader-one";
 
 // Dynamically import dialogs and ImageLightbox with loading states
 const AddProjectDialog = dynamic(
@@ -20,7 +21,9 @@ const AddProjectDialog = dynamic(
     ),
   {
     loading: () => (
-      <div className="animate-pulse bg-muted h-[60vh] rounded-lg" />
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <LoaderOne />
+      </div>
     ),
     ssr: false,
   }
@@ -33,7 +36,9 @@ const EditProjectDialog = dynamic(
     ),
   {
     loading: () => (
-      <div className="animate-pulse bg-muted h-[60vh] rounded-lg" />
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <LoaderOne />
+      </div>
     ),
     ssr: false,
   }
@@ -46,7 +51,9 @@ const DeleteProjectDialog = dynamic(
     ),
   {
     loading: () => (
-      <div className="animate-pulse bg-muted h-[60vh] rounded-lg" />
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <LoaderOne />
+      </div>
     ),
     ssr: false,
   }
@@ -58,7 +65,11 @@ const ImageLightbox = dynamic(
       (mod) => mod.ImageLightbox
     ),
   {
-    loading: () => <div className="animate-pulse bg-muted/80 fixed inset-0" />,
+    loading: () => (
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <LoaderOne />
+      </div>
+    ),
     ssr: false,
   }
 );

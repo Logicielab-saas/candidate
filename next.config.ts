@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cdntest.postuly.com",
         port: "",
-        pathname: "/resumes/**",
+        pathname: "/**",
       },
     ],
   },
