@@ -34,6 +34,7 @@ import { CalendarIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCreateResumeExperience } from "../../hooks/use-resume-experience";
+import { useState } from "react";
 
 // Internal form schema uses Date objects for better date handling
 const experienceFormSchema = z.object({
@@ -58,6 +59,9 @@ export function AddExperienceDialog({
   onOpenChange,
 }: AddExperienceDialogProps) {
   const { mutate: createExperience, isPending } = useCreateResumeExperience();
+
+  const [startDateOpen, setStartDateOpen] = useState(false);
+  const [endDateOpen, setEndDateOpen] = useState(false);
 
   const form = useForm<ExperienceFormValues>({
     resolver: zodResolver(experienceFormSchema),
@@ -104,6 +108,7 @@ export function AddExperienceDialog({
               onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-4 px-3"
             >
+              {/* Job Title Section */}
               <FormField
                 control={form.control}
                 name="job_title"
@@ -120,6 +125,7 @@ export function AddExperienceDialog({
                 )}
               />
 
+              {/* Company Name Section */}
               <FormField
                 control={form.control}
                 name="company_name"
@@ -136,6 +142,7 @@ export function AddExperienceDialog({
                 )}
               />
 
+              {/* Start Date Section */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
@@ -146,7 +153,10 @@ export function AddExperienceDialog({
                         Start Date <span className="text-destructive">*</span>
                       </FormLabel>
                       <div className="flex gap-2">
-                        <Popover>
+                        <Popover
+                          open={startDateOpen}
+                          onOpenChange={setStartDateOpen}
+                        >
                           <PopoverTrigger asChild>
                             <FormControl>
                               <Button
@@ -171,7 +181,10 @@ export function AddExperienceDialog({
                             <Calendar
                               mode="single"
                               selected={field.value}
-                              onSelect={field.onChange}
+                              onSelect={(date) => {
+                                field.onChange(date);
+                                setStartDateOpen(false);
+                              }}
                               disabled={(date) =>
                                 date > new Date() ||
                                 date < new Date("1900-01-01")
@@ -196,6 +209,7 @@ export function AddExperienceDialog({
                   )}
                 />
 
+                {/* End Date Section */}
                 <FormField
                   control={form.control}
                   name="date_end"
@@ -203,7 +217,10 @@ export function AddExperienceDialog({
                     <FormItem className="flex flex-col">
                       <FormLabel>End Date</FormLabel>
                       <div className="flex gap-2">
-                        <Popover>
+                        <Popover
+                          open={endDateOpen}
+                          onOpenChange={setEndDateOpen}
+                        >
                           <PopoverTrigger asChild>
                             <FormControl>
                               <Button
@@ -229,7 +246,10 @@ export function AddExperienceDialog({
                             <Calendar
                               mode="single"
                               selected={field.value}
-                              onSelect={field.onChange}
+                              onSelect={(date) => {
+                                field.onChange(date);
+                                setEndDateOpen(false);
+                              }}
                               initialFocus
                             />
                           </PopoverContent>
@@ -251,6 +271,7 @@ export function AddExperienceDialog({
                 />
               </div>
 
+              {/* Current Position Section */}
               <FormField
                 control={form.control}
                 name="current_time"
@@ -287,7 +308,7 @@ export function AddExperienceDialog({
             <Button
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={isPending}
+              disabled={isPending || !form.formState.isValid}
             >
               {isPending ? "Adding..." : "Add Experience"}
             </Button>
