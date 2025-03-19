@@ -10,10 +10,58 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import type { ResumeProject } from "@/core/interfaces/resume-project.interface";
 import Image from "next/image";
-import { AddProjectDialog } from "./dialogs/add/AddProjectDialog";
-import { EditProjectDialog } from "./dialogs/edit/EditProjectDialog";
-import { DeleteProjectDialog } from "./dialogs/delete/DeleteProjectDialog";
-import { ImageLightbox } from "@/components/shared/ImageLightbox";
+import dynamic from "next/dynamic";
+
+// Dynamically import dialogs and ImageLightbox with loading states
+const AddProjectDialog = dynamic(
+  () =>
+    import("./dialogs/add/AddProjectDialog").then(
+      (mod) => mod.AddProjectDialog
+    ),
+  {
+    loading: () => (
+      <div className="animate-pulse bg-muted h-[60vh] rounded-lg" />
+    ),
+    ssr: false,
+  }
+);
+
+const EditProjectDialog = dynamic(
+  () =>
+    import("./dialogs/edit/EditProjectDialog").then(
+      (mod) => mod.EditProjectDialog
+    ),
+  {
+    loading: () => (
+      <div className="animate-pulse bg-muted h-[60vh] rounded-lg" />
+    ),
+    ssr: false,
+  }
+);
+
+const DeleteProjectDialog = dynamic(
+  () =>
+    import("./dialogs/delete/DeleteProjectDialog").then(
+      (mod) => mod.DeleteProjectDialog
+    ),
+  {
+    loading: () => (
+      <div className="animate-pulse bg-muted h-[60vh] rounded-lg" />
+    ),
+    ssr: false,
+  }
+);
+
+const ImageLightbox = dynamic(
+  () =>
+    import("@/components/shared/ImageLightbox").then(
+      (mod) => mod.ImageLightbox
+    ),
+  {
+    loading: () => <div className="animate-pulse bg-muted/80 fixed inset-0" />,
+    ssr: false,
+  }
+);
 
 interface ProjectsListProps {
   projects: ResumeProject[] | null;
@@ -185,27 +233,35 @@ export function ProjectsList({ projects }: ProjectsListProps) {
           </p>
         )}
       </div>
-      <AddProjectDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+      {dialogOpen && (
+        <AddProjectDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+      )}
       {selectedProject && (
         <>
-          <EditProjectDialog
-            open={editDialogOpen}
-            onOpenChange={setEditDialogOpen}
-            project={selectedProject}
-          />
-          <DeleteProjectDialog
-            open={deleteDialogOpen}
-            onOpenChange={setDeleteDialogOpen}
-            project={selectedProject}
-          />
+          {editDialogOpen && (
+            <EditProjectDialog
+              open={editDialogOpen}
+              onOpenChange={setEditDialogOpen}
+              project={selectedProject}
+            />
+          )}
+          {deleteDialogOpen && (
+            <DeleteProjectDialog
+              open={deleteDialogOpen}
+              onOpenChange={setDeleteDialogOpen}
+              project={selectedProject}
+            />
+          )}
         </>
       )}
-      <ImageLightbox
-        isOpen={lightboxOpen}
-        onOpenChange={setLightboxOpen}
-        images={selectedImages}
-        initialIndex={initialImageIndex}
-      />
+      {lightboxOpen && (
+        <ImageLightbox
+          isOpen={lightboxOpen}
+          onOpenChange={setLightboxOpen}
+          images={selectedImages}
+          initialIndex={initialImageIndex}
+        />
+      )}
     </div>
   );
 }
