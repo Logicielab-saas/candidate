@@ -1,5 +1,3 @@
-"use client";
-
 import GenerateCV from "@/components/shared/GenerateCV";
 
 export default function PostulyCVPage() {
