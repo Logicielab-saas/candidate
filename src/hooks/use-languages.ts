@@ -14,6 +14,9 @@ export const LANGUAGES_QUERY_KEY = ["languages"] as const;
 export function useLanguages() {
   return useQuery<Languages[]>({
     queryKey: LANGUAGES_QUERY_KEY,
-    queryFn: fetchPublicLanguages,
+    queryFn: async () => {
+      const response = await fetchPublicLanguages();
+      return response.languages;
+    },
   });
 }

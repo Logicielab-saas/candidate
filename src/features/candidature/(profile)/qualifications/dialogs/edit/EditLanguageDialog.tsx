@@ -1,16 +1,30 @@
+/**
+ * EditLanguageDialog - Dialog for editing an existing language in the resume
+ *
+ * Features:
+ * - Language selection via Select
+ * - Proficiency level selection
+ * - Form validation
+ * - Loading states
+ */
+
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useLanguages } from "@/hooks/use-languages";
+import { PROFICIENCY_OPTIONS } from "../../constants/language-proficiency";
+import { useUpdateResumeLanguage } from "../../hooks/use-resume-language";
+import type { ResumeLanguage } from "@/core/interfaces";
+import { useEffect } from "react";
+
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -20,45 +34,45 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
-import type { Language } from "@/core/interfaces/";
-import { useEffect } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 import {
   Select,
-  SelectItem,
   SelectContent,
-  SelectValue,
+  SelectItem,
   SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 
-const languageFormSchema = z.object({
-  name: z.string().min(1, "Le nom de la langue est requis"),
-  level: z.enum(["Basic", "Conversational", "Proficient", "Fluent"]),
+const formSchema = z.object({
+  language_uuid: z.string({
+    required_error: "Please select a language",
+  }),
+  level: z.number({
+    required_error: "Please select a proficiency level",
+  }),
 });
 
-type LanguageFormValues = z.infer<typeof languageFormSchema>;
+type FormValues = z.infer<typeof formSchema>;
 
 interface EditLanguageDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (id: string, values: Omit<Language, "id">) => void;
-  language: Language;
+  language: ResumeLanguage;
 }
 
 export function EditLanguageDialog({
   open,
   onOpenChange,
-  onSubmit,
   language,
 }: EditLanguageDialogProps) {
-  const { toast } = useToast();
-  const form = useForm<LanguageFormValues>({
-    resolver: zodResolver(languageFormSchema),
+  const { data: languages, isLoading } = useLanguages();
+  const { mutate: updateLanguage, isPending } = useUpdateResumeLanguage();
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      level: "Basic",
+      language_uuid: "",
+      level: 1,
     },
   });
 
@@ -66,99 +80,115 @@ export function EditLanguageDialog({
   useEffect(() => {
     if (language) {
       form.reset({
-        name: language.name,
-        level: language.level,
+        language_uuid: language.uuid,
+        level: Number(language.level),
       });
     }
   }, [language, form]);
 
-  const handleSubmit = (values: LanguageFormValues) => {
-    onSubmit(language.id, values);
-    onOpenChange(false);
-    toast({
-      variant: "success",
-      title: "Langue modifiée",
-      description: "La langue a été modifiée avec succès.",
-    });
-  };
+  function onSubmit(values: FormValues) {
+    updateLanguage(
+      {
+        uuid: language.uuid,
+        language_uuid: values.language_uuid,
+        level: values.level.toString(),
+      },
+      {
+        onSuccess: () => {
+          onOpenChange(false);
+        },
+      }
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] p-0 sm:max-w-[400px]">
-        <ScrollArea className="px-3 max-h-[60vh]">
-          <DialogHeader className="p-6 pb-4">
-            <DialogTitle>Modifier la langue</DialogTitle>
-            <DialogDescription>
-              Modifiez les informations de votre langue.
-            </DialogDescription>
-          </DialogHeader>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Edit Language</DialogTitle>
+          <DialogDescription>
+            Update your language proficiency level.
+          </DialogDescription>
+        </DialogHeader>
 
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className="space-y-4 px-3"
-            >
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Nom de la langue{" "}
-                      <span className="text-destructive">*</span>
-                    </FormLabel>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="language_uuid"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Language</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={isLoading || isPending}
+                  >
                     <FormControl>
-                      <Input placeholder="Ex: Anglais" {...field} />
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select language" />
+                      </SelectTrigger>
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                    <SelectContent>
+                      {languages?.map((language) => (
+                        <SelectItem key={language.uuid} value={language.uuid}>
+                          {language.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <FormField
-                control={form.control}
-                name="level"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Niveau</FormLabel>
+            <FormField
+              control={form.control}
+              name="level"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Proficiency Level</FormLabel>
+                  <Select
+                    onValueChange={(value) => field.onChange(Number(value))}
+                    defaultValue={field.value?.toString()}
+                    disabled={isPending}
+                  >
                     <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Sélectionnez un niveau" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Basic">Basic</SelectItem>
-                          <SelectItem value="Conversational">
-                            Conversational
-                          </SelectItem>
-                          <SelectItem value="Proficient">Proficient</SelectItem>
-                          <SelectItem value="Fluent">Fluent</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select level" />
+                      </SelectTrigger>
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
+                    <SelectContent>
+                      {PROFICIENCY_OPTIONS.map((option) => (
+                        <SelectItem
+                          key={option.value}
+                          value={option.value.toString()}
+                        >
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <DialogFooter className="p-6 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
-              Annuler
-            </Button>
-            <Button onClick={form.handleSubmit(handleSubmit)}>
-              Enregistrer
-            </Button>
-          </DialogFooter>
-        </ScrollArea>
+            <div className="flex justify-end gap-3 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={isPending}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isPending}>
+                {isPending ? "Saving..." : "Save Changes"}
+              </Button>
+            </div>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

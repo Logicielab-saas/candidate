@@ -1,9 +1,12 @@
+/**
+ * Hooks for managing resume languages
+ * Provides mutations for creating, updating, and deleting languages
+ */
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   handleResumeLanguage,
   deleteResumeLanguage,
-  type CreateLanguageDTO,
-  type UpdateLanguageDTO,
 } from "../services/resume-language";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
@@ -13,7 +16,7 @@ export function useCreateResumeLanguage() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: (data: CreateLanguageDTO) => handleResumeLanguage(data),
+    mutationFn: handleResumeLanguage,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: PROFILE_RESUME_QUERY_KEY,
@@ -22,7 +25,7 @@ export function useCreateResumeLanguage() {
       toast({
         variant: "success",
         title: "Language added",
-        description: "Your language has been added successfully.",
+        description: "Language has been added successfully.",
       });
     },
     onError: (error: Error) => {
@@ -50,7 +53,7 @@ export function useDeleteResumeLanguage() {
       toast({
         variant: "success",
         title: "Language deleted",
-        description: "Your language has been deleted successfully.",
+        description: "Language has been deleted successfully.",
       });
     },
     onError: (error: Error) => {
@@ -69,7 +72,7 @@ export function useUpdateResumeLanguage() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: (data: UpdateLanguageDTO) => handleResumeLanguage(data),
+    mutationFn: handleResumeLanguage,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: PROFILE_RESUME_QUERY_KEY,
@@ -78,7 +81,7 @@ export function useUpdateResumeLanguage() {
       toast({
         variant: "success",
         title: "Language updated",
-        description: "Your language has been updated successfully.",
+        description: "Language has been updated successfully.",
       });
     },
     onError: (error: Error) => {

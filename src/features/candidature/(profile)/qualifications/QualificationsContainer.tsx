@@ -17,6 +17,7 @@ import { WorkExperienceSkeleton } from "./skeletons/WorkExperienceSkeleton";
 import { EducationSkeleton } from "./skeletons/EducationSkeleton";
 import { ProjectsSkeleton } from "./skeletons/ProjectsSkeleton";
 import { CertificationsSkeleton } from "./skeletons/CertificationsSkeleton";
+import { LanguagesSkeleton } from "./skeletons/LanguagesSkeleton";
 
 export function QualificationsContainer() {
   const { data: resume, isLoading, error } = useProfileResume();
@@ -50,6 +51,9 @@ export function QualificationsContainer() {
         </QualificationSection>
         <QualificationSection>
           <CertificationsSkeleton />
+        </QualificationSection>
+        <QualificationSection>
+          <LanguagesSkeleton />
         </QualificationSection>
       </div>
     );
@@ -108,7 +112,9 @@ export function QualificationsContainer() {
       </QualificationSection>
 
       <QualificationSection>
-        <LanguagesList />
+        <LanguagesList
+          resumeLanguages={resume?.resume?.resumeLanguages ?? null}
+        />
       </QualificationSection>
     </div>
   );

@@ -13,6 +13,7 @@ import {
 import { ResumeExperience } from "@/core/interfaces/resume-experience.interface";
 import { useDeleteResumeExperience } from "../../hooks/use-resume-experience";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 interface DeleteExperienceDialogProps {
   open: boolean;
@@ -27,6 +28,8 @@ export function DeleteExperienceDialog({
 }: DeleteExperienceDialogProps) {
   const { mutate: deleteExperience, isPending } = useDeleteResumeExperience();
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const { toast } = useToast();
 
   const handleConfirm = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -49,6 +52,14 @@ export function DeleteExperienceDialog({
       onOpenChange(false);
     } catch (_error) {
       setIsDeleting(false);
+      toast({
+        variant: "destructive",
+        title: "Erreur",
+        description:
+          _error instanceof Error
+            ? _error.message
+            : "Une erreur est survenue lors de la suppression de l'expérience.",
+      });
     }
   };
 
@@ -65,13 +76,13 @@ export function DeleteExperienceDialog({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
           <AlertDialogDescription>
-            You are about to delete the experience:{" "}
-            <span className="font-bold">{experience.job_title}</span> at{" "}
+            Vous êtes sur le point de supprimer l&apos;expérience:{" "}
+            <span className="font-bold">{experience.job_title}</span> à{" "}
             <span className="font-bold">{experience.company_name}</span>.
             <br />
-            This action cannot be undone.
+            Cette action ne peut être annulée.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -81,7 +92,7 @@ export function DeleteExperienceDialog({
             className="bg-destructive hover:bg-destructive/90"
             disabled={isLoading}
           >
-            {isLoading ? "Deleting..." : "Delete"}
+            {isLoading ? "Suppression..." : "Supprimer"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
