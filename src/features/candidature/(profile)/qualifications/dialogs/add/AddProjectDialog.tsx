@@ -41,12 +41,19 @@ import {
   ACCEPTED_IMAGE_TYPES,
 } from "@/core/constants/image-constraints";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Internal form schema uses Date objects for better date handling
 const projectFormSchema = z.object({
   name: z.string().min(2, "Project name is required"),
-  description: z.string().min(10, "Description is required"),
-  url: z.string().url("Must be a valid URL"),
+  description: z.string().optional(),
+  url: z.string().url("Must be a valid URL").optional().or(z.literal("")),
   date_start: z.date({
     required_error: "Start date is required",
   }),
@@ -55,7 +62,7 @@ const projectFormSchema = z.object({
     .array(
       z.object({
         name: z.string().min(2, "Task name is required"),
-        description: z.string().min(10, "Task description is required"),
+        description: z.string().optional(),
         status: z.enum(["In Progress", "Completed"]),
       })
     )
@@ -199,9 +206,7 @@ export function AddProjectDialog({
                     name="date_start"
                     render={({ field }) => (
                       <FormItem className="flex flex-col">
-                        <FormLabel>
-                          Start Date <span className="text-destructive">*</span>
-                        </FormLabel>
+                        <FormLabel>Start Date</FormLabel>
                         <div className="flex gap-2">
                           <Popover>
                             <PopoverTrigger asChild>
@@ -317,15 +322,13 @@ export function AddProjectDialog({
                   />
                 </div>
 
-                {/* Description */}
+                {/* Description Section */}
                 <FormField
                   control={form.control}
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>
-                        Description <span className="text-destructive">*</span>
-                      </FormLabel>
+                      <FormLabel>Description</FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Describe your project, technologies used..."
@@ -339,6 +342,7 @@ export function AddProjectDialog({
                   )}
                 />
 
+                {/* Project Images Section */}
                 <FormField
                   control={form.control}
                   name="image"
@@ -446,6 +450,7 @@ export function AddProjectDialog({
                   )}
                 />
 
+                {/* Project URL Section */}
                 <FormField
                   control={form.control}
                   name="url"
@@ -552,15 +557,32 @@ export function AddProjectDialog({
                           <FormLabel>
                             Status <span className="text-destructive">*</span>
                           </FormLabel>
-                          <FormControl>
-                            <select
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm">
+                                <SelectValue placeholder="Select status" />
+                              </SelectTrigger>
+                            </FormControl>
+
+                            <SelectContent>
+                              <SelectItem value="In Progress">
+                                In Progress
+                              </SelectItem>
+                              <SelectItem value="Completed">
+                                Completed
+                              </SelectItem>
+                            </SelectContent>
+                            {/* <select
                               {...field}
                               className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
                             >
                               <option value="In Progress">In Progress</option>
                               <option value="Completed">Completed</option>
-                            </select>
-                          </FormControl>
+                            </select> */}
+                          </Select>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -582,7 +604,7 @@ export function AddProjectDialog({
             <Button
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={isPending}
+              disabled={isPending || !form.formState.isValid}
             >
               {isPending ? "Adding..." : "Add Project"}
             </Button>
