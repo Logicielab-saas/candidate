@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  createResumeCertification,
+  handleResumeCertification,
   deleteResumeCertification,
-  updateResumeCertification,
+  type CreateCertificationDTO,
+  type UpdateCertificationDTO,
 } from "../services/resume-certification";
-import type { UpdateCertificationDTO } from "../services/resume-certification";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
 
@@ -13,7 +13,8 @@ export function useCreateResumeCertification() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: createResumeCertification,
+    mutationFn: (data: CreateCertificationDTO) =>
+      handleResumeCertification(data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: PROFILE_RESUME_QUERY_KEY,
@@ -69,13 +70,8 @@ export function useUpdateResumeCertification() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: ({
-      uuid,
-      data,
-    }: {
-      uuid: string;
-      data: UpdateCertificationDTO;
-    }) => updateResumeCertification(uuid, data),
+    mutationFn: (data: UpdateCertificationDTO) =>
+      handleResumeCertification(data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: PROFILE_RESUME_QUERY_KEY,

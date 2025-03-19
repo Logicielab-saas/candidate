@@ -6,17 +6,21 @@ import type { ResumeCertifications } from "@/core/interfaces";
 const endpoint = "/employee/resume/certification";
 
 export type CreateCertificationDTO = Omit<ResumeCertifications, "uuid">;
+export type UpdateCertificationDTO = Partial<CreateCertificationDTO> & {
+  uuid: string;
+};
 
-export type UpdateCertificationDTO = Partial<CreateCertificationDTO>;
+export type CertificationDTO = CreateCertificationDTO | UpdateCertificationDTO;
 
-export async function createResumeCertification(data: CreateCertificationDTO) {
+export async function handleResumeCertification(data: CertificationDTO) {
   try {
     const response = await api.post<ResumeCertifications>(endpoint, data);
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
       const apiError = error.response?.data as ApiError;
-      throw new Error(apiError?.message || "Failed to create certification");
+      const action = "uuid" in data ? "update" : "create";
+      throw new Error(apiError?.message || `Failed to ${action} certification`);
     }
     throw error;
   }
@@ -29,25 +33,6 @@ export async function deleteResumeCertification(uuid: string) {
     if (error instanceof AxiosError) {
       const apiError = error.response?.data as ApiError;
       throw new Error(apiError?.message || "Failed to delete certification");
-    }
-    throw error;
-  }
-}
-
-export async function updateResumeCertification(
-  uuid: string,
-  data: UpdateCertificationDTO
-) {
-  try {
-    const response = await api.post<ResumeCertifications>(
-      `${endpoint}/${uuid}`,
-      data
-    );
-    return response.data;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      const apiError = error.response?.data as ApiError;
-      throw new Error(apiError?.message || "Failed to update certification");
     }
     throw error;
   }

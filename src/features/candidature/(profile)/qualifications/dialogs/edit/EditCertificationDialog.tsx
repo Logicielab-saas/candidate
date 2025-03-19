@@ -90,15 +90,13 @@ export function EditCertificationDialog({
   function onSubmit(values: CertificationFormValues) {
     updateCertification(
       {
+        ...values,
         uuid: certification.uuid,
-        data: {
-          ...values,
-          date: format(values.date, "yyyy-MM-dd"),
-          expiration_date: values.expiration_date
-            ? format(values.expiration_date, "yyyy-MM-dd")
-            : null,
-          description: values.description || null,
-        },
+        date: format(values.date, "yyyy-MM-dd"),
+        expiration_date: values.expiration_date
+          ? format(values.expiration_date, "yyyy-MM-dd")
+          : null,
+        description: values.description || null,
       },
       {
         onSuccess: () => {
