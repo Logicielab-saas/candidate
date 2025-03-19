@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  createResumeProject,
+  handleResumeProject,
   deleteResumeProject,
-  updateResumeProject,
+  type CreateProjectDTO,
+  type UpdateProjectDTO,
 } from "../services/resume-project";
-import type { UpdateProjectDTO } from "../services/resume-project";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
 
@@ -13,7 +13,7 @@ export function useCreateResumeProject() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: createResumeProject,
+    mutationFn: (data: CreateProjectDTO) => handleResumeProject(data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: PROFILE_RESUME_QUERY_KEY,
@@ -69,8 +69,7 @@ export function useUpdateResumeProject() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: ({ uuid, data }: { uuid: string; data: UpdateProjectDTO }) =>
-      updateResumeProject(uuid, data),
+    mutationFn: (data: UpdateProjectDTO) => handleResumeProject(data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: PROFILE_RESUME_QUERY_KEY,

@@ -11,35 +11,68 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import type { Project } from "@/core/types/project";
+import type { ResumeProject } from "@/core/interfaces";
+import { useDeleteResumeProject } from "../../hooks/use-resume-project";
+import { useState } from "react";
 
 interface DeleteProjectDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onConfirm: (id: string) => void;
-  project: Project;
+  project: ResumeProject;
 }
 
 export function DeleteProjectDialog({
   open,
   onOpenChange,
-  onConfirm,
   project,
 }: DeleteProjectDialogProps) {
+  const { mutate: deleteProject, isPending } = useDeleteResumeProject();
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const { toast } = useToast();
 
-  const handleConfirm = () => {
-    onConfirm(project.id);
-    onOpenChange(false);
-    toast({
-      variant: "success",
-      title: "Projet supprimé",
-      description: "Le projet a été supprimé avec succès.",
-    });
+  const handleConfirm = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    setIsDeleting(true);
+    try {
+      await new Promise<void>((resolve, reject) => {
+        deleteProject(project.uuid, {
+          onSuccess: () => {
+            resolve();
+          },
+          onError: (error) => {
+            reject(error);
+          },
+        });
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description:
+          error instanceof Error
+            ? error.message
+            : "An error occurred while deleting the project.",
+      });
+    } finally {
+      setIsDeleting(false);
+      onOpenChange(false);
+    }
   };
 
+  const isLoading = isPending || isDeleting;
+
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
+    <AlertDialog
+      open={open}
+      onOpenChange={(newOpen) => {
+        if (!isLoading) {
+          onOpenChange(newOpen);
+        }
+      }}
+    >
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
@@ -52,9 +85,10 @@ export function DeleteProjectDialog({
           <AlertDialogCancel>Annuler</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
+            disabled={isLoading}
             className="bg-destructive hover:bg-destructive/90"
           >
-            Supprimer
+            {isLoading ? "Suppression en cours..." : "Supprimer"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

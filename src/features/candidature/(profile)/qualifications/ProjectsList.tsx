@@ -11,6 +11,8 @@ import { fr } from "date-fns/locale";
 import type { ResumeProject } from "@/core/interfaces/resume-project.interface";
 import Image from "next/image";
 import { AddProjectDialog } from "./dialogs/add/AddProjectDialog";
+import { EditProjectDialog } from "./dialogs/edit/EditProjectDialog";
+import { DeleteProjectDialog } from "./dialogs/delete/DeleteProjectDialog";
 
 interface ProjectsListProps {
   projects: ResumeProject[] | null;
@@ -150,6 +152,20 @@ export function ProjectsList({ projects }: ProjectsListProps) {
         )}
       </div>
       <AddProjectDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+      {selectedProject && (
+        <>
+          <EditProjectDialog
+            open={editDialogOpen}
+            onOpenChange={setEditDialogOpen}
+            project={selectedProject}
+          />
+          <DeleteProjectDialog
+            open={deleteDialogOpen}
+            onOpenChange={setDeleteDialogOpen}
+            project={selectedProject}
+          />
+        </>
+      )}
     </div>
   );
 }

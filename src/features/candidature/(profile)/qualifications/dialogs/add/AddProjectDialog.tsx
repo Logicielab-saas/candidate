@@ -44,9 +44,9 @@ import { useToast } from "@/hooks/use-toast";
 
 // Internal form schema uses Date objects for better date handling
 const projectFormSchema = z.object({
-  name: z.string().min(1, "Project name is required"),
-  description: z.string().optional(),
-  url: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  name: z.string().min(2, "Project name is required"),
+  description: z.string().min(10, "Description is required"),
+  url: z.string().url("Must be a valid URL"),
   date_start: z.date({
     required_error: "Start date is required",
   }),
@@ -54,18 +54,18 @@ const projectFormSchema = z.object({
   tasks: z
     .array(
       z.object({
-        name: z.string().min(1, "Task name is required"),
-        description: z.string().min(1, "Task description is required"),
+        name: z.string().min(2, "Task name is required"),
+        description: z.string().min(10, "Task description is required"),
         status: z.enum(["In Progress", "Completed"]),
       })
     )
     .default([]),
   // We'll handle image upload separately
   image: z
-    .custom<FileList>()
+    .any()
     .optional()
     .transform((files) => {
-      if (!files) return null;
+      if (!files || !(files instanceof FileList)) return null;
       return Array.from(files);
     }),
 });
@@ -130,43 +130,29 @@ export function AddProjectDialog({
   };
 
   function onSubmit(values: ProjectFormValues) {
-    const formData = new FormData();
-
-    // Add basic fields
-    formData.append("name", values.name);
-    formData.append("date_start", format(values.date_start, "yyyy-MM-dd"));
-    if (values.date_end) {
-      formData.append("date_end", format(values.date_end, "yyyy-MM-dd"));
-    }
-    if (values.description) {
-      formData.append("description", values.description);
-    }
-    if (values.url) {
-      formData.append("url", values.url);
-    }
-
-    // Add tasks
-    values.tasks.forEach((task, index) => {
-      formData.append(`tasks[${index}][name]`, task.name);
-      if (task.description) {
-        formData.append(`tasks[${index}][description]`, task.description);
-      }
-      formData.append(`tasks[${index}][status]`, task.status);
-    });
-
-    // Add images
-    if (values.image) {
-      Array.from(values.image).forEach((file, index) => {
-        formData.append(`images[${index}]`, file);
-      });
-    }
-
-    createProject(formData, {
-      onSuccess: () => {
-        form.reset();
-        onOpenChange(false);
+    createProject(
+      {
+        name: values.name,
+        description: values.description || null,
+        url: values.url || null,
+        date_start: format(values.date_start, "yyyy-MM-dd"),
+        date_end: values.date_end
+          ? format(values.date_end, "yyyy-MM-dd")
+          : null,
+        tasks: values.tasks.map((task) => ({
+          name: task.name,
+          description: task.description || "",
+          status: task.status,
+        })),
+        image: values.image || null,
       },
-    });
+      {
+        onSuccess: () => {
+          form.reset();
+          onOpenChange(false);
+        },
+      }
+    );
   }
 
   return (
@@ -207,6 +193,7 @@ export function AddProjectDialog({
                 />
 
                 <div className="grid gap-4 sm:grid-cols-2">
+                  {/* Start Date */}
                   <FormField
                     control={form.control}
                     name="date_start"
@@ -269,6 +256,7 @@ export function AddProjectDialog({
                     )}
                   />
 
+                  {/* End Date */}
                   <FormField
                     control={form.control}
                     name="date_end"
@@ -329,12 +317,15 @@ export function AddProjectDialog({
                   />
                 </div>
 
+                {/* Description */}
                 <FormField
                   control={form.control}
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Description</FormLabel>
+                      <FormLabel>
+                        Description <span className="text-destructive">*</span>
+                      </FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Describe your project, technologies used..."
