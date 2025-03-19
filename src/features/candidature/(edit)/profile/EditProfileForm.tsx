@@ -132,7 +132,7 @@ export function EditProfileForm({
         updateProfile(profileData, { onSuccess: resolve });
       }),
       new Promise((resolve) => {
-        if (values.description) {
+        if (values.description && values.description !== resumeDescription) {
           updateResume(values.description, { onSuccess: resolve });
         } else {
           resolve(null);
