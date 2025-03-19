@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { ResumeEducation } from "@/core/interfaces/resume-education.interface";
 import { useUpdateResumeEducation } from "../../hooks/use-resume-education";
@@ -63,6 +63,9 @@ export function EditEducationDialog({
   education,
 }: EditEducationDialogProps) {
   const { mutate: updateEducation, isPending } = useUpdateResumeEducation();
+
+  const [startDateOpen, setStartDateOpen] = useState(false);
+  const [endDateOpen, setEndDateOpen] = useState(false);
 
   const form = useForm<EducationFormValues>({
     resolver: zodResolver(educationFormSchema),
@@ -126,6 +129,7 @@ export function EditEducationDialog({
               onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-4 px-3"
             >
+              {/* School Name Section */}
               <FormField
                 control={form.control}
                 name="title"
@@ -145,6 +149,7 @@ export function EditEducationDialog({
                 )}
               />
 
+              {/* Degree Section */}
               <FormField
                 control={form.control}
                 name="degree"
@@ -164,6 +169,7 @@ export function EditEducationDialog({
                 )}
               />
 
+              {/* Start Date Section */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
@@ -174,7 +180,10 @@ export function EditEducationDialog({
                         Start Date <span className="text-destructive">*</span>
                       </FormLabel>
                       <div className="flex gap-2">
-                        <Popover>
+                        <Popover
+                          open={startDateOpen}
+                          onOpenChange={setStartDateOpen}
+                        >
                           <PopoverTrigger asChild>
                             <FormControl>
                               <Button
@@ -203,9 +212,10 @@ export function EditEducationDialog({
                                   ? field.value
                                   : undefined
                               }
-                              onSelect={(date: Date | undefined) =>
-                                field.onChange(date || null)
-                              }
+                              onSelect={(date: Date | undefined) => {
+                                field.onChange(date || null);
+                                setStartDateOpen(false);
+                              }}
                               disabled={(date) =>
                                 date > new Date() ||
                                 date < new Date("1900-01-01")
@@ -230,6 +240,7 @@ export function EditEducationDialog({
                   )}
                 />
 
+                {/* End Date Section */}
                 <FormField
                   control={form.control}
                   name="date_end"
@@ -237,7 +248,10 @@ export function EditEducationDialog({
                     <FormItem className="flex flex-col">
                       <FormLabel>End Date</FormLabel>
                       <div className="flex gap-2">
-                        <Popover>
+                        <Popover
+                          open={endDateOpen}
+                          onOpenChange={setEndDateOpen}
+                        >
                           <PopoverTrigger asChild>
                             <FormControl>
                               <Button
@@ -267,9 +281,10 @@ export function EditEducationDialog({
                                   ? field.value
                                   : undefined
                               }
-                              onSelect={(date: Date | undefined) =>
-                                field.onChange(date || null)
-                              }
+                              onSelect={(date: Date | undefined) => {
+                                field.onChange(date || null);
+                                setEndDateOpen(false);
+                              }}
                               disabled={(date) =>
                                 date < form.getValues("date_start")
                               }
@@ -294,6 +309,7 @@ export function EditEducationDialog({
                 />
               </div>
 
+              {/* Currently Studying Section */}
               <FormField
                 control={form.control}
                 name="is_current"
@@ -317,6 +333,7 @@ export function EditEducationDialog({
                 )}
               />
 
+              {/* Description Section */}
               <FormField
                 control={form.control}
                 name="description"
@@ -348,7 +365,7 @@ export function EditEducationDialog({
             <Button
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={isPending}
+              disabled={isPending || !form.formState.isValid}
             >
               {isPending ? "Saving..." : "Save Changes"}
             </Button>

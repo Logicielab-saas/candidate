@@ -35,6 +35,7 @@ import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCreateResumeEducation } from "../../hooks/use-resume-education";
 import type { CreateEducationDTO } from "../../services/resume-education";
+import { useState } from "react";
 
 // Internal form schema uses Date objects for better date handling
 const educationFormSchema = z.object({
@@ -60,6 +61,9 @@ export function AddEducationDialog({
   onOpenChange,
 }: AddEducationDialogProps) {
   const { mutate: createEducation, isPending } = useCreateResumeEducation();
+
+  const [startDateOpen, setStartDateOpen] = useState(false);
+  const [endDateOpen, setEndDateOpen] = useState(false);
 
   const form = useForm<EducationFormValues>({
     resolver: zodResolver(educationFormSchema),
@@ -109,6 +113,7 @@ export function AddEducationDialog({
               onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-4 px-3"
             >
+              {/* School Name Section */}
               <FormField
                 control={form.control}
                 name="title"
@@ -128,6 +133,7 @@ export function AddEducationDialog({
                 )}
               />
 
+              {/* Degree Section */}
               <FormField
                 control={form.control}
                 name="degree"
@@ -147,6 +153,7 @@ export function AddEducationDialog({
                 )}
               />
 
+              {/* Start Date Section */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
@@ -157,7 +164,10 @@ export function AddEducationDialog({
                         Start Date <span className="text-destructive">*</span>
                       </FormLabel>
                       <div className="flex gap-2">
-                        <Popover>
+                        <Popover
+                          open={startDateOpen}
+                          onOpenChange={setStartDateOpen}
+                        >
                           <PopoverTrigger asChild>
                             <FormControl>
                               <Button
@@ -182,7 +192,10 @@ export function AddEducationDialog({
                             <Calendar
                               mode="single"
                               selected={field.value}
-                              onSelect={field.onChange}
+                              onSelect={(date) => {
+                                field.onChange(date);
+                                setStartDateOpen(false);
+                              }}
                               disabled={(date) =>
                                 date > new Date() ||
                                 date < new Date("1900-01-01")
@@ -207,6 +220,7 @@ export function AddEducationDialog({
                   )}
                 />
 
+                {/* End Date Section */}
                 <FormField
                   control={form.control}
                   name="date_end"
@@ -214,7 +228,10 @@ export function AddEducationDialog({
                     <FormItem className="flex flex-col">
                       <FormLabel>End Date</FormLabel>
                       <div className="flex gap-2">
-                        <Popover>
+                        <Popover
+                          open={endDateOpen}
+                          onOpenChange={setEndDateOpen}
+                        >
                           <PopoverTrigger asChild>
                             <FormControl>
                               <Button
@@ -240,7 +257,10 @@ export function AddEducationDialog({
                             <Calendar
                               mode="single"
                               selected={field.value}
-                              onSelect={field.onChange}
+                              onSelect={(date) => {
+                                field.onChange(date);
+                                setEndDateOpen(false);
+                              }}
                               initialFocus
                             />
                           </PopoverContent>
@@ -262,6 +282,7 @@ export function AddEducationDialog({
                 />
               </div>
 
+              {/* Currently Studying Section */}
               <FormField
                 control={form.control}
                 name="is_current"
@@ -285,6 +306,7 @@ export function AddEducationDialog({
                 )}
               />
 
+              {/* Description Section */}
               <FormField
                 control={form.control}
                 name="description"
@@ -316,7 +338,7 @@ export function AddEducationDialog({
             <Button
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={isPending}
+              disabled={isPending || !form.formState.isValid}
             >
               {isPending ? "Adding..." : "Add Education"}
             </Button>
