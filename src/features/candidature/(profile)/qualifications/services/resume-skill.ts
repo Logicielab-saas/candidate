@@ -6,7 +6,7 @@ import type { ResumeSkill } from "@/core/interfaces";
 const endpoint = "/employee/resume/skill-resume";
 
 interface ResumeSkillItem {
-  uuid: string;
+  uuid?: string;
   skill_uuid: string | null;
   resumeskill_level: string | null;
 }

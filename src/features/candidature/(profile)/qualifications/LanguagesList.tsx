@@ -118,7 +118,7 @@ export function LanguagesList({ resumeLanguages }: LanguagesListProps) {
         {resumeLanguages.map((lang) => (
           <Card
             key={lang.uuid}
-            className="p-4 group hover:border-primary/50 transition-colors"
+            className="p-4 group hover:border-primary/50 hover:bg-accent/50 transition-colors"
           >
             <div className="flex items-start gap-4">
               <Avatar className="h-12 w-12 border-2 border-primary/20">

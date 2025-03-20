@@ -7,19 +7,21 @@
 
 "use client";
 
-import { Zap } from "lucide-react";
+import { Zap, Pencil, X } from "lucide-react";
 import { useState } from "react";
 import type { ResumeSkill } from "@/core/interfaces";
 import { SectionHeader } from "./SectionHeader";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+import {
+  getSkillBadgeStyle,
+  getSkillLevelBadgeStyle,
+} from "@/core/styles/skill-badge.style";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
 import {
   getProficiencyLabel,
   isValidProficiencyLevel,
-  type SkillProficiencyLevel,
 } from "./constants/skill-proficiency";
 import { cn } from "@/lib/utils";
 
@@ -110,53 +112,41 @@ export function SkillsList({ resumeSkills }: SkillsListProps) {
         {resumeSkills.map((skill) => {
           const level = Number(skill.resumeskill_level);
           const isValidLevel = isValidProficiencyLevel(level);
+          const proficiencyLabel = isValidLevel
+            ? getProficiencyLabel(level)
+            : "N/A";
 
           return (
-            <div
-              key={skill.uuid}
-              className="group flex items-start justify-between hover:bg-accent/50 transition-colors px-3 py-2 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100 rounded-lg"
-            >
-              <div className="flex flex-col gap-1 min-w-0">
+            <div key={skill.uuid} className={cn(getSkillBadgeStyle())}>
+              <div className="flex flex-col gap-1 min-w-0 ">
                 <span className="font-medium truncate max-w-[150px]">
                   {skill.resumeskill_name}
                 </span>
-                {skill.resumeskill_level && isValidLevel && (
-                  <Badge
-                    variant="secondary"
-                    className={cn(
-                      "w-fit text-xs",
-                      level === 5 &&
-                        "bg-primary/20 text-primary hover:bg-primary/30",
-                      level === 4 &&
-                        "bg-blue-500/20 text-blue-600 hover:bg-blue-500/30",
-                      level === 3 &&
-                        "bg-green-500/20 text-green-600 hover:bg-green-500/30",
-                      level === 2 &&
-                        "bg-orange-500/20 text-orange-600 hover:bg-orange-500/30",
-                      level === 1 &&
-                        "bg-red-500/20 text-red-600 hover:bg-red-500/30"
-                    )}
-                  >
-                    {getProficiencyLabel(level as SkillProficiencyLevel)}
-                  </Badge>
-                )}
+                <Badge
+                  variant="secondary"
+                  className={getSkillLevelBadgeStyle(level)}
+                >
+                  {proficiencyLabel}
+                </Badge>
               </div>
-              <div className="flex gap-1 ml-2">
+              <div className="flex gap-1">
                 <Button
+                  type="button"
                   variant="ghost"
                   size="icon"
+                  className="h-7 w-7 text-muted-foreground hover:text-primary hover:bg-primary/10"
                   onClick={() => handleEdit(skill.uuid)}
-                  className="h-7 w-7 text-muted-foreground hover:text-primary hover:bg-primaryHex-100"
                 >
-                  <Pencil className="h-3.5 w-3.5 text-primaryHex-600" />
+                  <Pencil className="h-3.5 w-3.5" />
                 </Button>
                 <Button
+                  type="button"
                   variant="ghost"
                   size="icon"
-                  onClick={() => handleDelete(skill.uuid)}
                   className="h-7 w-7 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                  onClick={() => handleDelete(skill.uuid)}
                 >
-                  <Trash2 className="h-3.5 w-3.5 text-destructive" />
+                  <X className="h-3.5 w-3.5 text-destructive" />
                 </Button>
               </div>
             </div>
