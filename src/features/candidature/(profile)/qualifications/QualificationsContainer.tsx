@@ -7,10 +7,8 @@ import { LanguagesList } from "./LanguagesList";
 import { QualificationSection } from "./QualificationSection";
 import { WorkExperienceList } from "./WorkExperienceList";
 import { ProjectsList } from "./ProjectsList";
-import { SectionHeader } from "./SectionHeader";
-import { File } from "lucide-react";
 import { AboutMe } from "./AboutMe";
-import { ResumeItem } from "../components/ResumeItem";
+import { ResumeItem } from "../../../../components/shared/ResumeItem";
 import { useProfileResume } from "./hooks/use-profile-resume";
 import { AboutMeSkeleton } from "./skeletons/AboutMeSkeleton";
 import { WorkExperienceSkeleton } from "./skeletons/WorkExperienceSkeleton";
@@ -19,6 +17,8 @@ import { ProjectsSkeleton } from "./skeletons/ProjectsSkeleton";
 import { CertificationsSkeleton } from "./skeletons/CertificationsSkeleton";
 import { LanguagesSkeleton } from "./skeletons/LanguagesSkeleton";
 import { SkillsSkeleton } from "./skeletons/SkillsSkeleton";
+import { ResumeSkeleton } from "../components/ResumeSkeleton";
+
 export function QualificationsContainer() {
   const { data: resume, isLoading, error } = useProfileResume();
 
@@ -51,6 +51,9 @@ export function QualificationsContainer() {
         </QualificationSection>
         <QualificationSection>
           <CertificationsSkeleton />
+        </QualificationSection>
+        <QualificationSection>
+          <ResumeSkeleton />
         </QualificationSection>
         <QualificationSection>
           <SkillsSkeleton />
@@ -101,12 +104,12 @@ export function QualificationsContainer() {
 
       <QualificationSection>
         <div className="border p-4 rounded-lg shadow-sm">
-          <SectionHeader
-            title="Resume"
-            icon={<File className="w-6 h-6 text-primaryHex-400 mr-2" />}
-            onAdd={() => {}}
+          <ResumeItem
+            title="My CV"
+            subtitle="PDF format, max 2MB"
+            type="custom"
+            resumeFiles={resume?.resume?.resumeFiles}
           />
-          <ResumeItem title="Bilal_Nnasser_CV" />
         </div>
       </QualificationSection>
 

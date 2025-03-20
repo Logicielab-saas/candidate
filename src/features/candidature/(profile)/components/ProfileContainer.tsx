@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Edit } from "lucide-react";
 import Link from "next/link";
-import { ResumeItem } from "./ResumeItem";
+import { ResumeItem } from "../../../../components/shared/ResumeItem";
 import { ProfilePreferencesSection } from "./ProfilePreferencesSection";
 import { ProfileContactInfo } from "./ProfileContactInfo";
 import { ProfileAboutInfo } from "./ProfileAboutInfo";
@@ -14,8 +14,8 @@ import {
   ProfileHeaderSkeleton,
   ProfileAboutSkeleton,
   ProfileContactSkeleton,
-  ProfileResumeSkeleton,
 } from "./skeletons";
+import { ResumeSkeleton } from "./ResumeSkeleton";
 
 export function ProfileContainer() {
   const { data: profile, isLoading } = useProfile();
@@ -110,7 +110,7 @@ export function ProfileContainer() {
 
           {/* Resume Section */}
           {isLoading ? (
-            <ProfileResumeSkeleton />
+            <ResumeSkeleton />
           ) : (
             <div className="space-y-4">
               <h3 className="text-lg font-medium">CV</h3>

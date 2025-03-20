@@ -6,32 +6,31 @@ import type { FilesResponse } from "@/core/interfaces";
 const endpoint = "/employee/resume/file";
 
 interface ResumeFilesItem {
-  uuid?: string;
-  file: string;
-  url_file: string;
-  server: string;
-  resume_uuid: string;
+  file: File;
 }
 
 export interface CreateFilesDTO {
-  resume_files: ResumeFilesItem[];
+  file: ResumeFilesItem[];
 }
 
 export interface UpdateFilesDTO extends CreateFilesDTO {
   uuid: string;
 }
 
-export type FilesDTO = CreateFilesDTO | UpdateFilesDTO;
+export type FilesDTO = FormData;
 
 export async function handleResumeFiles(data: FilesDTO) {
   try {
-    const response = await api.post<FilesResponse>(endpoint, data);
+    const response = await api.post<FilesResponse>(endpoint, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
       const apiError = error.response?.data as ApiError;
-      const action = "uuid" in data ? "update" : "create";
-      throw new Error(apiError?.message || `Failed to ${action} files`);
+      throw new Error(apiError?.message || `Failed to upload file`);
     }
     throw error;
   }
