@@ -1,10 +1,10 @@
-import type { Skill } from "../../features/candidature/(profile)/common/interface";
 import type { ResumeEducation } from "./resume-education.interface";
 import type { ResumeExperience } from "./resume-experience.interface";
 import type { ResumeProject } from "./resume-project.interface";
 import type { ResumeCertifications } from "./resume-certifications.interface";
 import type { ResumeLanguage } from "./resume-language.interface";
 import type { ResumeFile } from "./resume-file.interface";
+import type { ResumeSkill } from "./resume-skill.interface";
 
 export interface Resume {
   uuid: string;
@@ -30,6 +30,6 @@ export interface Resume {
     resumeCertifications: ResumeCertifications[];
     resumeLanguages: ResumeLanguage[];
     resumeFiles: ResumeFile[];
-    skills: Skill[];
+    skills: ResumeSkill[];
   };
 }

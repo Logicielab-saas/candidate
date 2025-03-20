@@ -1,4 +1,4 @@
-import { Skill } from "./skill.interface";
+import { ResumeSkill } from "./resume-skill.interface";
 
 export interface GetMeResponse {
   uuid: string;
@@ -23,6 +23,6 @@ export interface GetMeResponse {
     resumeCertifications: []; // TODO: Define a more Certification type if available
     resumeLanguages: []; // TODO: Define a more Language type if available
     resumeFiles: []; // TODO: Define a more File type if available
-    skills: Skill[];
+    skills: ResumeSkill[];
   };
 }

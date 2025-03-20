@@ -11,50 +11,84 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import type { Skill } from "@/core/types/skill";
+import type { ResumeSkill } from "@/core/interfaces/resume-skill.interface";
+import { useDeleteResumeSkill } from "../../hooks/use-resume-skill";
+import { useState } from "react";
 
 interface DeleteSkillDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onConfirm: (id: string) => void;
-  skill: Skill;
+  skill: ResumeSkill;
 }
 
 export function DeleteSkillDialog({
   open,
   onOpenChange,
-  onConfirm,
   skill,
 }: DeleteSkillDialogProps) {
+  const { mutate: deleteSkill, isPending } = useDeleteResumeSkill();
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const { toast } = useToast();
 
-  const handleConfirm = () => {
-    onConfirm(skill.id);
-    onOpenChange(false);
-    toast({
-      variant: "success",
-      title: "Compétence supprimée",
-      description: "La compétence a été supprimée avec succès.",
-    });
+  const handleConfirm = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    setIsDeleting(true);
+    try {
+      await new Promise<void>((resolve, reject) => {
+        deleteSkill(skill.uuid, {
+          onSuccess: () => {
+            resolve();
+          },
+          onError: (error) => {
+            reject(error);
+          },
+        });
+      });
+
+      setIsDeleting(false);
+      onOpenChange(false);
+    } catch (_error) {
+      setIsDeleting(false);
+      toast({
+        variant: "destructive",
+        title: "Erreur",
+        description:
+          "Une erreur est survenue lors de la suppression de la compétence.",
+      });
+    }
   };
 
+  const isLoading = isPending || isDeleting;
+
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
+    <AlertDialog
+      open={open}
+      onOpenChange={(newOpen) => {
+        if (!isLoading) {
+          onOpenChange(newOpen);
+        }
+      }}
+    >
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
           <AlertDialogDescription>
-            Vous êtes sur le point de retirer la compétence &quot;{skill.name}
+            Vous êtes sur le point de retirer la compétence &quot;
+            {skill.resumeskill_name}
             &quot;. Cette action est irréversible.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Annuler</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>Annuler</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             className="bg-destructive hover:bg-destructive/90"
+            disabled={isLoading}
           >
-            Retirer
+            {isLoading ? "Suppression..." : "Supprimer"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
