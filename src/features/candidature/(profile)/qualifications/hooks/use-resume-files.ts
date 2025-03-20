@@ -1,0 +1,93 @@
+/**
+ * Hooks for managing resume files
+ * Provides mutations for creating, updating, and deleting files
+ */
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { handleResumeFiles, deleteResumeFiles } from "../services/resume-files";
+import { useToast } from "@/hooks/use-toast";
+import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
+
+export function useCreateResumeFiles() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: handleResumeFiles,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: PROFILE_RESUME_QUERY_KEY,
+      });
+
+      toast({
+        variant: "success",
+        title: "Files added",
+        description: "Files has been added successfully.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        variant: "destructive",
+        title: "Failed to add files",
+        description:
+          error.message || "An unexpected error occurred. Please try again.",
+      });
+    },
+  });
+}
+
+export function useDeleteResumeFiles() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: deleteResumeFiles,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: PROFILE_RESUME_QUERY_KEY,
+      });
+
+      toast({
+        variant: "success",
+        title: "Files deleted",
+        description: "Files has been deleted successfully.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        variant: "destructive",
+        title: "Failed to delete files",
+        description:
+          error.message || "An unexpected error occurred. Please try again.",
+      });
+    },
+  });
+}
+
+export function useUpdateResumeFiles() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: handleResumeFiles,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: PROFILE_RESUME_QUERY_KEY,
+      });
+
+      toast({
+        variant: "success",
+        title: "Files updated",
+        description: "Files has been updated successfully.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        variant: "destructive",
+        title: "Failed to update files",
+        description:
+          error.message || "An unexpected error occurred. Please try again.",
+      });
+    },
+  });
+}
