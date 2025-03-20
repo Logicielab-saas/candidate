@@ -1,5 +1,3 @@
-import type { Files } from "@/core/interfaces";
-
 export interface Profile {
   uuid: string;
   user_id: string;
@@ -16,6 +14,11 @@ export interface Profile {
   image: File | null;
   bio: string | null;
   skills: string[] | null;
-  resume_files: Files[] | null;
+  resumeFiles: ProfileFiles[] | null;
   deleted_at: string | null;
+}
+
+export interface ProfileFiles {
+  uuid: string;
+  file: string;
 }

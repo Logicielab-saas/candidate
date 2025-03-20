@@ -107,7 +107,7 @@ export function ProfileContainer() {
               title={`Resume_${profile?.last_name?.toUpperCase()}.pdf`}
               subtitle="PDF format, max 2MB"
               type="custom"
-              resumeFiles={profile?.resume_files || []}
+              resumeFiles={profile?.resumeFiles || []}
               source="profile"
             />
           </div>

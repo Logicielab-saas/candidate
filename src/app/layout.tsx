@@ -46,12 +46,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ReactQueryProvider>
-            <NextTopLoader showSpinner={false} color="#F97316" />
-            <NavBar />
-            <NuqsAdapter>{children}</NuqsAdapter>
-            <Toaster />
-          </ReactQueryProvider>
+          <NextTopLoader showSpinner={false} color="text-primary" />
+          <NavBar />
+          <NuqsAdapter>
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+          </NuqsAdapter>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

@@ -24,11 +24,12 @@ import { useToast } from "@/hooks/use-toast";
 import type { ResumeFile, Files } from "@/core/interfaces";
 import { useDeleteResumeFiles } from "../../features/candidature/(profile)/qualifications/hooks/use-resume-files";
 import { useState } from "react";
+import { ProfileFiles } from "@/features/candidature/(profile)/common/interface";
 
 interface DeleteResumeDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  file: ResumeFile | Files;
+  file: ResumeFile | Files | ProfileFiles;
   source?: "profile" | "qualifications";
 }
 

@@ -36,6 +36,7 @@ import type { ResumeFile, Files } from "@/core/interfaces";
 import { SectionHeader } from "../../features/candidature/(profile)/qualifications/SectionHeader";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
+import { ProfileFiles } from "@/features/candidature/(profile)/common/interface";
 
 // Dynamically import dialog with loading state
 const DeleteResumeDialog = dynamic(
@@ -54,7 +55,7 @@ interface ResumeItemProps {
   title: string;
   subtitle?: string;
   type?: "postuly" | "custom";
-  resumeFiles?: (ResumeFile | Files)[];
+  resumeFiles?: (ResumeFile | Files | ProfileFiles)[];
   source?: "profile" | "qualifications";
 }
 
@@ -68,9 +69,9 @@ export function ResumeItem({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const updateFileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
-  const [fileToDelete, setFileToDelete] = useState<ResumeFile | Files | null>(
-    null
-  );
+  const [fileToDelete, setFileToDelete] = useState<
+    ResumeFile | Files | ProfileFiles | null
+  >(null);
   const [selectedFileUuid, setSelectedFileUuid] = useState<string | null>(null);
   const { mutate: createFile, isPending: isUploading } = useCreateResumeFiles();
   const { isPending: isDeleting } = useDeleteResumeFiles();
@@ -150,9 +151,9 @@ export function ResumeItem({
   const isLoading = isUploading || isDeleting;
 
   // Helper function to get file URL based on source
-  const getFileUrl = (file: ResumeFile | Files) => {
+  const getFileUrl = (file: ResumeFile | Files | ProfileFiles) => {
     if (source === "profile") {
-      return (file as Files).url_file;
+      return (file as ProfileFiles).file;
     }
     return (file as ResumeFile).file_url;
   };
