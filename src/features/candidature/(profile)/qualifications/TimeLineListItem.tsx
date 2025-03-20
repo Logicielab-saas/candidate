@@ -5,14 +5,13 @@ import type { ResumeExperience } from "@/core/interfaces/resume-experience.inter
 import CircleLineWrapper from "./CircleLineWrapper";
 import { Button } from "@/components/ui/button";
 import { PencilIcon, Trash } from "lucide-react";
-import type { Project } from "@/core/types/project";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
 interface TimeLineListItemProps {
-  data: ResumeEducation | ResumeExperience | ResumeCertifications | Project;
+  data: ResumeEducation | ResumeExperience | ResumeCertifications;
   onEdit: (
-    data: ResumeEducation | ResumeExperience | ResumeCertifications | Project
+    data: ResumeEducation | ResumeExperience | ResumeCertifications
   ) => void;
   onDelete: (id: string) => void;
 }
@@ -86,7 +85,7 @@ export default function TimeLineListItem({
           <Button
             variant="ghost"
             className="cursor-pointer text-red-600 hover:bg-red-100 hover:text-red-600"
-            onClick={() => onDelete("uuid" in data ? data.uuid : data.id)}
+            onClick={() => onDelete(data.uuid)}
           >
             <Trash className="w-4 h-4" />
           </Button>
