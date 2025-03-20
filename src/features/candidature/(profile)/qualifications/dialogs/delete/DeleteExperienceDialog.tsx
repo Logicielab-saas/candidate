@@ -10,7 +10,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { ResumeExperience } from "@/core/interfaces/resume-experience.interface";
+import type { ResumeExperience } from "@/core/interfaces/";
 import { useDeleteResumeExperience } from "../../hooks/use-resume-experience";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";

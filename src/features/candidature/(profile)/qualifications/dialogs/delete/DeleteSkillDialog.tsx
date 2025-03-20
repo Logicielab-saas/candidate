@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import type { ResumeSkill } from "@/core/interfaces/resume-skill.interface";
+import type { ResumeSkill } from "@/core/interfaces/";
 import { useDeleteResumeSkill } from "../../hooks/use-resume-skill";
 import { useState } from "react";
 

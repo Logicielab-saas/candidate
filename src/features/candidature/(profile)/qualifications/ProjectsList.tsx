@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { PencilIcon, Trash } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import type { ResumeProject } from "@/core/interfaces/resume-project.interface";
+import type { ResumeProject } from "@/core/interfaces/";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";

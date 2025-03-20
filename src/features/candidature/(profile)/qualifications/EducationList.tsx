@@ -2,7 +2,7 @@ import { useState } from "react";
 import { GraduationCap } from "lucide-react";
 import TimeLineListItem from "./TimeLineListItem";
 import { SectionHeader } from "./SectionHeader";
-import type { ResumeEducation } from "@/core/interfaces/resume-education.interface";
+import type { ResumeEducation } from "@/core/interfaces/";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
 

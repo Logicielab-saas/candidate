@@ -10,7 +10,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { ResumeEducation } from "@/core/interfaces/resume-education.interface";
+import type { ResumeEducation } from "@/core/interfaces/";
 import { useDeleteResumeEducation } from "../../hooks/use-resume-education";
 import { useState } from "react";
 
