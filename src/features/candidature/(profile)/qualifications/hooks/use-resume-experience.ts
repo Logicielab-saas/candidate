@@ -12,7 +12,7 @@ export function useCreateResumeExperience() {
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (data: CreateExperienceDTO) => handleResumeExperience(data),
     onSuccess: async () => {
       // Wait for the query invalidation to complete
@@ -35,13 +35,15 @@ export function useCreateResumeExperience() {
       });
     },
   });
+
+  return { mutate, isPending };
 }
 
 export function useDeleteResumeExperience() {
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: deleteResumeExperience,
     onSuccess: async () => {
       // Wait for the query invalidation to complete
@@ -64,13 +66,15 @@ export function useDeleteResumeExperience() {
       });
     },
   });
+
+  return { mutate, isPending };
 }
 
 export function useUpdateResumeExperience() {
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (data: UpdateExperienceDTO) => handleResumeExperience(data),
     onSuccess: async () => {
       // Wait for the query invalidation to complete
@@ -93,4 +97,6 @@ export function useUpdateResumeExperience() {
       });
     },
   });
+
+  return { mutate, isPending };
 }

@@ -12,7 +12,7 @@ export function useCreateResumeEducation() {
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (data: CreateEducationDTO) => handleResumeEducation(data),
     onSuccess: async () => {
       // Wait for the query invalidation to complete
@@ -35,13 +35,15 @@ export function useCreateResumeEducation() {
       });
     },
   });
+
+  return { mutate, isPending };
 }
 
 export function useDeleteResumeEducation() {
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: deleteResumeEducation,
     onSuccess: async () => {
       // Wait for the query invalidation to complete
@@ -64,13 +66,15 @@ export function useDeleteResumeEducation() {
       });
     },
   });
+
+  return { mutate, isPending };
 }
 
 export function useUpdateResumeEducation() {
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (data: UpdateEducationDTO) => handleResumeEducation(data),
     onSuccess: async () => {
       // Wait for the query invalidation to complete
@@ -93,4 +97,6 @@ export function useUpdateResumeEducation() {
       });
     },
   });
+
+  return { mutate, isPending };
 }

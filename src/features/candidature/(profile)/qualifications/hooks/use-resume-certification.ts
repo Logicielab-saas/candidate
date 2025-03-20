@@ -12,7 +12,7 @@ export function useCreateResumeCertification() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (data: CreateCertificationDTO) =>
       handleResumeCertification(data),
     onSuccess: async () => {
@@ -35,13 +35,15 @@ export function useCreateResumeCertification() {
       });
     },
   });
+
+  return { mutate, isPending };
 }
 
 export function useDeleteResumeCertification() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: deleteResumeCertification,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -63,13 +65,15 @@ export function useDeleteResumeCertification() {
       });
     },
   });
+
+  return { mutate, isPending };
 }
 
 export function useUpdateResumeCertification() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (data: UpdateCertificationDTO) =>
       handleResumeCertification(data),
     onSuccess: async () => {
@@ -92,4 +96,6 @@ export function useUpdateResumeCertification() {
       });
     },
   });
+
+  return { mutate, isPending };
 }

@@ -12,11 +12,13 @@ import type { Cities } from "@/core/interfaces";
 export const CITIES_QUERY_KEY = ["cities"] as const;
 
 export function useCities() {
-  return useQuery<Cities[]>({
+  const { data, isLoading, error } = useQuery<Cities[]>({
     queryKey: CITIES_QUERY_KEY,
     queryFn: async () => {
       const response = await fetchPublicCities();
       return response.cities;
     },
   });
+
+  return { data, isLoading, error };
 }

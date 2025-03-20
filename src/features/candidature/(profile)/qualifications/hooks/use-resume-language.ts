@@ -15,7 +15,7 @@ export function useCreateResumeLanguage() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: handleResumeLanguage,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -37,13 +37,15 @@ export function useCreateResumeLanguage() {
       });
     },
   });
+
+  return { mutate, isPending };
 }
 
 export function useDeleteResumeLanguage() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: deleteResumeLanguage,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -65,13 +67,15 @@ export function useDeleteResumeLanguage() {
       });
     },
   });
+
+  return { mutate, isPending };
 }
 
 export function useUpdateResumeLanguage() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: handleResumeLanguage,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -93,4 +97,6 @@ export function useUpdateResumeLanguage() {
       });
     },
   });
+
+  return { mutate, isPending };
 }

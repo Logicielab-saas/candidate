@@ -5,17 +5,19 @@ import { useToast } from "@/hooks/use-toast";
 export const PROFILE_RESUME_QUERY_KEY = ["profile-resume"];
 
 export function useProfileResume() {
-  return useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: PROFILE_RESUME_QUERY_KEY,
     queryFn: getProfileResume,
   });
+
+  return { data, isLoading, error };
 }
 
 export function useUpdateProfileResume() {
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  return useMutation({
+  const { mutate, isPending, isError } = useMutation({
     mutationFn: updateProfileResume,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: PROFILE_RESUME_QUERY_KEY });
@@ -34,4 +36,6 @@ export function useUpdateProfileResume() {
       });
     },
   });
+
+  return { mutate, isPending, isError };
 }

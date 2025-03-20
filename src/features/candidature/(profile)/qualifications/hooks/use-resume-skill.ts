@@ -12,7 +12,7 @@ export function useCreateResumeSkill() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: handleResumeSkill,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -34,13 +34,15 @@ export function useCreateResumeSkill() {
       });
     },
   });
+
+  return { mutate, isPending };
 }
 
 export function useDeleteResumeSkill() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: deleteResumeSkill,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -62,13 +64,15 @@ export function useDeleteResumeSkill() {
       });
     },
   });
+
+  return { mutate, isPending };
 }
 
 export function useUpdateResumeSkill() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: handleResumeSkill,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -90,4 +94,6 @@ export function useUpdateResumeSkill() {
       });
     },
   });
+
+  return { mutate, isPending };
 }

@@ -12,7 +12,7 @@ export function useCreateResumeProject() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (data: CreateProjectDTO) => handleResumeProject(data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -34,13 +34,15 @@ export function useCreateResumeProject() {
       });
     },
   });
+
+  return { mutate, isPending };
 }
 
 export function useDeleteResumeProject() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: deleteResumeProject,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -62,13 +64,15 @@ export function useDeleteResumeProject() {
       });
     },
   });
+
+  return { mutate, isPending };
 }
 
 export function useUpdateResumeProject() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (data: UpdateProjectDTO) => handleResumeProject(data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -90,4 +94,6 @@ export function useUpdateResumeProject() {
       });
     },
   });
+
+  return { mutate, isPending };
 }

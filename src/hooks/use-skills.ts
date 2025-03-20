@@ -12,11 +12,13 @@ import type { Skills } from "@/core/interfaces";
 export const SKILLS_QUERY_KEY = ["skills"] as const;
 
 export function useSkills(q?: string) {
-  return useQuery<Skills[]>({
+  const { data, isLoading, error } = useQuery<Skills[]>({
     queryKey: [...SKILLS_QUERY_KEY, q],
     queryFn: async () => {
       const response = await fetchPublicSkills(q);
       return response.skills;
     },
   });
+
+  return { data, isLoading, error };
 }

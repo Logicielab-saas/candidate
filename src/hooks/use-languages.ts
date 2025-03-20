@@ -12,11 +12,13 @@ import type { Languages } from "@/core/interfaces";
 export const LANGUAGES_QUERY_KEY = ["languages"] as const;
 
 export function useLanguages() {
-  return useQuery<Languages[]>({
+  const { data, isLoading, error } = useQuery<Languages[]>({
     queryKey: LANGUAGES_QUERY_KEY,
     queryFn: async () => {
       const response = await fetchPublicLanguages();
       return response.languages;
     },
   });
+
+  return { data, isLoading, error };
 }

@@ -12,7 +12,7 @@ export function useCreateResumeFiles() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: handleResumeFiles,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -34,13 +34,15 @@ export function useCreateResumeFiles() {
       });
     },
   });
+
+  return { mutate, isPending };
 }
 
 export function useDeleteResumeFiles() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: deleteResumeFiles,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -62,13 +64,15 @@ export function useDeleteResumeFiles() {
       });
     },
   });
+
+  return { mutate, isPending };
 }
 
 export function useUpdateResumeFiles() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: handleResumeFiles,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -90,4 +94,6 @@ export function useUpdateResumeFiles() {
       });
     },
   });
+
+  return { mutate, isPending };
 }
