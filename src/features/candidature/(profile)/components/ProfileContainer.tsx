@@ -113,17 +113,19 @@ export function ProfileContainer() {
             <ResumeSkeleton />
           ) : (
             <div className="space-y-4">
-              <h3 className="text-lg font-medium">CV</h3>
               <div className="space-y-3">
-                <ResumeItem
+                {/* <ResumeItem
                   title="Postuly CV"
                   subtitle="Non validé"
                   type="postuly"
-                />
+                  source="profile"
+                /> */}
                 <ResumeItem
-                  title="Resume_LASTNAME.pdf"
-                  subtitle="Ajouté le 19 Fev 2024"
+                  title={`Resume_${profile?.last_name?.toUpperCase()}.pdf`}
+                  subtitle="PDF format, max 2MB"
                   type="custom"
+                  resumeFiles={profile?.resume_files || []}
+                  source="profile"
                 />
               </div>
             </div>

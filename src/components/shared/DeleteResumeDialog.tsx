@@ -5,6 +5,7 @@
  * - Confirmation dialog for deleting resume files
  * - Loading states
  * - Error handling
+ * - Supports both profile and qualifications resume files
  */
 
 "use client";
@@ -20,20 +21,23 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import type { ResumeFile } from "@/core/interfaces";
+import type { ResumeFile, Files } from "@/core/interfaces";
 import { useDeleteResumeFiles } from "../../features/candidature/(profile)/qualifications/hooks/use-resume-files";
 import { useState } from "react";
 
 interface DeleteResumeDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  file: ResumeFile;
+  file: ResumeFile | Files;
+  source?: "profile" | "qualifications";
 }
 
 export function DeleteResumeDialog({
   open,
   onOpenChange,
   file,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  source = "qualifications",
 }: DeleteResumeDialogProps) {
   const { mutate: deleteFile, isPending } = useDeleteResumeFiles();
   const [isDeleting, setIsDeleting] = useState(false);

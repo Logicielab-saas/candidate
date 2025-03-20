@@ -5,6 +5,7 @@
  * - File upload via header button
  * - File preview, download, and delete actions
  * - Loading states and error handling
+ * - Supports both profile and qualifications resume files
  */
 
 import {
@@ -32,7 +33,7 @@ import {
   useCreateResumeFiles,
   useDeleteResumeFiles,
 } from "../../features/candidature/(profile)/qualifications/hooks/use-resume-files";
-import type { ResumeFile } from "@/core/interfaces";
+import type { ResumeFile, Files } from "@/core/interfaces";
 import { SectionHeader } from "../../features/candidature/(profile)/qualifications/SectionHeader";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
@@ -54,7 +55,8 @@ interface ResumeItemProps {
   title: string;
   subtitle?: string;
   type?: "postuly" | "custom";
-  resumeFiles?: ResumeFile[];
+  resumeFiles?: (ResumeFile | Files)[];
+  source?: "profile" | "qualifications";
 }
 
 export function ResumeItem({
@@ -62,11 +64,14 @@ export function ResumeItem({
   subtitle = "",
   type = "custom",
   resumeFiles = [],
+  source = "qualifications",
 }: ResumeItemProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const updateFileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
-  const [fileToDelete, setFileToDelete] = useState<ResumeFile | null>(null);
+  const [fileToDelete, setFileToDelete] = useState<ResumeFile | Files | null>(
+    null
+  );
   const [selectedFileUuid, setSelectedFileUuid] = useState<string | null>(null);
   const { mutate: createFile, isPending: isUploading } = useCreateResumeFiles();
   const { isPending: isDeleting } = useDeleteResumeFiles();
@@ -145,6 +150,14 @@ export function ResumeItem({
 
   const isLoading = isUploading || isDeleting;
 
+  // Helper function to get file URL based on source
+  const getFileUrl = (file: ResumeFile | Files) => {
+    if (source === "profile") {
+      return (file as Files).url_file;
+    }
+    return (file as ResumeFile).file_url;
+  };
+
   return (
     <div className="space-y-4">
       <SectionHeader
@@ -206,7 +219,7 @@ export function ResumeItem({
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem className="flex items-center" asChild>
-                  <Link href={file.file_url} target="_blank">
+                  <Link href={getFileUrl(file)} target="_blank">
                     <Eye className="mr-2 h-4 w-4" />
                     View CV
                   </Link>
@@ -218,7 +231,7 @@ export function ResumeItem({
                       Change Resume
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => handleDownloadCV(file.file_url)}
+                      onClick={() => handleDownloadCV(getFileUrl(file))}
                     >
                       <Download className="mr-2 h-4 w-4" />
                       Download CV
