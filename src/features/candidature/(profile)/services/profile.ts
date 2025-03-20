@@ -19,7 +19,7 @@ export async function getCurrentUser() {
 }
 
 export async function getProfile() {
-  const response = await axios.get<Profile>("/employee/user-profile");
+  const response = await api.get<Profile>("/employee/user-profile");
   return response.data;
 }
 
