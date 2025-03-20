@@ -9,6 +9,7 @@ export interface Profile {
   birthdate: string | null;
   address: string | null;
   city_uuid: string | null;
+  city: string | null;
   country: string | null;
   postal_code: string | null;
   phone: string | null;

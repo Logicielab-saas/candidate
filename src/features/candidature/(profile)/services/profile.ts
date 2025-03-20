@@ -2,7 +2,7 @@ import { GetMeResponse } from "@/core/interfaces";
 import api from "@/lib/axios";
 import { AxiosError } from "axios";
 import { ApiError } from "next/dist/server/api-utils";
-import { Profile } from "../common/interface";
+import type { Profile } from "../common/interface";
 import axios from "@/lib/axios";
 
 export async function getCurrentUser() {

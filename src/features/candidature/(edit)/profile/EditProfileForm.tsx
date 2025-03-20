@@ -24,6 +24,14 @@ import {
   MAX_FILE_SIZE,
   ACCEPTED_IMAGE_TYPES,
 } from "@/core/constants/image-constraints";
+import { useCities } from "@/hooks/use-cities";
+import {
+  Select,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 const formSchema = z.object({
   first_name: z.string().min(2, "First name must be at least 2 characters"),
@@ -92,7 +100,9 @@ export function EditProfileForm({
   const { mutate: updateResume, isPending: isResumeUpdating } =
     useUpdateProfileResume();
 
-  const isPending = isProfileUpdating || isResumeUpdating;
+  const { data: cities, isLoading: isCitiesLoading } = useCities();
+
+  const isPending = isProfileUpdating || isResumeUpdating || isCitiesLoading;
 
   // Format the date from ISO to YYYY-MM-DD for the input
   const formatDateForInput = (dateString: string | null) => {
@@ -309,13 +319,23 @@ export function EditProfileForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>City</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="New York"
-                    {...field}
-                    value={field.value || ""}
-                  />
-                </FormControl>
+                <Select
+                  onValueChange={(value) => field.onChange(value)}
+                  value={field.value || ""}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a city" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {cities?.map((city) => (
+                      <SelectItem key={city.uuid} value={city.uuid}>
+                        {city.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}

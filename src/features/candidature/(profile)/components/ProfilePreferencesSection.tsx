@@ -1,8 +1,35 @@
+"use client";
+
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { HideJobDetailsDialog } from "./HideJobDetailsDialog";
-import { AvailabilityStatusDialog } from "./AvailabilityStatusDialog";
+import dynamic from "next/dynamic";
+import LoaderOne from "@/components/ui/loader-one";
+
+//* Dynamically import dialogs with loading states
+const HideJobDetailsDialog = dynamic(
+  () =>
+    import("./HideJobDetailsDialog").then((mod) => mod.HideJobDetailsDialog),
+  {
+    loading: () => (
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <LoaderOne />
+      </div>
+    ),
+    ssr: false,
+  }
+);
+
+const AvailabilityStatusDialog = dynamic(
+  () =>
+    import("./AvailabilityStatusDialog").then(
+      (mod) => mod.AvailabilityStatusDialog
+    ),
+  {
+    loading: () => <div>Loading...</div>,
+    ssr: false,
+  }
+);
 
 export function ProfilePreferencesSection() {
   const [showHideDetailsDialog, setShowHideDetailsDialog] = useState(false);
@@ -66,10 +93,12 @@ export function ProfilePreferencesSection() {
           onOpenChange={setShowHideDetailsDialog}
         />
       )}
-      <AvailabilityStatusDialog
-        open={showAvailabilityDialog}
-        onOpenChange={setShowAvailabilityDialog}
-      />
+      {showAvailabilityDialog && (
+        <AvailabilityStatusDialog
+          open={showAvailabilityDialog}
+          onOpenChange={setShowAvailabilityDialog}
+        />
+      )}
     </div>
   );
 }
