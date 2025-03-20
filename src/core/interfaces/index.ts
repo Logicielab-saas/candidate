@@ -28,3 +28,4 @@ export * from "./resume-language.interface";
 export * from "./resume-skill.interface";
 export * from "./languages.interface";
 export * from "./skills.interface";
+export * from "./cities.interface";

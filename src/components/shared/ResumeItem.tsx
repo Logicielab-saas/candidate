@@ -28,7 +28,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { handleDownloadCV } from "@/core/utils/download-cv";
 import {
   useCreateResumeFiles,
   useDeleteResumeFiles,
@@ -230,11 +229,11 @@ export function ResumeItem({
                       <Upload className="mr-2 h-4 w-4" />
                       Change Resume
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => handleDownloadCV(getFileUrl(file))}
-                    >
-                      <Download className="mr-2 h-4 w-4" />
-                      Download CV
+                    <DropdownMenuItem asChild>
+                      <Link href={getFileUrl(file)} target="_blank">
+                        <Download className="mr-2 h-4 w-4" />
+                        Download CV
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className="text-destructive focus:text-destructive"
