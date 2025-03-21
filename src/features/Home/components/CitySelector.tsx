@@ -1,7 +1,7 @@
 /**
  * CitySelector - Searchable city selection component
  *
- * Provides a searchable dropdown for city selection
+ * Provides a searchable dropdown for city selection with data from the API
  * Exposes current city selection to parent component for search button handling
  */
 
@@ -21,25 +21,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { useState, useEffect } from "react";
 import { useDebounce } from "use-debounce";
-
-// Available cities data
-const cities = [
-  { value: "paris", label: "Paris" },
-  { value: "london", label: "London" },
-  { value: "berlin", label: "Berlin" },
-  { value: "madrid", label: "Madrid" },
-  { value: "rome", label: "Rome" },
-  { value: "amsterdam", label: "Amsterdam" },
-  { value: "barcelona", label: "Barcelona" },
-  { value: "munich", label: "Munich" },
-  { value: "vienna", label: "Vienna" },
-  { value: "prague", label: "Prague" },
-] as const;
+import { useCities } from "@/hooks/use-cities";
 
 // Define props interface to expose city value and setter
 interface CitySelectorProps {
@@ -58,6 +45,9 @@ export function CitySelector({
   const [open, setOpen] = useState(false);
   const [urlCity] = useQueryState("city");
 
+  // Fetch cities using the hook
+  const { data: cities, isLoading } = useCities();
+
   // Sync with URL on initial load and navigation
   useEffect(() => {
     if (urlCity !== value) {
@@ -70,12 +60,13 @@ export function CitySelector({
   const [debouncedCitySearch] = useDebounce(citySearch, 300);
 
   // Filter cities based on debounced search
-  const filteredCities = cities.filter((city) =>
-    city.label.toLowerCase().includes(debouncedCitySearch.toLowerCase())
-  );
+  const filteredCities =
+    cities?.filter((city) =>
+      city.name.toLowerCase().includes(debouncedCitySearch.toLowerCase())
+    ) || [];
 
-  // Get the current city label
-  const currentCity = cities.find((city) => city.value === value);
+  // Get the current city
+  const currentCity = cities?.find((city) => city.uuid === value);
 
   return (
     <div className="w-full sm:w-[250px] space-y-1.5">
@@ -97,7 +88,7 @@ export function CitySelector({
             aria-expanded={open}
             className="w-full justify-between"
           >
-            {currentCity?.label ?? "Toutes les villes..."}
+            {currentCity?.name ?? "Toutes les villes..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -109,28 +100,35 @@ export function CitySelector({
               onValueChange={setCitySearch}
             />
             <CommandList>
-              <CommandEmpty>Aucune ville trouvée.</CommandEmpty>
-              <CommandGroup>
-                {filteredCities.map((city) => (
-                  <CommandItem
-                    key={city.value}
-                    value={city.value}
-                    onSelect={(currentValue) => {
-                      onChange(currentValue === value ? null : currentValue);
-                      setCitySearch("");
-                      setOpen(false);
-                    }}
-                  >
-                    <Check
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        value === city.value ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                    {city.label}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
+              {isLoading ? (
+                <div className="flex items-center justify-center py-6">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                </div>
+              ) : filteredCities.length === 0 ? (
+                <CommandEmpty>Aucune ville trouvée.</CommandEmpty>
+              ) : (
+                <CommandGroup>
+                  {filteredCities.map((city) => (
+                    <CommandItem
+                      key={city.uuid}
+                      value={city.uuid}
+                      onSelect={(currentValue) => {
+                        onChange(currentValue === value ? null : currentValue);
+                        setCitySearch("");
+                        setOpen(false);
+                      }}
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          value === city.uuid ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                      {city.name}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )}
             </CommandList>
           </Command>
         </PopoverContent>

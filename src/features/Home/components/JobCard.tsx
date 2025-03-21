@@ -1,9 +1,18 @@
 import { cn } from "@/lib/utils";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import type { Emplois } from "@/core/interfaces";
-import { Building2, MapPin, Users } from "lucide-react";
+import { Building2, MapPin, MoreVertical } from "lucide-react";
 import { spanBadgeStyle } from "@/core/styles/span-badge.style";
 import { redirect } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { JobCardMenu } from "./JobCardMenu";
 
 interface JobCardProps {
   job: Emplois;
@@ -30,10 +39,26 @@ export function JobCard({ job, isSelected }: JobCardProps) {
       )}
     >
       <CardHeader>
-        <div className="flex items-start justify-between gap-2">
-          <div className="space-y-1">
-            <h3 className="font-semibold leading-none">{job.title}</h3>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex items-start gap-4">
+          <Avatar className="h-12 w-12">
+            <AvatarImage
+              className="rounded-full"
+              src={job.company_logo}
+              alt={job.title}
+            />
+            <AvatarFallback>
+              <Building2 className="h-8 w-8 text-muted-foreground" />
+            </AvatarFallback>
+          </Avatar>
+
+          <div className="flex flex-col gap-2 flex-1">
+            <div className="flex items-start justify-between">
+              <h3 className="font-semibold leading-none">{job.title}</h3>
+              <div className="flex items-center gap-2">
+                <JobCardMenu jobId={job.uuid} />
+              </div>
+            </div>
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
                 <Building2 className="h-3 w-3" />
                 <span>{job.company_name}</span>
@@ -42,13 +67,6 @@ export function JobCard({ job, isSelected }: JobCardProps) {
                 <MapPin className="h-3 w-3" />
                 <span>{job.city_name}</span>
               </div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <Users className="h-3 w-3" />
-              <span>{job.postule} applied</span>
             </div>
           </div>
         </div>
@@ -87,7 +105,8 @@ export function JobCard({ job, isSelected }: JobCardProps) {
             </div>
           )}
           <div className="text-xs text-muted-foreground">
-            {job.views} views • {job.status === "open" ? "Active" : "Closed"}
+            {job.views} views • {job.postule} applied •{" "}
+            {job.status === "open" ? "Active" : "Closed"}
           </div>
         </div>
       </CardContent>
