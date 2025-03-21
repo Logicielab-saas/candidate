@@ -10,127 +10,94 @@
 
 "use client";
 
-import { mockJobsList } from "@/core/mockData/jobs-list";
 import { useQueryState } from "nuqs";
 import { JobCard } from "./JobCard";
-import { useNotInterestedStore } from "../store/not-interested.store";
 import { useRouter } from "next/navigation";
-import { subDays } from "date-fns";
+import { useEmplois } from "../hooks/use-emplois";
 
 interface JobsListProps {
   isDesktop: boolean;
 }
 
 export function JobsList({ isDesktop }: JobsListProps) {
-  const [searchText] = useQueryState("q");
-  const [selectedCity] = useQueryState("city");
-  const [selectedJobId, setSelectedJobId] = useQueryState("jobId");
-  const [dateFilter] = useQueryState("date");
-  const [contractTypes] = useQueryState("contracts", {
-    parse: (value) => value.split(","),
-    serialize: (value) => value.join(","),
-    defaultValue: [],
-  });
-  const [keywords] = useQueryState("keyword", {
-    parse: (value) => value?.split(",") || [],
-    serialize: (value) => value?.join(","),
-  });
-  const { isNotInterested } = useNotInterestedStore();
+  const [_searchText] = useQueryState("q");
+  const [_selectedCity] = useQueryState("city");
+  const [selectedJobId, setSelectedJobId] = useQueryState("job");
   const router = useRouter();
 
-  // Filter jobs based on all search params
-  const filteredJobs = mockJobsList.filter((job) => {
-    // Skip jobs marked as not interested
-    if (isNotInterested(job.id)) return false;
+  // Fetch jobs from API
+  const { data: jobs, isLoading, error } = useEmplois();
 
+  // Filter jobs based on search text and city only for now
+  /* Commenting out filters for now
+  const filteredJobs = jobs.filter((job: Emplois) => {
     // Text search filter
     const matchesSearch =
       !searchText ||
-      job.jobTitle.toLowerCase().includes(searchText.toLowerCase()) ||
-      job.companyName.toLowerCase().includes(searchText.toLowerCase()) ||
-      job.keyWords.some((keyword) =>
-        keyword.toLowerCase().includes(searchText.toLowerCase())
-      );
+      job.title.toLowerCase().includes(searchText.toLowerCase()) ||
+      job.company_name.toLowerCase().includes(searchText.toLowerCase());
 
     // City filter
     const matchesCity =
-      !selectedCity || job.city.toLowerCase() === selectedCity.toLowerCase();
+      !selectedCity ||
+      job.city_name.toLowerCase() === selectedCity.toLowerCase();
 
-    // Date filter
-    let matchesDate = true;
-    if (dateFilter) {
-      const jobDate = new Date(job.postedAt);
-      const now = new Date();
-      switch (dateFilter) {
-        case "24h":
-          matchesDate = jobDate >= subDays(now, 1);
-          break;
-        case "week":
-          matchesDate = jobDate >= subDays(now, 7);
-          break;
-        case "month":
-          matchesDate = jobDate >= subDays(now, 30);
-          break;
-      }
-    }
-
-    // Keywords filter - match if any selected keyword matches any job keyword
-    const matchesKeywords =
-      !keywords?.length ||
-      keywords.some((keyword) =>
-        job.keyWords.some((jobKeyword) =>
-          jobKeyword.toLowerCase().includes(keyword.toLowerCase())
-        )
-      );
-
-    // Contract types filter - match if any selected contract type matches any job keyword
-    const matchesContract =
-      !contractTypes?.length ||
-      contractTypes.some((type) =>
-        job.keyWords.some(
-          (keyword) => keyword.toLowerCase() === type.toLowerCase()
-        )
-      );
-
-    return (
-      matchesSearch &&
-      matchesCity &&
-      matchesDate &&
-      matchesKeywords &&
-      matchesContract
-    );
+    return matchesSearch && matchesCity;
   });
+  */
 
   // Handle job card click
-  const handleJobClick = (jobId: string) => {
+  const handleJobClick = (jobSlug: string) => {
     if (isDesktop) {
-      setSelectedJobId(jobId);
+      setSelectedJobId(jobSlug);
     } else {
-      router.push(`/annonce-details/${jobId}`);
+      router.push(`/annonce-details/${jobSlug}`);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold">Loading jobs...</h2>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-destructive">
+            Error loading jobs
+          </h2>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">Available Positions</h2>
         <span className="text-sm text-muted-foreground">
-          {filteredJobs.length} jobs found
+          {jobs?.length || 0} jobs found
         </span>
       </div>
 
       <div className="grid grid-cols-1 gap-4">
-        {filteredJobs.map((job) => (
+        {jobs?.map((job) => (
           <div
-            key={job.id}
-            onClick={() => handleJobClick(job.id)}
+            key={job.slug}
+            onClick={() => handleJobClick(job.slug)}
             className="cursor-pointer"
           >
-            <JobCard job={job} isSelected={job.id === selectedJobId} />
+            <JobCard job={job} isSelected={job.slug === selectedJobId} />
           </div>
         ))}
 
-        {filteredJobs.length === 0 && (
+        {!jobs?.length && (
           <div className="text-center p-8 border rounded-lg">
             <p className="text-muted-foreground">
               No jobs match your search criteria.
