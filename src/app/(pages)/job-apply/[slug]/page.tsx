@@ -2,7 +2,14 @@ import { JobApplyContainer } from "@/features/job-apply/components/JobApplyConta
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function JobApplyPage() {
+interface JobApplyPageProps {
+  params: Promise<{
+    slug: string;
+  }>;
+}
+export default async function JobApplyPage({ params }: JobApplyPageProps) {
+  const { slug } = await params;
+
   return (
     <Suspense
       fallback={
@@ -33,7 +40,7 @@ export default function JobApplyPage() {
         </div>
       }
     >
-      <JobApplyContainer />
+      <JobApplyContainer slug={slug} />
     </Suspense>
   );
 }

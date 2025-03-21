@@ -154,7 +154,7 @@ export function JobDetails() {
           )}
 
           <Button size="sm" className="w-full" asChild>
-            <Link href={`/job-apply?jobId=${job.uuid}`}>
+            <Link href={`/job-apply/${job.slug}`}>
               Postuler <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>

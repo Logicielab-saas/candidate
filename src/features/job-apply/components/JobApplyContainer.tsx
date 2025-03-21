@@ -25,7 +25,11 @@ import { MOCK_USER } from "@/core/mockData/user";
 // Using the same type as in MOCK_ANNONCES
 type JobDetails = (typeof MOCK_ANNONCES)[0];
 
-export function JobApplyContainer() {
+interface JobApplyContainerProps {
+  slug: string;
+}
+
+export function JobApplyContainer({ slug }: JobApplyContainerProps) {
   const { currentStep } = useJobApplyStore();
   const searchParams = useSearchParams();
   const [jobDetails, setJobDetails] = useState<JobDetails | null>(null);
