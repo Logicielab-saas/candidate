@@ -30,3 +30,4 @@ export * from "./languages.interface";
 export * from "./skills.interface";
 export * from "./cities.interface";
 export * from "./emplois.interface";
+export * from "./emplois-details.interface";

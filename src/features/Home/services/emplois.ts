@@ -1,11 +1,16 @@
 import { ApiError } from "next/dist/server/api-utils";
 import api from "@/lib/axios";
 import { AxiosError } from "axios";
-import type { Emplois } from "@/core/interfaces";
+import type { Emplois, EmploisDetails } from "@/core/interfaces";
 
-interface EmploisResponse {
+export interface EmploisResponse {
   message: string;
   emplois: Emplois[];
+}
+
+export interface EmploisDetailsResponse {
+  message: string;
+  emploi: EmploisDetails;
 }
 
 const endpoint = "/employee/emplois";
@@ -21,4 +26,9 @@ export async function fetchEmplois() {
     }
     throw error;
   }
+}
+
+export async function fetchEmploisBySlug(slug: string) {
+  const response = await api.get<EmploisDetailsResponse>(`${endpoint}/${slug}`);
+  return response.data;
 }

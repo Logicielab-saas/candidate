@@ -1,0 +1,31 @@
+export interface EmploisDetails {
+  uuid: string;
+  title: string;
+  description: string;
+  city_uuid: string;
+  city_name: string;
+  html_description: string;
+  company_uuid: string;
+  company_name: string;
+  slug: string;
+  employeesNum: number;
+  salaryType: string;
+  startPrice: string;
+  endPrice: string;
+  normalPrice: string;
+  expireDate: string;
+  workingDuration: number;
+  workingHours: number;
+  minWorkingHours: number;
+  maxWorkingHours: number;
+  durationType: string;
+  emploi_uuid: string;
+  saved: boolean;
+  applied: boolean;
+  emploi_categories: string[];
+  emploi_contracts: string[];
+  emploi_types: string[];
+  emploi_requirements: string[];
+  emploi_skills: string[];
+  emploi_questions: string[];
+}
