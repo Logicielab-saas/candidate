@@ -17,6 +17,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 import { useEmploisBySlug } from "@/features/Home/hooks/use-emplois";
 import { JobDescriptionPanel } from "./JobDescriptionPanel";
+import { useCurrentUser } from "@/features/candidature/(profile)/hooks/use-profile";
+import { AlreadyApplied } from "./AlreadyApplied";
 
 interface JobApplyContainerProps {
   slug: string;
@@ -24,8 +26,10 @@ interface JobApplyContainerProps {
 
 export function JobApplyContainer({ slug }: JobApplyContainerProps) {
   const { data: jobDetails, isLoading } = useEmploisBySlug(slug);
+  const { data: user, isLoading: isLoadingUser } = useCurrentUser();
   const { currentStep, setCurrentStep } = useJobApplyStore();
 
+  const IsFetching = isLoading || isLoadingUser;
   // Set initial step based on whether job has questions
   useEffect(() => {
     if (jobDetails) {
@@ -37,7 +41,7 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
 
   // Render the appropriate step component based on current step
   const renderStepContent = () => {
-    if (isLoading || !jobDetails) {
+    if (IsFetching || !jobDetails) {
       return <StepSkeleton />;
     }
 
@@ -45,13 +49,17 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
       case "questions":
         return <QuestionStep questions={jobDetails.emploi_questions} />;
       case "review":
-        return <ReviewStep jobDetails={jobDetails} />;
+        return <ReviewStep jobDetails={jobDetails} user={user!} />;
       default:
         return <div>Étape inconnue</div>;
     }
   };
 
-  if (!jobDetails && !isLoading) {
+  if (!IsFetching && jobDetails?.applied) {
+    return <AlreadyApplied jobDetails={jobDetails} />;
+  }
+
+  if (!jobDetails && !IsFetching) {
     return (
       <Card className="w-full max-w-4xl mx-auto p-8 flex items-center justify-center">
         <p className="text-lg text-muted-foreground">

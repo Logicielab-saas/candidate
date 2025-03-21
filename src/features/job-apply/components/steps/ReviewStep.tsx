@@ -2,7 +2,7 @@
  * ReviewStep - Final review and submission of job application
  *
  * Shows a summary of the application and handles submission
- * Includes user profile information, cover letter, and file upload
+ * Includes user profile information, resumes, cover letter, and file upload
  */
 
 "use client";
@@ -17,29 +17,31 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useJobApplyStore } from "@/features/job-apply/store/useJobApplyStore";
-import type { EmploisDetails } from "@/core/interfaces";
+import type { EmploisDetails, GetMeResponse } from "@/core/interfaces";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useApplyToJob } from "@/features/job-apply/hooks/use-job-apply";
-import { useCurrentUser } from "@/features/candidature/(profile)/hooks/use-profile";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { PencilIcon, FileIcon, UserIcon, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { PencilIcon, ImageIcon, UserIcon, AlertCircle } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { ResumeItem } from "@/components/shared/ResumeItem";
+import Image from "next/image";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface ReviewStepProps {
   jobDetails: EmploisDetails;
+  user: GetMeResponse;
 }
 
-export function ReviewStep({ jobDetails }: ReviewStepProps) {
+export function ReviewStep({ jobDetails, user }: ReviewStepProps) {
   const router = useRouter();
   const { questionsData } = useJobApplyStore();
   const { mutate: applyToJob, isPending } = useApplyToJob();
-  const { data: user, isLoading: isLoadingUser } = useCurrentUser();
   const [error, setError] = useState<string | null>(null);
   const [coverLetter, setCoverLetter] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async () => {
     try {
@@ -47,9 +49,11 @@ export function ReviewStep({ jobDetails }: ReviewStepProps) {
 
       // Create FormData for file upload
       const formData = new FormData();
-      formData.append("emploi_uuid", jobDetails.emploi_uuid);
-      formData.append("cover_letter", coverLetter);
-      if (file) {
+      formData.append("emploi_uuid", jobDetails.uuid);
+      formData.append("cover_letter", coverLetter || ""); // Ensure empty string if null
+
+      // Only append file if it exists and is valid
+      if (file instanceof File) {
         formData.append("file", file);
       }
 
@@ -70,29 +74,24 @@ export function ReviewStep({ jobDetails }: ReviewStepProps) {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      const selectedFile = e.target.files[0];
-      // Check file type
-      if (
-        selectedFile.type === "application/pdf" ||
-        selectedFile.type.startsWith("image/")
-      ) {
-        setFile(selectedFile);
-      } else {
-        setError("Veuillez sélectionner un fichier PDF ou une image");
-      }
+    const files = e.target.files;
+    if (!files?.length) return;
+
+    const selectedFile = files[0];
+    // Check file type
+    if (
+      selectedFile.type === "application/pdf" ||
+      selectedFile.type.startsWith("image/")
+    ) {
+      setFile(selectedFile);
+    } else {
+      setError("Veuillez sélectionner un fichier PDF ou une image");
+      e.target.value = "";
     }
   };
 
-  if (isLoadingUser) {
-    return (
-      <Card className="w-full max-w-4xl mx-auto p-8">
-        <div className="flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
-      </Card>
-    );
-  }
+  const hasResumes =
+    user?.resume?.resumeFiles && user.resume.resumeFiles.length > 0;
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
@@ -147,6 +146,29 @@ export function ReviewStep({ jobDetails }: ReviewStepProps) {
           </div>
         </div>
 
+        <Separator />
+
+        {/* Resume Section */}
+        <div className="space-y-4">
+          <ResumeItem
+            subtitle="Votre CV principal"
+            resumeFiles={user?.resume?.resumeFiles || []}
+            source="profile"
+          />
+          {hasResumes && (
+            <Alert>
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Information importante</AlertTitle>
+              <AlertDescription>
+                Tous vos CV seront envoyés avec votre candidature. Assurez-vous
+                qu&apos;ils sont à jour avant de soumettre.
+              </AlertDescription>
+            </Alert>
+          )}
+        </div>
+
+        <Separator />
+
         {/* Job Details Summary */}
         <div>
           <h3 className="font-semibold mb-2">Poste</h3>
@@ -158,38 +180,43 @@ export function ReviewStep({ jobDetails }: ReviewStepProps) {
           )}
         </div>
 
+        <Separator />
+
         {/* Questions Summary */}
         {jobDetails.emploi_questions?.length > 0 && (
-          <div>
-            <div className="flex items-center justify-between">
-              <h3 className="font-semibold mb-2">Réponses aux questions</h3>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-muted-foreground hover:text-foreground"
-                onClick={() => router.back()}
-              >
-                <PencilIcon className="h-4 w-4 mr-2" />
-                Modifier
-              </Button>
-            </div>
-            <div className="space-y-4">
-              {jobDetails.emploi_questions.map((question, index) => {
-                const answer = questionsData.answers.find(
-                  (a) => a.id === String(index)
-                )?.answer;
+          <>
+            <div>
+              <div className="flex items-center justify-between">
+                <h3 className="font-semibold mb-2">Réponses aux questions</h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-muted-foreground hover:text-foreground"
+                  onClick={() => router.back()}
+                >
+                  <PencilIcon className="h-4 w-4 mr-2" />
+                  Modifier
+                </Button>
+              </div>
+              <div className="space-y-4">
+                {jobDetails.emploi_questions.map((question, index) => {
+                  const answer = questionsData.answers.find(
+                    (a) => a.id === String(index)
+                  )?.answer;
 
-                return (
-                  <div key={index}>
-                    <p className="font-medium text-sm">{question}</p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {answer ? String(answer) : "Pas de réponse"}
-                    </p>
-                  </div>
-                );
-              })}
+                  return (
+                    <div key={index}>
+                      <p className="font-medium text-sm">{question}</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {answer ? String(answer) : "Pas de réponse"}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+            <Separator />
+          </>
         )}
 
         {/* Cover Letter */}
@@ -206,31 +233,81 @@ export function ReviewStep({ jobDetails }: ReviewStepProps) {
           />
         </div>
 
+        <Separator />
+
         {/* File Upload */}
         <div className="space-y-2">
-          <Label htmlFor="file">Document complémentaire (optionnel)</Label>
-          <div className="flex items-center gap-4">
-            <Input
-              id="file"
+          <Label>Document complémentaire (optionnel)</Label>
+          <div
+            role="button"
+            tabIndex={0}
+            className="border-2 border-dashed rounded-lg p-6 hover:border-primary/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            onClick={() => fileInputRef.current?.click()}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                fileInputRef.current?.click();
+              }
+            }}
+          >
+            <input
+              ref={fileInputRef}
               type="file"
+              className="hidden"
               onChange={handleFileChange}
               accept="application/pdf,image/*"
-              className={cn(
-                "file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0",
-                "file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground",
-                "hover:file:bg-primary/90"
-              )}
             />
-            {file && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <FileIcon className="h-4 w-4" />
-                {file.name}
+            {!file ? (
+              <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                <ImageIcon className="h-8 w-8" />
+                <p className="text-sm font-medium">
+                  Cliquez pour télécharger un document
+                </p>
+                <p className="text-xs">
+                  Formats acceptés : PDF, images (JPG, PNG)
+                </p>
+              </div>
+            ) : (
+              <div className="mt-4 grid grid-cols-1 gap-4">
+                <div className="group relative aspect-video rounded-lg overflow-hidden bg-muted">
+                  {file.type.startsWith("image/") ? (
+                    <Image
+                      src={URL.createObjectURL(file)}
+                      alt="Preview"
+                      className="object-cover"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full">
+                      <ImageIcon className="h-16 w-16 text-muted-foreground" />
+                    </div>
+                  )}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/50">
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      className="h-8"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setFile(null);
+                        if (fileInputRef.current) {
+                          fileInputRef.current.value = "";
+                        }
+                      }}
+                    >
+                      Supprimer
+                    </Button>
+                  </div>
+                </div>
+                <p className="text-sm text-center text-muted-foreground">
+                  {file.name}
+                </p>
               </div>
             )}
           </div>
-          <p className="text-xs text-muted-foreground">
-            Formats acceptés : PDF, images (JPG, PNG)
-          </p>
         </div>
 
         {error && <p className="text-sm text-destructive mt-2">{error}</p>}
