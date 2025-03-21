@@ -60,13 +60,13 @@ export function JobCard({ job, isSelected }: JobCardProps) {
               {skills.map((skill, index) => (
                 <span
                   key={index}
-                  onClick={(e) => handleKeywordClick(e, skill.name)}
+                  onClick={(e) => handleKeywordClick(e, skill)}
                   className={cn(
                     spanBadgeStyle,
                     "cursor-pointer hover:bg-secondary/50 transition-colors"
                   )}
                 >
-                  {skill.name}
+                  {skill}
                 </span>
               ))}
             </div>
@@ -81,7 +81,7 @@ export function JobCard({ job, isSelected }: JobCardProps) {
                     "bg-primary/10 text-primary hover:bg-primary/20"
                   )}
                 >
-                  {contract.name}
+                  {contract}
                 </span>
               ))}
             </div>

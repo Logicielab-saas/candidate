@@ -1,5 +1,3 @@
-import { Skills } from "./skills.interface";
-
 export interface Emplois {
   uuid: string;
   title: string;
@@ -10,9 +8,9 @@ export interface Emplois {
   company_logo: string;
   postule: number;
   views: number;
-  type: EmploisTypes[];
-  skills: Skills[];
-  contracts: EmploisContracts[];
+  type: string[];
+  skills: string[];
+  contracts: string[];
   saved: boolean;
   applied: boolean;
 }
