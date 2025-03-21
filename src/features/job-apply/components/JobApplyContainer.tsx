@@ -15,7 +15,7 @@ import { ReviewStep } from "./steps/ReviewStep";
 import { useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
-import { useEmploisBySlug } from "@/features/Home/hooks/use-emplois";
+import { useEmploisBySlug } from "@/features/Emplois/hooks/use-emplois";
 import { JobDescriptionPanel } from "./JobDescriptionPanel";
 import { useCurrentUser } from "@/features/candidature/(profile)/hooks/use-profile";
 import { AlreadyApplied } from "./AlreadyApplied";

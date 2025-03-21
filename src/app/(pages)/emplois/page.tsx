@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import { HomeHeader } from "@/features/Home/components/HomeHeader";
-import { JobsContainer } from "@/features/Home/components/JobsContainer";
+import { HomeHeader } from "@/features/Emplois/components/HomeHeader";
+import { JobsContainer } from "@/features/Emplois/components/JobsContainer";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 

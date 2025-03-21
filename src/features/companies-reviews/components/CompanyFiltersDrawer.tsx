@@ -28,7 +28,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { useState } from "react";
-import { CitySelector } from "@/features/Home/components/CitySelector";
+import { CitySelector } from "@/features/Emplois/components/CitySelector";
 import { IndustrySelector } from "./IndustrySelector";
 
 // Default values

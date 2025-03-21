@@ -12,12 +12,12 @@
 "use client";
 
 import { mockJobsList } from "@/core/mockData/jobs-list";
-import { JobCard } from "@/features/Home/components/JobCard";
+import { JobCard } from "@/features/Emplois/components/JobCard";
 import { useRouter } from "next/navigation";
 import { CompanyDetails } from "@/core/interfaces";
 import { useState } from "react";
-import { SearchInput } from "@/features/Home/components/SearchInput";
-import { CitySelector } from "@/features/Home/components/CitySelector";
+import { SearchInput } from "@/features/Emplois/components/SearchInput";
+import { CitySelector } from "@/features/Emplois/components/CitySelector";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";

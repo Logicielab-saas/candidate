@@ -1,7 +1,7 @@
 "use client";
 
 import { useToast } from "@/hooks/use-toast";
-import { useEmploisBySlug } from "@/features/Home/hooks/use-emplois";
+import { useEmploisBySlug } from "@/features/Emplois/hooks/use-emplois";
 import LoaderOne from "@/components/ui/loader-one";
 import { AnnonceHeader } from "./AnnonceHeader";
 import { AnnonceDescription } from "./AnnonceDescription";
