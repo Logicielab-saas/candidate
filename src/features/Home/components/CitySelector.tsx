@@ -27,6 +27,7 @@ import { useQueryState } from "nuqs";
 import { useState, useEffect } from "react";
 import { useDebounce } from "use-debounce";
 import { useCities } from "@/hooks/use-cities";
+import LoaderOne from "@/components/ui/loader-one";
 
 // Define props interface to expose city value and setter
 interface CitySelectorProps {
@@ -102,7 +103,7 @@ export function CitySelector({
             <CommandList>
               {isLoading ? (
                 <div className="flex items-center justify-center py-6">
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <LoaderOne />
                 </div>
               ) : filteredCities.length === 0 ? (
                 <CommandEmpty>Aucune ville trouvée.</CommandEmpty>

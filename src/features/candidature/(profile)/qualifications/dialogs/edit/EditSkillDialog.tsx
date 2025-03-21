@@ -56,8 +56,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import LoaderOne from "@/components/ui/loader-one";
 
 const formSchema = z.object({
   skill_uuid: z.string({
@@ -153,7 +154,7 @@ export function EditSkillDialog({
                         >
                           {selectedSkill?.name ?? "Select skill..."}
                           {isLoading ? (
-                            <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                            <LoaderOne />
                           ) : (
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           )}

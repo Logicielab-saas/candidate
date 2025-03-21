@@ -20,7 +20,6 @@ import {
   MoreVertical,
   Download,
   Trash2,
-  Loader2,
   File,
   Upload,
 } from "lucide-react";
@@ -213,7 +212,7 @@ export function ResumeItem({
 
           {isLoading && selectedFileUuid === file.uuid ? (
             <div className="flex items-center gap-2">
-              <Loader2 className="h-4 w-4 animate-spin" />
+              <LoaderOne />
               <span className="text-sm text-muted-foreground">
                 {isUploading ? "Uploading..." : "Deleting..."}
               </span>

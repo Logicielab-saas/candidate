@@ -11,12 +11,12 @@
 
 "use client";
 
-import { Loader2, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "use-debounce";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-
+import LoaderOne from "@/components/ui/loader-one";
 interface SearchCoursesProps {
   value: string | null;
   onSearch: (search: string | null) => void;
@@ -55,7 +55,7 @@ export function SearchCourses({ value, onSearch }: SearchCoursesProps) {
         />
         <div className="absolute right-4 top-3 flex h-6 w-6 items-center justify-center">
           {isLoading ? (
-            <Loader2 className="h-5 w-5 animate-spin text-primaryHex-500" />
+            <LoaderOne />
           ) : (
             <Search
               className={cn(

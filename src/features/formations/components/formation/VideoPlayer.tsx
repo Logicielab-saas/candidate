@@ -14,7 +14,6 @@
 import { useRef, Suspense } from "react";
 import dynamic from "next/dynamic";
 import {
-  Loader2,
   MoreVertical,
   Play,
   Pause,
@@ -43,13 +42,14 @@ import {
 } from "@/features/formations/hooks/use-video-player";
 import { useVideoControls } from "@/features/formations/hooks/use-video-controls";
 import { useFullscreen } from "@/features/formations/hooks/use-fullscreen";
+import LoaderOne from "@/components/ui/loader-one";
 
 // Dynamically import ReactPlayer with no SSR to avoid hydration issues
 const ReactPlayerComponent = dynamic(() => import("react-player/lazy"), {
   ssr: false,
   loading: () => (
     <div className="flex h-full w-full items-center justify-center bg-black">
-      <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      <LoaderOne />
     </div>
   ),
 });
@@ -113,7 +113,7 @@ export function VideoPlayer({ videoUrl, startAt = 0 }: VideoPlayerProps) {
         <Suspense
           fallback={
             <div className="flex h-full w-full items-center justify-center">
-              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+              <LoaderOne />
             </div>
           }
         >

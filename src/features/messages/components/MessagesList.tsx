@@ -9,7 +9,7 @@
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
-import { Search, Loader2, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -33,7 +33,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useDebouncedCallback } from "use-debounce";
 import { useQueryState, parseAsString } from "nuqs";
-
+import LoaderOne from "@/components/ui/loader-one";
 interface Status {
   id: string;
   label: string;
@@ -223,9 +223,7 @@ export function MessagesList({
               className="h-8 pl-8 pr-16"
             />
             <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
-              {isSearching && (
-                <Loader2 className="h-4 w-4 animate-spin text-primaryHex-500" />
-              )}
+              {isSearching && <LoaderOne />}
               {localQuery && !isSearching && (
                 <Button
                   variant="ghost"

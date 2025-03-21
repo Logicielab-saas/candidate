@@ -8,11 +8,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { File, Image as ImageIcon, Loader2, Paperclip, X } from "lucide-react";
+import { File, Image as ImageIcon, Paperclip, X } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
+import LoaderOne from "../ui/loader-one";
 
 interface FileWithPreview extends File {
   preview?: string;
@@ -328,7 +329,7 @@ export function UploadDialog({
             disabled={selectedFiles.length === 0 || isUploading}
             className="gap-2"
           >
-            {isUploading && <Loader2 className="h-4 w-4 animate-spin" />}
+            {isUploading && <LoaderOne />}
             {isUploading ? "Envoi en cours..." : "Envoyer"}
           </Button>
         </DialogFooter>
