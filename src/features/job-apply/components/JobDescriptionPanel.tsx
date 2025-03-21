@@ -7,7 +7,6 @@
 
 "use client";
 
-import { MOCK_ANNONCES } from "@/core/mockData/annonces";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -18,129 +17,92 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
-import { ContractType } from "@/core/enums/contract-type.enum";
-import {
-  formatSalary,
-  formatSchedule,
-  formatDuration,
-} from "@/core/utils/format-annonce-details";
 import { Separator } from "@/components/ui/separator";
 import parse from "html-react-parser";
 import DOMPurify from "isomorphic-dompurify";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
-// Using the same type as in MOCK_ANNONCES
-type JobDetails = (typeof MOCK_ANNONCES)[0];
+import { EmploisDetails } from "@/core/interfaces";
 
 interface JobDescriptionPanelProps {
-  jobDetails: JobDetails;
+  jobDetails: EmploisDetails;
 }
 
 export function JobDescriptionPanel({ jobDetails }: JobDescriptionPanelProps) {
-  const {
-    baseInformation,
-    jobTypeInformation,
-    salaryInformation,
-    description,
-    preferences,
-  } = jobDetails;
-
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLongDescription, setIsLongDescription] = useState(false);
 
   // Clean HTML content for safe rendering
-  const cleanDescription = DOMPurify.sanitize(description);
+  const cleanDescription = DOMPurify.sanitize(
+    jobDetails.html_description || ""
+  );
 
   // Check if description is long (more than 300 characters)
   useEffect(() => {
-    // Using a simple heuristic - if the description has more than 500 characters
-    // This could be improved to check actual rendered height
     setIsLongDescription(cleanDescription.length > 500);
   }, [cleanDescription]);
-
-  // Format contract types manually since the utility doesn't handle this specific case
-  const formatContractTypes = () => {
-    return jobTypeInformation.contractTypes
-      .map((type) => {
-        switch (type) {
-          case ContractType.FULL_TIME:
-            return "Full-time";
-          case ContractType.PART_TIME:
-            return "Part-time";
-          case ContractType.CDI:
-            return "CDI";
-          case ContractType.CDD:
-            return "CDD";
-          case ContractType.INTERNSHIP:
-            return "Internship";
-          case ContractType.FREELANCE:
-            return "Freelance";
-          default:
-            return type;
-        }
-      })
-      .join(", ");
-  };
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
+  // Format salary range
+  const formatSalary = () => {
+    if (jobDetails.startPrice && jobDetails.endPrice) {
+      return `${jobDetails.startPrice} - ${jobDetails.endPrice} MAD`;
+    }
+    if (jobDetails.normalPrice) {
+      return `${jobDetails.normalPrice} MAD`;
+    }
+    return "Non spécifié";
+  };
+
   return (
     <Card className="sticky top-4 overflow-auto max-h-[calc(100vh-8rem)]">
       <CardHeader className="pb-2">
-        <CardTitle className="text-xl font-bold">
-          {baseInformation.jobTitle}
-        </CardTitle>
+        <CardTitle className="text-xl font-bold">{jobDetails.title}</CardTitle>
         <div className="flex flex-wrap gap-1 mt-1 text-sm text-muted-foreground">
+          {jobDetails.city_name && (
+            <>
+              <div className="flex items-center gap-1">
+                <MapPin className="h-3.5 w-3.5" />
+                <span className="capitalize">{jobDetails.city_name}</span>
+              </div>
+              <span>•</span>
+            </>
+          )}
           <div className="flex items-center gap-1">
-            <MapPin className="h-3.5 w-3.5" />
-            <span className="capitalize">
-              {baseInformation.promotionLocation}
+            <Briefcase className="h-3.5 w-3.5" />
+            <span>
+              {jobDetails.emploi_contracts
+                .map((contract) => contract.name.toUpperCase())
+                .join(", ")}
             </span>
           </div>
           <span>•</span>
           <div className="flex items-center gap-1">
-            <Briefcase className="h-3.5 w-3.5" />
-            <span>{formatContractTypes()}</span>
-          </div>
-          <span>•</span>
-          <div className="flex items-center gap-1">
             <Clock className="h-3.5 w-3.5" />
-            <span>{formatSalary(salaryInformation)}</span>
+            <span>{formatSalary()}</span>
           </div>
         </div>
 
         {/* Additional details */}
         <div className="flex flex-wrap gap-2 mt-2">
-          {jobTypeInformation.partTimeDetails && (
-            <Badge variant="outline" className="text-xs">
-              {formatSchedule(jobTypeInformation)}
+          {jobDetails.emploi_types.map((type) => (
+            <Badge key={type.uuid} variant="outline" className="text-xs">
+              {type.title}
             </Badge>
-          )}
+          ))}
 
-          {jobTypeInformation.cddDetails && (
-            <Badge variant="outline" className="text-xs">
-              {formatDuration(jobTypeInformation)}
-            </Badge>
-          )}
-
-          {jobTypeInformation.internshipDetails && (
-            <Badge variant="outline" className="text-xs">
-              {formatDuration(jobTypeInformation)}
-            </Badge>
-          )}
-
-          {preferences.hasDeadline && preferences.deadline && (
+          {jobDetails.expireDate && (
             <Badge
               variant="outline"
               className="text-xs flex items-center gap-1"
             >
               <Calendar className="h-3 w-3" />
               Postuler avant le{" "}
-              {new Date(preferences.deadline).toLocaleDateString()}
+              {new Date(jobDetails.expireDate).toLocaleDateString()}
             </Badge>
           )}
         </div>

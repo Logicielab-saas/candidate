@@ -1,83 +1,49 @@
 /**
  * JobApplyContainer - Main container for the job application process
  *
- * Manages the multi-step form flow for job applications
- * Renders the appropriate step component based on current step
- * Displays job details on the right side for reference
+ * Manages the simplified application flow:
+ * - Shows questions step if job has questions
+ * - Shows review step for final submission
  */
 
 "use client";
 
 import { useJobApplyStore } from "../store/useJobApplyStore";
 import { StepIndicator } from "./StepIndicator";
-import { ResumeStep } from "./steps/ResumeStep";
-import { PersonalInfoStep } from "./steps/PersonalInfoStep";
 import { QuestionStep } from "./steps/questions/QuestionStep";
 import { ReviewStep } from "./steps/ReviewStep";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
-import { useSearchParams } from "next/navigation";
-import { MOCK_ANNONCES } from "@/core/mockData/annonces";
+import { useEmploisBySlug } from "@/features/Home/hooks/use-emplois";
 import { JobDescriptionPanel } from "./JobDescriptionPanel";
-import { MOCK_USER } from "@/core/mockData/user";
-
-// Using the same type as in MOCK_ANNONCES
-type JobDetails = (typeof MOCK_ANNONCES)[0];
 
 interface JobApplyContainerProps {
   slug: string;
 }
 
 export function JobApplyContainer({ slug }: JobApplyContainerProps) {
-  const { currentStep } = useJobApplyStore();
-  const searchParams = useSearchParams();
-  const [jobDetails, setJobDetails] = useState<JobDetails | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: jobDetails, isLoading } = useEmploisBySlug(slug);
+  const { currentStep, setCurrentStep } = useJobApplyStore();
 
-  // Fetch job details based on jobId query parameter
+  // Set initial step based on whether job has questions
   useEffect(() => {
-    const jobId = searchParams.get("jobId");
-
-    if (jobId) {
-      // Find the job in MOCK_ANNONCES
-      const job = MOCK_ANNONCES.find((job) => job.id === jobId);
-
-      if (job) {
-        setJobDetails(job);
-      }
+    if (jobDetails) {
+      setCurrentStep(
+        jobDetails.emploi_questions?.length > 0 ? "questions" : "review"
+      );
     }
-
-    setIsLoading(false);
-  }, [searchParams]);
+  }, [jobDetails, setCurrentStep]);
 
   // Render the appropriate step component based on current step
   const renderStepContent = () => {
-    if (isLoading) {
+    if (isLoading || !jobDetails) {
       return <StepSkeleton />;
     }
 
-    if (!jobDetails) {
-      return (
-        <Card className="w-full max-w-4xl mx-auto p-8 flex items-center justify-center">
-          <p className="text-lg text-muted-foreground">
-            Offre d&apos;emploi introuvable. Veuillez vérifier l&apos;URL et
-            réessayer.
-          </p>
-        </Card>
-      );
-    }
-
-    // Check if CV is required for this job
-    const isCVRequired = jobDetails.preferences?.requireResume ?? true;
-
     switch (currentStep) {
-      case "resume":
-        return <ResumeStep isCVRequired={isCVRequired} />;
-      case "personal-info":
-        return <PersonalInfoStep />;
       case "questions":
-        return <QuestionStep questions={jobDetails.questions} />;
+        return <QuestionStep questions={jobDetails.emploi_questions} />;
       case "review":
         return <ReviewStep jobDetails={jobDetails} />;
       default:
@@ -85,19 +51,25 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
     }
   };
 
+  if (!jobDetails && !isLoading) {
+    return (
+      <Card className="w-full max-w-4xl mx-auto p-8 flex items-center justify-center">
+        <p className="text-lg text-muted-foreground">
+          Offre d&apos;emploi introuvable. Veuillez vérifier l&apos;URL et
+          réessayer.
+        </p>
+      </Card>
+    );
+  }
+
   return (
     <div className="container py-8 max-w-7xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-center mb-2">
           {jobDetails ? (
             <>
-              Bonjour <span className="text-primary">{MOCK_USER.name},</span>{" "}
-              <div className="mt-1">
-                Postuler pour:{" "}
-                <span className="text-primary">
-                  {jobDetails.baseInformation.jobTitle}
-                </span>
-              </div>
+              Postuler pour:{" "}
+              <span className="text-primary">{jobDetails.title}</span>
             </>
           ) : (
             "Postuler pour un emploi"
@@ -108,7 +80,7 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
         </p>
       </div>
 
-      <StepIndicator />
+      {jobDetails && <StepIndicator jobDetails={jobDetails} />}
 
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Main content - form steps */}

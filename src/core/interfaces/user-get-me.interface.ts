@@ -1,3 +1,11 @@
+import {
+  ResumeCertifications,
+  ResumeEducation,
+  ResumeExperience,
+  ResumeFile,
+  ResumeLanguage,
+} from ".";
+import { ResumeProject } from "./resume-project.interface";
 import { ResumeSkill } from "./resume-skill.interface";
 
 export interface GetMeResponse {
@@ -6,6 +14,8 @@ export interface GetMeResponse {
   type: "recruiter" | "employee";
   device_name: string;
   name: string;
+  first_name: string | null;
+  last_name: string | null;
   token: string;
   refresh_token: string | null;
   device_uuid: string;
@@ -17,12 +27,12 @@ export interface GetMeResponse {
   resume: {
     uuid: string;
     description: string | null;
-    resumeEducations: []; // TODO: Define a more Education type if available
-    resumeExperiences: []; // TODO: Define a more Experience type if available
-    resumeProjects: []; // TODO: Define a more Project type if available
-    resumeCertifications: []; // TODO: Define a more Certification type if available
-    resumeLanguages: []; // TODO: Define a more Language type if available
-    resumeFiles: []; // TODO: Define a more File type if available
+    resumeEducations: ResumeEducation[];
+    resumeExperiences: ResumeExperience[];
+    resumeProjects: ResumeProject[];
+    resumeCertifications: ResumeCertifications[];
+    resumeLanguages: ResumeLanguage[];
+    resumeFiles: ResumeFile[];
     skills: ResumeSkill[];
   };
 }

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getProfile, updateProfile } from "../services/profile";
+import { getCurrentUser, getProfile, updateProfile } from "../services/profile";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "../qualifications/hooks/use-profile-resume";
 
@@ -12,6 +12,13 @@ export function useProfile() {
   return useQuery({
     queryKey: profileKeys.me(),
     queryFn: getProfile,
+  });
+}
+
+export function useCurrentUser() {
+  return useQuery({
+    queryKey: profileKeys.me(),
+    queryFn: getCurrentUser,
   });
 }
 
