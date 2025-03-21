@@ -105,7 +105,6 @@ export function QualificationsContainer() {
       <QualificationSection>
         <div className="border p-4 rounded-lg shadow-sm">
           <ResumeItem
-            title="My CV"
             subtitle="PDF format, max 2MB"
             type="custom"
             resumeFiles={resume?.resume?.resumeFiles}

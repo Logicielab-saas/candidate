@@ -36,14 +36,14 @@ export function AlreadyApplied({ jobDetails }: AlreadyAppliedProps) {
           <h2 className="text-2xl font-semibold">Candidature déjà envoyée</h2>
           <p className="text-muted-foreground max-w-md">
             Vous avez déjà postulé pour le poste de{" "}
-            <span className="font-medium text-foreground">
+            <span className="font-medium text-primaryHex-700">
               {jobDetails.title}
             </span>
             {jobDetails.company_name && (
               <>
                 {" "}
                 chez{" "}
-                <span className="font-medium text-foreground">
+                <span className="font-medium text-primaryHex-700">
                   {jobDetails.company_name}
                 </span>
               </>
