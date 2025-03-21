@@ -50,7 +50,7 @@ export function JobDetails() {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isNotInterestedOpen, setIsNotInterestedOpen] = useState(false);
   const [isSignalerOpen, setIsSignalerOpen] = useState(false);
-  const [jobId, setJobId] = useQueryState("jobId");
+  const [jobId, setJobId] = useQueryState("job");
   const { markAsNotInterested } = useNotInterestedStore();
   const { toast } = useToast();
 

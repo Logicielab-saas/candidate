@@ -23,7 +23,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export function JobsContainer() {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
-  const [, setJobId] = useQueryState("jobId");
+  const [, setJobId] = useQueryState("job");
   const [searchText] = useQueryState("q");
   const [selectedCity] = useQueryState("city");
   const [keywords] = useQueryState("keyword");

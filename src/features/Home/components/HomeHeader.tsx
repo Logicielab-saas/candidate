@@ -33,7 +33,7 @@ export function HomeHeader() {
   const [, setUrlCity] = useQueryState("city", {
     history: "push",
   });
-  const [, setJobId] = useQueryState("jobId");
+  const [, setJobId] = useQueryState("job");
 
   // Handle search button click
   const handleSearch = () => {
