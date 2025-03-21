@@ -1,3 +1,8 @@
+interface Requirement {
+  uuid: string;
+  requirement: string;
+}
+
 export interface EmploisDetails {
   uuid: string;
   title: string;
@@ -25,7 +30,7 @@ export interface EmploisDetails {
   emploi_categories: string[];
   emploi_contracts: string[];
   emploi_types: string[];
-  emploi_requirements: string[];
+  emploi_requirements: Requirement[];
   emploi_skills: string[];
   emploi_questions: string[];
 }

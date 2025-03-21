@@ -14,6 +14,7 @@ import { useQueryState } from "nuqs";
 import { JobCard } from "./JobCard";
 import { useRouter } from "next/navigation";
 import { useEmplois } from "../hooks/use-emplois";
+import LoaderOne from "@/components/ui/loader-one";
 
 interface JobsListProps {
   isDesktop: boolean;
@@ -58,8 +59,10 @@ export function JobsList({ isDesktop }: JobsListProps) {
   if (isLoading) {
     return (
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold">Loading jobs...</h2>
+        <div className="flex items-center justify-center h-[300px]">
+          <h2 className="text-xl font-semibold">
+            <LoaderOne />
+          </h2>
         </div>
       </div>
     );
