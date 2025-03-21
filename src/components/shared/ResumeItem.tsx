@@ -149,12 +149,21 @@ export function ResumeItem({
 
   const isLoading = isUploading || isDeleting;
 
-  // Helper function to get file URL based on source
+  // Helper function to get file URL based on source and file type
   const getFileUrl = (file: ResumeFile | Files | ProfileFiles) => {
     if (source === "profile") {
       return (file as ProfileFiles).file;
     }
-    return (file as ResumeFile).file_url;
+    // Check for Files type first (from API response)
+    if ("url_file" in file) {
+      return (file as Files).url_file;
+    }
+    // Then check for ResumeFile type
+    if ("file_url" in file) {
+      return (file as ResumeFile).file_url;
+    }
+    // Fallback to file property if exists
+    return (file as { file: string }).file;
   };
 
   return (

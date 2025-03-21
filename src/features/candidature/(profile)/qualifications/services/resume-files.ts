@@ -47,3 +47,8 @@ export async function deleteResumeFiles(uuid: string) {
     throw error;
   }
 }
+
+export async function fetchResumeFiles() {
+  const response = await api.get<FilesResponse>(endpoint);
+  return response.data;
+}

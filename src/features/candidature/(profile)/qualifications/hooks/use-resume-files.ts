@@ -3,8 +3,12 @@
  * Provides mutations for creating, updating, and deleting files
  */
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { handleResumeFiles, deleteResumeFiles } from "../services/resume-files";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  handleResumeFiles,
+  deleteResumeFiles,
+  fetchResumeFiles,
+} from "../services/resume-files";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
 import { profileKeys } from "../../hooks/use-profile";
@@ -121,4 +125,13 @@ export function useUpdateResumeFiles() {
   });
 
   return { mutate, isPending };
+}
+
+export function useFetchResumeFiles() {
+  const { data, isLoading, error } = useQuery({
+    queryKey: PROFILE_RESUME_QUERY_KEY,
+    queryFn: fetchResumeFiles,
+  });
+
+  return { data, isLoading, error };
 }
