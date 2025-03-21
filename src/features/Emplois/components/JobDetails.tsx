@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useEmploisBySlug } from "../hooks/use-emplois";
 import LoaderOne from "@/components/ui/loader-one";
+import { Badge } from "@/components/ui/badge";
 
 export function JobDetails() {
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -54,7 +55,9 @@ export function JobDetails() {
     });
   };
 
-  const sanitizedHTML = DOMPurify.sanitize(job?.html_description || "");
+  const sanitizedHTML = job?.html_description
+    ? DOMPurify.sanitize(job.html_description)
+    : "";
 
   if (isLoading) {
     return (
@@ -76,6 +79,32 @@ export function JobDetails() {
     );
   }
 
+  // Format salary based on type and available values
+  const formatSalary = () => {
+    if (job.salaryType === "range" && job.startPrice && job.endPrice) {
+      return `${job.startPrice} - ${job.endPrice} MAD`;
+    }
+    if (job.normalPrice) {
+      return `${job.normalPrice} MAD`;
+    }
+    return "Non spécifié";
+  };
+
+  // Format working hours
+  const formatWorkingHours = () => {
+    if (job.minWorkingHours && job.maxWorkingHours) {
+      return `${job.minWorkingHours}-${job.maxWorkingHours}h${
+        job.durationType ? `/${job.durationType}` : ""
+      }`;
+    }
+    if (job.workingHours) {
+      return `${job.workingHours}h${
+        job.durationType ? `/${job.durationType}` : ""
+      }`;
+    }
+    return "Non spécifié";
+  };
+
   return (
     <Card className="sticky top-14">
       <CardHeader>
@@ -84,11 +113,19 @@ export function JobDetails() {
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-2">
               <h2 className="text-2xl font-bold leading-tight">{job.title}</h2>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Building2 className="h-4 w-4" />
-                <span className="font-medium">{job.company_name}</span>
-                <MapPin className="h-4 w-4" />
-                <span className="font-medium">{job.city_name}</span>
+              <div className="flex flex-wrap items-center gap-2 text-muted-foreground">
+                {job.company_name && (
+                  <div className="flex items-center gap-1">
+                    <Building2 className="h-4 w-4" />
+                    <span className="font-medium">{job.company_name}</span>
+                  </div>
+                )}
+                {job.city_name && (
+                  <div className="flex items-center gap-1">
+                    <MapPin className="h-4 w-4" />
+                    <span className="font-medium">{job.city_name}</span>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -122,26 +159,32 @@ export function JobDetails() {
 
           {/* Key Information */}
           <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-1.5">
-              <Users className="h-4 w-4" />
-              <span>{job.employeesNum} poste(s)</span>
-            </div>
+            {job.employeesNum && (
+              <div className="flex items-center gap-1.5">
+                <Users className="h-4 w-4" />
+                <span>{job.employeesNum} poste(s)</span>
+              </div>
+            )}
             <div className="flex items-center gap-1.5">
               <Clock className="h-4 w-4" />
-              <span>
-                {job.minWorkingHours}-{job.maxWorkingHours}h/{job.durationType}
-              </span>
+              <span>{formatWorkingHours()}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Euro className="h-4 w-4" />
-              <span>
-                {job.salaryType === "range"
-                  ? `${job.startPrice}€ - ${job.endPrice}€`
-                  : `${job.normalPrice}€`}
-                /{job.durationType}
-              </span>
+              <span>{formatSalary()}</span>
             </div>
           </div>
+
+          {/* Contract Types */}
+          {job.emploi_contracts.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {job.emploi_contracts.map((contract) => (
+                <Badge key={contract.uuid} variant="secondary">
+                  {contract.name}
+                </Badge>
+              ))}
+            </div>
+          )}
 
           {/* Deadline if exists */}
           {job.expireDate && (
@@ -153,9 +196,10 @@ export function JobDetails() {
             </div>
           )}
 
-          <Button size="sm" className="w-full" asChild>
+          <Button size="sm" className="w-full" asChild disabled={job.applied}>
             <Link href={`/job-apply/${job.slug}`}>
-              Postuler <ArrowRight className="h-4 w-4" />
+              {job.applied ? "Déjà postulé" : "Postuler"}{" "}
+              <ArrowRight className="h-4 w-4 ml-2" />
             </Link>
           </Button>
         </div>
@@ -168,7 +212,7 @@ export function JobDetails() {
           {/* Description */}
           <div>
             <h3 className="font-semibold mb-2">Description du poste</h3>
-            <div className="text-sm text-muted-foreground leading-relaxed prose prose-sm max-w-none">
+            <div className="text-sm text-muted-foreground leading-relaxed prose prose-sm max-w-none dark:prose-invert">
               {parse(sanitizedHTML)}
             </div>
           </div>
@@ -179,43 +223,44 @@ export function JobDetails() {
               <h3 className="font-semibold mb-2">Prérequis</h3>
               <ul className="list-disc list-inside text-sm text-muted-foreground space-y-2">
                 {job.emploi_requirements.map((req) => (
-                  <li key={req.uuid}>{req.requirement}</li>
+                  <li key={req.requirement}>{req.requirement}</li>
                 ))}
               </ul>
             </div>
           )}
 
-          {/* Skills */}
+          {/* Skills
           {job.emploi_skills.length > 0 && (
             <div>
               <h3 className="font-semibold mb-2">Compétences requises</h3>
               <div className="flex flex-wrap gap-2">
                 {job.emploi_skills.map((skill) => (
-                  <span
-                    key={skill}
-                    className={cn(
-                      "px-2.5 py-0.5 rounded-full text-xs",
-                      "bg-secondary text-secondary-foreground"
-                    )}
-                  >
-                    {skill}
-                  </span>
+                  <Badge key={skill.uuid} variant="outline">
+                    {skill.resumeskill_name}
+                  </Badge>
                 ))}
               </div>
             </div>
           )}
-
-          {/* Questions */}
+*/}
+          {/* Questions Preview
           {job.emploi_questions.length > 0 && (
             <div>
               <h3 className="font-semibold mb-2">Questions de candidature</h3>
-              <ul className="list-disc list-inside text-sm text-muted-foreground space-y-2">
+              <div className="space-y-3">
                 {job.emploi_questions.map((question) => (
-                  <li key={question}>{question}</li>
+                  <div key={question.uuid} className="text-sm">
+                    <p className="font-medium">{question.title}</p>
+                    {question.description && (
+                      <p className="text-muted-foreground mt-1">
+                        {question.description}
+                      </p>
+                    )}
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
-          )}
+          )} */}
         </div>
       </CardContent>
     </Card>

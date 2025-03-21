@@ -68,7 +68,7 @@ export function SuccessScreen() {
                 className="flex flex-col sm:flex-row justify-center gap-4 w-full max-w-md mt-4"
               >
                 <Button variant="outline" className="w-full sm:w-1/2" asChild>
-                  <Link href="/home">
+                  <Link href="/emplois">
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Retour aux offres
                   </Link>

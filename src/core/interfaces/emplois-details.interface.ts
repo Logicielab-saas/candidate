@@ -1,6 +1,7 @@
 import type {
   EmploisCategories,
   EmploisContracts,
+  EmploisQuestions,
   EmploisTypes,
 } from "./emplois.interface";
 
@@ -38,6 +39,6 @@ export interface EmploisDetails {
   emploi_contracts: EmploisContracts[];
   emploi_types: EmploisTypes[];
   emploi_requirements: Requirement[];
-  emploi_skills: string[];
-  emploi_questions: string[];
+  emploi_skills: { uuid: string; resumeskill_name: string }[];
+  emploi_questions: EmploisQuestions[];
 }

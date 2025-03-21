@@ -60,7 +60,7 @@ export function ReviewStep({ jobDetails, user }: ReviewStepProps) {
       // Submit application
       applyToJob(formData, {
         onSuccess: () => {
-          router.push("/jobs");
+          router.push("/emplois");
         },
         onError: (error: Error) => {
           setError(error.message);
@@ -199,14 +199,14 @@ export function ReviewStep({ jobDetails, user }: ReviewStepProps) {
                 </Button>
               </div>
               <div className="space-y-4">
-                {jobDetails.emploi_questions.map((question, index) => {
+                {jobDetails.emploi_questions.map((question) => {
                   const answer = questionsData.answers.find(
-                    (a) => a.id === String(index)
+                    (a) => a.id === question.uuid
                   )?.answer;
 
                   return (
-                    <div key={index}>
-                      <p className="font-medium text-sm">{question}</p>
+                    <div key={question.uuid}>
+                      <p className="font-medium text-sm">{question.title}</p>
                       <p className="text-sm text-muted-foreground mt-1">
                         {answer ? String(answer) : "Pas de réponse"}
                       </p>
@@ -316,7 +316,7 @@ export function ReviewStep({ jobDetails, user }: ReviewStepProps) {
       <CardFooter className="flex justify-end gap-4">
         <Button
           variant="outline"
-          onClick={() => router.push("/jobs")}
+          onClick={() => router.push("/emplois")}
           disabled={isPending}
         >
           Annuler

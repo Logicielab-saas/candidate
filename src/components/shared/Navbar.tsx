@@ -47,7 +47,7 @@ import { usePathname } from "next/navigation";
 //   className?: string;
 // }
 const navItems = [
-  { name: "Home", url: "/home", icon: Home },
+  { name: "Emplois", url: "/emplois", icon: Home },
   { name: "Formations", url: "/formations", icon: User },
   { name: "Profile", url: "/profile", icon: Briefcase },
   {
@@ -113,7 +113,7 @@ export function NavBar() {
                 </Sheet>
 
                 {/* Logo */}
-                <Link href="/home" className="flex items-center gap-2">
+                <Link href="/emplois" className="flex items-center gap-2">
                   <span className="text-xl font-bold text-primary">
                     Postuly
                   </span>

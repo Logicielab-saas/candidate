@@ -9,9 +9,10 @@
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { QuestionAnswer } from "@/features/job-apply/store/useJobApplyStore";
+import type { EmploisQuestions } from "@/core/interfaces";
 
 interface QuestionFormProps {
-  questions: string[];
+  questions: EmploisQuestions[];
   answers: QuestionAnswer[];
   onChange: (answers: QuestionAnswer[]) => void;
 }
@@ -38,20 +39,20 @@ export function QuestionForm({
 
   return (
     <div className="space-y-6">
-      {questions.map((question, index) => {
+      {questions.map((question) => {
         const answer =
-          (answers.find((a) => a.id === String(index))?.answer as string) || "";
+          (answers.find((a) => a.id === question.uuid)?.answer as string) || "";
 
         return (
-          <div key={index} className="space-y-2">
-            <Label htmlFor={`question-${index}`} className="text-base">
-              {question}
+          <div key={question.uuid} className="space-y-2">
+            <Label htmlFor={`question-${question.uuid}`} className="text-base">
+              {question.title}
             </Label>
             <Textarea
-              id={`question-${index}`}
+              id={`question-${question.uuid}`}
               value={answer}
               onChange={(e) =>
-                handleAnswerChange(String(index), e.target.value)
+                handleAnswerChange(question.uuid, e.target.value)
               }
               placeholder="Votre réponse..."
               className="min-h-[100px]"

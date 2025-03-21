@@ -29,3 +29,14 @@ export interface EmploisCategories {
   uuid: string;
   title: string;
 }
+
+export interface EmploisQuestions {
+  uuid: string;
+  title: string;
+  description: string;
+  is_required: boolean;
+  type: string | null;
+
+  is_multiple: boolean;
+  options: string[] | null;
+}

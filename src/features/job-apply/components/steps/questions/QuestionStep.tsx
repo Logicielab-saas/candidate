@@ -11,9 +11,10 @@ import { Card } from "@/components/ui/card";
 import { useJobApplyStore } from "@/features/job-apply/store/useJobApplyStore";
 import { useState, useEffect } from "react";
 import { QuestionForm } from "./QuestionForm";
+import type { EmploisQuestions } from "@/core/interfaces";
 
 interface QuestionStepProps {
-  questions: string[];
+  questions: EmploisQuestions[];
 }
 
 export function QuestionStep({ questions }: QuestionStepProps) {
