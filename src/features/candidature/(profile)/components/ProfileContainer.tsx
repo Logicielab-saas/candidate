@@ -12,6 +12,9 @@ import {
   ProfileContactSkeleton,
 } from "./skeletons";
 import { ResumeSkeleton } from "./ResumeSkeleton";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { FileText } from "lucide-react";
 
 export function ProfileContainer() {
   const { data: profile, isLoading } = useProfile();
@@ -96,6 +99,18 @@ export function ProfileContainer() {
         <ResumeSkeleton />
       ) : (
         <div className="space-y-4">
+          <div className="flex items-center justify-end">
+            <Link href="/profile/postuly-cv">
+              <Button
+                variant="default"
+                size="sm"
+                className="gap-2 hover:animate-pulse"
+              >
+                <FileText className="h-4 w-4" />
+                Generate CV
+              </Button>
+            </Link>
+          </div>
           <div className="space-y-3">
             {/* <ResumeItem
                   title="Postuly CV"
@@ -104,10 +119,9 @@ export function ProfileContainer() {
                   source="profile"
                 /> */}
             <ResumeItem
-              title={`Resume_${profile?.last_name?.toUpperCase()}.pdf`}
               subtitle="PDF format, max 2MB"
               type="custom"
-              resumeFiles={profile?.resumeFiles || []}
+              resumeFiles={profile?.files || []}
               source="profile"
             />
           </div>

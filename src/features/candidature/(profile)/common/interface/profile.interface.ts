@@ -1,6 +1,12 @@
+export interface ProfileFiles {
+  uuid: string;
+  file: string;
+  name: string;
+  slug: string;
+}
+
 export interface Profile {
   uuid: string;
-  user_id: string;
   first_name: string | null;
   last_name: string | null;
   is_male: boolean | null;
@@ -13,12 +19,9 @@ export interface Profile {
   phone: string | null;
   image: File | null;
   bio: string | null;
-  skills: string[] | null;
-  resumeFiles: ProfileFiles[] | null;
+  name: string;
+  email: string;
   deleted_at: string | null;
-}
-
-export interface ProfileFiles {
-  uuid: string;
-  file: string;
+  skills: string[] | null;
+  files: ProfileFiles[];
 }

@@ -76,10 +76,6 @@ export function SkillsList({ resumeSkills }: SkillsListProps) {
   const [skillToEdit, setSkillToEdit] = useState<ResumeSkill | null>(null);
   const [skillToDelete, setSkillToDelete] = useState<ResumeSkill | null>(null);
 
-  const handleAdd = () => {
-    setIsAddSkillOpen(true);
-  };
-
   const handleEdit = (uuid: string) => {
     setSkillToEdit(resumeSkills?.find((skill) => skill.uuid === uuid) || null);
   };
@@ -90,17 +86,6 @@ export function SkillsList({ resumeSkills }: SkillsListProps) {
     );
   };
 
-  if (!resumeSkills?.length) {
-    return (
-      <>
-        <div className="text-center text-muted-foreground py-8">
-          No skills added yet
-        </div>
-        <button className="hidden" data-add-button onClick={handleAdd} />
-      </>
-    );
-  }
-
   return (
     <div className="border p-4 rounded-lg shadow-sm">
       <SectionHeader
@@ -109,50 +94,58 @@ export function SkillsList({ resumeSkills }: SkillsListProps) {
         onAdd={() => setIsAddSkillOpen(true)}
       />
       <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 p-2">
-        {resumeSkills.map((skill) => {
-          const level = Number(skill.resumeskill_level);
-          const isValidLevel = isValidProficiencyLevel(level);
-          const proficiencyLabel = isValidLevel
-            ? getProficiencyLabel(level)
-            : "N/A";
+        {resumeSkills &&
+          resumeSkills.length > 0 &&
+          resumeSkills.map((skill) => {
+            const level = Number(skill.resumeskill_level);
+            const isValidLevel = isValidProficiencyLevel(level);
+            const proficiencyLabel = isValidLevel
+              ? getProficiencyLabel(level)
+              : "N/A";
 
-          return (
-            <div key={skill.uuid} className={cn(getSkillBadgeStyle())}>
-              <div className="flex flex-col gap-1 min-w-0 ">
-                <span className="font-medium truncate max-w-[150px]">
-                  {skill.resumeskill_name}
-                </span>
-                <Badge
-                  variant="secondary"
-                  className={getSkillLevelBadgeStyle(level)}
-                >
-                  {proficiencyLabel}
-                </Badge>
+            return (
+              <div key={skill.uuid} className={cn(getSkillBadgeStyle())}>
+                <div className="flex flex-col gap-1 min-w-0 ">
+                  <span className="font-medium truncate max-w-[150px]">
+                    {skill.resumeskill_name}
+                  </span>
+                  <Badge
+                    variant="secondary"
+                    className={getSkillLevelBadgeStyle(level)}
+                  >
+                    {proficiencyLabel}
+                  </Badge>
+                </div>
+                <div className="flex gap-1">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7 text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    onClick={() => handleEdit(skill.uuid)}
+                  >
+                    <Pencil className="h-3.5 w-3.5" />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                    onClick={() => handleDelete(skill.uuid)}
+                  >
+                    <X className="h-3.5 w-3.5 text-destructive" />
+                  </Button>
+                </div>
               </div>
-              <div className="flex gap-1">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="h-7 w-7 text-muted-foreground hover:text-primary hover:bg-primary/10"
-                  onClick={() => handleEdit(skill.uuid)}
-                >
-                  <Pencil className="h-3.5 w-3.5" />
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="h-7 w-7 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                  onClick={() => handleDelete(skill.uuid)}
-                >
-                  <X className="h-3.5 w-3.5 text-destructive" />
-                </Button>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
+
+      {resumeSkills && resumeSkills.length === 0 && (
+        <p className="text-muted-foreground text-center py-4">
+          No skills added yet
+        </p>
+      )}
 
       {isAddSkillOpen && (
         <AddSkillDialog

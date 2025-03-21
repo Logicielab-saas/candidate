@@ -36,7 +36,7 @@ import type { ResumeFile, Files } from "@/core/interfaces";
 import { SectionHeader } from "../../features/candidature/(profile)/qualifications/SectionHeader";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
-import { ProfileFiles } from "@/features/candidature/(profile)/common/interface";
+import type { ProfileFiles } from "@/features/candidature/(profile)/common/interface";
 
 // Dynamically import dialog with loading state
 const DeleteResumeDialog = dynamic(
@@ -52,7 +52,6 @@ const DeleteResumeDialog = dynamic(
 );
 
 interface ResumeItemProps {
-  title: string;
   subtitle?: string;
   type?: "postuly" | "custom";
   resumeFiles?: (ResumeFile | Files | ProfileFiles)[];
@@ -60,7 +59,6 @@ interface ResumeItemProps {
 }
 
 export function ResumeItem({
-  title,
   subtitle = "",
   type = "custom",
   resumeFiles = [],
@@ -125,6 +123,7 @@ export function ResumeItem({
       createFile(formData, {
         onSuccess: () => {
           toast({
+            variant: "success",
             title: uuid
               ? "CV updated successfully"
               : "CV uploaded successfully",
@@ -198,7 +197,7 @@ export function ResumeItem({
               <FileText className="h-5 w-5 text-muted-foreground" />
             </div>
             <div>
-              <p className="font-medium">{title}</p>
+              <p className="font-medium">{file.name}</p>
               <p className="text-xs text-muted-foreground">{subtitle}</p>
             </div>
           </div>

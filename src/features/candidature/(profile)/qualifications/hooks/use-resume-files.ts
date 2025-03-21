@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { handleResumeFiles, deleteResumeFiles } from "../services/resume-files";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
+import { profileKeys } from "../../hooks/use-profile";
 
 export function useCreateResumeFiles() {
   const queryClient = useQueryClient();
@@ -15,9 +16,17 @@ export function useCreateResumeFiles() {
   const { mutate, isPending } = useMutation({
     mutationFn: handleResumeFiles,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: PROFILE_RESUME_QUERY_KEY,
-      });
+      // Force refetch both queries
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: PROFILE_RESUME_QUERY_KEY,
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({
+          queryKey: profileKeys.me(),
+          refetchType: "all",
+        }),
+      ]);
 
       toast({
         variant: "success",
@@ -45,9 +54,17 @@ export function useDeleteResumeFiles() {
   const { mutate, isPending } = useMutation({
     mutationFn: deleteResumeFiles,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: PROFILE_RESUME_QUERY_KEY,
-      });
+      // Force refetch both queries
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: PROFILE_RESUME_QUERY_KEY,
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({
+          queryKey: profileKeys.me(),
+          refetchType: "all",
+        }),
+      ]);
 
       toast({
         variant: "success",
@@ -75,9 +92,17 @@ export function useUpdateResumeFiles() {
   const { mutate, isPending } = useMutation({
     mutationFn: handleResumeFiles,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: PROFILE_RESUME_QUERY_KEY,
-      });
+      // Force refetch both queries
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: PROFILE_RESUME_QUERY_KEY,
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({
+          queryKey: profileKeys.me(),
+          refetchType: "all",
+        }),
+      ]);
 
       toast({
         variant: "success",

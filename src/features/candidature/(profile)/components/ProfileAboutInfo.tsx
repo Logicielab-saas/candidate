@@ -20,8 +20,8 @@ export function ProfileAboutInfo({ bio, skills }: ProfileAboutInfoProps) {
         <h3 className="text-lg font-medium">Skills</h3>
         {skills && skills.length > 0 ? (
           <div className="mt-2 flex flex-wrap gap-2">
-            {skills.map((skill) => (
-              <span key={skill} className={spanBadgeStyle}>
+            {skills.map((skill, index) => (
+              <span key={index} className={spanBadgeStyle}>
                 {skill}
               </span>
             ))}
