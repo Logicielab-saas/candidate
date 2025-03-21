@@ -1,14 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { type JobDetails } from "@/core/mockData/annonces";
+import type { EmploisDetails } from "@/core/interfaces";
 import parse from "html-react-parser";
 import DOMPurify from "isomorphic-dompurify";
 
 interface AnnonceDescriptionProps {
-  annonce: JobDetails;
+  annonce: EmploisDetails;
 }
 
 export function AnnonceDescription({ annonce }: AnnonceDescriptionProps) {
-  const sanitizedHTML = DOMPurify.sanitize(annonce.description);
+  const sanitizedHTML = DOMPurify.sanitize(
+    annonce.html_description ||
+      annonce.description ||
+      "Aucune description disponible"
+  );
 
   return (
     <Card>
