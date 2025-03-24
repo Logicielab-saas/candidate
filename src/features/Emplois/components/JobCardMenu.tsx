@@ -15,6 +15,8 @@ import { ReportJobDialog } from "@/features/candidature/(profile)/my-jobs/Report
 import { NotInterestedDialog } from "./NotInterestedDialog";
 import { useSavedJobsStore } from "../store/saved-jobs.store";
 import { useSaveEmplois, useCancelSaveEmplois } from "../hooks/use-emplois";
+import { useQueryClient } from "@tanstack/react-query";
+import { EMPLOIS_QUERY_KEY } from "../hooks/use-emplois";
 
 interface JobCardMenuProps {
   jobId: string;
@@ -24,6 +26,7 @@ interface JobCardMenuProps {
 export function JobCardMenu({ jobId, onNotInterested }: JobCardMenuProps) {
   const [isSignalerOpen, setIsSignalerOpen] = useState(false);
   const [isNotInterestedOpen, setIsNotInterestedOpen] = useState(false);
+  const queryClient = useQueryClient();
 
   // Global state for saved jobs
   const { isSaved, saveJob, removeSavedJob } = useSavedJobsStore();
@@ -39,23 +42,35 @@ export function JobCardMenu({ jobId, onNotInterested }: JobCardMenuProps) {
     setIsNotInterestedOpen(false);
   };
 
-  const handleBookmarkClick = (e: React.MouseEvent) => {
+  const handleBookmarkClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
 
     if (isBookmarked) {
-      // Remove from favorites
-      cancelSaveEmplois(jobId, {
-        onSuccess: () => {
-          removeSavedJob(jobId);
-        },
-      });
+      // Remove from favorites and revalidate together
+      await Promise.all([
+        new Promise((resolve) => {
+          cancelSaveEmplois(jobId, {
+            onSuccess: () => {
+              removeSavedJob(jobId);
+              resolve(true);
+            },
+          });
+        }),
+        queryClient.invalidateQueries({ queryKey: EMPLOIS_QUERY_KEY }),
+      ]);
     } else {
-      // Add to favorites
-      saveEmplois(jobId, {
-        onSuccess: () => {
-          saveJob(jobId);
-        },
-      });
+      // Add to favorites and revalidate together
+      await Promise.all([
+        new Promise((resolve) => {
+          saveEmplois(jobId, {
+            onSuccess: () => {
+              saveJob(jobId);
+              resolve(true);
+            },
+          });
+        }),
+        queryClient.invalidateQueries({ queryKey: EMPLOIS_QUERY_KEY }),
+      ]);
     }
   };
 
