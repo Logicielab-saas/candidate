@@ -1,7 +1,7 @@
 /**
- * YesNoQuestion - Component for yes/no type questions
+ * YesNoQuestion - Renders a yes/no radio group question
  *
- * Displays a question with radio buttons for yes/no answers
+ * Displays a question with yes/no radio options
  */
 
 "use client";
@@ -14,34 +14,32 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { UseFormReturn } from "react-hook-form";
-import { type BaseQuestionWithId } from "@/core/types";
-import { type QuestionFormData } from "@/core/interfaces";
 import { Label } from "@/components/ui/label";
+import { QuestionProps } from "@/features/job-apply/types/question-form";
 
-interface YesNoQuestionProps {
-  question: BaseQuestionWithId;
-  form: UseFormReturn<QuestionFormData>;
-}
-
-export function YesNoQuestion({ question, form }: YesNoQuestionProps) {
+export function YesNoQuestion({ question, form }: QuestionProps) {
   return (
     <FormField
       control={form.control}
       name={`answers.${question.id}`}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="space-y-3">
           <FormLabel>
-            {question.question}
+            {question.title}
             {question.isRequired && (
-              <span className="text-destructive ml-1">*</span>
+              <span className="text-destructive"> *</span>
             )}
           </FormLabel>
+          {question.description && (
+            <p className="text-sm text-muted-foreground mb-4">
+              {question.description}
+            </p>
+          )}
           <FormControl>
             <RadioGroup
               onValueChange={field.onChange}
               value={field.value as string}
-              className="grid grid-cols-2 gap-4 max-w-[400px]"
+              className="flex flex-col space-y-1"
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="yes" id={`${question.id}-yes`} />

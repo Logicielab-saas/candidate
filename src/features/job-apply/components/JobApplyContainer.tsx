@@ -13,12 +13,13 @@ import { StepIndicator } from "./StepIndicator";
 import { QuestionStep } from "./steps/questions/QuestionStep";
 import { ReviewStep } from "./steps/ReviewStep";
 import { useEffect } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 import { useEmploisBySlug } from "@/features/Emplois/hooks/use-emplois";
 import { JobDescriptionPanel } from "./JobDescriptionPanel";
 import { useCurrentUser } from "@/features/candidature/(profile)/hooks/use-profile";
 import { AlreadyApplied } from "./AlreadyApplied";
+import LoaderOne from "@/components/ui/loader-one";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface JobApplyContainerProps {
   slug: string;
@@ -30,6 +31,7 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
   const { currentStep, setCurrentStep } = useJobApplyStore();
 
   const IsFetching = isLoading || isLoadingUser;
+
   // Set initial step based on whether job has questions
   useEffect(() => {
     if (jobDetails) {
@@ -41,8 +43,19 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
 
   // Render the appropriate step component based on current step
   const renderStepContent = () => {
-    if (IsFetching || !jobDetails) {
-      return <StepSkeleton />;
+    if (IsFetching) {
+      return;
+    }
+
+    if (!jobDetails) {
+      return (
+        <Card className="w-full max-w-4xl mx-auto p-8 flex items-center justify-center">
+          <p className="text-lg text-muted-foreground">
+            Offre d&apos;emploi introuvable. Veuillez vérifier l&apos;URL et
+            réessayer.
+          </p>
+        </Card>
+      );
     }
 
     switch (currentStep) {
@@ -59,34 +72,31 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
     return <AlreadyApplied jobDetails={jobDetails} />;
   }
 
-  if (!jobDetails && !IsFetching) {
-    return (
-      <Card className="w-full max-w-4xl mx-auto p-8 flex items-center justify-center">
-        <p className="text-lg text-muted-foreground">
-          Offre d&apos;emploi introuvable. Veuillez vérifier l&apos;URL et
-          réessayer.
-        </p>
-      </Card>
-    );
-  }
-
   return (
     <div className="container py-8 max-w-7xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-center mb-2">
-          {jobDetails ? (
-            <>
+        {IsFetching ? (
+          <>
+            <Skeleton className="h-12 w-1/2 mx-auto mb-2" />
+            <Skeleton className="h-6 w-[500px] mx-auto" />
+          </>
+        ) : (
+          <>
+            <h1 className="text-3xl font-bold text-center mb-2">
               Postuler pour:{" "}
-              <span className="text-primary">{jobDetails.title}</span>
-            </>
-          ) : (
-            "Postuler pour un emploi"
-          )}
-        </h1>
-        <p className="text-muted-foreground text-center">
-          Complétez les étapes suivantes pour soumettre votre candidature
-        </p>
+              <span className="text-primary">{jobDetails?.title}</span>
+            </h1>
+            <p className="text-muted-foreground text-center">
+              Complétez les étapes suivantes pour soumettre votre candidature
+            </p>
+          </>
+        )}
       </div>
+      {IsFetching && (
+        <div className="flex justify-center items-center text-center h-full">
+          <LoaderOne />
+        </div>
+      )}
 
       {jobDetails && <StepIndicator jobDetails={jobDetails} />}
 
@@ -106,19 +116,6 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
             <JobDescriptionPanel jobDetails={jobDetails} />
           </div>
         )}
-      </div>
-    </div>
-  );
-}
-
-// Skeleton loader for steps
-function StepSkeleton() {
-  return (
-    <div className="w-full max-w-4xl mx-auto">
-      <Skeleton className="h-12 w-full mb-4" />
-      <Skeleton className="h-[600px] w-full mb-4" />
-      <div className="flex justify-end">
-        <Skeleton className="h-10 w-32" />
       </div>
     </div>
   );

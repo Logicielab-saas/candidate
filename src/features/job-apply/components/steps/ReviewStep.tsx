@@ -36,7 +36,7 @@ interface ReviewStepProps {
 
 export function ReviewStep({ jobDetails, user }: ReviewStepProps) {
   const router = useRouter();
-  const { questionsData } = useJobApplyStore();
+  const { questionsData, prevStep, resetForm } = useJobApplyStore();
   const { mutate: applyToJob, isPending } = useApplyToJob();
   const [error, setError] = useState<string | null>(null);
   const [coverLetter, setCoverLetter] = useState<string>("");
@@ -50,16 +50,41 @@ export function ReviewStep({ jobDetails, user }: ReviewStepProps) {
       // Create FormData for file upload
       const formData = new FormData();
       formData.append("emploi_uuid", jobDetails.uuid);
-      formData.append("cover_letter", coverLetter || ""); // Ensure empty string if null
+      if (coverLetter) {
+        formData.append("cover_letter", coverLetter);
+      }
 
       // Only append file if it exists and is valid
       if (file instanceof File) {
         formData.append("file", file);
       }
 
+      // Add questions answers if any
+      if (questionsData.answers.length > 0) {
+        questionsData.answers.forEach((answer, index) => {
+          formData.append(
+            `emploi_question_reponses[${index}][emploi_question_uuid]`,
+            answer.id
+          );
+          formData.append(
+            `emploi_question_reponses[${index}][reponse]`,
+            Array.isArray(answer.answer)
+              ? answer.answer.join(",")
+              : answer.answer
+          );
+        });
+      }
+
       // Submit application
       applyToJob(formData, {
         onSuccess: () => {
+          // Reset all form states
+          resetForm();
+          setCoverLetter("");
+          setFile(null);
+          if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+          }
           router.push("/emplois");
         },
         onError: (error: Error) => {
@@ -192,7 +217,7 @@ export function ReviewStep({ jobDetails, user }: ReviewStepProps) {
                   variant="ghost"
                   size="sm"
                   className="text-muted-foreground hover:text-foreground"
-                  onClick={() => router.back()}
+                  onClick={() => prevStep()}
                 >
                   <PencilIcon className="h-4 w-4 mr-2" />
                   Modifier
@@ -205,10 +230,18 @@ export function ReviewStep({ jobDetails, user }: ReviewStepProps) {
                   )?.answer;
 
                   return (
-                    <div key={question.uuid}>
+                    <div key={question.uuid} className="rounded-lg border p-4">
                       <p className="font-medium text-sm">{question.title}</p>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {answer ? String(answer) : "Pas de réponse"}
+                      {question.description && (
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {question.description}
+                        </p>
+                      )}
+                      <p className="text-sm mt-2">
+                        <span className="font-medium">Réponse : </span>
+                        {Array.isArray(answer)
+                          ? answer.join(", ")
+                          : answer || "Pas de réponse"}
                       </p>
                     </div>
                   );

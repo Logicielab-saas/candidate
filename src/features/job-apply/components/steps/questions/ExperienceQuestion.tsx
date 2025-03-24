@@ -15,11 +15,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
-import { type BaseQuestionWithId } from "@/core/types";
-import { type QuestionFormData } from "@/core/interfaces";
+import { type QuestionFormData } from "@/features/job-apply/types/question-form";
 
 interface ExperienceQuestionProps {
-  question: BaseQuestionWithId;
+  question: {
+    id: string;
+    title: string;
+    description?: string;
+    isRequired: boolean;
+  };
   form: UseFormReturn<QuestionFormData>;
 }
 
@@ -34,14 +38,16 @@ export function ExperienceQuestion({
       render={({ field }) => (
         <FormItem>
           <FormLabel>
-            {question.label}
+            {question.title}
             {question.isRequired && (
               <span className="text-destructive ml-1">*</span>
             )}
           </FormLabel>
-          <div className="text-sm text-muted-foreground mb-2">
-            {question.question}
-          </div>
+          {question.description && (
+            <p className="text-sm text-muted-foreground mb-4">
+              {question.description}
+            </p>
+          )}
           <FormControl>
             <Input placeholder="Votre expérience..." {...field} />
           </FormControl>

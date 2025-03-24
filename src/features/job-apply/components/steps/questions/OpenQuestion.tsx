@@ -15,11 +15,15 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { UseFormReturn } from "react-hook-form";
-import { type BaseQuestionWithId } from "@/core/types";
-import { type QuestionFormData } from "@/core/interfaces";
+import { type QuestionFormData } from "@/features/job-apply/types/question-form";
 
 interface OpenQuestionProps {
-  question: BaseQuestionWithId;
+  question: {
+    id: string;
+    title: string;
+    description?: string;
+    isRequired: boolean;
+  };
   form: UseFormReturn<QuestionFormData>;
 }
 
@@ -31,11 +35,16 @@ export function OpenQuestion({ question, form }: OpenQuestionProps) {
       render={({ field }) => (
         <FormItem>
           <FormLabel>
-            {question.question}
+            {question.title}
             {question.isRequired && (
               <span className="text-destructive ml-1">*</span>
             )}
           </FormLabel>
+          {question.description && (
+            <p className="text-sm text-muted-foreground mb-4">
+              {question.description}
+            </p>
+          )}
           <FormControl>
             <Textarea
               placeholder="Votre réponse..."

@@ -9,7 +9,7 @@ import api from "@/lib/axios";
 import { AxiosError } from "axios";
 import { JobApplyFormData } from "@/core/interfaces";
 
-const endpoint = "/employee/emplois/apply";
+const endpoint = "/employee/emploi/apply";
 
 export async function ApplyToJob(data: JobApplyFormData) {
   try {

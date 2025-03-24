@@ -1,5 +1,5 @@
 /**
- * ChoiceQuestion - Component for choice type questions
+ * ChoiceQuestion - Component for selection type questions
  *
  * Displays a question with radio buttons or checkboxes based on isMultipleChoices
  */
@@ -16,12 +16,22 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { UseFormReturn } from "react-hook-form";
-import { type ChoiceQuestionWithId } from "@/core/types";
-import { type QuestionFormData } from "@/core/interfaces";
 import { Label } from "@/components/ui/label";
+import { type QuestionFormData } from "@/features/job-apply/types/question-form";
+
+interface Option {
+  value: string;
+}
 
 interface ChoiceQuestionProps {
-  question: ChoiceQuestionWithId;
+  question: {
+    id: string;
+    title: string;
+    description?: string;
+    isRequired: boolean;
+    isMultipleChoices: boolean;
+    options: Option[];
+  };
   form: UseFormReturn<QuestionFormData>;
 }
 
@@ -35,32 +45,44 @@ export function ChoiceQuestion({ question, form }: ChoiceQuestionProps) {
       render={({ field }) => (
         <FormItem>
           <FormLabel>
-            {question.question}
+            {question.title}
             {question.isRequired && (
               <span className="text-destructive ml-1">*</span>
             )}
           </FormLabel>
+          {question.description && (
+            <p className="text-sm text-muted-foreground mb-4">
+              {question.description}
+            </p>
+          )}
           <FormControl>
             {question.isMultipleChoices ? (
               // Checkboxes for multiple choices
               <div className="grid gap-4">
                 {question.options.map((option) => (
-                  <div key={option} className="flex items-center space-x-2">
+                  <div
+                    key={option.value}
+                    className="flex items-center space-x-2"
+                  >
                     <Checkbox
-                      id={`${question.id}-${option}`}
-                      checked={(field.value || []).includes(option)}
+                      id={`${question.id}-${option.value}`}
+                      checked={(field.value || []).includes(option.value)}
                       onCheckedChange={(checked) => {
                         const currentValue = (field.value || []) as string[];
                         if (checked) {
-                          field.onChange([...currentValue, option]);
+                          field.onChange([...currentValue, option.value]);
                         } else {
                           field.onChange(
-                            currentValue.filter((value) => value !== option)
+                            currentValue.filter(
+                              (value) => value !== option.value
+                            )
                           );
                         }
                       }}
                     />
-                    <Label htmlFor={`${question.id}-${option}`}>{option}</Label>
+                    <Label htmlFor={`${question.id}-${option.value}`}>
+                      {option.value}
+                    </Label>
                   </div>
                 ))}
               </div>
@@ -72,12 +94,17 @@ export function ChoiceQuestion({ question, form }: ChoiceQuestionProps) {
                 className="grid gap-4"
               >
                 {question.options.map((option) => (
-                  <div key={option} className="flex items-center space-x-2">
+                  <div
+                    key={option.value}
+                    className="flex items-center space-x-2"
+                  >
                     <RadioGroupItem
-                      value={option}
-                      id={`${question.id}-${option}`}
+                      value={option.value}
+                      id={`${question.id}-${option.value}`}
                     />
-                    <Label htmlFor={`${question.id}-${option}`}>{option}</Label>
+                    <Label htmlFor={`${question.id}-${option.value}`}>
+                      {option.value}
+                    </Label>
                   </div>
                 ))}
               </RadioGroup>

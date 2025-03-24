@@ -1,7 +1,7 @@
 /**
  * QuestionStep - Handles job application questions
  *
- * Displays and manages answers for job-specific questions
+ * Displays and manages answers for job-specific questions using different question types
  */
 
 "use client";
@@ -10,28 +10,100 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useJobApplyStore } from "@/features/job-apply/store/useJobApplyStore";
 import { useState, useEffect } from "react";
-import { QuestionForm } from "./QuestionForm";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Form } from "@/components/ui/form";
 import type { EmploisQuestions } from "@/core/interfaces";
+import { ChoiceQuestion } from "./ChoiceQuestion";
+import { ExperienceQuestion } from "./ExperienceQuestion";
+import { OpenQuestion } from "./OpenQuestion";
+import { YesNoQuestion } from "./YesNoQuestion";
+import type { QuestionFormData } from "@/features/job-apply/types/question-form";
 
 interface QuestionStepProps {
   questions: EmploisQuestions[];
+}
+
+// Create dynamic schema based on questions
+function createQuestionSchema(questions: EmploisQuestions[]) {
+  const answersSchema: Record<string, z.ZodType> = {};
+
+  questions.forEach((question) => {
+    if (question.type === "selection") {
+      if (question.is_multiple) {
+        answersSchema[question.uuid] = question.is_required
+          ? z.array(z.string()).min(1, "Ce champ est requis")
+          : z.array(z.string()).optional();
+      } else {
+        answersSchema[question.uuid] = question.is_required
+          ? z.string().min(1, "Ce champ est requis")
+          : z.string().optional();
+      }
+    } else if (question.type === "yes_no") {
+      answersSchema[question.uuid] = question.is_required
+        ? z.enum(["yes", "no"], { required_error: "Ce champ est requis" })
+        : z.enum(["yes", "no"]).optional();
+    } else {
+      answersSchema[question.uuid] = question.is_required
+        ? z.string().min(1, "Ce champ est requis")
+        : z.string().optional();
+    }
+  });
+
+  return z.object({
+    answers: z.object(answersSchema),
+  });
 }
 
 export function QuestionStep({ questions }: QuestionStepProps) {
   const { nextStep, questionsData, setQuestionsData } = useJobApplyStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Check for no questions and skip to next step
+  const form = useForm<QuestionFormData>({
+    resolver: zodResolver(createQuestionSchema(questions || [])),
+    defaultValues: {
+      answers: Object.fromEntries(
+        (questions || []).map((question) => [
+          question.uuid,
+          questionsData.answers.find((a) => a.id === question.uuid)?.answer ||
+            (question.type === "selection" && question.is_multiple
+              ? []
+              : undefined),
+        ])
+      ),
+    },
+  });
+
+  // Handle auto-skip when no questions
   useEffect(() => {
     if (!questions?.length) {
       nextStep();
     }
   }, [questions, nextStep]);
 
-  const handleSubmit = async () => {
+  // If no questions, return null immediately
+  if (!questions?.length) {
+    return null;
+  }
+
+  const onSubmit = async (data: QuestionFormData) => {
     setIsSubmitting(true);
     try {
-      // Save answers and move to next step
+      // Filter out empty answers for non-required fields
+      const formattedAnswers = Object.entries(data.answers)
+        .filter(([id, answer]) => {
+          const question = questions.find((q) => q.uuid === id);
+          return (
+            question?.is_required || (answer !== "" && answer !== undefined)
+          );
+        })
+        .map(([id, answer]) => ({
+          id,
+          answer,
+        }));
+
+      setQuestionsData({ answers: formattedAnswers });
       nextStep();
     } catch (error) {
       console.error("Error submitting questions:", error);
@@ -40,27 +112,70 @@ export function QuestionStep({ questions }: QuestionStepProps) {
     }
   };
 
-  // If no questions, don't render anything
-  if (!questions?.length) {
-    return null;
-  }
+  const renderQuestion = (question: EmploisQuestions) => {
+    const baseQuestionProps = {
+      id: question.uuid,
+      title: question.title,
+      description: question.description,
+      isRequired: question.is_required,
+    };
+
+    switch (question.type) {
+      case "selection":
+        return (
+          <ChoiceQuestion
+            key={question.uuid}
+            question={{
+              ...baseQuestionProps,
+              isMultipleChoices: question.is_multiple,
+              options: question.options || [],
+            }}
+            form={form}
+          />
+        );
+      case "experience":
+        return (
+          <ExperienceQuestion
+            key={question.uuid}
+            question={baseQuestionProps}
+            form={form}
+          />
+        );
+      case "open":
+        return (
+          <OpenQuestion
+            key={question.uuid}
+            question={baseQuestionProps}
+            form={form}
+          />
+        );
+      case "yes_no":
+        return (
+          <YesNoQuestion
+            key={question.uuid}
+            question={baseQuestionProps}
+            form={form}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <Card className="p-6">
       <h2 className="text-2xl font-semibold mb-6">Questions supplémentaires</h2>
-      <div className="space-y-8">
-        <QuestionForm
-          questions={questions}
-          answers={questionsData.answers}
-          onChange={(answers) => setQuestionsData({ answers })}
-        />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          {questions.map((question) => renderQuestion(question))}
 
-        <div className="flex justify-end pt-4">
-          <Button onClick={handleSubmit} disabled={isSubmitting}>
-            {isSubmitting ? "Enregistrement..." : "Continuer"}
-          </Button>
-        </div>
-      </div>
+          <div className="flex justify-end pt-4">
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Enregistrement..." : "Continuer"}
+            </Button>
+          </div>
+        </form>
+      </Form>
     </Card>
   );
 }

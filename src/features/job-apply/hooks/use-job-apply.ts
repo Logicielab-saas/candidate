@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApplyToJob } from "../services/job-apply";
 import { useToast } from "@/hooks/use-toast";
 import { JobApplyFormData } from "@/core/interfaces";
+import { EMPLOIS_QUERY_KEY } from "@/features/Emplois/hooks/use-emplois";
 
 export const JOB_APPLY_QUERY_KEY = ["job-apply"];
 
@@ -19,7 +20,7 @@ export function useApplyToJob() {
     mutationFn: (data: JobApplyFormData) => ApplyToJob(data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: JOB_APPLY_QUERY_KEY,
+        queryKey: EMPLOIS_QUERY_KEY,
       });
 
       toast({
