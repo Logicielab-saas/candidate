@@ -14,7 +14,7 @@
 import { mockJobsList } from "@/core/mockData/jobs-list";
 import { JobCard } from "@/features/Emplois/components/JobCard";
 import { useRouter } from "next/navigation";
-import { CompanyDetails } from "@/core/interfaces";
+import { CompanyDetails, Emplois } from "@/core/interfaces";
 import { useState } from "react";
 import { SearchInput } from "@/features/Emplois/components/SearchInput";
 import { CitySelector } from "@/features/Emplois/components/CitySelector";
@@ -116,7 +116,7 @@ export function CompanyJobs({ company }: CompanyJobsProps) {
                 onClick={(e) => handleJobSelect(e, job.id)}
                 className="cursor-pointer"
               >
-                <JobCard job={job} />
+                <JobCard job={job as unknown as Emplois} />
               </div>
             ))}
           </div>
