@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { handleResumeSkill, deleteResumeSkill } from "../services/resume-skill";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
+import { AxiosError } from "axios";
 
 export function useCreateResumeSkill() {
   const queryClient = useQueryClient();
@@ -25,12 +26,13 @@ export function useCreateResumeSkill() {
         description: "Skill has been added successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast({
         variant: "destructive",
         title: "Failed to add skill",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });
@@ -55,12 +57,13 @@ export function useDeleteResumeSkill() {
         description: "Skill has been deleted successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast({
         variant: "destructive",
         title: "Failed to delete skill",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });
@@ -85,12 +88,13 @@ export function useUpdateResumeSkill() {
         description: "Skill has been updated successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast({
         variant: "destructive",
         title: "Failed to update skill",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });

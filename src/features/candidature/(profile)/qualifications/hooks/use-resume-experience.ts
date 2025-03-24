@@ -7,6 +7,7 @@ import {
 } from "../services/resume-experience";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
+import { AxiosError } from "axios";
 
 export function useCreateResumeExperience() {
   const queryClient = useQueryClient();
@@ -26,12 +27,13 @@ export function useCreateResumeExperience() {
         description: "Your experience has been added successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast.toast({
         variant: "destructive",
         title: "Failed to add experience",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });
@@ -57,12 +59,13 @@ export function useDeleteResumeExperience() {
         description: "Your experience has been deleted successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast.toast({
         variant: "destructive",
         title: "Failed to delete experience",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });
@@ -88,12 +91,13 @@ export function useUpdateResumeExperience() {
         description: "Your experience has been updated successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast.toast({
         variant: "destructive",
         title: "Failed to update experience",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });

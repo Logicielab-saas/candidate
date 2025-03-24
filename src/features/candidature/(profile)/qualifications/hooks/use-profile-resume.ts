@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getProfileResume, updateProfileResume } from "../services/resume";
 import { useToast } from "@/hooks/use-toast";
+import { AxiosError } from "axios";
 
 export const PROFILE_RESUME_QUERY_KEY = ["profile-resume"];
 
@@ -28,11 +29,13 @@ export function useUpdateProfileResume() {
         description: "Your resume description has been updated successfully",
       });
     },
-    onError: (error) => {
+    onError: (error: AxiosError) => {
       toast.toast({
         variant: "destructive",
         title: "Failed to update resume",
-        description: error.message || "Failed to update resume description",
+        description:
+          (error.response?.data as { message: string }).message ||
+          "Failed to update resume description",
       });
     },
   });

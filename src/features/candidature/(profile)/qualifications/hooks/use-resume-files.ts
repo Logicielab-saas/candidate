@@ -12,6 +12,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
 import { profileKeys } from "../../hooks/use-profile";
+import { AxiosError } from "axios";
 
 export function useCreateResumeFiles() {
   const queryClient = useQueryClient();
@@ -38,12 +39,13 @@ export function useCreateResumeFiles() {
         description: "Files has been added successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast({
         variant: "destructive",
         title: "Failed to add files",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });
@@ -76,12 +78,13 @@ export function useDeleteResumeFiles() {
         description: "Files has been deleted successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast({
         variant: "destructive",
         title: "Failed to delete files",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });
@@ -114,12 +117,13 @@ export function useUpdateResumeFiles() {
         description: "Files has been updated successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast({
         variant: "destructive",
         title: "Failed to update files",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });

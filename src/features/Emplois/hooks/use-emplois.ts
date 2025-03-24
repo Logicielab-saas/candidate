@@ -57,7 +57,6 @@ export function useSaveEmplois() {
       });
     },
     onError: (error: AxiosError) => {
-      console.log(error);
       if (
         (error.response?.data as { message: string }).message ===
         "You have already saved to this emploi"
@@ -95,6 +94,15 @@ export function useCancelSaveEmplois() {
         variant: "success",
         title: "Emploi removed",
         description: "Your emploi has been removed successfully.",
+      });
+    },
+    onError: (error: AxiosError) => {
+      toast.toast({
+        variant: "destructive",
+        title: "Failed to remove emploi",
+        description:
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });

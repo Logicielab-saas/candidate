@@ -7,6 +7,7 @@ import {
 } from "../services/resume-project";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
+import { AxiosError } from "axios";
 
 export function useCreateResumeProject() {
   const queryClient = useQueryClient();
@@ -25,12 +26,13 @@ export function useCreateResumeProject() {
         description: "Your project has been added successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast({
         variant: "destructive",
         title: "Failed to add project",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });
@@ -55,12 +57,13 @@ export function useDeleteResumeProject() {
         description: "Your project has been deleted successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast({
         variant: "destructive",
         title: "Failed to delete project",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });
@@ -85,12 +88,13 @@ export function useUpdateResumeProject() {
         description: "Your project has been updated successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast({
         variant: "destructive",
         title: "Failed to update project",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });

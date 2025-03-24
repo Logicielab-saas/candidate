@@ -7,6 +7,7 @@ import {
 } from "../services/resume-certification";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
+import { AxiosError } from "axios";
 
 export function useCreateResumeCertification() {
   const queryClient = useQueryClient();
@@ -26,12 +27,13 @@ export function useCreateResumeCertification() {
         description: "Your certification has been added successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast({
         variant: "destructive",
         title: "Failed to add certification",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });
@@ -56,12 +58,13 @@ export function useDeleteResumeCertification() {
         description: "Your certification has been deleted successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast({
         variant: "destructive",
         title: "Failed to delete certification",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });
@@ -87,12 +90,13 @@ export function useUpdateResumeCertification() {
         description: "Your certification has been updated successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast({
         variant: "destructive",
         title: "Failed to update certification",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });

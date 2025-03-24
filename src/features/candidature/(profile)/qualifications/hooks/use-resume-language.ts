@@ -10,6 +10,7 @@ import {
 } from "../services/resume-language";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
+import { AxiosError } from "axios";
 
 export function useCreateResumeLanguage() {
   const queryClient = useQueryClient();
@@ -28,12 +29,13 @@ export function useCreateResumeLanguage() {
         description: "Language has been added successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast({
         variant: "destructive",
         title: "Failed to add language",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });
@@ -58,12 +60,13 @@ export function useDeleteResumeLanguage() {
         description: "Language has been deleted successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast({
         variant: "destructive",
         title: "Failed to delete language",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });
@@ -88,12 +91,13 @@ export function useUpdateResumeLanguage() {
         description: "Language has been updated successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast({
         variant: "destructive",
         title: "Failed to update language",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });

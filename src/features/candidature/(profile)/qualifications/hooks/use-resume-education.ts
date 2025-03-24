@@ -7,6 +7,7 @@ import {
 } from "../services/resume-education";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
+import { AxiosError } from "axios";
 
 export function useCreateResumeEducation() {
   const queryClient = useQueryClient();
@@ -26,12 +27,13 @@ export function useCreateResumeEducation() {
         description: "Your education has been added successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast.toast({
         variant: "destructive",
         title: "Failed to add education",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });
@@ -57,12 +59,13 @@ export function useDeleteResumeEducation() {
         description: "Your education has been deleted successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast.toast({
         variant: "destructive",
         title: "Failed to delete education",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });
@@ -88,12 +91,13 @@ export function useUpdateResumeEducation() {
         description: "Your education has been updated successfully.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       toast.toast({
         variant: "destructive",
         title: "Failed to update education",
         description:
-          error.message || "An unexpected error occurred. Please try again.",
+          (error.response?.data as { message: string }).message ||
+          "An unexpected error occurred. Please try again.",
       });
     },
   });
