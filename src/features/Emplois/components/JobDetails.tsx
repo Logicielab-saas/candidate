@@ -81,7 +81,7 @@ export function JobDetails() {
 
   // Format salary based on type and available values
   const formatSalary = () => {
-    if (job.salaryType === "range" && job.startPrice && job.endPrice) {
+    if (job.salaryType === "invoice" && job.startPrice && job.endPrice) {
       return `${job.startPrice} - ${job.endPrice} MAD`;
     }
     if (job.normalPrice) {

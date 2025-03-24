@@ -1,9 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  CancelSaveEmplois,
   type EmploisResponse,
   fetchEmplois,
   fetchEmploisBySlug,
+  SaveEmplois,
 } from "../services/emplois";
+import { useToast } from "@/hooks/use-toast";
+import { AxiosError } from "axios";
 
 export const EMPLOIS_QUERY_KEY = ["emplois"];
 
@@ -32,4 +36,68 @@ export function useEmploisBySlug(slug: string | null) {
     isLoading,
     error,
   };
+}
+
+export function useSaveEmplois() {
+  const queryClient = useQueryClient();
+  const toast = useToast();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (uuid: string) => SaveEmplois(uuid),
+    onSuccess: async () => {
+      // Wait for the query invalidation to complete
+      await queryClient.invalidateQueries({
+        queryKey: EMPLOIS_QUERY_KEY,
+      });
+
+      toast.toast({
+        variant: "success",
+        title: "Emploi saved",
+        description: "Your emploi has been saved successfully.",
+      });
+    },
+    onError: (error: AxiosError) => {
+      console.log(error);
+      if (
+        (error.response?.data as { message: string }).message ===
+        "You have already saved to this emploi"
+      ) {
+        toast.toast({
+          variant: "info",
+          title: "Emploi already saved",
+          description: (error.response?.data as { message: string }).message,
+        });
+      } else {
+        toast.toast({
+          variant: "destructive",
+          title: "Failed to save emploi",
+          description: "An unexpected error occurred. Please try again.",
+        });
+      }
+    },
+  });
+
+  return { mutate, isPending };
+}
+
+export function useCancelSaveEmplois() {
+  const queryClient = useQueryClient();
+  const toast = useToast();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (uuid: string) => CancelSaveEmplois(uuid),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: EMPLOIS_QUERY_KEY,
+      });
+
+      toast.toast({
+        variant: "success",
+        title: "Emploi removed",
+        description: "Your emploi has been removed successfully.",
+      });
+    },
+  });
+
+  return { mutate, isPending };
 }

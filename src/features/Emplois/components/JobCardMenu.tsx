@@ -13,22 +13,26 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { ReportJobDialog } from "@/features/candidature/(profile)/my-jobs/ReportJobDialog";
 import { NotInterestedDialog } from "./NotInterestedDialog";
+import { useSavedJobsStore } from "../store/saved-jobs.store";
+import { useSaveEmplois, useCancelSaveEmplois } from "../hooks/use-emplois";
 
 interface JobCardMenuProps {
   jobId: string;
   onNotInterested?: (jobId: string) => void;
-  isBookmarked?: boolean;
-  onBookmark?: () => void;
 }
 
-export function JobCardMenu({
-  jobId,
-  onNotInterested,
-  isBookmarked,
-  onBookmark,
-}: JobCardMenuProps) {
+export function JobCardMenu({ jobId, onNotInterested }: JobCardMenuProps) {
   const [isSignalerOpen, setIsSignalerOpen] = useState(false);
   const [isNotInterestedOpen, setIsNotInterestedOpen] = useState(false);
+
+  // Global state for saved jobs
+  const { isSaved, saveJob, removeSavedJob } = useSavedJobsStore();
+  const isBookmarked = isSaved(jobId);
+
+  // Save/Cancel save job mutations
+  const { mutate: saveEmplois, isPending: isSaving } = useSaveEmplois();
+  const { mutate: cancelSaveEmplois, isPending: isCanceling } =
+    useCancelSaveEmplois();
 
   const handleNotInterested = (id: string) => {
     onNotInterested?.(id);
@@ -37,7 +41,22 @@ export function JobCardMenu({
 
   const handleBookmarkClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onBookmark?.();
+
+    if (isBookmarked) {
+      // Remove from favorites
+      cancelSaveEmplois(jobId, {
+        onSuccess: () => {
+          removeSavedJob(jobId);
+        },
+      });
+    } else {
+      // Add to favorites
+      saveEmplois(jobId, {
+        onSuccess: () => {
+          saveJob(jobId);
+        },
+      });
+    }
   };
 
   const handleNotInterestedClick = (e: React.MouseEvent) => {
@@ -54,6 +73,9 @@ export function JobCardMenu({
     e.stopPropagation();
   };
 
+  // Check if any bookmark action is in progress
+  const isLoading = isSaving || isCanceling;
+
   return (
     <>
       <DropdownMenu>
@@ -62,6 +84,7 @@ export function JobCardMenu({
             variant="ghost"
             size="icon"
             className={cn("h-8 w-8", "-mr-2")}
+            disabled={isLoading}
           >
             <MoreVertical className="h-4 w-4" />
             <span className="sr-only">Open menu</span>
@@ -71,6 +94,7 @@ export function JobCardMenu({
           <DropdownMenuItem
             className="flex items-center gap-2 cursor-pointer"
             onClick={handleBookmarkClick}
+            disabled={isLoading}
           >
             <Heart
               className={cn(

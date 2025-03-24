@@ -15,6 +15,8 @@ import { JobCard } from "./JobCard";
 import { useRouter } from "next/navigation";
 import { useEmplois } from "../hooks/use-emplois";
 import LoaderOne from "@/components/ui/loader-one";
+import { useEffect } from "react";
+import { useSavedJobsStore } from "../store/saved-jobs.store";
 
 interface JobsListProps {
   isDesktop: boolean;
@@ -25,9 +27,19 @@ export function JobsList({ isDesktop }: JobsListProps) {
   const [_selectedCity] = useQueryState("city");
   const [selectedJobId, setSelectedJobId] = useQueryState("job");
   const router = useRouter();
+  const initializeSavedJobs = useSavedJobsStore(
+    (state) => state.initializeSavedJobs
+  );
 
   // Fetch jobs from API
   const { data: jobs, isLoading, error } = useEmplois();
+
+  // Initialize saved jobs when data is loaded
+  useEffect(() => {
+    if (jobs) {
+      initializeSavedJobs(jobs);
+    }
+  }, [jobs, initializeSavedJobs]);
 
   // Filter jobs based on search text and city only for now
   /* Commenting out filters for now
