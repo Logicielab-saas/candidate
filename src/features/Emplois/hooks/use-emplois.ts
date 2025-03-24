@@ -81,11 +81,16 @@ export function useSaveEmplois() {
 }
 
 export function useCancelSaveEmplois() {
+  const queryClient = useQueryClient();
   const toast = useToast();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (uuid: string) => CancelSaveEmplois(uuid),
     onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: EMPLOIS_QUERY_KEY,
+      });
+
       toast.toast({
         variant: "success",
         title: "Emploi removed",
