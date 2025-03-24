@@ -13,13 +13,20 @@ import { useQueryState } from "nuqs";
 import { useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import { JobFilters } from "./JobFilters";
 import { useRecentSearchesStore } from "../store/recent-searches.store";
 import { FileText, Pin, Zap } from "lucide-react";
 import { tabsListStyles, tabTriggerStyles } from "@/core/styles/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
+
+const JobFilters = dynamic(
+  () => import("./JobFilters").then((mod) => mod.JobFilters),
+  {
+    ssr: false,
+    loading: () => <LoaderOne />,
+  }
+);
 
 const RecentSearches = dynamic(
   () => import("./RecentSearches").then((mod) => mod.RecentSearches),
