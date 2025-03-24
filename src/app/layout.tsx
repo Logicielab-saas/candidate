@@ -46,7 +46,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NextTopLoader showSpinner={false} color="text-primary" />
+          <NextTopLoader showSpinner={false} color="#F97316" />
           <NavBar />
           <NuqsAdapter>
             <ReactQueryProvider>{children}</ReactQueryProvider>
