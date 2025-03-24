@@ -12,14 +12,30 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { useQueryState } from "nuqs";
 import { useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { RecentSearches } from "./RecentSearches";
 import { Separator } from "@/components/ui/separator";
 import { JobFilters } from "./JobFilters";
 import { useRecentSearchesStore } from "../store/recent-searches.store";
 import { FileText, Pin, Zap } from "lucide-react";
 import { tabsListStyles, tabTriggerStyles } from "@/core/styles/tabs";
-import { ResumeUpload } from "./ResumeUpload";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import dynamic from "next/dynamic";
+import LoaderOne from "@/components/ui/loader-one";
+
+const RecentSearches = dynamic(
+  () => import("./RecentSearches").then((mod) => mod.RecentSearches),
+  {
+    ssr: false,
+    loading: () => <LoaderOne />,
+  }
+);
+
+const ResumeUpload = dynamic(
+  () => import("./ResumeUpload").then((mod) => mod.ResumeUpload),
+  {
+    ssr: false,
+    loading: () => <LoaderOne />,
+  }
+);
 
 export function JobsContainer() {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
