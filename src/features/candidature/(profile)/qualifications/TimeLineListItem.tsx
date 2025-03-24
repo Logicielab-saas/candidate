@@ -43,21 +43,22 @@ export default function TimeLineListItem({
     let endDate = "";
     let isCurrent = false;
 
-    if ("date_start" in data) {
+    if ("date_start" in data && data.date_start) {
       startDate = formatDate(data.date_start);
-      if ("current_time" in data) {
+      if ("current_time" in data && data.current_time) {
         isCurrent = data.current_time;
         endDate = data.date_end ? formatDate(data.date_end) : "";
-      } else if ("is_current" in data) {
+      } else if ("is_current" in data && data.is_current) {
         isCurrent = data.is_current;
         endDate = data.date_end ? formatDate(data.date_end) : "";
       }
-    } else if ("issueDate" in data) {
+    } else if ("issueDate" in data && data.issueDate) {
       startDate = data.issueDate as string;
     }
 
-    if ("date" in data) startDate = formatDate(data.date as string);
-    if ("expiration_date" in data)
+    if ("date" in data && data.date)
+      startDate = formatDate(data.date as string);
+    if ("expiration_date" in data && data.expiration_date)
       endDate = formatDate(data.expiration_date as string);
 
     if (isCurrent) return `${startDate} - Present`;
