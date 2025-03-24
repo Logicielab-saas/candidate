@@ -18,7 +18,7 @@ export function useEmplois() {
   });
 
   return {
-    data: data?.emplois || [],
+    data: data?.data || [],
     isLoading,
     error,
   };

@@ -5,7 +5,7 @@ import type { Emplois, EmploisDetails } from "@/core/interfaces";
 
 export interface EmploisResponse {
   message: string;
-  emplois: Emplois[];
+  data: Emplois[];
 }
 
 export interface EmploisDetailsResponse {

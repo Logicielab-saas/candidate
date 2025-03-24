@@ -14,9 +14,9 @@ import { useQueryState } from "nuqs";
 import { JobCard } from "./JobCard";
 import { useRouter } from "next/navigation";
 import { useEmplois } from "../hooks/use-emplois";
-import LoaderOne from "@/components/ui/loader-one";
 import { useEffect } from "react";
 import { useSavedJobsStore } from "../store/saved-jobs.store";
+import { JobCardSkeleton } from "../skeletons/JobCardSkeleton";
 
 interface JobsListProps {
   isDesktop: boolean;
@@ -71,10 +71,14 @@ export function JobsList({ isDesktop }: JobsListProps) {
   if (isLoading) {
     return (
       <div className="space-y-4">
-        <div className="flex items-center justify-center h-[300px]">
-          <h2 className="text-xl font-semibold">
-            <LoaderOne />
-          </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold">Available Positions</h2>
+          <span className="text-sm text-muted-foreground">Loading...</span>
+        </div>
+        <div className="grid grid-cols-1 gap-4">
+          {[...Array(3)].map((_, index) => (
+            <JobCardSkeleton key={index} />
+          ))}
         </div>
       </div>
     );
