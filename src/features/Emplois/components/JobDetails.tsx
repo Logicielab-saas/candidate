@@ -196,8 +196,14 @@ export function JobDetails() {
             </div>
           )}
 
-          <Button size="sm" className="w-full" asChild disabled={job.applied}>
-            <Link href={`/job-apply/${job.slug}`}>
+          <Button size="sm" className="w-full" asChild>
+            <Link
+              href={
+                job.applied
+                  ? `/profile/my-jobs?tab=sent-applications`
+                  : `/job-apply/${job.slug}`
+              }
+            >
               {job.applied ? "Déjà postulé" : "Postuler"}{" "}
               <ArrowRight className="h-4 w-4 ml-2" />
             </Link>
