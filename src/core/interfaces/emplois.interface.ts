@@ -1,3 +1,5 @@
+import type { EmploiQuestionType } from "../types/";
+
 export interface Emplois {
   uuid: string;
   title: string;
@@ -30,13 +32,16 @@ export interface EmploisCategories {
   title: string;
 }
 
+export interface EmploisQuestionOption {
+  value: string;
+}
+
 export interface EmploisQuestions {
   uuid: string;
   title: string;
   description: string;
   is_required: boolean;
-  type: string | null;
-
+  type: EmploiQuestionType | null;
   is_multiple: boolean;
-  options: string[] | null;
+  options: EmploisQuestionOption[] | null;
 }

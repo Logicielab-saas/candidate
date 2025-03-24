@@ -14,7 +14,7 @@ export interface EmploisDetailsResponse {
 }
 
 const endpoint = "/employee/emplois";
-const saveEndpoint = "/employee/emplois/save";
+const saveEndpoint = "/employee/emploi/save";
 
 export async function fetchEmplois() {
   try {
