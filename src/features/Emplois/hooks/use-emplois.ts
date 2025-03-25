@@ -1,13 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  CancelSaveEmplois,
   type EmploisResponse,
   fetchEmplois,
   fetchEmploisBySlug,
-  SaveEmplois,
 } from "../services/emplois";
 import { useToast } from "@/hooks/use-toast";
 import { AxiosError } from "axios";
+import {
+  CancelSaveEmplois,
+  SaveEmplois,
+} from "@/features/candidature/(profile)/my-jobs/services/my-jobs";
 
 export const EMPLOIS_QUERY_KEY = ["emplois"];
 

@@ -6,6 +6,12 @@ import type { Emplois, EmploisDetails } from "@/core/interfaces";
 export interface EmploisResponse {
   message: string;
   data: Emplois[];
+  meta: {
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+  };
 }
 
 export interface EmploisDetailsResponse {
@@ -14,7 +20,6 @@ export interface EmploisDetailsResponse {
 }
 
 const endpoint = "/employee/emplois";
-const saveEndpoint = "/employee/emploi/save";
 
 export async function fetchEmplois() {
   try {
@@ -31,15 +36,5 @@ export async function fetchEmplois() {
 
 export async function fetchEmploisBySlug(slug: string) {
   const response = await api.get<EmploisDetailsResponse>(`${endpoint}/${slug}`);
-  return response.data;
-}
-
-export async function SaveEmplois(uuid: string) {
-  const response = await api.post(`${saveEndpoint}`, { emploi_uuid: uuid });
-  return response.data;
-}
-
-export async function CancelSaveEmplois(uuid: string) {
-  const response = await api.delete(`${saveEndpoint}/${uuid}`);
   return response.data;
 }
