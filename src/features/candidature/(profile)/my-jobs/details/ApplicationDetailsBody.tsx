@@ -33,30 +33,38 @@ export function ApplicationDetailsBody({
         {/* Candidate Informations */}
         <div className="shadow dark:border p-4 rounded-lg flex flex-col gap-4">
           <h6 className="text-muted-foreground font-semibold text-lg">
-            Contact Information
+            Informations de contact
           </h6>
-          <div className="flex flex-col gap-2">
-            <div className="flex gap-2">
-              <span className="font-semibold">Nom complet:</span>
-              <span className="text-muted-foreground">
-                {profile?.first_name} {profile?.last_name}
-              </span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span className="font-semibold min-w-[120px]">
+                  Nom complet:
+                </span>
+                <span className="text-muted-foreground break-all">
+                  {profile?.first_name} {profile?.last_name}
+                </span>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span className="font-semibold min-w-[120px]">Email:</span>
+                <span className="text-muted-foreground break-all">
+                  {profile?.email}
+                </span>
+              </div>
             </div>
-            <div className="flex gap-2">
-              <span className="font-semibold">Email:</span>
-              <span className="text-muted-foreground">{profile?.email}</span>
-            </div>
-            <div className="flex gap-2">
-              <span className="font-semibold">Téléphone:</span>
-              <span className="text-muted-foreground">
-                {profile?.phone || "Non spécifié"}
-              </span>
-            </div>
-            <div className="flex gap-2">
-              <span className="font-semibold">Adresse:</span>
-              <span className="text-muted-foreground">
-                {profile?.address || "Non spécifié"}
-              </span>
+            <div className="space-y-2">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span className="font-semibold min-w-[120px]">Téléphone:</span>
+                <span className="text-muted-foreground">
+                  {profile?.phone || "Non spécifié"}
+                </span>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span className="font-semibold min-w-[120px]">Adresse:</span>
+                <span className="text-muted-foreground break-all">
+                  {profile?.address || "Non spécifié"}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -112,20 +120,6 @@ export function ApplicationDetailsBody({
             <Separator />
           </>
         )}
-
-        {/* Job Details */}
-        <div className="shadow dark:border p-4 rounded-lg flex flex-col items-start gap-2">
-          <h6 className="text-muted-foreground font-semibold">
-            Détails du poste
-          </h6>
-          <p className="text-base font-semibold">{application.emploi.title}</p>
-          <p className="text-base font-medium">
-            {application.emploi.company_name}
-          </p>
-          <p className="text-sm text-muted-foreground">
-            {application.emploi.city_name || "Lieu non spécifié"}
-          </p>
-        </div>
       </CardContent>
     </Card>
   );
