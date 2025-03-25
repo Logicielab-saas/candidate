@@ -21,7 +21,7 @@ export function useDeleteSentApplication() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (uuid: string) => deleteSentApplication(uuid),
-    onSuccess: async () => {
+    onSuccess: async (data) => {
       // Wait for the query invalidation to complete
       await Promise.all([
         queryClient.invalidateQueries({
@@ -31,11 +31,12 @@ export function useDeleteSentApplication() {
           queryKey: SENT_APPLICATIONS_QUERY_KEY,
         }),
       ]);
-
+      console.log(data);
       toast.toast({
         variant: "success",
         title: "Application deleted",
-        description: "Your application has been deleted successfully.",
+        description:
+          data.message || "Your application has been deleted successfully.",
       });
     },
     onError: (error: AxiosError) => {

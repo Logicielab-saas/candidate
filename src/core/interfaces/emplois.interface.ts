@@ -3,11 +3,11 @@ import type { EmploiQuestionType } from "../types/";
 export interface Emplois {
   uuid: string;
   title: string;
-  city_name: string;
-  company_name: string;
+  city_name: string | null;
+  company_name: string | null;
   slug: string;
   status: "closed" | "open";
-  company_logo: string;
+  company_logo: string | null;
   postule: number;
   views: number;
   type: string[];

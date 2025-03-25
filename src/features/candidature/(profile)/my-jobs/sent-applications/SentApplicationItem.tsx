@@ -1,9 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
-  MoreVertical,
   Building2,
   MapPin,
   Calendar,
@@ -13,36 +11,16 @@ import {
   XCircle,
   Ban,
   ThumbsUp,
-  ExternalLink,
-  Archive,
-  AlertTriangle,
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import type { Job, JobStatuses, CandidateStatus } from "@/core/types";
 import { statusStyles } from "@/core/styles/status-styles.style";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { UpdateStatusDialog } from "./UpdateStatusDialog";
-import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ReportJobDialog } from "../ReportJobDialog";
-import { ConfirmWithdrawDialog } from "../ConfirmWithdrawDialog";
-import { useToast } from "@/hooks/use-toast";
+import type { EmploisApplied } from "@/core/interfaces";
+import { SentApplicationItemMenu } from "./SentApplicationItemMenu";
 
-interface SentApplicationItemProps
-  extends Pick<
-    Job,
-    "jobTitle" | "company" | "location" | "applyTime" | "jobExpired" | "jobUrl"
-  > {
-  statuses: JobStatuses;
-  onUpdateStatus: (jobId: string, newStatus: CandidateStatus) => void;
-  jobId: string;
-  onArchive: (jobId: string) => void;
+interface SentApplicationItemProps {
+  applied: EmploisApplied;
 }
 
 const formatDate = (timestamp: number) => {
@@ -61,38 +39,9 @@ const getCompanyInitials = (name: string) => {
     .slice(0, 2);
 };
 
-export function SentApplicationItem({
-  jobTitle,
-  company,
-  location,
-  applyTime,
-  statuses,
-  jobExpired,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  jobUrl,
-  onUpdateStatus,
-  jobId,
-  onArchive,
-}: SentApplicationItemProps) {
-  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
-  const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
-  const [isWithdrawDialogOpen, setIsWithdrawDialogOpen] = useState(false);
-
-  const { toast } = useToast();
-  const handleStatusUpdate = (newStatus: CandidateStatus) => {
-    onUpdateStatus(jobId, newStatus);
-    setIsUpdateDialogOpen(false);
-    toast({
-      variant: "success",
-      title: "Statut mis à jour",
-      description: "Le statut de la candidature a été mis à jour avec succès.",
-    });
-  };
-
+export function SentApplicationItem({ applied }: SentApplicationItemProps) {
   const getStatusInfo = () => {
-    const { candidateStatus, employerJobStatus } = statuses;
-
-    if (jobExpired || employerJobStatus.status === "EXPIRED") {
+    if (applied.emploi.status === "closed") {
       return {
         icon: <Ban className="h-3.5 w-3.5" />,
         label: "Offre expirée",
@@ -100,7 +49,7 @@ export function SentApplicationItem({
       };
     }
 
-    switch (candidateStatus.status) {
+    switch (applied.status) {
       case "APPLIED":
         return {
           icon: <Clock className="h-3.5 w-3.5" />,
@@ -154,22 +103,6 @@ export function SentApplicationItem({
 
   const statusInfo = getStatusInfo();
 
-  const handleArchive = (jobId: string) => {
-    // Logic to archive the job application
-    console.log("Archiving job:", jobId);
-    // Call a function to update the state in the parent component
-    onArchive(jobId);
-    toast({
-      variant: "success",
-      title: "Candidature archivée",
-      description: "La candidature a été archivée avec succès.",
-    });
-  };
-
-  const handleWithdraw = () => {
-    setIsWithdrawDialogOpen(true);
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -185,38 +118,41 @@ export function SentApplicationItem({
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               <Avatar className="h-10 w-10">
-                <AvatarImage alt={company.name} />
+                <AvatarImage
+                  src={applied.emploi.company_logo || ""}
+                  alt={applied.emploi.company_name || ""}
+                />
                 <AvatarFallback className="text-xs font-medium">
-                  {getCompanyInitials(company.name)}
+                  {getCompanyInitials(applied.emploi.company_name || "")}
                 </AvatarFallback>
               </Avatar>
             </motion.div>
             <a
-              href={`/profile/my-jobs/application-details/${jobId}`}
+              href={`/profile/my-jobs/application-details/${applied.uuid}`}
               target="_blank"
               rel="noopener noreferrer"
               className="font-medium hover:underline"
             >
-              {jobTitle}
+              {applied.emploi.title}
             </a>
           </div>
 
           <div className="space-y-1 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Building2 className="h-4 w-4" />
-              <span>{company.name}</span>
+              <span>{applied.emploi.company_name}</span>
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="h-4 w-4" />
-              <span>{location}</span>
+              <span>{applied.emploi.city_name || "Inconnu"}</span>
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              <span>Candidature envoyée le {formatDate(applyTime)}</span>
+              <span>Candidature envoyée le {formatDate(Date.now())}</span>
             </div>
             <AnimatePresence mode="popLayout">
               <motion.div
-                key={statuses.candidateStatus.status}
+                key={applied.status}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
@@ -233,9 +169,9 @@ export function SentApplicationItem({
         </div>
 
         <div className="flex items-center gap-2">
-          <UpdateStatusDialog
+          {/* <UpdateStatusDialog
             onStatusUpdate={handleStatusUpdate}
-            currentStatus={statuses.candidateStatus.status}
+            currentStatus={applied.status}
             open={isUpdateDialogOpen}
             onOpenChange={setIsUpdateDialogOpen}
             trigger={
@@ -247,65 +183,18 @@ export function SentApplicationItem({
                 Mettre à jour le statut
               </Button>
             }
-          />
+          /> */}
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <MoreVertical className="h-5 w-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuItem asChild>
-                <a
-                  href={`/profile/my-jobs/application-details/${jobId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2"
-                >
-                  <ExternalLink className="h-4 w-4" />
-                  Voir les détails
-                </a>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="flex items-center gap-2"
-                onClick={() => handleArchive(jobId)}
-              >
-                <Archive className="h-4 w-4" />
-                Archiver
-              </DropdownMenuItem>
-              {statuses.candidateStatus.status !== "WITHDRAWN" && (
-                <DropdownMenuItem
-                  className="flex items-center gap-2 text-destructive"
-                  onClick={jobExpired ? undefined : handleWithdraw}
-                  disabled={jobExpired}
-                >
-                  <XCircle className="h-4 w-4" />
-                  Retirer la candidature
-                </DropdownMenuItem>
-              )}
-              <DropdownMenuItem
-                className="flex items-center gap-2 text-destructive"
-                onClick={() => setIsReportDialogOpen(true)}
-              >
-                <AlertTriangle className="h-4 w-4" />
-                Signaler l&apos;offre d&apos;emploi
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <SentApplicationItemMenu applied={applied} />
         </div>
       </div>
       <Separator />
-      <ReportJobDialog
-        open={isReportDialogOpen}
-        onOpenChange={setIsReportDialogOpen}
-        jobId={jobId}
-      />
-      <ConfirmWithdrawDialog
+
+      {/* <ConfirmWithdrawDialog
         open={isWithdrawDialogOpen}
         onOpenChange={setIsWithdrawDialogOpen}
-        onConfirm={() => onUpdateStatus(jobId, "WITHDRAWN")}
-      />
+        onConfirm={() => onUpdateStatus(applied.uuid, "WITHDRAWN")}
+      /> */}
     </motion.div>
   );
 }

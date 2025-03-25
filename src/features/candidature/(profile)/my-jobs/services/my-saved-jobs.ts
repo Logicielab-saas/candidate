@@ -1,9 +1,16 @@
+import type { Emplois } from "@/core/interfaces";
 import api from "@/lib/axios";
 import { AxiosError } from "axios";
 import { ApiError } from "next/dist/server/api-utils";
 
 const saveEndpoint = "/employee/emploi/save";
-export async function fetchSavedJobs() {
+
+interface SavedJobsResponse {
+  message: string;
+  saved: Emplois[];
+}
+
+export async function fetchSavedJobs(): Promise<SavedJobsResponse> {
   try {
     const response = await api.get(`${saveEndpoint}`);
     return response.data;

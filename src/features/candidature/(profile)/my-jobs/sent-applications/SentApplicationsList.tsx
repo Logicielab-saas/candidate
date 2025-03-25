@@ -12,8 +12,9 @@
 "use client";
 
 import { SentApplicationItem } from "./SentApplicationItem";
-import type { CandidateStatus, Job } from "@/core/types";
 import { motion, AnimatePresence } from "framer-motion";
+import { useFetchSentApplications } from "../hooks/use-my-applied-jobs";
+import { SentApplicationItemSkeleton } from "../skeletons/SentApplicationItemSkeleton";
 
 // Animation configuration for the container
 const container = {
@@ -26,17 +27,32 @@ const container = {
   },
 };
 
-interface SentApplicationsListProps {
-  applications: Job[];
-  onUpdateStatus: (jobId: string, newStatus: CandidateStatus) => void;
-  onArchive: (jobId: string) => void;
-}
+export function SentApplicationsList({}) {
+  const {
+    data: sentApplications,
+    isLoading,
+    error,
+  } = useFetchSentApplications();
 
-export function SentApplicationsList({
-  applications,
-  onUpdateStatus,
-  onArchive,
-}: SentApplicationsListProps) {
+  // Show skeleton loading state
+  if (isLoading) {
+    return (
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="divide-y divide-border"
+      >
+        {Array.from({ length: 3 }).map((_, index) => (
+          <SentApplicationItemSkeleton key={index} />
+        ))}
+      </motion.div>
+    );
+  }
+
+  if (error) return <div>Error: {error.message}</div>;
+  if (!sentApplications) return <div>No applications found</div>;
+
   return (
     <motion.div
       variants={container}
@@ -46,20 +62,8 @@ export function SentApplicationsList({
     >
       {/* AnimatePresence enables exit animations when items are removed */}
       <AnimatePresence mode="popLayout">
-        {applications.map((job) => (
-          <SentApplicationItem
-            key={job.jobKey}
-            jobId={job.jobKey}
-            jobTitle={job.jobTitle}
-            company={job.company}
-            location={job.location}
-            applyTime={job.applyTime}
-            jobExpired={job.jobExpired}
-            jobUrl={job.jobUrl}
-            statuses={job.statuses}
-            onUpdateStatus={onUpdateStatus}
-            onArchive={onArchive}
-          />
+        {sentApplications.applied.map((applied) => (
+          <SentApplicationItem applied={applied} key={applied.uuid} />
         ))}
       </AnimatePresence>
     </motion.div>

@@ -112,7 +112,7 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
    * Archives a job application
    * This is a wrapper around handleUpdateStatus
    */
-  const handleArchive = (jobId: string) => {
+  const _handleArchive = (jobId: string) => {
     handleUpdateStatus(jobId, "ARCHIVED");
   };
 
@@ -212,11 +212,7 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
           </TabsContent>
 
           <TabsContent value="sent-applications">
-            <SentApplicationsList
-              applications={sentApplications}
-              onUpdateStatus={handleUpdateStatus}
-              onArchive={handleArchive}
-            />
+            <SentApplicationsList />
           </TabsContent>
 
           <TabsContent value="interviews">
