@@ -14,8 +14,10 @@ import { useState } from "react";
 import { ReportJobDialog } from "@/features/candidature/(profile)/my-jobs/ReportJobDialog";
 import { NotInterestedDialog } from "./NotInterestedDialog";
 import { useSavedJobsStore } from "../store/saved-jobs.store";
-import { useSaveEmplois, useCancelSaveEmplois } from "../hooks/use-emplois";
-
+import {
+  useSaveEmplois,
+  useCancelSaveEmplois,
+} from "@/features/candidature/(profile)/my-jobs/hooks/use-my-saved-jobs";
 interface JobCardMenuProps {
   jobId: string;
   onNotInterested?: (jobId: string) => void;

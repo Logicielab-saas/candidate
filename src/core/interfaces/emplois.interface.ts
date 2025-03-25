@@ -12,7 +12,7 @@ export interface Emplois {
   views: number;
   type: string[];
   skills: string[];
-  contracts: string[];
+  // contracts: string[];
   saved: boolean;
   applied: boolean;
 }

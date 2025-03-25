@@ -20,7 +20,7 @@ export function JobCard({ job, isSelected }: JobCardProps) {
 
   // Ensure arrays exist with default empty arrays
   const skills = job?.skills || [];
-  const contracts = job?.contracts || [];
+  // const contracts = job?.contracts || [];
 
   return (
     <Card
@@ -82,7 +82,7 @@ export function JobCard({ job, isSelected }: JobCardProps) {
               ))}
             </div>
           )}
-          {contracts.length > 0 && (
+          {/* {contracts.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {contracts.map((contract, index) => (
                 <span
@@ -96,7 +96,7 @@ export function JobCard({ job, isSelected }: JobCardProps) {
                 </span>
               ))}
             </div>
-          )}
+          )} */}
           <div className="text-xs text-muted-foreground">
             {job.views} views • {job.postule} applied •{" "}
             {job.status === "open" ? "Active" : "Closed"}
