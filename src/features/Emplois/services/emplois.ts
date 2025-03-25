@@ -5,8 +5,8 @@ import type { Emplois, EmploisDetails } from "@/core/interfaces";
 
 export interface EmploisResponse {
   message: string;
-  data: Emplois[];
-  meta: {
+  emplois: Emplois[];
+  pagination: {
     current_page: number;
     last_page: number;
     per_page: number;
@@ -21,9 +21,17 @@ export interface EmploisDetailsResponse {
 
 const endpoint = "/employee/emplois";
 
-export async function fetchEmplois() {
+export async function fetchEmplois(page: number = 1, per_page: number = 10) {
   try {
-    const response = await api.get<EmploisResponse>(endpoint);
+    const params: Record<string, number> = {};
+
+    // Only add params if they differ from defaults
+    if (page !== 1) params.current_page = page;
+    if (per_page !== 10) params.per_page = per_page;
+
+    const response = await api.get<EmploisResponse>(endpoint, {
+      params: Object.keys(params).length ? params : undefined,
+    });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {

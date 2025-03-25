@@ -36,7 +36,7 @@ export function JobCard({ job, isSelected }: JobCardProps) {
           <Avatar className="h-12 w-12">
             <AvatarImage
               className="rounded-full"
-              src={job.company_logo}
+              src={job.company_logo || ""}
               alt={job.title}
             />
             <AvatarFallback>

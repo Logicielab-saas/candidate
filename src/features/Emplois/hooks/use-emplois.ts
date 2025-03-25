@@ -7,14 +7,22 @@ import {
 
 export const EMPLOIS_QUERY_KEY = ["emplois"];
 
-export function useEmplois() {
+interface UseEmploisParams {
+  page?: number;
+  per_page?: number;
+}
+
+export function useEmplois(params?: UseEmploisParams) {
   const { data, isLoading, error } = useQuery<EmploisResponse>({
-    queryKey: EMPLOIS_QUERY_KEY,
-    queryFn: fetchEmplois,
+    queryKey: [...EMPLOIS_QUERY_KEY, params?.page, params?.per_page].filter(
+      Boolean
+    ),
+    queryFn: () => fetchEmplois(params?.page, params?.per_page),
   });
 
   return {
-    data: data?.data || [],
+    data: data?.emplois || [],
+    pagination: data?.pagination,
     isLoading,
     error,
   };
