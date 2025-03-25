@@ -37,12 +37,12 @@ export async function fetchSentApplications(): Promise<SentApplicationsResponse>
 }
 
 export async function fetchSentApplicationsDetails(
-  uuid: string
+  slug: string
 ): Promise<SentApplicationDetailsResponse> {
   try {
     const response = await api.get(`${sentApplicationsEndpoint}`, {
       params: {
-        uuid,
+        slug,
       },
     });
     return response.data;

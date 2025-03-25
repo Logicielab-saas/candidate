@@ -63,7 +63,7 @@ export function SentApplicationItemMenu({
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuItem asChild>
             <Link
-              href={`/profile/my-jobs/application-details/${applied.emploi.uuid}`}
+              href={`/profile/my-jobs/application-details/${applied.slug}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2"

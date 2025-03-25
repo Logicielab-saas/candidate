@@ -18,10 +18,10 @@ export function useFetchSentApplications() {
   return { data, isLoading, error };
 }
 
-export function useFetchSentApplicationsDetails(uuid: string) {
+export function useFetchSentApplicationsDetails(slug: string) {
   const { data, isLoading, error } = useQuery({
-    queryKey: [SENT_APPLICATIONS_QUERY_KEY, uuid],
-    queryFn: () => fetchSentApplicationsDetails(uuid),
+    queryKey: [SENT_APPLICATIONS_QUERY_KEY, slug],
+    queryFn: () => fetchSentApplicationsDetails(slug),
   });
   return { data, isLoading, error };
 }
