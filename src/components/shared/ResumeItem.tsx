@@ -153,6 +153,10 @@ export function ResumeItem({
   // Helper function to get file URL based on source and file type
   const getFileUrl = (file: ResumeFile | Files | ProfileFiles) => {
     if (source === "profile") {
+      // Check for file_url first (from profile resumes)
+      if ("file_url" in file) {
+        return (file as ResumeFile).file_url;
+      }
       return (file as ProfileFiles).file;
     }
     // Check for Files type first (from API response)
