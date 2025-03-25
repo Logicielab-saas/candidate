@@ -1,33 +1,33 @@
-import type { Job } from "@/core/types";
+"use client";
+
 import { ApplicationDetailsHeader } from "./ApplicationDetailsHeader";
 import { ApplicationDetailsBody } from "./ApplicationDetailsBody";
+import { useFetchSentApplicationsDetails } from "../hooks/use-my-applied-jobs";
+import { useCurrentUser } from "../../hooks/use-profile";
 
 interface ApplicationDetailsContainerProps {
-  application: Job;
+  slug: string;
 }
 
-const _formatDate = (timestamp: number) => {
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "short",
-  }).format(new Date(timestamp));
-};
-
 export function ApplicationDetailsContainer({
-  application,
+  slug,
 }: ApplicationDetailsContainerProps) {
-  const { jobTitle, company, location, applyTime } = application;
+  const { data, isLoading, error } = useFetchSentApplicationsDetails(slug);
+  const {
+    data: profile,
+    isLoading: profileLoading,
+    error: profileError,
+  } = useCurrentUser();
+
+  if (isLoading || profileLoading) return <div>Loading...</div>;
+  if (error || profileError)
+    return <div>Error: {error?.message || profileError?.message}</div>;
+  if (!data) return <div>No application found</div>;
 
   return (
     <div className="flex flex-col gap-4">
-      <ApplicationDetailsHeader
-        jobTitle={jobTitle}
-        company={company}
-        location={location}
-        applyTime={applyTime}
-      />
-
-      <ApplicationDetailsBody application={application} />
+      <ApplicationDetailsHeader application={data} />
+      <ApplicationDetailsBody application={data} profile={profile} />
     </div>
   );
 }

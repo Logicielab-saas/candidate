@@ -55,6 +55,7 @@ interface ResumeItemProps {
   type?: "postuly" | "custom";
   resumeFiles?: (ResumeFile | Files | ProfileFiles)[];
   source?: "profile" | "qualifications";
+  removeAdd?: boolean;
 }
 
 export function ResumeItem({
@@ -62,6 +63,7 @@ export function ResumeItem({
   type = "custom",
   resumeFiles = [],
   source = "qualifications",
+  removeAdd = false,
 }: ResumeItemProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const updateFileInputRef = useRef<HTMLInputElement>(null);
@@ -171,6 +173,7 @@ export function ResumeItem({
         title="Resume"
         icon={<File className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={type === "custom" ? handleChangeCV : undefined}
+        removeAdd={removeAdd}
       />
 
       <input

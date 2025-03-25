@@ -18,17 +18,12 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion, AnimatePresence } from "framer-motion";
 import type { EmploisApplied } from "@/core/interfaces";
 import { SentApplicationItemMenu } from "./SentApplicationItemMenu";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 interface SentApplicationItemProps {
   applied: EmploisApplied;
 }
-
-const formatDate = (timestamp: number) => {
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "short",
-  }).format(new Date(timestamp));
-};
 
 const getCompanyInitials = (name: string) => {
   return name
@@ -148,7 +143,12 @@ export function SentApplicationItem({ applied }: SentApplicationItemProps) {
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              <span>Candidature envoyée le {formatDate(Date.now())}</span>
+              <span>
+                Candidature envoyée le{" "}
+                {format(new Date(applied.applied_at), "d MMM yyyy", {
+                  locale: fr,
+                })}
+              </span>
             </div>
             <AnimatePresence mode="popLayout">
               <motion.div

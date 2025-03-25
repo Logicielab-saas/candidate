@@ -1,39 +1,27 @@
 import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
-import type { Job, JobQuestion } from "@/core/types";
+import type { EmploisApplied, GetMeResponse } from "@/core/interfaces";
 import { FileText } from "lucide-react";
-import { JobQuestions } from "@/core/mockData/jobs";
 import { Separator } from "@/components/ui/separator";
-
-interface Document {
-  id: number;
-  name: string;
-  type: string;
-  url: string;
-}
+import { ResumeItem } from "@/components/shared/ResumeItem";
 
 interface ApplicationDetailsBodyProps {
-  application: Job;
+  application: EmploisApplied;
+  profile?: GetMeResponse;
 }
 
-// const { documents } = {
-//   documents: [
-//     {
-//       id: 1,
-//       name: "Cover Letter",
-//       type: "cover-letter",
-//       url: "/documents/cover-letter.pdf",
-//     },
-//   ],
-// };
-
-const { documents }: { documents: Document[] | null } = {
-  documents: null,
-};
-
 export function ApplicationDetailsBody({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   application,
+  profile,
 }: ApplicationDetailsBodyProps) {
+  // Format resume files for ResumeItem component
+  const resumeFiles =
+    profile?.resume?.resumeFiles?.map((file) => ({
+      ...file,
+      uuid: file.uuid,
+      name: file.name,
+      file: file.file_url, // Assuming file_url is the correct property
+    })) || [];
+
   return (
     <Card className="flex flex-col gap-4 shadow-md rounded-lg">
       <CardHeader>
@@ -49,101 +37,95 @@ export function ApplicationDetailsBody({
           </h6>
           <div className="flex flex-col gap-2">
             <div className="flex gap-2">
-              <span className="font-semibold">Full Name:</span>
-              <span className="text-muted-foreground">John Doe</span>
-            </div>
-            <div className="flex gap-2">
-              <span className="font-semibold">Email Address:</span>
+              <span className="font-semibold">Nom complet:</span>
               <span className="text-muted-foreground">
-                john.doe@example.com
+                {profile?.first_name} {profile?.last_name}
               </span>
             </div>
             <div className="flex gap-2">
-              <span className="font-semibold">City, State:</span>
-              <span className="text-muted-foreground">Tanger</span>
+              <span className="font-semibold">Email:</span>
+              <span className="text-muted-foreground">{profile?.email}</span>
             </div>
             <div className="flex gap-2">
-              <span className="font-semibold">Phone Number:</span>
-              <span className="text-muted-foreground">+212 6 12 34 56 78</span>
+              <span className="font-semibold">Téléphone:</span>
+              <span className="text-muted-foreground">
+                {profile?.phone || "Non spécifié"}
+              </span>
+            </div>
+            <div className="flex gap-2">
+              <span className="font-semibold">Adresse:</span>
+              <span className="text-muted-foreground">
+                {profile?.address || "Non spécifié"}
+              </span>
             </div>
           </div>
         </div>
 
         <Separator />
 
-        {/* Candidature CV */}
-        <div className="shadow dark:border p-4 rounded-lg flex flex-col items-start gap-2">
-          <h6 className="text-muted-foreground font-semibold">CV</h6>
-          <a
-            href="/cvs/sample.pdf"
-            download
-            className="text-primaryHex-500 hover:bg-accent p-2 rounded-lg flex items-center gap-2 transition duration-200"
-          >
-            <FileText className="h-5 w-5 text-primaryHex-600" />
-            Bilal-Nnasser-fr.pdf
-          </a>
-        </div>
+        {/* Resume Section */}
+        {resumeFiles.length > 0 && (
+          <>
+            <div className="shadow dark:border p-4 rounded-lg">
+              <ResumeItem
+                type="custom"
+                source="profile"
+                resumeFiles={resumeFiles}
+                removeAdd={true}
+              />
+            </div>
+            <Separator />
+          </>
+        )}
 
-        <Separator />
+        {/* Cover Letter if exists */}
+        {application.cover_letter && (
+          <>
+            <div className="shadow dark:border p-4 rounded-lg flex flex-col items-start gap-2">
+              <h6 className="text-muted-foreground font-semibold">
+                Lettre de motivation
+              </h6>
+              <div className="prose dark:prose-invert max-w-none">
+                {application.cover_letter}
+              </div>
+            </div>
+            <Separator />
+          </>
+        )}
 
-        {/* Candidature Relevant Experience */}
+        {/* Additional Files if exists */}
+        {application.file && (
+          <>
+            <div className="shadow dark:border p-4 rounded-lg flex flex-col items-start gap-2">
+              <h6 className="text-muted-foreground font-semibold">
+                Documents supplémentaires
+              </h6>
+              <a
+                href={application.file}
+                download
+                className="text-primaryHex-500 hover:bg-accent p-2 rounded-lg flex items-center gap-2 transition duration-200"
+              >
+                <FileText className="h-5 w-5 text-primaryHex-600" />
+                Télécharger le document
+              </a>
+            </div>
+            <Separator />
+          </>
+        )}
+
+        {/* Job Details */}
         <div className="shadow dark:border p-4 rounded-lg flex flex-col items-start gap-2">
           <h6 className="text-muted-foreground font-semibold">
-            Relevant Experience
+            Détails du poste
           </h6>
-          <p className="text-base font-semibold">Front End Developer</p>
-          <p className="text-base font-medium">Logiciel Lab</p>
+          <p className="text-base font-semibold">{application.emploi.title}</p>
+          <p className="text-base font-medium">
+            {application.emploi.company_name}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            {application.emploi.city_name || "Lieu non spécifié"}
+          </p>
         </div>
-
-        <Separator />
-
-        {/* Candidature Questions */}
-        <div className="shadow dark:border p-4 rounded-lg flex flex-col items-start gap-4">
-          <h6 className="text-muted-foreground font-semibold text-lg">
-            Questions
-          </h6>
-          {JobQuestions.length > 0 ? (
-            JobQuestions.map((question: JobQuestion) => (
-              <div
-                key={question.id}
-                className="bg-gray-100 dark:bg-zinc-700 p-4 rounded-lg shadow-sm w-full"
-              >
-                <p className="font-semibold text-md text-primaryHex-600">
-                  {question.question}
-                </p>
-                <p className="text-base font-normal text-muted-foreground">
-                  {question.answer}
-                </p>
-              </div>
-            ))
-          ) : (
-            <p>No questions available</p>
-          )}
-        </div>
-
-        <Separator />
-
-        {/* Supporting Documents Cover Letter */}
-        {documents ? (
-          documents.map((document) => (
-            <div
-              key={document.id}
-              className="shadow p-4 rounded-lg flex flex-col items-start gap-2"
-            >
-              <h6 className="text-muted-foreground font-semibold">
-                {document.name}
-              </h6>
-              <p>{document.name}</p>
-            </div>
-          ))
-        ) : (
-          <div className="shadow p-4 rounded-lg flex flex-col items-start gap-2">
-            <h6 className="text-muted-foreground font-semibold">
-              Relevant Experience
-            </h6>
-            <p>No documents found</p>
-          </div>
-        )}
       </CardContent>
     </Card>
   );

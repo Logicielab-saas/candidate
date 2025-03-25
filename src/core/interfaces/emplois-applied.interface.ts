@@ -7,5 +7,9 @@ export interface EmploisApplied {
   resume_uuid: string;
   apply: boolean;
   status: string;
+  status_employee: string;
+  status_recruiter: string;
+  slug: string;
+  applied_at: string;
   emploi: Emplois;
 }

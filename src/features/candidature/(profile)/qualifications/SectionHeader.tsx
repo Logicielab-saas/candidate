@@ -6,6 +6,7 @@ interface SectionHeaderProps {
   icon: React.ReactNode;
   onAdd?: () => void;
   onEdit?: () => void;
+  removeAdd?: boolean;
 }
 
 export function SectionHeader({
@@ -13,6 +14,7 @@ export function SectionHeader({
   icon,
   onAdd,
   onEdit,
+  removeAdd = false,
 }: SectionHeaderProps) {
   return (
     <h2 className="text-xl font-semibold mb-4 flex items-center justify-between">
@@ -27,7 +29,7 @@ export function SectionHeader({
         >
           <Pencil className="w-5 h-5" />
         </Link>
-      ) : (
+      ) : removeAdd ? null : (
         <span
           className="text-primaryHex-600 font-bold rounded-full p-2 bg-primaryHex-100 hover:bg-primaryHex-200 cursor-pointer"
           onClick={onAdd}

@@ -10,6 +10,10 @@ interface SentApplicationsResponse {
   applied: EmploisApplied[];
 }
 
+interface SentApplicationDetailsResponse extends EmploisApplied {
+  message: string;
+}
+
 export async function fetchSentApplications(): Promise<SentApplicationsResponse> {
   try {
     const response = await api.get(`${sentApplicationsEndpoint}`);
@@ -18,6 +22,27 @@ export async function fetchSentApplications(): Promise<SentApplicationsResponse>
     if (error instanceof AxiosError) {
       const apiError = error.response?.data as ApiError;
       throw new Error(apiError?.message || `Failed to fetch emplois`);
+    }
+    throw error;
+  }
+}
+
+export async function fetchSentApplicationsDetails(
+  uuid: string
+): Promise<SentApplicationDetailsResponse> {
+  try {
+    const response = await api.get(`${sentApplicationsEndpoint}`, {
+      params: {
+        uuid,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      const apiError = error.response?.data as ApiError;
+      throw new Error(
+        apiError?.message || `Failed to fetch application details`
+      );
     }
     throw error;
   }

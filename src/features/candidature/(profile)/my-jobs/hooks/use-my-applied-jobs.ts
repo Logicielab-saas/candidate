@@ -2,7 +2,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { AxiosError } from "axios";
 import { EMPLOIS_QUERY_KEY } from "@/features/Emplois/hooks/use-emplois";
-import { fetchSentApplications } from "../services/my-applied-jobs";
+import {
+  fetchSentApplications,
+  fetchSentApplicationsDetails,
+} from "../services/my-applied-jobs";
 import { deleteSentApplication } from "../services/my-applied-jobs";
 
 export const SENT_APPLICATIONS_QUERY_KEY = ["sent-applications"];
@@ -11,6 +14,14 @@ export function useFetchSentApplications() {
   const { data, isLoading, error } = useQuery({
     queryKey: SENT_APPLICATIONS_QUERY_KEY,
     queryFn: fetchSentApplications,
+  });
+  return { data, isLoading, error };
+}
+
+export function useFetchSentApplicationsDetails(uuid: string) {
+  const { data, isLoading, error } = useQuery({
+    queryKey: [SENT_APPLICATIONS_QUERY_KEY, uuid],
+    queryFn: () => fetchSentApplicationsDetails(uuid),
   });
   return { data, isLoading, error };
 }

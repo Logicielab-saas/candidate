@@ -1,35 +1,31 @@
 import { Card, CardContent } from "@/components/ui/card";
-import type { Company } from "@/core/types";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import type { EmploisApplied } from "@/core/interfaces";
 
 interface ApplicationDetailsHeaderProps {
-  jobTitle: string;
-  company: Company;
-  location: string;
-  applyTime: number;
+  application: EmploisApplied;
 }
 
-const formatDate = (timestamp: number) => {
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "short",
-  }).format(new Date(timestamp));
-};
-
 export function ApplicationDetailsHeader({
-  jobTitle,
-  company,
-  location,
-  applyTime,
+  application,
 }: ApplicationDetailsHeaderProps) {
   return (
     <Card className="p-0">
       <CardContent className="p-0">
         <div className="p-4">
-          <h2 className="text-xl font-bold">{jobTitle}</h2>
-          <p className="text-md font-medium">{company.name}</p>
-          <p className="text-sm text-muted-foreground">{location}</p>
+          <h2 className="text-xl font-bold">{application.emploi.title}</h2>
+          <p className="text-md font-medium">
+            {application.emploi.company_name}
+          </p>
           <p className="text-sm text-muted-foreground">
-            Candidature envoyée le {formatDate(applyTime)}
+            {application.emploi.city_name || "Inconnu"}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Candidature envoyée le{" "}
+            {format(new Date(application.applied_at), "d MMM yyyy", {
+              locale: fr,
+            })}
           </p>
         </div>
       </CardContent>
