@@ -4,14 +4,24 @@ import { FileText } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { ResumeItem } from "@/components/shared/ResumeItem";
 
+interface ResponseQuestion {
+  uuid: string;
+  emploi_question_uuid: string;
+  emploi_apply_uuid: string;
+  user_id: number;
+  reponse: string | string[];
+}
+
 interface ApplicationDetailsBodyProps {
   application: EmploisApplied;
   profile?: GetMeResponse;
+  reponse_questions?: ResponseQuestion[];
 }
 
 export function ApplicationDetailsBody({
   application,
   profile,
+  reponse_questions = [],
 }: ApplicationDetailsBodyProps) {
   // Format resume files for ResumeItem component
   const resumeFiles =
@@ -19,7 +29,7 @@ export function ApplicationDetailsBody({
       ...file,
       uuid: file.uuid,
       name: file.name,
-      file: file.file_url, // Assuming file_url is the correct property
+      file: file.file_url,
     })) || [];
 
   return (
@@ -116,6 +126,42 @@ export function ApplicationDetailsBody({
                 <FileText className="h-5 w-5 text-primaryHex-600" />
                 Télécharger le document
               </a>
+            </div>
+            <Separator />
+          </>
+        )}
+
+        {/* Response Questions Section */}
+        {reponse_questions.length > 0 && (
+          <>
+            <div className="shadow dark:border p-4 rounded-lg flex flex-col gap-4">
+              <h6 className="text-muted-foreground font-semibold text-lg">
+                Questions et Réponses
+              </h6>
+              <div className="space-y-4">
+                {reponse_questions.map((question) => (
+                  <div
+                    key={question.uuid}
+                    className="bg-muted/50 p-4 rounded-lg space-y-2"
+                  >
+                    <div className="font-medium text-sm">
+                      {Array.isArray(question.reponse) ? (
+                        <div className="space-y-1">
+                          {question.reponse.map((answer, index) => (
+                            <p key={index} className="text-muted-foreground">
+                              • {answer}
+                            </p>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-muted-foreground">
+                          {question.reponse}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
             <Separator />
           </>

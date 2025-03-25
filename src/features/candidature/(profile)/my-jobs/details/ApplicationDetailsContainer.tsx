@@ -27,7 +27,11 @@ export function ApplicationDetailsContainer({
   return (
     <div className="flex flex-col gap-4">
       <ApplicationDetailsHeader application={data} />
-      <ApplicationDetailsBody application={data} profile={profile} />
+      <ApplicationDetailsBody
+        application={data}
+        profile={profile}
+        reponse_questions={data.reponse_questions}
+      />
     </div>
   );
 }

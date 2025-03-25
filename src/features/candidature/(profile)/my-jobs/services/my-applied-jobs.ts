@@ -3,6 +3,14 @@ import api from "@/lib/axios";
 import { AxiosError } from "axios";
 import { ApiError } from "next/dist/server/api-utils";
 
+interface ResponseQuestion {
+  uuid: string;
+  emploi_question_uuid: string;
+  emploi_apply_uuid: string;
+  user_id: number;
+  reponse: string | string[];
+}
+
 const sentApplicationsEndpoint = "/employee/emploi/apply";
 
 interface SentApplicationsResponse {
@@ -12,6 +20,7 @@ interface SentApplicationsResponse {
 
 interface SentApplicationDetailsResponse extends EmploisApplied {
   message: string;
+  reponse_questions: ResponseQuestion[];
 }
 
 export async function fetchSentApplications(): Promise<SentApplicationsResponse> {
