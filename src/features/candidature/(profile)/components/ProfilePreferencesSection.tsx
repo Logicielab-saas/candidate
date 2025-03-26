@@ -26,7 +26,11 @@ const AvailabilityStatusDialog = dynamic(
       (mod) => mod.AvailabilityStatusDialog
     ),
   {
-    loading: () => <div>Loading...</div>,
+    loading: () => (
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <LoaderOne />
+      </div>
+    ),
     ssr: false,
   }
 );

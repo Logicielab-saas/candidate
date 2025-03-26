@@ -3,6 +3,7 @@ import type { EmploisApplied, GetMeResponse } from "@/core/interfaces";
 import { FileText } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { ResumeItem } from "@/components/shared/ResumeItem";
+import Link from "next/link";
 
 interface ResponseQuestion {
   uuid: string;
@@ -118,14 +119,14 @@ export function ApplicationDetailsBody({
               <h6 className="text-muted-foreground font-semibold">
                 Documents supplémentaires
               </h6>
-              <a
+              <Link
                 href={application.file}
                 download
                 className="text-primaryHex-500 hover:bg-accent p-2 rounded-lg flex items-center gap-2 transition duration-200"
               >
                 <FileText className="h-5 w-5 text-primaryHex-600" />
                 Télécharger le document
-              </a>
+              </Link>
             </div>
             <Separator />
           </>

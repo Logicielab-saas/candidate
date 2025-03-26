@@ -14,7 +14,7 @@ import {
 import { ResumeSkeleton } from "./ResumeSkeleton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { FileText } from "lucide-react";
+import { FileText, Edit } from "lucide-react";
 
 export function ProfileContainer() {
   const { data: profile, isLoading } = useProfile();
@@ -25,44 +25,56 @@ export function ProfileContainer() {
       {isLoading ? (
         <ProfileHeaderSkeleton />
       ) : (
-        <div className="flex items-center gap-6">
-          <Avatar className="h-20 w-20 sm:h-24 sm:w-24">
-            {profile?.image ? (
-              <AvatarImage
-                src={
-                  profile.image instanceof File
-                    ? URL.createObjectURL(profile.image)
-                    : typeof profile.image === "string"
-                    ? profile.image
-                    : undefined
-                }
-                alt={`${profile?.first_name} ${profile?.last_name}`}
-              />
-            ) : null}
-            <AvatarFallback>
-              {profile
-                ? [profile.first_name, profile.last_name]
-                    .filter(Boolean)
-                    .map((n) => n?.[0])
-                    .join("")
-                    .toUpperCase()
-                : "?"}
-            </AvatarFallback>
-          </Avatar>
-          <div className="space-y-1">
-            <h3 className="text-xl sm:text-2xl font-semibold">
-              {profile
-                ? [profile.first_name, profile.last_name]
-                    .filter(Boolean)
-                    .join(" ") || "No name provided"
-                : "No name provided"}
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              {profile?.city && profile?.country
-                ? `${profile.city}, ${profile.country}`
-                : "No location provided"}
-            </p>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+          <div className="flex items-center gap-6 flex-1">
+            <Avatar className="h-20 w-20 sm:h-24 sm:w-24">
+              {profile?.image ? (
+                <AvatarImage
+                  src={
+                    profile.image instanceof File
+                      ? URL.createObjectURL(profile.image)
+                      : typeof profile.image === "string"
+                      ? profile.image
+                      : undefined
+                  }
+                  alt={`${profile?.first_name} ${profile?.last_name}`}
+                />
+              ) : null}
+              <AvatarFallback>
+                {profile
+                  ? [profile.first_name, profile.last_name]
+                      .filter(Boolean)
+                      .map((n) => n?.[0])
+                      .join("")
+                      .toUpperCase()
+                  : "?"}
+              </AvatarFallback>
+            </Avatar>
+            <div className="space-y-1">
+              <h3 className="text-xl sm:text-2xl font-semibold">
+                {profile
+                  ? [profile.first_name, profile.last_name]
+                      .filter(Boolean)
+                      .join(" ") || "No name provided"
+                  : "No name provided"}
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                {profile?.city && profile?.country
+                  ? `${profile.city}, ${profile.country}`
+                  : "No location provided"}
+              </p>
+            </div>
           </div>
+          <Link href="/edit/profile" className="mt-4 sm:mt-0">
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full sm:w-auto hover:bg-primary/10 transition-colors"
+            >
+              <Edit className="mr-2 h-4 w-4" />
+              Edit Profile
+            </Button>
+          </Link>
         </div>
       )}
 

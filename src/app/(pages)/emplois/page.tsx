@@ -3,6 +3,7 @@ import { HomeHeader } from "@/features/Emplois/components/HomeHeader";
 import { JobsContainer } from "@/features/Emplois/components/JobsContainer";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import LoaderOne from "@/components/ui/loader-one";
 
 export default function HomePage() {
   return (
@@ -47,24 +48,8 @@ export default function HomePage() {
 
       <Suspense
         fallback={
-          <div className="space-y-6 mt-5">
-            <div className="flex items-center justify-between">
-              <Skeleton className="h-8 w-48" />
-              <Skeleton className="h-10 w-40" />
-            </div>
-            <div className="space-y-4">
-              <Skeleton className="h-40 w-full" />
-              <div className="grid gap-4 md:grid-cols-[2fr_1fr]">
-                <div className="space-y-4">
-                  <Skeleton className="h-64 w-full" />
-                  <Skeleton className="h-32 w-full" />
-                </div>
-                <div className="space-y-4">
-                  <Skeleton className="h-40 w-full" />
-                  <Skeleton className="h-40 w-full" />
-                </div>
-              </div>
-            </div>
+          <div className="flex items-center justify-center h-screen">
+            <LoaderOne />
           </div>
         }
       >

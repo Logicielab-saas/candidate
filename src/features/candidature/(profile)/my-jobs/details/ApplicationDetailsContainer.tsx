@@ -4,6 +4,8 @@ import { ApplicationDetailsHeader } from "./ApplicationDetailsHeader";
 import { ApplicationDetailsBody } from "./ApplicationDetailsBody";
 import { useFetchSentApplicationsDetails } from "../hooks/use-my-applied-jobs";
 import { useCurrentUser } from "../../hooks/use-profile";
+import { ApplicationDetailsHeaderSkeleton } from "./skeletons/ApplicationDetailsHeaderSkeleton";
+import { ApplicationDetailsBodySkeleton } from "./skeletons/ApplicationDetailsBodySkeleton";
 
 interface ApplicationDetailsContainerProps {
   slug: string;
@@ -19,7 +21,13 @@ export function ApplicationDetailsContainer({
     error: profileError,
   } = useCurrentUser();
 
-  if (isLoading || profileLoading) return <div>Loading...</div>;
+  if (isLoading || profileLoading)
+    return (
+      <div className="flex flex-col gap-4">
+        <ApplicationDetailsHeaderSkeleton />
+        <ApplicationDetailsBodySkeleton />
+      </div>
+    );
   if (error || profileError)
     return <div>Error: {error?.message || profileError?.message}</div>;
   if (!data) return <div>No application found</div>;

@@ -9,9 +9,13 @@ import { SectionHeader } from "../qualifications/SectionHeader";
 import { File, MoreVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export function ResumeSkeleton() {
+export function ResumeSkeleton({ source = "profile" }: { source?: string }) {
   return (
-    <div className="border p-4 rounded-lg shadow-sm space-y-4">
+    <div
+      className={`${
+        source === "profile" ? "" : "p-4 rounded-lg shadow-sm"
+      } space-y-4`}
+    >
       <SectionHeader
         title="Resume"
         icon={<File className="w-6 h-6 text-primaryHex-400 mr-2" />}

@@ -90,6 +90,12 @@ interface EditProfileFormProps {
   resumeDescription?: string | null;
 }
 
+/**
+ * EditProfileForm - Form for editing user profile information
+ *
+ * Allows users to edit their personal details, contact information,
+ * address, biography, and resume description with validation.
+ */
 export function EditProfileForm({
   profile,
   resumeDescription,
@@ -168,6 +174,7 @@ export function EditProfileForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {/* Image Upload Section */}
         <FormField
           control={form.control}
           name="image"
@@ -187,6 +194,7 @@ export function EditProfileForm({
           )}
         />
 
+        {/* Name Fields - First Name & Last Name */}
         <div className="grid gap-4 md:grid-cols-2">
           <FormField
             control={form.control}
@@ -225,11 +233,12 @@ export function EditProfileForm({
           />
         </div>
 
+        {/* Phone Field */}
         <FormField
           control={form.control}
           name="phone"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full md:w-2/3 lg:w-1/2">
               <FormLabel>Phone Number</FormLabel>
               <FormControl>
                 <Input
@@ -243,11 +252,12 @@ export function EditProfileForm({
           )}
         />
 
+        {/* Birth Date Field */}
         <FormField
           control={form.control}
           name="birth_date"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full md:w-40">
               <FormLabel>Birth Date</FormLabel>
               <FormControl>
                 <Input type="date" {...field} value={field.value || ""} />
@@ -257,11 +267,12 @@ export function EditProfileForm({
           )}
         />
 
+        {/* Gender Field - Radio Buttons */}
         <FormField
           control={form.control}
           name="is_male"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="space-y-3">
               <FormLabel>Gender</FormLabel>
               <FormControl>
                 <RadioGroup
@@ -273,7 +284,7 @@ export function EditProfileForm({
                   value={
                     field.value === null ? undefined : field.value.toString()
                   }
-                  className="flex gap-4"
+                  className="flex gap-6"
                 >
                   <FormItem className="flex items-center space-x-2">
                     <FormControl>
@@ -294,6 +305,7 @@ export function EditProfileForm({
           )}
         />
 
+        {/* Address Field */}
         <FormField
           control={form.control}
           name="address"
@@ -312,6 +324,7 @@ export function EditProfileForm({
           )}
         />
 
+        {/* City, Country, Postal Code Fields */}
         <div className="grid gap-4 md:grid-cols-3">
           <FormField
             control={form.control}
@@ -378,6 +391,7 @@ export function EditProfileForm({
           />
         </div>
 
+        {/* Bio Field */}
         <FormField
           control={form.control}
           name="bio"
@@ -387,7 +401,7 @@ export function EditProfileForm({
               <FormControl>
                 <Textarea
                   placeholder="Tell us about yourself"
-                  className="min-h-[100px]"
+                  className="min-h-[112px]"
                   {...field}
                   value={field.value || ""}
                 />
@@ -397,6 +411,7 @@ export function EditProfileForm({
           )}
         />
 
+        {/* Resume Description Field */}
         <FormField
           control={form.control}
           name="description"
@@ -406,7 +421,7 @@ export function EditProfileForm({
               <FormControl>
                 <Textarea
                   placeholder="Describe your professional experience and goals"
-                  className="min-h-[150px]"
+                  className="min-h-[144px]"
                   {...field}
                   value={field.value || ""}
                 />
@@ -416,7 +431,8 @@ export function EditProfileForm({
           )}
         />
 
-        <div className="flex justify-end gap-4">
+        {/* Action Buttons */}
+        <div className="flex justify-end gap-4 pt-2">
           <Button
             type="button"
             variant="outline"
