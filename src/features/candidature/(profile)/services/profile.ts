@@ -27,7 +27,7 @@ export interface UpdateProfileData {
   first_name: string;
   last_name: string;
   phone?: string | null;
-  birth_date?: string | null;
+  birthdate?: string | null;
   address?: string | null;
   city?: string | null;
   country?: string | null;

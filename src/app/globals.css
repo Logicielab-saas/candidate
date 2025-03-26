@@ -1,7 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+.rdp-vhidden {
+  @apply hidden;
+}
 body {
   font-family: Arial, Helvetica, sans-serif;
 }

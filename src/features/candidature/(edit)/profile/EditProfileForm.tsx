@@ -32,6 +32,16 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { format, parse, parseISO, isValid } from "date-fns";
+import { fr } from "date-fns/locale";
+import { CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   first_name: z.string().min(2, "First name must be at least 2 characters"),
@@ -66,7 +76,7 @@ const formSchema = z.object({
     .nullish()
     .transform((v) => v || null),
   is_male: z.boolean().nullable(),
-  birth_date: z
+  birthdate: z
     .string()
     .nullish()
     .transform((v) => v || null),
@@ -133,7 +143,7 @@ export function EditProfileForm({
       bio: profile.bio || "",
       description: resumeDescription || "",
       is_male: profile.is_male,
-      birth_date: formatDateForInput(profile.birthdate),
+      birthdate: formatDateForInput(profile.birthdate),
       image: null,
     },
   });
@@ -255,13 +265,85 @@ export function EditProfileForm({
         {/* Birth Date Field */}
         <FormField
           control={form.control}
-          name="birth_date"
+          name="birthdate"
           render={({ field }) => (
-            <FormItem className="w-full md:w-40">
+            <FormItem className="w-full md:w-72 flex flex-col gap-2">
               <FormLabel>Birth Date</FormLabel>
-              <FormControl>
-                <Input type="date" {...field} value={field.value || ""} />
-              </FormControl>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "w-full pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
+                      disabled={isPending}
+                    >
+                      {field.value ? (
+                        <span>
+                          {format(
+                            // Safely parse ISO or YYYY-MM-DD format
+                            (() => {
+                              try {
+                                const parsedDate = parse(
+                                  field.value,
+                                  "yyyy-MM-dd",
+                                  new Date()
+                                );
+                                return isValid(parsedDate)
+                                  ? parsedDate
+                                  : parseISO(field.value);
+                              } catch (_e) {
+                                return new Date();
+                              }
+                            })(),
+                            "d MMMM yyyy",
+                            { locale: fr }
+                          )}
+                        </span>
+                      ) : (
+                        <span className="text-muted-foreground">
+                          Sélectionner une date
+                        </span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={
+                      field.value
+                        ? (() => {
+                            try {
+                              const parsedDate = parse(
+                                field.value,
+                                "yyyy-MM-dd",
+                                new Date()
+                              );
+                              return isValid(parsedDate)
+                                ? parsedDate
+                                : parseISO(field.value);
+                            } catch (_e) {
+                              return undefined;
+                            }
+                          })()
+                        : undefined
+                    }
+                    onSelect={(date) =>
+                      field.onChange(date ? format(date, "yyyy-MM-dd") : "")
+                    }
+                    disabled={isPending}
+                    initialFocus
+                    captionLayout="dropdown-buttons"
+                    fromYear={1940}
+                    toYear={new Date().getFullYear()}
+                    locale={fr}
+                  />
+                </PopoverContent>
+              </Popover>
               <FormMessage />
             </FormItem>
           )}
