@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { ProfileSidebar } from "@/components/shared/profile-sidebar";
 import { Metadata } from "next";
 import { sidebarProfileNav } from "@/core/constants/sidebar-nav";
+import { NavBar } from "@/components/shared/Navbar";
 
 export const metadata: Metadata = {
   title: "Profile | Postuly",
@@ -20,19 +21,23 @@ export default function ProfileLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={cn("min-h-screen bg-background pt-4 md:pt-8")}>
-      <div
-        className={cn("mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-24 md:pb-8")}
-      >
-        <div className={cn("flex flex-col md:flex-row gap-8")}>
-          <aside className="md:w-64 flex-shrink-0">
-            <div className="sm:sticky sm:top-20">
-              <ProfileSidebar navItems={sidebarProfileNav} />
-            </div>
-          </aside>
-          <main className={cn("flex-1 min-w-0")}>{children}</main>
+    <>
+      <NavBar />
+
+      <div className={cn("min-h-screen bg-background pt-4 md:pt-8")}>
+        <div
+          className={cn("mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-24 md:pb-8")}
+        >
+          <div className={cn("flex flex-col md:flex-row gap-8")}>
+            <aside className="md:w-64 flex-shrink-0">
+              <div className="sm:sticky sm:top-20">
+                <ProfileSidebar navItems={sidebarProfileNav} />
+              </div>
+            </aside>
+            <main className={cn("flex-1 min-w-0")}>{children}</main>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

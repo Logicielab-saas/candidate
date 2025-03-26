@@ -12,6 +12,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
+import { NavBar } from "@/components/shared/Navbar";
 
 interface PagesLayoutProps {
   children: React.ReactNode;
@@ -30,26 +31,30 @@ export const metadata: Metadata = {
 
 export default function PagesLayout({ children }: PagesLayoutProps) {
   return (
-    <div className={cn("bg-background", "pt-4 md:pt-8", "antialiased")}>
-      <div
-        className={cn(
-          "mx-auto max-w-7xl",
-          "px-4 sm:px-6 lg:px-8",
-          "pb-24 md:pb-8"
-        )}
-      >
-        <div className={cn("flex flex-col md:flex-row", "gap-8")}>
-          <main
-            className={cn(
-              "flex-1 min-w-0",
-              "relative",
-              "animate-in fade-in duration-500"
-            )}
-          >
-            {children}
-          </main>
+    <>
+      <NavBar />
+
+      <div className={cn("bg-background", "pt-4 md:pt-8", "antialiased")}>
+        <div
+          className={cn(
+            "mx-auto max-w-7xl",
+            "px-4 sm:px-6 lg:px-8",
+            "pb-24 md:pb-8"
+          )}
+        >
+          <div className={cn("flex flex-col md:flex-row", "gap-8")}>
+            <main
+              className={cn(
+                "flex-1 min-w-0",
+                "relative",
+                "animate-in fade-in duration-500"
+              )}
+            >
+              {children}
+            </main>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

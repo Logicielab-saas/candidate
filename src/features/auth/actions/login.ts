@@ -40,7 +40,7 @@ export async function loginAction(
     // Return success and redirect path based on user type
     return {
       success: true,
-      redirectTo: result.type === "employee" ? "/home" : "/recruiter",
+      redirectTo: result.type === "employee" ? "/emplois" : "/recruiter",
     };
   } catch (error) {
     console.error("Login error:", error);

@@ -6,7 +6,6 @@ import { ReactQueryProvider } from "@/lib/providers/ReactQueryProvider";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/toaster";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { NavBar } from "@/components/shared/Navbar";
 import { ThemeProvider } from "@/lib/providers/ThemeProvider";
 
 export const metadata: Metadata = {
@@ -47,7 +46,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <NextTopLoader showSpinner={false} color="#F97316" />
-          <NavBar />
           <NuqsAdapter>
             <ReactQueryProvider>{children}</ReactQueryProvider>
           </NuqsAdapter>

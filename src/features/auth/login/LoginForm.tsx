@@ -56,6 +56,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
 
       if (result.success && result.redirectTo) {
         toast({
+          variant: "success",
           title: "Success",
           description: "Login successful",
         });

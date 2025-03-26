@@ -8,7 +8,8 @@
 import api from "@/lib/axios";
 import { redirect } from "next/navigation";
 import { AxiosError } from "axios";
-import { setAuthToken, removeAuthToken } from "@/lib/cookies";
+import { setAuthToken } from "@/lib/cookies";
+import jsCookie from "js-cookie";
 import { AuthResponse, SignupCredentials } from "../common/interfaces";
 import { LoginCredentials } from "../common/interfaces";
 
@@ -60,7 +61,7 @@ export async function signup(
 export async function logout() {
   try {
     // Clear the token cookie
-    await removeAuthToken();
+    jsCookie.remove("accessToken");
 
     // Redirect to login page
     redirect("/login");

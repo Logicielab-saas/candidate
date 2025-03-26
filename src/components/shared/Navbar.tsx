@@ -34,7 +34,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeButton } from "@/components/shared/ThemeButton";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useProfile } from "@/features/candidature/(profile)/hooks/use-profile";
+import { Skeleton } from "../ui/skeleton";
+import jsCookie from "js-cookie";
 
 // interface NavItem {
 //   name: string;
@@ -59,6 +62,8 @@ const navItems = [
 
 export function NavBar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { data: profile, isLoading } = useProfile();
 
   const activeTab =
     navItems.find(
@@ -66,6 +71,15 @@ export function NavBar() {
     )?.name || "";
 
   const isEmplois = pathname.includes("/emplois");
+
+  // Generate user initials for avatar fallback
+  const userInitials = profile
+    ? [profile.first_name, profile.last_name]
+        .filter(Boolean)
+        .map((n) => n?.[0])
+        .join("")
+        .toUpperCase()
+    : "U";
 
   return (
     <header className={cn("flex h-14 items-center gap-2 px-4")}>
@@ -176,13 +190,30 @@ export function NavBar() {
                         variant="ghost"
                         className="relative h-8 w-8 rounded-full hover:cursor-pointer"
                       >
-                        <Avatar className="h-8 w-8">
-                          <AvatarImage
-                            src="https://placehold.co/64x64"
-                            alt="@USER"
-                          />
-                          <AvatarFallback>SC</AvatarFallback>
-                        </Avatar>
+                        {isLoading ? (
+                          <Avatar className="h-8 w-8 border">
+                            <AvatarFallback className="bg-muted/50 p-0">
+                              <Skeleton className="h-full w-full rounded-full" />
+                            </AvatarFallback>
+                          </Avatar>
+                        ) : (
+                          <Avatar className="h-8 w-8">
+                            <AvatarImage
+                              src={
+                                profile?.image &&
+                                typeof profile.image === "string"
+                                  ? profile.image
+                                  : undefined
+                              }
+                              alt={
+                                profile
+                                  ? `${profile.first_name} ${profile.last_name}`
+                                  : "@USER"
+                              }
+                            />
+                            <AvatarFallback>{userInitials}</AvatarFallback>
+                          </Avatar>
+                        )}
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
@@ -192,12 +223,25 @@ export function NavBar() {
                     >
                       <DropdownMenuLabel className="font-normal">
                         <div className="flex flex-col space-y-1">
-                          <p className="text-sm font-medium leading-none">
-                            @USER
-                          </p>
-                          <p className="text-xs leading-none text-muted-foreground">
-                            m@example.com
-                          </p>
+                          {isLoading ? (
+                            <>
+                              <Skeleton className="h-5 w-24" />
+                              <Skeleton className="h-4 w-32" />
+                            </>
+                          ) : (
+                            <>
+                              <p className="text-sm font-medium leading-none">
+                                {profile
+                                  ? `${profile.first_name || ""} ${
+                                      profile.last_name || ""
+                                    }`.trim()
+                                  : "@USER"}
+                              </p>
+                              <p className="text-xs leading-none text-muted-foreground">
+                                {profile?.email || "m@example.com"}
+                              </p>
+                            </>
+                          )}
                         </div>
                       </DropdownMenuLabel>
                       <DropdownMenuSeparator />
@@ -261,7 +305,13 @@ export function NavBar() {
                       <DropdownMenuSeparator />
 
                       {/* Logout Section */}
-                      <DropdownMenuItem className="text-destructive hover:cursor-pointer">
+                      <DropdownMenuItem
+                        className="text-destructive hover:cursor-pointer"
+                        onClick={() => {
+                          jsCookie.remove("accessToken");
+                          router.replace("/login");
+                        }}
+                      >
                         <LogOut className="mr-2 h-4 w-4" />
                         <span>Déconnexion</span>
                       </DropdownMenuItem>
