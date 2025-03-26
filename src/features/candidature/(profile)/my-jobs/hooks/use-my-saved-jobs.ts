@@ -7,15 +7,33 @@ import {
   saveEmplois,
 } from "@/features/candidature/(profile)/my-jobs/services/my-saved-jobs";
 import { EMPLOIS_QUERY_KEY } from "@/features/Emplois/hooks/use-emplois";
+import { useTabsCountStore } from "../store/tabs-count.store";
+import { useEffect, useRef } from "react";
 
 export const SAVED_EMPLOIS_QUERY_KEY = ["saved-emplois"];
 
-export function useFetchSavedEmplois() {
-  const { data, isLoading, error } = useQuery({
-    queryKey: SAVED_EMPLOIS_QUERY_KEY,
-    queryFn: fetchSavedJobs,
+export function useFetchSavedEmplois(page: number = 1, per_page: number = 10) {
+  const setSavedJobsCount = useTabsCountStore(
+    (state) => state.setSavedJobsCount
+  );
+
+  const prevCountRef = useRef<number | null>(null);
+
+  const result = useQuery({
+    queryKey: [...SAVED_EMPLOIS_QUERY_KEY, page, per_page],
+    queryFn: () => fetchSavedJobs(page, per_page),
   });
-  return { data, isLoading, error };
+
+  useEffect(() => {
+    const total = result.data?.pagination?.total;
+
+    if (total !== undefined && total !== prevCountRef.current) {
+      setSavedJobsCount(total);
+      prevCountRef.current = total;
+    }
+  }, [result.data?.pagination?.total, setSavedJobsCount]);
+
+  return result;
 }
 
 export function useSaveEmplois() {
@@ -25,7 +43,6 @@ export function useSaveEmplois() {
   const { mutate, isPending } = useMutation({
     mutationFn: (uuid: string) => saveEmplois(uuid),
     onSuccess: async () => {
-      // Wait for the query invalidation to complete
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: EMPLOIS_QUERY_KEY,

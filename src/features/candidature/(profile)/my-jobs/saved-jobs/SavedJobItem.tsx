@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { MoreVertical, Building2, MapPin, Calendar, Heart } from "lucide-react";
+import { MoreVertical, Building2, MapPin, Calendar } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,14 +13,13 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { ReportJobDialog } from "../ReportJobDialog";
-import type { SavedJob } from "@/core/interfaces/";
+import type { EmploiSaved } from "@/core/interfaces";
 import Link from "next/link";
 import { linkLikeButtonStyle } from "@/core/styles/links";
+import { JobBookmarkButton } from "@/components/ui/job-bookmark-button";
 
-interface SavedJobItemProps extends Omit<SavedJob, "id"> {
-  jobId: string;
-  onRemove: () => void;
-  bookmarked: boolean;
+interface SavedJobItemProps {
+  saved: EmploiSaved;
 }
 
 const getCompanyInitials = (name: string) => {
@@ -32,17 +31,21 @@ const getCompanyInitials = (name: string) => {
     .slice(0, 2);
 };
 
-export function SavedJobItem({
-  jobId,
-  title,
-  company,
-  location,
-  savedDate,
-  onRemove,
-  jobUrl,
-  bookmarked,
-}: SavedJobItemProps) {
+export function SavedJobItem({ saved }: SavedJobItemProps) {
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+
+  // Handle successful unsave/removal
+  const handleUnsaveSuccess = () => {
+    // After a short delay, make the item invisible to animate it out
+    setTimeout(() => {
+      setIsVisible(false);
+    }, 300);
+  };
+
+  if (!isVisible) {
+    return null;
+  }
 
   return (
     <motion.div
@@ -59,34 +62,34 @@ export function SavedJobItem({
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               <Avatar className="h-10 w-10">
-                <AvatarImage alt={company.name} />
+                <AvatarImage alt={saved.emploi.company_name || ""} />
                 <AvatarFallback className="text-xs font-medium">
-                  {getCompanyInitials(company.name)}
+                  {getCompanyInitials(saved.emploi.company_name || "")}
                 </AvatarFallback>
               </Avatar>
             </motion.div>
-            <a
-              href={jobUrl}
+            <Link
+              href={`/annonce-details/${saved.emploi.slug}`}
               target="_blank"
               rel="noopener noreferrer"
               className="font-medium hover:underline"
             >
-              {title}
-            </a>
+              {saved.emploi.title || ""}
+            </Link>
           </div>
 
           <div className="space-y-1 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Building2 className="h-4 w-4" />
-              <span>{company.name}</span>
+              <span>{saved.emploi.company_name || ""}</span>
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="h-4 w-4" />
-              <span>{location}</span>
+              <span>{saved.emploi.city_name || ""}</span>
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              <span>Enregistré le {savedDate}</span>
+              <span>Enregistré le {saved.saved_at}</span>
             </div>
           </div>
         </div>
@@ -94,7 +97,7 @@ export function SavedJobItem({
         <div className="flex items-center gap-2">
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Link
-              href={`/job-apply?jobId=${jobId}`}
+              href={`/job-apply/${saved.emploi.slug}`}
               target="_blank"
               rel="noopener noreferrer"
               className={linkLikeButtonStyle}
@@ -103,20 +106,12 @@ export function SavedJobItem({
             </Link>
           </motion.div>
 
-          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onRemove}
-              className="text-muted-foreground hover:text-primary"
-            >
-              {bookmarked ? (
-                <Heart className="h-5 w-5 text-primaryHex-400 fill-primaryHex-400" />
-              ) : (
-                <Heart className="h-5 w-5 text-gray-400" />
-              )}
-            </Button>
-          </motion.div>
+          <JobBookmarkButton
+            jobId={saved.emploi.uuid}
+            initialIsSaved={true}
+            jobTitle={saved.emploi.title}
+            onUnsaveSuccess={handleUnsaveSuccess}
+          />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -139,7 +134,7 @@ export function SavedJobItem({
       <ReportJobDialog
         open={isReportDialogOpen}
         onOpenChange={setIsReportDialogOpen}
-        jobId={jobId}
+        jobId={saved.emploi.slug}
       />
     </motion.div>
   );

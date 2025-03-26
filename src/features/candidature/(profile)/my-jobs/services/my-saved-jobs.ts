@@ -1,4 +1,4 @@
-import type { Emplois } from "@/core/interfaces";
+import type { EmploiSaved, Pagination } from "@/core/interfaces";
 import api from "@/lib/axios";
 import { AxiosError } from "axios";
 import { ApiError } from "next/dist/server/api-utils";
@@ -7,12 +7,23 @@ const saveEndpoint = "/employee/emploi/save";
 
 interface SavedJobsResponse {
   message: string;
-  saved: Emplois[];
+  saved: EmploiSaved[];
+  pagination: Pagination;
 }
 
-export async function fetchSavedJobs(): Promise<SavedJobsResponse> {
+export async function fetchSavedJobs(
+  page: number = 1,
+  per_page: number = 10
+): Promise<SavedJobsResponse> {
   try {
-    const response = await api.get(`${saveEndpoint}`);
+    const params: Record<string, number> = {};
+
+    if (page !== 1) params.page = page;
+    if (per_page !== 10) params.per_page = per_page;
+
+    const response = await api.get(`${saveEndpoint}`, {
+      params: Object.keys(params).length ? params : undefined,
+    });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {

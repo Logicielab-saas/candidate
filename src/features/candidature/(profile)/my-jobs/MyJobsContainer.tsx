@@ -226,10 +226,7 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
 
         <div className="mt-6">
           <TabsContent value="saved-jobs">
-            <SavedJobsList
-              jobs={savedJobs}
-              onRemoveBookmark={handleRemoveBookmark}
-            />
+            <SavedJobsList />
           </TabsContent>
 
           <TabsContent value="sent-applications">
