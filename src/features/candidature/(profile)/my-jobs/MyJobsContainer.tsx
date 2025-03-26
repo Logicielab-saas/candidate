@@ -27,12 +27,19 @@ import { mockInterviews } from "@/core/mockData/jobs";
 import type { Job, CandidateStatus } from "@/core/types";
 import type { Interview } from "@/core/interfaces/";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useTabsCountStore } from "./store/tabs-count.store";
 
 // Types and interfaces
 interface JobTab {
   id: string;
   label: string;
-  count: number;
+  countKey: keyof Pick<
+    ReturnType<typeof useTabsCountStore.getState>,
+    | "savedJobsCount"
+    | "sentApplicationsCount"
+    | "interviewsCount"
+    | "archivedCount"
+  >;
 }
 
 function TabCounter({ count }: { count: number }) {
@@ -50,6 +57,14 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
     parse: (value) => value || "saved-jobs",
   });
 
+  // Get tab counts from the store
+  const {
+    savedJobsCount,
+    sentApplicationsCount,
+    interviewsCount,
+    archivedCount,
+  } = useTabsCountStore();
+
   // Centralized state management for all jobs and interviews
   const [jobs, setJobs] = useState<Job[]>(mockSentApplications);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -57,9 +72,7 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
 
   // Derived states - Filter jobs based on different criteria
   const savedJobs = jobs.filter((job) => job.bookmarked);
-  const sentApplications = jobs.filter(
-    (job) => job.statuses.userJobStatus.status !== "ARCHIVED"
-  );
+
   const archivedJobs = jobs.filter(
     (job) => job.statuses.userJobStatus.status === "ARCHIVED"
   );
@@ -149,29 +162,37 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
     );
   };
 
-  // Tab configuration with dynamic counts
+  // Tab configuration with count keys for the store
   const jobTabs: JobTab[] = [
     {
       id: "saved-jobs",
       label: "Emplois enregistrés",
-      count: savedJobs.length,
+      countKey: "savedJobsCount",
     },
     {
       id: "sent-applications",
       label: "Candidatures envoyées",
-      count: sentApplications.length,
+      countKey: "sentApplicationsCount",
     },
     {
       id: "interviews",
       label: "Entretiens",
-      count: interviews.length,
+      countKey: "interviewsCount",
     },
     {
       id: "archived",
       label: "Archivées",
-      count: archivedJobs.length,
+      countKey: "archivedCount",
     },
   ];
+
+  // Map of count keys to actual counts
+  const countMap = {
+    savedJobsCount,
+    sentApplicationsCount,
+    interviewsCount,
+    archivedCount,
+  };
 
   return (
     <div className={cn("space-y-6 w-full", className)}>
@@ -195,7 +216,7 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
                   className={tabTriggerStyles.base}
                 >
                   {tab.label}
-                  <TabCounter count={tab.count} />
+                  <TabCounter count={countMap[tab.countKey]} />
                 </TabsTrigger>
               ))}
             </TabsList>

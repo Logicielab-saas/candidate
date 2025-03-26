@@ -7,6 +7,8 @@ import {
   fetchSentApplicationsDetails,
 } from "../services/my-applied-jobs";
 import { deleteSentApplication } from "../services/my-applied-jobs";
+import { useTabsCountStore } from "../store/tabs-count.store";
+import { useEffect } from "react";
 
 export const SENT_APPLICATIONS_QUERY_KEY = ["sent-applications"];
 
@@ -14,10 +16,23 @@ export function useFetchSentApplications(
   page: number = 1,
   perPage: number = 10
 ) {
+  // Get the setter from the tabs count store
+  const setSentApplicationsCount = useTabsCountStore(
+    (state) => state.setSentApplicationsCount
+  );
+
   const { data, isLoading, error } = useQuery({
     queryKey: [...SENT_APPLICATIONS_QUERY_KEY, page, perPage],
     queryFn: () => fetchSentApplications(page, perPage),
   });
+
+  // Update the count in the store when data changes
+  useEffect(() => {
+    if (data?.pagination?.total !== undefined) {
+      setSentApplicationsCount(data.pagination.total);
+    }
+  }, [data?.pagination?.total, setSentApplicationsCount]);
+
   return { data, isLoading, error };
 }
 
