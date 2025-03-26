@@ -6,6 +6,7 @@
  * - Filters jobs based on search text, city, date, keywords, and contract types
  * - Shows job details like company, location, and keywords
  * - Handles mobile navigation to detail pages
+ * - Supports infinite loading with Load More button
  */
 
 "use client";
@@ -17,6 +18,8 @@ import { useEmplois } from "../hooks/use-emplois";
 import { useEffect } from "react";
 import { useSavedJobsStore } from "../store/saved-jobs.store";
 import { JobCardSkeleton } from "../skeletons/JobCardSkeleton";
+import { Button } from "@/components/ui/button";
+import { LoaderPinwheel } from "lucide-react";
 
 interface JobsListProps {
   isDesktop: boolean;
@@ -31,8 +34,16 @@ export function JobsList({ isDesktop }: JobsListProps) {
     (state) => state.initializeSavedJobs
   );
 
-  // Fetch jobs from API
-  const { data: jobs, isLoading, error } = useEmplois();
+  // Fetch jobs from API with pagination
+  const {
+    data: jobs,
+    pagination,
+    isLoading,
+    error,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useEmplois();
 
   // Initialize saved jobs when data is loaded
   useEffect(() => {
@@ -65,6 +76,13 @@ export function JobsList({ isDesktop }: JobsListProps) {
       setSelectedJobId(jobSlug);
     } else {
       router.push(`/annonce-details/${jobSlug}`);
+    }
+  };
+
+  // Handle load more click
+  const handleLoadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
     }
   };
 
@@ -101,7 +119,7 @@ export function JobsList({ isDesktop }: JobsListProps) {
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">Available Positions</h2>
         <span className="text-sm text-muted-foreground">
-          {jobs?.length || 0} jobs found
+          {pagination?.total || 0} jobs found
         </span>
       </div>
 
@@ -121,6 +139,29 @@ export function JobsList({ isDesktop }: JobsListProps) {
             <p className="text-muted-foreground">
               No jobs match your search criteria.
             </p>
+          </div>
+        )}
+
+        {hasNextPage && (
+          <div className="flex justify-center pt-4">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={handleLoadMore}
+              disabled={isFetchingNextPage}
+              className="w-full max-w-[200px]"
+            >
+              {isFetchingNextPage ? (
+                <>
+                  <LoaderPinwheel className="mr-2 h-4 w-4 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                `Load More (${
+                  pagination ? pagination.total - jobs.length : 0
+                } remaining)`
+              )}
+            </Button>
           </div>
         )}
       </div>

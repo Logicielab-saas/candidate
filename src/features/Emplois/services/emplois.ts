@@ -26,7 +26,7 @@ export async function fetchEmplois(page: number = 1, per_page: number = 10) {
     const params: Record<string, number> = {};
 
     // Only add params if they differ from defaults
-    if (page !== 1) params.current_page = page;
+    if (page !== 1) params.page = page;
     if (per_page !== 10) params.per_page = per_page;
 
     const response = await api.get<EmploisResponse>(endpoint, {
