@@ -8,6 +8,7 @@ import { CheckCircle2, CheckCircle } from "lucide-react";
 import { RecruiterSignupForm } from "@/features/auth/signup/RecruiterSignupForm";
 import { CandidateSignupForm } from "@/features/auth/signup/CandidateSignupForm";
 import { Illustration } from "../Illustration";
+import Link from "next/link";
 
 interface SignupFirstStepProps {
   onSelect: (type: "recruiter" | "employee" | null) => void;
@@ -155,8 +156,9 @@ export function SignupFirstStep({
         <CandidateSignupForm onSelect={onSelect} />
       )}
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
+        By clicking continue, you agree to our{" "}
+        <Link href="#">Terms of Service</Link> and{" "}
+        <Link href="#">Privacy Policy</Link>.
       </div>
     </div>
   );

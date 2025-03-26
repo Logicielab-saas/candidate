@@ -20,6 +20,7 @@ import type { EmploisApplied } from "@/core/interfaces";
 import { SentApplicationItemMenu } from "./SentApplicationItemMenu";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import Link from "next/link";
 
 interface SentApplicationItemProps {
   applied: EmploisApplied;
@@ -122,14 +123,14 @@ export function SentApplicationItem({ applied }: SentApplicationItemProps) {
                 </AvatarFallback>
               </Avatar>
             </motion.div>
-            <a
-              href={`/profile/my-jobs/application-details/${applied.uuid}`}
+            <Link
+              href={`/profile/my-jobs/application-details/${applied.slug}`}
               target="_blank"
               rel="noopener noreferrer"
               className="font-medium hover:underline"
             >
               {applied.emploi.title}
-            </a>
+            </Link>
           </div>
 
           <div className="space-y-1 text-sm text-muted-foreground">
