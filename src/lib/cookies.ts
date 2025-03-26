@@ -52,6 +52,7 @@ export async function hasCookie(key: string): Promise<boolean> {
 
 // Auth specific cookie helpers
 export const AUTH_TOKEN_KEY = "accessToken";
+export const USER_ROLE_KEY = "userRole";
 
 export async function getAuthToken(): Promise<string | undefined> {
   return getCookie(AUTH_TOKEN_KEY);
@@ -67,4 +68,21 @@ export async function removeAuthToken(): Promise<void> {
 
 export async function isAuthenticated(): Promise<boolean> {
   return hasCookie(AUTH_TOKEN_KEY);
+}
+
+// User role specific cookie helpers
+export async function getUserRole(): Promise<string | undefined> {
+  return getCookie(USER_ROLE_KEY);
+}
+
+export async function setUserRole(role: string): Promise<void> {
+  return setCookie(USER_ROLE_KEY, role);
+}
+
+export async function removeUserRole(): Promise<void> {
+  return deleteCookie(USER_ROLE_KEY);
+}
+
+export async function hasUserRole(): Promise<boolean> {
+  return hasCookie(USER_ROLE_KEY);
 }

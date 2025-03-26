@@ -40,20 +40,20 @@ export const useTabsCountStore = create<TabsCountState>()(
 
       // Set actions
       setSavedJobsCount: (count: number) =>
-        set((state) => ({ savedJobsCount: count })),
+        set((_state) => ({ savedJobsCount: count })),
 
       setSentApplicationsCount: (count: number) =>
-        set((state) => ({ sentApplicationsCount: count })),
+        set((_state) => ({ sentApplicationsCount: count })),
 
       setInterviewsCount: (count: number) =>
-        set((state) => ({ interviewsCount: count })),
+        set((_state) => ({ interviewsCount: count })),
 
       setArchivedCount: (count: number) =>
-        set((state) => ({ archivedCount: count })),
+        set((_state) => ({ archivedCount: count })),
 
       // Reset action
       resetCounts: () =>
-        set((state) => ({
+        set((_state) => ({
           savedJobsCount: 0,
           sentApplicationsCount: 0,
           interviewsCount: 0,

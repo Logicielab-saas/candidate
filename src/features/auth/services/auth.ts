@@ -8,7 +8,7 @@
 import api from "@/lib/axios";
 import { redirect } from "next/navigation";
 import { AxiosError } from "axios";
-import { setAuthToken } from "@/lib/cookies";
+import { setAuthToken, setUserRole } from "@/lib/cookies";
 import jsCookie from "js-cookie";
 import { AuthResponse, SignupCredentials } from "../common/interfaces";
 import { LoginCredentials } from "../common/interfaces";
@@ -28,6 +28,9 @@ export async function login(
 
     // Set the token in an HTTP-only cookie
     await setAuthToken(response.data.token);
+
+    // Set the user role in a cookie
+    await setUserRole(response.data.type);
 
     return response.data;
   } catch (error) {
@@ -62,6 +65,9 @@ export async function logout() {
   try {
     // Clear the token cookie
     jsCookie.remove("accessToken");
+
+    // Clear the user role cookie
+    jsCookie.remove("userRole");
 
     // Redirect to login page
     redirect("/login");

@@ -22,7 +22,7 @@ import { ReportJobDialog } from "../ReportJobDialog";
 import type { EmploiSaved } from "@/core/interfaces";
 import Link from "next/link";
 import { linkLikeButtonStyle } from "@/core/styles/links";
-import { JobBookmarkButton } from "@/components/ui/job-bookmark-button";
+import { JobBookmarkButton } from "@/components/shared/JobBookmarkButton";
 import { format } from "date-fns";
 
 interface SavedJobItemProps {
