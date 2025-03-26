@@ -10,10 +10,13 @@ import { deleteSentApplication } from "../services/my-applied-jobs";
 
 export const SENT_APPLICATIONS_QUERY_KEY = ["sent-applications"];
 
-export function useFetchSentApplications() {
+export function useFetchSentApplications(
+  page: number = 1,
+  perPage: number = 10
+) {
   const { data, isLoading, error } = useQuery({
-    queryKey: SENT_APPLICATIONS_QUERY_KEY,
-    queryFn: fetchSentApplications,
+    queryKey: [...SENT_APPLICATIONS_QUERY_KEY, page, perPage],
+    queryFn: () => fetchSentApplications(page, perPage),
   });
   return { data, isLoading, error };
 }

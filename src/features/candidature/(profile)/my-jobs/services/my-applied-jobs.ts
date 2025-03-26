@@ -1,4 +1,4 @@
-import type { EmploisApplied } from "@/core/interfaces";
+import type { EmploisApplied, Pagination } from "@/core/interfaces";
 import api from "@/lib/axios";
 import { AxiosError } from "axios";
 import { ApiError } from "next/dist/server/api-utils";
@@ -16,6 +16,7 @@ const sentApplicationsEndpoint = "/employee/emploi/apply";
 interface SentApplicationsResponse {
   message: string;
   applied: EmploisApplied[];
+  pagination: Pagination;
 }
 
 interface SentApplicationDetailsResponse extends EmploisApplied {
@@ -23,9 +24,20 @@ interface SentApplicationDetailsResponse extends EmploisApplied {
   reponse_questions: ResponseQuestion[];
 }
 
-export async function fetchSentApplications(): Promise<SentApplicationsResponse> {
+export async function fetchSentApplications(
+  page: number = 1,
+  per_page: number = 10
+): Promise<SentApplicationsResponse> {
   try {
-    const response = await api.get(`${sentApplicationsEndpoint}`);
+    const params: Record<string, number> = {};
+
+    // Only add params if they differ from defaults
+    if (page !== 1) params.page = page;
+    if (per_page !== 10) params.per_page = per_page;
+
+    const response = await api.get(`${sentApplicationsEndpoint}`, {
+      params: Object.keys(params).length ? params : undefined,
+    });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {

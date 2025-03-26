@@ -85,7 +85,7 @@ export function ReviewStep({ jobDetails, user }: ReviewStepProps) {
           if (fileInputRef.current) {
             fileInputRef.current.value = "";
           }
-          router.push("/emplois");
+          router.push("/job-apply/success");
         },
         onError: (error: Error) => {
           setError(error.message);

@@ -1,17 +1,12 @@
 import { ApiError } from "next/dist/server/api-utils";
 import api from "@/lib/axios";
 import { AxiosError } from "axios";
-import type { Emplois, EmploisDetails } from "@/core/interfaces";
+import type { Emplois, EmploisDetails, Pagination } from "@/core/interfaces";
 
 export interface EmploisResponse {
   message: string;
   emplois: Emplois[];
-  pagination: {
-    current_page: number;
-    last_page: number;
-    per_page: number;
-    total: number;
-  };
+  pagination: Pagination;
 }
 
 export interface EmploisDetailsResponse {
