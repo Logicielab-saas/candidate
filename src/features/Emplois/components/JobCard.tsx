@@ -99,7 +99,11 @@ export function JobCard({ job, isSelected }: JobCardProps) {
           )} */}
           <div className="text-xs text-muted-foreground">
             {job.views} views • {job.postule} applied •{" "}
-            {job.status === "open" ? "Active" : "Closed"}
+            {job.status === "open"
+              ? "Active"
+              : job.status === "closed"
+              ? "Closed"
+              : "Suspended"}
             {job.saved && " • Saved"}
           </div>
         </div>

@@ -61,7 +61,7 @@ export function JobDetails() {
 
   if (isLoading) {
     return (
-      <Card className="sticky top-14">
+      <Card className="sticky top-1">
         <CardContent className="flex items-center justify-center h-[300px] text-muted-foreground">
           <LoaderOne />
         </CardContent>
@@ -71,7 +71,7 @@ export function JobDetails() {
 
   if (!job) {
     return (
-      <Card className="sticky top-14">
+      <Card className="sticky top-1">
         <CardContent className="flex items-center justify-center h-[300px] text-muted-foreground">
           Sélectionnez une offre pour voir les détails
         </CardContent>
@@ -106,7 +106,7 @@ export function JobDetails() {
   };
 
   return (
-    <Card className="sticky top-14">
+    <Card className="sticky top-1">
       <CardHeader>
         <div className="space-y-4">
           {/* Job Title, Location and Actions */}
