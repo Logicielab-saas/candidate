@@ -90,7 +90,7 @@ export function JobBookmarkButton({
     <TooltipProvider>
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>{buttonContent}</TooltipTrigger>
-        <TooltipContent side={tooltipPosition} className="text-xs">
+        <TooltipContent side={tooltipPosition} className="text-sm">
           {isSaved ? "Retirer des favoris" : "Ajouter aux favoris"}
         </TooltipContent>
       </Tooltip>

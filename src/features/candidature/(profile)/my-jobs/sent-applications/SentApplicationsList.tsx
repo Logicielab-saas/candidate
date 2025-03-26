@@ -1,18 +1,23 @@
 /**
  * SentApplicationsList - Displays a list of active job applications with pagination
  *
- * This component shows all non-archived job applications with pagination controls
- * and provides functionality to update their status or archive them.
- * Uses URL query parameters for state management with nuqs.
+ * This component receives job applications data from the parent container and displays them
+ * with pagination controls and animation effects.
  */
 "use client";
 
 import { SentApplicationItem } from "./SentApplicationItem";
 import { motion, AnimatePresence } from "framer-motion";
-import { useFetchSentApplications } from "../hooks/use-my-applied-jobs";
 import { SentApplicationItemSkeleton } from "../skeletons/SentApplicationItemSkeleton";
-import { Pagination } from "@/components/ui/pagination";
-import { useQueryState } from "nuqs";
+import dynamic from "next/dynamic";
+import type { SentApplicationsResponse } from "../services/my-applied-jobs";
+
+const Pagination = dynamic(
+  () => import("@/components/ui/pagination").then((mod) => mod.Pagination),
+  {
+    ssr: false,
+  }
+);
 
 // Animation configuration for the container
 const container = {
@@ -25,39 +30,20 @@ const container = {
   },
 };
 
-export function SentApplicationsList() {
-  // URL query state for pagination
-  const [pageStr, setPageStr] = useQueryState("page", {
-    parse: (value) => value,
-    serialize: (value) => value,
-  });
+interface SentApplicationsListProps {
+  sentApplicationsData?: SentApplicationsResponse;
 
-  const [perPageStr, _setPerPageStr] = useQueryState("perPage", {
-    parse: (value) => value,
-    serialize: (value) => value,
-  });
+  isLoading: boolean;
+  error: Error | null;
+  onPageChange: (page: number) => void;
+}
 
-  // Convert string values to numbers
-  const page = pageStr ? parseInt(pageStr) : 1;
-  const perPage = perPageStr ? parseInt(perPageStr) : 10;
-
-  const {
-    data: sentApplications,
-    isLoading,
-    error,
-  } = useFetchSentApplications(page, perPage);
-
-  // Handle page change
-  const handlePageChange = (newPage: number) => {
-    setPageStr(newPage.toString());
-
-    // Scroll to top of the list when page changes
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
+export function SentApplicationsList({
+  sentApplicationsData,
+  isLoading,
+  error,
+  onPageChange,
+}: SentApplicationsListProps) {
   // Show skeleton loading state
   if (isLoading) {
     return (
@@ -75,14 +61,14 @@ export function SentApplicationsList() {
   }
 
   if (error) return <div>Error: {error.message}</div>;
-  if (!sentApplications || sentApplications.applied.length === 0)
+  if (!sentApplicationsData || sentApplicationsData.applied.length === 0)
     return (
       <div className="text-center py-6 text-muted-foreground">
         Aucune candidature trouvée.
       </div>
     );
 
-  const { pagination } = sentApplications;
+  const { pagination } = sentApplicationsData;
 
   return (
     <div className="space-y-6">
@@ -94,7 +80,7 @@ export function SentApplicationsList() {
       >
         {/* AnimatePresence enables exit animations when items are removed */}
         <AnimatePresence mode="popLayout">
-          {sentApplications.applied.map((applied) => (
+          {sentApplicationsData.applied.map((applied) => (
             <SentApplicationItem applied={applied} key={applied.uuid} />
           ))}
         </AnimatePresence>
@@ -107,7 +93,7 @@ export function SentApplicationsList() {
           totalPages={pagination.last_page}
           perPage={pagination.per_page}
           totalItems={pagination.total}
-          onPageChange={handlePageChange}
+          onPageChange={onPageChange}
           className="mt-6"
         />
       )}

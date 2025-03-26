@@ -13,7 +13,7 @@ interface ResponseQuestion {
 
 const sentApplicationsEndpoint = "/employee/emploi/apply";
 
-interface SentApplicationsResponse {
+export interface SentApplicationsResponse {
   message: string;
   applied: EmploisApplied[];
   pagination: Pagination;

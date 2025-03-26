@@ -1,17 +1,23 @@
 /**
  * SavedJobsList - Displays a list of bookmarked jobs with pagination
  *
- * This component fetches and displays jobs that have been bookmarked by the user
- * and renders them in a list with animation effects and pagination.
+ * This component receives saved jobs data from the parent container and
+ * renders them in a list with animation effects.
  */
 "use client";
 
-import { SavedJobItem } from "./SavedJobItem";
 import { motion, AnimatePresence } from "framer-motion";
-import { useFetchSavedEmplois } from "../hooks/use-my-saved-jobs";
-import { useQueryState } from "nuqs";
-import { Pagination } from "@/components/ui/pagination";
+import { SavedJobItem } from "./SavedJobItem";
 import { SavedJobsItemSkeleton } from "../skeletons/SavedJobsItemSkeleton";
+import type { SavedJobsResponse } from "../services/my-saved-jobs";
+import dynamic from "next/dynamic";
+
+const Pagination = dynamic(
+  () => import("@/components/ui/pagination").then((mod) => mod.Pagination),
+  {
+    ssr: false,
+  }
+);
 
 // Animation configuration for the container
 const container = {
@@ -24,35 +30,19 @@ const container = {
   },
 };
 
-export function SavedJobsList() {
-  // URL query state for pagination
-  const [pageStr, setPageStr] = useQueryState("page", {
-    parse: (value) => value,
-    serialize: (value) => value,
-  });
+interface SavedJobsListProps {
+  savedJobsData?: SavedJobsResponse;
+  isLoading: boolean;
+  error: Error | null;
+  onPageChange: (page: number) => void;
+}
 
-  const [perPageStr, _setPerPageStr] = useQueryState("perPage", {
-    parse: (value) => value,
-    serialize: (value) => value,
-  });
-
-  // Convert string values to numbers
-  const page = pageStr ? parseInt(pageStr) : 1;
-  const perPage = perPageStr ? parseInt(perPageStr) : 10;
-
-  const { data, isLoading, error } = useFetchSavedEmplois(page, perPage);
-
-  // Handle page change
-  const handlePageChange = (newPage: number) => {
-    setPageStr(newPage.toString());
-
-    // Scroll to top of the list when page changes
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
+export function SavedJobsList({
+  savedJobsData,
+  isLoading,
+  error,
+  onPageChange,
+}: SavedJobsListProps) {
   if (isLoading) {
     return (
       <motion.div
@@ -70,7 +60,7 @@ export function SavedJobsList() {
 
   if (error) return <div>Error: {error.message}</div>;
 
-  if (!data || data.saved.length === 0) {
+  if (!savedJobsData || savedJobsData.saved.length === 0) {
     return (
       <div className="text-center py-10 border rounded-lg">
         <h3 className="font-medium text-lg mb-2">Aucun emploi enregistré</h3>
@@ -83,7 +73,7 @@ export function SavedJobsList() {
     );
   }
 
-  const { pagination } = data;
+  const { pagination } = savedJobsData;
 
   return (
     <div className="space-y-6">
@@ -94,7 +84,7 @@ export function SavedJobsList() {
         className="divide-y divide-border"
       >
         <AnimatePresence mode="popLayout">
-          {data.saved.map((saved) => (
+          {savedJobsData.saved.map((saved) => (
             <SavedJobItem saved={saved} key={saved.uuid} />
           ))}
         </AnimatePresence>
@@ -107,7 +97,7 @@ export function SavedJobsList() {
           totalPages={pagination.last_page}
           perPage={pagination.per_page}
           totalItems={pagination.total}
-          onPageChange={handlePageChange}
+          onPageChange={onPageChange}
           className="mt-6"
         />
       )}

@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { AxiosError } from "axios";
 import { EMPLOIS_QUERY_KEY } from "@/features/Emplois/hooks/use-emplois";
@@ -24,6 +29,7 @@ export function useFetchSentApplications(
   const { data, isLoading, error } = useQuery({
     queryKey: [...SENT_APPLICATIONS_QUERY_KEY, page, perPage],
     queryFn: () => fetchSentApplications(page, perPage),
+    placeholderData: keepPreviousData,
   });
 
   // Update the count in the store when data changes

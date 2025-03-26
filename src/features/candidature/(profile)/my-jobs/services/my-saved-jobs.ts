@@ -5,7 +5,7 @@ import { ApiError } from "next/dist/server/api-utils";
 
 const saveEndpoint = "/employee/emploi/save";
 
-interface SavedJobsResponse {
+export interface SavedJobsResponse {
   message: string;
   saved: EmploiSaved[];
   pagination: Pagination;

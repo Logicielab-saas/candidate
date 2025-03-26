@@ -2,10 +2,11 @@
  * MyJobsContainer - Parent component that manages all job-related state
  *
  * This component is responsible for:
- * 1. Centralizing state management for all job-related data
+ * 1. Centralizing state management for all job-related data including API calls
  * 2. Managing tab navigation with URL state
  * 3. Providing handlers for all job operations (bookmark, archive, status updates)
- * 4. Filtering and passing data to child components
+ * 4. Fetching all data in parallel using Promise.all
+ * 5. Filtering and passing data to child components
  */
 "use client";
 
@@ -24,10 +25,12 @@ import { useQueryState } from "nuqs";
 import { useState } from "react";
 import { mockSentApplications } from "@/core/mockData/jobs";
 import { mockInterviews } from "@/core/mockData/jobs";
-import type { Job, CandidateStatus } from "@/core/types";
+import type { Job } from "@/core/types";
 import type { Interview } from "@/core/interfaces/";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useTabsCountStore } from "./store/tabs-count.store";
+import { useFetchSavedEmplois } from "./hooks/use-my-saved-jobs";
+import { useFetchSentApplications } from "./hooks/use-my-applied-jobs";
 
 // Types and interfaces
 interface JobTab {
@@ -57,6 +60,21 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
     parse: (value) => value || "saved-jobs",
   });
 
+  // URL query state for pagination - shared by all tabs
+  const [pageStr, setPageStr] = useQueryState("page", {
+    parse: (value) => value,
+    serialize: (value) => value,
+  });
+
+  const [perPageStr, _setPerPageStr] = useQueryState("perPage", {
+    parse: (value) => value,
+    serialize: (value) => value,
+  });
+
+  // Convert string values to numbers
+  const page = pageStr ? parseInt(pageStr) : 1;
+  const perPage = perPageStr ? parseInt(perPageStr) : 10;
+
   // Get tab counts from the store
   const {
     savedJobsCount,
@@ -65,68 +83,39 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
     archivedCount,
   } = useTabsCountStore();
 
-  // Centralized state management for all jobs and interviews
-  const [jobs, setJobs] = useState<Job[]>(mockSentApplications);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [interviews, setInterviews] = useState<Interview[]>(mockInterviews);
+  // Centralized data fetching for all job types
+  const {
+    data: savedJobsData,
+    isLoading: isSavedJobsLoading,
+    error: savedJobsError,
+  } = useFetchSavedEmplois(page, perPage);
 
-  // Derived states - Filter jobs based on different criteria
-  const savedJobs = jobs.filter((job) => job.bookmarked);
+  const {
+    data: sentApplicationsData,
+    isLoading: isSentApplicationsLoading,
+    error: sentApplicationsError,
+  } = useFetchSentApplications(page, perPage);
+
+  // Combined loading state
+  const _isLoading = isSavedJobsLoading || isSentApplicationsLoading;
+
+  // Centralized state management for mock data (interviews & archive)
+  const [jobs, setJobs] = useState<Job[]>(mockSentApplications);
+  const [interviews, _setInterviews] = useState<Interview[]>(mockInterviews);
 
   const archivedJobs = jobs.filter(
     (job) => job.statuses.userJobStatus.status === "ARCHIVED"
   );
 
-  /**
-   * Updates the status of a job application
-   * This is used for various status changes including archiving and withdrawing
-   */
-  const handleUpdateStatus = (jobId: string, newStatus: CandidateStatus) => {
-    setJobs((currentJobs) =>
-      currentJobs.map((job) => {
-        if (job.jobKey === jobId) {
-          const now = Date.now();
-          return {
-            ...job,
-            statuses: {
-              ...job.statuses,
-              candidateStatus: {
-                status: newStatus,
-                timestamp: now,
-              },
-              selfReportedStatus: {
-                status: newStatus,
-                timestamp: now,
-              },
-              userJobStatus: {
-                ...job.statuses.userJobStatus,
-                status: newStatus === "ARCHIVED" ? "ARCHIVED" : "POST_APPLY",
-              },
-            },
-          };
-        }
-        return job;
-      })
-    );
-  };
+  // Handle page change function to be passed to child components
+  const handlePageChange = (newPage: number) => {
+    setPageStr(newPage.toString());
 
-  /**
-   * Removes a job from bookmarks
-   */
-  const handleRemoveBookmark = (jobId: string) => {
-    setJobs((currentJobs) =>
-      currentJobs.map((job) =>
-        job.jobKey === jobId ? { ...job, bookmarked: false } : job
-      )
-    );
-  };
-
-  /**
-   * Archives a job application
-   * This is a wrapper around handleUpdateStatus
-   */
-  const _handleArchive = (jobId: string) => {
-    handleUpdateStatus(jobId, "ARCHIVED");
+    // Scroll to top of the list when page changes
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   /**
@@ -226,11 +215,21 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
 
         <div className="mt-6">
           <TabsContent value="saved-jobs">
-            <SavedJobsList />
+            <SavedJobsList
+              savedJobsData={savedJobsData}
+              isLoading={isSavedJobsLoading}
+              error={savedJobsError}
+              onPageChange={handlePageChange}
+            />
           </TabsContent>
 
           <TabsContent value="sent-applications">
-            <SentApplicationsList />
+            <SentApplicationsList
+              sentApplicationsData={sentApplicationsData}
+              isLoading={isSentApplicationsLoading}
+              error={sentApplicationsError}
+              onPageChange={handlePageChange}
+            />
           </TabsContent>
 
           <TabsContent value="interviews">

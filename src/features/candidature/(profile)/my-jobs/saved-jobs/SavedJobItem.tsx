@@ -2,7 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { MoreVertical, Building2, MapPin, Calendar } from "lucide-react";
+import {
+  MoreVertical,
+  Building2,
+  MapPin,
+  Calendar,
+  AlertTriangle,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +23,7 @@ import type { EmploiSaved } from "@/core/interfaces";
 import Link from "next/link";
 import { linkLikeButtonStyle } from "@/core/styles/links";
 import { JobBookmarkButton } from "@/components/ui/job-bookmark-button";
+import { format } from "date-fns";
 
 interface SavedJobItemProps {
   saved: EmploiSaved;
@@ -89,7 +96,9 @@ export function SavedJobItem({ saved }: SavedJobItemProps) {
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              <span>Enregistré le {saved.saved_at}</span>
+              <span>
+                Enregistré le {format(new Date(saved.saved_at), "d MMM yyyy")}
+              </span>
             </div>
           </div>
         </div>
@@ -124,7 +133,8 @@ export function SavedJobItem({ saved }: SavedJobItemProps) {
                 className="text-destructive"
                 onClick={() => setIsReportDialogOpen(true)}
               >
-                Signaler l&apos;offre d&apos;emploi
+                <AlertTriangle className="h-4 w-4" /> Signaler l&apos;offre
+                d&apos;emploi
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
