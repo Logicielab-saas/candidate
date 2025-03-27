@@ -2,7 +2,8 @@
  * ProfileHeaderSkeleton - Loading placeholder for Profile header section
  *
  * Provides a loading skeleton that matches the structure of the Profile header,
- * including avatar, name, location, and edit button with responsive layout.
+ * including avatar, name, location, and action buttons (Edit Profile and Generate CV)
+ * with responsive layout that stacks vertically on mobile and horizontally on larger screens.
  */
 
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,8 +23,12 @@ export function ProfileHeaderSkeleton() {
         </div>
       </div>
 
-      {/* Edit button placeholder */}
-      <div className="mt-4 sm:mt-0 shrink-0">
+      {/* Action buttons placeholders */}
+      <div className="flex flex-col gap-2 mt-4 sm:mt-0 shrink-0">
+        {/* Edit profile button placeholder */}
+        <Skeleton className="h-9 w-full sm:w-32" aria-hidden="true" />
+
+        {/* Generate CV button placeholder */}
         <Skeleton className="h-9 w-full sm:w-32" aria-hidden="true" />
       </div>
     </div>

@@ -16,10 +16,10 @@ import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { useEmploisBySlug } from "@/features/Emplois/hooks/use-emplois";
 import { JobDescriptionPanel } from "./JobDescriptionPanel";
-import { useCurrentUser } from "@/features/candidature/(profile)/hooks/use-profile";
 import { AlreadyApplied } from "./AlreadyApplied";
 import LoaderOne from "@/components/ui/loader-one";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useProfile } from "@/features/candidature/(profile)/hooks/use-profile";
 
 interface JobApplyContainerProps {
   slug: string;
@@ -27,7 +27,7 @@ interface JobApplyContainerProps {
 
 export function JobApplyContainer({ slug }: JobApplyContainerProps) {
   const { data: jobDetails, isLoading } = useEmploisBySlug(slug);
-  const { data: user, isLoading: isLoadingUser } = useCurrentUser();
+  const { data: profile, isLoading: isLoadingUser } = useProfile();
   const { currentStep, setCurrentStep } = useJobApplyStore();
 
   const IsFetching = isLoading || isLoadingUser;
@@ -62,7 +62,7 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
       case "questions":
         return <QuestionStep questions={jobDetails.emploi_questions} />;
       case "review":
-        return <ReviewStep jobDetails={jobDetails} user={user!} />;
+        return <ReviewStep jobDetails={jobDetails} profile={profile!} />;
       default:
         return <div>Étape inconnue</div>;
     }
