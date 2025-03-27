@@ -12,7 +12,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
-import { NavBar } from "@/components/shared/Navbar";
+import { NavbarWrapper } from "@/components/shared/NavbarWrapper";
 
 interface PagesLayoutProps {
   children: React.ReactNode;
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 export default function PagesLayout({ children }: PagesLayoutProps) {
   return (
     <>
-      <NavBar />
+      <NavbarWrapper />
 
       <div className={cn("bg-background", "pt-4 md:pt-8", "antialiased")}>
         <div

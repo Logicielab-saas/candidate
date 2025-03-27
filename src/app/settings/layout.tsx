@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { ProfileSidebar } from "@/components/shared/profile-sidebar";
 import { Metadata } from "next";
 import { sidebarSettingsNav } from "@/core/constants/sidebar-nav";
-import { NavBar } from "@/components/shared/Navbar";
+import { NavbarWrapper } from "@/components/shared/NavbarWrapper";
 
 export const metadata: Metadata = {
   title: "Settings | Postuly",
@@ -22,7 +22,7 @@ export default function SettingsLayout({
 }) {
   return (
     <>
-      <NavBar />
+      <NavbarWrapper />
 
       <div className={cn("min-h-screen bg-background pt-4 md:pt-8")}>
         <div
