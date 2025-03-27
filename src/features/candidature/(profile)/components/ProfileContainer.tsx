@@ -90,18 +90,7 @@ export function ProfileContainer() {
         </div>
       )}
 
-      {isLoading ? (
-        <ProfileAboutSkeleton />
-      ) : (
-        <ProfileAboutInfo
-          bio={profile?.bio || "No biography provided"}
-          skills={profile?.skills || []}
-        />
-      )}
-
-      <Separator />
-
-      {/* Contact Section */}
+      {/* Contact Section - Moved up */}
       {isLoading ? (
         <ProfileContactSkeleton />
       ) : (
@@ -113,6 +102,17 @@ export function ProfileContainer() {
           postalCode={profile?.postal_code || "Postal code not provided"}
           city={profile?.city || "City not provided"}
           country={profile?.country || "Country not provided"}
+        />
+      )}
+
+      <Separator />
+      {/* About Section */}
+      {isLoading ? (
+        <ProfileAboutSkeleton />
+      ) : (
+        <ProfileAboutInfo
+          bio={profile?.bio || "No biography provided"}
+          skills={profile?.skills || []}
         />
       )}
 
