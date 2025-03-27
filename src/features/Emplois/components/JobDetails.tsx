@@ -12,14 +12,13 @@ import {
   Calendar,
   Clock,
   Euro,
-  Heart,
   ArrowRight,
+  Flag,
+  XCircle,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useQueryState } from "nuqs";
-import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 import parse from "html-react-parser";
 import DOMPurify from "isomorphic-dompurify";
@@ -33,27 +32,14 @@ import {
 import { useEmploisBySlug } from "../hooks/use-emplois";
 import LoaderOne from "@/components/ui/loader-one";
 import { Badge } from "@/components/ui/badge";
+import { ShareJobPopover } from "./ShareJobPopover";
+import { JobBookmarkButton } from "@/components/shared/JobBookmarkButton";
 
 export function JobDetails() {
-  const [isBookmarked, setIsBookmarked] = useState(false);
   const [selectedJobSlug] = useQueryState("job");
-  const { toast } = useToast();
 
   // Fetch job details
   const { data: job, isLoading } = useEmploisBySlug(selectedJobSlug);
-
-  const handleBookmark = () => {
-    setIsBookmarked(!isBookmarked);
-    toast({
-      title: isBookmarked
-        ? "Offre retirée des favoris"
-        : "Offre ajoutée aux favoris",
-      description: isBookmarked
-        ? "Cette offre a été retirée de vos favoris"
-        : "Cette offre a été ajoutée à vos favoris",
-      variant: "default",
-    });
-  };
 
   const sanitizedHTML = job?.html_description
     ? DOMPurify.sanitize(job.html_description)
@@ -132,25 +118,58 @@ export function JobDetails() {
             {/* Action Buttons */}
             <div className="flex items-center gap-2">
               <TooltipProvider delayDuration={100}>
+                <JobBookmarkButton
+                  jobId={job.uuid}
+                  initialIsSaved={job.saved}
+                  jobTitle={job.title}
+                  tooltipPosition="top"
+                  iconClassName="h-6 w-6"
+                  buttonStyle="action"
+                />
+
+                <Tooltip>
+                  <TooltipTrigger>
+                    <ShareJobPopover
+                      jobTitle={job.title}
+                      companyName={job.company_name || ""}
+                      jobLocation={job.city_name || ""}
+                      slug={job.slug}
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Partager l&apos;offre</p>
+                  </TooltipContent>
+                </Tooltip>
                 <Tooltip>
                   <TooltipTrigger>
                     <span
                       className={cn(
-                        "h-9 w-9 flex items-center justify-center cursor-pointer hover:bg-accent rounded-full",
-                        isBookmarked && "text-primary hover:text-primary/80"
+                        "h-9 w-9 flex items-center justify-center cursor-pointer",
+                        "text-destructive hover:bg-accent rounded-full"
                       )}
-                      onClick={handleBookmark}
+                      // onClick={() => setIsSignalerOpen(true)}
                     >
-                      <Heart
-                        className={cn(
-                          "h-6 w-6",
-                          isBookmarked && "fill-current"
-                        )}
-                      />
+                      <Flag className="h-6 w-6" />
                     </span>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Ajouter aux favoris</p>
+                    <p>Signaler l&apos;offre</p>
+                  </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <span
+                      className={cn(
+                        "h-9 w-9 flex items-center justify-center cursor-pointer",
+                        "text-yellow-600 hover:text-yellow-700 hover:bg-accent rounded-full"
+                      )}
+                      // onClick={() => setIsNotInterestedOpen(true)}
+                    >
+                      <XCircle className="h-6 w-6" />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Écarter l&apos;offre</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

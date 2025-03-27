@@ -34,6 +34,7 @@ interface JobBookmarkButtonProps {
   tooltipEnabled?: boolean;
   onSaveSuccess?: () => void;
   onUnsaveSuccess?: () => void;
+  buttonStyle?: "action" | "default";
 }
 
 export function JobBookmarkButton({
@@ -48,6 +49,7 @@ export function JobBookmarkButton({
   tooltipEnabled = true,
   onSaveSuccess,
   onUnsaveSuccess,
+  buttonStyle = "default",
 }: JobBookmarkButtonProps) {
   const { isSaved, isProcessing, toggleSaved } = useJobBookmark({
     initialIsSaved,
@@ -59,7 +61,31 @@ export function JobBookmarkButton({
 
   const heartIconClasses = getHeartIconClasses(isSaved, isProcessing);
 
-  const buttonContent = (
+  const actionButtonContent = (
+    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+      <span
+        className={cn(
+          "h-9 w-9 flex items-center justify-center cursor-pointer hover:bg-accent rounded-full",
+          isSaved && "text-primary hover:text-primary/80",
+          isProcessing && "opacity-50 cursor-not-allowed pointer-events-none",
+          className
+        )}
+        onClick={(e) => {
+          if (isProcessing) return;
+          e.preventDefault();
+          e.stopPropagation();
+          toggleSaved();
+        }}
+        aria-disabled={isProcessing}
+        role="button"
+        aria-label={isSaved ? "Retirer des favoris" : "Ajouter aux favoris"}
+      >
+        <Heart className={cn(heartIconClasses, iconClassName)} />
+      </span>
+    </motion.div>
+  );
+
+  const defaultButtonContent = (
     <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
       <Button
         variant={variant}
@@ -82,14 +108,17 @@ export function JobBookmarkButton({
     </motion.div>
   );
 
+  const content =
+    buttonStyle === "action" ? actionButtonContent : defaultButtonContent;
+
   if (!tooltipEnabled) {
-    return buttonContent;
+    return content;
   }
 
   return (
     <TooltipProvider>
       <Tooltip delayDuration={300}>
-        <TooltipTrigger asChild>{buttonContent}</TooltipTrigger>
+        <TooltipTrigger asChild>{content}</TooltipTrigger>
         <TooltipContent side={tooltipPosition} className="text-sm">
           {isSaved ? "Retirer des favoris" : "Ajouter aux favoris"}
         </TooltipContent>

@@ -1,6 +1,5 @@
 "use client";
 
-import { useToast } from "@/hooks/use-toast";
 import { useEmploisBySlug } from "@/features/Emplois/hooks/use-emplois";
 import LoaderOne from "@/components/ui/loader-one";
 import { AnnonceHeader } from "./AnnonceHeader";
@@ -15,25 +14,7 @@ interface AnnonceDetailsContainerProps {
 export function AnnonceDetailsContainer({
   slug,
 }: AnnonceDetailsContainerProps) {
-  const { toast } = useToast();
   const { data: annonce, isLoading } = useEmploisBySlug(slug);
-
-  function handleApply() {
-    if (!annonce) return;
-    // TODO: Implement apply logic
-    console.log("Applying to job:", annonce.title);
-  }
-
-  function handleSave() {
-    if (!annonce) return;
-    // TODO: Implement save logic
-    console.log("Saving job:", annonce.title);
-    toast({
-      title: "Offre sauvegardée",
-      description: "Vous pouvez la retrouver dans votre liste de favoris.",
-      variant: "success",
-    });
-  }
 
   if (isLoading) {
     return (
@@ -68,11 +49,7 @@ export function AnnonceDetailsContainer({
         {/* Right Column */}
         <div className="space-y-8">
           <AnnonceJobDetails annonce={annonce} />
-          <AnnonceActions
-            annonce={annonce}
-            onApply={handleApply}
-            onSave={handleSave}
-          />
+          <AnnonceActions annonce={annonce} />
         </div>
       </div>
     </div>

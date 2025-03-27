@@ -69,6 +69,7 @@ export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
                   jobTitle={annonce.title}
                   companyName={annonce.company_name || ""}
                   jobLocation={annonce.city_name || ""}
+                  slug={annonce.slug}
                 />
               </div>
               <div

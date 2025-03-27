@@ -30,12 +30,12 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { usePathname } from "next/navigation";
 
 interface ShareJobPopoverProps {
   jobTitle: string;
   companyName: string;
   jobLocation: string;
+  slug: string;
 }
 
 // Create motion components
@@ -59,11 +59,11 @@ export function ShareJobPopover({
   jobTitle,
   companyName,
   jobLocation,
+  slug,
 }: ShareJobPopoverProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
-  const pathname = usePathname();
-  const shareUrl = process.env.NEXT_PUBLIC_APP_URL + pathname;
+  const shareUrl = process.env.NEXT_PUBLIC_APP_URL + "/annonce-details/" + slug;
 
   // Generate platform-specific sharing text
   const getShareText = (platform?: "twitter" | "linkedin" | "facebook") => {
