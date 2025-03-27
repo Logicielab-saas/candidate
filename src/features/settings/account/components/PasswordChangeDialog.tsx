@@ -33,7 +33,7 @@ import {
   PasswordChangeForm as PasswordChangeFormType,
   passwordChangeSchema,
 } from "./PasswordChangeForm";
-import { MOCK_USER } from "@/core/mockData/user";
+import { useVerifyPassword } from "../hooks/use-verify-password";
 
 type Step = "verify-current" | "change";
 
@@ -51,6 +51,7 @@ export function PasswordChangeDialog({
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState<Step>("verify-current");
   const { toast } = useToast();
+  const verifyPasswordMutation = useVerifyPassword();
 
   const verificationForm = useForm<VerificationForm>({
     resolver: zodResolver(verificationSchema),
@@ -76,34 +77,28 @@ export function PasswordChangeDialog({
     setIsOpen(open);
     if (!open) {
       resetForms();
+      setStep("verify-current");
     }
   };
 
   const handleVerificationSubmit = async (data: VerificationForm) => {
-    if (data.currentPassword !== MOCK_USER.password) {
+    try {
+      await verifyPasswordMutation.mutateAsync(data.currentPassword);
+      setStep("change");
+      verificationForm.reset();
+    } catch {
       verificationForm.setError("currentPassword", {
         message: "Mot de passe incorrect",
       });
-      return;
     }
-
-    setStep("change");
-    verificationForm.reset();
   };
 
   const handlePasswordChangeSubmit = async (data: PasswordChangeFormType) => {
-    if (data.newPassword === MOCK_USER.password) {
-      changeForm.setError("newPassword", {
-        message: "Le nouveau mot de passe doit être différent de l'actuel",
-      });
-      return;
-    }
-
     try {
       await onPasswordChange(data.newPassword);
       setIsOpen(false);
       resetForms();
-      setStep("verify-current"); // Reset step only after successful password change
+      setStep("verify-current");
       toast({
         variant: "success",
         title: "Mot de passe modifié",
@@ -121,7 +116,7 @@ export function PasswordChangeDialog({
   const handleCancel = () => {
     setIsOpen(false);
     resetForms();
-    setStep("verify-current"); // Reset step when user cancels
+    setStep("verify-current");
   };
 
   const getStepContent = () => {

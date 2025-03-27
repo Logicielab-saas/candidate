@@ -36,12 +36,14 @@ interface PhoneChangeFormProps {
   form: UseFormReturn<PhoneChangeForm>;
   onCancel: () => void;
   onSubmit: (data: PhoneChangeForm) => Promise<void>;
+  isLoading?: boolean;
 }
 
 export function PhoneChangeForm({
   form,
   onCancel,
   onSubmit,
+  isLoading = false,
 }: PhoneChangeFormProps) {
   return (
     <Form {...form}>
@@ -68,6 +70,7 @@ export function PhoneChangeForm({
                     placeholder="612345678"
                     type="tel"
                     className="rounded-l-none"
+                    disabled={isLoading}
                     {...field}
                     onChange={(e) => {
                       // Remove any non-digit characters
@@ -82,10 +85,15 @@ export function PhoneChangeForm({
           )}
         />
         <DialogFooter>
-          <Button type="button" variant="ghost" onClick={onCancel}>
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={onCancel}
+            disabled={isLoading}
+          >
             Annuler
           </Button>
-          <Button type="submit" disabled={form.formState.isSubmitting}>
+          <Button type="submit" disabled={isLoading}>
             Continuer
           </Button>
         </DialogFooter>

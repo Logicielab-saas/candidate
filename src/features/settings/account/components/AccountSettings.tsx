@@ -44,10 +44,6 @@ export function AccountActions() {
   const handleLogout = async () => {
     try {
       setIsLoggingOut(true);
-      // TODO: Implement actual logout logic
-      console.log("Logging out user:", user.id);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
-      jsCookie.remove("accessToken");
       jsCookie.remove("userRole");
       router.replace("/login");
 

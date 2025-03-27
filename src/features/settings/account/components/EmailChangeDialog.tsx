@@ -39,10 +39,7 @@ import {
   OtpVerificationForm,
   otpVerificationSchema,
 } from "./EmailVerificationForm";
-import { MOCK_USER } from "@/core/mockData/user";
-
-// Static verification code (this will be replaced with real email verification later)
-const VERIFICATION_CODE = "111111";
+import { useVerifyPassword } from "../hooks/use-verify-password";
 
 type Step = "verify-password" | "change" | "confirm";
 
@@ -58,6 +55,9 @@ const STEPS = [
   { title: "Confirmation" },
 ];
 
+// Static verification code (this will be replaced with real email verification later)
+const VERIFICATION_CODE = "111111";
+
 export function EmailChangeDialog({
   currentEmail,
   onEmailChange,
@@ -68,6 +68,7 @@ export function EmailChangeDialog({
   const [newEmailAddress, setNewEmailAddress] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
   const { toast } = useToast();
+  const verifyPasswordMutation = useVerifyPassword();
 
   const verificationForm = useForm<VerificationForm>({
     resolver: zodResolver(verificationSchema),
@@ -101,19 +102,20 @@ export function EmailChangeDialog({
     setIsOpen(open);
     if (!open) {
       resetForms();
+      setStep("verify-password");
     }
   };
 
   const handleVerificationSubmit = async (data: VerificationForm) => {
-    if (data.currentPassword !== MOCK_USER.password) {
+    try {
+      await verifyPasswordMutation.mutateAsync(data.currentPassword);
+      setStep("change");
+      verificationForm.reset();
+    } catch {
       verificationForm.setError("currentPassword", {
         message: "Mot de passe incorrect",
       });
-      return;
     }
-
-    setStep("change");
-    verificationForm.reset();
   };
 
   const handleEmailChangeSubmit = async (data: EmailChangeFormType) => {
@@ -162,7 +164,7 @@ export function EmailChangeDialog({
       await onEmailChange(newEmailAddress);
       setIsOpen(false);
       resetForms();
-      setStep("verify-password"); // Reset step only after successful email change
+      setStep("verify-password");
       toast({
         variant: "success",
         title: "Email modifié",
@@ -180,7 +182,7 @@ export function EmailChangeDialog({
   const handleCancel = () => {
     setIsOpen(false);
     resetForms();
-    setStep("verify-password"); // Reset step when user explicitly cancels
+    setStep("verify-password");
   };
 
   const handleBack = () => {
@@ -196,6 +198,7 @@ export function EmailChangeDialog({
             form={verificationForm}
             onCancel={handleCancel}
             onSubmit={handleVerificationSubmit}
+            isLoading={verifyPasswordMutation.isPending}
           />
         );
       case "change":
@@ -204,6 +207,7 @@ export function EmailChangeDialog({
             form={changeForm}
             onCancel={handleCancel}
             onSubmit={handleEmailChangeSubmit}
+            isLoading={false}
           />
         );
       case "confirm":

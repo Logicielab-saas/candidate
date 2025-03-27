@@ -54,30 +54,6 @@ export function AccountInfo() {
     }
   };
 
-  const handlePhoneChange = async (newPhone: string) => {
-    try {
-      setIsUpdating(true);
-      // TODO: Implement actual phone change logic
-      console.log("Changing phone to:", newPhone);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
-      toast({
-        variant: "success",
-        title: "Numéro modifié avec succès",
-        description: "Votre numéro de téléphone a été modifié avec succès",
-      });
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Échec de la modification du numéro",
-        description:
-          "Une erreur est survenue lors de la modification de votre numéro",
-      });
-      throw error;
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
   const handlePasswordChange = async (_newPassword: string) => {
     try {
       setIsUpdating(true);
@@ -110,7 +86,7 @@ export function AccountInfo() {
       <div className="divide-y">
         <InfoItem
           label="Type de compte"
-          value="Candidat"
+          value="Employee"
           showChangeButton={false}
         />
         <InfoItem
@@ -134,7 +110,6 @@ export function AccountInfo() {
           changeButton={
             <PhoneChangeDialog
               currentPhone={profile.phone || ""}
-              onPhoneChange={handlePhoneChange}
               trigger={
                 <Button variant="outline" size="sm" disabled={isUpdating}>
                   Changer

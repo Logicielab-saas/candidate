@@ -24,8 +24,8 @@ export async function getProfile() {
 }
 
 export interface UpdateProfileData {
-  first_name: string;
-  last_name: string;
+  first_name?: string | null;
+  last_name?: string | null;
   phone?: string | null;
   birthdate?: string | null;
   address?: string | null;
@@ -34,7 +34,7 @@ export interface UpdateProfileData {
   postal_code?: string | null;
   bio?: string | null;
   image?: File | null;
-  is_male: boolean | null;
+  is_male?: boolean | null;
 }
 
 export async function updateProfile(data: UpdateProfileData) {

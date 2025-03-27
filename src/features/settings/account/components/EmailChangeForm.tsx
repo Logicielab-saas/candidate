@@ -40,12 +40,14 @@ interface EmailChangeFormProps {
   form: UseFormReturn<EmailChangeForm>;
   onCancel: () => void;
   onSubmit: (data: EmailChangeForm) => Promise<void>;
+  isLoading?: boolean;
 }
 
 export function EmailChangeForm({
   form,
   onCancel,
   onSubmit,
+  isLoading = false,
 }: EmailChangeFormProps) {
   return (
     <Form {...form}>
@@ -60,6 +62,7 @@ export function EmailChangeForm({
                 <Input
                   placeholder="nouvelle@email.com"
                   type="email"
+                  disabled={isLoading}
                   {...field}
                 />
               </FormControl>
@@ -77,6 +80,7 @@ export function EmailChangeForm({
                 <Input
                   placeholder="nouvelle@email.com"
                   type="email"
+                  disabled={isLoading}
                   {...field}
                 />
               </FormControl>
@@ -85,10 +89,15 @@ export function EmailChangeForm({
           )}
         />
         <DialogFooter>
-          <Button type="button" variant="ghost" onClick={onCancel}>
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={onCancel}
+            disabled={isLoading}
+          >
             Annuler
           </Button>
-          <Button type="submit" disabled={form.formState.isSubmitting}>
+          <Button type="submit" disabled={isLoading}>
             Continuer
           </Button>
         </DialogFooter>

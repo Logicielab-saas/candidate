@@ -31,12 +31,14 @@ interface PasswordVerificationFormProps {
   form: UseFormReturn<VerificationForm>;
   onCancel: () => void;
   onSubmit: (data: VerificationForm) => Promise<void>;
+  isLoading?: boolean;
 }
 
 export function PasswordVerificationForm({
   form,
   onCancel,
   onSubmit,
+  isLoading = false,
 }: PasswordVerificationFormProps) {
   return (
     <Form {...form}>
@@ -52,6 +54,7 @@ export function PasswordVerificationForm({
                   type="password"
                   placeholder="••••••••"
                   autoComplete="current-password"
+                  disabled={isLoading}
                   {...field}
                 />
               </FormControl>
@@ -60,10 +63,15 @@ export function PasswordVerificationForm({
           )}
         />
         <DialogFooter>
-          <Button type="button" variant="ghost" onClick={onCancel}>
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={onCancel}
+            disabled={isLoading}
+          >
             Annuler
           </Button>
-          <Button type="submit" disabled={form.formState.isSubmitting}>
+          <Button type="submit" disabled={isLoading}>
             Continuer
           </Button>
         </DialogFooter>
