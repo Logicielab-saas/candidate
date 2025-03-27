@@ -54,30 +54,6 @@ export function AccountInfo() {
     }
   };
 
-  const handlePasswordChange = async (_newPassword: string) => {
-    try {
-      setIsUpdating(true);
-      // TODO: Implement actual password change logic
-      console.log("Changing password...");
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
-      toast({
-        variant: "success",
-        title: "Mot de passe modifié avec succès",
-        description: "Votre mot de passe a été modifié avec succès",
-      });
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Échec de la modification du mot de passe",
-        description:
-          "Une erreur est survenue lors de la modification de votre mot de passe",
-      });
-      throw error;
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
   return (
     <Card className="p-6">
       <h4 className="tracking-tight text-lg font-medium mb-4">
@@ -86,7 +62,7 @@ export function AccountInfo() {
       <div className="divide-y">
         <InfoItem
           label="Type de compte"
-          value="Employee"
+          value={profile.type_user}
           showChangeButton={false}
         />
         <InfoItem
@@ -123,7 +99,6 @@ export function AccountInfo() {
           value="••••••••"
           changeButton={
             <PasswordChangeDialog
-              onPasswordChange={handlePasswordChange}
               trigger={
                 <Button variant="outline" size="sm" disabled={isUpdating}>
                   Changer

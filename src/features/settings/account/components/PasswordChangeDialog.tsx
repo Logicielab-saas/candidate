@@ -1,10 +1,8 @@
 /**
- * PasswordChangeDialog - Dialog for changing user password
+ * PasswordChangeDialog - Dialog for changing password
  *
- * A client component that provides a form to change the user's password
- * with a two-step process:
- * 1. Enter current password for verification
- * 2. Enter and confirm new password
+ * A client component that provides a dialog for changing the user's password,
+ * with proper validation and error handling.
  */
 
 "use client";
@@ -12,167 +10,69 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
-import { StepIndicator } from "@/components/shared/StepIndicator";
-import {
-  PasswordVerificationForm,
-  VerificationForm,
-  verificationSchema,
-} from "./PasswordVerificationForm";
-import {
-  PasswordChangeForm,
-  PasswordChangeForm as PasswordChangeFormType,
-  passwordChangeSchema,
-} from "./PasswordChangeForm";
-import { useVerifyPassword } from "../hooks/use-verify-password";
-
-type Step = "verify-current" | "change";
+import { PasswordChangeForm, passwordChangeSchema } from "./PasswordChangeForm";
+import { useUpdatePassword } from "../hooks/use-update-password";
 
 interface PasswordChangeDialogProps {
-  onPasswordChange: (newPassword: string) => Promise<void>;
-  trigger?: React.ReactNode;
+  trigger: React.ReactNode;
 }
 
-const STEPS = [{ title: "Vérification" }, { title: "Nouveau mot de passe" }];
-
-export function PasswordChangeDialog({
-  onPasswordChange,
-  trigger,
-}: PasswordChangeDialogProps) {
+export function PasswordChangeDialog({ trigger }: PasswordChangeDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [step, setStep] = useState<Step>("verify-current");
-  const { toast } = useToast();
-  const verifyPasswordMutation = useVerifyPassword();
+  const { mutate: updatePassword, isPending } = useUpdatePassword();
 
-  const verificationForm = useForm<VerificationForm>({
-    resolver: zodResolver(verificationSchema),
-    defaultValues: {
-      currentPassword: "",
-    },
-  });
-
-  const changeForm = useForm<PasswordChangeFormType>({
+  const form = useForm<PasswordChangeForm>({
     resolver: zodResolver(passwordChangeSchema),
     defaultValues: {
+      currentPassword: "",
       newPassword: "",
       confirmPassword: "",
     },
   });
 
-  const resetForms = () => {
-    verificationForm.reset();
-    changeForm.reset();
+  const handleSubmit = async (data: PasswordChangeForm) => {
+    updatePassword(
+      {
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
+        password_confirmation: data.confirmPassword,
+      },
+      {
+        onSuccess: () => {
+          setIsOpen(false);
+          form.reset();
+        },
+      }
+    );
   };
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
     if (!open) {
-      resetForms();
-      setStep("verify-current");
-    }
-  };
-
-  const handleVerificationSubmit = async (data: VerificationForm) => {
-    try {
-      await verifyPasswordMutation.mutateAsync(data.currentPassword);
-      setStep("change");
-      verificationForm.reset();
-    } catch {
-      verificationForm.setError("currentPassword", {
-        message: "Mot de passe incorrect",
-      });
-    }
-  };
-
-  const handlePasswordChangeSubmit = async (data: PasswordChangeFormType) => {
-    try {
-      await onPasswordChange(data.newPassword);
-      setIsOpen(false);
-      resetForms();
-      setStep("verify-current");
-      toast({
-        variant: "success",
-        title: "Mot de passe modifié",
-        description: "Votre mot de passe a été modifié avec succès",
-      });
-    } catch (_error) {
-      toast({
-        variant: "destructive",
-        title: "Erreur",
-        description: "Impossible de modifier le mot de passe",
-      });
-    }
-  };
-
-  const handleCancel = () => {
-    setIsOpen(false);
-    resetForms();
-    setStep("verify-current");
-  };
-
-  const getStepContent = () => {
-    switch (step) {
-      case "verify-current":
-        return (
-          <PasswordVerificationForm
-            form={verificationForm}
-            onCancel={handleCancel}
-            onSubmit={handleVerificationSubmit}
-          />
-        );
-      case "change":
-        return (
-          <PasswordChangeForm
-            form={changeForm}
-            onCancel={handleCancel}
-            onSubmit={handlePasswordChangeSubmit}
-          />
-        );
-    }
-  };
-
-  const getStepTitle = () => {
-    switch (step) {
-      case "verify-current":
-        return "Vérification du mot de passe actuel";
-      case "change":
-        return "Changer le mot de passe";
-    }
-  };
-
-  const getStepDescription = () => {
-    switch (step) {
-      case "verify-current":
-        return "Entrez votre mot de passe actuel pour continuer.";
-      case "change":
-        return "Choisissez un nouveau mot de passe sécurisé.";
+      form.reset();
     }
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
-        {trigger || <Button variant="outline">Changer</Button>}
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>{getStepTitle()}</DialogTitle>
-          <DialogDescription>{getStepDescription()}</DialogDescription>
+          <DialogTitle>Changer le mot de passe</DialogTitle>
         </DialogHeader>
-        <StepIndicator
-          currentStep={step === "verify-current" ? 0 : 1}
-          steps={STEPS}
+        <PasswordChangeForm
+          form={form}
+          onCancel={() => setIsOpen(false)}
+          onSubmit={handleSubmit}
+          isLoading={isPending}
         />
-        {getStepContent()}
       </DialogContent>
     </Dialog>
   );

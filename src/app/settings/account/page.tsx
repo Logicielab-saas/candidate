@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import { AccountInfo } from "@/features/settings/account/components/AccountInfo";
-import { AccountActions } from "@/features/settings/account/components/AccountSettings";
+import { AccountSettings } from "@/features/settings/account/components/AccountSettings";
 
 export default function AccountPage() {
   return (
@@ -16,7 +16,7 @@ export default function AccountPage() {
 
       <AccountInfo />
       <Separator className="my-6" />
-      <AccountActions />
+      <AccountSettings />
     </div>
   );
 }
