@@ -9,18 +9,26 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { MOCK_USER } from "@/core/mockData/user";
+import { useToast } from "@/hooks/use-toast";
+import { InfoItem } from "./InfoItem";
+import { useProfile } from "@/features/candidature/(profile)/hooks/use-profile";
 import { EmailChangeDialog } from "./EmailChangeDialog";
 import { PhoneChangeDialog } from "./PhoneChangeDialog";
 import { PasswordChangeDialog } from "./PasswordChangeDialog";
-import { useToast } from "@/hooks/use-toast";
-import { InfoItem } from "./InfoItem";
+import { AccountInfoSkeleton } from "../skeletons/AccountInfoSkeleton";
 
 export function AccountInfo() {
+  const { data: profile, isLoading } = useProfile();
   const [isUpdating, setIsUpdating] = useState(false);
   const { toast } = useToast();
 
-  const user = MOCK_USER;
+  if (isLoading) {
+    return <AccountInfoSkeleton />;
+  }
+
+  if (!profile) {
+    return null;
+  }
 
   const handleEmailChange = async (newEmail: string) => {
     try {
@@ -28,7 +36,6 @@ export function AccountInfo() {
       // TODO: Implement actual email change logic
       console.log("Changing email to:", newEmail);
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
-      user.email = newEmail;
       toast({
         variant: "success",
         title: "Adresse email modifiée avec succès",
@@ -41,7 +48,7 @@ export function AccountInfo() {
         description:
           "Une erreur est survenue lors de la modification de votre adresse email",
       });
-      throw error; // Re-throw to be handled by the dialog
+      throw error;
     } finally {
       setIsUpdating(false);
     }
@@ -53,7 +60,6 @@ export function AccountInfo() {
       // TODO: Implement actual phone change logic
       console.log("Changing phone to:", newPhone);
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
-      user.phone = newPhone;
       toast({
         variant: "success",
         title: "Numéro modifié avec succès",
@@ -66,7 +72,7 @@ export function AccountInfo() {
         description:
           "Une erreur est survenue lors de la modification de votre numéro",
       });
-      throw error; // Re-throw to be handled by the dialog
+      throw error;
     } finally {
       setIsUpdating(false);
     }
@@ -90,7 +96,7 @@ export function AccountInfo() {
         description:
           "Une erreur est survenue lors de la modification de votre mot de passe",
       });
-      throw error; // Re-throw to be handled by the dialog
+      throw error;
     } finally {
       setIsUpdating(false);
     }
@@ -104,15 +110,15 @@ export function AccountInfo() {
       <div className="divide-y">
         <InfoItem
           label="Type de compte"
-          value={user.accountType}
+          value="Candidat"
           showChangeButton={false}
         />
         <InfoItem
           label="Email"
-          value={user.email}
+          value={profile.email}
           changeButton={
             <EmailChangeDialog
-              currentEmail={user.email}
+              currentEmail={profile.email}
               onEmailChange={handleEmailChange}
               trigger={
                 <Button variant="outline" size="sm" disabled={isUpdating}>
@@ -124,10 +130,10 @@ export function AccountInfo() {
         />
         <InfoItem
           label="Numéro de téléphone"
-          value={user.phone}
+          value={profile.phone || "Non renseigné"}
           changeButton={
             <PhoneChangeDialog
-              currentPhone={user.phone}
+              currentPhone={profile.phone || ""}
               onPhoneChange={handlePhoneChange}
               trigger={
                 <Button variant="outline" size="sm" disabled={isUpdating}>

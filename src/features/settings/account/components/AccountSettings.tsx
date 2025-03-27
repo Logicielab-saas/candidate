@@ -27,6 +27,8 @@ import { Label } from "@/components/ui/label";
 import { MOCK_USER } from "@/core/mockData/user";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
+import jsCookie from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const DELETE_CONFIRMATION = "SUPPRIMER MON COMPTE";
 
@@ -35,6 +37,7 @@ export function AccountActions() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const [showDeleteError, setShowDeleteError] = useState(false);
+  const router = useRouter();
   const { toast } = useToast();
   const user = MOCK_USER;
 
@@ -44,6 +47,10 @@ export function AccountActions() {
       // TODO: Implement actual logout logic
       console.log("Logging out user:", user.id);
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
+      jsCookie.remove("accessToken");
+      jsCookie.remove("userRole");
+      router.replace("/login");
+
       toast({
         variant: "success",
         title: "Déconnexion réussie",
