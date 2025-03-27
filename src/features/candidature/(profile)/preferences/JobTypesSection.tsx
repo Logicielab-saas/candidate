@@ -3,10 +3,15 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
-import { AddJobTypeDialog } from "./dialogs/add/AddJobTypeDialog";
 import { EditJobTypeDialog } from "./dialogs/edit/EditJobTypeDialog";
 import { DeleteJobTypeDialog } from "./dialogs/delete/DeleteJobTypeDialog";
 import { ContractType } from "@/core/enums/contract-type.enum";
+import dynamic from "next/dynamic";
+
+const AddJobTypeDialog = dynamic(
+  () => import("./dialogs/add/AddJobTypeDialog"),
+  { ssr: false }
+);
 
 export interface JobType {
   id: string;
@@ -19,24 +24,12 @@ export function JobTypesSection() {
   const [jobTypeToEdit, setJobTypeToEdit] = useState<JobType | null>(null);
   const [jobTypeToDelete, setJobTypeToDelete] = useState<JobType | null>(null);
 
-  const handleAdd = () => {
-    setIsAddOpen(true);
-  };
-
   const handleEdit = (jobType: JobType) => {
     setJobTypeToEdit(jobType);
   };
 
   const handleDelete = (jobType: JobType) => {
     setJobTypeToDelete(jobType);
-  };
-
-  const handleSubmit = (values: { type: ContractType }) => {
-    const newJobType: JobType = {
-      id: crypto.randomUUID(),
-      type: values.type,
-    };
-    setJobTypes([...jobTypes, newJobType]);
   };
 
   const handleEditSubmit = (id: string, values: { type: ContractType }) => {
@@ -95,14 +88,15 @@ export function JobTypesSection() {
         </div>
       )}
 
-      <button className="hidden" data-add-button onClick={handleAdd} />
-
-      <AddJobTypeDialog
-        open={isAddOpen}
-        onOpenChange={setIsAddOpen}
-        onSubmit={handleSubmit}
-        selectedTypes={jobTypes.map((jt) => jt.type)}
+      <button
+        className="hidden"
+        data-add-button
+        onClick={() => setIsAddOpen(true)}
       />
+
+      {isAddOpen && (
+        <AddJobTypeDialog open={isAddOpen} onOpenChange={setIsAddOpen} />
+      )}
 
       {jobTypeToEdit && (
         <EditJobTypeDialog
