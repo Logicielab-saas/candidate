@@ -22,16 +22,16 @@ api.interceptors.request.use(
 );
 
 // Add response interceptor
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    // Handle 401 errors (unauthorized)
-    if (error.response?.status === 401) {
-      Cookies.remove("accessToken");
-      window.location.href = "/login";
-    }
-    return Promise.reject(error);
-  }
-);
+// api.interceptors.response.use(
+//   (response) => response,
+//   async (error) => {
+//     // Handle 401 errors (unauthorized)
+//     if (error.response?.status === 401) {
+//       Cookies.remove("accessToken");
+//       window.location.href = "/login";
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 
 export default api;
