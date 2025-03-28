@@ -65,31 +65,32 @@ export function ProfileContainer() {
               </p>
             </div>
           </div>
-          <Link href="/edit/profile" className="mt-4 sm:mt-0">
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full sm:w-auto hover:bg-primary/10 transition-colors"
-            >
-              <Edit className="mr-2 h-4 w-4" />
-              Edit Profile
-            </Button>
-          </Link>
+          <div className="flex flex-col gap-2 mt-4 sm:mt-0">
+            <Link href="/edit/profile">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full sm:w-auto hover:bg-primary/10 transition-colors"
+              >
+                <Edit className="mr-2 h-4 w-4" />
+                Edit Profile
+              </Button>
+            </Link>
+            <Link href="/profile/postuly-cv">
+              <Button
+                variant="default"
+                size="sm"
+                className="w-full sm:w-auto gap-2"
+              >
+                <FileText className="h-4 w-4" />
+                Generate CV
+              </Button>
+            </Link>
+          </div>
         </div>
       )}
 
-      {isLoading ? (
-        <ProfileAboutSkeleton />
-      ) : (
-        <ProfileAboutInfo
-          bio={profile?.bio || "No biography provided"}
-          skills={profile?.skills || []}
-        />
-      )}
-
-      <Separator />
-
-      {/* Contact Section */}
+      {/* Contact Section - Moved up */}
       {isLoading ? (
         <ProfileContactSkeleton />
       ) : (
@@ -105,31 +106,24 @@ export function ProfileContainer() {
       )}
 
       <Separator />
+      {/* About Section */}
+      {isLoading ? (
+        <ProfileAboutSkeleton />
+      ) : (
+        <ProfileAboutInfo
+          bio={profile?.bio || "No biography provided"}
+          skills={profile?.skills || []}
+        />
+      )}
+
+      <Separator />
 
       {/* Resume Section */}
       {isLoading ? (
         <ResumeSkeleton />
       ) : (
         <div className="space-y-4">
-          <div className="flex items-center justify-end">
-            <Link href="/profile/postuly-cv">
-              <Button
-                variant="default"
-                size="sm"
-                className="gap-2 hover:animate-pulse"
-              >
-                <FileText className="h-4 w-4" />
-                Generate CV
-              </Button>
-            </Link>
-          </div>
           <div className="space-y-3">
-            {/* <ResumeItem
-                  title="Postuly CV"
-                  subtitle="Non validé"
-                  type="postuly"
-                  source="profile"
-                /> */}
             <ResumeItem
               subtitle="PDF format, max 2MB"
               type="custom"

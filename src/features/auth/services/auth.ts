@@ -16,6 +16,7 @@ import { LoginCredentials } from "../common/interfaces";
 interface ApiError {
   message: string;
 }
+
 // Server Actions
 export async function login(
   credentials: LoginCredentials

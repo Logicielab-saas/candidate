@@ -1,6 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
+import { NavbarWrapper } from "@/components/shared/NavbarWrapper";
 // import { NavBar } from "@/components/shared/Navbar";
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default function AuthLayout({
 }) {
   return (
     <>
-      {/* <NavBar /> */}
+      <NavbarWrapper />
 
       <div className={cn("min-h-screen bg-background pt-4 md:pt-8")}>
         <div

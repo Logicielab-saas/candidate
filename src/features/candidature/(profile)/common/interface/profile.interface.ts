@@ -7,6 +7,7 @@ export interface ProfileFiles {
 
 export interface Profile {
   uuid: string;
+  type_user: string;
   first_name: string | null;
   last_name: string | null;
   is_male: boolean | null;

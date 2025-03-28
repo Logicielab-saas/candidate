@@ -17,7 +17,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useJobApplyStore } from "@/features/job-apply/store/useJobApplyStore";
-import type { EmploisDetails, GetMeResponse } from "@/core/interfaces";
+import type { EmploisDetails } from "@/core/interfaces";
 import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
 import { useApplyToJob } from "@/features/job-apply/hooks/use-job-apply";
@@ -28,13 +28,14 @@ import { Separator } from "@/components/ui/separator";
 import { ResumeItem } from "@/components/shared/ResumeItem";
 import Image from "next/image";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Profile } from "@/features/candidature/(profile)/common/interface";
 
 interface ReviewStepProps {
   jobDetails: EmploisDetails;
-  user: GetMeResponse;
+  profile: Profile;
 }
 
-export function ReviewStep({ jobDetails, user }: ReviewStepProps) {
+export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
   const router = useRouter();
   const { questionsData, prevStep, resetForm } = useJobApplyStore();
   const { mutate: applyToJob, isPending } = useApplyToJob();
@@ -115,8 +116,7 @@ export function ReviewStep({ jobDetails, user }: ReviewStepProps) {
     }
   };
 
-  const hasResumes =
-    user?.resume?.resumeFiles && user.resume.resumeFiles.length > 0;
+  const hasResumes = profile?.files && profile.files.length > 0;
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
@@ -149,23 +149,23 @@ export function ReviewStep({ jobDetails, user }: ReviewStepProps) {
             <div>
               <p className="font-medium">Nom complet</p>
               <p className="text-muted-foreground">
-                {user?.first_name} {user?.last_name}
+                {profile?.first_name} {profile?.last_name}
               </p>
             </div>
             <div>
               <p className="font-medium">Email</p>
-              <p className="text-muted-foreground">{user?.email}</p>
+              <p className="text-muted-foreground">{profile?.email}</p>
             </div>
             <div>
               <p className="font-medium">Téléphone</p>
               <p className="text-muted-foreground">
-                {user?.phone || "Non renseigné"}
+                {profile?.phone || "Non renseigné"}
               </p>
             </div>
             <div>
               <p className="font-medium">Adresse</p>
               <p className="text-muted-foreground">
-                {user?.address || "Non renseignée"}
+                {profile?.address || "Non renseignée"}
               </p>
             </div>
           </div>
@@ -177,7 +177,7 @@ export function ReviewStep({ jobDetails, user }: ReviewStepProps) {
         <div className="space-y-4">
           <ResumeItem
             subtitle="Votre CV principal"
-            resumeFiles={user?.resume?.resumeFiles || []}
+            resumeFiles={profile?.files || []}
             source="profile"
           />
           {hasResumes && (

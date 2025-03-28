@@ -33,13 +33,13 @@ import {
   PhoneChangeForm as PhoneChangeFormType,
   phoneChangeSchema,
 } from "./PhoneChangeForm";
-import { MOCK_USER } from "@/core/mockData/user";
+import { useVerifyPassword } from "../hooks/use-verify-password";
+import { useUpdatePhone } from "../hooks/use-update-phone";
 
 type Step = "verify-current" | "change";
 
 interface PhoneChangeDialogProps {
   currentPhone: string;
-  onPhoneChange: (newPhone: string) => Promise<void>;
   trigger?: React.ReactNode;
 }
 
@@ -47,12 +47,13 @@ const STEPS = [{ title: "Vérification" }, { title: "Nouveau numéro" }];
 
 export function PhoneChangeDialog({
   currentPhone,
-  onPhoneChange,
   trigger,
 }: PhoneChangeDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState<Step>("verify-current");
   const { toast } = useToast();
+  const verifyPasswordMutation = useVerifyPassword();
+  const updatePhoneMutation = useUpdatePhone();
 
   const verificationForm = useForm<VerificationForm>({
     resolver: zodResolver(verificationSchema),
@@ -78,19 +79,20 @@ export function PhoneChangeDialog({
     setIsOpen(open);
     if (!open) {
       resetForms();
+      setStep("verify-current");
     }
   };
 
   const handleVerificationSubmit = async (data: VerificationForm) => {
-    if (data.currentPassword !== MOCK_USER.password) {
+    try {
+      await verifyPasswordMutation.mutateAsync(data.currentPassword);
+      setStep("change");
+      verificationForm.reset();
+    } catch {
       verificationForm.setError("currentPassword", {
         message: "Mot de passe incorrect",
       });
-      return;
     }
-
-    setStep("change");
-    verificationForm.reset();
   };
 
   const handlePhoneChangeSubmit = async (data: PhoneChangeFormType) => {
@@ -104,28 +106,24 @@ export function PhoneChangeDialog({
     }
 
     try {
-      await onPhoneChange(fullPhoneNumber);
+      await updatePhoneMutation.mutateAsync(fullPhoneNumber);
       setIsOpen(false);
       resetForms();
-      setStep("verify-current"); // Reset step only after successful phone change
+      setStep("verify-current");
       toast({
         variant: "success",
         title: "Numéro modifié",
         description: "Votre numéro de téléphone a été modifié avec succès",
       });
     } catch (_error) {
-      toast({
-        variant: "destructive",
-        title: "Erreur",
-        description: "Impossible de modifier le numéro de téléphone",
-      });
+      // Error toast is handled by the mutation
     }
   };
 
   const handleCancel = () => {
     setIsOpen(false);
     resetForms();
-    setStep("verify-current"); // Reset step when user explicitly cancels
+    setStep("verify-current");
   };
 
   const getStepContent = () => {
@@ -136,6 +134,7 @@ export function PhoneChangeDialog({
             form={verificationForm}
             onCancel={handleCancel}
             onSubmit={handleVerificationSubmit}
+            isLoading={verifyPasswordMutation.isPending}
           />
         );
       case "change":
@@ -144,6 +143,7 @@ export function PhoneChangeDialog({
             form={changeForm}
             onCancel={handleCancel}
             onSubmit={handlePhoneChangeSubmit}
+            isLoading={updatePhoneMutation.isPending}
           />
         );
     }

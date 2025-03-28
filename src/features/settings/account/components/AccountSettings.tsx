@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * AccountActions - Handles critical account operations
+ * AccountSettings - Handles critical account operations
  *
  * A client component that provides functionality for logging out
  * and deleting the user account. Uses client-side interactivity
@@ -9,41 +9,34 @@
  */
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { MOCK_USER } from "@/core/mockData/user";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
+import jsCookie from "js-cookie";
+import { useRouter } from "next/navigation";
 
-const DELETE_CONFIRMATION = "SUPPRIMER MON COMPTE";
+// Dynamic import of DeleteAccountDialog with loading fallback
+const DeleteAccountDialog = dynamic(
+  () => import("./DeleteAccountDialog").then((mod) => mod.DeleteAccountDialog),
+  {
+    ssr: false,
+  }
+);
 
-export function AccountActions() {
+export function AccountSettings() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [deleteConfirmation, setDeleteConfirmation] = useState("");
-  const [showDeleteError, setShowDeleteError] = useState(false);
+  const router = useRouter();
   const { toast } = useToast();
-  const user = MOCK_USER;
 
   const handleLogout = async () => {
     try {
       setIsLoggingOut(true);
-      // TODO: Implement actual logout logic
-      console.log("Logging out user:", user.id);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
+      jsCookie.remove("userRole");
+      router.replace("/login");
+
       toast({
         variant: "success",
         title: "Déconnexion réussie",
@@ -62,16 +55,10 @@ export function AccountActions() {
   };
 
   const handleDeleteAccount = async () => {
-    if (deleteConfirmation !== DELETE_CONFIRMATION) {
-      setShowDeleteError(true);
-      return;
-    }
-
     try {
       setIsDeleting(true);
-      setShowDeleteError(false);
       // TODO: Implement actual account deletion logic
-      console.log("Deleting account:", user.id);
+      console.log("Deleting account...");
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
       toast({
         variant: "success",
@@ -88,14 +75,6 @@ export function AccountActions() {
       console.error("Account deletion failed:", error);
     } finally {
       setIsDeleting(false);
-      setDeleteConfirmation("");
-    }
-  };
-
-  const handleDeleteDialogOpenChange = (open: boolean) => {
-    if (!open) {
-      setDeleteConfirmation("");
-      setShowDeleteError(false);
     }
   };
 
@@ -134,70 +113,10 @@ export function AccountActions() {
             </p>
           </div>
 
-          {/* Delete Account Dialog */}
-          <AlertDialog onOpenChange={handleDeleteDialogOpenChange}>
-            <AlertDialogTrigger asChild>
-              <Button
-                variant="destructive"
-                disabled={isDeleting}
-                className="w-full sm:w-auto"
-              >
-                Supprimer le compte
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  Êtes-vous sûr de vouloir supprimer votre compte ?
-                </AlertDialogTitle>
-                <AlertDialogDescription asChild>
-                  <div className="space-y-4">
-                    <span className="block">
-                      Cette action est irréversible. Toutes vos données seront
-                      définitivement supprimées.
-                    </span>
-                    <div className="space-y-2">
-                      <Label
-                        htmlFor="confirmation"
-                        className="text-sm font-medium"
-                      >
-                        Pour confirmer, écrivez &quot;{DELETE_CONFIRMATION}
-                        &quot; ci-dessous :
-                      </Label>
-                      <Input
-                        id="confirmation"
-                        value={deleteConfirmation}
-                        onChange={(e) => {
-                          setDeleteConfirmation(e.target.value);
-                          setShowDeleteError(false);
-                        }}
-                        className={showDeleteError ? "border-destructive" : ""}
-                        placeholder={DELETE_CONFIRMATION}
-                      />
-                      {showDeleteError && (
-                        <span className="block text-sm text-destructive">
-                          Veuillez écrire exactement &quot;{DELETE_CONFIRMATION}
-                          &quot; pour confirmer
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Annuler</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={handleDeleteAccount}
-                  className="bg-destructive hover:bg-destructive/90 disabled:opacity-50"
-                  disabled={
-                    isDeleting || deleteConfirmation !== DELETE_CONFIRMATION
-                  }
-                >
-                  {isDeleting ? "Suppression..." : "Supprimer définitivement"}
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          <DeleteAccountDialog
+            onDelete={handleDeleteAccount}
+            isDeleting={isDeleting}
+          />
         </div>
       </div>
     </Card>
