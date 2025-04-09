@@ -16,6 +16,7 @@ import { ReviewRating } from "./ReviewRating";
 import { ReviewSummary } from "./ReviewSummary";
 import { ReviewComment } from "./ReviewComment";
 import { ReviewPoints } from "./ReviewPoints";
+import { ReviewJobDetails } from "./ReviewJobDetails";
 import { toast } from "@/hooks/use-toast";
 import { ReviewFormValues, reviewFormSchema } from "../types";
 
@@ -27,6 +28,8 @@ export function WriteReviewForm() {
     resolver: zodResolver(reviewFormSchema),
     defaultValues: {
       rating: 0,
+      jobTitle: "",
+      isCurrentJob: false,
       summary: "",
       comment: "",
       positivePoints: [],
@@ -57,6 +60,7 @@ export function WriteReviewForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="space-y-6">
           <ReviewRating form={form} />
+          <ReviewJobDetails form={form} />
           <ReviewSummary form={form} />
           <ReviewComment form={form} />
           <ReviewPoints form={form} />

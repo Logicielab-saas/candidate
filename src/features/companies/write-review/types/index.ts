@@ -2,6 +2,10 @@ import { z } from "zod";
 
 export const reviewFormSchema = z.object({
   rating: z.number().min(1).max(5),
+  jobTitle: z
+    .string()
+    .min(2, "Le titre du poste doit contenir au moins 2 caractères"),
+  isCurrentJob: z.boolean(),
   summary: z.string().min(10, "Le résumé doit contenir au moins 10 caractères"),
   comment: z
     .string()
