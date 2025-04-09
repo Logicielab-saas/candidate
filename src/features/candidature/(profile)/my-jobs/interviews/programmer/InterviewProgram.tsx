@@ -12,6 +12,8 @@ import type { Interview } from "@/core/interfaces/";
 import Link from "next/link";
 import { JobHeader } from "../jobHeader";
 import { InterviewTypeDetails } from "@/components/shared/InterviewTypeDetails";
+import { fr } from "date-fns/locale";
+import { useToast } from "@/hooks/use-toast";
 
 interface InterviewProgramProps {
   job: Interview | undefined;
@@ -22,31 +24,43 @@ export function InterviewProgram({ job }: InterviewProgramProps) {
   const [selectedHour, setSelectedHour] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [isDetailsVisible, setIsDetailsVisible] = useState<boolean>(false);
+  const { toast } = useToast();
 
   // Candidate information (you can replace these with actual data)
-  const candidateName = "Meryem AZELHAK";
-  const candidateEmail = "meryem.azelhak@gmail.com";
-  const candidatePhone = "+212 625 106251";
+  const candidateName = "Malak BENALI";
+  const candidateEmail = "malak.benali@gmail.com";
+  const candidatePhone = "+212 625 125 125";
 
-  useEffect(() => {
-    const date = new Date(2025, 1, selectedDay);
-    setSelectedDate(format(date, "EEEE, d MMMM yyyy"));
-  }, [selectedDay]);
-
+  console.log(job?.fixedInterviewDate);
   useEffect(() => {
     if (job?.fixedInterviewDate && job?.fixedInterviewHour) {
       setSelectedHour(job.fixedInterviewHour);
       setSelectedDate(
-        format(new Date(job.fixedInterviewDate), "EEEE, d MMMM yyyy")
+        format(new Date(job.fixedInterviewDate), "PPP", {
+          locale: fr,
+        })
       );
+    } else if (selectedDay) {
+      // Get the current month's first day
+      const today = new Date();
+      const currentYear = today.getFullYear();
+      const currentMonth = today.getMonth();
+
+      // Calculate the date based on the selected day
+      const date = new Date(currentYear, currentMonth, selectedDay);
+      setSelectedDate(format(date, "PPP", { locale: fr }));
     }
-  }, [job]);
+  }, [job, selectedDay]);
 
   const handleContinue = () => {
     if (selectedHour) {
       setIsDetailsVisible(true);
     } else {
-      alert("Please select an hour before continuing.");
+      toast({
+        variant: "destructive",
+        title: "Erreur",
+        description: "Veuillez sélectionner une heure avant de continuer.",
+      });
     }
   };
 

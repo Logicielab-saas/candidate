@@ -8,10 +8,13 @@
 import {
   useSaveEmplois,
   useCancelSaveEmplois,
+  SAVED_EMPLOIS_QUERY_KEY,
 } from "@/features/candidature/(profile)/my-jobs/hooks/use-my-saved-jobs";
 import { useState, useCallback, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useSavedJobsStore } from "@/features/Emplois/store/saved-jobs.store";
+import { useQueryClient } from "@tanstack/react-query";
+import { EMPLOIS_QUERY_KEY } from "@/features/Emplois/hooks/use-emplois";
 
 interface UseJobBookmarkProps {
   initialIsSaved: boolean;
@@ -52,6 +55,7 @@ export function useJobBookmark({
 
   // Global saved jobs store
   const { saveJob, removeSavedJob } = useSavedJobsStore();
+  const queryClient = useQueryClient();
 
   // Update local state when initialIsSaved changes
   useEffect(() => {
@@ -65,6 +69,30 @@ export function useJobBookmark({
   const { toast } = useToast();
 
   /**
+   * Invalidate all relevant queries
+   */
+  const invalidateQueries = useCallback(async () => {
+    await Promise.all([
+      // Invalidate all emplois list queries
+      queryClient.invalidateQueries({
+        queryKey: EMPLOIS_QUERY_KEY,
+        refetchType: "all",
+      }),
+      // Invalidate saved emplois queries
+      queryClient.invalidateQueries({
+        queryKey: SAVED_EMPLOIS_QUERY_KEY,
+        refetchType: "all",
+      }),
+      // Invalidate individual job queries
+      queryClient.invalidateQueries({
+        queryKey: EMPLOIS_QUERY_KEY,
+        type: "all",
+        exact: false,
+      }),
+    ]);
+  }, [queryClient]);
+
+  /**
    * Handle saving a job
    */
   const handleSave = useCallback(async (): Promise<void> => {
@@ -75,13 +103,14 @@ export function useJobBookmark({
     try {
       await new Promise<void>((resolve, reject) => {
         saveJobMutation(jobId, {
-          onSuccess: () => {
+          onSuccess: async () => {
             setIsSaved(true);
             saveJob(jobId); // Update global store
+            await invalidateQueries();
             if (onSaveSuccess) onSaveSuccess();
             resolve();
           },
-          onError: (error) => {
+          onError: async (error) => {
             // If already saved, we still want to set the state correctly
             if (
               (error.response?.data as { message: string })?.message ===
@@ -89,6 +118,7 @@ export function useJobBookmark({
             ) {
               setIsSaved(true);
               saveJob(jobId); // Update global store
+              await invalidateQueries();
               if (onSaveSuccess) onSaveSuccess();
               resolve();
             } else {
@@ -115,6 +145,7 @@ export function useJobBookmark({
     jobTitle,
     onSaveSuccess,
     saveJob,
+    invalidateQueries,
   ]);
 
   /**
@@ -128,9 +159,10 @@ export function useJobBookmark({
     try {
       await new Promise<void>((resolve, reject) => {
         unsaveJobMutation(jobId, {
-          onSuccess: () => {
+          onSuccess: async () => {
             setIsSaved(false);
             removeSavedJob(jobId); // Update global store
+            await invalidateQueries();
             if (onUnsaveSuccess) onUnsaveSuccess();
             resolve();
           },
@@ -157,6 +189,7 @@ export function useJobBookmark({
     jobTitle,
     onUnsaveSuccess,
     removeSavedJob,
+    invalidateQueries,
   ]);
 
   /**

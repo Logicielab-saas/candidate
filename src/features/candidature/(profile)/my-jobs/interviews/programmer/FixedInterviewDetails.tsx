@@ -45,7 +45,7 @@ const FixedInterviewDetails = ({
       <Button className="w-full mt-4" onClick={onContinue}>
         Continue
       </Button>
-      <Button variant="outline" className="w-full mt-2">
+      <Button variant="outline" className="w-full mt-2" asChild>
         <Link href={`/interviews/reporter/${jobKey}`}>
           Suggérer nouveaux créneaux
         </Link>
