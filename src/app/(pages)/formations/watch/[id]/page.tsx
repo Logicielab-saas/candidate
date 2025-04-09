@@ -51,6 +51,7 @@ export default async function FormationDetailsPage({
         viewersNum={course.viewersNum}
         progress={course.progress}
         description={course.description}
+        courseId={course.id}
       />
       <FormationDetailsContainer
         course={course}
