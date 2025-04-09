@@ -9,8 +9,9 @@ import {
   useSaveEmplois,
   useCancelSaveEmplois,
 } from "@/features/candidature/(profile)/my-jobs/hooks/use-my-saved-jobs";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useSavedJobsStore } from "@/features/Emplois/store/saved-jobs.store";
 
 interface UseJobBookmarkProps {
   initialIsSaved: boolean;
@@ -49,9 +50,18 @@ export function useJobBookmark({
   const [isSaved, setIsSaved] = useState(initialIsSaved);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // Global saved jobs store
+  const { saveJob, removeSavedJob } = useSavedJobsStore();
+
+  // Update local state when initialIsSaved changes
+  useEffect(() => {
+    setIsSaved(initialIsSaved);
+  }, [initialIsSaved, jobId]);
+
   // Hooks for API operations
-  const { mutate: saveJob, isPending: isSaving } = useSaveEmplois();
-  const { mutate: unsaveJob, isPending: isUnsaving } = useCancelSaveEmplois();
+  const { mutate: saveJobMutation, isPending: isSaving } = useSaveEmplois();
+  const { mutate: unsaveJobMutation, isPending: isUnsaving } =
+    useCancelSaveEmplois();
   const { toast } = useToast();
 
   /**
@@ -64,9 +74,10 @@ export function useJobBookmark({
 
     try {
       await new Promise<void>((resolve, reject) => {
-        saveJob(jobId, {
+        saveJobMutation(jobId, {
           onSuccess: () => {
             setIsSaved(true);
+            saveJob(jobId); // Update global store
             if (onSaveSuccess) onSaveSuccess();
             resolve();
           },
@@ -77,6 +88,7 @@ export function useJobBookmark({
               "You have already saved to this emploi"
             ) {
               setIsSaved(true);
+              saveJob(jobId); // Update global store
               if (onSaveSuccess) onSaveSuccess();
               resolve();
             } else {
@@ -94,7 +106,16 @@ export function useJobBookmark({
     } finally {
       setIsProcessing(false);
     }
-  }, [jobId, isProcessing, isSaved, saveJob, toast, jobTitle, onSaveSuccess]);
+  }, [
+    jobId,
+    isProcessing,
+    isSaved,
+    saveJobMutation,
+    toast,
+    jobTitle,
+    onSaveSuccess,
+    saveJob,
+  ]);
 
   /**
    * Handle unsaving a job
@@ -106,9 +127,10 @@ export function useJobBookmark({
 
     try {
       await new Promise<void>((resolve, reject) => {
-        unsaveJob(jobId, {
+        unsaveJobMutation(jobId, {
           onSuccess: () => {
             setIsSaved(false);
+            removeSavedJob(jobId); // Update global store
             if (onUnsaveSuccess) onUnsaveSuccess();
             resolve();
           },
@@ -130,10 +152,11 @@ export function useJobBookmark({
     jobId,
     isProcessing,
     isSaved,
-    unsaveJob,
+    unsaveJobMutation,
     toast,
     jobTitle,
     onUnsaveSuccess,
+    removeSavedJob,
   ]);
 
   /**

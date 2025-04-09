@@ -46,9 +46,16 @@ export function useSaveEmplois() {
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: EMPLOIS_QUERY_KEY,
+          refetchType: "all",
         }),
         queryClient.invalidateQueries({
           queryKey: SAVED_EMPLOIS_QUERY_KEY,
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({
+          queryKey: EMPLOIS_QUERY_KEY,
+          type: "all",
+          exact: false,
         }),
       ]);
 
@@ -91,9 +98,16 @@ export function useCancelSaveEmplois() {
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: EMPLOIS_QUERY_KEY,
+          refetchType: "all",
         }),
         queryClient.invalidateQueries({
           queryKey: SAVED_EMPLOIS_QUERY_KEY,
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({
+          queryKey: EMPLOIS_QUERY_KEY,
+          type: "all",
+          exact: false,
         }),
       ]);
 

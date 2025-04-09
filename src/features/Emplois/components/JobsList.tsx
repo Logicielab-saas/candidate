@@ -61,7 +61,7 @@ export function JobsList({ isDesktop }: JobsListProps) {
       ) {
         setSelectedJobId(jobs[0].slug);
       }
-      if (!isDesktop && selectedJobId) {
+      if (!isDesktop && jobs.length > 0 && selectedJobId && !isLoading) {
         router.push(`/annonce-details/${selectedJobId}`);
       }
     }
