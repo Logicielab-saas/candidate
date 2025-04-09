@@ -44,31 +44,36 @@ export function JobsList({ isDesktop }: JobsListProps) {
     fetchNextPage,
     hasNextPage,
   } = useEmplois();
-
   // Initialize saved jobs when data is loaded
   useEffect(() => {
     if (jobs) {
       initializeSavedJobs(jobs);
+      // Only set default job if:
+      // 1. We're on desktop
+      // 2. We have jobs
+      // 3. No job is selected (selectedJobId is explicitly null, not undefined)
+      // 4. We're not loading
+      if (
+        isDesktop &&
+        jobs.length > 0 &&
+        selectedJobId === null &&
+        !isLoading
+      ) {
+        setSelectedJobId(jobs[0].slug);
+      }
+      if (!isDesktop && selectedJobId) {
+        router.push(`/annonce-details/${selectedJobId}`);
+      }
     }
-  }, [jobs, initializeSavedJobs]);
-
-  // Filter jobs based on search text and city only for now
-  /* Commenting out filters for now
-  const filteredJobs = jobs.filter((job: Emplois) => {
-    // Text search filter
-    const matchesSearch =
-      !searchText ||
-      job.title.toLowerCase().includes(searchText.toLowerCase()) ||
-      job.company_name.toLowerCase().includes(searchText.toLowerCase());
-
-    // City filter
-    const matchesCity =
-      !selectedCity ||
-      job.city_name.toLowerCase() === selectedCity.toLowerCase();
-
-    return matchesSearch && matchesCity;
-  });
-  */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    jobs,
+    initializeSavedJobs,
+    isDesktop,
+    setSelectedJobId,
+    selectedJobId,
+    isLoading,
+  ]);
 
   // Handle job card click
   const handleJobClick = (jobSlug: string) => {
