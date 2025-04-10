@@ -58,7 +58,7 @@ function ArchivedJobsSkeleton() {
   );
 }
 
-export function ArchivedJobsList({
+export default function ArchivedJobsList({
   archivedJobs,
   isLoading,
   error,

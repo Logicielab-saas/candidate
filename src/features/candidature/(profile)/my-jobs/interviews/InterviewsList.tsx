@@ -21,7 +21,7 @@ interface InterviewsListProps {
   interviews: Interview[];
 }
 
-export function InterviewsList({ interviews }: InterviewsListProps) {
+export default function InterviewsList({ interviews }: InterviewsListProps) {
   return (
     <div className="space-y-6">
       {/* Interviews where candidate has been invited */}

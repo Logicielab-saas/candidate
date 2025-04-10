@@ -17,10 +17,6 @@ import {
   tabsListStyles,
   tabCounterStyles,
 } from "@/core/styles/tabs";
-import { SavedJobsList } from "./saved-jobs/SavedJobsList";
-import { SentApplicationsList } from "./sent-applications/SentApplicationsList";
-import { ArchivedJobsList } from "./archived-jobs/ArchivedJobsList";
-import { InterviewsList } from "./interviews/InterviewsList";
 import { useQueryState } from "nuqs";
 import { useState } from "react";
 import { mockInterviews } from "@/core/mockData/jobs";
@@ -30,6 +26,29 @@ import { useTabsCountStore } from "./store/tabs-count.store";
 import { useFetchSavedEmplois } from "./hooks/use-my-saved-jobs";
 import { useFetchSentApplications } from "./hooks/use-my-applied-jobs";
 import { useFetchArchivedJobs } from "./hooks/use-my-archived-jobs";
+import dynamic from "next/dynamic";
+
+const SavedJobsList = dynamic(() => import("./saved-jobs/SavedJobsList"), {
+  ssr: false,
+});
+
+const SentApplicationsList = dynamic(
+  () => import("./sent-applications/SentApplicationsList"),
+  {
+    ssr: false,
+  }
+);
+
+const ArchivedJobsList = dynamic(
+  () => import("./archived-jobs/ArchivedJobsList"),
+  {
+    ssr: false,
+  }
+);
+
+const InterviewsList = dynamic(() => import("./interviews/InterviewsList"), {
+  ssr: false,
+});
 
 // Types and interfaces
 interface JobTab {
@@ -183,34 +202,42 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
 
         <div className="mt-6">
           <TabsContent value="saved-jobs">
-            <SavedJobsList
-              savedJobsData={savedJobsData}
-              isLoading={isSavedJobsLoading}
-              error={savedJobsError}
-              onPageChange={handlePageChange}
-            />
+            {activeTab === "saved-jobs" && (
+              <SavedJobsList
+                savedJobsData={savedJobsData}
+                isLoading={isSavedJobsLoading}
+                error={savedJobsError}
+                onPageChange={handlePageChange}
+              />
+            )}
           </TabsContent>
 
           <TabsContent value="sent-applications">
-            <SentApplicationsList
-              sentApplicationsData={sentApplicationsData}
-              isLoading={isSentApplicationsLoading}
-              error={sentApplicationsError}
-              onPageChange={handlePageChange}
-            />
+            {activeTab === "sent-applications" && (
+              <SentApplicationsList
+                sentApplicationsData={sentApplicationsData}
+                isLoading={isSentApplicationsLoading}
+                error={sentApplicationsError}
+                onPageChange={handlePageChange}
+              />
+            )}
           </TabsContent>
 
           <TabsContent value="interviews">
-            <InterviewsList interviews={interviews} />
+            {activeTab === "interviews" && (
+              <InterviewsList interviews={interviews} />
+            )}
           </TabsContent>
 
           <TabsContent value="archived">
-            <ArchivedJobsList
-              archivedJobs={archivedJobsData}
-              isLoading={isArchivedJobsLoading}
-              error={archivedJobsError}
-              onPageChange={handlePageChange}
-            />
+            {activeTab === "archived" && (
+              <ArchivedJobsList
+                archivedJobs={archivedJobsData}
+                isLoading={isArchivedJobsLoading}
+                error={archivedJobsError}
+                onPageChange={handlePageChange}
+              />
+            )}
           </TabsContent>
         </div>
       </Tabs>
