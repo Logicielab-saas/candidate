@@ -43,3 +43,11 @@ export async function fetchEmploisBySlug(slug: string) {
   const response = await api.get<EmploisDetailsResponse>(`${endpoint}/${slug}`);
   return response.data;
 }
+
+// TODO: Implement this FUNCTIONALITY NO APP TOMORROW (FRIDAY)
+export async function getSuggestions(query: string) {
+  const response = await api.get<EmploisResponse>(`${endpoint}/suggestions`, {
+    params: { query },
+  });
+  return response.data;
+}
