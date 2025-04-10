@@ -2,11 +2,9 @@
  * AdvancedFiltersDrawer - Advanced filtering options in a drawer
  *
  * Features:
- * - Multiple filter categories
- * - Salary range filter with debounced updates
- * - Experience level filter
- * - Remote work options
- * - Industry sectors
+ * - Multiple filter categories with memoized components
+ * - Local state management for smooth interactions
+ * - Batch updates to URL parameters
  */
 
 "use client";
@@ -22,37 +20,19 @@ import {
   SheetFooter,
 } from "@/components/ui/sheet";
 import { Settings2 } from "lucide-react";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Slider } from "@/components/ui/slider";
-import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { useState, useEffect } from "react";
-import { useDebounce } from "use-debounce";
-
-// Filter options
-const EXPERIENCE_LEVELS = [
-  { value: "entry", label: "Entry Level (0-2 years)" },
-  { value: "mid", label: "Mid Level (3-5 years)" },
-  { value: "senior", label: "Senior Level (5+ years)" },
-  { value: "lead", label: "Lead/Manager (8+ years)" },
-] as const;
-
-const INDUSTRIES = [
-  { value: "tech", label: "Technology" },
-  { value: "finance", label: "Finance" },
-  { value: "healthcare", label: "Healthcare" },
-  { value: "education", label: "Education" },
-  { value: "retail", label: "Retail" },
-  { value: "manufacturing", label: "Manufacturing" },
-] as const;
-
-// Default values
-const DEFAULT_MIN_SALARY = 30;
-const DEFAULT_MAX_SALARY = 150;
+import {
+  SalaryRangeFilter,
+  DEFAULT_MIN_SALARY,
+  DEFAULT_MAX_SALARY,
+} from "./filters/SalaryRangeFilter";
+import { ExperienceLevelFilter } from "./filters/ExperienceLevelFilter";
+import { IndustryFilter } from "./filters/IndustryFilter";
+import { RemoteWorkFilter } from "./filters/RemoteWorkFilter";
 
 export function AdvancedFiltersDrawer() {
   const [isOpen, setIsOpen] = useState(false);
@@ -163,71 +143,28 @@ export function AdvancedFiltersDrawer() {
 
         <div className="mt-6 sm:mt-8 space-y-6 sm:space-y-8">
           {/* Salary Range */}
-          <div className="space-y-4">
-            <Label>Salary Range (K€/year)</Label>
-            <Slider
-              min={DEFAULT_MIN_SALARY}
-              max={DEFAULT_MAX_SALARY}
-              step={5}
-              value={localSalaryRange}
-              onValueChange={setLocalSalaryRange}
-              className="w-full"
-              minStepsBetweenThumbs={2}
-            />
-            <div className="flex items-center justify-between text-sm text-muted-foreground">
-              <span>{localSalaryRange[0]}K€</span>
-              <span>{localSalaryRange[1]}K€</span>
-            </div>
-          </div>
+          <SalaryRangeFilter
+            value={localSalaryRange}
+            onChange={setLocalSalaryRange}
+          />
 
           <Separator />
 
           {/* Experience Level */}
-          <div className="space-y-4">
-            <Label>Experience Level</Label>
-            <RadioGroup
-              value={localExperience}
-              onValueChange={setLocalExperience}
-            >
-              {EXPERIENCE_LEVELS.map((level) => (
-                <div key={level.value} className="flex items-center space-x-2">
-                  <RadioGroupItem value={level.value} id={level.value} />
-                  <Label htmlFor={level.value}>{level.label}</Label>
-                </div>
-              ))}
-            </RadioGroup>
-          </div>
+          <ExperienceLevelFilter
+            value={localExperience}
+            onChange={setLocalExperience}
+          />
 
           <Separator />
 
           {/* Remote Work */}
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label>Remote Work</Label>
-              <p className="text-sm text-muted-foreground">
-                Show only remote positions
-              </p>
-            </div>
-            <Switch
-              checked={localIsRemote}
-              onCheckedChange={setLocalIsRemote}
-            />
-          </div>
+          <RemoteWorkFilter value={localIsRemote} onChange={setLocalIsRemote} />
 
           <Separator />
 
           {/* Industry */}
-          <div className="space-y-4">
-            <Label>Industry</Label>
-            <RadioGroup value={localIndustry} onValueChange={setLocalIndustry}>
-              {INDUSTRIES.map((ind) => (
-                <div key={ind.value} className="flex items-center space-x-2">
-                  <RadioGroupItem value={ind.value} id={ind.value} />
-                  <Label htmlFor={ind.value}>{ind.label}</Label>
-                </div>
-              ))}
-            </RadioGroup>
-          </div>
+          <IndustryFilter value={localIndustry} onChange={setLocalIndustry} />
         </div>
 
         <SheetFooter className="flex-row gap-2 mt-6 sm:mt-8">
