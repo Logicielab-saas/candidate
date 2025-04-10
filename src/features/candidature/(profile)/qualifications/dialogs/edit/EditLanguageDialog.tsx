@@ -80,7 +80,7 @@ export function EditLanguageDialog({
   useEffect(() => {
     if (language) {
       form.reset({
-        language_uuid: language.uuid,
+        language_uuid: language.language_uuid,
         level: Number(language.level),
       });
     }

@@ -96,17 +96,6 @@ export function LanguagesList({ resumeLanguages }: LanguagesListProps) {
     );
   };
 
-  if (!resumeLanguages?.length) {
-    return (
-      <>
-        <div className="text-center text-muted-foreground py-8">
-          No languages added yet
-        </div>
-        <button className="hidden" data-add-button onClick={handleAdd} />
-      </>
-    );
-  }
-
   return (
     <div className="border p-4 rounded-lg shadow-sm space-y-4">
       <SectionHeader
@@ -115,54 +104,63 @@ export function LanguagesList({ resumeLanguages }: LanguagesListProps) {
         onAdd={() => setIsAddLanguageOpen(true)}
       />
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {resumeLanguages.map((lang) => (
-          <Card
-            key={lang.uuid}
-            className="p-4 group hover:border-primary/50 hover:bg-accent/50 transition-colors"
-          >
-            <div className="flex items-start gap-4">
-              <Avatar className="h-12 w-12 border-2 border-primary/20">
-                <AvatarImage src={lang.flag} alt={lang.name} />
-                <AvatarFallback className="text-lg">
-                  {lang.name.slice(0, 2).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-2">
-                  <h3 className="font-semibold text-lg truncate">
-                    {lang.name}
-                  </h3>
-                  <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleEdit(lang.uuid)}
-                      className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primaryHex-100"
-                    >
-                      <Pencil className="h-4 w-4 text-primaryHex-600" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDelete(lang.uuid)}
-                      className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                    >
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
-                  </div>
-                </div>
-                <Badge
-                  variant="secondary"
-                  className="mt-2 px-3 py-1 text-sm font-medium"
-                >
-                  {isValidProficiencyLevel(lang.level)
-                    ? getProficiencyLabel(lang.level)
-                    : "Unknown"}
-                </Badge>
-              </div>
+        {!resumeLanguages?.length ? (
+          <>
+            <div className="text-muted-foreground text-center items-center py-4">
+              No languages added yet
             </div>
-          </Card>
-        ))}
+            <button className="hidden" data-add-button onClick={handleAdd} />
+          </>
+        ) : (
+          resumeLanguages?.map((lang) => (
+            <Card
+              key={lang.uuid}
+              className="p-4 group hover:border-primary/50 hover:bg-accent/50 transition-colors"
+            >
+              <div className="flex items-start gap-4">
+                <Avatar className="h-12 w-12 border-2 border-primary/20">
+                  <AvatarImage src={lang.flag} alt={lang.name} />
+                  <AvatarFallback className="text-lg">
+                    {lang.name.slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="font-semibold text-lg truncate">
+                      {lang.name}
+                    </h3>
+                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleEdit(lang.uuid)}
+                        className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primaryHex-100"
+                      >
+                        <Pencil className="h-4 w-4 text-primaryHex-600" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleDelete(lang.uuid)}
+                        className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                      >
+                        <Trash2 className="h-4 w-4 text-destructive" />
+                      </Button>
+                    </div>
+                  </div>
+                  <Badge
+                    variant="secondary"
+                    className="mt-2 px-3 py-1 text-sm font-medium"
+                  >
+                    {isValidProficiencyLevel(lang.level)
+                      ? getProficiencyLabel(lang.level)
+                      : "Unknown"}
+                  </Badge>
+                </div>
+              </div>
+            </Card>
+          ))
+        )}
       </div>
 
       <button className="hidden" data-add-button onClick={handleAdd} />
