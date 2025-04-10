@@ -1,5 +1,5 @@
 /**
- * ReportJobDialog - A dialog component for reporting inappropriate job listings
+ * ReportJobDialog - An alert dialog component for reporting inappropriate job listings
  *
  * Allows users to report jobs with a specific reason and additional information.
  * Uses form validation with zod and integrates with the reporting API.
@@ -13,20 +13,23 @@
 "use client";
 
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useReportEmploi } from "@/hooks/use-report-emplois";
+import { useState } from "react";
 
 const reportReasons = [
   "Offre offensante ou discriminatoire",
@@ -55,7 +58,7 @@ export default function ReportJobDialog({
   onOpenChange,
 }: ReportJobDialogProps) {
   const { mutate: reportJob, isPending } = useReportEmploi();
-
+  const [isDeleting, setIsDeleting] = useState(false);
   const {
     control,
     register,
@@ -72,27 +75,50 @@ export default function ReportJobDialog({
   });
 
   const onSubmit: SubmitHandler<ReportFormData> = (data) => {
-    reportJob({
-      emploi_uuid: jobId,
-      reason: data.reason,
-      message: data.additionalInfo,
-    });
-
-    reset();
-    onOpenChange(false);
+    setIsDeleting(true);
+    reportJob(
+      {
+        emploi_uuid: jobId,
+        reason: data.reason,
+        message: data.additionalInfo,
+      },
+      {
+        onSuccess: () => {
+          onOpenChange(false);
+          setIsDeleting(false);
+          reset();
+        },
+        onError: () => {
+          onOpenChange(false);
+          setIsDeleting(false);
+          reset();
+        },
+      }
+    );
   };
 
+  const isLoading = isPending || isDeleting;
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Signaler cette offre d&apos;emploi</DialogTitle>
-          <DialogDescription>
+    <AlertDialog
+      open={open}
+      onOpenChange={(newOpen) => {
+        if (!isLoading) {
+          onOpenChange(newOpen);
+        }
+      }}
+    >
+      <AlertDialogContent className="sm:max-w-[425px]">
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            Signaler cette offre d&apos;emploi
+          </AlertDialogTitle>
+          <AlertDialogDescription>
             Sélectionnez une raison et fournissez des informations
             supplémentaires si nécessaire.
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <div className="space-y-4">
           <Controller
             control={control}
             name="reason"
@@ -100,7 +126,7 @@ export default function ReportJobDialog({
               <RadioGroup
                 value={field.value}
                 onValueChange={field.onChange}
-                className="space-y-4 mb-4"
+                className="space-y-4"
               >
                 {reportReasons.map((reason) => (
                   <div key={reason} className="flex items-center space-x-3">
@@ -114,43 +140,46 @@ export default function ReportJobDialog({
             )}
           />
           {errors.reason && (
-            <span className="text-red-500">
-              {errors.reason.message} <br />
-            </span>
+            <span className="text-red-500 block">{errors.reason.message}</span>
           )}
-          <Label>Informations complémentaires</Label>
-          <Textarea
-            className="w-full border rounded-md p-2"
-            rows={4}
-            maxLength={300}
-            {...register("additionalInfo")}
-          />
-          {errors.additionalInfo && (
-            <span className="text-red-500">
-              {errors.additionalInfo.message}
-            </span>
-          )}
-          <div className="flex justify-end mt-4">
-            <Button
-              type="button"
-              variant="outline"
+
+          <div className="space-y-2">
+            <Label>Informations complémentaires</Label>
+            <Textarea
+              className="w-full border rounded-md p-2"
+              rows={4}
+              maxLength={300}
+              {...register("additionalInfo")}
+            />
+            {errors.additionalInfo && (
+              <span className="text-red-500 block">
+                {errors.additionalInfo.message}
+              </span>
+            )}
+          </div>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel
               onClick={() => {
                 reset();
                 onOpenChange(false);
               }}
+              disabled={isLoading}
             >
               Annuler
-            </Button>
-            <Button
-              className="ml-2"
-              type="submit"
-              disabled={!watch("reason") || isPending}
-            >
-              {isPending ? "Envoi..." : "Envoyer"}
-            </Button>
-          </div>
-        </form>
-      </DialogContent>
-    </Dialog>
+            </AlertDialogCancel>
+            <AlertDialogAction asChild disabled={!watch("reason") || isLoading}>
+              <button
+                type="button"
+                onClick={handleSubmit(onSubmit)}
+                disabled={!watch("reason") || isLoading}
+              >
+                {isLoading ? "Envoi..." : "Envoyer"}
+              </button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </div>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

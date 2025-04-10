@@ -27,15 +27,20 @@ import { useFetchSavedEmplois } from "./hooks/use-my-saved-jobs";
 import { useFetchSentApplications } from "./hooks/use-my-applied-jobs";
 import { useFetchArchivedJobs } from "./hooks/use-my-archived-jobs";
 import dynamic from "next/dynamic";
+import { SavedJobsItemSkeleton } from "./skeletons/SavedJobsItemSkeleton";
+import { SentApplicationItemSkeleton } from "./skeletons/SentApplicationItemSkeleton";
+import LoaderOne from "@/components/ui/loader-one";
 
 const SavedJobsList = dynamic(() => import("./saved-jobs/SavedJobsList"), {
   ssr: false,
+  loading: () => <SavedJobsItemSkeleton />,
 });
 
 const SentApplicationsList = dynamic(
   () => import("./sent-applications/SentApplicationsList"),
   {
     ssr: false,
+    loading: () => <SentApplicationItemSkeleton />,
   }
 );
 
@@ -43,11 +48,17 @@ const ArchivedJobsList = dynamic(
   () => import("./archived-jobs/ArchivedJobsList"),
   {
     ssr: false,
+    loading: () => <SavedJobsItemSkeleton source="archived" />,
   }
 );
 
 const InterviewsList = dynamic(() => import("./interviews/InterviewsList"), {
   ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center h-[100px]">
+      <LoaderOne />
+    </div>
+  ),
 });
 
 // Types and interfaces
