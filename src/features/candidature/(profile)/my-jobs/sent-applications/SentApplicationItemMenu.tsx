@@ -28,6 +28,13 @@ import type { EmploisApplied } from "@/core/interfaces";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
+const ArchiveJobDialog = dynamic(
+  () => import("../components/ArchiveJobDialog"),
+  {
+    ssr: false,
+  }
+);
+
 const RemoveApplyEmploi = dynamic(
   () => import("./RemoveApplyEmploi").then((mod) => mod.RemoveApplyEmploi),
   {
@@ -49,6 +56,7 @@ interface SentApplicationItemMenuProps {
 export function SentApplicationItemMenu({
   applied,
 }: SentApplicationItemMenuProps) {
+  const [isArchiveDialogOpen, setIsArchiveDialogOpen] = useState(false);
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
 
@@ -72,7 +80,10 @@ export function SentApplicationItemMenu({
               Voir les détails
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="flex items-center gap-2">
+          <DropdownMenuItem
+            className="flex items-center gap-2"
+            onClick={() => setIsArchiveDialogOpen(true)}
+          >
             <Archive className="h-4 w-4" />
             Archiver
           </DropdownMenuItem>
@@ -95,6 +106,16 @@ export function SentApplicationItemMenu({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {isArchiveDialogOpen && (
+        <ArchiveJobDialog
+          open={isArchiveDialogOpen}
+          onOpenChange={setIsArchiveDialogOpen}
+          jobId={applied.emploi.uuid}
+          jobTitle={applied.emploi.title}
+        />
+      )}
+
       {isReportDialogOpen && (
         <ReportJobDialog
           open={isReportDialogOpen}

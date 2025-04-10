@@ -23,14 +23,13 @@ import { ArchivedJobsList } from "./archived-jobs/ArchivedJobsList";
 import { InterviewsList } from "./interviews/InterviewsList";
 import { useQueryState } from "nuqs";
 import { useState } from "react";
-import { mockSentApplications } from "@/core/mockData/jobs";
 import { mockInterviews } from "@/core/mockData/jobs";
-import type { Job } from "@/core/types";
 import type { Interview } from "@/core/interfaces/";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useTabsCountStore } from "./store/tabs-count.store";
 import { useFetchSavedEmplois } from "./hooks/use-my-saved-jobs";
 import { useFetchSentApplications } from "./hooks/use-my-applied-jobs";
+import { useFetchArchivedJobs } from "./hooks/use-my-archived-jobs";
 
 // Types and interfaces
 interface JobTab {
@@ -96,16 +95,18 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
     error: sentApplicationsError,
   } = useFetchSentApplications(page, perPage);
 
+  const {
+    data: archivedJobsData,
+    isLoading: isArchivedJobsLoading,
+    error: archivedJobsError,
+  } = useFetchArchivedJobs(page, perPage);
+
   // Combined loading state
-  const _isLoading = isSavedJobsLoading || isSentApplicationsLoading;
+  const _isLoading =
+    isSavedJobsLoading || isSentApplicationsLoading || isArchivedJobsLoading;
 
-  // Centralized state management for mock data (interviews & archive)
-  const [jobs, setJobs] = useState<Job[]>(mockSentApplications);
-  const [interviews, _setInterviews] = useState<Interview[]>(mockInterviews);
-
-  const archivedJobs = jobs.filter(
-    (job) => job.statuses.userJobStatus.status === "ARCHIVED"
-  );
+  // Centralized state management for mock data (interviews only)
+  const [interviews] = useState<Interview[]>(mockInterviews);
 
   // Handle page change function to be passed to child components
   const handlePageChange = (newPage: number) => {
@@ -116,39 +117,6 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
       top: 0,
       behavior: "smooth",
     });
-  };
-
-  /**
-   * Unarchives a job application
-   * Resets the status to APPLIED and moves it back to active applications
-   */
-  const handleUnarchive = (jobId: string) => {
-    setJobs((currentJobs) =>
-      currentJobs.map((job) => {
-        if (job.jobKey === jobId) {
-          const now = Date.now();
-          return {
-            ...job,
-            statuses: {
-              ...job.statuses,
-              candidateStatus: {
-                status: "APPLIED",
-                timestamp: now,
-              },
-              selfReportedStatus: {
-                status: "APPLIED",
-                timestamp: now,
-              },
-              userJobStatus: {
-                ...job.statuses.userJobStatus,
-                status: "POST_APPLY",
-              },
-            },
-          };
-        }
-        return job;
-      })
-    );
   };
 
   // Tab configuration with count keys for the store
@@ -170,7 +138,7 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
     },
     {
       id: "archived",
-      label: "Archivées",
+      label: "Archivés",
       countKey: "archivedCount",
     },
   ];
@@ -238,8 +206,10 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
 
           <TabsContent value="archived">
             <ArchivedJobsList
-              archivedJobs={archivedJobs}
-              onUnarchive={handleUnarchive}
+              archivedJobs={archivedJobsData}
+              isLoading={isArchivedJobsLoading}
+              error={archivedJobsError}
+              onPageChange={handlePageChange}
             />
           </TabsContent>
         </div>

@@ -7,7 +7,7 @@ const archiveEndpoint = "/employee/emploi/archive";
 
 export interface ArchivedJobsResponse {
   message: string;
-  saved: ArchivedJob[];
+  archives: ArchivedJob[];
   pagination: Pagination;
 }
 

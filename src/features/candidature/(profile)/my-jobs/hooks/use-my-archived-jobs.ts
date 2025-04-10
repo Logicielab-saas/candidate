@@ -31,9 +31,7 @@ export const ARCHIVED_JOBS_QUERY_KEY = ["archived-jobs"];
 
 export function useFetchArchivedJobs(page: number = 1, perPage: number = 10) {
   // Get the setter from the tabs count store
-  const setArchivedJobsCount = useTabsCountStore(
-    (state) => state.setArchivedCount
-  );
+  const setArchivedCount = useTabsCountStore((state) => state.setArchivedCount);
 
   const { data, isLoading, error } = useQuery({
     queryKey: [...ARCHIVED_JOBS_QUERY_KEY, page, perPage],
@@ -44,9 +42,9 @@ export function useFetchArchivedJobs(page: number = 1, perPage: number = 10) {
   // Update the count in the store when data changes
   useEffect(() => {
     if (data?.pagination?.total !== undefined) {
-      setArchivedJobsCount(data.pagination.total);
+      setArchivedCount(data.pagination.total);
     }
-  }, [data?.pagination?.total, setArchivedJobsCount]);
+  }, [data?.pagination?.total, setArchivedCount]);
 
   return { data, isLoading, error };
 }
