@@ -12,7 +12,7 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
 import type { Job } from "@/core/types";
-import { ReportJobDialog } from "../ReportJobDialog";
+import { ReportJobDialog } from "../../../../../components/shared/ReportJobDialog";
 import { useState } from "react";
 
 interface ArchivedJobItemProps extends Omit<Job, "id"> {

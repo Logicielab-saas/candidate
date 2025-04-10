@@ -4,7 +4,7 @@ import { spanBadgeStyle } from "@/core/styles/span-badge.style";
 import { Avatar } from "@radix-ui/react-avatar";
 import { Building2, Flag, MapPin, Users2 } from "lucide-react";
 import { useCallback, useState } from "react";
-import { ReportJobDialog } from "@/features/candidature/(profile)/my-jobs/ReportJobDialog";
+import { ReportJobDialog } from "@/components/shared/ReportJobDialog";
 import { ShareJobPopover } from "@/features/Emplois/components/ShareJobPopover";
 import { cn } from "@/lib/utils";
 import type { EmploisDetails } from "@/core/interfaces";

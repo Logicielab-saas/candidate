@@ -18,7 +18,7 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { ReportJobDialog } from "../ReportJobDialog";
+import { ReportJobDialog } from "../../../../../components/shared/ReportJobDialog";
 import type { EmploiSaved } from "@/core/interfaces";
 import Link from "next/link";
 import { linkLikeButtonStyle } from "@/core/styles/links";

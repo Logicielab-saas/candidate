@@ -68,6 +68,7 @@ export function ReportJobDialog({
       reason: data.reason,
       additionalInfo: data.additionalInfo,
     };
+
     console.log("Reporting job with data:", reportData);
     reset();
     onOpenChange(false);

@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { MoreVertical, Heart, XCircle, Flag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { ReportJobDialog } from "@/features/candidature/(profile)/my-jobs/ReportJobDialog";
+import { ReportJobDialog } from "@/components/shared/ReportJobDialog";
 import { NotInterestedDialog } from "./NotInterestedDialog";
 import { useSavedJobsStore } from "../store/saved-jobs.store";
 import {
