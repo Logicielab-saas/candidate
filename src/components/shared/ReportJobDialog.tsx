@@ -1,3 +1,15 @@
+/**
+ * ReportJobDialog - A dialog component for reporting inappropriate job listings
+ *
+ * Allows users to report jobs with a specific reason and additional information.
+ * Uses form validation with zod and integrates with the reporting API.
+ *
+ * Props:
+ * - open: boolean - Controls dialog visibility
+ * - jobId: string - UUID of the job being reported
+ * - onOpenChange: (open: boolean) => void - Handler for dialog open state changes
+ */
+
 "use client";
 
 import {
@@ -11,15 +23,10 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  useForm,
-  SubmitHandler,
-  FieldValues,
-  Controller,
-} from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/hooks/use-toast";
+import { useReportEmploi } from "@/hooks/use-report-emplois";
 
 const reportReasons = [
   "Offre offensante ou discriminatoire",
@@ -34,18 +41,20 @@ const reportSchema = z.object({
   additionalInfo: z.string().max(300, "Maximum 300 caractères"),
 });
 
+type ReportFormData = z.infer<typeof reportSchema>;
+
 interface ReportJobDialogProps {
   open: boolean;
   jobId: string;
   onOpenChange: (open: boolean) => void;
 }
 
-export function ReportJobDialog({
+export default function ReportJobDialog({
   open,
   jobId,
   onOpenChange,
 }: ReportJobDialogProps) {
-  const { toast } = useToast();
+  const { mutate: reportJob, isPending } = useReportEmploi();
 
   const {
     control,
@@ -54,7 +63,7 @@ export function ReportJobDialog({
     formState: { errors },
     reset,
     watch,
-  } = useForm({
+  } = useForm<ReportFormData>({
     resolver: zodResolver(reportSchema),
     defaultValues: {
       reason: "",
@@ -62,21 +71,15 @@ export function ReportJobDialog({
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const reportData = {
-      jobId,
+  const onSubmit: SubmitHandler<ReportFormData> = (data) => {
+    reportJob({
+      emploi_uuid: jobId,
       reason: data.reason,
-      additionalInfo: data.additionalInfo,
-    };
+      message: data.additionalInfo,
+    });
 
-    console.log("Reporting job with data:", reportData);
     reset();
     onOpenChange(false);
-    toast({
-      variant: "success",
-      title: "Offre signalée",
-      description: "Merci pour votre contribution à la communauté.",
-    });
   };
 
   return (
@@ -122,6 +125,11 @@ export function ReportJobDialog({
             maxLength={300}
             {...register("additionalInfo")}
           />
+          {errors.additionalInfo && (
+            <span className="text-red-500">
+              {errors.additionalInfo.message}
+            </span>
+          )}
           <div className="flex justify-end mt-4">
             <Button
               type="button"
@@ -133,8 +141,12 @@ export function ReportJobDialog({
             >
               Annuler
             </Button>
-            <Button className="ml-2" type="submit" disabled={!watch("reason")}>
-              Envoyer
+            <Button
+              className="ml-2"
+              type="submit"
+              disabled={!watch("reason") || isPending}
+            >
+              {isPending ? "Envoi..." : "Envoyer"}
             </Button>
           </div>
         </form>

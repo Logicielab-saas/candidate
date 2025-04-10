@@ -12,8 +12,13 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
 import type { Job } from "@/core/types";
-import { ReportJobDialog } from "../../../../../components/shared/ReportJobDialog";
+import dynamic from "next/dynamic";
 import { useState } from "react";
+
+const ReportJobDialog = dynamic(
+  () => import("../../../../../components/shared/ReportJobDialog"),
+  { ssr: false }
+);
 
 interface ArchivedJobItemProps extends Omit<Job, "id"> {
   onUnarchive: () => void;
@@ -107,11 +112,13 @@ export function ArchivedJobItem({
         </div>
       </div>
       <Separator />
-      <ReportJobDialog
-        open={isReportDialogOpen}
-        onOpenChange={setIsReportDialogOpen}
-        jobId={jobId}
-      />
+      {isReportDialogOpen && (
+        <ReportJobDialog
+          open={isReportDialogOpen}
+          onOpenChange={setIsReportDialogOpen}
+          jobId={jobId}
+        />
+      )}
     </motion.div>
   );
 }

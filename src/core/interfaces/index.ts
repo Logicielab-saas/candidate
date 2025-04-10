@@ -35,3 +35,4 @@ export * from "./job-apply.interface";
 export * from "./emplois-applied.interface";
 export * from "./pagination.interface";
 export * from "./emploi-saved.interface";
+export * from "./emploi-report.interface";

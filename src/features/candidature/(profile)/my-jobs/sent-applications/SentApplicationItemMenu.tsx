@@ -36,10 +36,7 @@ const RemoveApplyEmploi = dynamic(
 );
 
 const ReportJobDialog = dynamic(
-  () =>
-    import("../../../../../components/shared/ReportJobDialog").then(
-      (mod) => mod.ReportJobDialog
-    ),
+  () => import("../../../../../components/shared/ReportJobDialog"),
   {
     ssr: false,
   }
