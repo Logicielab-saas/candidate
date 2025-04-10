@@ -8,9 +8,13 @@
 import {
   useSaveEmplois,
   useCancelSaveEmplois,
+  SAVED_EMPLOIS_QUERY_KEY,
 } from "@/features/candidature/(profile)/my-jobs/hooks/use-my-saved-jobs";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useSavedJobsStore } from "@/features/Emplois/store/saved-jobs.store";
+import { useQueryClient } from "@tanstack/react-query";
+import { EMPLOIS_QUERY_KEY } from "@/features/Emplois/hooks/use-emplois";
 
 interface UseJobBookmarkProps {
   initialIsSaved: boolean;
@@ -49,10 +53,44 @@ export function useJobBookmark({
   const [isSaved, setIsSaved] = useState(initialIsSaved);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // Global saved jobs store
+  const { saveJob, removeSavedJob } = useSavedJobsStore();
+  const queryClient = useQueryClient();
+
+  // Update local state when initialIsSaved changes
+  useEffect(() => {
+    setIsSaved(initialIsSaved);
+  }, [initialIsSaved, jobId]);
+
   // Hooks for API operations
-  const { mutate: saveJob, isPending: isSaving } = useSaveEmplois();
-  const { mutate: unsaveJob, isPending: isUnsaving } = useCancelSaveEmplois();
+  const { mutate: saveJobMutation, isPending: isSaving } = useSaveEmplois();
+  const { mutate: unsaveJobMutation, isPending: isUnsaving } =
+    useCancelSaveEmplois();
   const { toast } = useToast();
+
+  /**
+   * Invalidate all relevant queries
+   */
+  const invalidateQueries = useCallback(async () => {
+    await Promise.all([
+      // Invalidate all emplois list queries
+      queryClient.invalidateQueries({
+        queryKey: EMPLOIS_QUERY_KEY,
+        refetchType: "all",
+      }),
+      // Invalidate saved emplois queries
+      queryClient.invalidateQueries({
+        queryKey: SAVED_EMPLOIS_QUERY_KEY,
+        refetchType: "all",
+      }),
+      // Invalidate individual job queries
+      queryClient.invalidateQueries({
+        queryKey: EMPLOIS_QUERY_KEY,
+        type: "all",
+        exact: false,
+      }),
+    ]);
+  }, [queryClient]);
 
   /**
    * Handle saving a job
@@ -64,19 +102,23 @@ export function useJobBookmark({
 
     try {
       await new Promise<void>((resolve, reject) => {
-        saveJob(jobId, {
-          onSuccess: () => {
+        saveJobMutation(jobId, {
+          onSuccess: async () => {
             setIsSaved(true);
+            saveJob(jobId); // Update global store
+            await invalidateQueries();
             if (onSaveSuccess) onSaveSuccess();
             resolve();
           },
-          onError: (error) => {
+          onError: async (error) => {
             // If already saved, we still want to set the state correctly
             if (
               (error.response?.data as { message: string })?.message ===
               "You have already saved to this emploi"
             ) {
               setIsSaved(true);
+              saveJob(jobId); // Update global store
+              await invalidateQueries();
               if (onSaveSuccess) onSaveSuccess();
               resolve();
             } else {
@@ -94,7 +136,17 @@ export function useJobBookmark({
     } finally {
       setIsProcessing(false);
     }
-  }, [jobId, isProcessing, isSaved, saveJob, toast, jobTitle, onSaveSuccess]);
+  }, [
+    jobId,
+    isProcessing,
+    isSaved,
+    saveJobMutation,
+    toast,
+    jobTitle,
+    onSaveSuccess,
+    saveJob,
+    invalidateQueries,
+  ]);
 
   /**
    * Handle unsaving a job
@@ -106,9 +158,11 @@ export function useJobBookmark({
 
     try {
       await new Promise<void>((resolve, reject) => {
-        unsaveJob(jobId, {
-          onSuccess: () => {
+        unsaveJobMutation(jobId, {
+          onSuccess: async () => {
             setIsSaved(false);
+            removeSavedJob(jobId); // Update global store
+            await invalidateQueries();
             if (onUnsaveSuccess) onUnsaveSuccess();
             resolve();
           },
@@ -130,10 +184,12 @@ export function useJobBookmark({
     jobId,
     isProcessing,
     isSaved,
-    unsaveJob,
+    unsaveJobMutation,
     toast,
     jobTitle,
     onUnsaveSuccess,
+    removeSavedJob,
+    invalidateQueries,
   ]);
 
   /**

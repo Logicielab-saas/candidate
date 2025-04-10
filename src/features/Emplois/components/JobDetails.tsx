@@ -34,9 +34,17 @@ import LoaderOne from "@/components/ui/loader-one";
 import { Badge } from "@/components/ui/badge";
 import { ShareJobPopover } from "./ShareJobPopover";
 import { JobBookmarkButton } from "@/components/shared/JobBookmarkButton";
+import { useState } from "react";
+import dynamic from "next/dynamic";
+
+const ReportJobDialog = dynamic(
+  () => import("@/components/shared/ReportJobDialog"),
+  { ssr: false }
+);
 
 export function JobDetails() {
   const [selectedJobSlug] = useQueryState("job");
+  const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
 
   // Fetch job details
   const { data: job, isLoading } = useEmploisBySlug(selectedJobSlug);
@@ -147,7 +155,7 @@ export function JobDetails() {
                         "h-9 w-9 flex items-center justify-center cursor-pointer",
                         "text-destructive hover:bg-accent rounded-full"
                       )}
-                      // onClick={() => setIsSignalerOpen(true)}
+                      onClick={() => setIsReportDialogOpen(true)}
                     >
                       <Flag className="h-6 w-6" />
                     </span>
@@ -290,6 +298,13 @@ export function JobDetails() {
           )} */}
         </div>
       </CardContent>
+      {isReportDialogOpen && (
+        <ReportJobDialog
+          open={isReportDialogOpen}
+          onOpenChange={setIsReportDialogOpen}
+          jobId={job.uuid}
+        />
+      )}
     </Card>
   );
 }

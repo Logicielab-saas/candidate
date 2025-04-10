@@ -22,7 +22,7 @@ interface NotInterestedDialogProps {
   onConfirm: (jobId: string) => void;
 }
 
-export function NotInterestedDialog({
+export default function NotInterestedDialog({
   open,
   onOpenChange,
   jobId,

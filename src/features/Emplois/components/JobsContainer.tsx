@@ -46,7 +46,7 @@ const ResumeUpload = dynamic(
 
 export function JobsContainer() {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
-  const [, setJobId] = useQueryState("job");
+  const [_selectedJobId, _setSelectedJobId] = useQueryState("job");
   const [searchText] = useQueryState("q");
   const [selectedCity] = useQueryState("city");
   const [keywords] = useQueryState("keyword");
@@ -55,13 +55,6 @@ export function JobsContainer() {
     defaultValue: "recommended",
   });
   const addSearch = useRecentSearchesStore((state) => state.addSearch);
-
-  // Clear jobId when switching to mobile
-  useEffect(() => {
-    if (!isDesktop) {
-      setJobId(null);
-    }
-  }, [isDesktop, setJobId]);
 
   // Track searches in Zustand store
   useEffect(() => {

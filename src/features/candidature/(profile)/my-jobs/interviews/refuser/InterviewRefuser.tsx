@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { InterviewTypeDetails } from "@/components/shared/InterviewTypeDetails";
+import { useRouter } from "next/navigation";
 
 // Define Zod schema for form validation
 const formSchema = z.object({
@@ -39,6 +40,7 @@ export function InterviewRefuser({
   interview,
   source = "refuser",
 }: InterviewRefuserProps) {
+  const router = useRouter();
   const { toast } = useToast();
   const {
     register,
@@ -68,6 +70,7 @@ export function InterviewRefuser({
         title: "Entretien refusé",
         description: "L'entretien a été refusé avec succès",
       });
+      router.replace(`/profile/my-jobs?tab=interviews`);
     }
   };
 

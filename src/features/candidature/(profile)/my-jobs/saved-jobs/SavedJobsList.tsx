@@ -37,7 +37,7 @@ interface SavedJobsListProps {
   onPageChange: (page: number) => void;
 }
 
-export function SavedJobsList({
+export default function SavedJobsList({
   savedJobsData,
   isLoading,
   error,

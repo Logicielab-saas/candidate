@@ -1,6 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 import { CalendarIcon, ClockIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -25,7 +27,12 @@ const FixedInterviewDetails = ({
       <div className="flex items-center mb-2">
         <CalendarIcon className="h-5 w-5 text-primaryHex-500 mr-2" />
         <p className="text-md text-gray-700 dark:text-gray-300">
-          Date: <span className="font-bold">{fixedDate}</span>
+          Date:{" "}
+          <span className="font-bold">
+            {format(new Date(fixedDate || ""), "PPP", {
+              locale: fr,
+            })}
+          </span>
         </p>
       </div>
       <div className="flex items-center">
@@ -38,7 +45,7 @@ const FixedInterviewDetails = ({
       <Button className="w-full mt-4" onClick={onContinue}>
         Continue
       </Button>
-      <Button variant="outline" className="w-full mt-2">
+      <Button variant="outline" className="w-full mt-2" asChild>
         <Link href={`/interviews/reporter/${jobKey}`}>
           Suggérer nouveaux créneaux
         </Link>

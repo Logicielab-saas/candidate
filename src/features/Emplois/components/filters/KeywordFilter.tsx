@@ -3,20 +3,22 @@
  *
  * Features:
  * - Multi-select dropdown for job keywords
- * - URL state management with nuqs
- * - Synchronization with URL parameters
+ * - Debounced URL updates
+ * - Local state for smooth interaction
+ * - Memoized to prevent unnecessary re-renders
  */
 
 "use client";
 
 import { MultiSelect } from "@/components/ui/multi-select";
 import { useQueryState } from "nuqs";
-import { useState, useEffect } from "react";
+import { memo, useState, useEffect, useCallback } from "react";
 import { Tag } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useDebounce } from "use-debounce";
 
 // Available keywords data
-const KEYWORDS = [
+export const KEYWORDS = [
   { value: "javascript", label: "JavaScript" },
   { value: "react", label: "React" },
   { value: "node.js", label: "Node.js" },
@@ -33,44 +35,55 @@ const KEYWORDS = [
   value: keyword.value.toLowerCase(),
 }));
 
-export function KeywordFilter() {
+function KeywordFilterComponent() {
   // URL state management
   const [urlKeywords, setUrlKeywords] = useQueryState("keyword", {
     parse: (value) => value.split(","),
     serialize: (value) => value.join(","),
-    defaultValue: [],
   });
 
   // Local state for selected keywords
-  const [selectedKeywords, setSelectedKeywords] = useState<string[]>(
+  const [localKeywords, setLocalKeywords] = useState<string[]>(
     urlKeywords || []
   );
 
-  // Sync with URL on initial load and navigation
-  useEffect(() => {
-    if (urlKeywords?.join(",") !== selectedKeywords.join(",")) {
-      setSelectedKeywords(urlKeywords || []);
-    }
-  }, [selectedKeywords, urlKeywords]);
+  // Debounced keywords
+  const [debouncedKeywords] = useDebounce(localKeywords, 1000);
 
-  // Update URL when selection changes
-  const handleValueChange = (values: string[]) => {
-    setSelectedKeywords(values);
-    setUrlKeywords(values.length ? values : null);
-  };
+  // Update URL when debounced value changes
+  useEffect(() => {
+    const currentUrlValue = urlKeywords || [];
+    if (JSON.stringify(debouncedKeywords) !== JSON.stringify(currentUrlValue)) {
+      setUrlKeywords(debouncedKeywords.length ? debouncedKeywords : null);
+    }
+  }, [debouncedKeywords, setUrlKeywords, urlKeywords]);
+
+  // Sync local state with URL params on mount and URL changes
+  useEffect(() => {
+    const urlValues = urlKeywords || [];
+    if (JSON.stringify(urlValues) !== JSON.stringify(localKeywords)) {
+      setLocalKeywords(urlValues);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlKeywords]);
+
+  // Handle value changes
+  const handleValueChange = useCallback((values: string[]) => {
+    setLocalKeywords(values);
+  }, []);
 
   return (
     <div className="relative">
       <MultiSelect
         options={KEYWORDS}
-        value={selectedKeywords}
+        value={localKeywords}
         onValueChange={handleValueChange}
         placeholder="Filter by keywords"
         modalPopover={true}
         className={cn(
           "w-[220px] bg-background pl-8",
           "border-dashed",
-          selectedKeywords.length > 0 && "border-primary"
+          localKeywords.length > 0 && "border-primary"
         )}
         contentClassName="w-[220px]"
       />
@@ -78,3 +91,5 @@ export function KeywordFilter() {
     </div>
   );
 }
+
+export const KeywordFilter = memo(KeywordFilterComponent);

@@ -2,8 +2,8 @@
  * AddSkillDialog - Dialog for adding new skills to the resume
  *
  * Features:
- * - Custom skill entry with name and level
  * - Skill selection via searchable combobox
+ * - Option to add new skills when not found
  * - Tags-style multiple skills support
  * - Form validation
  * - Loading states
@@ -19,7 +19,7 @@ import { useState } from "react";
 import { useDebounce } from "use-debounce";
 import { useCreateResumeSkill } from "../../hooks/use-resume-skill";
 import { PROFICIENCY_OPTIONS } from "../../constants/skill-proficiency";
-import { X, Check, ChevronsUpDown, LoaderPinwheel } from "lucide-react";
+import { X, Check, ChevronsUpDown, LoaderPinwheel, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   getSkillBadgeStyle,
@@ -62,19 +62,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
 interface SelectedSkill {
   uuid?: string;
   name: string;
   level: string;
-  isCustom: boolean;
 }
 
 const formSchema = z.object({
   skill_uuid: z.string().optional(),
-  resumeskill_name: z.string().optional(),
   resumeskill_level: z.string({
     required_error: "Please select a proficiency level",
   }),
@@ -102,35 +99,74 @@ export function AddSkillDialog({ open, onOpenChange }: AddSkillDialogProps) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      resumeskill_name: "",
+      skill_uuid: undefined,
       resumeskill_level: undefined,
     },
   });
 
+  function isSkillNameDuplicate(skillName: string): boolean {
+    const normalizedName = skillName.toLowerCase();
+    return selectedSkills.some(
+      (skill) => skill.name.toLowerCase() === normalizedName
+    );
+  }
+
   function onSubmit(values: FormValues) {
-    if (!values.skill_uuid && !values.resumeskill_name) {
+    if (!values.skill_uuid) return;
+
+    // Add to selected skills
+    const skillToAdd = skills?.find((s) => s.uuid === values.skill_uuid);
+    if (!skillToAdd) return;
+
+    // Check for duplicates
+    if (isSkillNameDuplicate(skillToAdd.name)) {
+      form.setError("skill_uuid", {
+        type: "manual",
+        message: "This skill has already been added",
+      });
       return;
     }
 
-    // Add to selected skills
     setSelectedSkills((prev) => [
       ...prev,
       {
         uuid: values.skill_uuid,
-        name: values.skill_uuid
-          ? skills?.find((s) => s.uuid === values.skill_uuid)?.name || ""
-          : values.resumeskill_name || "",
+        name: skillToAdd.name,
         level: values.resumeskill_level,
-        isCustom: !values.skill_uuid,
       },
     ]);
 
     // Reset form
     form.reset({
       skill_uuid: undefined,
-      resumeskill_name: "",
       resumeskill_level: values.resumeskill_level, // Keep the same level for convenience
     });
+  }
+
+  function handleAddNewSkill() {
+    if (!search.trim()) return;
+
+    const newSkillName = search.trim();
+
+    // Check for duplicates
+    if (isSkillNameDuplicate(newSkillName)) {
+      form.setError("skill_uuid", {
+        type: "manual",
+        message: "This skill has already been added",
+      });
+      return;
+    }
+
+    setSelectedSkills((prev) => [
+      ...prev,
+      {
+        name: newSkillName,
+        level: form.getValues("resumeskill_level") || "1",
+      },
+    ]);
+
+    setSearch("");
+    setCommandOpen(false);
   }
 
   function handleSave() {
@@ -138,7 +174,7 @@ export function AddSkillDialog({ open, onOpenChange }: AddSkillDialogProps) {
       {
         resume_skills: selectedSkills.map((skill) => ({
           skill_uuid: skill.uuid || null,
-          resumeskill_name: skill.isCustom ? skill.name : null,
+          resumeskill_name: !skill.uuid ? skill.name : null,
           resumeskill_level: skill.level || null,
         })),
       },
@@ -161,8 +197,8 @@ export function AddSkillDialog({ open, onOpenChange }: AddSkillDialogProps) {
         <DialogHeader>
           <DialogTitle>Add Skills</DialogTitle>
           <DialogDescription>
-            Add new skills to your profile. You can either select from existing
-            skills or enter custom ones.
+            Add new skills to your profile. Search for existing skills or add
+            new ones if not found.
           </DialogDescription>
         </DialogHeader>
 
@@ -203,104 +239,91 @@ export function AddSkillDialog({ open, onOpenChange }: AddSkillDialogProps) {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="flex gap-4">
-              <FormField
-                control={form.control}
-                name="skill_uuid"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Select Skill</FormLabel>
-                    <Popover open={commandOpen} onOpenChange={setCommandOpen}>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            aria-expanded={commandOpen}
-                            className={cn(
-                              "w-full justify-between",
-                              !field.value && "text-muted-foreground"
-                            )}
-                            disabled={isPending}
-                          >
-                            {skills?.find((s) => s.uuid === field.value)
-                              ?.name ?? "Select skill..."}
+            <FormField
+              control={form.control}
+              name="skill_uuid"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Select Skill</FormLabel>
+                  <Popover open={commandOpen} onOpenChange={setCommandOpen}>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={commandOpen}
+                          className={cn(
+                            "w-full justify-between",
+                            !field.value && "text-muted-foreground"
+                          )}
+                          disabled={isPending}
+                        >
+                          {skills?.find((s) => s.uuid === field.value)?.name ??
+                            "Select skill..."}
+                          {isLoading ? (
+                            <LoaderPinwheel className="ml-2 h-4 w-4 shrink-0 opacity-50 animate-spin" />
+                          ) : (
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          )}
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                      <Command shouldFilter={false}>
+                        <CommandInput
+                          placeholder="Search skills..."
+                          value={search}
+                          onValueChange={setSearch}
+                        />
+                        <CommandList>
+                          <CommandEmpty className="py-6 text-center">
                             {isLoading ? (
-                              <LoaderPinwheel className="ml-2 h-4 w-4 shrink-0 opacity-50 animate-spin" />
+                              "Searching..."
                             ) : (
-                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              <Button
+                                variant="ghost"
+                                className="w-full justify-center gap-2"
+                                onClick={handleAddNewSkill}
+                              >
+                                <Plus className="h-4 w-4" />
+                                Add
+                                <span className="font-bold text-primary">
+                                  &quot;{search}&quot;{" "}
+                                </span>
+                                as a new skill
+                              </Button>
                             )}
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-                        <Command shouldFilter={false}>
-                          <CommandInput
-                            placeholder="Search skills..."
-                            value={search}
-                            onValueChange={setSearch}
-                          />
-                          <CommandList>
-                            <CommandEmpty>
-                              {isLoading ? "Searching..." : "No skills found."}
-                            </CommandEmpty>
-                            <CommandGroup>
-                              {skills?.map((s) => (
-                                <CommandItem
-                                  key={s.uuid}
-                                  value={s.uuid}
-                                  onSelect={(value) => {
-                                    form.setValue("skill_uuid", value);
-                                    form.setValue(
-                                      "resumeskill_name",
-                                      undefined
-                                    );
-                                    setCommandOpen(false);
-                                  }}
-                                >
-                                  <Check
-                                    className={cn(
-                                      "mr-2 h-4 w-4",
-                                      field.value === s.uuid
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    )}
-                                  />
-                                  {s.name}
-                                </CommandItem>
-                              ))}
-                            </CommandGroup>
-                          </CommandList>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="resumeskill_name"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Custom Skill</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter custom skill..."
-                        {...field}
-                        disabled={isPending}
-                        onChange={(e) => {
-                          field.onChange(e);
-                          form.setValue("skill_uuid", undefined);
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                          </CommandEmpty>
+                          <CommandGroup>
+                            {skills?.map((s) => (
+                              <CommandItem
+                                key={s.uuid}
+                                value={s.uuid}
+                                onSelect={(value) => {
+                                  form.setValue("skill_uuid", value);
+                                  setCommandOpen(false);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    field.value === s.uuid
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {s.name}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}
@@ -337,11 +360,8 @@ export function AddSkillDialog({ open, onOpenChange }: AddSkillDialogProps) {
             <div className="flex justify-between items-center pt-4">
               <Button
                 type="submit"
-                variant="outline"
-                disabled={
-                  isPending ||
-                  (!form.watch("skill_uuid") && !form.watch("resumeskill_name"))
-                }
+                className="text-white bg-primaryHex-600 hover:bg-primary/90"
+                disabled={isPending || !form.watch("skill_uuid")}
               >
                 Add to List
               </Button>

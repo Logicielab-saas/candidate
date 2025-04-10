@@ -1,3 +1,17 @@
+/**
+ * ArchivedJobItem - Individual archived job item component
+ *
+ * Displays information about an archived job and provides
+ * functionality to unarchive it or report it.
+ *
+ * Props:
+ * - jobId: Unique identifier for the job
+ * - jobTitle: Title of the job
+ * - company: Company information object
+ * - location: Job location
+ * - savedDate: Date when the job was archived
+ * - onUnarchive: Callback function to unarchive the job
+ */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -11,14 +25,23 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
-import type { Job } from "@/core/types";
-import { ReportJobDialog } from "../ReportJobDialog";
+import dynamic from "next/dynamic";
 import { useState } from "react";
+import { useUnarchiveJob } from "../hooks/use-my-archived-jobs";
 
-interface ArchivedJobItemProps extends Omit<Job, "id"> {
-  onUnarchive: () => void;
-  savedDate: string;
+const ReportJobDialog = dynamic(
+  () => import("@/components/shared/ReportJobDialog"),
+  { ssr: false }
+);
+
+interface ArchivedJobItemProps {
   jobId: string;
+  jobTitle: string;
+  company: {
+    name: string;
+  };
+  location: string;
+  savedDate: string;
 }
 
 const getCompanyInitials = (name: string) => {
@@ -31,20 +54,15 @@ const getCompanyInitials = (name: string) => {
 };
 
 export function ArchivedJobItem({
+  jobId,
   jobTitle,
   company,
   location,
   savedDate,
-  jobUrl,
-  onUnarchive,
-  jobId,
 }: ArchivedJobItemProps) {
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
+  const { mutate: unarchiveJob, isPending: isUnarchiving } = useUnarchiveJob();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleReport = (reason: string, additionalInfo: string) => {
-    // TODO: Implement the logic to handle the report
-  };
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -61,14 +79,7 @@ export function ArchivedJobItem({
                 {getCompanyInitials(company.name)}
               </AvatarFallback>
             </Avatar>
-            <a
-              href={jobUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium hover:underline"
-            >
-              {jobTitle}
-            </a>
+            <span className="font-medium">{jobTitle}</span>
           </div>
           <div className="space-y-1 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
@@ -86,8 +97,12 @@ export function ArchivedJobItem({
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button onClick={onUnarchive} size="sm">
-            Désarchiver
+          <Button
+            onClick={() => unarchiveJob(jobId)}
+            size="sm"
+            disabled={isUnarchiving}
+          >
+            {isUnarchiving ? "Désarchivage..." : "Désarchiver"}
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -107,11 +122,13 @@ export function ArchivedJobItem({
         </div>
       </div>
       <Separator />
-      <ReportJobDialog
-        open={isReportDialogOpen}
-        onOpenChange={setIsReportDialogOpen}
-        jobId={jobId}
-      />
+      {isReportDialogOpen && (
+        <ReportJobDialog
+          open={isReportDialogOpen}
+          onOpenChange={setIsReportDialogOpen}
+          jobId={jobId}
+        />
+      )}
     </motion.div>
   );
 }

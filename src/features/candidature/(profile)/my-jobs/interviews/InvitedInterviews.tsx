@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Building2, MapPin, Calendar, Clock, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 interface InvitedInterviewsProps {
   interviews: Interview[];
@@ -16,7 +18,7 @@ export function InvitedInterviews({ interviews }: InvitedInterviewsProps) {
     <div>
       <div className="border border-primaryHex-500 p-4 rounded-lg shadow-md mb-4 relative">
         <h2 className="text-xl font-bold mb-4 relative z-10">
-          Entretiens Invités
+          Entretiens Programmés
         </h2>
         <p className="text-md mb-4">
           Ce sont les entretiens auxquels vous avez été invité.
@@ -49,7 +51,11 @@ export function InvitedInterviews({ interviews }: InvitedInterviewsProps) {
                 </div>
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Calendar className="h-4 w-4 mr-1" />
-                  <span>{interview.interviewDate}</span>
+                  <span>
+                    {format(new Date(interview.interviewDate), "PPP", {
+                      locale: fr,
+                    })}
+                  </span>
                 </div>
                 <div className="flex items-center text-sm text-gray-600 dark:text-gray-100">
                   <Clock className="h-4 w-4 mr-1" />

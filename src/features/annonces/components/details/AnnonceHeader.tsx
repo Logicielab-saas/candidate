@@ -4,10 +4,15 @@ import { spanBadgeStyle } from "@/core/styles/span-badge.style";
 import { Avatar } from "@radix-ui/react-avatar";
 import { Building2, Flag, MapPin, Users2 } from "lucide-react";
 import { useCallback, useState } from "react";
-import { ReportJobDialog } from "@/features/candidature/(profile)/my-jobs/ReportJobDialog";
+import dynamic from "next/dynamic";
 import { ShareJobPopover } from "@/features/Emplois/components/ShareJobPopover";
 import { cn } from "@/lib/utils";
 import type { EmploisDetails } from "@/core/interfaces";
+
+const ReportJobDialog = dynamic(
+  () => import("@/components/shared/ReportJobDialog"),
+  { ssr: false }
+);
 
 interface AnnonceHeaderProps {
   annonce: EmploisDetails;
@@ -84,11 +89,13 @@ export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
             </div>
           </div>
 
-          <ReportJobDialog
-            open={openReportDialog}
-            onOpenChange={setOpenReportDialog}
-            jobId={annonce.uuid}
-          />
+          {openReportDialog && (
+            <ReportJobDialog
+              open={openReportDialog}
+              onOpenChange={setOpenReportDialog}
+              jobId={annonce.uuid}
+            />
+          )}
 
           {/* Tags */}
           {annonce.emploi_contracts.length > 0 && (

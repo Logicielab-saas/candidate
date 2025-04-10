@@ -8,7 +8,8 @@
  */
 
 import { Progress } from "@/components/ui/progress";
-import { Eye, Star } from "lucide-react";
+import { ArrowLeft, Eye, Star } from "lucide-react";
+import Link from "next/link";
 
 interface CourseHeaderProps {
   title: string;
@@ -16,6 +17,7 @@ interface CourseHeaderProps {
   viewersNum: number;
   progress?: number;
   description: string;
+  courseId: string;
 }
 
 export function CourseHeader({
@@ -24,6 +26,7 @@ export function CourseHeader({
   viewersNum,
   progress,
   description,
+  courseId,
 }: CourseHeaderProps) {
   if (progress === undefined) {
     progress = 0;
@@ -31,6 +34,15 @@ export function CourseHeader({
 
   return (
     <div className="space-y-6">
+      <div className="flex items-center mt-2">
+        <Link
+          href={`/formations/formation-details/${courseId}`}
+          className="flex items-center gap-1 hover:underline bg-accent p-2 rounded-md hover:bg-accent/70"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Retour</span>
+        </Link>
+      </div>
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{title}</h1>
         <div className="flex items-center gap-4 text-sm text-muted-foreground">

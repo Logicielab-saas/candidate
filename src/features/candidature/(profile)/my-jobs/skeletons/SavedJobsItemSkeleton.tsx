@@ -9,8 +9,13 @@
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
+import { MoreVertical } from "lucide-react";
 
-export function SavedJobsItemSkeleton() {
+export function SavedJobsItemSkeleton({
+  source = "saved",
+}: {
+  source?: string;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -42,8 +47,8 @@ export function SavedJobsItemSkeleton() {
 
         <div className="flex items-center gap-2">
           <Skeleton className="h-9 w-20" />
-          <Skeleton className="h-9 w-9 rounded-md" />
-          <Skeleton className="h-9 w-9 rounded-md" />
+          {source === "saved" && <Skeleton className="h-9 w-9 rounded-md" />}
+          <MoreVertical className="h-5 w-5 opacity-50 animate-pulse" />
         </div>
       </div>
       <Separator />

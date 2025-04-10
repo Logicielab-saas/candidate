@@ -19,6 +19,11 @@ export interface UpdateFilesDTO extends CreateFilesDTO {
 
 export type FilesDTO = FormData;
 
+export async function fetchResumeFiles() {
+  const response = await api.get<FilesResponse>(endpoint);
+  return response.data;
+}
+
 export async function handleResumeFiles(data: FilesDTO) {
   try {
     const response = await api.post<FilesResponse>(endpoint, data, {
@@ -36,6 +41,23 @@ export async function handleResumeFiles(data: FilesDTO) {
   }
 }
 
+export async function updateResumeFiles(data: UpdateFilesDTO) {
+  try {
+    const response = await api.post<FilesResponse>(`${endpoint}/update`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      const apiError = error.response?.data as ApiError;
+      throw new Error(apiError?.message || "Failed to update files");
+    }
+    throw error;
+  }
+}
+
 export async function deleteResumeFiles(uuid: string) {
   try {
     await api.delete(`${endpoint}/${uuid}`);
@@ -46,9 +68,4 @@ export async function deleteResumeFiles(uuid: string) {
     }
     throw error;
   }
-}
-
-export async function fetchResumeFiles() {
-  const response = await api.get<FilesResponse>(endpoint);
-  return response.data;
 }

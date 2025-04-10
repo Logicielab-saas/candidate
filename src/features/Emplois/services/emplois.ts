@@ -2,6 +2,7 @@ import { ApiError } from "next/dist/server/api-utils";
 import api from "@/lib/axios";
 import { AxiosError } from "axios";
 import type { Emplois, EmploisDetails, Pagination } from "@/core/interfaces";
+import { hasAccessToken } from "@/lib/check-access-token";
 
 export interface EmploisResponse {
   message: string;
@@ -13,8 +14,9 @@ export interface EmploisDetailsResponse {
   message: string;
   emploi: EmploisDetails;
 }
+const isAuthenticated = hasAccessToken();
 
-const endpoint = "/employee/emplois";
+const endpoint = isAuthenticated ? "/employee/emplois" : "/emplois";
 
 export async function fetchEmplois(page: number = 1, per_page: number = 10) {
   try {
@@ -39,5 +41,13 @@ export async function fetchEmplois(page: number = 1, per_page: number = 10) {
 
 export async function fetchEmploisBySlug(slug: string) {
   const response = await api.get<EmploisDetailsResponse>(`${endpoint}/${slug}`);
+  return response.data;
+}
+
+// TODO: Implement this FUNCTIONALITY NO APP TOMORROW (FRIDAY)
+export async function getSuggestions(query: string) {
+  const response = await api.get<EmploisResponse>(`${endpoint}/suggestions`, {
+    params: { query },
+  });
   return response.data;
 }

@@ -43,23 +43,31 @@ export default function TimeLineListItem({
     let endDate = "";
     let isCurrent = false;
 
+    // Handle work experience and education dates
     if ("date_start" in data && data.date_start) {
       startDate = formatDate(data.date_start);
-      if ("current_time" in data && data.current_time) {
-        isCurrent = data.current_time;
-        endDate = data.date_end ? formatDate(data.date_end) : "";
-      } else if ("is_current" in data && data.is_current) {
-        isCurrent = data.is_current;
-        endDate = data.date_end ? formatDate(data.date_end) : "";
-      }
-    } else if ("issueDate" in data && data.issueDate) {
-      startDate = data.issueDate as string;
-    }
 
-    if ("date" in data && data.date)
+      // Check for work experience
+      if ("current_time" in data) {
+        isCurrent = data.current_time;
+      }
+      // Check for education
+      else if ("is_current" in data) {
+        isCurrent = data.is_current;
+      }
+
+      // Set end date if it exists and not current
+      if (data.date_end && !isCurrent) {
+        endDate = formatDate(data.date_end);
+      }
+    }
+    // Handle certifications
+    else if ("date" in data && data.date) {
       startDate = formatDate(data.date as string);
-    if ("expiration_date" in data && data.expiration_date)
-      endDate = formatDate(data.expiration_date as string);
+      if ("expiration_date" in data && data.expiration_date) {
+        endDate = formatDate(data.expiration_date as string);
+      }
+    }
 
     if (isCurrent) return `${startDate} - Present`;
     if (endDate) return `${startDate} - ${endDate}`;

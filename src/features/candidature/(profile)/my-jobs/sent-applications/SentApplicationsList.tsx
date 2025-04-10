@@ -38,7 +38,7 @@ interface SentApplicationsListProps {
   onPageChange: (page: number) => void;
 }
 
-export function SentApplicationsList({
+export default function SentApplicationsList({
   sentApplicationsData,
   isLoading,
   error,

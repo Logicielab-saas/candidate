@@ -18,6 +18,7 @@ import { fr } from "date-fns/locale";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { InterviewTypeDetails } from "@/components/shared/InterviewTypeDetails";
+import { useRouter } from "next/navigation";
 
 interface InterviewReporterProps {
   interview: Interview | undefined;
@@ -58,6 +59,7 @@ function getWeekTitle(days: { date: Date }[]): string {
 }
 
 export function InterviewReporter({ interview }: InterviewReporterProps) {
+  const router = useRouter();
   const { toast } = useToast();
   const {
     control,
@@ -91,6 +93,7 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
       title: "Disponibilités envoyées",
       description: "Vos disponibilités ont été envoyées avec succès",
     });
+    router.replace(`/profile/my-jobs?tab=interviews`);
   }
 
   return (
@@ -207,6 +210,14 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
 
       <Button type="submit" className="w-full">
         Continuer
+      </Button>
+      <Button
+        variant="outline"
+        className="w-full mt-2"
+        type="button"
+        onClick={() => router.back()}
+      >
+        Retour
       </Button>
     </form>
   );

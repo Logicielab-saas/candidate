@@ -2,11 +2,9 @@
  * AdvancedFiltersDrawer - Advanced filtering options in a drawer
  *
  * Features:
- * - Multiple filter categories
- * - Salary range filter
- * - Experience level filter
- * - Remote work options
- * - Industry sectors
+ * - Multiple filter categories with memoized components
+ * - Local state management for smooth interactions
+ * - Batch updates to URL parameters
  */
 
 "use client";
@@ -22,36 +20,19 @@ import {
   SheetFooter,
 } from "@/components/ui/sheet";
 import { Settings2 } from "lucide-react";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Slider } from "@/components/ui/slider";
-import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
-import { useState } from "react";
-
-// Filter options
-const EXPERIENCE_LEVELS = [
-  { value: "entry", label: "Entry Level (0-2 years)" },
-  { value: "mid", label: "Mid Level (3-5 years)" },
-  { value: "senior", label: "Senior Level (5+ years)" },
-  { value: "lead", label: "Lead/Manager (8+ years)" },
-] as const;
-
-const INDUSTRIES = [
-  { value: "tech", label: "Technology" },
-  { value: "finance", label: "Finance" },
-  { value: "healthcare", label: "Healthcare" },
-  { value: "education", label: "Education" },
-  { value: "retail", label: "Retail" },
-  { value: "manufacturing", label: "Manufacturing" },
-] as const;
-
-// Default values
-const DEFAULT_MIN_SALARY = 30;
-const DEFAULT_MAX_SALARY = 150;
+import { useState, useEffect } from "react";
+import {
+  SalaryRangeFilter,
+  DEFAULT_MIN_SALARY,
+  DEFAULT_MAX_SALARY,
+} from "./filters/SalaryRangeFilter";
+import { ExperienceLevelFilter } from "./filters/ExperienceLevelFilter";
+import { IndustryFilter } from "./filters/IndustryFilter";
+import { RemoteWorkFilter } from "./filters/RemoteWorkFilter";
 
 export function AdvancedFiltersDrawer() {
   const [isOpen, setIsOpen] = useState(false);
@@ -67,10 +48,27 @@ export function AdvancedFiltersDrawer() {
     defaultValue: `${DEFAULT_MIN_SALARY},${DEFAULT_MAX_SALARY}`,
   });
 
-  // Parse salary range from URL
-  const parsedSalaryRange = salaryRange
-    ? salaryRange.split(",").map(Number)
-    : [DEFAULT_MIN_SALARY, DEFAULT_MAX_SALARY];
+  // Local state for form values
+  const [localExperience, setLocalExperience] = useState(experience || "");
+  const [localIndustry, setLocalIndustry] = useState(industry || "");
+  const [localIsRemote, setLocalIsRemote] = useState(isRemote || false);
+  const [localSalaryRange, setLocalSalaryRange] = useState<number[]>(
+    salaryRange
+      ? salaryRange.split(",").map(Number)
+      : [DEFAULT_MIN_SALARY, DEFAULT_MAX_SALARY]
+  );
+
+  // Sync local state with URL params on initial load
+  useEffect(() => {
+    setLocalExperience(experience || "");
+    setLocalIndustry(industry || "");
+    setLocalIsRemote(isRemote || false);
+    setLocalSalaryRange(
+      salaryRange
+        ? salaryRange.split(",").map(Number)
+        : [DEFAULT_MIN_SALARY, DEFAULT_MAX_SALARY]
+    );
+  }, [experience, industry, isRemote, salaryRange]);
 
   // Count active filters
   const activeFiltersCount = [
@@ -78,16 +76,36 @@ export function AdvancedFiltersDrawer() {
     industry,
     isRemote,
     salaryRange &&
-      (parsedSalaryRange[0] !== DEFAULT_MIN_SALARY ||
-        parsedSalaryRange[1] !== DEFAULT_MAX_SALARY),
+      (localSalaryRange[0] !== DEFAULT_MIN_SALARY ||
+        localSalaryRange[1] !== DEFAULT_MAX_SALARY),
   ].filter(Boolean).length;
 
   // Reset all filters
   const handleReset = () => {
+    setLocalExperience("");
+    setLocalIndustry("");
+    setLocalIsRemote(false);
+    setLocalSalaryRange([DEFAULT_MIN_SALARY, DEFAULT_MAX_SALARY]);
+
+    // Reset URL params
     setExperience(null);
     setIndustry(null);
     setIsRemote(null);
     setSalaryRange(null);
+  };
+
+  // Apply filters
+  const handleApply = () => {
+    setExperience(localExperience || null);
+    setIndustry(localIndustry || null);
+    setIsRemote(localIsRemote || null);
+    setSalaryRange(
+      localSalaryRange[0] === DEFAULT_MIN_SALARY &&
+        localSalaryRange[1] === DEFAULT_MAX_SALARY
+        ? null
+        : localSalaryRange.join(",")
+    );
+    setIsOpen(false);
   };
 
   return (
@@ -125,64 +143,28 @@ export function AdvancedFiltersDrawer() {
 
         <div className="mt-6 sm:mt-8 space-y-6 sm:space-y-8">
           {/* Salary Range */}
-          <div className="space-y-4">
-            <Label>Salary Range (K€/year)</Label>
-            <Slider
-              min={DEFAULT_MIN_SALARY}
-              max={DEFAULT_MAX_SALARY}
-              step={5}
-              value={parsedSalaryRange}
-              onValueChange={(value) => setSalaryRange(value.join(","))}
-              className="w-full"
-            />
-            <div className="flex items-center justify-between text-sm text-muted-foreground">
-              <span>{parsedSalaryRange[0]}K€</span>
-              <span>{parsedSalaryRange[1]}K€</span>
-            </div>
-          </div>
+          <SalaryRangeFilter
+            value={localSalaryRange}
+            onChange={setLocalSalaryRange}
+          />
 
           <Separator />
 
           {/* Experience Level */}
-          <div className="space-y-4">
-            <Label>Experience Level</Label>
-            <RadioGroup value={experience || ""} onValueChange={setExperience}>
-              {EXPERIENCE_LEVELS.map((level) => (
-                <div key={level.value} className="flex items-center space-x-2">
-                  <RadioGroupItem value={level.value} id={level.value} />
-                  <Label htmlFor={level.value}>{level.label}</Label>
-                </div>
-              ))}
-            </RadioGroup>
-          </div>
+          <ExperienceLevelFilter
+            value={localExperience}
+            onChange={setLocalExperience}
+          />
 
           <Separator />
 
           {/* Remote Work */}
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label>Remote Work</Label>
-              <p className="text-sm text-muted-foreground">
-                Show only remote positions
-              </p>
-            </div>
-            <Switch checked={isRemote || false} onCheckedChange={setIsRemote} />
-          </div>
+          <RemoteWorkFilter value={localIsRemote} onChange={setLocalIsRemote} />
 
           <Separator />
 
           {/* Industry */}
-          <div className="space-y-4">
-            <Label>Industry</Label>
-            <RadioGroup value={industry || ""} onValueChange={setIndustry}>
-              {INDUSTRIES.map((ind) => (
-                <div key={ind.value} className="flex items-center space-x-2">
-                  <RadioGroupItem value={ind.value} id={ind.value} />
-                  <Label htmlFor={ind.value}>{ind.label}</Label>
-                </div>
-              ))}
-            </RadioGroup>
-          </div>
+          <IndustryFilter value={localIndustry} onChange={setLocalIndustry} />
         </div>
 
         <SheetFooter className="flex-row gap-2 mt-6 sm:mt-8">
@@ -193,10 +175,7 @@ export function AdvancedFiltersDrawer() {
           >
             Reset Filters
           </Button>
-          <Button
-            onClick={() => setIsOpen(false)}
-            className="flex-1 sm:flex-none"
-          >
+          <Button onClick={handleApply} className="flex-1 sm:flex-none">
             Apply Filters
           </Button>
         </SheetFooter>

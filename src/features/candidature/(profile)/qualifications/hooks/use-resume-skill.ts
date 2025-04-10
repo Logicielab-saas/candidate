@@ -8,6 +8,7 @@ import { handleResumeSkill, deleteResumeSkill } from "../services/resume-skill";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
 import { AxiosError } from "axios";
+import { SKILLS_QUERY_KEY } from "@/hooks/use-skills";
 
 export function useCreateResumeSkill() {
   const queryClient = useQueryClient();
@@ -16,9 +17,14 @@ export function useCreateResumeSkill() {
   const { mutate, isPending } = useMutation({
     mutationFn: handleResumeSkill,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: PROFILE_RESUME_QUERY_KEY,
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: PROFILE_RESUME_QUERY_KEY,
+        }),
+        queryClient.invalidateQueries({
+          queryKey: SKILLS_QUERY_KEY,
+        }),
+      ]);
 
       toast({
         variant: "success",

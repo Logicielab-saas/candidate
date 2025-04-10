@@ -21,6 +21,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useEffect, useState } from "react";
 
 interface JobBookmarkButtonProps {
   jobId: string;
@@ -51,22 +52,36 @@ export function JobBookmarkButton({
   onUnsaveSuccess,
   buttonStyle = "default",
 }: JobBookmarkButtonProps) {
-  const { isSaved, isProcessing, toggleSaved } = useJobBookmark({
-    initialIsSaved,
+  // Local state to track the current saved status
+  const [localIsSaved, setLocalIsSaved] = useState(initialIsSaved);
+
+  // Update local state when initialIsSaved changes
+  useEffect(() => {
+    setLocalIsSaved(initialIsSaved);
+  }, [initialIsSaved, jobId]);
+
+  const { isProcessing, toggleSaved } = useJobBookmark({
+    initialIsSaved: localIsSaved,
     jobId,
     jobTitle,
-    onSaveSuccess,
-    onUnsaveSuccess,
+    onSaveSuccess: () => {
+      setLocalIsSaved(true);
+      onSaveSuccess?.();
+    },
+    onUnsaveSuccess: () => {
+      setLocalIsSaved(false);
+      onUnsaveSuccess?.();
+    },
   });
 
-  const heartIconClasses = getHeartIconClasses(isSaved, isProcessing);
+  const heartIconClasses = getHeartIconClasses(localIsSaved, isProcessing);
 
   const actionButtonContent = (
     <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
       <span
         className={cn(
           "h-9 w-9 flex items-center justify-center cursor-pointer hover:bg-accent rounded-full",
-          isSaved && "text-primary hover:text-primary/80",
+          localIsSaved && "text-primary hover:text-primary/80",
           isProcessing && "opacity-50 cursor-not-allowed pointer-events-none",
           className
         )}
@@ -78,7 +93,9 @@ export function JobBookmarkButton({
         }}
         aria-disabled={isProcessing}
         role="button"
-        aria-label={isSaved ? "Retirer des favoris" : "Ajouter aux favoris"}
+        aria-label={
+          localIsSaved ? "Retirer des favoris" : "Ajouter aux favoris"
+        }
       >
         <Heart className={cn(heartIconClasses, iconClassName)} />
       </span>
@@ -101,7 +118,9 @@ export function JobBookmarkButton({
           toggleSaved();
         }}
         disabled={isProcessing}
-        aria-label={isSaved ? "Retirer des favoris" : "Ajouter aux favoris"}
+        aria-label={
+          localIsSaved ? "Retirer des favoris" : "Ajouter aux favoris"
+        }
       >
         <Heart className={cn(heartIconClasses, iconClassName)} />
       </Button>
@@ -120,7 +139,7 @@ export function JobBookmarkButton({
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>{content}</TooltipTrigger>
         <TooltipContent side={tooltipPosition} className="text-sm">
-          {isSaved ? "Retirer des favoris" : "Ajouter aux favoris"}
+          {localIsSaved ? "Retirer des favoris" : "Ajouter aux favoris"}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

@@ -1,10 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { CalendarIcon, ClockIcon, Pencil } from "lucide-react";
+import { CalendarIcon, ClockIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { JobHeader } from "../jobHeader";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 interface InterviewDetailsProps {
   selectedDate: string | null;
@@ -28,6 +29,7 @@ export function InterviewDetails({
   companyName,
 }: InterviewDetailsProps) {
   const { toast } = useToast();
+  const router = useRouter();
   const handleConfirm = () => {
     const data = {
       name: candidateName,
@@ -42,7 +44,10 @@ export function InterviewDetails({
       title: "Entretien programmé",
       description: "L'entretien a été programmé avec succès",
     });
+    router.replace(`/profile/my-jobs?tab=interviews`);
   };
+
+  console.log(selectedDate);
 
   return (
     <div className="space-y-4">
@@ -50,13 +55,13 @@ export function InterviewDetails({
       <Separator />
       <h2 className="text-xl font-semibold mb-2">Informations</h2>
       <div className="p-6 shadow-md rounded-lg border">
-        <p className="text-md text-gray-700">
+        <p className="text-md text-gray-700 dark:text-gray-300">
           Prénom et nom: <span className="font-bold">{candidateName}</span>
         </p>
-        <p className="text-md text-gray-700">
+        <p className="text-md text-gray-700 dark:text-gray-300">
           Adresse email: <span className="font-bold">{candidateEmail}</span>
         </p>
-        <p className="text-md text-gray-700">
+        <p className="text-md text-gray-700 dark:text-gray-300">
           Numéro de téléphone:{" "}
           <span className="font-bold">{candidatePhone}</span>
         </p>
@@ -64,12 +69,12 @@ export function InterviewDetails({
       <Separator />
       <div className="flex justify-between">
         <h2 className="text-xl font-semibold mb-2">Entretien en personne</h2>
-        <span
+        {/* <span
           onClick={onModify}
           className="text-primaryHex-600 font-bold rounded-full p-2 bg-primaryHex-100 hover:bg-primaryHex-200 cursor-pointer"
         >
           <Pencil className="w-5 h-5" />
-        </span>
+        </span> */}
       </div>
       <div className="p-6 shadow-md rounded-lg border">
         <div className="flex items-center mb-2">

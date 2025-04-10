@@ -5,6 +5,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { daysOfWeek, availableHours } from "@/core/mockData/AvailableDates";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 interface SelectAvailabilityDateProps {
   selectedDay: number;
@@ -24,6 +26,12 @@ const SelectAvailabilityDate = ({
       setSelectedHour(""); // Reset selected hour when day changes
     }
   }, [selectedDay, setSelectedHour]);
+
+  const formatDayDate = (dayNumber: number) => {
+    const today = new Date();
+    const date = new Date(today.getFullYear(), today.getMonth(), dayNumber);
+    return format(date, "d MMMM", { locale: fr });
+  };
 
   return (
     <>
@@ -47,7 +55,7 @@ const SelectAvailabilityDate = ({
             >
               <div className="p-4 flex flex-col text-center border rounded-lg text-primaryHex-600">
                 <span className="text-sm">{day.name}</span>
-                <span>{day.number} mars</span>
+                <span>{formatDayDate(day.number)}</span>
               </div>
             </Label>
           </div>

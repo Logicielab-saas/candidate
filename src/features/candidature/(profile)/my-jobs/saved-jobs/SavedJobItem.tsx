@@ -18,12 +18,17 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { ReportJobDialog } from "../ReportJobDialog";
 import type { EmploiSaved } from "@/core/interfaces";
 import Link from "next/link";
 import { linkLikeButtonStyle } from "@/core/styles/links";
 import { JobBookmarkButton } from "@/components/shared/JobBookmarkButton";
 import { format } from "date-fns";
+import dynamic from "next/dynamic";
+
+const ReportJobDialog = dynamic(
+  () => import("../../../../../components/shared/ReportJobDialog"),
+  { ssr: false }
+);
 
 interface SavedJobItemProps {
   saved: EmploiSaved;
@@ -141,11 +146,13 @@ export function SavedJobItem({ saved }: SavedJobItemProps) {
         </div>
       </div>
       <Separator />
-      <ReportJobDialog
-        open={isReportDialogOpen}
-        onOpenChange={setIsReportDialogOpen}
-        jobId={saved.emploi.slug}
-      />
+      {isReportDialogOpen && (
+        <ReportJobDialog
+          open={isReportDialogOpen}
+          onOpenChange={setIsReportDialogOpen}
+          jobId={saved.emploi.uuid}
+        />
+      )}
     </motion.div>
   );
 }

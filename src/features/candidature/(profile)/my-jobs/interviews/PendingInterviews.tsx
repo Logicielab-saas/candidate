@@ -2,6 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import type { Interview } from "@/core/interfaces/";
+import { fr } from "date-fns/locale";
+import { format } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { Building2, MapPin, Calendar, Clock, Zap } from "lucide-react";
 import Link from "next/link";
@@ -43,7 +45,11 @@ export function PendingInterviews({ interviews }: PendingInterviewsProps) {
                 </div>
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Calendar className="h-4 w-4 mr-1" />
-                  <span>{interview.interviewDate}</span>
+                  <span>
+                    {format(new Date(interview.interviewDate), "PPP", {
+                      locale: fr,
+                    })}
+                  </span>
                 </div>
                 <div className="flex items-center text-sm text-gray-600 dark:text-gray-100">
                   <Clock className="h-4 w-4 mr-1" />

@@ -70,7 +70,8 @@ export function NavBar() {
       (item) => pathname === item.url || (item.url === "/" && pathname === "/")
     )?.name || "";
 
-  const isEmplois = pathname.includes("/emplois");
+  const isNotFixed =
+    pathname.includes("/emplois") || pathname.includes("/formations/watch");
 
   // Generate user initials for avatar fallback
   const userInitials = profile
@@ -85,7 +86,7 @@ export function NavBar() {
     <header className={cn("flex h-14 items-center gap-2 px-4")}>
       <div
         className={` ${
-          isEmplois ? "absolute" : "fixed"
+          isNotFixed ? "absolute" : "fixed"
         }  top-0 left-0 right-0  z-50`}
       >
         <div className="md:px-4">

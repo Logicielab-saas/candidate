@@ -11,13 +11,22 @@ import { Button } from "@/components/ui/button";
 import { MoreVertical, Heart, XCircle, Flag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { ReportJobDialog } from "@/features/candidature/(profile)/my-jobs/ReportJobDialog";
-import { NotInterestedDialog } from "./NotInterestedDialog";
+import dynamic from "next/dynamic";
 import { useSavedJobsStore } from "../store/saved-jobs.store";
 import {
   useSaveEmplois,
   useCancelSaveEmplois,
 } from "@/features/candidature/(profile)/my-jobs/hooks/use-my-saved-jobs";
+
+const NotInterestedDialog = dynamic(() => import("./NotInterestedDialog"), {
+  ssr: false,
+});
+
+const ReportJobDialog = dynamic(
+  () => import("@/components/shared/ReportJobDialog"),
+  { ssr: false }
+);
+
 interface JobCardMenuProps {
   jobId: string;
   onNotInterested?: (jobId: string) => void;
@@ -127,18 +136,21 @@ export function JobCardMenu({ jobId, onNotInterested }: JobCardMenuProps) {
       </DropdownMenu>
 
       <div onClick={handleDialogClick}>
-        <NotInterestedDialog
-          open={isNotInterestedOpen}
-          onOpenChange={setIsNotInterestedOpen}
-          jobId={jobId}
-          onConfirm={handleNotInterested}
-        />
-
-        <ReportJobDialog
-          open={isSignalerOpen}
-          onOpenChange={setIsSignalerOpen}
-          jobId={jobId}
-        />
+        {isNotInterestedOpen && (
+          <NotInterestedDialog
+            open={isNotInterestedOpen}
+            onOpenChange={setIsNotInterestedOpen}
+            jobId={jobId}
+            onConfirm={handleNotInterested}
+          />
+        )}
+        {isSignalerOpen && (
+          <ReportJobDialog
+            open={isSignalerOpen}
+            onOpenChange={setIsSignalerOpen}
+            jobId={jobId}
+          />
+        )}
       </div>
     </>
   );
