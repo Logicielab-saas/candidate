@@ -8,6 +8,7 @@ import {
   handleResumeFiles,
   deleteResumeFiles,
   fetchResumeFiles,
+  updateResumeFiles,
 } from "../services/resume-files";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
@@ -97,7 +98,7 @@ export function useUpdateResumeFiles() {
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: handleResumeFiles,
+    mutationFn: updateResumeFiles,
     onSuccess: async () => {
       // Force refetch both queries
       await Promise.all([

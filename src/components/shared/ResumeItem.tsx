@@ -30,7 +30,9 @@ import { useToast } from "@/hooks/use-toast";
 import {
   useCreateResumeFiles,
   useDeleteResumeFiles,
+  useUpdateResumeFiles,
 } from "../../features/candidature/(profile)/qualifications/hooks/use-resume-files";
+import type { UpdateFilesDTO } from "../../features/candidature/(profile)/qualifications/services/resume-files";
 import type { ResumeFile, Files } from "@/core/interfaces";
 import { SectionHeader } from "../../features/candidature/(profile)/qualifications/SectionHeader";
 import dynamic from "next/dynamic";
@@ -73,6 +75,7 @@ export function ResumeItem({
   >(null);
   const [selectedFileUuid, setSelectedFileUuid] = useState<string | null>(null);
   const { mutate: createFile, isPending: isUploading } = useCreateResumeFiles();
+  const { mutate: updateFile, isPending: isUpdating } = useUpdateResumeFiles();
   const { isPending: isDeleting } = useDeleteResumeFiles();
 
   const handleChangeCV = () => {
@@ -112,34 +115,23 @@ export function ResumeItem({
     }
 
     try {
-      // Create FormData
-      const formData = new FormData();
-      // Append file directly with the field name 'file'
-      formData.append("file", file);
-      // If uuid is provided, this is an update operation
       if (uuid) {
+        // Update operation
+        const formData = new FormData();
+        formData.append("file", file);
         formData.append("uuid", uuid);
+        updateFile(formData as unknown as UpdateFilesDTO);
+      } else {
+        // Create operation
+        const formData = new FormData();
+        formData.append("file", file);
+        createFile(formData);
       }
-
-      createFile(formData, {
-        onSuccess: () => {
-          toast({
-            variant: "success",
-            title: uuid
-              ? "CV updated successfully"
-              : "CV uploaded successfully",
-            description: uuid
-              ? "Your CV has been updated"
-              : "Your CV has been uploaded",
-          });
-          setSelectedFileUuid(null);
-        },
-      });
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error updating CV",
-        description: "There was an error updating your CV. Please try again.",
+        title: "Error managing CV",
+        description: "There was an error managing your CV. Please try again.",
       });
       console.error(error);
     }
@@ -148,7 +140,7 @@ export function ResumeItem({
     event.target.value = "";
   };
 
-  const isLoading = isUploading || isDeleting;
+  const isLoading = isUploading || isDeleting || isUpdating;
 
   // Helper function to get file URL based on source and file type
   const getFileUrl = (file: ResumeFile | Files | ProfileFiles) => {
@@ -212,7 +204,7 @@ export function ResumeItem({
               <FileText className="h-5 w-5 text-muted-foreground" />
             </div>
             <div>
-              <p className="font-medium">{file.name}</p>
+              <p className="font-medium">{file.slug}</p>
               <p className="text-xs text-muted-foreground">{subtitle}</p>
             </div>
           </div>
