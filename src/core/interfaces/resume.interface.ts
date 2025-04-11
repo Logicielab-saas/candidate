@@ -18,6 +18,7 @@ export interface Resume {
   device_uuid: string | null;
   phone: string | null;
   image: string | null;
+  city: string | null;
   address: string | null;
   birthdate: string | null;
   IsMale: boolean | null;

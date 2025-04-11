@@ -2,7 +2,8 @@
  * ClassicCVTemplate - A classic style CV template component
  *
  * Renders a professional CV layout with a left sidebar containing personal info,
- * skills, languages and a main content area for experience and education.
+ * skills, languages and a main content area for experience, projects, education,
+ * and certifications.
  *
  * Props:
  * - primaryColor: string - Primary theme color
@@ -12,8 +13,9 @@
  * - resume: Resume - Resume data to display
  */
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import type { Resume } from "@/core/interfaces";
+import Image from "next/image";
 
 interface ClassicCVProps {
   primaryColor: string;
@@ -21,6 +23,15 @@ interface ClassicCVProps {
   setImageLoaded: (loaded: boolean) => void;
   setImageError: (error: boolean) => void;
   resume: Resume;
+}
+
+function formatDate(dateString: string | null): string {
+  if (!dateString) return "Present";
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+  });
 }
 
 export function ClassicCVTemplate({
@@ -52,19 +63,26 @@ export function ClassicCVTemplate({
             className="w-48 h-48 rounded-full mb-4"
             style={{ borderColor: accentColor, borderWidth: "4px" }}
           >
-            <AvatarImage
-              src={resume.image || undefined}
-              className="rounded-full"
-              onLoad={() => {
-                setImageLoaded(true);
-                setImageError(false);
-              }}
-              onError={() => {
-                setImageLoaded(false);
-                setImageError(true);
-              }}
-            />
-            <AvatarFallback>{initials}</AvatarFallback>
+            {resume.image ? (
+              <Image
+                src={resume.image}
+                alt={fullName}
+                width={192}
+                height={192}
+                className="rounded-full object-cover"
+                crossOrigin="anonymous"
+                onLoad={() => {
+                  setImageLoaded(true);
+                  setImageError(false);
+                }}
+                onError={() => {
+                  setImageLoaded(false);
+                  setImageError(true);
+                }}
+              />
+            ) : (
+              <AvatarFallback>{initials}</AvatarFallback>
+            )}
           </Avatar>
         </div>
 
@@ -93,6 +111,12 @@ export function ClassicCVTemplate({
                 <span>{resume.address}</span>
               </div>
             )}
+            {resume.city && (
+              <div className="flex items-center gap-3">
+                <span style={{ color: accentColor }}>🏙️</span>
+                <span>{resume.city}</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -110,6 +134,12 @@ export function ClassicCVTemplate({
                 <li key={skill.uuid} className="flex items-center gap-2">
                   <span style={{ color: accentColor }}>•</span>
                   {skill.resumeskill_name || skill.skill_uuid}
+                  {skill.resumeskill_level && (
+                    <span className="text-sm opacity-75">
+                      {" - Level "}
+                      {skill.resumeskill_level}
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -128,16 +158,18 @@ export function ClassicCVTemplate({
             <div className="space-y-3">
               {resume.resume.resumeLanguages.map((language) => (
                 <div key={language.uuid} className="space-y-1">
-                  <div className="flex justify-between">
-                    <span>{language.name}</span>
-                    <span>{language.level}</span>
+                  <div className="flex items-center gap-2">
+                    <div className="flex justify-between flex-1">
+                      <span>{language.name}</span>
+                      <span>Level {language.level}</span>
+                    </div>
                   </div>
                   <div className="w-full bg-gray-700 rounded-full h-1.5">
                     <div
                       className="h-1.5 rounded-full"
                       style={{
                         backgroundColor: accentColor,
-                        width: `${language.level}%`,
+                        width: `${(language.level / 5) * 100}%`,
                       }}
                     ></div>
                   </div>
@@ -195,9 +227,99 @@ export function ClassicCVTemplate({
                   >
                     <span>{exp.company_name}</span>
                     <span>
-                      {exp.date_start} - {exp.date_end || "Present"}
+                      {formatDate(exp.date_start)} -{" "}
+                      {exp.current_time ? "Present" : formatDate(exp.date_end)}
                     </span>
                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Projects */}
+        {resume.resume.resumeProjects.length > 0 && (
+          <div className="space-y-6 page-break">
+            <h3
+              className="text-2xl font-semibold border-b-2 pb-2"
+              style={{ color: primaryColor, borderColor: accentColor }}
+            >
+              PROJECTS
+            </h3>
+            <div className="space-y-6">
+              {resume.resume.resumeProjects.map((project) => (
+                <div
+                  key={project.uuid}
+                  className="relative pl-6"
+                  style={{ borderLeft: `2px solid ${accentColor}` }}
+                >
+                  <div
+                    className="absolute w-3 h-3 rounded-full -left-[7px] top-2"
+                    style={{ backgroundColor: accentColor }}
+                  ></div>
+                  <div className="flex items-center gap-2">
+                    <h4
+                      className="text-xl font-semibold"
+                      style={{ color: primaryColor }}
+                    >
+                      {project.name}
+                    </h4>
+                    {project.url && (
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm hover:underline"
+                        style={{ color: accentColor }}
+                      >
+                        🔗 View Project
+                      </a>
+                    )}
+                  </div>
+                  <div
+                    className="flex justify-between text-sm"
+                    style={{ color: accentColor }}
+                  >
+                    <span>
+                      {formatDate(project.date_start)} -{" "}
+                      {formatDate(project.date_end)}
+                    </span>
+                  </div>
+                  {project.description && (
+                    <p className="mt-2 text-gray-600">{project.description}</p>
+                  )}
+                  {project.tasks && project.tasks.length > 0 && (
+                    <div className="mt-2">
+                      <h5
+                        className="text-sm font-semibold mb-1"
+                        style={{ color: primaryColor }}
+                      >
+                        Key Tasks:
+                      </h5>
+                      <ul className="list-disc list-inside space-y-1">
+                        {project.tasks.map((task) => (
+                          <li key={task.uuid} className="text-gray-600 text-sm">
+                            {task.name}
+                            {task.description && (
+                              <span className="text-gray-500">
+                                {" "}
+                                - {task.description}
+                              </span>
+                            )}
+                            <span
+                              className={`ml-2 text-xs px-2 py-0.5 rounded-full ${
+                                task.status === "Completed"
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-yellow-100 text-yellow-800"
+                              }`}
+                            >
+                              {task.status}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -236,10 +358,59 @@ export function ClassicCVTemplate({
                   >
                     <span>{edu.degree}</span>
                     <span>
-                      {edu.date_start} - {edu.date_end || "Present"}
+                      {formatDate(edu.date_start)} -{" "}
+                      {edu.is_current ? "Present" : formatDate(edu.date_end)}
                     </span>
                   </div>
-                  <p className="mt-2 text-gray-600">{edu.description || ""}</p>
+                  {edu.description && (
+                    <p className="mt-2 text-gray-600">{edu.description}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Certifications */}
+        {resume.resume.resumeCertifications.length > 0 && (
+          <div className="space-y-6">
+            <h3
+              className="text-2xl font-semibold border-b-2 pb-2"
+              style={{ color: primaryColor, borderColor: accentColor }}
+            >
+              CERTIFICATIONS
+            </h3>
+            <div className="space-y-6">
+              {resume.resume.resumeCertifications.map((cert) => (
+                <div
+                  key={cert.uuid}
+                  className="relative pl-6"
+                  style={{ borderLeft: `2px solid ${accentColor}` }}
+                >
+                  <div
+                    className="absolute w-3 h-3 rounded-full -left-[7px] top-2"
+                    style={{ backgroundColor: accentColor }}
+                  ></div>
+                  <h4
+                    className="text-xl font-semibold"
+                    style={{ color: primaryColor }}
+                  >
+                    {cert.name}
+                  </h4>
+                  <div
+                    className="flex justify-between"
+                    style={{ color: accentColor }}
+                  >
+                    <span>{cert.organization}</span>
+                    <span>
+                      {formatDate(cert.date)}{" "}
+                      {cert.expiration_date &&
+                        `- Expires: ${formatDate(cert.expiration_date)}`}
+                    </span>
+                  </div>
+                  {cert.description && (
+                    <p className="mt-2 text-gray-600">{cert.description}</p>
+                  )}
                 </div>
               ))}
             </div>
