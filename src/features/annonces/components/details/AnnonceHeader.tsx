@@ -26,10 +26,10 @@ export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
   }, []);
 
   return (
-    <Card className="p-6">
-      <div className="flex items-start gap-6">
+    <Card className="p-4 sm:p-6">
+      <div className="flex items-start gap-4 sm:gap-6">
         {/* Company Logo */}
-        <div className="relative h-16 w-16">
+        <div className="relative h-12 w-12 sm:h-16 sm:w-16 flex-shrink-0">
           <Avatar>
             <AvatarImage
               className="rounded-full"
@@ -37,27 +37,29 @@ export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
               alt={annonce.title}
             />
             <AvatarFallback>
-              <Building2 className="h-8 w-8 text-muted-foreground" />
+              <Building2 className="h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground" />
             </AvatarFallback>
           </Avatar>
         </div>
 
         {/* Job Info */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
             <div className="space-y-1">
-              <h1 className="text-2xl font-semibold">{annonce.title}</h1>
-              <div className="flex items-center gap-2 text-muted-foreground">
+              <h1 className="text-xl sm:text-2xl font-semibold line-clamp-2">
+                {annonce.title}
+              </h1>
+              <div className="flex flex-wrap items-center gap-2 text-muted-foreground">
                 {annonce.city_name && (
                   <>
-                    <MapPin className="h-4 w-4" />
+                    <MapPin className="h-4 w-4 flex-shrink-0" />
                     <span className="text-sm">{annonce.city_name}</span>
-                    <span className="text-xs">•</span>{" "}
+                    <span className="text-xs hidden sm:inline">•</span>{" "}
                   </>
                 )}
                 {annonce.employeesNum && (
                   <>
-                    <Users2 className="h-4 w-4" />
+                    <Users2 className="h-4 w-4 flex-shrink-0" />
                     <span className="text-sm">
                       {annonce.employeesNum} poste
                       {annonce.employeesNum !== 1 && "s"}
@@ -68,8 +70,8 @@ export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-2">
-              <div className="h-9 w-9 md:w-auto md:px-4 flex items-center justify-center">
+            <div className="flex items-center gap-2 self-start">
+              <div className="h-8 w-8 sm:h-9 sm:w-9 md:w-auto md:px-4 flex items-center justify-center rounded-full hover:bg-accent">
                 <ShareJobPopover
                   jobTitle={annonce.title}
                   companyName={annonce.company_name || ""}
@@ -77,15 +79,16 @@ export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
                   slug={annonce.slug}
                 />
               </div>
-              <div
+              <button
+                type="button"
                 className={cn(
-                  "h-9 w-9 flex items-center justify-center cursor-pointer",
+                  "h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center",
                   "text-destructive hover:text-destructive/80 hover:bg-accent rounded-full"
                 )}
                 onClick={handleReport}
               >
-                <Flag className="h-6 w-6" />
-              </div>
+                <Flag className="h-5 w-5 sm:h-6 sm:w-6" />
+              </button>
             </div>
           </div>
 

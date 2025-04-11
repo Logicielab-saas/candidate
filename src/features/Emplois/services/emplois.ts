@@ -1,7 +1,12 @@
 import { ApiError } from "next/dist/server/api-utils";
 import api from "@/lib/axios";
 import { AxiosError } from "axios";
-import type { Emplois, EmploisDetails, Pagination } from "@/core/interfaces";
+import type {
+  Emplois,
+  EmploisDetails,
+  Pagination,
+  SearchSuggestions,
+} from "@/core/interfaces";
 import { hasAccessToken } from "@/lib/check-access-token";
 
 export interface EmploisResponse {
@@ -14,9 +19,17 @@ export interface EmploisDetailsResponse {
   message: string;
   emploi: EmploisDetails;
 }
+
+export interface SearchSuggestionsResponse {
+  message: string;
+  results: SearchSuggestions[];
+  pagination: Pagination;
+}
+
 const isAuthenticated = hasAccessToken();
 
 const endpoint = isAuthenticated ? "/employee/emplois" : "/emplois";
+const endpointSuggestions = "/employee/emploi/search";
 
 export async function fetchEmplois(page: number = 1, per_page: number = 10) {
   try {
@@ -45,9 +58,12 @@ export async function fetchEmploisBySlug(slug: string) {
 }
 
 // TODO: Implement this FUNCTIONALITY NO APP TOMORROW (FRIDAY)
-export async function getSuggestions(query: string) {
-  const response = await api.get<EmploisResponse>(`${endpoint}/suggestions`, {
-    params: { query },
-  });
+export async function fetchSearchSuggestions(query: string) {
+  const response = await api.get<SearchSuggestionsResponse>(
+    `${endpointSuggestions}`,
+    {
+      params: { q: query },
+    }
+  );
   return response.data;
 }

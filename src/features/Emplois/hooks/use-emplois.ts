@@ -1,5 +1,9 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { fetchEmplois, fetchEmploisBySlug } from "../services/emplois";
+import {
+  fetchEmplois,
+  fetchEmploisBySlug,
+  fetchSearchSuggestions,
+} from "../services/emplois";
 
 export const EMPLOIS_QUERY_KEY = ["emplois"];
 
@@ -40,6 +44,21 @@ export function useEmplois(params?: UseEmploisParams) {
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
+  };
+}
+
+export function useSearchSuggestions(query: string) {
+  const { data, isLoading, error } = useQuery({
+    queryKey: [EMPLOIS_QUERY_KEY, "search-suggestions", query],
+    queryFn: () => fetchSearchSuggestions(query),
+    enabled: query.length >= 2, // Only fetch when query is at least 2 characters
+    staleTime: 1000 * 60 * 5, // Cache results for 5 minutes
+  });
+
+  return {
+    suggestions: data?.results || [],
+    isLoading,
+    error,
   };
 }
 

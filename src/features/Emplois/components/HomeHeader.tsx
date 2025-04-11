@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { SearchInput } from "./SearchInput";
 import { CitySelector } from "./CitySelector";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQueryState } from "nuqs";
 
 export function HomeHeader() {
@@ -26,14 +26,20 @@ export function HomeHeader() {
   const [inputText, setInputText] = useState("");
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
 
-  // URL state setters
-  const [, setSearchText] = useQueryState("q", {
+  // URL state
+  const [searchText, setSearchText] = useQueryState("q", {
     history: "push",
   });
-  const [, setUrlCity] = useQueryState("city", {
+  const [urlCity, setUrlCity] = useQueryState("city", {
     history: "push",
   });
   const [, setJobId] = useQueryState("job");
+
+  // Sync local state with URL state on mount and URL changes
+  useEffect(() => {
+    setInputText(searchText || "");
+    setSelectedCity(urlCity);
+  }, [searchText, urlCity]);
 
   // Handle search button click
   const handleSearch = () => {
