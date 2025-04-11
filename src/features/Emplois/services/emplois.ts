@@ -29,7 +29,7 @@ export interface SearchSuggestionsResponse {
 const isAuthenticated = hasAccessToken();
 
 const endpoint = isAuthenticated ? "/employee/emplois" : "/emplois";
-const endpointSuggestions = "/employee/emploi/search";
+const endpointSuggestions = "/emploi/search";
 
 export async function fetchEmplois(
   page: number = 1,
