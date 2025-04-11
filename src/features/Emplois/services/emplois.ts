@@ -31,13 +31,20 @@ const isAuthenticated = hasAccessToken();
 const endpoint = isAuthenticated ? "/employee/emplois" : "/emplois";
 const endpointSuggestions = "/employee/emploi/search";
 
-export async function fetchEmplois(page: number = 1, per_page: number = 10) {
+export async function fetchEmplois(
+  page: number = 1,
+  per_page: number = 10,
+  searchText?: string,
+  city?: string
+) {
   try {
-    const params: Record<string, number> = {};
+    const params: Record<string, string | number> = {};
 
-    // Only add params if they differ from defaults
+    // Only add params if they differ from defaults or are defined
     if (page !== 1) params.page = page;
     if (per_page !== 10) params.per_page = per_page;
+    if (searchText) params.q = searchText;
+    if (city) params.city = city;
 
     const response = await api.get<EmploisResponse>(endpoint, {
       params: Object.keys(params).length ? params : undefined,

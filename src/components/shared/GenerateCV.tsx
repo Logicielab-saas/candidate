@@ -1,3 +1,10 @@
+/**
+ * GenerateCV - A component for generating and downloading CV in different templates
+ *
+ * Handles CV template selection, color customization, and PDF generation
+ * with proper loading and error states for resume data.
+ */
+
 "use client";
 
 import { generatePDF } from "@/core/utils/generate-pdf";
@@ -6,6 +13,8 @@ import { ColorPicker } from "./ColorPicker";
 import { CVTemplate, TemplateSelector } from "./TemplateSelector";
 import { ClassicCVTemplate } from "./ClassicCVTemplate";
 import { ModernCVTemplate } from "./ModernCVTemplate";
+import { useProfileResume } from "@/features/candidature/(profile)/qualifications/hooks/use-profile-resume";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function GenerateCV() {
   const resumeRef = useRef<HTMLDivElement>(null);
@@ -14,9 +23,10 @@ export default function GenerateCV() {
   const [primaryColor, setPrimaryColor] = useState("#1B2F3D");
   const [accentColor, setAccentColor] = useState("#29ABE2");
   const [template, setTemplate] = useState<CVTemplate>("classic");
+  const { data: resume, isLoading, error } = useProfileResume();
 
   const handleGeneratePDF = async () => {
-    if (!resumeRef.current) return;
+    if (!resumeRef.current || !resume) return;
 
     try {
       await generatePDF({
@@ -28,6 +38,30 @@ export default function GenerateCV() {
       console.error("Failed to generate PDF:", error);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen p-4 space-y-4">
+        <Skeleton className="h-12 w-full max-w-md" />
+        <Skeleton className="h-[800px] w-full max-w-[800px] mx-auto" />
+      </div>
+    );
+  }
+
+  if (error || !resume) {
+    return (
+      <div className="min-h-screen p-4 flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <h2 className="text-2xl font-semibold text-gray-800">
+            Failed to load resume data
+          </h2>
+          <p className="text-gray-600">
+            Please try again later or contact support if the issue persists.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-4">
@@ -59,6 +93,7 @@ export default function GenerateCV() {
             accentColor={accentColor}
             setImageLoaded={setIsImageLoaded}
             setImageError={setHasImageError}
+            resume={resume}
           />
         ) : (
           <ModernCVTemplate
@@ -66,6 +101,7 @@ export default function GenerateCV() {
             accentColor={accentColor}
             setImageLoaded={setIsImageLoaded}
             setImageError={setHasImageError}
+            resume={resume}
           />
         )}
       </div>

@@ -4,6 +4,7 @@ import {
   fetchEmploisBySlug,
   fetchSearchSuggestions,
 } from "../services/emplois";
+import { useQueryState } from "nuqs";
 
 export const EMPLOIS_QUERY_KEY = ["emplois"];
 
@@ -13,6 +14,9 @@ interface UseEmploisParams {
 }
 
 export function useEmplois(params?: UseEmploisParams) {
+  const [searchText] = useQueryState("q");
+  const [selectedCity] = useQueryState("city");
+
   const {
     data,
     isLoading,
@@ -21,8 +25,18 @@ export function useEmplois(params?: UseEmploisParams) {
     isFetchingNextPage,
     hasNextPage,
   } = useInfiniteQuery({
-    queryKey: [...EMPLOIS_QUERY_KEY, "infinite"],
-    queryFn: ({ pageParam = 1 }) => fetchEmplois(pageParam, params?.per_page),
+    queryKey: [
+      ...EMPLOIS_QUERY_KEY,
+      "infinite",
+      { q: searchText, city: selectedCity },
+    ],
+    queryFn: ({ pageParam = 1 }) =>
+      fetchEmplois(
+        pageParam,
+        params?.per_page,
+        searchText || undefined,
+        selectedCity || undefined
+      ),
     getNextPageParam: (lastPage) => {
       if (lastPage.pagination.current_page < lastPage.pagination.last_page) {
         return lastPage.pagination.current_page + 1;

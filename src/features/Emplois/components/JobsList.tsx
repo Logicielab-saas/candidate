@@ -44,36 +44,19 @@ export function JobsList({ isDesktop }: JobsListProps) {
     fetchNextPage,
     hasNextPage,
   } = useEmplois();
-  // Initialize saved jobs when data is loaded
+
+  // Initialize saved jobs
   useEffect(() => {
     if (jobs) {
       initializeSavedJobs(jobs);
-      // Only set default job if:
-      // 1. We're on desktop
-      // 2. We have jobs
-      // 3. No job is selected (selectedJobId is explicitly null, not undefined)
-      // 4. We're not loading
-      if (
-        isDesktop &&
-        jobs.length > 0 &&
-        selectedJobId === null &&
-        !isLoading
-      ) {
-        setSelectedJobId(jobs[0].slug);
-      }
+
+      // Handle mobile navigation
       if (!isDesktop && jobs.length > 0 && selectedJobId && !isLoading) {
         router.push(`/annonce-details/${selectedJobId}`);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    jobs,
-    initializeSavedJobs,
-    isDesktop,
-    setSelectedJobId,
-    selectedJobId,
-    isLoading,
-  ]);
+  }, [jobs, initializeSavedJobs, isDesktop, selectedJobId, isLoading]);
 
   // Handle job card click
   const handleJobClick = (jobSlug: string) => {
