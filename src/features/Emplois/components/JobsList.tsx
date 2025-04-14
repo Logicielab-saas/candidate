@@ -19,7 +19,7 @@ import { useEffect } from "react";
 import { useSavedJobsStore } from "../store/saved-jobs.store";
 import { JobCardSkeleton } from "../skeletons/JobCardSkeleton";
 import { Button } from "@/components/ui/button";
-import { LoaderPinwheel } from "lucide-react";
+import LoaderOne from "@/components/ui/loader-one";
 
 interface JobsListProps {
   isDesktop: boolean;
@@ -141,8 +141,8 @@ export function JobsList({ isDesktop }: JobsListProps) {
             >
               {isFetchingNextPage ? (
                 <>
-                  <LoaderPinwheel className="mr-2 h-4 w-4 animate-spin" />
-                  Loading...
+                  <LoaderOne />
+                  <span className="ml-2">Loading...</span>
                 </>
               ) : (
                 `Load More (${

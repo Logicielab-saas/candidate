@@ -39,7 +39,7 @@ import { useProfile } from "@/features/candidature/(profile)/hooks/use-profile";
 import { Skeleton } from "../ui/skeleton";
 import jsCookie from "js-cookie";
 import { requestPermission } from "@/lib/request-permission";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // interface NavItem {
 //   name: string;
@@ -66,6 +66,7 @@ export function NavBar() {
   const pathname = usePathname();
   const router = useRouter();
   const { data: profile, isLoading } = useProfile();
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   useEffect(() => {
     // Only request permission if we're in a browser environment
@@ -105,7 +106,7 @@ export function NavBar() {
             <div className="md:rounded-xl bg-background/50 backdrop-blur-lg md:border md:shadow-sm border-b md:border-b">
               <div className="px-4 py-2 flex items-center justify-between">
                 {/* Mobile Menu Button */}
-                <Sheet>
+                <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                   <SheetTrigger asChild className="md:hidden">
                     <Button variant="ghost" size="icon">
                       <Menu className="h-5 w-5" />
@@ -128,6 +129,7 @@ export function NavBar() {
                           <Link
                             key={item.name}
                             href={item.url}
+                            onClick={() => setIsSheetOpen(false)}
                             className={cn(
                               "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors",
                               isActive

@@ -3,30 +3,23 @@
  *
  * Manages the display and filtering of notifications
  * Handles loading states and empty states
+ * Uses useNotifications hook for data fetching and state management
  */
 
 "use client";
 
 import { useQueryState } from "nuqs";
-import { useState } from "react";
 import { NotificationFilters } from "./NotificationFilters";
 import { NotificationItem } from "./NotificationItem";
-import type { Notification, NotificationType } from "../types";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { useNotifications } from "../hooks/use-notifications";
+import { Skeleton } from "@/components/ui/skeleton";
 
-interface NotificationsListProps {
-  initialNotifications: Notification[];
-}
-
-export function NotificationsList({
-  initialNotifications,
-}: NotificationsListProps) {
-  const [notifications, setNotifications] =
-    useState<Notification[]>(initialNotifications);
-  const [type] = useQueryState<NotificationType | "all">("type", {
-    parse: (value: string) => value as NotificationType | "all",
+export function NotificationsList() {
+  const { data: notifications, isLoading, error } = useNotifications();
+  const [type] = useQueryState<"job" | "interview" | "resume" | "all">("type", {
+    parse: (value: string) => value as "job" | "interview" | "resume" | "all",
     defaultValue: "all",
   });
   const [readStatus] = useQueryState<"all" | "read" | "unread">("status", {
@@ -34,26 +27,23 @@ export function NotificationsList({
     defaultValue: "all",
   });
 
-  const handleMarkAsRead = async (id: string) => {
+  const handleMarkAsRead = async (_uuid: string) => {
     // TODO: Implement API call to mark notification as read
-    setNotifications((prev) =>
-      prev.map((notification) =>
-        notification.id === id
-          ? { ...notification, isRead: true }
-          : notification
-      )
-    );
+    // Will need to add a mutation function in the notifications service
   };
 
-  const filteredNotifications = notifications.filter((notification) => {
-    const matchesType = type === "all" || notification.type === type;
-    const matchesReadStatus =
-      readStatus === "all" ||
-      (readStatus === "read" ? notification.isRead : !notification.isRead);
-    return matchesType && matchesReadStatus;
-  });
+  if (error && !isLoading) {
+    return (
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertDescription>
+          Failed to load notifications. Please try again later.
+        </AlertDescription>
+      </Alert>
+    );
+  }
 
-  if (notifications.length === 0) {
+  if (!notifications?.length && !isLoading) {
     return (
       <Alert>
         <AlertCircle className="h-4 w-4" />
@@ -64,27 +54,49 @@ export function NotificationsList({
     );
   }
 
+  const filteredNotifications = notifications?.filter((notification) => {
+    const matchesType = type === "all" || notification.type === type;
+    const matchesReadStatus =
+      readStatus === "all" ||
+      (readStatus === "read" ? notification.is_read : !notification.is_read);
+    return matchesType && matchesReadStatus;
+  });
+
   return (
     <div>
       <NotificationFilters />
-      <ScrollArea className="h-[calc(100vh-12rem)]">
-        {filteredNotifications.length === 0 ? (
-          <Alert>
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>
-              No notifications match your filters.
-            </AlertDescription>
-          </Alert>
-        ) : (
-          filteredNotifications.map((notification) => (
-            <NotificationItem
-              key={notification.id}
-              notification={notification}
-              onMarkAsRead={handleMarkAsRead}
-            />
-          ))
-        )}
-      </ScrollArea>
+      {isLoading ? (
+        <div className="space-y-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="p-4 border rounded-lg space-y-3">
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-5 w-5 rounded-full" />
+                <Skeleton className="h-4 w-48" />
+              </div>
+              <Skeleton className="h-4 w-full" />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <>
+          {filteredNotifications?.length === 0 ? (
+            <Alert>
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                No notifications match your filters.
+              </AlertDescription>
+            </Alert>
+          ) : (
+            filteredNotifications?.map((notification) => (
+              <NotificationItem
+                key={notification.uuid}
+                notification={notification}
+                onMarkAsRead={handleMarkAsRead}
+              />
+            ))
+          )}
+        </>
+      )}
     </div>
   );
 }

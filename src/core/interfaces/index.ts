@@ -38,3 +38,4 @@ export * from "./emploi-saved.interface";
 export * from "./emploi-report.interface";
 export * from "./archived-job.interface";
 export * from "./search-suggestions.interface";
+export * from "./notifications.interface";
