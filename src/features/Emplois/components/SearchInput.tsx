@@ -117,9 +117,9 @@ export function SearchInput({ value, onChange }: SearchInputProps) {
                       >
                         <Search className="mr-2 h-4 w-4" />
                         <span>{suggestion.title}</span>
-                        <span className="ml-2 text-xs text-muted-foreground">
+                        {/* <span className="ml-2 text-xs text-muted-foreground">
                           {suggestion.type}
-                        </span>
+                        </span> */}
                       </CommandItem>
                     ))}
                   </CommandGroup>

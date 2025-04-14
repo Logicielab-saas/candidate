@@ -11,7 +11,7 @@ import {
   Users,
   Calendar,
   Clock,
-  Euro,
+  HandCoins,
   ArrowRight,
   Flag,
   XCircle,
@@ -206,7 +206,7 @@ export function JobDetails() {
               <span>{formatWorkingHours()}</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <Euro className="h-4 w-4" />
+              <HandCoins className="h-4 w-4" />
               <span>{formatSalary()}</span>
             </div>
           </div>

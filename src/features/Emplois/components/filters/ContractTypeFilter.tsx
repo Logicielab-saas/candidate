@@ -2,6 +2,7 @@
  * ContractTypeFilter - Contract type selection with multi-select
  *
  * Features:
+ * - Fetches contract types from API
  * - Debounced URL updates
  * - Local state for smooth interaction
  * - Memoized to prevent unnecessary re-renders
@@ -13,20 +14,12 @@ import { Briefcase } from "lucide-react";
 import { memo, useState, useEffect, useCallback } from "react";
 import { useDebounce } from "use-debounce";
 import { useQueryState } from "nuqs";
-
-// Contract type options
-export const CONTRACT_TYPES = [
-  { value: "cdi", label: "CDI" },
-  { value: "cdd", label: "CDD" },
-  { value: "stage", label: "Stage" },
-  { value: "alternance", label: "Alternance" },
-  { value: "freelance", label: "Freelance" },
-].map((type) => ({
-  label: type.label,
-  value: type.value.toLowerCase(),
-}));
+import { useEmploiContracts } from "@/hooks/use-emploi-contracts";
 
 function ContractTypeFilterComponent() {
+  // Fetch contract types from API
+  const { data: contractTypesData, isLoading } = useEmploiContracts();
+
   // URL state
   const [contractTypes, setContractTypes] = useQueryState("contracts", {
     parse: (value) => value.split(","),
@@ -67,10 +60,16 @@ function ContractTypeFilterComponent() {
     setLocalContractTypes(values);
   }, []);
 
+  const contractTypeOptions =
+    contractTypesData?.map((type) => ({
+      label: type.name,
+      value: type.uuid,
+    })) || [];
+
   return (
     <div className="relative">
       <MultiSelect
-        options={CONTRACT_TYPES}
+        options={contractTypeOptions}
         value={localContractTypes}
         modalPopover={true}
         onValueChange={handleValueChange}
@@ -81,6 +80,7 @@ function ContractTypeFilterComponent() {
           localContractTypes.length > 0 && "border-primary"
         )}
         contentClassName="w-[220px]"
+        isLoading={isLoading}
       />
       <Briefcase className="absolute left-2.5 top-3 h-4 w-4 text-muted-foreground pointer-events-none" />
     </div>
