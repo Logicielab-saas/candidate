@@ -18,15 +18,15 @@ export function useMaskEmploi() {
         queryKey: [...EMPLOIS_QUERY_KEY],
       });
 
-      // Update the reports list if it exists in cache
+      // Update the masked emplois list if it exists in cache
       await queryClient.invalidateQueries({
         queryKey: [...MASK_EMPLOI_QUERY_KEY],
       });
 
       toast({
         variant: "success",
-        title: "Report envoyé",
-        description: "Votre report a été envoyé avec succès.",
+        title: "Emploi masqué",
+        description: "Votre emploi a été masqué avec succès.",
       });
     },
     onError: (error: Error) => {

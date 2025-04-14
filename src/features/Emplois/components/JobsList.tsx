@@ -15,7 +15,7 @@ import { useQueryState } from "nuqs";
 import { JobCard } from "./JobCard";
 import { useRouter } from "next/navigation";
 import { useEmplois } from "../hooks/use-emplois";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSavedJobsStore } from "../store/saved-jobs.store";
 import { JobCardSkeleton } from "../skeletons/JobCardSkeleton";
 import { Button } from "@/components/ui/button";
@@ -29,7 +29,6 @@ export function JobsList({ isDesktop }: JobsListProps) {
   const [_searchText] = useQueryState("q");
   const [_selectedCity] = useQueryState("city");
   const [selectedJobId, setSelectedJobId] = useQueryState("job");
-  const [_maskedJobs, setMaskedJobs] = useState<Set<string>>(new Set());
   const router = useRouter();
   const initializeSavedJobs = useSavedJobsStore(
     (state) => state.initializeSavedJobs
@@ -66,11 +65,6 @@ export function JobsList({ isDesktop }: JobsListProps) {
     } else {
       router.push(`/annonce-details/${jobSlug}`);
     }
-  };
-
-  // Handle job masking
-  const handleJobMasked = (jobSlug: string) => {
-    setMaskedJobs((prev) => new Set([...prev, jobSlug]));
   };
 
   // Handle load more click
@@ -124,11 +118,7 @@ export function JobsList({ isDesktop }: JobsListProps) {
             onClick={() => handleJobClick(job.slug)}
             className="cursor-pointer"
           >
-            <JobCard
-              job={job}
-              isSelected={job.slug === selectedJobId}
-              onMasked={handleJobMasked}
-            />
+            <JobCard job={job} isSelected={job.slug === selectedJobId} />
           </div>
         ))}
 

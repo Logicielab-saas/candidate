@@ -30,14 +30,12 @@ interface NotInterestedDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   jobId: string;
-  onConfirm?: (jobId: string) => void;
 }
 
 export default function NotInterestedDialog({
   open,
   onOpenChange,
   jobId,
-  onConfirm,
 }: NotInterestedDialogProps) {
   const { mutate: maskJob, isPending } = useMaskEmploi();
 
@@ -45,7 +43,6 @@ export default function NotInterestedDialog({
     maskJob(jobId, {
       onSuccess: () => {
         onOpenChange(false);
-        onConfirm?.(jobId);
       },
     });
   };

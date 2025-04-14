@@ -1,58 +1,26 @@
 import { cn } from "@/lib/utils";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import type { Emplois } from "@/core/interfaces";
-import { Building2, MapPin, EyeOff } from "lucide-react";
+import { Building2, MapPin } from "lucide-react";
 import { spanBadgeStyle } from "@/core/styles/span-badge.style";
 import { redirect } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { JobCardMenu } from "./JobCardMenu";
-import { useState } from "react";
 
 interface JobCardProps {
   job: Emplois;
   isSelected?: boolean;
-  onMasked?: (jobSlug: string) => void;
 }
 
-export function JobCard({ job, isSelected, onMasked }: JobCardProps) {
-  const [isMasked, setIsMasked] = useState(false);
-
+export function JobCard({ job, isSelected }: JobCardProps) {
   const handleKeywordClick = (e: React.MouseEvent, skill: string) => {
     e.stopPropagation(); // Prevent job card click
     redirect(`/home?keyword=${encodeURIComponent(skill)}`);
   };
 
-  const handleMask = () => {
-    setIsMasked(true);
-    onMasked?.(job.slug);
-  };
-
   // Ensure arrays exist with default empty arrays
   const skills = job?.skills || [];
   // const contracts = job?.contracts || [];
-
-  if (isMasked) {
-    return (
-      <Card
-        className={cn(
-          "transition-all duration-200 relative overflow-hidden",
-          "border-yellow-200 bg-yellow-50/10"
-        )}
-      >
-        <div className="p-6 flex items-center justify-center">
-          <div className="text-center space-y-3">
-            <div className="bg-yellow-100 text-yellow-800 rounded-full p-3 inline-flex">
-              <EyeOff className="h-6 w-6" />
-            </div>
-            <p className="text-sm font-medium text-muted-foreground">
-              Offre masquée
-            </p>
-          </div>
-        </div>
-      </Card>
-    );
-  }
-
   return (
     <Card
       className={cn(
@@ -79,7 +47,7 @@ export function JobCard({ job, isSelected, onMasked }: JobCardProps) {
             <div className="flex items-start justify-between">
               <h3 className="font-semibold leading-none">{job.title}</h3>
               <div className="flex items-center gap-2">
-                <JobCardMenu jobId={job.uuid} onNotInterested={handleMask} />
+                <JobCardMenu jobId={job.uuid} />
               </div>
             </div>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
