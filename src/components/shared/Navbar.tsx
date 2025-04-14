@@ -38,6 +38,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { useProfile } from "@/features/candidature/(profile)/hooks/use-profile";
 import { Skeleton } from "../ui/skeleton";
 import jsCookie from "js-cookie";
+import { requestPermission } from "@/lib/request-permission";
+import { useEffect } from "react";
 
 // interface NavItem {
 //   name: string;
@@ -64,6 +66,15 @@ export function NavBar() {
   const pathname = usePathname();
   const router = useRouter();
   const { data: profile, isLoading } = useProfile();
+
+  useEffect(() => {
+    // Only request permission if we're in a browser environment
+    if (typeof window !== "undefined") {
+      requestPermission().catch((error: Error) => {
+        console.error("Failed to setup notifications:", error);
+      });
+    }
+  }, []);
 
   const activeTab =
     navItems.find(
@@ -179,7 +190,12 @@ export function NavBar() {
                       <MessageSquare className="h-5 w-5 " />
                     </Link>
                   </Button>
-                  <Button variant="ghost" size="icon" asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="relative"
+                    asChild
+                  >
                     <Link href="/notifications">
                       <Bell className="h-5 w-5" />
                     </Link>

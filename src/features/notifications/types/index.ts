@@ -7,6 +7,7 @@
 export const NOTIFICATION_TYPES = {
   JOB: "job",
   INTERVIEW: "interview",
+  RESUME: "resume",
   SYSTEM: "system",
   APPLICATION: "application",
 } as const;
@@ -14,6 +15,17 @@ export const NOTIFICATION_TYPES = {
 export type NotificationType =
   (typeof NOTIFICATION_TYPES)[keyof typeof NOTIFICATION_TYPES];
 
+/**
+ * Module information for routing and context
+ */
+export interface NotificationModule {
+  type: string;
+  slug: string;
+}
+
+/**
+ * Core notification interface
+ */
 export interface Notification {
   id: string;
   type: NotificationType;
@@ -21,6 +33,7 @@ export interface Notification {
   message: string;
   createdAt: string;
   isRead: boolean;
+  module?: NotificationModule;
   metadata?: {
     jobId?: string;
     interviewId?: string;
