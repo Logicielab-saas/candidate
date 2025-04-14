@@ -21,7 +21,6 @@ export function JobCard({ job, isSelected }: JobCardProps) {
   // Ensure arrays exist with default empty arrays
   const skills = job?.skills || [];
   // const contracts = job?.contracts || [];
-
   return (
     <Card
       className={cn(

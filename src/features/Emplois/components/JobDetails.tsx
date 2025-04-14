@@ -34,8 +34,9 @@ import LoaderOne from "@/components/ui/loader-one";
 import { Badge } from "@/components/ui/badge";
 import { ShareJobPopover } from "./ShareJobPopover";
 import { JobBookmarkButton } from "@/components/shared/JobBookmarkButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+import { useEmplois } from "../hooks/use-emplois";
 
 const ReportJobDialog = dynamic(
   () => import("@/components/shared/ReportJobDialog"),
@@ -43,11 +44,19 @@ const ReportJobDialog = dynamic(
 );
 
 export function JobDetails() {
-  const [selectedJobSlug] = useQueryState("job");
+  const [selectedJobId, setSelectedJobId] = useQueryState("job");
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
+  const { data: jobs } = useEmplois();
+
+  // Set default job if none is selected and jobs are available
+  useEffect(() => {
+    if (!selectedJobId && jobs?.length > 0) {
+      setSelectedJobId(jobs[0].slug);
+    }
+  }, [selectedJobId, jobs, setSelectedJobId]);
 
   // Fetch job details
-  const { data: job, isLoading } = useEmploisBySlug(selectedJobSlug);
+  const { data: job, isLoading } = useEmploisBySlug(selectedJobId);
 
   const sanitizedHTML = job?.html_description
     ? DOMPurify.sanitize(job.html_description)

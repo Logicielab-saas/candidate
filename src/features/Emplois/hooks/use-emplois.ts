@@ -1,5 +1,10 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { fetchEmplois, fetchEmploisBySlug } from "../services/emplois";
+import {
+  fetchEmplois,
+  fetchEmploisBySlug,
+  fetchSearchSuggestions,
+} from "../services/emplois";
+import { useQueryState } from "nuqs";
 
 export const EMPLOIS_QUERY_KEY = ["emplois"];
 
@@ -9,6 +14,9 @@ interface UseEmploisParams {
 }
 
 export function useEmplois(params?: UseEmploisParams) {
+  const [searchText] = useQueryState("q");
+  const [selectedCity] = useQueryState("city");
+
   const {
     data,
     isLoading,
@@ -17,8 +25,18 @@ export function useEmplois(params?: UseEmploisParams) {
     isFetchingNextPage,
     hasNextPage,
   } = useInfiniteQuery({
-    queryKey: [...EMPLOIS_QUERY_KEY, "infinite"],
-    queryFn: ({ pageParam = 1 }) => fetchEmplois(pageParam, params?.per_page),
+    queryKey: [
+      ...EMPLOIS_QUERY_KEY,
+      "infinite",
+      { q: searchText, city: selectedCity },
+    ],
+    queryFn: ({ pageParam = 1 }) =>
+      fetchEmplois(
+        pageParam,
+        params?.per_page,
+        searchText || undefined,
+        selectedCity || undefined
+      ),
     getNextPageParam: (lastPage) => {
       if (lastPage.pagination.current_page < lastPage.pagination.last_page) {
         return lastPage.pagination.current_page + 1;
@@ -40,6 +58,21 @@ export function useEmplois(params?: UseEmploisParams) {
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
+  };
+}
+
+export function useSearchSuggestions(query: string) {
+  const { data, isLoading, error } = useQuery({
+    queryKey: [EMPLOIS_QUERY_KEY, "search-suggestions", query],
+    queryFn: () => fetchSearchSuggestions(query),
+    enabled: query.length >= 2, // Only fetch when query is at least 2 characters
+    staleTime: 1000 * 60 * 5, // Cache results for 5 minutes
+  });
+
+  return {
+    suggestions: data?.results || [],
+    isLoading,
+    error,
   };
 }
 
