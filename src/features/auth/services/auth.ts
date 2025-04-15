@@ -62,25 +62,6 @@ export async function signup(
   }
 }
 
-export async function logout() {
-  try {
-    // Clear the token cookie
-    jsCookie.remove("accessToken");
-
-    // Clear the user role cookie
-    jsCookie.remove("userRole");
-
-    // Redirect to login page
-    redirect("/login");
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      const apiError = error.response?.data as ApiError;
-      throw new Error(apiError?.message || "Failed to logout");
-    }
-    throw error;
-  }
-}
-
 // export async function forgotPassword(email: string) {
 //   try {
 //     await api.post(`employee/forgot-password`, { email });

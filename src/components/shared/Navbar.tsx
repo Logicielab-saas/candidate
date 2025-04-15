@@ -40,6 +40,7 @@ import { Skeleton } from "../ui/skeleton";
 import jsCookie from "js-cookie";
 import { requestPermission } from "@/lib/request-permission";
 import { useEffect, useState } from "react";
+import { logout } from "@/features/auth/services/logout";
 
 // interface NavItem {
 //   name: string;
@@ -328,8 +329,8 @@ export function NavBar() {
                       {/* Logout Section */}
                       <DropdownMenuItem
                         className="text-destructive hover:cursor-pointer"
-                        onClick={() => {
-                          jsCookie.remove("accessToken");
+                        onClick={async () => {
+                          await logout();
                           router.replace("/login");
                         }}
                       >

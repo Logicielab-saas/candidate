@@ -27,7 +27,6 @@ const DeleteAccountDialog = dynamic(
 
 export function AccountSettings() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -51,30 +50,6 @@ export function AccountSettings() {
       });
     } finally {
       setIsLoggingOut(false);
-    }
-  };
-
-  const handleDeleteAccount = async () => {
-    try {
-      setIsDeleting(true);
-      // TODO: Implement actual account deletion logic
-      console.log("Deleting account...");
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
-      toast({
-        variant: "success",
-        title: "Compte supprimé",
-        description: "Votre compte a été supprimé avec succès",
-      });
-      // TODO: Redirect to logout or home page after successful deletion
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Erreur",
-        description: "Impossible de supprimer le compte",
-      });
-      console.error("Account deletion failed:", error);
-    } finally {
-      setIsDeleting(false);
     }
   };
 
@@ -113,10 +88,7 @@ export function AccountSettings() {
             </p>
           </div>
 
-          <DeleteAccountDialog
-            onDelete={handleDeleteAccount}
-            isDeleting={isDeleting}
-          />
+          <DeleteAccountDialog />
         </div>
       </div>
     </Card>

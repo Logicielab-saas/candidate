@@ -23,7 +23,7 @@ import { useQueryState } from "nuqs";
 import { Calendar } from "lucide-react";
 import { AdvancedFiltersDrawer } from "./AdvancedFiltersDrawer";
 import { SaveSearchAlert } from "./SaveSearchAlert";
-import { ContractTypeFilter } from "./filters/ContractTypeFilter";
+import { JobTypesFilter } from "./filters/ContractTypeFilter";
 
 // Filter options
 const DATE_FILTERS = [
@@ -91,7 +91,7 @@ export function JobFilters() {
         {/* <KeywordFilter /> */}
 
         {/* Contract Type Filter */}
-        <ContractTypeFilter />
+        <JobTypesFilter />
 
         {/* Advanced Filters Drawer */}
         <AdvancedFiltersDrawer />
