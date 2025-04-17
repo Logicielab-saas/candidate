@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useArchiveJob } from "../hooks/use-my-archived-jobs";
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import LoaderOne from "@/components/ui/loader-one";
 
 interface ArchiveJobDialogProps {
   open: boolean;
@@ -87,7 +87,7 @@ export default function ArchiveJobDialog({
             disabled={isPending}
             className="bg-destructive hover:bg-destructive/90"
           >
-            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isPending && <LoaderOne />}
             {isPending ? "Archivage..." : "Archiver"}
           </AlertDialogAction>
         </AlertDialogFooter>

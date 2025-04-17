@@ -37,7 +37,9 @@ import { ThemeButton } from "@/components/shared/ThemeButton";
 import { usePathname, useRouter } from "next/navigation";
 import { useProfile } from "@/features/candidature/(profile)/hooks/use-profile";
 import { Skeleton } from "../ui/skeleton";
-import jsCookie from "js-cookie";
+import { requestPermission } from "@/lib/request-permission";
+import { useEffect, useState } from "react";
+import { logout } from "@/features/auth/services/logout";
 
 // interface NavItem {
 //   name: string;
@@ -64,6 +66,16 @@ export function NavBar() {
   const pathname = usePathname();
   const router = useRouter();
   const { data: profile, isLoading } = useProfile();
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  useEffect(() => {
+    // Only request permission if we're in a browser environment
+    if (typeof window !== "undefined") {
+      requestPermission().catch((error: Error) => {
+        console.error("Failed to setup notifications:", error);
+      });
+    }
+  }, []);
 
   const activeTab =
     navItems.find(
@@ -94,7 +106,7 @@ export function NavBar() {
             <div className="md:rounded-xl bg-background/50 backdrop-blur-lg md:border md:shadow-sm border-b md:border-b">
               <div className="px-4 py-2 flex items-center justify-between">
                 {/* Mobile Menu Button */}
-                <Sheet>
+                <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                   <SheetTrigger asChild className="md:hidden">
                     <Button variant="ghost" size="icon">
                       <Menu className="h-5 w-5" />
@@ -117,6 +129,7 @@ export function NavBar() {
                           <Link
                             key={item.name}
                             href={item.url}
+                            onClick={() => setIsSheetOpen(false)}
                             className={cn(
                               "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors",
                               isActive
@@ -179,7 +192,12 @@ export function NavBar() {
                       <MessageSquare className="h-5 w-5 " />
                     </Link>
                   </Button>
-                  <Button variant="ghost" size="icon" asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="relative"
+                    asChild
+                  >
                     <Link href="/notifications">
                       <Bell className="h-5 w-5" />
                     </Link>
@@ -310,8 +328,8 @@ export function NavBar() {
                       {/* Logout Section */}
                       <DropdownMenuItem
                         className="text-destructive hover:cursor-pointer"
-                        onClick={() => {
-                          jsCookie.remove("accessToken");
+                        onClick={async () => {
+                          await logout();
                           router.replace("/login");
                         }}
                       >

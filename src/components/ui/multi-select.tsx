@@ -1,5 +1,3 @@
-// src/components/multi-select.tsx
-
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { CheckIcon, ChevronDown } from "lucide-react";
@@ -116,6 +114,13 @@ interface MultiSelectProps
    * Optional, can be used to customize the dropdown width and other styles.
    */
   contentClassName?: string;
+
+  /**
+   * Whether the component is in a loading state.
+   * When true, shows a loading indicator inside the input.
+   * Optional, defaults to false.
+   */
+  isLoading?: boolean;
 }
 
 export const MultiSelect = React.forwardRef<
@@ -133,6 +138,7 @@ export const MultiSelect = React.forwardRef<
       modalPopover = false,
       className,
       contentClassName,
+      isLoading = false,
       ...props
     },
     ref
@@ -191,7 +197,16 @@ export const MultiSelect = React.forwardRef<
               className
             )}
           >
-            {value.length > 0 ? (
+            {isLoading ? (
+              <div className="flex items-center justify-between w-full px-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    Loading...
+                  </span>
+                </div>
+                <ChevronDown className="h-4 cursor-pointer text-muted-foreground" />
+              </div>
+            ) : value.length > 0 ? (
               <div className="flex justify-between items-center w-full px-3">
                 <span className="text-sm font-medium text-foreground">
                   ({value.length}) {placeholder}

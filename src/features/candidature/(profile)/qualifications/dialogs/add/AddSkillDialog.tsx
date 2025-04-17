@@ -19,7 +19,7 @@ import { useState } from "react";
 import { useDebounce } from "use-debounce";
 import { useCreateResumeSkill } from "../../hooks/use-resume-skill";
 import { PROFICIENCY_OPTIONS } from "../../constants/skill-proficiency";
-import { X, Check, ChevronsUpDown, LoaderPinwheel, Plus } from "lucide-react";
+import { X, Check, ChevronsUpDown, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   getSkillBadgeStyle,
@@ -63,6 +63,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import LoaderOne from "@/components/ui/loader-one";
 
 interface SelectedSkill {
   uuid?: string;
@@ -261,7 +262,7 @@ export function AddSkillDialog({ open, onOpenChange }: AddSkillDialogProps) {
                           {skills?.find((s) => s.uuid === field.value)?.name ??
                             "Select skill..."}
                           {isLoading ? (
-                            <LoaderPinwheel className="ml-2 h-4 w-4 shrink-0 opacity-50 animate-spin" />
+                            <LoaderOne />
                           ) : (
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           )}

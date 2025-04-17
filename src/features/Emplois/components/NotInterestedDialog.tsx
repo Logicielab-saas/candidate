@@ -23,8 +23,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import LoaderOne from "@/components/ui/loader-one";
 import { useMaskEmploi } from "@/hooks/use-mask-emploi";
-import { Loader2 } from "lucide-react";
 
 interface NotInterestedDialogProps {
   open: boolean;
@@ -66,8 +66,8 @@ export default function NotInterestedDialog({
           >
             {isPending ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Masquage...
+                <LoaderOne />
+                <span className="ml-2">Masquage...</span>
               </>
             ) : (
               "Confirmer"
