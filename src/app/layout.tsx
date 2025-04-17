@@ -8,6 +8,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ThemeProvider } from "@/lib/providers/ThemeProvider";
 import { NotificationsProvider } from "@/features/notifications/context/notifications-context";
+import { getUserLocaleOnServer } from "@/lib/actions/getUserLocale.action";
+import { NextIntlClientProvider } from "next-intl";
 
 export const metadata: Metadata = {
   title: "JobsApp",
@@ -29,13 +31,22 @@ const roboto = Roboto({
   weight: ["400", "700"],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // server-side cookie read
+  const locale = await getUserLocaleOnServer();
+
+  // load the messages for this locale
+  const messages = (await import(`@/messages/${locale}.json`)).default;
+
+  // only arabic should flip for now
+  const isRTL = locale === "ar";
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} dir={isRTL ? "rtl" : "ltr"} suppressHydrationWarning>
       <head>
         {/* <script src="https://unpkg.com/react-scan/dist/auto.global.js" async /> */}
       </head>
@@ -47,11 +58,13 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <NextTopLoader showSpinner={false} color="#F97316" />
-            <NuqsAdapter>
-              <ReactQueryProvider>{children}</ReactQueryProvider>
-            </NuqsAdapter>
-            <Toaster />
+            <NextIntlClientProvider messages={messages}>
+              <NextTopLoader showSpinner={false} color="#ff9c2a" />
+              <NuqsAdapter>
+                <ReactQueryProvider>{children}</ReactQueryProvider>
+              </NuqsAdapter>
+              <Toaster />
+            </NextIntlClientProvider>
           </ThemeProvider>
         </NotificationsProvider>
       </body>
