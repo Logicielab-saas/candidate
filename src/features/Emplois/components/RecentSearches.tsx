@@ -16,8 +16,10 @@ import { Search, MapPin, Clock, X } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useQueryState } from "nuqs";
 import { useRecentSearchesStore } from "../store/recent-searches.store";
+import { useTranslations } from "next-intl";
 
 export function RecentSearches() {
+  // Local state for form inputs
   const [, setSearchText] = useQueryState("q", {
     history: "push",
   });
@@ -26,6 +28,8 @@ export function RecentSearches() {
   });
   const [, setJobId] = useQueryState("job");
   const { searches, removeSearch } = useRecentSearchesStore();
+
+  const t = useTranslations("emplois.recentSearches");
 
   const handleSearchClick = (search: {
     searchText?: string;
@@ -41,10 +45,8 @@ export function RecentSearches() {
   if (searches.length === 0) {
     return (
       <div className="text-center text-muted-foreground py-8">
-        <p>No recent searches yet.</p>
-        <p className="text-sm mt-2">
-          Try searching for jobs by title, keyword, or location.
-        </p>
+        <p>{t("noSearches")}</p>
+        <p className="text-sm mt-2">{t("searchTip")}</p>
       </div>
     );
   }
@@ -89,6 +91,7 @@ export function RecentSearches() {
               onClick={() => removeSearch(search.id)}
             >
               <X className="h-4 w-4" />
+              <span className="sr-only">{t("removeSearch")}</span>
             </Button>
           </div>
         </Card>

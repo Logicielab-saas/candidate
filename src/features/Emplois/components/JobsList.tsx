@@ -20,6 +20,7 @@ import { useSavedJobsStore } from "../store/saved-jobs.store";
 import { JobCardSkeleton } from "../skeletons/JobCardSkeleton";
 import { Button } from "@/components/ui/button";
 import LoaderOne from "@/components/ui/loader-one";
+import { useTranslations } from "next-intl";
 
 interface JobsListProps {
   isDesktop: boolean;
@@ -33,6 +34,9 @@ export function JobsList({ isDesktop }: JobsListProps) {
   const initializeSavedJobs = useSavedJobsStore(
     (state) => state.initializeSavedJobs
   );
+
+  const t = useTranslations("emplois.jobsList");
+  const tCommon = useTranslations("common");
 
   // Fetch jobs from API with pagination
   const {
@@ -78,8 +82,8 @@ export function JobsList({ isDesktop }: JobsListProps) {
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold">Available Positions</h2>
-          <span className="text-sm text-muted-foreground">Loading...</span>
+          <h2 className="text-xl font-semibold">{t("title")}</h2>
+          <span className="text-sm text-muted-foreground">{t("loading")}</span>
         </div>
         <div className="grid grid-cols-1 gap-4">
           {[...Array(3)].map((_, index) => (
@@ -95,19 +99,24 @@ export function JobsList({ isDesktop }: JobsListProps) {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold text-destructive">
-            Error loading jobs
+            {t("error")}
           </h2>
         </div>
       </div>
     );
   }
 
+  const totalJobs = pagination?.total ?? 0;
+  const remainingJobs = jobs ? totalJobs - jobs.length : 0;
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">Available Positions</h2>
+        <h2 className="text-xl font-semibold">{t("title")}</h2>
         <span className="text-sm text-muted-foreground">
-          {pagination?.total} jobs found
+          {totalJobs === 1
+            ? t("jobsFound", { count: totalJobs })
+            : t("jobsFoundPlural", { count: totalJobs })}
         </span>
       </div>
 
@@ -124,9 +133,7 @@ export function JobsList({ isDesktop }: JobsListProps) {
 
         {!jobs?.length && (
           <div className="text-center p-8 border rounded-lg">
-            <p className="text-muted-foreground">
-              No jobs match your search criteria.
-            </p>
+            <p className="text-muted-foreground">{t("noResults")}</p>
           </div>
         )}
 
@@ -142,12 +149,12 @@ export function JobsList({ isDesktop }: JobsListProps) {
               {isFetchingNextPage ? (
                 <>
                   <LoaderOne />
-                  <span className="ml-2">Loading...</span>
+                  <span className="ml-2">{tCommon("loading")}</span>
                 </>
               ) : (
-                `Load More (${
-                  pagination ? pagination.total - jobs.length : 0
-                } remaining)`
+                `${tCommon("actions.loadMore")} (${t("remainingJobs", {
+                  count: remainingJobs,
+                })})`
               )}
             </Button>
           </div>

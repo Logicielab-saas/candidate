@@ -6,6 +6,7 @@ import { spanBadgeStyle } from "@/core/styles/span-badge.style";
 import { redirect } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { JobCardMenu } from "./JobCardMenu";
+import { useTranslations } from "next-intl";
 
 interface JobCardProps {
   job: Emplois;
@@ -13,6 +14,8 @@ interface JobCardProps {
 }
 
 export function JobCard({ job, isSelected }: JobCardProps) {
+  const t = useTranslations("emplois.jobCard");
+
   const handleKeywordClick = (e: React.MouseEvent, skill: string) => {
     e.stopPropagation(); // Prevent job card click
     redirect(`/home?keyword=${encodeURIComponent(skill)}`);
@@ -97,13 +100,16 @@ export function JobCard({ job, isSelected }: JobCardProps) {
             </div>
           )} */}
           <div className="text-xs text-muted-foreground">
-            {job.views} views • {job.postule} applied •{" "}
-            {job.status === "open"
-              ? "Active"
-              : job.status === "closed"
-              ? "Closed"
-              : "Suspended"}
-            {job.saved && " • Saved"}
+            {job.views === 1
+              ? t("views", { count: job.views })
+              : t("viewsPlural", { count: job.views })}
+            {" • "}
+            {job.postule === 1
+              ? t("applied", { count: job.postule })
+              : t("appliedPlural", { count: job.postule })}
+            {" • "}
+            {t(`status.${job.status}`)}
+            {job.saved && ` • ${t("saved")}`}
           </div>
         </div>
       </CardContent>

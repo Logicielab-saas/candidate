@@ -30,6 +30,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface ShareJobPopoverProps {
   jobTitle: string;
@@ -39,7 +40,7 @@ interface ShareJobPopoverProps {
 }
 
 // Create motion components
-const MotionButton = motion.create(Button);
+const MotionButton = motion(Button);
 const MotionSpan = motion.span;
 
 const buttonVariants = {
@@ -63,40 +64,46 @@ export function ShareJobPopover({
 }: ShareJobPopoverProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
+  const t = useTranslations("emplois.jobDetails.share");
   const shareUrl = process.env.NEXT_PUBLIC_APP_URL + "/annonce-details/" + slug;
 
   // Generate platform-specific sharing text
-  const getShareText = (platform?: "twitter" | "linkedin" | "facebook") => {
-    const baseText = `${jobTitle} chez ${companyName} à ${jobLocation}`;
+  const getShareText = (
+    platform?: "twitter" | "linkedin" | "facebook" | "whatsapp"
+  ) => {
+    const params = { title: jobTitle, company: companyName };
 
-    switch (platform) {
-      case "twitter":
-        return `🚀 Nouvelle opportunité : ${baseText}\n\n`;
-      case "linkedin":
-        return `Je viens de découvrir cette offre d'emploi intéressante :\n\n📍 ${baseText}\n\n#Opportunité`;
-      case "facebook":
-        return `📢 Découvrez cette offre d'emploi :\n\n${baseText}`;
-      default:
-        return `Découvrez cette offre d'emploi : ${baseText}`;
+    if (platform) {
+      return t(`shareText.${platform}`, params);
     }
+    return t("shareText.default", params);
   };
 
   // Handle native sharing if available
   const handleNativeShare = async () => {
-    if (!canUseShareApi) return;
-
-    const shareText = getShareText();
-    const fullText = `${shareText}\n\n${shareUrl}`;
+    if (!canUseShareApi) {
+      toast({
+        title: t("toast.shareError.title"),
+        description: t("errors.nativeShareUnavailable"),
+        variant: "destructive",
+      });
+      return;
+    }
 
     try {
       await navigator.share({
-        title: `Offre d'emploi : ${jobTitle}`,
-        text: fullText,
+        title: jobTitle,
+        text: getShareText(),
         url: shareUrl,
       });
       setIsOpen(false);
     } catch (error) {
       console.error("Error sharing:", error);
+      toast({
+        title: t("toast.shareError.title"),
+        description: t("toast.shareError.description"),
+        variant: "destructive",
+      });
     }
   };
 
@@ -111,13 +118,18 @@ export function ShareJobPopover({
         shareLink = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`;
         break;
       case "linkedin":
-        // LinkedIn's sharing URL structure
         shareLink = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}&summary=${encodedText}`;
         break;
       case "facebook":
-        // Facebook allows both URL and quote
         shareLink = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`;
         break;
+      default:
+        toast({
+          title: t("toast.shareError.title"),
+          description: t("errors.unsupportedPlatform"),
+          variant: "destructive",
+        });
+        return;
     }
 
     window.open(shareLink, "_blank", "width=600,height=400");
@@ -131,16 +143,15 @@ export function ShareJobPopover({
     try {
       await navigator.clipboard.writeText(textToCopy);
       toast({
-        title: "Lien copié",
-        description:
-          "Le lien et la description de l'offre ont été copiés dans le presse-papier",
+        title: t("toast.copySuccess.title"),
+        description: t("toast.copySuccess.description"),
       });
       setIsOpen(false);
     } catch (error) {
       console.error("Error copying link:", error);
       toast({
-        title: "Erreur",
-        description: "Impossible de copier le lien",
+        title: t("toast.copyError.title"),
+        description: t("toast.copyError.description"),
         variant: "destructive",
       });
     }
@@ -148,7 +159,7 @@ export function ShareJobPopover({
 
   // Handle WhatsApp share
   const handleWhatsAppShare = () => {
-    const shareText = getShareText();
+    const shareText = getShareText("whatsapp");
     const fullText = `${shareText}\n\n${shareUrl}`;
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(fullText)}`;
     window.open(whatsappUrl, "_blank");
@@ -198,7 +209,7 @@ export function ShareJobPopover({
                 custom={0}
               >
                 <Share2 className="h-5 w-5 mr-2" />
-                Partager
+                {t("shareNative")}
               </MotionButton>
             )}
 
@@ -218,7 +229,7 @@ export function ShareJobPopover({
               custom={1}
             >
               <MessageCircle className="h-5 w-5 mr-2" />
-              WhatsApp
+              {t("platforms.whatsapp")}
             </MotionButton>
 
             {/* Social Platform Buttons */}
@@ -237,7 +248,7 @@ export function ShareJobPopover({
               custom={2}
             >
               <Twitter className="h-5 w-5 mr-2" />
-              Twitter
+              {t("platforms.twitter")}
             </MotionButton>
 
             <MotionButton
@@ -255,7 +266,7 @@ export function ShareJobPopover({
               custom={3}
             >
               <Linkedin className="h-5 w-5 mr-2" />
-              LinkedIn
+              {t("platforms.linkedin")}
             </MotionButton>
 
             <MotionButton
@@ -273,7 +284,7 @@ export function ShareJobPopover({
               custom={4}
             >
               <Facebook className="h-5 w-5 mr-2" />
-              Facebook
+              {t("platforms.facebook")}
             </MotionButton>
 
             <motion.div
@@ -297,7 +308,7 @@ export function ShareJobPopover({
               custom={6}
             >
               <Link className="h-5 w-5 mr-2" />
-              Copier le lien
+              {t("copyLink")}
             </MotionButton>
           </motion.div>
         </AnimatePresence>

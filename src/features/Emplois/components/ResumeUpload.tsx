@@ -16,9 +16,19 @@ import { AlertCircle } from "lucide-react";
 import { ResumeItem } from "@/components/shared/ResumeItem";
 import { useFetchResumeFiles } from "@/features/candidature/(profile)/qualifications/hooks/use-resume-files";
 import { ResumeSkeleton } from "@/features/candidature/(profile)/components/ResumeSkeleton";
+import { useTranslations } from "next-intl";
 
 export function ResumeUpload() {
   const { data: resumeFiles, isLoading } = useFetchResumeFiles();
+  const t = useTranslations("emplois.resumeUpload");
+
+  // Get the tips array from translations
+  const tips = [
+    t.raw("tips.list.format"),
+    t.raw("tips.list.achievements"),
+    t.raw("tips.list.tailored"),
+    t.raw("tips.list.grammar"),
+  ];
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -40,15 +50,12 @@ export function ResumeUpload() {
           <div className="rounded-lg bg-muted/50 p-4">
             <h4 className="font-medium mb-2 flex items-center gap-2">
               <AlertCircle className="h-4 w-4 text-muted-foreground" />
-              Conseils pour votre CV
+              {t("tips.title")}
             </h4>
             <ul className="text-sm text-muted-foreground space-y-1 list-disc pl-5">
-              <li>Utilisez un format clair et professionnel</li>
-              <li>
-                Mettez en avant vos réalisations plutôt que vos responsabilités
-              </li>
-              <li>Adaptez votre CV aux offres d&apos;emploi ciblées</li>
-              <li>Vérifiez l&apos;orthographe et la grammaire</li>
+              {tips.map((tip, index) => (
+                <li key={index}>{tip}</li>
+              ))}
             </ul>
           </div>
         </CardContent>

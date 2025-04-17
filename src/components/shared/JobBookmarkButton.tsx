@@ -22,6 +22,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface JobBookmarkButtonProps {
   jobId: string;
@@ -54,6 +55,7 @@ export function JobBookmarkButton({
 }: JobBookmarkButtonProps) {
   // Local state to track the current saved status
   const [localIsSaved, setLocalIsSaved] = useState(initialIsSaved);
+  const t = useTranslations("emplois.jobCard.menu.bookmark");
 
   // Update local state when initialIsSaved changes
   useEffect(() => {
@@ -93,9 +95,7 @@ export function JobBookmarkButton({
         }}
         aria-disabled={isProcessing}
         role="button"
-        aria-label={
-          localIsSaved ? "Retirer des favoris" : "Ajouter aux favoris"
-        }
+        aria-label={localIsSaved ? t("remove") : t("add")}
       >
         <Heart className={cn(heartIconClasses, iconClassName)} />
       </span>
@@ -118,9 +118,7 @@ export function JobBookmarkButton({
           toggleSaved();
         }}
         disabled={isProcessing}
-        aria-label={
-          localIsSaved ? "Retirer des favoris" : "Ajouter aux favoris"
-        }
+        aria-label={localIsSaved ? t("remove") : t("add")}
       >
         <Heart className={cn(heartIconClasses, iconClassName)} />
       </Button>
@@ -139,7 +137,7 @@ export function JobBookmarkButton({
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>{content}</TooltipTrigger>
         <TooltipContent side={tooltipPosition} className="text-sm">
-          {localIsSaved ? "Retirer des favoris" : "Ajouter aux favoris"}
+          {localIsSaved ? t("remove") : t("add")}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

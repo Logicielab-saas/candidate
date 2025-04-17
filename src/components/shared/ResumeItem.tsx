@@ -38,6 +38,7 @@ import { SectionHeader } from "../../features/candidature/(profile)/qualificatio
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
 import type { ProfileFiles } from "@/features/candidature/(profile)/common/interface";
+import { useTranslations } from "next-intl";
 
 // Dynamically import dialog with loading state
 const DeleteResumeDialog = dynamic(
@@ -78,6 +79,8 @@ export function ResumeItem({
   const { mutate: updateFile, isPending: isUpdating } = useUpdateResumeFiles();
   const { isPending: isDeleting } = useDeleteResumeFiles();
 
+  const t = useTranslations("resume");
+
   const handleChangeCV = () => {
     fileInputRef.current?.click();
   };
@@ -98,8 +101,8 @@ export function ResumeItem({
     if (file.type !== "application/pdf") {
       toast({
         variant: "destructive",
-        title: "Invalid file type",
-        description: "Please upload a PDF file",
+        title: t("validation.invalidType.title"),
+        description: t("validation.invalidType.description"),
       });
       return;
     }
@@ -108,8 +111,8 @@ export function ResumeItem({
     if (file.size > 2048 * 1024) {
       toast({
         variant: "destructive",
-        title: "File too large",
-        description: "Maximum file size is 2MB (2048KB)",
+        title: t("validation.fileSize.title"),
+        description: t("validation.fileSize.description"),
       });
       return;
     }
@@ -130,8 +133,8 @@ export function ResumeItem({
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error managing CV",
-        description: "There was an error managing your CV. Please try again.",
+        title: t("error.title"),
+        description: t("error.description"),
       });
       console.error(error);
     }
@@ -166,7 +169,7 @@ export function ResumeItem({
   return (
     <div className="space-y-4">
       <SectionHeader
-        title="Resume"
+        title={t("title")}
         icon={<File className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={type === "custom" ? handleChangeCV : undefined}
         removeAdd={removeAdd}
@@ -190,7 +193,7 @@ export function ResumeItem({
 
       {!resumeFiles?.length && (
         <p className="text-muted-foreground text-center py-4">
-          No CV added yet
+          {t("noResume")}
         </p>
       )}
 
@@ -213,7 +216,7 @@ export function ResumeItem({
             <div className="flex items-center gap-2">
               <LoaderOne />
               <span className="text-sm text-muted-foreground">
-                {isUploading ? "Uploading..." : "Deleting..."}
+                {isUploading ? t("uploading") : t("deleting")}
               </span>
             </div>
           ) : (
@@ -227,19 +230,19 @@ export function ResumeItem({
                 <DropdownMenuItem className="flex items-center" asChild>
                   <Link href={getFileUrl(file)} target="_blank">
                     <Eye className="mr-2 h-4 w-4" />
-                    View CV
+                    {t("actions.view")}
                   </Link>
                 </DropdownMenuItem>
                 {type === "custom" && (
                   <>
                     <DropdownMenuItem onClick={() => handleUpdateCV(file.uuid)}>
                       <Upload className="mr-2 h-4 w-4" />
-                      Change Resume
+                      {t("actions.change")}
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <Link href={getFileUrl(file)} target="_blank">
                         <Download className="mr-2 h-4 w-4" />
-                        Download CV
+                        {t("actions.download")}
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -251,7 +254,7 @@ export function ResumeItem({
                       }}
                     >
                       <Trash2 className="mr-2 h-4 w-4" />
-                      Delete CV
+                      {t("actions.delete")}
                     </DropdownMenuItem>
                   </>
                 )}

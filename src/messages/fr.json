@@ -14,7 +14,12 @@
       "cancel": "Annuler",
       "update": "Mettre à jour",
       "apply": "Appliquer",
-      "reset": "Réinitialiser"
+      "reset": "Réinitialiser",
+      "loadMore": "Charger plus",
+      "openMenu": "Ouvrir le menu",
+      "confirm": "Confirmer",
+      "send": "Envoyer",
+      "sending": "Envoi..."
     },
     "filters": {
       "activeFilters": "{count} filtre actif",
@@ -68,7 +73,8 @@
     },
     "labels": {
       "search": "Recherche",
-      "salary": "Salaire"
+      "salary": "Salaire",
+      "additionalInfo": "Informations complémentaires"
     },
     "selectorsSearch": {
       "citySelector": {
@@ -112,6 +118,55 @@
         "description": "Utilisez la barre de recherche ci-dessus pour trouver des emplois"
       }
     },
+    "jobsList": {
+      "title": "Postes disponibles",
+      "loading": "Chargement...",
+      "error": "Erreur lors du chargement des emplois",
+      "noResults": "Aucun emploi ne correspond à vos critères de recherche.",
+      "jobsFound": "{count} emploi trouvé",
+      "jobsFoundPlural": "{count} emplois trouvés",
+      "remainingJobs": "{count} restant"
+    },
+    "jobCard": {
+      "views": "{count} vue",
+      "viewsPlural": "{count} vues",
+      "applied": "{count} postulation",
+      "appliedPlural": "{count} postulations",
+      "status": {
+        "open": "Actif",
+        "closed": "Fermé",
+        "suspended": "Suspendu"
+      },
+      "saved": "Enregistré",
+      "menu": {
+        "bookmark": {
+          "add": "Ajouter aux favoris",
+          "remove": "Retirer des favoris"
+        },
+        "notInterested": "Pas intéressé(e)",
+        "report": "Signaler cette offre"
+      },
+      "notInterestedDialog": {
+        "title": "Confirmer votre choix",
+        "description": "Cette offre ne sera plus visible dans votre flux principal. Vous pouvez toujours la retrouver dans vos paramètres.",
+        "masking": "Masquage..."
+      },
+      "reportDialog": {
+        "title": "Signaler cette offre d'emploi",
+        "description": "Sélectionnez une raison et fournissez des informations supplémentaires si nécessaire.",
+        "reasons": {
+          "offensive": "Offre offensante ou discriminatoire",
+          "fraudulent": "Offre potentiellement frauduleuse",
+          "inaccurate": "Offre inexacte",
+          "advertising": "Il s'agit d'une publicité",
+          "other": "Autre"
+        },
+        "validation": {
+          "reasonRequired": "Veuillez sélectionner une raison",
+          "maxLength": "Maximum 300 caractères"
+        }
+      }
+    },
     "alerts": {
       "create": "Créer une Alerte",
       "active": "Alerte active",
@@ -131,6 +186,112 @@
           "searchCriteria": "Critères de recherche"
         }
       }
+    },
+    "jobDetails": {
+      "selectJob": "Sélectionnez un poste pour voir les détails",
+      "positions": "{count} poste(s)",
+      "salary": {
+        "range": "{start} - {end} MAD",
+        "fixed": "{amount} MAD",
+        "unspecified": "Non spécifié"
+      },
+      "workingHours": {
+        "range": "{min}-{max}h{duration}",
+        "fixed": "{hours}h{duration}",
+        "unspecified": "Non spécifié"
+      },
+      "deadline": "Date limite: {date}",
+      "apply": "Postuler",
+      "alreadyApplied": "Déjà postulé",
+      "actions": {
+        "share": "Partager l'offre",
+        "report": "Signaler l'offre",
+        "notInterested": "Écarter l'offre"
+      },
+      "sections": {
+        "description": "Description du poste",
+        "requirements": "Prérequis"
+      },
+      "share": {
+        "title": "Partager cette offre d'emploi",
+        "description": "Partagez cette opportunité avec votre réseau",
+        "copyLink": "Copier le lien",
+        "copied": "Lien copié !",
+        "shareNative": "Partager via...",
+        "platforms": {
+          "twitter": "Partager sur Twitter",
+          "linkedin": "Partager sur LinkedIn",
+          "facebook": "Partager sur Facebook",
+          "whatsapp": "Partager sur WhatsApp"
+        },
+        "shareText": {
+          "default": "Découvrez cette offre d'emploi intéressante : {title} chez {company}",
+          "twitter": "🚀 Superbe opportunité : {title} chez {company}! Consultez l'offre ici :",
+          "linkedin": "Je viens de découvrir ce poste intéressant : {title} chez {company}. Plus de détails ici :",
+          "facebook": "Une belle opportunité à ne pas manquer : {title} chez {company}. En savoir plus :",
+          "whatsapp": "Salut ! J'ai pensé que cette offre pourrait t'intéresser : {title} chez {company}. Voici le lien :"
+        },
+        "toast": {
+          "copySuccess": {
+            "title": "Lien copié !",
+            "description": "Le lien a été copié dans votre presse-papiers"
+          },
+          "copyError": {
+            "title": "Erreur de copie",
+            "description": "Impossible de copier le lien. Veuillez réessayer."
+          },
+          "shareError": {
+            "title": "Erreur de partage",
+            "description": "Impossible de partager l'offre. Veuillez réessayer."
+          }
+        },
+        "errors": {
+          "unsupportedPlatform": "Plateforme de partage non prise en charge",
+          "nativeShareUnavailable": "Le partage natif n'est pas disponible sur votre appareil"
+        }
+      }
+    },
+    "recentSearches": {
+      "noSearches": "Aucune recherche récente.",
+      "searchTip": "Essayez de rechercher des emplois par titre, mot-clé ou lieu.",
+      "removeSearch": "Supprimer la recherche"
+    },
+    "resumeUpload": {
+      "tips": {
+        "title": "Conseils pour votre CV",
+        "list": {
+          "format": "Utilisez un format clair et professionnel",
+          "achievements": "Mettez en avant vos réalisations plutôt que vos responsabilités",
+          "tailored": "Adaptez votre CV aux offres d'emploi ciblées",
+          "grammar": "Vérifiez l'orthographe et la grammaire"
+        }
+      }
+    }
+  },
+  "resume": {
+    "title": "CV",
+    "noResume": "Aucun CV ajouté",
+    "uploading": "Téléchargement en cours...",
+    "deleting": "Suppression en cours...",
+    "actions": {
+      "view": "Voir le CV",
+      "change": "Modifier le CV",
+      "download": "Télécharger le CV",
+      "delete": "Supprimer le CV"
+    },
+    "validation": {
+      "invalidType": {
+        "title": "Type de fichier invalide",
+        "description": "Veuillez télécharger un fichier PDF"
+      },
+      "fileSize": {
+        "title": "Fichier trop volumineux",
+        "description": "La taille maximale du fichier est de 2 Mo (2048 Ko)"
+      }
+    },
+    "error": {
+      "title": "Erreur de gestion du CV",
+      "description": "Une erreur s'est produite lors de la gestion de votre CV. Veuillez réessayer."
     }
   }
 }
