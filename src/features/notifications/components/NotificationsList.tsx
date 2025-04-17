@@ -15,8 +15,10 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { useNotifications } from "../hooks/use-notifications";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslations } from "next-intl";
 
 export function NotificationsList() {
+  const t = useTranslations("notifications");
   const { data: notifications, isLoading, error } = useNotifications();
   const [type] = useQueryState<"job" | "interview" | "resume" | "all">("type", {
     parse: (value: string) => value as "job" | "interview" | "resume" | "all",
@@ -36,9 +38,7 @@ export function NotificationsList() {
     return (
       <Alert variant="destructive">
         <AlertCircle className="h-4 w-4" />
-        <AlertDescription>
-          Failed to load notifications. Please try again later.
-        </AlertDescription>
+        <AlertDescription>{t("errors.loadFailed")}</AlertDescription>
       </Alert>
     );
   }
@@ -47,9 +47,7 @@ export function NotificationsList() {
     return (
       <Alert>
         <AlertCircle className="h-4 w-4" />
-        <AlertDescription>
-          Vous n&apos;avez pas encore de notifications.
-        </AlertDescription>
+        <AlertDescription>{t("errors.noNotifications")}</AlertDescription>
       </Alert>
     );
   }
@@ -83,7 +81,7 @@ export function NotificationsList() {
             <Alert>
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
-                No notifications match your filters.
+                {t("errors.noMatchingFilters")}
               </AlertDescription>
             </Alert>
           ) : (

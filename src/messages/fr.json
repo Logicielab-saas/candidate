@@ -29,7 +29,9 @@
       "share": "Partager",
       "alreadyApplied": "Déjà postulé",
       "yes": "Oui",
-      "no": "Non"
+      "no": "Non",
+      "clearFilters": "Effacer les filtres",
+      "markAsRead": "Marquer comme lu"
     },
     "filters": {
       "activeFilters": "{count} filtre actif",
@@ -37,7 +39,12 @@
       "filterByDate": "Filtrer par date",
       "types": {
         "contractTypes": "Types de contrat",
-        "employmentTypes": "Types d'emploi"
+        "employmentTypes": "Types d'emploi",
+        "all": "Tous les types",
+        "job": "Emplois",
+        "interview": "Entretiens",
+        "application": "Candidatures",
+        "system": "Système"
       },
       "jobType": {
         "placeholder": "Filtrer par type d'emploi"
@@ -79,6 +86,15 @@
             }
           }
         }
+      },
+      "filterBy": {
+        "type": "Filtrer par type",
+        "status": "Filtrer par statut"
+      },
+      "status": {
+        "all": "Tous les statuts",
+        "read": "Lu",
+        "unread": "Non lu"
       }
     },
     "labels": {
@@ -395,6 +411,16 @@
         "title": "Erreur",
         "description": "Une erreur s'est produite lors de l'envoi de votre message. Veuillez réessayer."
       }
+    }
+  },
+  "notifications": {
+    "page": {
+      "title": "Notifications"
+    },
+    "errors": {
+      "loadFailed": "Impossible de charger les notifications. Veuillez réessayer plus tard.",
+      "noNotifications": "Vous n'avez pas encore de notifications.",
+      "noMatchingFilters": "Aucune notification ne correspond à vos filtres."
     }
   }
 }
