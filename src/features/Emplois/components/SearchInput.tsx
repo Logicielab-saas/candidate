@@ -22,6 +22,7 @@ import {
 import { useOnClickOutside } from "@/hooks/use-on-click-outside";
 import { useDebounce } from "use-debounce";
 import LoaderOne from "@/components/ui/loader-one";
+import { useTranslations } from "next-intl";
 
 interface SearchInputProps {
   value: string;
@@ -34,6 +35,9 @@ export function SearchInput({ value, onChange }: SearchInputProps) {
   const [debouncedValue] = useDebounce(localValue, 1000);
   const [isDebouncing, setIsDebouncing] = useState(false);
   const commandRef = useRef<HTMLDivElement>(null);
+
+  const t = useTranslations("emplois.searchInput");
+  const tCommon = useTranslations("common");
 
   const { suggestions, isLoading } = useSearchSuggestions(debouncedValue);
 
@@ -76,13 +80,13 @@ export function SearchInput({ value, onChange }: SearchInputProps) {
           "peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         )}
       >
-        Search Jobs
+        {t("label")}
       </label>
       <div className="relative" ref={commandRef}>
         <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           id="search"
-          placeholder="Search by job title, company name, or keywords..."
+          placeholder={t("placeholder")}
           className="pl-8"
           value={localValue}
           onChange={(e) => handleInputChange(e.target.value)}
@@ -97,12 +101,14 @@ export function SearchInput({ value, onChange }: SearchInputProps) {
                   <CommandEmpty className="py-6 text-center">
                     <LoaderOne />
                     <p className="text-sm text-muted-foreground mt-2">
-                      {isDebouncing ? "Typing..." : "Loading suggestions..."}
+                      {isDebouncing
+                        ? tCommon("writing")
+                        : tCommon("suggestionsLoading")}
                     </p>
                   </CommandEmpty>
                 ) : suggestions.length === 0 ? (
-                  <CommandEmpty className="py-6">
-                    No results found for &ldquo;{localValue}&rdquo;
+                  <CommandEmpty className="py-6 text-center">
+                    {tCommon("searchNoResults", { localValue })}
                   </CommandEmpty>
                 ) : (
                   <CommandGroup heading="Suggestions">

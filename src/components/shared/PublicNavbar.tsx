@@ -15,6 +15,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 const navItems = [
   { name: "Emplois", url: "/emplois" },
@@ -125,6 +126,8 @@ export function PublicNavbar() {
                 {/* Right Side */}
                 <div className="flex items-center gap-2">
                   <ThemeButton />
+                  <LanguageSwitcher />
+
                   <div className="flex items-center gap-2">
                     <Button
                       variant="outline"

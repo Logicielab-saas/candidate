@@ -28,19 +28,16 @@ import { useState, useEffect } from "react";
 import { useDebounce } from "use-debounce";
 import { useCities } from "@/hooks/use-cities";
 import LoaderOne from "@/components/ui/loader-one";
+import { useTranslations } from "next-intl";
 
 // Define props interface to expose city value and setter
 interface CitySelectorProps {
   value: string | null;
   onChange: (value: string | null) => void;
-  label?: string;
 }
 
-export function CitySelector({
-  value,
-  onChange,
-  label = "City",
-}: CitySelectorProps) {
+export function CitySelector({ value, onChange }: CitySelectorProps) {
+  const t = useTranslations("common.selectorsSearch.citySelector");
   // Local state
   const [citySearch, setCitySearch] = useState("");
   const [open, setOpen] = useState(false);
@@ -79,7 +76,7 @@ export function CitySelector({
           "peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         )}
       >
-        {label}
+        {t("label")}
       </label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
@@ -89,14 +86,14 @@ export function CitySelector({
             aria-expanded={open}
             className="w-full justify-between"
           >
-            {currentCity?.name ?? "Toutes les villes..."}
+            {currentCity?.name ?? t("allCities")}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[250px] p-0">
           <Command>
             <CommandInput
-              placeholder="Rechercher une ville..."
+              placeholder={t("searchPlaceholder")}
               value={citySearch}
               onValueChange={setCitySearch}
             />
@@ -106,7 +103,7 @@ export function CitySelector({
                   <LoaderOne />
                 </div>
               ) : filteredCities.length === 0 ? (
-                <CommandEmpty>Aucune ville trouvée.</CommandEmpty>
+                <CommandEmpty>{t("noCitiesFound")}</CommandEmpty>
               ) : (
                 <CommandGroup>
                   {filteredCities.map((city) => (

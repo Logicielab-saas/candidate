@@ -40,6 +40,7 @@ import { Skeleton } from "../ui/skeleton";
 import { requestPermission } from "@/lib/request-permission";
 import { useEffect, useState } from "react";
 import { logout } from "@/features/auth/services/logout";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 // interface NavItem {
 //   name: string;
@@ -204,6 +205,7 @@ export function NavBar() {
                   </Button>
 
                   <ThemeButton />
+                  <LanguageSwitcher />
 
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

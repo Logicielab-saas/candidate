@@ -1,5 +1,26 @@
 {
-  "commonGlobal": {},
-  "validationGlobal": {},
-  "emploisPage": {}
+  "common": {
+    "search": "Rechercher",
+    "writing": "Écrivant...",
+    "suggestionsLoading": "Chargement des suggestions...",
+    "searchNoResults": "Aucun résultat trouvé pour \"{localValue}\"",
+    "selectorsSearch": {
+      "citySelector": {
+        "label": "Ville",
+        "searchPlaceholder": "Rechercher une ville...",
+        "noCitiesFound": "Aucune ville trouvée.",
+        "allCities": "Toutes les villes..."
+      }
+    }
+  },
+  "emplois": {
+    "page": {
+      "title": "Découvrez votre carrière de rêve",
+      "description": "Explorez des milliers d'opportunités d'emploi et trouvez le rôle parfait qui correspond à vos compétences et à vos aspirations"
+    },
+    "searchInput": {
+      "label": "Rechercher un emploi",
+      "placeholder": "Rechercher par titre d'emploi, entreprise ou mots-clés..."
+    }
+  }
 }
