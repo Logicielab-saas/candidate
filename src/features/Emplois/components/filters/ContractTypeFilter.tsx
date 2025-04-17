@@ -17,8 +17,11 @@ import { useDebounce } from "use-debounce";
 import { useQueryState } from "nuqs";
 import { useEmploiContracts } from "@/hooks/use-emploi-contracts";
 import { useEmploiTypes } from "@/hooks/use-emploi-types";
+import { useTranslations } from "next-intl";
 
 function JobTypesFilterComponent() {
+  const tCommon = useTranslations("common");
+
   // Fetch both contract types and employment types from API
   const { data: contractTypesData, isLoading: isLoadingContracts } =
     useEmploiContracts();
@@ -45,18 +48,18 @@ function JobTypesFilterComponent() {
       contractTypesData?.map((type) => ({
         label: type.name,
         value: `contract-${type.uuid}`,
-        group: "Contract Types",
+        group: tCommon("filters.types.contractTypes"),
       })) || [];
 
     const employmentOptions =
       employmentTypesData?.map((type) => ({
         label: type.title,
         value: `employment-${type.uuid}`,
-        group: "Employment Types",
+        group: tCommon("filters.types.employmentTypes"),
       })) || [];
 
     return [...contractOptions, ...employmentOptions];
-  }, [contractTypesData, employmentTypesData]);
+  }, [contractTypesData, employmentTypesData, tCommon]);
 
   // Update URL when debounced value changes
   useEffect(() => {
@@ -93,7 +96,7 @@ function JobTypesFilterComponent() {
         value={localSelectedTypes}
         modalPopover={true}
         onValueChange={handleValueChange}
-        placeholder="Filter by job type"
+        placeholder={tCommon("filters.jobType.placeholder")}
         className={cn(
           "w-[220px] bg-background pl-8",
           "border-dashed",

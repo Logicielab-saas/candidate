@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useTranslations } from "next-intl";
 
 interface AlertEditDialogProps {
   isOpen: boolean;
@@ -29,13 +30,16 @@ export function AlertEditDialog({
   salaryRange,
   onSave,
 }: AlertEditDialogProps) {
+  const t = useTranslations("emplois.alerts.dialog.edit");
+  const tCommon = useTranslations("common");
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-2xl">
             <BellRing className="h-6 w-6 text-primary" />
-            Modifier l&apos;alerte
+            {t("title")}
           </DialogTitle>
         </DialogHeader>
 
@@ -44,12 +48,12 @@ export function AlertEditDialog({
           <div className="rounded-lg bg-muted/50 p-4">
             <h4 className="font-medium mb-3 flex items-center gap-2">
               <Search className="h-4 w-4 text-muted-foreground" />
-              Critères de recherche
+              {t("searchCriteria")}
             </h4>
             <div className="pl-6 space-y-2">
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground">
-                  Recherche:
+                  {tCommon("labels.search")}:
                 </span>
                 <span className="text-sm font-medium text-primaryHex-500">
                   {searchText}
@@ -58,7 +62,7 @@ export function AlertEditDialog({
               {salaryRange && (
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-muted-foreground">
-                    Salaire:
+                    {tCommon("labels.salary")}:
                   </span>
                   <div className="flex items-center gap-1">
                     <span className="text-sm font-medium text-primaryHex-500">
@@ -73,11 +77,11 @@ export function AlertEditDialog({
 
         <DialogFooter className="mt-8">
           <Button variant="outline" onClick={onClose}>
-            Annuler
+            {tCommon("actions.cancel")}
           </Button>
           <Button onClick={onSave} className="gap-2">
             <BellRing className="h-4 w-4" />
-            Mettre à jour
+            {tCommon("actions.update")}
           </Button>
         </DialogFooter>
       </DialogContent>

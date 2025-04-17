@@ -33,9 +33,11 @@ import {
 import { ExperienceLevelFilter } from "./filters/ExperienceLevelFilter";
 import { IndustryFilter } from "./filters/IndustryFilter";
 import { RemoteWorkFilter } from "./filters/RemoteWorkFilter";
+import { useTranslations } from "next-intl";
 
 export function AdvancedFiltersDrawer() {
   const [isOpen, setIsOpen] = useState(false);
+  const tCommon = useTranslations("common");
 
   // URL state management
   const [experience, setExperience] = useQueryState("experience");
@@ -135,9 +137,9 @@ export function AdvancedFiltersDrawer() {
         className="w-full sm:max-w-md p-4 sm:p-6 overflow-y-auto"
       >
         <SheetHeader className="space-y-2.5">
-          <SheetTitle>Advanced Filters</SheetTitle>
+          <SheetTitle>{tCommon("filters.advanced.title")}</SheetTitle>
           <SheetDescription>
-            Refine your job search with advanced filtering options.
+            {tCommon("filters.advanced.description")}
           </SheetDescription>
         </SheetHeader>
 
@@ -173,10 +175,10 @@ export function AdvancedFiltersDrawer() {
             onClick={handleReset}
             className="flex-1 sm:flex-none"
           >
-            Reset Filters
+            {tCommon("actions.reset")}
           </Button>
           <Button onClick={handleApply} className="flex-1 sm:flex-none">
-            Apply Filters
+            {tCommon("actions.apply")}
           </Button>
         </SheetFooter>
       </SheetContent>

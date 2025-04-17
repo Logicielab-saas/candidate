@@ -4,6 +4,72 @@
     "writing": "Écrivant...",
     "suggestionsLoading": "Chargement des suggestions...",
     "searchNoResults": "Aucun résultat trouvé pour \"{localValue}\"",
+    "loading": "Chargement...",
+    "actions": {
+      "create": "Créer",
+      "edit": "Modifier",
+      "view": "Voir",
+      "save": "Enregistrer",
+      "close": "Fermer",
+      "cancel": "Annuler",
+      "update": "Mettre à jour",
+      "apply": "Appliquer",
+      "reset": "Réinitialiser"
+    },
+    "filters": {
+      "activeFilters": "{count} filtre actif",
+      "activeFiltersPlural": "{count} filtres actifs",
+      "filterByDate": "Filtrer par date",
+      "types": {
+        "contractTypes": "Types de contrat",
+        "employmentTypes": "Types d'emploi"
+      },
+      "jobType": {
+        "placeholder": "Filtrer par type d'emploi"
+      },
+      "advanced": {
+        "title": "Filtres avancés",
+        "description": "Affinez votre recherche d'emploi avec des options de filtrage avancées.",
+        "sections": {
+          "salary": {
+            "title": "Fourchette de salaire",
+            "min": "Salaire minimum",
+            "max": "Salaire maximum"
+          },
+          "experience": {
+            "title": "Niveau d'expérience",
+            "placeholder": "Sélectionner un niveau",
+            "levels": {
+              "entry": "Débutant (0-2 ans)",
+              "mid": "Intermédiaire (3-5 ans)",
+              "senior": "Senior (5+ ans)",
+              "lead": "Lead/Manager (8+ ans)"
+            }
+          },
+          "remote": {
+            "title": "Travail à distance",
+            "label": "Travail à distance uniquement",
+            "description": "Afficher uniquement les postes en télétravail"
+          },
+          "industry": {
+            "title": "Secteur d'activité",
+            "placeholder": "Sélectionner un secteur",
+            "types": {
+              "tech": "Technologie",
+              "finance": "Finance",
+              "healthcare": "Santé",
+              "education": "Éducation",
+              "retail": "Commerce de détail",
+              "manufacturing": "Industrie"
+            }
+          }
+        }
+      }
+    },
+    "labels": {
+      "search": "Recherche",
+      "salary": "Salaire"
+    },
     "selectorsSearch": {
       "citySelector": {
         "label": "Ville",
@@ -21,6 +87,50 @@
     "searchInput": {
       "label": "Rechercher un emploi",
       "placeholder": "Rechercher par titre d'emploi, entreprise ou mots-clés..."
+    },
+    "jobsContainer": {
+      "tabs": {
+        "recommended": "Pour vous",
+        "recentSearches": "Les Recherches Récentes",
+        "resume": "Télécharger votre CV"
+      },
+      "filters": {
+        "title": "Filtres",
+        "keywords": "Mots-clés",
+        "contractTypes": "Types de contrat",
+        "apply": "Appliquer",
+        "reset": "Réinitialiser",
+        "date": {
+          "last24h": "Dernières 24 heures",
+          "lastWeek": "Dernière semaine",
+          "lastMonth": "Dernier mois",
+          "allTime": "Tout"
+        }
+      },
+      "noActiveSearch": {
+        "title": "Commencez votre recherche",
+        "description": "Utilisez la barre de recherche ci-dessus pour trouver des emplois"
+      }
+    },
+    "alerts": {
+      "create": "Créer une Alerte",
+      "active": "Alerte active",
+      "viewTooltip": "Voir l'alerte",
+      "editTooltip": "Modifier l'alerte",
+      "success": {
+        "title": "Alerte créée avec succès",
+        "description": "Vous recevrez des notifications pour les nouveaux postes correspondant à vos critères."
+      },
+      "dialog": {
+        "view": {
+          "title": "Détails de l'alerte",
+          "searchCriteria": "Critères de recherche"
+        },
+        "edit": {
+          "title": "Modifier l'alerte",
+          "searchCriteria": "Critères de recherche"
+        }
+      }
     }
   }
 }

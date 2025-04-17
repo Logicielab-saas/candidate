@@ -5,6 +5,7 @@
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { memo } from "react";
+import { useTranslations } from "next-intl";
 
 interface RemoteWorkFilterProps {
   value: boolean;
@@ -12,12 +13,14 @@ interface RemoteWorkFilterProps {
 }
 
 function RemoteWorkFilterComponent({ value, onChange }: RemoteWorkFilterProps) {
+  const tCommon = useTranslations("common.filters.advanced.sections.remote");
+
   return (
     <div className="flex items-center justify-between">
       <div className="space-y-0.5">
-        <Label>Remote Work</Label>
+        <Label>{tCommon("title")}</Label>
         <p className="text-sm text-muted-foreground">
-          Show only remote positions
+          {tCommon("description")}
         </p>
       </div>
       <Switch checked={value} onCheckedChange={onChange} />

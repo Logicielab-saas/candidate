@@ -19,6 +19,7 @@ import { tabsListStyles, tabTriggerStyles } from "@/core/styles/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
+import { useTranslations } from "next-intl";
 
 const JobFilters = dynamic(
   () => import("./JobFilters").then((mod) => mod.JobFilters),
@@ -55,6 +56,8 @@ export function JobsContainer() {
     defaultValue: "recommended",
   });
   const addSearch = useRecentSearchesStore((state) => state.addSearch);
+
+  const t = useTranslations("emplois.jobsContainer");
 
   // Track searches in Zustand store
   useEffect(() => {
@@ -103,15 +106,15 @@ export function JobsContainer() {
                 value="recommended"
                 className={cn(tabTriggerStyles.home)}
               >
-                <Zap className="h-4 w-4 mr-2" /> Pour vous
+                <Zap className="h-4 w-4 mr-2" /> {t("tabs.recommended")}
               </TabsTrigger>
               <TabsTrigger value="recent" className={cn(tabTriggerStyles.home)}>
                 <Pin className="h-4 w-4 mr-2" />
-                Les Recherches Récentes
+                {t("tabs.recentSearches")}
               </TabsTrigger>
               <TabsTrigger value="resume" className={cn(tabTriggerStyles.home)}>
                 <FileText className="h-4 w-4 mr-2" />
-                Télécharger votre CV
+                {t("tabs.resume")}
               </TabsTrigger>
             </TabsList>
             <ScrollBar
