@@ -6,6 +6,7 @@ import { AnnonceHeader } from "./AnnonceHeader";
 import { AnnonceDescription } from "./AnnonceDescription";
 import { AnnonceJobDetails } from "./AnnonceJobDetails";
 import { AnnonceActions } from "./AnnonceActions";
+import { useTranslations } from "next-intl";
 
 interface AnnonceDetailsContainerProps {
   slug: string;
@@ -15,6 +16,7 @@ export function AnnonceDetailsContainer({
   slug,
 }: AnnonceDetailsContainerProps) {
   const { data: annonce, isLoading } = useEmploisBySlug(slug);
+  const t = useTranslations("annonces");
 
   if (isLoading) {
     return (
@@ -28,7 +30,7 @@ export function AnnonceDetailsContainer({
     return (
       <div className="container mx-auto py-8 text-center">
         <h1 className="text-2xl font-bold text-destructive">
-          Offre non trouvée
+          {t("details.error.notFound")}
         </h1>
       </div>
     );

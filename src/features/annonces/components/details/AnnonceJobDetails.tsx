@@ -2,12 +2,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { EmploisDetails } from "@/core/interfaces";
 import { iconContainerStyle } from "@/core/styles/icon-container.style";
 import { BriefcaseIcon, CalendarIcon, ClockIcon, EuroIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface AnnonceJobDetailsProps {
   annonce: EmploisDetails;
 }
 
 export function AnnonceJobDetails({ annonce }: AnnonceJobDetailsProps) {
+  const tCommon = useTranslations("common");
+  const t = useTranslations("annonces");
+
   const hasSalary =
     annonce.salaryType &&
     (annonce.normalPrice || (annonce.startPrice && annonce.endPrice));
@@ -18,7 +22,7 @@ export function AnnonceJobDetails({ annonce }: AnnonceJobDetailsProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Détails du poste</CardTitle>
+        <CardTitle>{tCommon("labels.jobDetails")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Salary */}
@@ -28,14 +32,22 @@ export function AnnonceJobDetails({ annonce }: AnnonceJobDetailsProps) {
               <EuroIcon className="h-5 w-5 text-primaryHex-600" />
             </div>
             <div>
-              <h3 className="font-medium">Salaire</h3>
+              <h3 className="font-medium">{tCommon("labels.salary")}</h3>
               <p className="text-sm text-muted-foreground">
                 {annonce.salaryType === "range" &&
                 annonce.startPrice &&
                 annonce.endPrice
-                  ? `${annonce.startPrice}€ - ${annonce.endPrice}€`
-                  : `${annonce.normalPrice}€`}
-                {annonce.durationType && `/${annonce.durationType}`}
+                  ? t("details.jobDetails.salary.range", {
+                      start: annonce.startPrice,
+                      end: annonce.endPrice,
+                    })
+                  : t("details.jobDetails.salary.fixed", {
+                      amount: annonce.normalPrice || 0,
+                    })}
+                {annonce.durationType &&
+                  t("details.jobDetails.salary.perDuration", {
+                    duration: annonce.durationType,
+                  })}
               </p>
             </div>
           </div>
@@ -48,7 +60,7 @@ export function AnnonceJobDetails({ annonce }: AnnonceJobDetailsProps) {
               <BriefcaseIcon className="h-5 w-5 text-primaryHex-600" />
             </div>
             <div>
-              <h3 className="font-medium">Type de contrat</h3>
+              <h3 className="font-medium">{tCommon("labels.contractType")}</h3>
               <p className="text-sm text-muted-foreground">
                 {annonce.emploi_contracts
                   .map((contract) => contract.name)
@@ -65,7 +77,7 @@ export function AnnonceJobDetails({ annonce }: AnnonceJobDetailsProps) {
               <CalendarIcon className="h-5 w-5 text-primaryHex-600" />
             </div>
             <div>
-              <h3 className="font-medium">Durée</h3>
+              <h3 className="font-medium">{tCommon("labels.duration")}</h3>
               <p className="text-sm text-muted-foreground">
                 {annonce.workingDuration} {annonce.durationType}
               </p>
@@ -80,10 +92,13 @@ export function AnnonceJobDetails({ annonce }: AnnonceJobDetailsProps) {
               <ClockIcon className="h-5 w-5 text-primaryHex-600" />
             </div>
             <div>
-              <h3 className="font-medium">Horaires</h3>
+              <h3 className="font-medium">{tCommon("labels.schedule")}</h3>
               <p className="text-sm text-muted-foreground">
-                {annonce.minWorkingHours}-{annonce.maxWorkingHours}h
-                {annonce.durationType && `/${annonce.durationType}`}
+                {t("details.jobDetails.schedule.range", {
+                  min: annonce.minWorkingHours || 0,
+                  max: annonce.maxWorkingHours || 0,
+                  duration: annonce.durationType || "",
+                })}
               </p>
             </div>
           </div>

@@ -15,7 +15,7 @@ interface JobCardProps {
 
 export function JobCard({ job, isSelected }: JobCardProps) {
   const t = useTranslations("emplois.jobCard");
-
+  const tCommon = useTranslations("common.actions");
   const handleKeywordClick = (e: React.MouseEvent, skill: string) => {
     e.stopPropagation(); // Prevent job card click
     redirect(`/home?keyword=${encodeURIComponent(skill)}`);
@@ -109,7 +109,7 @@ export function JobCard({ job, isSelected }: JobCardProps) {
               : t("appliedPlural", { count: job.postule })}
             {" • "}
             {t(`status.${job.status}`)}
-            {job.saved && ` • ${t("saved")}`}
+            {job.saved && ` • ${tCommon("saved")}`}
           </div>
         </div>
       </CardContent>

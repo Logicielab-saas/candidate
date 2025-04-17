@@ -7,12 +7,16 @@ import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { useJobBookmark } from "@/core/utils/job-bookmark-handler";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 interface AnnonceActionsProps {
   annonce: EmploisDetails;
 }
 
 export function AnnonceActions({ annonce }: AnnonceActionsProps) {
+  const tCommon = useTranslations("common");
+  const t = useTranslations("annonces");
+
   const { isSaved, isProcessing, toggleSaved } = useJobBookmark({
     initialIsSaved: annonce.saved,
     jobId: annonce.uuid,
@@ -26,7 +30,7 @@ export function AnnonceActions({ annonce }: AnnonceActionsProps) {
           {/* Apply Button */}
           {annonce.applied ? (
             <Button size="lg" className="w-full" disabled={annonce.applied}>
-              <span>{annonce.applied ? "Déjà postulé" : "Postuler"}</span>
+              <span>{tCommon("actions.alreadyApplied")}</span>
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           ) : (
@@ -37,7 +41,7 @@ export function AnnonceActions({ annonce }: AnnonceActionsProps) {
               asChild
             >
               <Link href={`/job-apply/${annonce.slug}`}>
-                <span>{annonce.applied ? "Déjà postulé" : "Postuler"}</span>
+                <span>{tCommon("actions.apply")}</span>
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
@@ -65,18 +69,19 @@ export function AnnonceActions({ annonce }: AnnonceActionsProps) {
                 isProcessing && "animate-pulse"
               )}
             />
-            <span>{isSaved ? "Sauvegardé" : "Sauvegarder"}</span>
+            <span>
+              {isSaved ? tCommon("actions.saved") : tCommon("actions.save")}
+            </span>
           </Button>
 
           {/* Deadline Info */}
           {annonce.expireDate && (
             <p className="text-sm text-muted-foreground text-center">
-              Date limite de candidature :{" "}
-              <span className="font-bold">
-                {format(new Date(annonce.expireDate), "EEEE d MMMM yyyy", {
+              {t("details.jobDetails.deadline", {
+                date: format(new Date(annonce.expireDate), "EEEE d MMMM yyyy", {
                   locale: fr,
-                })}
-              </span>
+                }),
+              })}
             </p>
           )}
         </div>

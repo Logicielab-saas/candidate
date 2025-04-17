@@ -5,21 +5,31 @@
     "suggestionsLoading": "Chargement des suggestions...",
     "searchNoResults": "Aucun résultat trouvé pour \"{localValue}\"",
     "loading": "Chargement...",
+    "notFound": "Non trouvé",
+    "positions": "{count} poste(s)",
+    "jobDescription": "Description du poste",
+    "noDescription": "Aucune description disponible",
     "actions": {
       "create": "Créer",
       "edit": "Modifier",
       "view": "Voir",
-      "save": "Enregistrer",
+      "save": "Sauvegarder",
+      "saved": "Sauvegardé",
       "close": "Fermer",
       "cancel": "Annuler",
       "update": "Mettre à jour",
-      "apply": "Appliquer",
+      "apply": "Postuler",
       "reset": "Réinitialiser",
       "loadMore": "Charger plus",
       "openMenu": "Ouvrir le menu",
       "confirm": "Confirmer",
       "send": "Envoyer",
-      "sending": "Envoi..."
+      "sending": "Envoi...",
+      "report": "Signaler",
+      "share": "Partager",
+      "alreadyApplied": "Déjà postulé",
+      "yes": "Oui",
+      "no": "Non"
     },
     "filters": {
       "activeFilters": "{count} filtre actif",
@@ -74,7 +84,13 @@
     "labels": {
       "search": "Recherche",
       "salary": "Salaire",
-      "additionalInfo": "Informations complémentaires"
+      "additionalInfo": "Informations complémentaires",
+      "jobDetails": "Détails du poste",
+      "contractType": "Type de contrat",
+      "duration": "Durée",
+      "schedule": "Horaires",
+      "questions": "Questions",
+      "yourAnswer": "Votre réponse"
     },
     "selectorsSearch": {
       "citySelector": {
@@ -82,6 +98,25 @@
         "searchPlaceholder": "Rechercher une ville...",
         "noCitiesFound": "Aucune ville trouvée.",
         "allCities": "Toutes les villes..."
+      }
+    },
+    "form": {
+      "required": "*",
+      "placeholders": {
+        "shortAnswer": "Votre réponse",
+        "longAnswer": "Votre réponse détaillée"
+      },
+      "submit": "Envoyer",
+      "sending": "Envoi en cours..."
+    },
+    "toast": {
+      "success": {
+        "title": "Succès",
+        "description": "Votre demande a été envoyée avec succès"
+      },
+      "error": {
+        "title": "Erreur",
+        "description": "Une erreur s'est produite. Veuillez réessayer."
       }
     }
   },
@@ -137,7 +172,6 @@
         "closed": "Fermé",
         "suspended": "Suspendu"
       },
-      "saved": "Enregistré",
       "menu": {
         "bookmark": {
           "add": "Ajouter aux favoris",
@@ -292,6 +326,75 @@
     "error": {
       "title": "Erreur de gestion du CV",
       "description": "Une erreur s'est produite lors de la gestion de votre CV. Veuillez réessayer."
+    }
+  },
+  "annonces": {
+    "details": {
+      "header": {
+        "reportDialog": {
+          "title": "Signaler cette offre"
+        }
+      },
+      "error": {
+        "notFound": "Offre non trouvée"
+      },
+      "jobDetails": {
+        "salary": {
+          "perDuration": "/{duration}",
+          "range": "{start}€ - {end}€",
+          "fixed": "{amount}€"
+        },
+        "schedule": {
+          "range": "{min}-{max}h/{duration}"
+        },
+        "deadline": "Date limite de candidature : {date}"
+      },
+      "questions": {
+        "title": "Questions",
+        "types": {
+          "experience": {
+            "placeholder": "Décrivez votre expérience..."
+          },
+          "open": {
+            "placeholder": "Votre réponse"
+          }
+        }
+      }
+    }
+  },
+  "help": {
+    "page": {
+      "title": "Centre d'aide",
+      "description": "Nous sommes là pour vous aider. Décrivez votre problème et nous vous répondrons dans les plus brefs délais."
+    },
+    "form": {
+      "title": "Comment pouvons-nous vous aider ?",
+      "submit": "Envoyer",
+      "sending": "Envoi en cours..."
+    },
+    "selectIssue": {
+      "label": "Type de problème",
+      "placeholder": "Sélectionnez un type de problème",
+      "options": {
+        "technical": "Problème technique",
+        "account": "Problème de compte",
+        "billing": "Problème de facturation",
+        "other": "Autre"
+      }
+    },
+    "messageArea": {
+      "label": "Votre message",
+      "placeholder": "Décrivez votre problème en détail..."
+    },
+    "toast": {
+      "success": {
+        "title": "Message envoyé",
+        "description": "Nous avons bien reçu votre message. Nous vous répondrons dans les plus brefs délais."
+      },
+      "error": {
+        "title": "Erreur",
+        "description": "Une erreur s'est produite lors de l'envoi de votre message. Veuillez réessayer."
+      }
     }
   }
 }

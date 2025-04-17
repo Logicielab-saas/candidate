@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 import { ShareJobPopover } from "@/features/Emplois/components/ShareJobPopover";
 import { cn } from "@/lib/utils";
 import type { EmploisDetails } from "@/core/interfaces";
+import { useTranslations } from "next-intl";
 
 const ReportJobDialog = dynamic(
   () => import("@/components/shared/ReportJobDialog"),
@@ -20,6 +21,7 @@ interface AnnonceHeaderProps {
 
 export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
   const [openReportDialog, setOpenReportDialog] = useState(false);
+  const tCommon = useTranslations("common");
 
   const handleReport = useCallback(() => {
     setOpenReportDialog(true);
@@ -61,8 +63,7 @@ export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
                   <>
                     <Users2 className="h-4 w-4 flex-shrink-0" />
                     <span className="text-sm">
-                      {annonce.employeesNum} poste
-                      {annonce.employeesNum !== 1 && "s"}
+                      {tCommon("positions", { count: annonce.employeesNum })}
                     </span>
                   </>
                 )}
@@ -86,6 +87,7 @@ export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
                   "text-destructive hover:text-destructive/80 hover:bg-accent rounded-full"
                 )}
                 onClick={handleReport}
+                aria-label={tCommon("actions.report")}
               >
                 <Flag className="h-5 w-5 sm:h-6 sm:w-6" />
               </button>
