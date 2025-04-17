@@ -37,7 +37,6 @@ import { ThemeButton } from "@/components/shared/ThemeButton";
 import { usePathname, useRouter } from "next/navigation";
 import { useProfile } from "@/features/candidature/(profile)/hooks/use-profile";
 import { Skeleton } from "../ui/skeleton";
-import jsCookie from "js-cookie";
 import { requestPermission } from "@/lib/request-permission";
 import { useEffect, useState } from "react";
 import { logout } from "@/features/auth/services/logout";

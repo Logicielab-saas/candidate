@@ -25,7 +25,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useVerifyPassword } from "../hooks/use-verify-password";
 import { useDeleteAccount } from "../hooks/use-delete-account";
-import { useRouter } from "next/navigation";
 import { logout } from "@/features/auth/services/logout";
 import { useToast } from "@/hooks/use-toast";
 
@@ -39,7 +38,6 @@ export function DeleteAccountDialog() {
   const [showPasswordError, setShowPasswordError] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const router = useRouter();
   const { toast } = useToast();
   const { mutateAsync: verifyPassword, isPending: isVerifying } =
     useVerifyPassword();
