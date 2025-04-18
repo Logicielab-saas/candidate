@@ -171,7 +171,10 @@
     "toast": {
       "success": {
         "title": "Succès",
-        "description": "Votre demande a été envoyée avec succès"
+        "description": "Votre demande a été envoyée avec succès",
+        "resume": {
+          "delete": "Votre CV a été supprimé avec succès."
+        }
       },
       "error": {
         "title": "Erreur",
@@ -179,7 +182,10 @@
       }
     },
     "warnings": {
-      "irreversibleAction": "Cette action est irréversible."
+      "irreversibleAction": "Cette action est irréversible.",
+      "permanentDelete": {
+        "resume": "Cela supprimera définitivement votre CV."
+      }
     },
     "status": {
       "online": "En ligne",
@@ -305,6 +311,11 @@
           "month": "long",
           "day": "numeric"
         }
+      }
+    },
+    "dialogs": {
+      "confirmation": {
+        "title": "Êtes-vous sûr ?"
       }
     }
   },

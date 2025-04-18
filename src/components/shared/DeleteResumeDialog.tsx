@@ -20,11 +20,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useToast } from "@/hooks/use-toast";
 import type { ResumeFile, Files } from "@/core/interfaces";
 import { useDeleteResumeFiles } from "../../features/candidature/(profile)/qualifications/hooks/use-resume-files";
 import { useState } from "react";
 import { ProfileFiles } from "@/features/candidature/(profile)/common/interface";
+import { useTranslations } from "next-intl";
 
 interface DeleteResumeDialogProps {
   open: boolean;
@@ -42,7 +42,7 @@ export function DeleteResumeDialog({
 }: DeleteResumeDialogProps) {
   const { mutate: deleteFile, isPending } = useDeleteResumeFiles();
   const [isDeleting, setIsDeleting] = useState(false);
-  const { toast } = useToast();
+  const tCommon = useTranslations("common");
 
   const handleConfirm = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -53,20 +53,9 @@ export function DeleteResumeDialog({
       onSuccess: () => {
         setIsDeleting(false);
         onOpenChange(false);
-        toast({
-          variant: "success",
-          title: "CV deleted",
-          description: "Your CV has been deleted successfully.",
-        });
       },
-      onError: (error) => {
+      onError: () => {
         setIsDeleting(false);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description:
-            error instanceof Error ? error.message : "Failed to delete CV.",
-        });
       },
     });
   };
@@ -84,19 +73,26 @@ export function DeleteResumeDialog({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogTitle>
+            {tCommon("dialogs.confirmation.title")}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your CV.
+            {tCommon("warnings.irreversibleAction")}{" "}
+            {tCommon("warnings.permanentDelete.resume")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>
+            {tCommon("actions.cancel")}
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             className="bg-destructive hover:bg-destructive/90"
             disabled={isLoading}
           >
-            {isLoading ? "Deleting..." : "Delete"}
+            {isLoading
+              ? tCommon("actions.deleting")
+              : tCommon("actions.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
