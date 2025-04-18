@@ -24,6 +24,13 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
+
+interface ReportReason {
+  id: string;
+  label: string;
+  description: string;
+}
 
 interface SpamReportDialogProps {
   isOpen: boolean;
@@ -31,39 +38,6 @@ interface SpamReportDialogProps {
   messageToReport: Message | null;
   onConfirm: (reason: string, details: string) => void;
 }
-
-const REPORT_REASONS = [
-  {
-    id: "advertising",
-    label: "Publicité non sollicitée",
-    description: "Message promotionnel ou publicitaire non désiré",
-  },
-  {
-    id: "inappropriate",
-    label: "Contenu inapproprié ou offensant",
-    description: "Message contenant du contenu discriminatoire ou offensant",
-  },
-  {
-    id: "scam",
-    label: "Tentative d'arnaque",
-    description: "Message frauduleux ou tentative d'escroquerie",
-  },
-  {
-    id: "misleading",
-    label: "Information trompeuse",
-    description: "Fausses informations sur le poste ou l'entreprise",
-  },
-  {
-    id: "irrelevant",
-    label: "Sans rapport avec ma candidature",
-    description: "Message sans lien avec mes postulations",
-  },
-  {
-    id: "other",
-    label: "Autre",
-    description: "Autre raison non listée",
-  },
-];
 
 export function SpamReportDialog({
   isOpen,
@@ -73,6 +47,10 @@ export function SpamReportDialog({
 }: SpamReportDialogProps) {
   const [selectedReason, setSelectedReason] = useState<string>("");
   const [additionalDetails, setAdditionalDetails] = useState("");
+
+  // Translations
+  const tCommon = useTranslations("common");
+  const tMessages = useTranslations("messages");
 
   if (!messageToReport) return null;
 
@@ -96,29 +74,19 @@ export function SpamReportDialog({
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2 text-destructive">
             <AlertCircle className="h-5 w-5" />
-            Signaler un problème
+            {tMessages("chat.report.title")}
           </AlertDialogTitle>
           <AlertDialogDescription asChild>
             <div className="space-y-4">
               <div>
-                Vous souhaitez signaler la conversation avec{" "}
-                <span className="font-medium text-foreground">
-                  {messageToReport.company.name}
-                </span>
-                {recruiter && (
-                  <>
-                    {" "}
-                    concernant le poste de{" "}
-                    <span className="font-medium text-foreground">
-                      {messageToReport.job.name}
-                    </span>
-                  </>
-                )}
-                .
+                {tMessages("chat.report.confirmMessage", {
+                  company: messageToReport.company.name,
+                  job: messageToReport.job.name,
+                  hasRecruiter: recruiter ? "true" : "false",
+                })}
               </div>
               <div className="text-sm">
-                Votre signalement nous aidera à maintenir un environnement sûr
-                et professionnel pour tous les utilisateurs.
+                {tMessages("chat.report.description")}
               </div>
             </div>
           </AlertDialogDescription>
@@ -127,44 +95,48 @@ export function SpamReportDialog({
         <div className="space-y-4 py-4">
           <div className="space-y-4">
             <Label className="text-base">
-              Pour quelle raison souhaitez-vous signaler cette conversation ?
-              <span className="text-destructive ml-1">*</span>
+              {tMessages("chat.report.reasonLabel")}
+              <span className="text-destructive ml-1">
+                {tCommon("form.required")}
+              </span>
             </Label>
             <RadioGroup
               value={selectedReason}
               onValueChange={setSelectedReason}
               className="space-y-2"
             >
-              {REPORT_REASONS.map((reason) => (
-                <div key={reason.id} className="flex items-start space-x-3">
-                  <RadioGroupItem
-                    value={reason.id}
-                    id={reason.id}
-                    className="mt-1"
-                  />
-                  <Label
-                    htmlFor={reason.id}
-                    className="grid cursor-pointer leading-none"
-                  >
-                    <span className="font-medium">{reason.label}</span>
-                    <span className="text-sm text-muted-foreground mt-1.5">
-                      {reason.description}
-                    </span>
-                  </Label>
-                </div>
-              ))}
+              {(tMessages.raw("chat.report.reasons") as ReportReason[]).map(
+                (reason) => (
+                  <div key={reason.id} className="flex items-start space-x-3">
+                    <RadioGroupItem
+                      value={reason.id}
+                      id={reason.id}
+                      className="mt-1"
+                    />
+                    <Label
+                      htmlFor={reason.id}
+                      className="grid cursor-pointer leading-none"
+                    >
+                      <span className="font-medium">{reason.label}</span>
+                      <span className="text-sm text-muted-foreground mt-1.5">
+                        {reason.description}
+                      </span>
+                    </Label>
+                  </div>
+                )
+              )}
             </RadioGroup>
           </div>
 
           <div className="space-y-2">
             <Label className="text-base">
-              Informations complémentaires{" "}
+              {tMessages("chat.report.additionalInfo")}{" "}
               <span className="text-sm text-muted-foreground">
-                (facultatif)
+                {tCommon("form.optional")}
               </span>
             </Label>
             <Textarea
-              placeholder="Ajoutez des détails pour nous aider à mieux comprendre la situation..."
+              placeholder={tMessages("chat.report.additionalInfoPlaceholder")}
               value={additionalDetails}
               onChange={(e) => setAdditionalDetails(e.target.value)}
               className="resize-none"
@@ -180,7 +152,7 @@ export function SpamReportDialog({
               setAdditionalDetails("");
             }}
           >
-            Annuler
+            {tCommon("actions.cancel")}
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
@@ -190,7 +162,7 @@ export function SpamReportDialog({
             )}
             disabled={!selectedReason}
           >
-            Envoyer le signalement
+            {tMessages("chat.report.submit")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

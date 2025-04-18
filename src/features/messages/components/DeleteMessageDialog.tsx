@@ -1,74 +1,61 @@
+/**
+ * DeleteMessageDialog - Confirmation dialog for message deletion
+ *
+ * Displays a modal dialog to confirm message deletion with company and job title context.
+ * Uses Shadcn UI Dialog components and next-intl for translations.
+ */
+
 "use client";
 
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { type Message } from "@/core/mockData/messages-data";
+import { useTranslations } from "next-intl";
 
 interface DeleteMessageDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  messageToDelete: Message | null;
+  message: Message | null;
   onConfirm: () => void;
 }
 
 export function DeleteMessageDialog({
   isOpen,
   onOpenChange,
-  messageToDelete,
+  message,
   onConfirm,
 }: DeleteMessageDialogProps) {
-  if (!messageToDelete) return null;
-
-  const recruiter = messageToDelete.participants.find(
-    (p) => p.role === "Recruteur"
-  );
-
-  const handleConfirm = () => {
-    onConfirm();
-    onOpenChange(false);
-  };
+  const t = useTranslations("messages");
+  const tCommon = useTranslations("common");
 
   return (
-    <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Supprimer la conversation</AlertDialogTitle>
-          <AlertDialogDescription>
-            Êtes-vous sûr de vouloir supprimer cette conversation avec{" "}
-            <span className="font-medium">{messageToDelete.company.name}</span>
-            {recruiter && (
-              <>
-                {" "}
-                concernant le poste de{" "}
-                <span className="font-medium">
-                  {messageToDelete.job.name}
-                </span>{" "}
-                ?
-              </>
-            )}
-            <br />
-            <br />
-            Cette action est irréversible.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Annuler</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={handleConfirm}
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-          >
-            Supprimer
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t("delete.title")}</DialogTitle>
+          <DialogDescription>
+            {t("delete.description", {
+              company: message?.company.name ?? "",
+              job: message?.job.name ?? "",
+            })}
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            {tCommon("actions.cancel")}
+          </Button>
+          <Button variant="destructive" onClick={onConfirm}>
+            {tCommon("actions.delete")}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

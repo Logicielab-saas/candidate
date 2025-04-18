@@ -34,6 +34,8 @@ import { cn } from "@/lib/utils";
 import { useDebouncedCallback } from "use-debounce";
 import { useQueryState, parseAsString } from "nuqs";
 import LoaderOne from "@/components/ui/loader-one";
+import { useTranslations } from "next-intl";
+
 interface Status {
   id: string;
   label: string;
@@ -44,25 +46,25 @@ interface Status {
 const STATUSES: Status[] = [
   {
     id: "online",
-    label: "En ligne",
+    label: "online",
     color: "bg-green-500",
     className: "text-green-600 dark:text-green-400",
   },
   {
     id: "away",
-    label: "Absent",
+    label: "away",
     color: "bg-orange-500",
     className: "text-orange-600 dark:text-orange-400",
   },
   {
     id: "busy",
-    label: "Ne pas déranger",
+    label: "busy",
     color: "bg-red-500",
     className: "text-red-600 dark:text-red-400",
   },
   {
     id: "offline",
-    label: "Hors ligne",
+    label: "offline",
     color: "bg-gray-500",
     className: "text-gray-600 dark:text-gray-400",
   },
@@ -71,9 +73,9 @@ const STATUSES: Status[] = [
 type MessageFilter = "inbox" | "archive" | "spam";
 
 const MESSAGE_FILTERS = [
-  { value: "inbox", label: "Boîte de réception" },
-  { value: "archive", label: "Archive" },
-  { value: "spam", label: "Spam" },
+  { value: "inbox", label: "status.inbox" },
+  { value: "archive", label: "status.archive" },
+  { value: "spam", label: "status.spam" },
 ] as const;
 
 interface MessagesListProps {
@@ -89,6 +91,9 @@ export function MessagesList({
   onMessageDelete,
   selectedMessageId,
 }: MessagesListProps) {
+  const tCommon = useTranslations("common");
+  const t = useTranslations("messages");
+
   // Manage the "q" URL parameter via nuqs.
   const [query, setQuery] = useQueryState("q", parseAsString);
   // Local state for immediate feedback in the input.
@@ -185,7 +190,7 @@ export function MessagesList({
                   />
                 </div>
                 <span className={cn("text-sm", currentStatus.className)}>
-                  {currentStatus.label}
+                  {tCommon(`status.${currentStatus.label}`)}
                 </span>
               </Button>
             </DropdownMenuTrigger>
@@ -200,14 +205,16 @@ export function MessagesList({
                   onClick={() => setCurrentStatus(status)}
                 >
                   <div className={cn("h-2 w-2 rounded-full", status.color)} />
-                  <span className={status.className}>{status.label}</span>
+                  <span className={status.className}>
+                    {tCommon(`status.${status.label}`)}
+                  </span>
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
 
           <Badge variant="secondary" className="bg-muted text-muted-foreground">
-            {filteredMessages.length} messages
+            {tCommon("counts.messages", { count: filteredMessages.length })}
           </Badge>
         </div>
 
@@ -217,7 +224,7 @@ export function MessagesList({
           <div className="relative">
             <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Rechercher un message..."
+              placeholder={t("search.placeholder")}
               value={localQuery}
               onChange={handleSearchChange}
               className="h-8 pl-8 pr-16"
@@ -243,12 +250,12 @@ export function MessagesList({
             onValueChange={(value) => setCurrentFilter(value as MessageFilter)}
           >
             <SelectTrigger className="w-full h-8">
-              <SelectValue />
+              <SelectValue placeholder={t("filters.title")} />
             </SelectTrigger>
             <SelectContent>
               {MESSAGE_FILTERS.map((filter) => (
                 <SelectItem key={filter.value} value={filter.value}>
-                  {filter.label}
+                  {tCommon(`filters.status.${filter.value}`)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -278,7 +285,7 @@ export function MessagesList({
       <DeleteMessageDialog
         isOpen={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
-        messageToDelete={messageToDelete}
+        message={messageToDelete}
         onConfirm={handleConfirmDelete}
       />
     </Card>

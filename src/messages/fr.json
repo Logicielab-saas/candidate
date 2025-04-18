@@ -9,6 +9,16 @@
     "positions": "{count} poste(s)",
     "jobDescription": "Description du poste",
     "noDescription": "Aucune description disponible",
+    "form": {
+      "required": "*",
+      "optional": "(facultatif)",
+      "placeholders": {
+        "shortAnswer": "Votre réponse",
+        "longAnswer": "Votre réponse détaillée"
+      },
+      "submit": "Envoyer",
+      "sending": "Envoi en cours..."
+    },
     "actions": {
       "create": "Créer",
       "edit": "Modifier",
@@ -31,7 +41,15 @@
       "yes": "Oui",
       "no": "Non",
       "clearFilters": "Effacer les filtres",
-      "markAsRead": "Marquer comme lu"
+      "markAsRead": "Marquer comme lu",
+      "backToList": "Retour à la liste",
+      "delete": "Supprimer",
+      "search": "Rechercher",
+      "download": "Télécharger",
+      "schedule": "Programmer",
+      "refuse": "Refuser",
+      "zoom": "Agrandir",
+      "restore": "Restaurer"
     },
     "filters": {
       "activeFilters": "{count} filtre actif",
@@ -94,8 +112,12 @@
       "status": {
         "all": "Tous les statuts",
         "read": "Lu",
-        "unread": "Non lu"
-      }
+        "unread": "Non lu",
+        "inbox": "Boîte de réception",
+        "archive": "Archive",
+        "spam": "Spam"
+      },
+      "searchPlaceholder": "Rechercher..."
     },
     "labels": {
       "search": "Recherche",
@@ -116,15 +138,6 @@
         "allCities": "Toutes les villes..."
       }
     },
-    "form": {
-      "required": "*",
-      "placeholders": {
-        "shortAnswer": "Votre réponse",
-        "longAnswer": "Votre réponse détaillée"
-      },
-      "submit": "Envoyer",
-      "sending": "Envoi en cours..."
-    },
     "toast": {
       "success": {
         "title": "Succès",
@@ -134,6 +147,30 @@
         "title": "Erreur",
         "description": "Une erreur s'est produite. Veuillez réessayer."
       }
+    },
+    "warnings": {
+      "irreversibleAction": "Cette action est irréversible."
+    },
+    "status": {
+      "online": "En ligne",
+      "away": "Absent",
+      "busy": "Ne pas déranger",
+      "offline": "Hors ligne"
+    },
+    "counts": {
+      "messages": "{count} messages"
+    },
+    "fileUpload": {
+      "sharedFiles": "Fichiers partagés:",
+      "fileSize": {
+        "bytes": "Bytes",
+        "kb": "KB",
+        "mb": "MB",
+        "gb": "GB"
+      }
+    },
+    "templates": {
+      "title": "Modèles de messages"
     }
   },
   "emplois": {
@@ -421,6 +458,105 @@
       "loadFailed": "Impossible de charger les notifications. Veuillez réessayer plus tard.",
       "noNotifications": "Vous n'avez pas encore de notifications.",
       "noMatchingFilters": "Aucune notification ne correspond à vos filtres."
+    }
+  },
+  "messages": {
+    "delete": {
+      "title": "Supprimer la conversation",
+      "description": "Êtes-vous sûr de vouloir supprimer cette conversation avec {company} concernant le poste de {job} ?"
+    },
+    "search": {
+      "placeholder": "Rechercher un message..."
+    },
+    "filters": {
+      "title": "Filtres"
+    },
+    "chat": {
+      "company": "Entreprise",
+      "participants": "participants",
+      "participantsList": "Participants à la discussion",
+      "discussingWith": "En discussion avec",
+      "viewJob": "Voir l'annonce",
+      "archiveConversation": "Archiver la conversation",
+      "unarchiveConversation": "Désarchiver la conversation",
+      "reportSpam": "Signaler comme spam",
+      "noMessageSelected": "Sélectionnez un message pour afficher son contenu",
+      "writeMessage": "Écrivez votre message...",
+      "interview": {
+        "invitation": "Invitation à un entretien",
+        "details": {
+          "location": "Lieu",
+          "date": "Date",
+          "time": "Heure",
+          "type": "Type d'entretien"
+        }
+      },
+      "attachments": {
+        "preview": {
+          "size": "{size} {unit}"
+        }
+      },
+      "templates": {
+        "categories": {
+          "general": "Général",
+          "interview": "Entretien",
+          "offer": "Offre",
+          "followUp": "Suivi",
+          "candidature": "Candidature",
+          "entretiens": "Entretiens",
+          "suivi": "Suivi",
+          "documents": "Documents",
+          "questions": "Questions"
+        }
+      },
+      "archive": {
+        "archive": "Archiver",
+        "unarchive": "Désarchiver",
+        "confirmMessage": "Êtes-vous sûr de vouloir {action} cette conversation avec {company}{hasRecruiter, select, true { concernant le poste de {job}} other {}} ?",
+        "archiveDescription": "La conversation sera déplacée vers les archives. Vous pourrez la retrouver dans l'onglet \"Archive\".",
+        "unarchiveDescription": "La conversation sera déplacée vers la boîte de réception."
+      },
+      "report": {
+        "title": "Signaler un problème",
+        "confirmMessage": "Vous souhaitez signaler la conversation avec {company}{hasRecruiter, select, true { concernant le poste de {job}} other {}}.",
+        "description": "Votre signalement nous aidera à maintenir un environnement sûr et professionnel pour tous les utilisateurs.",
+        "reasonLabel": "Pour quelle raison souhaitez-vous signaler cette conversation ?",
+        "additionalInfo": "Informations complémentaires",
+        "additionalInfoPlaceholder": "Ajoutez des détails pour nous aider à mieux comprendre la situation...",
+        "submit": "Envoyer le signalement",
+        "reasons": [
+          {
+            "id": "advertising",
+            "label": "Publicité non sollicitée",
+            "description": "Message promotionnel ou publicitaire non désiré"
+          },
+          {
+            "id": "inappropriate",
+            "label": "Contenu inapproprié ou offensant",
+            "description": "Message contenant du contenu discriminatoire ou offensant"
+          },
+          {
+            "id": "scam",
+            "label": "Tentative d'arnaque",
+            "description": "Message frauduleux ou tentative d'escroquerie"
+          },
+          {
+            "id": "misleading",
+            "label": "Information trompeuse",
+            "description": "Fausses informations sur le poste ou l'entreprise"
+          },
+          {
+            "id": "irrelevant",
+            "label": "Sans rapport avec ma candidature",
+            "description": "Message sans lien avec mes postulations"
+          },
+          {
+            "id": "other",
+            "label": "Autre",
+            "description": "Autre raison non listée"
+          }
+        ]
+      }
     }
   }
 }
