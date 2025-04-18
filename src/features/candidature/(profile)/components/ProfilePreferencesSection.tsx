@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
+import { useTranslations } from "next-intl";
 
 //* Dynamically import dialogs with loading states
 const HideJobDetailsDialog = dynamic(
@@ -38,10 +39,11 @@ const AvailabilityStatusDialog = dynamic(
 export function ProfilePreferencesSection() {
   const [showHideDetailsDialog, setShowHideDetailsDialog] = useState(false);
   const [showAvailabilityDialog, setShowAvailabilityDialog] = useState(false);
+  const tCommon = useTranslations("common");
 
   return (
     <div className="space-y-6">
-      <h3 className="text-lg font-medium">Préférences</h3>
+      <h3 className="text-lg font-medium">{tCommon("preferences.title")}</h3>
 
       <div className="divide-y">
         {/* Employment Preferences */}
@@ -50,10 +52,11 @@ export function ProfilePreferencesSection() {
           className="flex items-center justify-between py-4 hover:bg-muted/50 transition-colors"
         >
           <div className="space-y-1">
-            <h4 className="text-base font-medium">Préférences d&apos;emploi</h4>
+            <h4 className="text-base font-medium">
+              {tCommon("preferences.employmentPreferences.title")}
+            </h4>
             <p className="text-sm text-muted-foreground">
-              Précisez certaines informations, telles que le salaire minimum et
-              l&apos;horaire désirés.
+              {tCommon("preferences.employmentPreferences.description")}
             </p>
           </div>
           <ChevronRight className="h-5 w-5 text-muted-foreground" />
@@ -66,11 +69,10 @@ export function ProfilePreferencesSection() {
         >
           <div className="space-y-1 text-left">
             <h4 className="text-base font-medium">
-              Masquer les emplois avec ces détails
+              {tCommon("preferences.hideJobDetails.title")}
             </h4>
             <p className="text-sm text-muted-foreground">
-              Gérez les qualifications et préférences à prendre en compte pour
-              masquer certains emplois de votre recherche.
+              {tCommon("preferences.hideJobDetails.description")}
             </p>
           </div>
           <ChevronRight className="h-5 w-5 text-muted-foreground" />
@@ -82,10 +84,11 @@ export function ProfilePreferencesSection() {
           className="w-full flex items-center justify-between py-4 hover:bg-muted/50 transition-colors"
         >
           <div className="space-y-1 text-left">
-            <h4 className="text-base font-medium">Disponible maintenant</h4>
+            <h4 className="text-base font-medium">
+              {tCommon("preferences.availability.title")}
+            </h4>
             <p className="text-sm text-muted-foreground">
-              Indiquez aux employeurs que vous pouvez commencer dès que
-              possible.
+              {tCommon("preferences.availability.description")}
             </p>
           </div>
           <ChevronRight className="h-5 w-5 text-muted-foreground" />

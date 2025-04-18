@@ -23,7 +23,7 @@ const languageNames: Record<Locale, string> = {
 
 const languageFlags: Record<Locale, string> = {
   fr: "/lang_flags/fr.svg",
-  en: "/lang_flags/eng.svg",
+  en: "/lang_flags/us.svg",
   ar: "/lang_flags/ma.svg",
 };
 

@@ -32,7 +32,7 @@
       "create": "Créer",
       "edit": "Modifier",
       "view": "Voir",
-      "save": "Sauvegarder",
+      "save": "Enregistrer",
       "saved": "Sauvegardé",
       "close": "Fermer",
       "cancel": "Annuler",
@@ -316,6 +316,34 @@
     "dialogs": {
       "confirmation": {
         "title": "Êtes-vous sûr ?"
+      }
+    },
+    "preferences": {
+      "title": "Préférences",
+      "employmentPreferences": {
+        "title": "Préférences d'emploi",
+        "description": "Précisez certaines informations, telles que le salaire minimum et l'horaire désirés."
+      },
+      "hideJobDetails": {
+        "title": "Masquer les emplois avec ces détails",
+        "description": "Gérez les qualifications et préférences à prendre en compte pour masquer certains emplois de votre recherche.",
+        "dialog": {
+          "description": "Nous allons faire notre possible pour masquer les emplois qui requièrent ces qualifications ou préférences.",
+          "empty": {
+            "description": "Lorsque vous donnez votre avis sur les emplois présentés dans vos résultats de recherche et vos notifications par email, vous en trouverez le détail ici."
+          }
+        }
+      },
+      "availability": {
+        "title": "Disponible maintenant",
+        "description": "Indiquez aux employeurs que vous pouvez commencer dès que possible.",
+        "dialog": {
+          "description": "Indiquez aux employeurs que vous pouvez commencer à travailler dès maintenant.",
+          "switch": {
+            "label": "Je peux commencer immédiatement.",
+            "description": "Cette information sera visible par les employeurs."
+          }
+        }
       }
     }
   },
