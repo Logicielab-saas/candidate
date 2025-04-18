@@ -26,7 +26,7 @@ interface DeleteJobTypeDialogProps {
   };
 }
 
-export function DeleteJobTypeDialog({
+export default function DeleteJobTypeDialog({
   open,
   onOpenChange,
   onConfirm,

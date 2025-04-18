@@ -494,7 +494,61 @@
           }
         },
         "relocation": {
-          "title": "Relocalisation"
+          "title": "Relocalisation",
+          "empty": "Aucune préférence de relocalisation ajoutée",
+          "status": {
+            "noRelocation": "Pas de relocalisation",
+            "anywhereRelocation": "Déménagement possible n'importe où",
+            "specificLocation": {
+              "title": "À proximité de :"
+            }
+          },
+          "dialog": {
+            "add": {
+              "title": "Ajouter une préférence de relocalisation",
+              "description": "Indiquez vos préférences de relocalisation"
+            },
+            "edit": {
+              "title": "Modifier la préférence de relocalisation",
+              "description": "Modifiez vos préférences de relocalisation"
+            },
+            "delete": {
+              "title": "Supprimer la préférence de relocalisation",
+              "description": "Cette action ne peut pas être annulée. La préférence de relocalisation sera supprimée définitivement de votre profil."
+            },
+            "form": {
+              "willRelocate": {
+                "label": "Prêt(e) à déménager",
+                "description": "Je suis disposé(e) à déménager pour un emploi"
+              },
+              "locationType": {
+                "label": "Type de localisation",
+                "options": {
+                  "anywhere": "N'importe où",
+                  "specific": "Villes spécifiques"
+                }
+              },
+              "location": {
+                "label": "Villes préférées",
+                "placeholder": "Entrez les villes, séparées par des virgules",
+                "description": "Listez les villes où vous souhaiteriez travailler"
+              }
+            },
+            "toast": {
+              "add": {
+                "title": "Préférence de relocalisation ajoutée",
+                "description": "Vos préférences de relocalisation ont été ajoutées avec succès."
+              },
+              "edit": {
+                "title": "Préférence de relocalisation modifiée",
+                "description": "Vos préférences de relocalisation ont été modifiées avec succès."
+              },
+              "delete": {
+                "title": "Préférence de relocalisation supprimée",
+                "description": "Vos préférences de relocalisation ont été supprimées avec succès."
+              }
+            }
+          }
         }
       }
     }

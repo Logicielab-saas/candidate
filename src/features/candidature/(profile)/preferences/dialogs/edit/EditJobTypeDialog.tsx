@@ -54,7 +54,7 @@ interface EditJobTypeDialogProps {
   selectedTypes: ContractType[];
 }
 
-export function EditJobTypeDialog({
+export default function EditJobTypeDialog({
   open,
   onOpenChange,
   onSubmit,

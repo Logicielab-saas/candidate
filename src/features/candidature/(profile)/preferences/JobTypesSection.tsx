@@ -3,14 +3,22 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
-import { EditJobTypeDialog } from "./dialogs/edit/EditJobTypeDialog";
-import { DeleteJobTypeDialog } from "./dialogs/delete/DeleteJobTypeDialog";
 import { ContractType } from "@/core/enums/contract-type.enum";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 
 const AddJobTypeDialog = dynamic(
   () => import("./dialogs/add/AddJobTypeDialog"),
+  { ssr: false }
+);
+
+const EditJobTypeDialog = dynamic(
+  () => import("./dialogs/edit/EditJobTypeDialog"),
+  { ssr: false }
+);
+
+const DeleteJobTypeDialog = dynamic(
+  () => import("./dialogs/delete/DeleteJobTypeDialog"),
   { ssr: false }
 );
 
