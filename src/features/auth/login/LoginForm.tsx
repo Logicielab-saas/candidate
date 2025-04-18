@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ArrowLeft } from "lucide-react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,15 +20,23 @@ import { useRouter } from "next/navigation";
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
+  user_type: z.enum(["employee", "recruiter"]),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
 interface LoginFormProps {
   className?: string;
+  onSelect: (type: "recruiter" | "employee" | null) => void;
+  selectedType: "recruiter" | "employee" | null;
 }
 
-export function LoginForm({ className, ...props }: LoginFormProps) {
+export function LoginForm({
+  className,
+  onSelect,
+  selectedType,
+  ...props
+}: LoginFormProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -39,6 +48,9 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
+    defaultValues: {
+      user_type: selectedType || "employee",
+    },
   });
 
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
@@ -56,7 +68,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
 
       if (result.success && result.redirectTo) {
         toast({
-          variant: "success",
+          variant: "default",
           title: "Success",
           description: "Login successful",
         });
@@ -82,7 +94,8 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
                 <p className="text-balance text-muted-foreground">
-                  Login to your Postuly account
+                  Login to your Postuly account as{" "}
+                  {selectedType === "employee" ? "a Candidate" : "a Recruiter"}
                 </p>
               </div>
               <div className="grid gap-2">
@@ -122,6 +135,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                   </span>
                 )}
               </div>
+              <input type="hidden" {...register("user_type")} />
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Logging in..." : "Login"}
               </Button>
@@ -147,9 +161,28 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                   Sign up
                 </Link>
               </div>
+              <Button
+                variant="outline"
+                onClick={() => onSelect(null)}
+                type="button"
+                disabled={isLoading}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" /> Back
+              </Button>
             </div>
           </form>
-          <Illustration src="/login/ask_login.svg" alt="Login Illustration" />
+          <Illustration
+            src={
+              selectedType === "employee"
+                ? "/login/ask_login.svg"
+                : "/login/recruiter_login.svg"
+            }
+            alt={
+              selectedType === "employee"
+                ? "Candidate Login"
+                : "Recruiter Login"
+            }
+          />
         </CardContent>
       </Card>
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">

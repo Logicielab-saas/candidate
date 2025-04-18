@@ -14,15 +14,22 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { SignupCredentials } from "../common/interfaces";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
-const signupSchema = z.object({
-  name: z.string().min(6, "Name must be at least 6 characters"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  user_type: z.enum(["employee", "recruiter"]),
-});
+const _signupSchema = z
+  .object({
+    name: z.string().min(6, "Name must be at least 6 characters"),
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    password_confirmation: z.string().min(6, "Please confirm your password"),
+    user_type: z.enum(["employee", "recruiter"]),
+  })
+  .refine((data) => data.password === data.password_confirmation, {
+    message: "Passwords do not match",
+    path: ["password_confirmation"],
+  });
 
-type SignupFormData = z.infer<typeof signupSchema>;
+type SignupFormData = z.infer<typeof _signupSchema>;
 
 interface SignupFormProps {
   className?: string;
@@ -39,13 +46,31 @@ export function SignupForm({
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  // Translations
+  const tCommon = useTranslations("common");
+  const tAuth = useTranslations("common.auth.signup");
+  const tValidation = useTranslations("common.validation");
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
   } = useForm<SignupFormData>({
-    resolver: zodResolver(signupSchema),
+    resolver: zodResolver(
+      z
+        .object({
+          name: z.string().min(6, tValidation("minLength", { count: 6 })),
+          email: z.string().email(tValidation("email")),
+          password: z.string().min(6, tValidation("minLength", { count: 6 })),
+          password_confirmation: z.string().min(6, tValidation("required")),
+          user_type: z.enum(["employee", "recruiter"]),
+        })
+        .refine((data) => data.password === data.password_confirmation, {
+          message: tValidation("passwordMatch"),
+          path: ["password_confirmation"],
+        })
+    ),
     mode: "onChange",
     defaultValues: {
       user_type: selectedType === "employee" ? "employee" : "recruiter",
@@ -55,28 +80,38 @@ export function SignupForm({
   const onSubmit: SubmitHandler<SignupFormData> = async (data) => {
     try {
       setIsLoading(true);
-      const result = await signupAction(data as SignupCredentials);
+
+      const signupData: SignupCredentials = {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        password_confirmation: data.password_confirmation,
+        user_type: data.user_type,
+        device_name: "auto-filled-by-server",
+      };
+
+      const result = await signupAction(signupData);
 
       if (result.error) {
         toast({
           variant: "destructive",
-          title: "Error",
+          title: tAuth("form.error"),
           description: result.error,
         });
       }
       if (result.success) {
         toast({
-          variant: "success",
-          title: "Success",
-          description: "Signup successful",
+          variant: "default",
+          title: tAuth("form.success"),
+          description: tAuth("form.success"),
         });
         router.replace("/login");
       }
     } catch (_error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        title: tAuth("form.error"),
+        description: tValidation("unexpectedError"),
       });
     } finally {
       setIsLoading(false);
@@ -90,18 +125,23 @@ export function SignupForm({
           <form className="p-6 md:p-8" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
-                <h1 className="text-2xl font-bold">Sign up</h1>
+                <h1 className="text-2xl font-bold">{tAuth("title")}</h1>
                 <p className="text-balance text-muted-foreground">
-                  Create your Postuly account
+                  {tAuth("description", {
+                    type:
+                      selectedType === "employee"
+                        ? tAuth("types.employee")
+                        : tAuth("types.recruiter"),
+                  })}
                 </p>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">{tAuth("form.labels.name")}</Label>
                 <div className="relative flex items-center">
                   <Input
                     id="name"
                     type="text"
-                    placeholder="Your Name"
+                    placeholder={tAuth("form.placeholders.name")}
                     {...register("name")}
                     disabled={isLoading}
                   />
@@ -116,12 +156,12 @@ export function SignupForm({
                 )}
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{tAuth("form.labels.email")}</Label>
                 <div className="relative flex items-center">
                   <Input
                     id="email"
                     type="email"
-                    placeholder="m@example.com"
+                    placeholder={tAuth("form.placeholders.email")}
                     {...register("email")}
                     disabled={isLoading}
                   />
@@ -136,11 +176,14 @@ export function SignupForm({
                 )}
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">
+                  {tAuth("form.labels.password")}
+                </Label>
                 <div className="relative flex items-center">
                   <Input
                     id="password"
                     type="password"
+                    placeholder={tAuth("form.placeholders.password")}
                     {...register("password")}
                     disabled={isLoading}
                   />
@@ -154,13 +197,40 @@ export function SignupForm({
                   </span>
                 )}
               </div>
+              <div className="grid gap-2">
+                <Label htmlFor="password_confirmation">
+                  {tAuth("form.labels.confirmPassword")}
+                </Label>
+                <div className="relative flex items-center">
+                  <Input
+                    id="password_confirmation"
+                    type="password"
+                    placeholder={tAuth("form.placeholders.confirmPassword")}
+                    {...register("password_confirmation")}
+                    disabled={isLoading}
+                  />
+                  {errors.password_confirmation ||
+                  !watch("password_confirmation") ||
+                  watch("password") !==
+                    watch("password_confirmation") ? null : (
+                    <CheckCircle className="absolute right-2 text-green-500" />
+                  )}
+                </div>
+                {errors.password_confirmation && (
+                  <span className="text-sm text-destructive">
+                    {errors.password_confirmation.message}
+                  </span>
+                )}
+              </div>
               <input type="hidden" {...register("user_type")} />
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Signing up..." : "Sign Up"}
+                {isLoading
+                  ? tAuth("form.buttons.signingUp")
+                  : tAuth("form.buttons.signup")}
               </Button>
               <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
                 <span className="relative z-10 bg-background px-2 text-muted-foreground">
-                  Or continue with
+                  {tAuth("form.orContinueWith")}
                 </span>
               </div>
               <div className="flex justify-center">
@@ -171,13 +241,15 @@ export function SignupForm({
                       fill="currentColor"
                     />
                   </svg>
-                  <span className="sr-only">Login with Google</span>
+                  <span className="sr-only">
+                    {tAuth("form.buttons.google")}
+                  </span>
                 </Button>
               </div>
               <div className="text-center text-sm">
-                Already have an account?{" "}
+                {tAuth("form.alreadyHaveAccount")}{" "}
                 <Link href="/login" className="underline underline-offset-4">
-                  Login
+                  {tAuth("form.login")}
                 </Link>
               </div>
               <Button
@@ -186,17 +258,43 @@ export function SignupForm({
                 type="button"
                 disabled={isLoading}
               >
-                <ArrowLeft className="w-4 h-4 mr-2" /> Back
+                <ArrowLeft className="w-4 h-4 mr-2" />{" "}
+                {tAuth("form.buttons.back")}
               </Button>
             </div>
           </form>
-          <Illustration src="/login/ask_login.svg" alt="Signup Illustration" />
+          <Illustration
+            src={
+              selectedType === "employee"
+                ? "/login/ask_login.svg"
+                : "/login/ask_login.svg"
+            }
+            alt={
+              selectedType === "employee"
+                ? tAuth("types.employee")
+                : tAuth("types.recruiter")
+            }
+          />
         </CardContent>
       </Card>
-      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-        By clicking continue, you agree to our{" "}
-        <Link href="#">Terms of Service</Link> and{" "}
-        <Link href="#">Privacy Policy</Link>.
+      <div className="text-balance text-center text-xs text-muted-foreground">
+        {tCommon
+          .raw("legal.agreement")
+          .replace("{terms}", "")
+          .replace("{privacy}", "")}
+        <Link
+          href="/terms"
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          {tCommon("links.termsOfService")}
+        </Link>
+        {" et "}
+        <Link
+          href="/privacy"
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          {tCommon("links.privacyPolicy")}
+        </Link>
       </div>
     </div>
   );
