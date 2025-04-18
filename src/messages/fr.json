@@ -38,6 +38,19 @@
         "period": {
           "required": "La période est requise"
         }
+      },
+      "firstName": {
+        "minLength": "First name must be at least 2 characters"
+      },
+      "lastName": {
+        "minLength": "Last name must be at least 2 characters"
+      },
+      "phone": {
+        "required": "Phone number is required"
+      },
+      "image": {
+        "size": "File size should be less than 5MB",
+        "format": "Only .jpg, .jpeg, .png and .gif formats are accepted"
       }
     },
     "form": {
@@ -65,6 +78,7 @@
       "view": "Voir",
       "save": "Enregistrer",
       "saved": "Sauvegardé",
+      "saving": "Enregistrement en cours...",
       "close": "Fermer",
       "cancel": "Annuler",
       "update": "Mettre à jour",
@@ -286,7 +300,6 @@
       "imageViewer": "Visionneuse d'images",
       "imageDescription": "Description de l'image"
     },
-
     "links": {
       "termsOfService": "Conditions d'utilisation",
       "privacyPolicy": "Politique de confidentialité"
@@ -967,6 +980,59 @@
       "section": {
         "title": "CV",
         "subtitle": "Format PDF, max 2MB"
+      }
+    }
+  },
+  "editProfile": {
+    "title": "Modifier votre profil",
+    "description": "Mettez à jour vos informations personnelles et comment les autres utilisateurs vous voient sur la plateforme.",
+    "form": {
+      "firstName": {
+        "label": "Prénom",
+        "placeholder": "John"
+      },
+      "lastName": {
+        "label": "Nom de famille",
+        "placeholder": "Doe"
+      },
+      "phone": {
+        "label": "Numéro de téléphone",
+        "placeholder": "+1234567890"
+      },
+      "birthdate": {
+        "label": "Date de naissance",
+        "placeholder": "Sélectionner une date"
+      },
+      "gender": {
+        "label": "Gender",
+        "options": {
+          "male": "Masculin",
+          "female": "Féminin"
+        }
+      },
+      "address": {
+        "label": "Adresse",
+        "placeholder": "123 Rue de la Paix"
+      },
+      "city": {
+        "label": "Ville",
+        "placeholder": "Sélectionner une ville"
+      },
+      "country": {
+        "label": "Pays",
+        "placeholder": "France"
+      },
+      "postalCode": {
+        "label": "Code postal",
+        "placeholder": "75000"
+      },
+      "bio": {
+        "label": "Bio",
+        "placeholder": "Décrivez-vous"
+      },
+      "description": {
+        "label": "Description du CV",
+        "placeholder": "Décrivez votre expérience professionnelle et vos objectifs"
       }
     }
   }
