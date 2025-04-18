@@ -79,7 +79,8 @@ export function ResumeItem({
   const { mutate: updateFile, isPending: isUpdating } = useUpdateResumeFiles();
   const { isPending: isDeleting } = useDeleteResumeFiles();
 
-  const t = useTranslations("resume");
+  const tCommon = useTranslations("common");
+  const tValidation = useTranslations("common.validation");
 
   const handleChangeCV = () => {
     fileInputRef.current?.click();
@@ -101,8 +102,8 @@ export function ResumeItem({
     if (file.type !== "application/pdf") {
       toast({
         variant: "destructive",
-        title: t("validation.invalidType.title"),
-        description: t("validation.invalidType.description"),
+        title: tValidation("invalidType.title"),
+        description: tValidation("invalidType.description"),
       });
       return;
     }
@@ -111,8 +112,8 @@ export function ResumeItem({
     if (file.size > 2048 * 1024) {
       toast({
         variant: "destructive",
-        title: t("validation.fileSize.title"),
-        description: t("validation.fileSize.description"),
+        title: tValidation("fileSize.title"),
+        description: tValidation("fileSize.description"),
       });
       return;
     }
@@ -130,13 +131,9 @@ export function ResumeItem({
         formData.append("file", file);
         createFile(formData);
       }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: t("error.title"),
-        description: t("error.description"),
-      });
-      console.error(error);
+    } catch (_error) {
+      // handled by the mutation hook
+      // console.error(error);
     }
 
     // Clear the input
@@ -169,7 +166,7 @@ export function ResumeItem({
   return (
     <div className="space-y-4">
       <SectionHeader
-        title={t("title")}
+        title={tCommon("labels.resume")}
         icon={<File className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={type === "custom" ? handleChangeCV : undefined}
         removeAdd={removeAdd}
@@ -193,7 +190,7 @@ export function ResumeItem({
 
       {!resumeFiles?.length && (
         <p className="text-muted-foreground text-center py-4">
-          {t("noResume")}
+          {tCommon("placeholders.noResume")}
         </p>
       )}
 
@@ -216,7 +213,7 @@ export function ResumeItem({
             <div className="flex items-center gap-2">
               <LoaderOne />
               <span className="text-sm text-muted-foreground">
-                {isUploading ? t("uploading") : t("deleting")}
+                {isUploading ? tCommon("loading") : tCommon("actions.deleting")}
               </span>
             </div>
           ) : (
@@ -230,19 +227,19 @@ export function ResumeItem({
                 <DropdownMenuItem className="flex items-center" asChild>
                   <Link href={getFileUrl(file)} target="_blank">
                     <Eye className="mr-2 h-4 w-4" />
-                    {t("actions.view")}
+                    {tCommon("actions.view")}
                   </Link>
                 </DropdownMenuItem>
                 {type === "custom" && (
                   <>
                     <DropdownMenuItem onClick={() => handleUpdateCV(file.uuid)}>
                       <Upload className="mr-2 h-4 w-4" />
-                      {t("actions.change")}
+                      {tCommon("actions.edit")}
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <Link href={getFileUrl(file)} target="_blank">
                         <Download className="mr-2 h-4 w-4" />
-                        {t("actions.download")}
+                        {tCommon("actions.download")}
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -254,7 +251,7 @@ export function ResumeItem({
                       }}
                     >
                       <Trash2 className="mr-2 h-4 w-4" />
-                      {t("actions.delete")}
+                      {tCommon("actions.delete")}
                     </DropdownMenuItem>
                   </>
                 )}

@@ -1,4 +1,5 @@
 import { Phone, MapPin, Calendar, User } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ProfileContactInfoProps {
   phone: string | null;
@@ -19,13 +20,30 @@ export function ProfileContactInfo({
   city,
   country,
 }: ProfileContactInfoProps) {
+  const tCommon = useTranslations("common");
+
   const fullAddress = [address, city, postalCode, country]
     .filter(Boolean)
     .join(", ");
 
+  const getGender = (isMale: boolean | null): string => {
+    if (isMale === null) return tCommon("gender.notSpecified");
+    return isMale ? tCommon("gender.male") : tCommon("gender.female");
+  };
+
+  const formatBirthdate = (date: string): string => {
+    return new Date(date).toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   return (
     <div>
-      <h3 className="text-lg font-medium mb-4">Contact Information</h3>
+      <h3 className="text-lg font-medium mb-4">
+        {tCommon("labels.contactInfo")}
+      </h3>
       <div className="grid gap-4 sm:grid-cols-2">
         {/* Phone Section */}
         <div className="flex items-start gap-3">
@@ -33,9 +51,9 @@ export function ProfileContactInfo({
             <Phone className="h-4 w-4 text-primaryHex-500" />
           </div>
           <div>
-            <p className="text-sm font-medium">Phone Number</p>
+            <p className="text-sm font-medium">{tCommon("labels.phone")}</p>
             <p className="text-sm text-muted-foreground">
-              {phone || "No phone number provided"}
+              {phone || tCommon("placeholders.noPhone")}
             </p>
           </div>
         </div>
@@ -46,9 +64,9 @@ export function ProfileContactInfo({
             <MapPin className="h-4 w-4 text-primaryHex-500" />
           </div>
           <div>
-            <p className="text-sm font-medium">Address</p>
+            <p className="text-sm font-medium">{tCommon("labels.address")}</p>
             <p className="text-sm text-muted-foreground break-words">
-              {fullAddress || "No address provided"}
+              {fullAddress || tCommon("placeholders.noAddress")}
             </p>
           </div>
         </div>
@@ -59,15 +77,11 @@ export function ProfileContactInfo({
             <Calendar className="h-4 w-4 text-primaryHex-500" />
           </div>
           <div>
-            <p className="text-sm font-medium">Birth Date</p>
+            <p className="text-sm font-medium">{tCommon("labels.birthDate")}</p>
             <p className="text-sm text-muted-foreground">
               {birthdate
-                ? new Date(birthdate).toLocaleDateString(undefined, {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })
-                : "No birthdate provided"}
+                ? formatBirthdate(birthdate)
+                : tCommon("placeholders.noBirthdate")}
             </p>
           </div>
         </div>
@@ -78,10 +92,8 @@ export function ProfileContactInfo({
             <User className="h-4 w-4 text-primaryHex-500" />
           </div>
           <div>
-            <p className="text-sm font-medium">Gender</p>
-            <p className="text-sm text-muted-foreground">
-              {isMale !== null ? (isMale ? "Male" : "Female") : "Not specified"}
-            </p>
+            <p className="text-sm font-medium">{tCommon("labels.gender")}</p>
+            <p className="text-sm text-muted-foreground">{getGender(isMale)}</p>
           </div>
         </div>
       </div>

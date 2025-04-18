@@ -70,7 +70,8 @@
       "loginWith": "Se connecter avec {provider}",
       "generate": "Générer",
       "editProfile": "Modifier le profil",
-      "generateCV": "Générer le CV"
+      "generateCV": "Générer le CV",
+      "deleting": "Suppression en cours..."
     },
     "filters": {
       "activeFilters": "{count} filtre actif",
@@ -149,7 +150,15 @@
       "duration": "Durée",
       "schedule": "Horaires",
       "questions": "Questions",
-      "yourAnswer": "Votre réponse"
+      "yourAnswer": "Votre réponse",
+      "contactInfo": "Informations de contact",
+      "phone": "Téléphone",
+      "address": "Adresse",
+      "birthDate": "Date de naissance",
+      "gender": "Genre",
+      "bio": "Bio",
+      "skills": "Compétences",
+      "resume": "CV"
     },
     "selectorsSearch": {
       "citySelector": {
@@ -244,7 +253,15 @@
       "email": "Adresse e-mail invalide",
       "minLength": "Minimum {count} caractères",
       "passwordMatch": "Les mots de passe ne correspondent pas",
-      "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer."
+      "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+      "invalidType": {
+        "title": "Type de fichier invalide",
+        "description": "Veuillez télécharger un fichier PDF"
+      },
+      "fileSize": {
+        "title": "Fichier trop volumineux",
+        "description": "La taille maximale du fichier est de 2 Mo (2048 Ko)"
+      }
     },
     "links": {
       "termsOfService": "Conditions d'utilisation",
@@ -262,7 +279,10 @@
       "noPostalCode": "Code postal non fourni",
       "noCity": "Ville non fournie",
       "noCountry": "Pays non fourni",
-      "noBio": "Aucune biographie fournie"
+      "noBio": "Aucune biographie fournie",
+      "noSkills": "Aucune compétence ajoutée. Cliquez sur modifier pour ajouter vos compétences.",
+      "noBioWithEdit": "Aucune information fournie. Cliquez sur modifier pour ajouter votre description.",
+      "noResume": "Aucun CV ajouté"
     },
     "location": {
       "format": "{city}, {country}"
@@ -271,6 +291,20 @@
       "pdf": {
         "format": "Format PDF",
         "maxSize": "max {size}MB"
+      }
+    },
+    "gender": {
+      "male": "Homme",
+      "female": "Femme",
+      "notSpecified": "Non spécifié"
+    },
+    "date": {
+      "format": {
+        "long": {
+          "year": "numeric",
+          "month": "long",
+          "day": "numeric"
+        }
       }
     }
   },
