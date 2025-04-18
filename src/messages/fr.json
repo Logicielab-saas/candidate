@@ -49,7 +49,12 @@
       "schedule": "Programmer",
       "refuse": "Refuser",
       "zoom": "Agrandir",
-      "restore": "Restaurer"
+      "restore": "Restaurer",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "zoomIn": "Zoom avant",
+      "zoomOut": "Zoom arrière",
+      "rotate": "Pivoter"
     },
     "filters": {
       "activeFilters": "{count} filtre actif",
@@ -167,10 +172,56 @@
         "kb": "KB",
         "mb": "MB",
         "gb": "GB"
+      },
+      "title": "Partager des fichiers",
+      "description": "Sélectionnez jusqu'à {maxFiles} fichiers à partager.",
+      "dragDrop": {
+        "idle": "Glissez et déposez vos fichiers",
+        "active": "Déposez les fichiers ici",
+        "or": "ou",
+        "browse": "parcourir"
+      },
+      "preview": {
+        "notAvailable": "Aperçu non disponible"
+      },
+      "validation": {
+        "maxFiles": {
+          "title": "Limite de fichiers atteinte",
+          "description": "Vous ne pouvez pas télécharger plus de {maxFiles} fichiers à la fois."
+        },
+        "fileType": {
+          "title": "Type de fichier non pris en charge",
+          "description": "Les types de fichiers acceptés sont : {types}"
+        },
+        "success": {
+          "title": "Fichiers ajoutés",
+          "description": "{count} fichier(s) ajouté(s) avec succès."
+        },
+        "upload": {
+          "success": {
+            "title": "Téléchargement réussi",
+            "description": "{count} fichier(s) téléchargé(s) avec succès."
+          },
+          "error": {
+            "title": "Erreur de téléchargement",
+            "description": "Une erreur s'est produite lors du téléchargement des fichiers."
+          }
+        },
+        "remove": {
+          "title": "Fichier supprimé",
+          "description": "{filename} a été supprimé."
+        }
       }
     },
     "templates": {
       "title": "Modèles de messages"
+    },
+    "navigation": {
+      "imageCount": "{current} / {total}"
+    },
+    "aria": {
+      "imageViewer": "Visionneuse d'images",
+      "imageDescription": "Description de l'image"
     }
   },
   "emplois": {
