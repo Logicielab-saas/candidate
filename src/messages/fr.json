@@ -17,7 +17,16 @@
         "longAnswer": "Votre réponse détaillée"
       },
       "submit": "Envoyer",
-      "sending": "Envoi en cours..."
+      "sending": "Envoi en cours...",
+      "email": {
+        "label": "Email",
+        "placeholder": "m@example.com"
+      },
+      "password": {
+        "label": "Mot de passe",
+        "placeholder": "••••••••",
+        "forgot": "Mot de passe oublié ?"
+      }
     },
     "actions": {
       "create": "Créer",
@@ -54,7 +63,11 @@
       "next": "Suivant",
       "zoomIn": "Zoom avant",
       "zoomOut": "Zoom arrière",
-      "rotate": "Pivoter"
+      "rotate": "Pivoter",
+      "back": "Retour",
+      "continue": "Continuer",
+      "continueWith": "Ou continuer avec",
+      "loginWith": "Se connecter avec {provider}"
     },
     "filters": {
       "activeFilters": "{count} filtre actif",
@@ -236,58 +249,29 @@
     },
     "legal": {
       "agreement": "En cliquant sur continuer, vous acceptez nos {terms} et notre {privacy}"
-    },
-    "auth": {
-      "signup": {
-        "title": "Inscription",
-        "description": "Créez votre compte {type}",
-        "types": {
-          "employee": "Candidat",
-          "recruiter": "Recruteur"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Sélectionnez le type de connexion",
+      "description": "Veuillez choisir comment vous souhaitez vous connecter.",
+      "welcomeBack": "Bienvenue",
+      "welcomeDescription": {
+        "employee": "Connectez-vous à votre compte Postuly en tant que Candidat",
+        "recruiter": "Connectez-vous à votre compte Postuly en tant que Recruteur"
+      },
+      "options": {
+        "employee": {
+          "title": "Je cherche un emploi",
+          "description": "Connectez-vous en tant que candidat pour postuler"
         },
-        "firstStep": {
-          "title": "Sélectionnez le type d'inscription",
-          "description": "Veuillez choisir comment vous souhaitez vous inscrire.",
-          "options": {
-            "employee": {
-              "title": "Je cherche un emploi",
-              "description": "Créez un compte candidat pour postuler à des offres"
-            },
-            "recruiter": {
-              "title": "Je recrute",
-              "description": "Créez un compte recruteur pour publier des offres"
-            }
-          }
-        },
-        "form": {
-          "labels": {
-            "name": "Nom",
-            "email": "Email",
-            "password": "Mot de passe",
-            "confirmPassword": "Confirmer le mot de passe"
-          },
-          "placeholders": {
-            "name": "Votre nom",
-            "email": "m@example.com",
-            "password": "•••••••",
-            "confirmPassword": "•••••••"
-          },
-          "buttons": {
-            "signup": "S'inscrire",
-            "signingUp": "Inscription en cours...",
-            "back": "Retour",
-            "google": "Continuer avec Google"
-          },
-          "orContinueWith": "Ou continuer avec",
-          "alreadyHaveAccount": "Vous avez déjà un compte ?",
-          "login": "Se connecter",
-          "termsAndPolicy": "En cliquant sur continuer, vous acceptez nos {terms} et notre {privacy}",
-          "terms": "Conditions d'utilisation",
-          "privacy": "Politique de confidentialité",
-          "success": "Inscription réussie",
-          "error": "Erreur lors de l'inscription"
+        "recruiter": {
+          "title": "Je recrute",
+          "description": "Connectez-vous en tant que recruteur pour publier des offres"
         }
-      }
+      },
+      "noAccount": "Vous n'avez pas de compte ?",
+      "signup": "S'inscrire"
     }
   },
   "emplois": {

@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { CheckCircle2, CheckCircle } from "lucide-react";
 import { Illustration } from "../Illustration";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 interface LoginFirstStepProps {
   onSelect: (type: "recruiter" | "employee" | null) => void;
@@ -17,15 +18,18 @@ export function LoginFirstStep({
   onSelect,
   selectedType,
 }: LoginFirstStepProps) {
+  const t = useTranslations("auth.login");
+  const tCommon = useTranslations("common");
+
   return (
     <div className="flex flex-col gap-6">
       <Card className="overflow-hidden">
         <CardContent className="grid p-0 md:grid-cols-2">
           <div className="flex flex-col gap-6 p-6 mb-12">
             <div className="flex flex-col items-center text-center">
-              <h1 className="text-2xl font-bold">Select Login Type</h1>
+              <h1 className="text-2xl font-bold">{t("title")}</h1>
               <p className="text-balance text-muted-foreground">
-                Please choose how you would like to login.
+                {t("description")}
               </p>
             </div>
             <RadioGroup className="grid grid-cols-1 md:grid-cols-1 gap-6">
@@ -70,13 +74,13 @@ export function LoginFirstStep({
                         <div className="p-2">
                           <Image
                             src="/signup/employ.svg"
-                            alt="Employee Icon"
+                            alt={t("options.employee.title")}
                             width={100}
                             height={100}
                           />
                         </div>
                         <h3 className="text-xl font-semibold text-secondaryHex-900 dark:text-secondaryHex-50 text-center">
-                          Looking for a job
+                          {t("options.employee.title")}
                         </h3>
                       </div>
                     </CardContent>
@@ -125,13 +129,13 @@ export function LoginFirstStep({
                         <div className="p-2">
                           <Image
                             src="/signup/comany.svg"
-                            alt="Company Icon"
+                            alt={t("options.recruiter.title")}
                             width={100}
                             height={100}
                           />
                         </div>
                         <h3 className="text-xl font-semibold text-secondaryHex-900 dark:text-secondaryHex-50 text-center">
-                          Hiring for a job
+                          {t("options.recruiter.title")}
                         </h3>
                       </div>
                     </CardContent>
@@ -148,9 +152,23 @@ export function LoginFirstStep({
         </CardContent>
       </Card>
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-        By clicking continue, you agree to our{" "}
-        <Link href="#">Terms of Service</Link> and{" "}
-        <Link href="#">Privacy Policy</Link>.
+        {tCommon
+          .raw("legal.agreement")
+          .replace("{terms}", "")
+          .replace("{privacy}", "")}
+        <Link
+          href="/terms"
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          {tCommon("links.termsOfService")}
+        </Link>
+        {" et "}
+        <Link
+          href="/privacy"
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          {tCommon("links.privacyPolicy")}
+        </Link>
       </div>
     </div>
   );
