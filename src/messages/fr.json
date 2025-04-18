@@ -67,7 +67,10 @@
       "back": "Retour",
       "continue": "Continuer",
       "continueWith": "Ou continuer avec",
-      "loginWith": "Se connecter avec {provider}"
+      "loginWith": "Se connecter avec {provider}",
+      "generate": "Générer",
+      "editProfile": "Modifier le profil",
+      "generateCV": "Générer le CV"
     },
     "filters": {
       "activeFilters": "{count} filtre actif",
@@ -249,6 +252,26 @@
     },
     "legal": {
       "agreement": "En cliquant sur continuer, vous acceptez nos {terms} et notre {privacy}"
+    },
+    "placeholders": {
+      "noName": "Aucun nom fourni",
+      "noLocation": "Aucun lieu fourni",
+      "noPhone": "Téléphone non fourni",
+      "noAddress": "Adresse non fournie",
+      "noBirthdate": "Date de naissance non fournie",
+      "noPostalCode": "Code postal non fourni",
+      "noCity": "Ville non fournie",
+      "noCountry": "Pays non fourni",
+      "noBio": "Aucune biographie fournie"
+    },
+    "location": {
+      "format": "{city}, {country}"
+    },
+    "files": {
+      "pdf": {
+        "format": "Format PDF",
+        "maxSize": "max {size}MB"
+      }
     }
   },
   "auth": {
@@ -657,6 +680,14 @@
             "description": "Autre raison non listée"
           }
         ]
+      }
+    }
+  },
+  "profile": {
+    "resume": {
+      "section": {
+        "title": "CV",
+        "subtitle": "Format PDF, max 2MB"
       }
     }
   }
