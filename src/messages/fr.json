@@ -9,6 +9,33 @@
     "positions": "{count} poste(s)",
     "jobDescription": "Description du poste",
     "noDescription": "Aucune description disponible",
+    "validation": {
+      "required": "Ce champ est requis",
+      "email": "Adresse e-mail invalide",
+      "minLength": "Minimum {count} caractères",
+      "passwordMatch": "Les mots de passe ne correspondent pas",
+      "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+      "invalidType": {
+        "title": "Type de fichier invalide",
+        "description": "Veuillez télécharger un fichier PDF"
+      },
+      "fileSize": {
+        "title": "Fichier trop volumineux",
+        "description": "La taille maximale du fichier est de 2 Mo (2048 Ko)"
+      },
+      "jobTitle": {
+        "required": "L'intitulé du poste est requis"
+      },
+      "minSalary": {
+        "amount": {
+          "required": "Le montant est requis",
+          "invalid": "Le montant doit être un nombre valide"
+        },
+        "period": {
+          "required": "La période est requise"
+        }
+      }
+    },
     "form": {
       "required": "*",
       "optional": "(facultatif)",
@@ -71,7 +98,8 @@
       "generate": "Générer",
       "editProfile": "Modifier le profil",
       "generateCV": "Générer le CV",
-      "deleting": "Suppression en cours..."
+      "deleting": "Suppression en cours...",
+      "add": "Ajouter"
     },
     "filters": {
       "activeFilters": "{count} filtre actif",
@@ -254,21 +282,7 @@
       "imageViewer": "Visionneuse d'images",
       "imageDescription": "Description de l'image"
     },
-    "validation": {
-      "required": "Ce champ est obligatoire",
-      "email": "Adresse e-mail invalide",
-      "minLength": "Minimum {count} caractères",
-      "passwordMatch": "Les mots de passe ne correspondent pas",
-      "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer.",
-      "invalidType": {
-        "title": "Type de fichier invalide",
-        "description": "Veuillez télécharger un fichier PDF"
-      },
-      "fileSize": {
-        "title": "Fichier trop volumineux",
-        "description": "La taille maximale du fichier est de 2 Mo (2048 Ko)"
-      }
-    },
+
     "links": {
       "termsOfService": "Conditions d'utilisation",
       "privacyPolicy": "Politique de confidentialité"
@@ -343,6 +357,109 @@
             "label": "Je peux commencer immédiatement.",
             "description": "Cette information sera visible par les employeurs."
           }
+        }
+      },
+      "page": {
+        "title": "Préférences d'emploi | Mon Profil",
+        "description": "Gérez vos préférences d'emploi, types de postes et critères de recherche.",
+        "keywords": [
+          "préférences d'emploi",
+          "salaire minimum",
+          "types de postes",
+          "relocalisation",
+          "critères de recherche"
+        ]
+      },
+      "sections": {
+        "jobTitles": {
+          "title": "Intitulés de poste",
+          "empty": "Aucun intitulé de poste ajouté",
+          "add": "Ajouter un intitulé de poste",
+          "dialog": {
+            "add": {
+              "title": "Ajouter un intitulé de poste",
+              "description": "Ajoutez un nouvel intitulé de poste à votre profil.",
+              "form": {
+                "label": "Intitulé du poste",
+                "placeholder": "Ex: Développeur Frontend"
+              },
+              "toast": {
+                "success": {
+                  "title": "Intitulé ajouté",
+                  "description": "L'intitulé du poste a été ajouté avec succès."
+                }
+              }
+            },
+            "edit": {
+              "title": "Modifier l'intitulé de poste",
+              "description": "Modifiez l'intitulé du poste sélectionné.",
+              "form": {
+                "label": "Intitulé du poste",
+                "placeholder": "Ex: Développeur Frontend"
+              },
+              "toast": {
+                "success": {
+                  "title": "Intitulé modifié",
+                  "description": "L'intitulé du poste a été modifié avec succès."
+                }
+              }
+            },
+            "delete": {
+              "title": "Êtes-vous sûr ?",
+              "description": "Cette action ne peut pas être annulée. Cet intitulé de poste sera supprimé définitivement de votre profil.",
+              "action": "Supprimer"
+            }
+          }
+        },
+        "minSalary": {
+          "title": "Salaire de base minimum",
+          "description": "Cette information ne sera pas communiquée aux employeurs.",
+          "placeholder": "Aucun salaire minimum ajouté",
+          "periods": {
+            "monthly": "par mois",
+            "yearly": "par an"
+          },
+          "dialog": {
+            "add": {
+              "title": "Ajouter un salaire minimum",
+              "description": "Quel salaire minimum recherchez-vous ?"
+            },
+            "edit": {
+              "title": "Modifier le salaire minimum",
+              "description": "Quel salaire minimum recherchez-vous ?"
+            },
+            "delete": {
+              "title": "Êtes-vous sûr ?",
+              "description": "Cette action ne peut pas être annulée. Le salaire minimum sera supprimé définitivement de votre profil."
+            },
+            "form": {
+              "amount": {
+                "label": "Salaire de base minimum",
+                "placeholder": "4.000",
+                "currency": "MAD"
+              },
+              "period": {
+                "label": "Période de paie",
+                "placeholder": "Sélectionnez une période"
+              }
+            },
+            "toast": {
+              "add": {
+                "title": "Salaire minimum ajouté",
+                "description": "Le salaire minimum a été ajouté avec succès."
+              },
+              "edit": {
+                "title": "Salaire minimum modifié",
+                "description": "Le salaire minimum a été modifié avec succès."
+              }
+            }
+          }
+        },
+        "jobTypes": {
+          "title": "Types de postes"
+        },
+        "relocation": {
+          "title": "Relocalisation"
         }
       }
     }

@@ -11,6 +11,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { type JobTitle } from "../../JobTitleSection";
+import { useTranslations } from "next-intl";
 
 interface DeleteJobTitleDialogProps {
   open: boolean;
@@ -19,29 +20,34 @@ interface DeleteJobTitleDialogProps {
   jobTitle: JobTitle;
 }
 
-export function DeleteJobTitleDialog({
+export default function DeleteJobTitleDialog({
   open,
   onOpenChange,
   onConfirm,
   jobTitle,
 }: DeleteJobTitleDialogProps) {
+  const tCommon = useTranslations("common");
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+          <AlertDialogTitle>
+            {tCommon("preferences.sections.jobTitles.dialog.delete.title")}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            Cette action ne peut pas être annulée. Cet intitulé de poste sera
-            supprimé définitivement de votre profil.
+            {tCommon(
+              "preferences.sections.jobTitles.dialog.delete.description"
+            )}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Annuler</AlertDialogCancel>
+          <AlertDialogCancel>{tCommon("actions.cancel")}</AlertDialogCancel>
           <AlertDialogAction
             className="bg-destructive hover:bg-destructive/90"
             onClick={() => onConfirm(jobTitle.id)}
           >
-            Supprimer
+            {tCommon("preferences.sections.jobTitles.dialog.delete.action")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

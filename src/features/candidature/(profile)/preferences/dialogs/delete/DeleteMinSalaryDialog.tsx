@@ -13,6 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { type MinSalary } from "../../MinSalarySection";
+import { useTranslations } from "next-intl";
 
 interface DeleteMinSalaryDialogProps {
   open: boolean;
@@ -21,29 +22,34 @@ interface DeleteMinSalaryDialogProps {
   minSalary: MinSalary;
 }
 
-export function DeleteMinSalaryDialog({
+export default function DeleteMinSalaryDialog({
   open,
   onOpenChange,
   onConfirm,
   minSalary,
 }: DeleteMinSalaryDialogProps) {
+  const tCommon = useTranslations("common");
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+          <AlertDialogTitle>
+            {tCommon("dialogs.confirmation.title")}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            Cette action ne peut pas être annulée. Le salaire minimum sera
-            supprimé définitivement de votre profil.
+            {tCommon(
+              "preferences.sections.minSalary.dialog.delete.description"
+            )}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Annuler</AlertDialogCancel>
+          <AlertDialogCancel>{tCommon("actions.cancel")}</AlertDialogCancel>
           <AlertDialogAction
             className={cn(buttonVariants({ variant: "destructive" }))}
             onClick={() => onConfirm(minSalary.id)}
           >
-            Supprimer
+            {tCommon("actions.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

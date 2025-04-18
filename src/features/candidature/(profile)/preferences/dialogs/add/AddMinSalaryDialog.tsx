@@ -32,17 +32,24 @@ import { useToast } from "@/hooks/use-toast";
 import { Info } from "lucide-react";
 import { SALARY_PATTERN, formatSalaryInput } from "@/core/constants/regex";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useTranslations } from "next-intl";
+import { useMemo } from "react";
 
-const minSalaryFormSchema = z.object({
-  amount: z.string().min(1, "Le montant est requis").regex(SALARY_PATTERN, {
-    message: "Le montant doit être un nombre valide",
-  }),
-  period: z.enum(["par mois", "par an"], {
-    required_error: "La période est requise",
-  }),
-});
+function minSalaryFormSchema(t: (key: string) => string) {
+  return z.object({
+    amount: z
+      .string()
+      .min(1, t("minSalary.amount.required"))
+      .regex(SALARY_PATTERN, {
+        message: t("minSalary.amount.invalid"),
+      }),
+    period: z.enum(["par mois", "par an"], {
+      required_error: t("minSalary.period.required"),
+    }),
+  });
+}
 
-type MinSalaryFormValues = z.infer<typeof minSalaryFormSchema>;
+type MinSalaryFormValues = z.infer<ReturnType<typeof minSalaryFormSchema>>;
 
 interface AddMinSalaryDialogProps {
   open: boolean;
@@ -50,14 +57,22 @@ interface AddMinSalaryDialogProps {
   onSubmit: (values: MinSalaryFormValues) => void;
 }
 
-export function AddMinSalaryDialog({
+export default function AddMinSalaryDialog({
   open,
   onOpenChange,
   onSubmit,
 }: AddMinSalaryDialogProps) {
   const { toast } = useToast();
+  const tCommon = useTranslations("common");
+  const tValidation = useTranslations("common.validation");
+
+  const minSalaryForm = useMemo(
+    () => minSalaryFormSchema(tValidation),
+    [tValidation]
+  );
+
   const form = useForm<MinSalaryFormValues>({
-    resolver: zodResolver(minSalaryFormSchema),
+    resolver: zodResolver(minSalaryForm),
     defaultValues: {
       amount: "",
       period: "par mois",
@@ -70,8 +85,10 @@ export function AddMinSalaryDialog({
     onOpenChange(false);
     toast({
       variant: "success",
-      title: "Salaire minimum ajouté",
-      description: "Le salaire minimum a été ajouté avec succès.",
+      title: tCommon("preferences.sections.minSalary.dialog.toast.add.title"),
+      description: tCommon(
+        "preferences.sections.minSalary.dialog.toast.add.description"
+      ),
     });
   };
 
@@ -80,22 +97,21 @@ export function AddMinSalaryDialog({
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[500px]">
         <ScrollArea className="px-3 max-h-[60vh]">
           <DialogHeader className="p-6 pb-4">
-            <DialogTitle>Ajouter un salaire minimum</DialogTitle>
+            <DialogTitle>
+              {tCommon("preferences.sections.minSalary.dialog.add.title")}
+            </DialogTitle>
             <DialogDescription>
-              Quel salaire minimum recherchez-vous ?
+              {tCommon("preferences.sections.minSalary.dialog.add.description")}
             </DialogDescription>
           </DialogHeader>
 
           <div className="flex items-center gap-2 rounded-md bg-blue-50 p-3 text-sm text-blue-900">
             <Info className="h-4 w-4" />
-            <p>Cette information ne sera pas communiquée aux employeurs.</p>
+            <p>{tCommon("preferences.sections.minSalary.description")}</p>
           </div>
 
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className="space-y-4"
-            >
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="px-3">
               <div className="flex gap-4">
                 <FormField
                   control={form.control}
@@ -103,13 +119,19 @@ export function AddMinSalaryDialog({
                   render={({ field }) => (
                     <FormItem className="flex-1">
                       <FormLabel>
-                        Salaire de base minimum{" "}
-                        <span className="text-destructive">*</span>
+                        {tCommon(
+                          "preferences.sections.minSalary.dialog.form.amount.label"
+                        )}{" "}
+                        <span className="text-destructive">
+                          {tCommon("form.required")}
+                        </span>
                       </FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Input
-                            placeholder="4.000"
+                            placeholder={tCommon(
+                              "preferences.sections.minSalary.dialog.form.amount.placeholder"
+                            )}
                             {...field}
                             onChange={(e) => {
                               const value = e.target.value;
@@ -119,7 +141,9 @@ export function AddMinSalaryDialog({
                             }}
                           />
                           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-                            MAD
+                            {tCommon(
+                              "preferences.sections.minSalary.dialog.form.amount.currency"
+                            )}
                           </span>
                         </div>
                       </FormControl>
@@ -134,8 +158,12 @@ export function AddMinSalaryDialog({
                   render={({ field }) => (
                     <FormItem className="flex-1">
                       <FormLabel>
-                        Période de paie{" "}
-                        <span className="text-destructive">*</span>
+                        {tCommon(
+                          "preferences.sections.minSalary.dialog.form.period.label"
+                        )}{" "}
+                        <span className="text-destructive">
+                          {tCommon("form.required")}
+                        </span>
                       </FormLabel>
                       <Select
                         onValueChange={field.onChange}
@@ -143,12 +171,24 @@ export function AddMinSalaryDialog({
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Sélectionnez une période" />
+                            <SelectValue
+                              placeholder={tCommon(
+                                "preferences.sections.minSalary.dialog.form.period.placeholder"
+                              )}
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="par mois">par mois</SelectItem>
-                          <SelectItem value="par an">par an</SelectItem>
+                          <SelectItem value="par mois">
+                            {tCommon(
+                              "preferences.sections.minSalary.periods.monthly"
+                            )}
+                          </SelectItem>
+                          <SelectItem value="par an">
+                            {tCommon(
+                              "preferences.sections.minSalary.periods.yearly"
+                            )}
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -165,9 +205,11 @@ export function AddMinSalaryDialog({
               variant="outline"
               onClick={() => onOpenChange(false)}
             >
-              Annuler
+              {tCommon("actions.cancel")}
             </Button>
-            <Button onClick={form.handleSubmit(handleSubmit)}>Ajouter</Button>
+            <Button onClick={form.handleSubmit(handleSubmit)}>
+              {tCommon("actions.add")}
+            </Button>
           </DialogFooter>
         </ScrollArea>
       </DialogContent>

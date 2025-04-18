@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export const metadata: Metadata = {
   title: "Préférences d'emploi | Mon Profil",
@@ -33,6 +34,7 @@ export const metadata: Metadata = {
 export function PreferencesContainer() {
   const [hasRelocation, setHasRelocation] = useState(false);
   const router = useRouter();
+  const tCommon = useTranslations("common");
 
   const handleBack = () => {
     router.back();
@@ -42,21 +44,28 @@ export function PreferencesContainer() {
     <div className="space-y-6">
       <Button variant="ghost" onClick={handleBack}>
         <ArrowLeft className="mr-2 h-4 w-4" />
-        Retour
+        {tCommon("actions.back")}
       </Button>
-      <PreferenceSection title="Intitulés de poste">
+      <PreferenceSection
+        title={tCommon("preferences.sections.jobTitles.title")}
+      >
         <JobTitleSection />
       </PreferenceSection>
 
-      <PreferenceSection title="Salaire de base minimum">
+      <PreferenceSection
+        title={tCommon("preferences.sections.minSalary.title")}
+      >
         <MinSalarySection />
       </PreferenceSection>
 
-      <PreferenceSection title="Types de postes">
+      <PreferenceSection title={tCommon("preferences.sections.jobTypes.title")}>
         <JobTypesSection />
       </PreferenceSection>
 
-      <PreferenceSection title="Relocalisation" showAddButton={!hasRelocation}>
+      <PreferenceSection
+        title={tCommon("preferences.sections.relocation.title")}
+        showAddButton={!hasRelocation}
+      >
         <RelocationSection onDataChange={setHasRelocation} />
       </PreferenceSection>
     </div>
