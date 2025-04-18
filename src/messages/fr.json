@@ -15,6 +15,10 @@
       "minLength": "Minimum {count} caractères",
       "passwordMatch": "Les mots de passe ne correspondent pas",
       "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+      "jobTypes": {
+        "required": "Le type de poste est requis",
+        "minSelection": "Sélectionnez au moins un type de poste"
+      },
       "invalidType": {
         "title": "Type de fichier invalide",
         "description": "Veuillez télécharger un fichier PDF"
@@ -456,7 +460,38 @@
           }
         },
         "jobTypes": {
-          "title": "Types de postes"
+          "title": "Types de postes",
+          "empty": "Aucun type de poste ajouté",
+          "dialog": {
+            "add": {
+              "title": "Ajouter un type de poste",
+              "description": "Sélectionnez un type de poste à ajouter à votre profil."
+            },
+            "edit": {
+              "title": "Modifier le type de poste",
+              "description": "Modifiez le type de poste sélectionné."
+            },
+            "delete": {
+              "title": "Supprimer le type de poste",
+              "description": "Cette action ne peut pas être annulée. Le type de poste sera supprimé définitivement de votre profil."
+            },
+            "form": {
+              "type": {
+                "label": "Type de poste",
+                "placeholder": "Sélectionnez un type de poste"
+              }
+            },
+            "toast": {
+              "add": {
+                "title": "Type de poste ajouté",
+                "description": "Le type de poste a été ajouté avec succès."
+              },
+              "edit": {
+                "title": "Type de poste modifié",
+                "description": "Le type de poste a été modifié avec succès."
+              }
+            }
+          }
         },
         "relocation": {
           "title": "Relocalisation"

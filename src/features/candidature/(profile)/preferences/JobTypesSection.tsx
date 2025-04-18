@@ -7,6 +7,7 @@ import { EditJobTypeDialog } from "./dialogs/edit/EditJobTypeDialog";
 import { DeleteJobTypeDialog } from "./dialogs/delete/DeleteJobTypeDialog";
 import { ContractType } from "@/core/enums/contract-type.enum";
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
 
 const AddJobTypeDialog = dynamic(
   () => import("./dialogs/add/AddJobTypeDialog"),
@@ -23,6 +24,7 @@ export function JobTypesSection() {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [jobTypeToEdit, setJobTypeToEdit] = useState<JobType | null>(null);
   const [jobTypeToDelete, setJobTypeToDelete] = useState<JobType | null>(null);
+  const tCommon = useTranslations("common");
 
   const handleEdit = (jobType: JobType) => {
     setJobTypeToEdit(jobType);
@@ -55,7 +57,7 @@ export function JobTypesSection() {
     <>
       {!jobTypes?.length ? (
         <div className="text-center text-muted-foreground py-8">
-          Aucun type de poste ajouté
+          {tCommon("preferences.sections.jobTypes.empty")}
         </div>
       ) : (
         <div className="rounded-lg border">
@@ -71,6 +73,7 @@ export function JobTypesSection() {
                   size="icon"
                   className="h-8 w-8"
                   onClick={() => handleEdit(jobType)}
+                  aria-label={tCommon("actions.edit")}
                 >
                   <Pencil className="h-4 w-4 text-muted-foreground" />
                 </Button>
@@ -79,6 +82,7 @@ export function JobTypesSection() {
                   size="icon"
                   className="h-8 w-8"
                   onClick={() => handleDelete(jobType)}
+                  aria-label={tCommon("actions.delete")}
                 >
                   <Trash2 className="h-4 w-4 text-destructive" />
                 </Button>
@@ -92,6 +96,7 @@ export function JobTypesSection() {
         className="hidden"
         data-add-button
         onClick={() => setIsAddOpen(true)}
+        aria-label={tCommon("actions.add")}
       />
 
       {isAddOpen && (
