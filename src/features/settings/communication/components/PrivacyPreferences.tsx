@@ -14,12 +14,15 @@ import { privacyPreferences as initialPrivacySettings } from "@/core/mockData/us
 import { useToast } from "@/hooks/use-toast";
 import React from "react";
 import { Separator } from "@/components/ui/separator";
+import { useTranslations } from 'next-intl';
 
 export function PrivacyPreferences() {
   const [privacySettings, setPrivacySettings] = useState(
     initialPrivacySettings
   );
   const { toast } = useToast();
+  const t = useTranslations('settings.communication.privacy');
+  const tCommon = useTranslations('common.actions');
 
   const handleToggleSetting = (id: string, isEnabled: boolean) => {
     setPrivacySettings(
@@ -30,8 +33,8 @@ export function PrivacyPreferences() {
 
     toast({
       variant: "success",
-      title: "Paramètre mis à jour",
-      description: "Vos préférences de confidentialité ont été mises à jour.",
+      title: t('toast.toggle.title'),
+      description: t('toast.toggle.description'),
     });
   };
 
@@ -56,11 +59,10 @@ export function PrivacyPreferences() {
                   onCheckedChange={(checked) =>
                     handleToggleSetting(setting.id, checked)
                   }
-                  aria-label={
-                    setting.isEnabled
-                      ? `Désactiver ${setting.title}`
-                      : `Activer ${setting.title}`
-                  }
+                  aria-label={t('switch.ariaLabel', {
+                    action: setting.isEnabled ? tCommon('disable') : tCommon('enable'),
+                    setting: setting.title
+                  })}
                 />
               </div>
               {index < privacySettings.length - 1 && <Separator />}

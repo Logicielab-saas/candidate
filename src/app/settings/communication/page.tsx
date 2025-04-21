@@ -9,34 +9,34 @@ import { Separator } from "@/components/ui/separator";
 import { AlertSection } from "@/features/settings/communication/components/AlertSection";
 import { AlertPreferences } from "@/features/settings/communication/components/AlertPreferences";
 import { PrivacyPreferences } from "@/features/settings/communication/components/PrivacyPreferences";
+import { getTranslations } from "next-intl/server";
 
-export default function CommunicationSettingsPage() {
+export default async function CommunicationSettingsPage() {
+  const t = await getTranslations("settings.communication");
+
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">Paramètres de communication</h1>
-        <p className="text-muted-foreground mt-1">
-          Gérez les paramètres de communication et vos préférences
-          d&apos;alertes.
-        </p>
+        <h1 className="text-2xl font-semibold">{t("page.title")}</h1>
+        <p className="text-muted-foreground mt-1">{t("page.description")}</p>
       </div>
 
       <Separator className="my-6" />
 
       <div className="space-y-6">
         <div>
-          <h2 className="text-xl font-medium mb-4">Alertes Configuration</h2>
+          <h2 className="text-xl font-medium mb-4">{t("alerts.title")}</h2>
 
           <div className="rounded-lg border border-border">
             <AlertSection
-              title="Alertes d'emploi"
-              description="Recevez des notifications pour les nouveaux emplois correspondant à vos critères."
+              title={t("alerts.jobAlerts.title")}
+              description={t("alerts.jobAlerts.description")}
               href="/settings/communication/job-alerts"
             />
             <Separator />
             <AlertSection
-              title="Alertes d'entreprise"
-              description="Suivez les mises à jour des entreprises qui vous intéressent."
+              title={t("alerts.companyAlerts.title")}
+              description={t("alerts.companyAlerts.description")}
               href="/settings/communication/company-alerts"
             />
           </div>
@@ -46,7 +46,7 @@ export default function CommunicationSettingsPage() {
 
         <div>
           <h2 className="text-xl font-medium mb-4">
-            Préférences de notification
+            {t("notificationPreferences.title")}
           </h2>
           <AlertPreferences />
         </div>
@@ -54,7 +54,7 @@ export default function CommunicationSettingsPage() {
         <Separator className="my-6" />
 
         <div>
-          <h2 className="text-xl font-medium mb-4">Confidentialité</h2>
+          <h2 className="text-xl font-medium mb-4">{t("privacy.title")}</h2>
           <PrivacyPreferences />
         </div>
       </div>

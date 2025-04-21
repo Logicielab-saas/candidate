@@ -12,6 +12,7 @@
  */
 
 import { ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 interface AlertSectionProps {
@@ -21,6 +22,7 @@ interface AlertSectionProps {
 }
 
 export function AlertSection({ title, description, href }: AlertSectionProps) {
+  const tCommon = useTranslations("common.actions");
   return (
     <Link
       href={href}
@@ -34,7 +36,7 @@ export function AlertSection({ title, description, href }: AlertSectionProps) {
           )}
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground">
-          Gérer
+          {tCommon("manage")}
           <ChevronRight className="h-4 w-4" />
         </div>
       </div>

@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { JobAlertForm } from "./JobAlertForm";
+import { useTranslations } from 'next-intl';
 
 export function JobAlertsList() {
   const [alerts, setAlerts] = useState<UserAlert[]>(initialAlerts);
@@ -30,6 +31,8 @@ export function JobAlertsList() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedAlert, setSelectedAlert] = useState<UserAlert | null>(null);
   const { toast } = useToast();
+  const t = useTranslations('settings.communication.jobAlerts');
+  const tCommon = useTranslations('common.actions');
 
   const handleToggleAlert = (id: string, isEnabled: boolean) => {
     setAlerts(
@@ -38,10 +41,10 @@ export function JobAlertsList() {
 
     toast({
       variant: "success",
-      title: isEnabled ? "Alerte activée" : "Alerte désactivée",
-      description: `L'alerte a été ${
-        isEnabled ? "activée" : "désactivée"
-      } avec succès.`,
+      title: isEnabled ? t('toast.toggle.enable.title') : t('toast.toggle.disable.title'),
+      description: t('toast.toggle.description', { 
+        state: isEnabled ? tCommon('enabled') : tCommon('disabled') 
+      }),
     });
   };
 
@@ -62,15 +65,14 @@ export function JobAlertsList() {
 
       toast({
         variant: "success",
-        title: "Alerte supprimée",
-        description: "L'alerte a été supprimée avec succès.",
+        title: t('toast.delete.title'),
+        description: t('toast.delete.description'),
       });
     }
   };
 
   const handleSaveAlert = (updatedAlert: UserAlert) => {
     if (selectedAlert) {
-      // Edit existing alert
       setAlerts(
         alerts.map((alert) =>
           alert.id === updatedAlert.id ? updatedAlert : alert
@@ -80,8 +82,8 @@ export function JobAlertsList() {
 
       toast({
         variant: "success",
-        title: "Alerte mise à jour",
-        description: "L'alerte a été mise à jour avec succès.",
+        title: t('toast.edit.title'),
+        description: t('toast.edit.description'),
       });
     }
   };
@@ -89,15 +91,15 @@ export function JobAlertsList() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-medium">Mes alertes d&apos;emploi</h3>
+        <h3 className="text-lg font-medium">{t('myAlerts')}</h3>
       </div>
 
       {alerts.length === 0 ? (
         <div className="flex flex-col items-center justify-center p-8 text-center border rounded-lg bg-muted/20">
           <AlertCircle className="h-10 w-10 text-muted-foreground mb-4" />
-          <h3 className="text-lg font-medium">Aucune alerte</h3>
+          <h3 className="text-lg font-medium">{t('empty.title')}</h3>
           <p className="text-sm text-muted-foreground mt-1">
-            Vous n&apos;avez pas encore créé d&apos;alertes d&apos;emploi.
+            {t('empty.description')}
           </p>
         </div>
       ) : (
@@ -117,7 +119,7 @@ export function JobAlertsList() {
                       )}
                       {alert.salaryRange && (
                         <div className="flex items-center">
-                          Salary: {alert.salaryRange.split(",").join("K€ - ")}K€
+                          {t('salary')}: {alert.salaryRange.split(",").join("K€ - ")}K€
                         </div>
                       )}
                     </div>
@@ -128,11 +130,10 @@ export function JobAlertsList() {
                       onCheckedChange={(checked) =>
                         handleToggleAlert(alert.id, checked)
                       }
-                      aria-label={
-                        alert.isEnabled
-                          ? "Désactiver l&apos;alerte"
-                          : "Activer l&apos;alerte"
-                      }
+                      aria-label={t('switch.ariaLabel', {
+                        action: alert.isEnabled ? tCommon('disable') : tCommon('enable'),
+                        alert: alert.post
+                      })}
                     />
                     <Button
                       size="icon"
@@ -140,7 +141,7 @@ export function JobAlertsList() {
                       onClick={() => handleEditClick(alert)}
                     >
                       <Pencil className="h-4 w-4 text-primaryHex-600" />
-                      <span className="sr-only">Modifier</span>
+                      <span className="sr-only">{tCommon('edit')}</span>
                     </Button>
                     <Button
                       size="icon"
@@ -148,7 +149,7 @@ export function JobAlertsList() {
                       onClick={() => handleDeleteClick(alert)}
                     >
                       <Trash2 className="h-4 w-4 text-destructive" />
-                      <span className="sr-only">Supprimer</span>
+                      <span className="sr-only">{tCommon('delete')}</span>
                     </Button>
                   </div>
                 </div>
@@ -162,21 +163,20 @@ export function JobAlertsList() {
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Supprimer l&apos;alerte</DialogTitle>
+            <DialogTitle>{t('deleteDialog.title')}</DialogTitle>
           </DialogHeader>
           <p className="pt-2 pb-4">
-            Êtes-vous sûr de vouloir supprimer cette alerte ? Cette action ne
-            peut pas être annulée.
+            {t('deleteDialog.description')}
           </p>
           <DialogFooter>
             <Button
               variant="outline"
               onClick={() => setIsDeleteDialogOpen(false)}
             >
-              Annuler
+              {tCommon('cancel')}
             </Button>
             <Button variant="destructive" onClick={handleDelete}>
-              Supprimer
+              {tCommon('delete')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -186,7 +186,7 @@ export function JobAlertsList() {
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Modifier l&apos;alerte</DialogTitle>
+            <DialogTitle>{t('editDialog.title')}</DialogTitle>
           </DialogHeader>
           {selectedAlert && (
             <JobAlertForm

@@ -144,6 +144,7 @@
       "sending": "Envoi...",
       "logout": "Déconnexion",
       "loggingOut": "Déconnexion...",
+      "manage": "Gérer",
       "report": "Signaler",
       "share": "Partager",
       "alreadyApplied": "Déjà postulé",
@@ -172,7 +173,11 @@
       "generate": "Générer",
       "editProfile": "Modifier le profil",
       "generateCV": "Générer le CV",
-      "add": "Ajouter"
+      "add": "Ajouter",
+      "enabled": "Activé",
+      "disabled": "Désactivé",
+      "enable": "Activer",
+      "disable": "Désactiver"
     },
     "filters": {
       "activeFilters": "{count} filtre actif",
@@ -1225,6 +1230,135 @@
         "deleteAccountConfirmDescription": "Cette action est irréversible. Toutes vos données seront définitivement supprimées.",
         "reConfirmation": "Pour confirmer, écrivez \"{DELETE_CONFIRMATION}\" ci-dessous :",
         "deleteConfirmationValue": "SUPPRIMER MON COMPTE"
+      }
+    },
+    "communication": {
+      "page": {
+        "title": "Paramètres de communication",
+        "description": "Gérez les paramètres de communication et vos préférences d'alertes."
+      },
+      "alerts": {
+        "title": "Alertes Configuration",
+        "jobAlerts": {
+          "title": "Alertes d'emploi",
+          "description": "Recevez des notifications pour les nouveaux emplois correspondant à vos critères."
+        },
+        "companyAlerts": {
+          "title": "Alertes d'entreprise",
+          "description": "Suivez les mises à jour des entreprises qui vous intéressent."
+        }
+      },
+      "notificationPreferences": {
+        "title": "Préférences de notification"
+      },
+      "privacy": {
+        "title": "Paramètres de confidentialité",
+        "description": "Gérez qui peut voir votre statut et vos informations",
+        "toast": {
+          "toggle": {
+            "title": "Paramètre de confidentialité mis à jour",
+            "description": "Vos préférences de confidentialité ont été mises à jour"
+          }
+        },
+        "switch": {
+          "ariaLabel": "{action} {setting}"
+        }
+      },
+      "notifications": {
+        "toast": {
+          "toggle": {
+            "title": "Notification {state}e",
+            "description": "La préférence de notification a été {state}e"
+          }
+        },
+        "switch": {
+          "ariaLabel": "{action} les notifications pour {preference}"
+        }
+      },
+      "companyAlerts": {
+        "title": "Alertes d'entreprise",
+        "description": "Configurez vos alertes entreprise pour recevoir des notifications lorsque de nouvelles opportunités sont disponibles dans les entreprises qui vous intéressent.",
+        "empty": {
+          "description": "Aucune alerte d'entreprise active."
+        },
+        "toast": {
+          "toggle": {
+            "enable": {
+              "title": "Alerte d'entreprise activée"
+            },
+            "disable": {
+              "title": "Alerte d'entreprise désactivée"
+            },
+            "description": "L'alerte a été {state}e"
+          },
+          "delete": {
+            "title": "Alerte supprimée",
+            "description": "L'alerte d'entreprise a été supprimée avec succès"
+          }
+        },
+        "deleteDialog": {
+          "title": "Supprimer l'alerte",
+          "description": "Êtes-vous sûr de vouloir supprimer l'alerte pour {company} ?"
+        },
+        "switch": {
+          "ariaLabel": "{action} les alertes pour {company}"
+        }
+      },
+      "jobAlerts": {
+        "title": "Alertes d'emploi",
+        "description": "Configurez vos alertes d'emploi pour recevoir des notifications lorsque de nouvelles offres correspondant à vos critères sont publiées.",
+        "myAlerts": "Mes alertes",
+        "empty": {
+          "title": "Aucune alerte",
+          "description": "Vous n'avez pas encore configuré d'alertes d'emploi."
+        },
+        "salary": "Salaire",
+        "switch": {
+          "ariaLabel": "{action} l'alerte pour {alert}"
+        },
+        "toast": {
+          "toggle": {
+            "enable": {
+              "title": "Alerte activée"
+            },
+            "disable": {
+              "title": "Alerte désactivée"
+            },
+            "description": "L'alerte a été {state}e"
+          },
+          "delete": {
+            "title": "Alerte supprimée",
+            "description": "L'alerte d'emploi a été supprimée avec succès"
+          },
+          "edit": {
+            "title": "Alerte modifiée",
+            "description": "L'alerte d'emploi a été mise à jour avec succès"
+          }
+        },
+        "deleteDialog": {
+          "title": "Supprimer l'alerte",
+          "description": "Êtes-vous sûr de vouloir supprimer cette alerte d'emploi ?"
+        },
+        "editDialog": {
+          "title": "Modifier l'alerte"
+        },
+        "form": {
+          "post": {
+            "label": "Intitulé du poste",
+            "placeholder": "Ex: Développeur Frontend",
+            "description": "Entrez l'intitulé du poste que vous recherchez"
+          },
+          "city": {
+            "label": "Ville",
+            "placeholder": "Ex: Paris",
+            "description": "Entrez la ville où vous souhaitez travailler"
+          },
+          "salary": {
+            "label": "Fourchette de salaire",
+            "description": "Sélectionnez la fourchette de salaire souhaitée",
+            "moveToChange": "Déplacez le curseur pour modifier la fourchette"
+          }
+        }
       }
     }
   }
