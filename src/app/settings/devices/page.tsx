@@ -7,15 +7,15 @@
 
 import { Separator } from "@/components/ui/separator";
 import { DevicesList } from "@/features/settings/devices/components/DevicesList";
+import { getTranslations } from "next-intl/server";
 
-export default function DevicesPage() {
+export default async function DevicesPage() {
+  const t = await getTranslations("settings.devices");
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">Appareils connectés</h1>
-        <p className="text-muted-foreground mt-1">
-          Gérez les appareils connectés à votre compte et leurs accès.
-        </p>
+        <h1 className="text-2xl font-semibold">{t("title")}</h1>
+        <p className="text-muted-foreground mt-1">{t("description")}</p>
       </div>
 
       <Separator className="my-6" />

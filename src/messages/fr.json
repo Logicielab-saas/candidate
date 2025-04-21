@@ -1360,6 +1360,26 @@
           }
         }
       }
+    },
+    "devices": {
+      "title": "Appareils connectés",
+      "description": "Gérez les appareils connectés à votre compte et leurs accès.",
+      "table": {
+        "headers": {
+          "device": "Appareil",
+          "loginDate": "Date de connexion",
+          "ipAddress": "Adresse IP",
+          "actions": "Actions"
+        },
+        "currentDevice": "Appareil actuel",
+        "logout": {
+          "button": "Déconnecter",
+          "toast": {
+            "title": "Appareil déconnecté",
+            "description": "L'appareil a été déconnecté avec succès"
+          }
+        }
+      }
     }
   }
 }
