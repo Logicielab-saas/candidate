@@ -1,5 +1,36 @@
 {
   "common": {
+    "reviews": {
+      "title": "Mes avis",
+      "summary": "Vous avez donné {count} avis au total.",
+      "deleteDialog": {
+        "title": "Supprimer l'avis",
+        "description": "Êtes-vous sûr de vouloir supprimer cet avis ? Cette action ne peut pas être annulée."
+      },
+      "deleteSuccess": "Votre avis a été supprimé avec succès.",
+      "sections": {
+        "positivePoints": "Points positifs",
+        "negativePoints": "Points à améliorer"
+      },
+      "search": {
+        "label": "Rechercher dans mes avis",
+        "placeholder": "Rechercher par titre ou contenu..."
+      },
+      "sort": {
+        "label": "Trier par",
+        "placeholder": "Trier par",
+        "options": {
+          "recent": "Plus récents",
+          "oldest": "Plus anciens",
+          "rating_high": "Note - Plus élevée",
+          "rating_low": "Note - Plus basse"
+        }
+      },
+      "empty": {
+        "noReviews": "Vous n'avez pas encore donné d'avis.",
+        "noResults": "Aucun avis ne correspond à votre recherche."
+      }
+    },
     "search": "Rechercher",
     "writing": "Écrivant...",
     "suggestionsLoading": "Chargement des suggestions...",
