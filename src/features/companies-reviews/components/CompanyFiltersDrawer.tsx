@@ -30,7 +30,7 @@ import { useQueryState } from "nuqs";
 import { useState } from "react";
 import { CitySelector } from "@/features/Emplois/components/CitySelector";
 import { IndustrySelector } from "./IndustrySelector";
-
+// TODO : adjust city selector label maybe
 // Default values
 const DEFAULT_MIN_SALARY = 30;
 const DEFAULT_MAX_SALARY = 150;
@@ -117,11 +117,7 @@ export function CompanyFiltersDrawer() {
         <div className="mt-6 sm:mt-8 space-y-6 sm:space-y-8">
           {/* Location */}
           <div className="space-y-4">
-            <CitySelector
-              value={localLocation}
-              onChange={setLocalLocation}
-              label="Localisation"
-            />
+            <CitySelector value={localLocation} onChange={setLocalLocation} />
           </div>
 
           <Separator />

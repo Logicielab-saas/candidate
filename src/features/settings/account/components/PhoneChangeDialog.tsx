@@ -66,7 +66,7 @@ export function PhoneChangeDialog({
   const steps = getSteps(t);
 
   const verificationForm = useForm<VerificationForm>({
-    resolver: zodResolver(verificationSchema),
+    resolver: zodResolver(verificationSchema(t)),
     defaultValues: {
       currentPassword: "",
     },

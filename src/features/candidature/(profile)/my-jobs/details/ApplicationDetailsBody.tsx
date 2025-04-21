@@ -4,7 +4,7 @@ import { FileText } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { ResumeItem } from "@/components/shared/ResumeItem";
 import Link from "next/link";
-
+// TODO: Comeback here to fix the details cover_letter & files does not exist on current data modify api response
 interface ResponseQuestion {
   uuid: string;
   emploi_question_uuid: string;
@@ -98,7 +98,8 @@ export function ApplicationDetailsBody({
         )}
 
         {/* Cover Letter if exists */}
-        {application.cover_letter && (
+
+        {/* {application.cover_letter && (
           <>
             <div className="shadow dark:border p-4 rounded-lg flex flex-col items-start gap-2">
               <h6 className="text-muted-foreground font-semibold">
@@ -110,10 +111,10 @@ export function ApplicationDetailsBody({
             </div>
             <Separator />
           </>
-        )}
+        )} */}
 
         {/* Additional Files if exists */}
-        {application.file && (
+        {/* {application.file && (
           <>
             <div className="shadow dark:border p-4 rounded-lg flex flex-col items-start gap-2">
               <h6 className="text-muted-foreground font-semibold">
@@ -130,7 +131,7 @@ export function ApplicationDetailsBody({
             </div>
             <Separator />
           </>
-        )}
+        )} */}
 
         {/* Response Questions Section */}
         {reponse_questions.length > 0 && (

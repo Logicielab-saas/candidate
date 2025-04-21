@@ -81,7 +81,7 @@ export function EmailChangeDialog({
   const steps = getSteps(t);
 
   const verificationForm = useForm<VerificationForm>({
-    resolver: zodResolver(verificationSchema),
+    resolver: zodResolver(verificationSchema(t)),
     defaultValues: {
       currentPassword: "",
     },
@@ -96,7 +96,7 @@ export function EmailChangeDialog({
   });
 
   const otpForm = useForm<OtpVerificationForm>({
-    resolver: zodResolver(otpVerificationSchema),
+    resolver: zodResolver(otpVerificationSchema(t)),
     defaultValues: {
       verificationCode: "",
     },

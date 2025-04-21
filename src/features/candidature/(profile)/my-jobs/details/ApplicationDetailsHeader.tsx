@@ -17,10 +17,10 @@ export function ApplicationDetailsHeader({
       <CardContent className="p-0">
         <div className="p-4 flex items-start gap-4">
           <Avatar className="h-12 w-12">
-            {application.emploi.company_logo && (
+            {application.company_logo && (
               <AvatarImage
-                src={application.emploi.company_logo}
-                alt={application.emploi.company_name || ""}
+                src={application.company_logo}
+                alt={application.company_name || ""}
               />
             )}
             <AvatarFallback className="bg-muted">
@@ -29,16 +29,16 @@ export function ApplicationDetailsHeader({
           </Avatar>
 
           <div className="flex-1">
-            <h2 className="text-xl font-bold">{application.emploi.title}</h2>
+            <h2 className="text-xl font-bold">{application.title}</h2>
             <p className="text-md font-medium text-muted-foreground">
-              {application.emploi.company_name}
+              {application.company_name}
             </p>
             <p className="text-sm text-muted-foreground">
-              {application.emploi.city_name || "Inconnu"}
+              {application.city_name || "Inconnu"}
             </p>
             <p className="text-sm text-muted-foreground mt-1">
               Candidature envoyée le{" "}
-              {format(new Date(application.applied_at), "d MMM yyyy", {
+              {format(new Date(application.created_at), "d MMM yyyy", {
                 locale: fr,
               })}
             </p>
