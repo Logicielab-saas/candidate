@@ -1380,6 +1380,46 @@
           }
         }
       }
+    },
+    "privacyPage": {
+      "title": "Confidentialité",
+      "description": "Gérez vos paramètres de confidentialité et vos données personnelles.",
+      "dataTypes": {
+        "title": "Types de données collectées",
+        "description": "Nous collectons les informations suivantes pour améliorer votre expérience :",
+        "items": {
+          "profile": "Informations de profil (nom, email, etc.)",
+          "resume": "CV et documents professionnels",
+          "preferences": "Préférences de recherche d'emploi",
+          "history": "Historique de navigation sur le site"
+        }
+      },
+      "dataUsage": {
+        "title": "Utilisation et divulgation de mes données",
+        "description": "Vos données sont utilisées pour :",
+        "items": {
+          "personalization": "Personnaliser votre recherche d'emploi",
+          "improvement": "Améliorer nos services et recommandations",
+          "communication": "Communiquer avec les recruteurs (avec votre accord)"
+        }
+      },
+      "cookies": {
+        "title": "Cookies",
+        "description": "Nous utilisons des cookies pour :",
+        "items": {
+          "session": "Maintenir votre session",
+          "preferences": "Mémoriser vos préférences",
+          "analytics": "Analyser l'utilisation du site"
+        }
+      },
+      "dataAccess": {
+        "title": "Accéder à mes données et les supprimer",
+        "description": "Vous pouvez à tout moment accéder à vos données personnelles ou demander leur suppression.",
+        "actions": {
+          "download": "Télécharger mes données",
+          "delete": "Supprimer mes données"
+        }
+      }
     }
   }
 }
