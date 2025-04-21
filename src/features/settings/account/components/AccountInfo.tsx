@@ -16,11 +16,14 @@ import { EmailChangeDialog } from "./EmailChangeDialog";
 import { PhoneChangeDialog } from "./PhoneChangeDialog";
 import { PasswordChangeDialog } from "./PasswordChangeDialog";
 import { AccountInfoSkeleton } from "../skeletons/AccountInfoSkeleton";
+import { useTranslations } from "next-intl";
 
 export function AccountInfo() {
   const { data: profile, isLoading } = useProfile();
   const [isUpdating, setIsUpdating] = useState(false);
   const { toast } = useToast();
+  const t = useTranslations("settings.account.info");
+  const tCommon = useTranslations("common");
 
   if (isLoading) {
     return <AccountInfoSkeleton />;
@@ -56,17 +59,15 @@ export function AccountInfo() {
 
   return (
     <Card className="p-6">
-      <h4 className="tracking-tight text-lg font-medium mb-4">
-        Informations du compte
-      </h4>
+      <h4 className="tracking-tight text-lg font-medium mb-4">{t("title")}</h4>
       <div className="divide-y">
         <InfoItem
-          label="Type de compte"
+          label={t("accountType")}
           value={profile.type_user}
           showChangeButton={false}
         />
         <InfoItem
-          label="Email"
+          label={t("email")}
           value={profile.email}
           changeButton={
             <EmailChangeDialog
@@ -74,34 +75,34 @@ export function AccountInfo() {
               onEmailChange={handleEmailChange}
               trigger={
                 <Button variant="outline" size="sm" disabled={isUpdating}>
-                  Changer
+                  {tCommon("actions.change")}
                 </Button>
               }
             />
           }
         />
         <InfoItem
-          label="Numéro de téléphone"
-          value={profile.phone || "Non renseigné"}
+          label={t("phone")}
+          value={profile.phone || t("phoneNotSet")}
           changeButton={
             <PhoneChangeDialog
               currentPhone={profile.phone || ""}
               trigger={
                 <Button variant="outline" size="sm" disabled={isUpdating}>
-                  Changer
+                  {tCommon("actions.change")}
                 </Button>
               }
             />
           }
         />
         <InfoItem
-          label="Mot de passe"
-          value="••••••••"
+          label={tCommon("password")}
+          value={tCommon("passwordMask")}
           changeButton={
             <PasswordChangeDialog
               trigger={
                 <Button variant="outline" size="sm" disabled={isUpdating}>
-                  Changer
+                  {tCommon("actions.change")}
                 </Button>
               }
             />

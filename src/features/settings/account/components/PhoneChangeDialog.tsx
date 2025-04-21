@@ -35,6 +35,7 @@ import {
 } from "./PhoneChangeForm";
 import { useVerifyPassword } from "../hooks/use-verify-password";
 import { useUpdatePhone } from "../hooks/use-update-phone";
+import { useTranslations } from "next-intl";
 
 type Step = "verify-current" | "change";
 
@@ -43,7 +44,14 @@ interface PhoneChangeDialogProps {
   trigger?: React.ReactNode;
 }
 
-const STEPS = [{ title: "Vérification" }, { title: "Nouveau numéro" }];
+const getSteps = (t: (key: string) => string) => [
+  {
+    title: t("settings.account.info.phoneChange.dialog.stepIndicator.0.title"),
+  },
+  {
+    title: t("settings.account.info.phoneChange.dialog.stepIndicator.1.title"),
+  },
+];
 
 export function PhoneChangeDialog({
   currentPhone,
@@ -54,6 +62,8 @@ export function PhoneChangeDialog({
   const { toast } = useToast();
   const verifyPasswordMutation = useVerifyPassword();
   const updatePhoneMutation = useUpdatePhone();
+  const t = useTranslations();
+  const steps = getSteps(t);
 
   const verificationForm = useForm<VerificationForm>({
     resolver: zodResolver(verificationSchema),
@@ -63,7 +73,7 @@ export function PhoneChangeDialog({
   });
 
   const changeForm = useForm<PhoneChangeFormType>({
-    resolver: zodResolver(phoneChangeSchema),
+    resolver: zodResolver(phoneChangeSchema(t)),
     defaultValues: {
       countryCode: "+212",
       newPhone: "",
@@ -90,7 +100,9 @@ export function PhoneChangeDialog({
       verificationForm.reset();
     } catch {
       verificationForm.setError("currentPassword", {
-        message: "Mot de passe incorrect",
+        message: t(
+          "settings.account.info.emailChange.dialog.validation.passwordIncorrect"
+        ),
       });
     }
   };
@@ -100,7 +112,9 @@ export function PhoneChangeDialog({
 
     if (fullPhoneNumber === currentPhone) {
       changeForm.setError("newPhone", {
-        message: "Le nouveau numéro doit être différent de l'actuel",
+        message: t(
+          "settings.account.info.phoneChange.dialog.validation.phoneSame"
+        ),
       });
       return;
     }
@@ -112,8 +126,8 @@ export function PhoneChangeDialog({
       setStep("verify-current");
       toast({
         variant: "success",
-        title: "Numéro modifié",
-        description: "Votre numéro de téléphone a été modifié avec succès",
+        title: t("settings.account.info.phoneChange.success.title"),
+        description: t("settings.account.info.phoneChange.success.description"),
       });
     } catch (_error) {
       // Error toast is handled by the mutation
@@ -152,18 +166,24 @@ export function PhoneChangeDialog({
   const getStepTitle = () => {
     switch (step) {
       case "verify-current":
-        return "Vérification du mot de passe";
+        return t(
+          "settings.account.info.phoneChange.dialog.steps.verification.title"
+        );
       case "change":
-        return "Changer le numéro de téléphone";
+        return t("settings.account.info.phoneChange.dialog.steps.change.title");
     }
   };
 
   const getStepDescription = () => {
     switch (step) {
       case "verify-current":
-        return "Entrez votre mot de passe pour continuer.";
+        return t(
+          "settings.account.info.phoneChange.dialog.steps.verification.description"
+        );
       case "change":
-        return "Entrez votre nouveau numéro de téléphone.";
+        return t(
+          "settings.account.info.phoneChange.dialog.steps.change.description"
+        );
     }
   };
 
@@ -179,7 +199,7 @@ export function PhoneChangeDialog({
         </DialogHeader>
         <StepIndicator
           currentStep={step === "verify-current" ? 0 : 1}
-          steps={STEPS}
+          steps={steps}
         />
         {getStepContent()}
       </DialogContent>

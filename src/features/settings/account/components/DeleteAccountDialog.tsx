@@ -27,8 +27,7 @@ import { useVerifyPassword } from "../hooks/use-verify-password";
 import { useDeleteAccount } from "../hooks/use-delete-account";
 import { logout } from "@/features/auth/services/logout";
 import { useToast } from "@/hooks/use-toast";
-
-const DELETE_CONFIRMATION = "SUPPRIMER MON COMPTE";
+import { useTranslations } from "next-intl";
 
 export function DeleteAccountDialog() {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,6 +41,11 @@ export function DeleteAccountDialog() {
   const { mutateAsync: verifyPassword, isPending: isVerifying } =
     useVerifyPassword();
   const { deleteAccount, isPending: isDeletingAccount } = useDeleteAccount();
+
+  const t = useTranslations("settings.account");
+  const tCommon = useTranslations("common");
+
+  const DELETE_CONFIRMATION = t("accountSettings.deleteConfirmationValue");
 
   const handleDeleteAccount = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -106,23 +110,22 @@ export function DeleteAccountDialog() {
     <AlertDialog open={isOpen} onOpenChange={handleOpenChange}>
       <AlertDialogTrigger asChild>
         <Button variant="destructive" className="w-full sm:w-auto">
-          Supprimer le compte
+          {t("accountSettings.deleteAccountLabel")}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Êtes-vous sûr de vouloir supprimer votre compte ?
+            {t("accountSettings.deleteAccountConfirm")}
           </AlertDialogTitle>
           <AlertDialogDescription asChild>
             <div className="space-y-4">
               <span className="block">
-                Cette action est irréversible. Toutes vos données seront
-                définitivement supprimées.
+                {t("accountSettings.deleteAccountConfirmDescription")}
               </span>
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-sm font-medium">
-                  Entrez votre mot de passe pour confirmer :
+                  {tCommon("enterPassword")}
                 </Label>
                 <Input
                   id="password"
@@ -133,19 +136,13 @@ export function DeleteAccountDialog() {
                     setShowPasswordError(false);
                   }}
                   className={showPasswordError ? "border-destructive" : ""}
-                  placeholder="Votre mot de passe"
+                  placeholder={tCommon("passwordMask")}
                   disabled={isLoading}
                 />
-                {showPasswordError && (
-                  <span className="block text-sm text-destructive">
-                    Veuillez entrer votre mot de passe
-                  </span>
-                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="confirmation" className="text-sm font-medium">
-                  Pour confirmer, écrivez &quot;{DELETE_CONFIRMATION}&quot;
-                  ci-dessous :
+                  {t("accountSettings.reConfirmation", { DELETE_CONFIRMATION })}
                 </Label>
                 <Input
                   id="confirmation"
@@ -158,12 +155,6 @@ export function DeleteAccountDialog() {
                   placeholder={DELETE_CONFIRMATION}
                   disabled={isLoading}
                 />
-                {showDeleteError && (
-                  <span className="block text-sm text-destructive">
-                    Veuillez écrire exactement &quot;{DELETE_CONFIRMATION}&quot;
-                    pour confirmer
-                  </span>
-                )}
               </div>
             </div>
           </AlertDialogDescription>
@@ -179,7 +170,9 @@ export function DeleteAccountDialog() {
               !password.trim()
             }
           >
-            {isLoading ? "Suppression..." : "Supprimer définitivement"}
+            {isLoading
+              ? tCommon("actions.deleting")
+              : tCommon("actions.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

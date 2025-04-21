@@ -118,9 +118,7 @@ export function LoginForm({
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
-                  <Label htmlFor="password">
-                    {tCommon("form.password.label")}
-                  </Label>
+                  <Label htmlFor="password">{tCommon("password")}</Label>
                   <Link
                     href="/forgot-password"
                     className="ml-auto text-sm underline-offset-2 hover:underline"
@@ -131,7 +129,7 @@ export function LoginForm({
                 <Input
                   id="password"
                   type="password"
-                  placeholder={tCommon("form.password.placeholder")}
+                  placeholder={tCommon("passwordMask")}
                   {...register("password")}
                   disabled={isLoading}
                 />

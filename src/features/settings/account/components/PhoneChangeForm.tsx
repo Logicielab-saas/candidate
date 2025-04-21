@@ -21,16 +21,24 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { UseFormReturn } from "react-hook-form";
 import { CountryCodeSelect } from "@/components/shared/CountryCodeSelect";
 import * as z from "zod";
+import { useTranslations } from "next-intl";
 
-export const phoneChangeSchema = z.object({
-  countryCode: z.string(),
-  newPhone: z
-    .string()
-    .min(9, "Le numéro doit contenir au moins 9 chiffres")
-    .regex(/^[0-9]+$/, "Format de numéro invalide"),
-});
+export const phoneChangeSchema = (t: (key: string) => string) =>
+  z.object({
+    countryCode: z.string(),
+    newPhone: z
+      .string()
+      .min(
+        9,
+        t("settings.account.info.phoneChange.dialog.validation.phoneMinLength")
+      )
+      .regex(
+        /^[0-9]+$/,
+        t("settings.account.info.phoneChange.dialog.validation.phoneInvalid")
+      ),
+  });
 
-export type PhoneChangeForm = z.infer<typeof phoneChangeSchema>;
+export type PhoneChangeForm = z.infer<ReturnType<typeof phoneChangeSchema>>;
 
 interface PhoneChangeFormProps {
   form: UseFormReturn<PhoneChangeForm>;
@@ -45,6 +53,9 @@ export function PhoneChangeForm({
   onSubmit,
   isLoading = false,
 }: PhoneChangeFormProps) {
+  const t = useTranslations();
+  const tCommon = useTranslations("common");
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -53,7 +64,11 @@ export function PhoneChangeForm({
           name="newPhone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nouveau numéro</FormLabel>
+              <FormLabel>
+                {t(
+                  "settings.account.info.phoneChange.dialog.form.newPhone.label"
+                )}
+              </FormLabel>
               <FormControl>
                 <div className="flex">
                   <FormField
@@ -67,7 +82,9 @@ export function PhoneChangeForm({
                     )}
                   />
                   <Input
-                    placeholder="612345678"
+                    placeholder={t(
+                      "settings.account.info.phoneChange.dialog.form.newPhone.placeholder"
+                    )}
                     type="tel"
                     className="rounded-l-none"
                     disabled={isLoading}
@@ -91,10 +108,10 @@ export function PhoneChangeForm({
             onClick={onCancel}
             disabled={isLoading}
           >
-            Annuler
+            {tCommon("actions.cancel")}
           </Button>
           <Button type="submit" disabled={isLoading}>
-            Continuer
+            {tCommon("actions.continue")}
           </Button>
         </DialogFooter>
       </form>
