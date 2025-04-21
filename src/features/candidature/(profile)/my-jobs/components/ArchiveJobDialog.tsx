@@ -25,6 +25,7 @@ import {
 import { useArchiveJob } from "../hooks/use-my-archived-jobs";
 import { useState } from "react";
 import LoaderOne from "@/components/ui/loader-one";
+import { useTranslations } from "next-intl";
 
 interface ArchiveJobDialogProps {
   open: boolean;
@@ -39,18 +40,19 @@ export default function ArchiveJobDialog({
   jobId,
   jobTitle,
 }: ArchiveJobDialogProps) {
+  const tCommon = useTranslations("common");
+  const t = useTranslations("myJobsPage.archiveJobDialog");
+
   const { mutate: archiveJob, isPending } = useArchiveJob();
   const [error, setError] = useState<string | null>(null);
 
-  const handleArchive = async () => {
+  const handleArchive = () => {
     try {
-      await archiveJob(jobId);
+      archiveJob(jobId);
       onOpenChange(false);
     } catch (err) {
       setError(
-        err instanceof Error
-          ? err.message
-          : "Une erreur inattendue est survenue"
+        err instanceof Error ? err.message : tCommon("toast.error.description")
       );
     }
   };
@@ -59,19 +61,11 @@ export default function ArchiveJobDialog({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>
-            Archiver cette offre d&apos;emploi ?
-          </AlertDialogTitle>
+          <AlertDialogTitle>{t("title")}</AlertDialogTitle>
           <AlertDialogDescription asChild>
             <div className="space-y-2">
-              <div>
-                Êtes-vous sûr de vouloir archiver l&apos;offre &quot;{jobTitle}
-                &quot; ?
-              </div>
-              <div>
-                Cette action déplacera l&apos;offre dans vos archives. Vous
-                pourrez la restaurer ultérieurement si nécessaire.
-              </div>
+              <div>{t("description", { jobTitle })}</div>
+              <div>{t("warning")}</div>
               {error && (
                 <div className="text-destructive text-sm font-medium">
                   {error}
@@ -81,14 +75,18 @@ export default function ArchiveJobDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>Annuler</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>
+            {tCommon("actions.cancel")}
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleArchive}
             disabled={isPending}
             className="bg-destructive hover:bg-destructive/90"
           >
             {isPending && <LoaderOne />}
-            {isPending ? "Archivage..." : "Archiver"}
+            {isPending
+              ? tCommon("actions.archiving")
+              : tCommon("actions.archive")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

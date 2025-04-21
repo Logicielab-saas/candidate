@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SentApplicationItemSkeleton } from "../skeletons/SentApplicationItemSkeleton";
 import dynamic from "next/dynamic";
 import type { SentApplicationsResponse } from "../services/my-applied-jobs";
+import { useTranslations } from "next-intl";
 
 const Pagination = dynamic(
   () => import("@/components/ui/pagination").then((mod) => mod.Pagination),
@@ -44,6 +45,8 @@ export default function SentApplicationsList({
   error,
   onPageChange,
 }: SentApplicationsListProps) {
+  const t = useTranslations("myJobsPage.empty");
+  const tCommon = useTranslations("common.actions");
   // Show skeleton loading state
   if (isLoading) {
     return (
@@ -60,11 +63,18 @@ export default function SentApplicationsList({
     );
   }
 
-  if (error) return <div>Error: {error.message}</div>;
-  if (!sentApplicationsData || sentApplicationsData.applied.length === 0)
+  if (error)
+    return (
+      <div>
+        {tCommon("error")}: {error.message}
+      </div>
+    );
+  if (!sentApplicationsData || sentApplicationsData.emplois.length === 0)
     return (
       <div className="text-center py-6 text-muted-foreground">
-        Aucune candidature trouvée.
+        {t("empty.description", {
+          description: "Vous n'avez encore envoyé aucune candidature.",
+        })}
       </div>
     );
 
@@ -80,8 +90,8 @@ export default function SentApplicationsList({
       >
         {/* AnimatePresence enables exit animations when items are removed */}
         <AnimatePresence mode="popLayout">
-          {sentApplicationsData.applied.map((applied) => (
-            <SentApplicationItem applied={applied} key={applied.uuid} />
+          {sentApplicationsData.emplois.map((item) => (
+            <SentApplicationItem emploi={item} key={item.uuid} />
           ))}
         </AnimatePresence>
       </motion.div>

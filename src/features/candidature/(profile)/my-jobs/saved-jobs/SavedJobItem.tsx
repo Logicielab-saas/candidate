@@ -24,6 +24,7 @@ import { linkLikeButtonStyle } from "@/core/styles/links";
 import { JobBookmarkButton } from "@/components/shared/JobBookmarkButton";
 import { format } from "date-fns";
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
 
 const ReportJobDialog = dynamic(
   () => import("../../../../../components/shared/ReportJobDialog"),
@@ -47,6 +48,8 @@ export function SavedJobItem({ saved }: SavedJobItemProps) {
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
+  const tCommon = useTranslations("common");
+
   // Handle successful unsave/removal
   const handleUnsaveSuccess = () => {
     // After a short delay, make the item invisible to animate it out
@@ -58,6 +61,8 @@ export function SavedJobItem({ saved }: SavedJobItemProps) {
   if (!isVisible) {
     return null;
   }
+
+  const formattedDate = format(new Date(saved.saved_at), "d MMM yyyy");
 
   return (
     <motion.div
@@ -101,9 +106,7 @@ export function SavedJobItem({ saved }: SavedJobItemProps) {
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              <span>
-                Enregistré le {format(new Date(saved.saved_at), "d MMM yyyy")}
-              </span>
+              <span>{tCommon("actions.savedAt", { date: formattedDate })}</span>
             </div>
           </div>
         </div>
@@ -116,7 +119,7 @@ export function SavedJobItem({ saved }: SavedJobItemProps) {
               rel="noopener noreferrer"
               className={linkLikeButtonStyle}
             >
-              Postuler
+              {tCommon("actions.apply")}
             </Link>
           </motion.div>
 
@@ -138,8 +141,8 @@ export function SavedJobItem({ saved }: SavedJobItemProps) {
                 className="text-destructive"
                 onClick={() => setIsReportDialogOpen(true)}
               >
-                <AlertTriangle className="h-4 w-4" /> Signaler l&apos;offre
-                d&apos;emploi
+                <AlertTriangle className="h-4 w-4" />{" "}
+                {tCommon("actions.reportJob")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

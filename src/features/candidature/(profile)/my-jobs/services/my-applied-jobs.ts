@@ -15,7 +15,7 @@ const sentApplicationsEndpoint = "/employee/emploi/apply";
 
 export interface SentApplicationsResponse {
   message: string;
-  applied: EmploisApplied[];
+  emplois: EmploisApplied[];
   pagination: Pagination;
 }
 

@@ -27,6 +27,7 @@ import { useState } from "react";
 import type { EmploisApplied } from "@/core/interfaces";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const ArchiveJobDialog = dynamic(
   () => import("../components/ArchiveJobDialog"),
@@ -56,6 +57,8 @@ interface SentApplicationItemMenuProps {
 export function SentApplicationItemMenu({
   applied,
 }: SentApplicationItemMenuProps) {
+  const t = useTranslations("myJobsPage.sentApplications");
+  const tCommon = useTranslations("common.actions");
   const [isArchiveDialogOpen, setIsArchiveDialogOpen] = useState(false);
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
@@ -64,7 +67,11 @@ export function SentApplicationItemMenu({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon">
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={t("aria.openOptions")}
+          >
             <MoreVertical className="h-5 w-5" />
           </Button>
         </DropdownMenuTrigger>
@@ -77,7 +84,7 @@ export function SentApplicationItemMenu({
               className="flex items-center gap-2"
             >
               <ExternalLink className="h-4 w-4" />
-              Voir les détails
+              {tCommon("viewDetails")}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -85,7 +92,7 @@ export function SentApplicationItemMenu({
             onClick={() => setIsArchiveDialogOpen(true)}
           >
             <Archive className="h-4 w-4" />
-            Archiver
+            {tCommon("archive")}
           </DropdownMenuItem>
           {applied.status !== "WITHDRAWN" && (
             <DropdownMenuItem
@@ -94,7 +101,7 @@ export function SentApplicationItemMenu({
               disabled={applied.status === "WITHDRAWN"}
             >
               <XCircle className="h-4 w-4" />
-              Retirer la candidature
+              {tCommon("withdraw")}
             </DropdownMenuItem>
           )}
           <DropdownMenuItem
@@ -102,7 +109,7 @@ export function SentApplicationItemMenu({
             onClick={() => setIsReportDialogOpen(true)}
           >
             <AlertTriangle className="h-4 w-4" />
-            Signaler l&apos;offre d&apos;emploi
+            {tCommon("reportJob")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -111,8 +118,8 @@ export function SentApplicationItemMenu({
         <ArchiveJobDialog
           open={isArchiveDialogOpen}
           onOpenChange={setIsArchiveDialogOpen}
-          jobId={applied.emploi.uuid}
-          jobTitle={applied.emploi.title}
+          jobId={applied.uuid}
+          jobTitle={applied.title}
         />
       )}
 
@@ -125,8 +132,8 @@ export function SentApplicationItemMenu({
       )}
       {applied.status !== "WITHDRAWN" && isRemoveDialogOpen && (
         <RemoveApplyEmploi
-          emploi_uuid={applied.emploi.uuid}
-          emploi_title={applied.emploi.title}
+          emploi_uuid={applied.uuid}
+          emploi_title={applied.title}
           open={isRemoveDialogOpen}
           onOpenChange={setIsRemoveDialogOpen}
         />

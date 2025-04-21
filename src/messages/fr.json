@@ -43,6 +43,8 @@
     "password": "Mot de passe",
     "enterPassword": "Entrez votre mot de passe pour confirmer",
     "passwordMask": "••••••••",
+    "companyUndefined": "Entreprise",
+    "locationUndefined": "Lieu non spécifié",
     "validation": {
       "required": "Ce champ est requis",
       "email": "Adresse e-mail invalide",
@@ -137,7 +139,15 @@
       "update": "Mettre à jour",
       "apply": "Postuler",
       "reset": "Réinitialiser",
+      "viewDetails": "Voir les détails",
+      "archive": "Archiver",
+      "archiving": "Archivage en cours...",
+      "withdraw": "Retirer",
       "loadMore": "Charger plus",
+      "savedAt": "Enregistré le {date}",
+      "applicationSentAt": "Candidature envoyée le {date}",
+      "reportJob": "Signaler l'offre",
+      "error": "Erreur",
       "openMenu": "Ouvrir le menu",
       "confirm": "Confirmer",
       "send": "Envoyer",
@@ -155,6 +165,7 @@
       "backToList": "Retour à la liste",
       "delete": "Supprimer",
       "deleting": "Suppression en cours...",
+      "removeApply": "Retirer la candidature",
       "search": "Rechercher",
       "download": "Télécharger",
       "schedule": "Programmer",
@@ -772,7 +783,6 @@
       "alreadyApplied": "Déjà postulé",
       "actions": {
         "share": "Partager l'offre",
-        "report": "Signaler l'offre",
         "notInterested": "Écarter l'offre"
       },
       "sections": {
@@ -1480,6 +1490,40 @@
           }
         }
       }
+    }
+  },
+  "myJobsPage": {
+    "title": "Mes offres d'emploi",
+    "tabs": {
+      "savedJobs": "Offres sauvegardées",
+      "sentApplications": "Candidatures envoyées",
+      "interviews": "Entretiens",
+      "archived": "Offres archivées"
+    },
+    "empty": {
+      "title": "Aucune {title}",
+      "description": "Vous n'avez pas encore {description}."
+    },
+    "sentApplications": {
+      "status": {
+        "unknown": "Statut inconnu",
+        "expired": "Offre expirée",
+        "applied": "Candidature envoyée",
+        "open": "Offre ouverte"
+      },
+      "aria": {
+        "openOptions": "Ouvrir les options de la candidature"
+      }
+    },
+    "archiveJobDialog": {
+      "title": "Archiver cette offre d'emploi ?",
+      "description": "Êtes-vous sûr de vouloir archiver l'offre \"{jobTitle}\" ?",
+      "warning": "Cette action déplacera l'offre dans vos archives. Vous pourrez la restaurer ultérieurement si nécessaire."
+    },
+    "removeApplyDialog": {
+      "title": "Êtes-vous sûr de vouloir retirer votre candidature ?",
+      "description": "Vous êtes sur le point de retirer votre candidature pour ",
+      "description2": " Cette action est irréversible."
     }
   }
 }

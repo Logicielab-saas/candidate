@@ -10,9 +10,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { useDeleteSentApplication } from "../hooks/use-my-applied-jobs";
+import { useTranslations } from "next-intl";
 
 interface RemoveApplyEmploiProps {
   open: boolean;
@@ -27,10 +27,11 @@ export function RemoveApplyEmploi({
   emploi_uuid,
   emploi_title,
 }: RemoveApplyEmploiProps) {
+  const t = useTranslations("myJobsPage.removeApplyDialog");
+  const tCommon = useTranslations("common");
+
   const { mutate: deleteApplied, isPending } = useDeleteSentApplication();
   const [isDeleting, setIsDeleting] = useState(false);
-
-  const { toast } = useToast();
 
   const handleConfirm = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -53,12 +54,6 @@ export function RemoveApplyEmploi({
       onOpenChange(false);
     } catch (_error) {
       setIsDeleting(false);
-      toast({
-        variant: "destructive",
-        title: "Erreur",
-        description:
-          "Une erreur est survenue lors de la suppression de la candidature.",
-      });
     }
   };
 
@@ -75,25 +70,27 @@ export function RemoveApplyEmploi({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>
-            Êtes-vous sûr de vouloir retirer votre candidature ?
-          </AlertDialogTitle>
+          <AlertDialogTitle>{t("title")}</AlertDialogTitle>
           <AlertDialogDescription>
-            Vous êtes sur le point de retirer votre candidature pour &quot;
+            {t("description")}
             <span className="font-bold text-primaryHex-700">
-              {emploi_title}
+              &quot;{emploi_title}&quot;
             </span>
-            &quot;. Cette action est irréversible.
+            {t("description2")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>Annuler</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>
+            {tCommon("actions.cancel")}
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             className="bg-destructive hover:bg-destructive/90"
             disabled={isLoading}
           >
-            {isLoading ? "Suppression..." : "Retirer la candidature"}
+            {isLoading
+              ? tCommon("actions.deleting")
+              : tCommon("actions.removeApply")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

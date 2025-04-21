@@ -30,6 +30,7 @@ import dynamic from "next/dynamic";
 import { SavedJobsItemSkeleton } from "./skeletons/SavedJobsItemSkeleton";
 import { SentApplicationItemSkeleton } from "./skeletons/SentApplicationItemSkeleton";
 import LoaderOne from "@/components/ui/loader-one";
+import { useTranslations } from "next-intl";
 
 const SavedJobsList = dynamic(() => import("./saved-jobs/SavedJobsList"), {
   ssr: false,
@@ -83,6 +84,7 @@ interface MyJobsContainerProps {
 }
 
 export function MyJobsContainer({ className }: MyJobsContainerProps) {
+  const t = useTranslations("myJobsPage");
   // URL state management for active tab
   const [activeTab, setActiveTab] = useQueryState<string>("tab", {
     defaultValue: "saved-jobs",
@@ -153,22 +155,22 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
   const jobTabs: JobTab[] = [
     {
       id: "saved-jobs",
-      label: "Emplois enregistrés",
+      label: t("tabs.savedJobs"),
       countKey: "savedJobsCount",
     },
     {
       id: "sent-applications",
-      label: "Candidatures envoyées",
+      label: t("tabs.sentApplications"),
       countKey: "sentApplicationsCount",
     },
     {
       id: "interviews",
-      label: "Entretiens",
+      label: t("tabs.interviews"),
       countKey: "interviewsCount",
     },
     {
       id: "archived",
-      label: "Archivés",
+      label: t("tabs.archived"),
       countKey: "archivedCount",
     },
   ];
@@ -184,7 +186,7 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
   return (
     <div className={cn("space-y-6 w-full", className)}>
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Mes emplois</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
       </div>
 
       {/* Tab navigation with filtered data passed to each tab panel */}
