@@ -15,6 +15,7 @@ import { ClassicCVTemplate } from "./ClassicCVTemplate";
 import { ModernCVTemplate } from "./ModernCVTemplate";
 import { useProfileResume } from "@/features/candidature/(profile)/qualifications/hooks/use-profile-resume";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslations } from "next-intl";
 
 export default function GenerateCV() {
   const resumeRef = useRef<HTMLDivElement>(null);
@@ -24,6 +25,8 @@ export default function GenerateCV() {
   const [accentColor, setAccentColor] = useState("#29ABE2");
   const [template, setTemplate] = useState<CVTemplate>("classic");
   const { data: resume, isLoading, error } = useProfileResume();
+  const t = useTranslations("postulyCVPage");
+  const tCommon = useTranslations("common.actions");
 
   const handleGeneratePDF = async () => {
     if (!resumeRef.current || !resume) return;
@@ -53,11 +56,9 @@ export default function GenerateCV() {
       <div className="min-h-screen p-4 flex items-center justify-center">
         <div className="text-center space-y-4">
           <h2 className="text-2xl font-semibold text-gray-800">
-            Failed to load resume data
+            {t("error.title")}
           </h2>
-          <p className="text-gray-600">
-            Please try again later or contact support if the issue persists.
-          </p>
+          <p className="text-gray-600">{t("error.description")}</p>
         </div>
       </div>
     );
@@ -81,7 +82,9 @@ export default function GenerateCV() {
             className="px-6 py-3 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             style={{ backgroundColor: accentColor }}
           >
-            {!hasImageError && !isImageLoaded ? "Loading..." : "Download PDF"}
+            {!hasImageError && !isImageLoaded
+              ? tCommon("loading")
+              : tCommon("download")}
           </button>
         </div>
       </div>

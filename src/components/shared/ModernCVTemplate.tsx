@@ -16,6 +16,7 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import type { Resume } from "@/core/interfaces";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 interface ModernCVProps {
   primaryColor: string;
@@ -28,9 +29,9 @@ interface ModernCVProps {
 function formatDate(dateString: string | null): string {
   if (!dateString) return "Present";
   const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
+  return date.toLocaleDateString("fr-FR", {
     year: "numeric",
-    month: "short",
+    month: "long",
   });
 }
 
@@ -41,6 +42,9 @@ export function ModernCVTemplate({
   setImageError,
   resume,
 }: ModernCVProps) {
+  const tShared = useTranslations("postulyCVPage.resume.templates.shared");
+  const t = useTranslations("postulyCVPage.resume.templates.modern.sections");
+
   const fullName = `${resume.first_name || ""} ${
     resume.last_name || ""
   }`.trim();
@@ -78,7 +82,8 @@ export function ModernCVTemplate({
           <div className="text-white text-center md:text-left">
             <h1 className="text-4xl font-bold">{fullName}</h1>
             <h2 className="text-2xl mt-2">
-              {resume.resume.resumeExperiences[0]?.job_title || "Professional"}
+              {resume.resume.resumeExperiences[0]?.job_title ||
+                tShared("professional")}
             </h2>
           </div>
         </div>
@@ -92,10 +97,10 @@ export function ModernCVTemplate({
             className="text-2xl font-semibold mb-4"
             style={{ color: primaryColor }}
           >
-            About Me
+            {t("about")}
           </h3>
           <p className="text-gray-600">
-            {resume.resume.description || "No description provided"}
+            {resume.resume.description || tShared("noDescription")}
           </p>
         </div>
 
@@ -109,7 +114,7 @@ export function ModernCVTemplate({
                 className="text-xl font-semibold mb-4"
                 style={{ color: primaryColor }}
               >
-                Contact Information
+                {tShared("sections.contact")}
               </h3>
               <div className="space-y-3">
                 {resume.phone && (
@@ -164,7 +169,7 @@ export function ModernCVTemplate({
                   className="text-xl font-semibold mb-4"
                   style={{ color: primaryColor }}
                 >
-                  Skills
+                  {tShared("sections.skills")}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {resume.resume.skills.map((skill) => (
@@ -176,7 +181,7 @@ export function ModernCVTemplate({
                       <span>{skill.resumeskill_name || skill.skill_uuid}</span>
                       {skill.resumeskill_level && (
                         <span className="opacity-75 text-xs">
-                          • L{skill.resumeskill_level}
+                          • {tShared("skills.level")} {skill.resumeskill_level}
                         </span>
                       )}
                     </div>
@@ -192,7 +197,7 @@ export function ModernCVTemplate({
                   className="text-xl font-semibold mb-4"
                   style={{ color: primaryColor }}
                 >
-                  Languages
+                  {tShared("sections.languages")}
                 </h3>
                 <div className="space-y-3">
                   {resume.resume.resumeLanguages.map((language) => (
@@ -201,7 +206,7 @@ export function ModernCVTemplate({
                         <div className="flex justify-between flex-1">
                           <span>{language.name}</span>
                           <span className="text-sm text-gray-600">
-                            Level {language.level}
+                            {tShared("languages.level")} {language.level}
                           </span>
                         </div>
                       </div>
@@ -230,7 +235,7 @@ export function ModernCVTemplate({
                   className="text-xl font-semibold mb-4"
                   style={{ color: primaryColor }}
                 >
-                  Professional Experience
+                  {tShared("sections.experience")}
                 </h3>
                 <div className="space-y-6">
                   {resume.resume.resumeExperiences.map((exp) => (
@@ -252,7 +257,7 @@ export function ModernCVTemplate({
                         >
                           {formatDate(exp.date_start)} -{" "}
                           {exp.current_time
-                            ? "Present"
+                            ? tShared("present")
                             : formatDate(exp.date_end)}
                         </span>
                       </div>
@@ -275,7 +280,7 @@ export function ModernCVTemplate({
                   className="text-xl font-semibold mb-4"
                   style={{ color: primaryColor }}
                 >
-                  Projects
+                  {tShared("sections.projects")}
                 </h3>
                 <div className="space-y-6">
                   {resume.resume.resumeProjects.map((project) => (
@@ -303,7 +308,7 @@ export function ModernCVTemplate({
                               >
                                 <span>🔗</span>
                                 <span className="hidden md:inline">
-                                  View Project
+                                  {tShared("projects.viewProject")}
                                 </span>
                               </a>
                             )}
@@ -328,7 +333,7 @@ export function ModernCVTemplate({
                             className="text-sm font-medium mb-2"
                             style={{ color: primaryColor }}
                           >
-                            Key Tasks:
+                            {tShared("projects.keyTasks")}:
                           </h5>
                           <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
                             {project.tasks.map((task) => (
@@ -343,7 +348,9 @@ export function ModernCVTemplate({
                                       : "bg-yellow-100 text-yellow-800"
                                   }`}
                                 >
-                                  {task.status}
+                                  {tShared(
+                                    `projects.status.${task.status.toLowerCase()}`
+                                  )}
                                 </span>
                                 <div>
                                   <span className="text-gray-800">
@@ -373,7 +380,7 @@ export function ModernCVTemplate({
                   className="text-xl font-semibold mb-4"
                   style={{ color: primaryColor }}
                 >
-                  Education
+                  {tShared("sections.education")}
                 </h3>
                 <div className="space-y-6">
                   {resume.resume.resumeEducations.map((edu) => (
@@ -395,7 +402,7 @@ export function ModernCVTemplate({
                         >
                           {formatDate(edu.date_start)} -{" "}
                           {edu.is_current
-                            ? "Present"
+                            ? tShared("present")
                             : formatDate(edu.date_end)}
                         </span>
                       </div>
@@ -423,7 +430,7 @@ export function ModernCVTemplate({
                   className="text-xl font-semibold mb-4"
                   style={{ color: primaryColor }}
                 >
-                  Certifications
+                  {tShared("sections.certifications")}
                 </h3>
                 <div className="space-y-6">
                   {resume.resume.resumeCertifications.map((cert) => (
@@ -447,7 +454,8 @@ export function ModernCVTemplate({
                           {cert.expiration_date && (
                             <span className="text-gray-500">
                               {" "}
-                              - Expires: {formatDate(cert.expiration_date)}
+                              - {tShared("certifications.expires")}:{" "}
+                              {formatDate(cert.expiration_date)}
                             </span>
                           )}
                         </span>

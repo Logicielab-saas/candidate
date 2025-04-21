@@ -1421,5 +1421,65 @@
         }
       }
     }
+  },
+  "postulyCVPage": {
+    "title": "Postuly CV",
+    "generateResume": "Générateur de CV",
+    "error": {
+      "title": "Erreur lors du chargement du CV",
+      "description": "Impossible de charger les données de votre CV. Veuillez réessayer plus tard."
+    },
+    "templates": {
+      "classic": "Classique",
+      "modern": "Moderne",
+      "selector": {
+        "label": "Choisir un template"
+      }
+    },
+    "colors": {
+      "title": "Couleurs",
+      "primary": "Principale",
+      "accent": "Accent"
+    },
+    "resume": {
+      "templates": {
+        "shared": {
+          "sections": {
+            "contact": "Contact",
+            "skills": "Compétences",
+            "languages": "Langues",
+            "experience": "Expérience Professionnelle",
+            "projects": "Projets",
+            "education": "Formation",
+            "certifications": "Certifications"
+          },
+          "skills": {
+            "level": "Niveau"
+          },
+          "languages": {
+            "level": "Niveau"
+          },
+          "professional": "Professionnel",
+          "noDescription": "Aucune description fournie",
+          "present": "Présent",
+          "projects": {
+            "viewProject": "Voir le projet",
+            "keyTasks": "Tâches clés",
+            "status": {
+              "completed": "Terminé",
+              "in_progress": "En cours"
+            }
+          },
+          "certifications": {
+            "expires": "Expire"
+          }
+        },
+        "modern": {
+          "sections": {
+            "about": "À propos"
+          }
+        }
+      }
+    }
   }
 }
