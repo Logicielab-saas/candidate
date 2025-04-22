@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { daysOfWeek, availableHours } from "@/core/mockData/AvailableDates";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { useTranslations } from "next-intl";
 
 interface SelectAvailabilityDateProps {
   selectedDay: number;
@@ -21,6 +22,7 @@ const SelectAvailabilityDate = ({
   selectedHour,
   setSelectedHour,
 }: SelectAvailabilityDateProps) => {
+  const tCommon = useTranslations("common");
   useEffect(() => {
     if (selectedDay) {
       setSelectedHour(""); // Reset selected hour when day changes
@@ -35,7 +37,7 @@ const SelectAvailabilityDate = ({
 
   return (
     <>
-      <h4 className="text-lg font-semibold mb-2">Sélectionner un jour</h4>
+      <h4 className="text-lg font-semibold mb-2">{tCommon("selectDay")}</h4>
       <RadioGroup className="flex space-x-4">
         {daysOfWeek.map((day) => (
           <div className="relative" key={day.number}>
@@ -63,7 +65,9 @@ const SelectAvailabilityDate = ({
       </RadioGroup>
       {selectedDay && (
         <>
-          <h4 className="text-lg font-semibold mb-2">Sélectionner une heure</h4>
+          <h4 className="text-lg font-semibold mb-2">
+            {tCommon("selectHour")}
+          </h4>
           <ScrollArea className="mt-4 max-h-80 overflow-y-auto">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {availableHours[selectedDay].map((hour: string) => (

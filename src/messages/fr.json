@@ -52,9 +52,26 @@
     "fullName": "Nom complet",
     "company": "Entreprise",
     "programmed": "Programmé",
+    "interviewDetails": "Détails de l'entretien",
+    "dateLabel": "Date",
+    "hour": "Heure",
+    "email": "Email",
+    "programInterview": "Programmer l'entretien",
+    "phone": "Téléphone de téléphone",
+    "personalInfo": "Informations personnelles",
+    "selectHour": "Sélectionner l'heure",
+    "selectDay": "Sélectionner le jour",
+    "suggestNewSlots": "Proposer d'autres créneaux",
+    "formatInterview": "Format de l'entretien :",
+    "inPerson": "En présentiel",
+    "videoCall": "Visioconférence",
+    "phoneCall": "Appel téléphonique",
+    "map": "Localisation",
+    "videoLink": "Lien de la réunion",
     "validation": {
       "required": "Ce champ est requis",
       "email": "Adresse e-mail invalide",
+      "phoneRequired": "Le numéro de téléphone est requis",
       "minLength": "Minimum {count} caractères",
       "passwordMatch": "Les mots de passe ne correspondent pas",
       "passwordRequired": "Le mot de passe est requis",
@@ -64,6 +81,7 @@
       "passwordIncorrect": "Mot de passe incorrect",
       "otpLength": "Le code doit contenir {length} chiffres",
       "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+      "selectTimeFirst": "Veuillez sélectionner une heure pour l'entretien",
       "jobTypes": {
         "required": "Le type de poste est requis",
         "minSelection": "Sélectionnez au moins un type de poste"
@@ -93,9 +111,6 @@
       },
       "lastName": {
         "minLength": "Last name must be at least 2 characters"
-      },
-      "phone": {
-        "required": "Phone number is required"
       },
       "image": {
         "size": "File size should be less than 5MB",
@@ -1555,6 +1570,76 @@
       "descriptionWaiting": "Ces entretiens attendent votre confirmation.",
       "titlePast": "Entretiens Passés",
       "descriptionPast": "Voici les entretiens que vous avez complétés."
+    }
+  },
+  "myInterviewActionPage": {
+    "unavailable": {
+      "title": "Vous n'êtes pas disponible ?",
+      "action": "Indiquer mon indisponibilité"
+    },
+    "details": {
+      "toast": {
+        "success": {
+          "title": "Entretien confirmé",
+          "description": "Votre entretien a été programmé avec succès"
+        }
+      }
+    },
+    "refuser": {
+      "title": {
+        "refuse": "Refuser l'entretien",
+        "cancel": "Annuler l'entretien"
+      },
+      "reason": {
+        "label": "Quelle est la raison ?"
+      },
+      "reasons": {
+        "notInterested": "Je ne suis plus intéressé(e) par ce poste",
+        "acceptedOther": "J'ai accepté une autre offre",
+        "tooFar": "Le lieu est trop éloigné",
+        "suspicious": "L'offre me semble suspecte",
+        "other": "Autre raison"
+      },
+      "message": {
+        "label": "Message (optionnel)",
+        "placeholder": "Expliquez votre décision...",
+        "counter": "{current}/500 caractères"
+      },
+      "validation": {
+        "reasonRequired": "Veuillez sélectionner une raison",
+        "messageMaxLength": "Le message ne doit pas dépasser 500 caractères"
+      },
+      "actions": {
+        "refuse": "Refuser l'entretien",
+        "cancel": "Annuler l'entretien",
+        "maintain": "Maintenir ma candidature"
+      },
+      "toast": {
+        "refuse": {
+          "title": "Entretien refusé",
+          "description": "Votre refus a été envoyé avec succès"
+        },
+        "cancel": {
+          "title": "Entretien annulé",
+          "description": "Votre annulation a été envoyée avec succès"
+        }
+      }
+    },
+    "reporter": {
+      "title": "Proposer de nouveaux créneaux",
+      "message": {
+        "title": "Message additionnel (optionnel)",
+        "placeholder": "Ajoutez des informations complémentaires sur vos disponibilités..."
+      },
+      "validation": {
+        "selectAvailability": "Veuillez sélectionner au moins une disponibilité"
+      },
+      "toast": {
+        "success": {
+          "title": "Disponibilités envoyées",
+          "description": "Vos créneaux de disponibilité ont été envoyés avec succès"
+        }
+      }
     }
   }
 }

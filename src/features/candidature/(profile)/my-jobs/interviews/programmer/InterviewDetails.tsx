@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { JobHeader } from "../jobHeader";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface InterviewDetailsProps {
   selectedDate: string | null;
@@ -28,8 +29,11 @@ export function InterviewDetails({
   jobTitle,
   companyName,
 }: InterviewDetailsProps) {
+  const t = useTranslations("myInterviewActionPage.details");
+  const tCommon = useTranslations("common");
   const { toast } = useToast();
   const router = useRouter();
+
   const handleConfirm = () => {
     const data = {
       name: candidateName,
@@ -41,8 +45,8 @@ export function InterviewDetails({
     console.log("Submitted Data:", data);
     toast({
       variant: "success",
-      title: "Entretien programmé",
-      description: "L'entretien a été programmé avec succès",
+      title: t("toast.success.title"),
+      description: t("toast.success.description"),
     });
     router.replace(`/profile/my-jobs?tab=interviews`);
   };
@@ -53,48 +57,47 @@ export function InterviewDetails({
     <div className="space-y-4">
       <JobHeader jobTitle={jobTitle || ""} companyName={companyName || ""} />
       <Separator />
-      <h2 className="text-xl font-semibold mb-2">Informations</h2>
+      <h2 className="text-xl font-semibold mb-2">{tCommon("personalInfo")}</h2>
       <div className="p-6 shadow-md rounded-lg border">
         <p className="text-md text-gray-700 dark:text-gray-300">
-          Prénom et nom: <span className="font-bold">{candidateName}</span>
+          {tCommon("fullName")}:{" "}
+          <span className="font-bold">{candidateName}</span>
         </p>
         <p className="text-md text-gray-700 dark:text-gray-300">
-          Adresse email: <span className="font-bold">{candidateEmail}</span>
+          {tCommon("email")}:{" "}
+          <span className="font-bold">{candidateEmail}</span>
         </p>
         <p className="text-md text-gray-700 dark:text-gray-300">
-          Numéro de téléphone:{" "}
+          {tCommon("phone")}:{" "}
           <span className="font-bold">{candidatePhone}</span>
         </p>
       </div>
       <Separator />
       <div className="flex justify-between">
-        <h2 className="text-xl font-semibold mb-2">Entretien en personne</h2>
-        {/* <span
-          onClick={onModify}
-          className="text-primaryHex-600 font-bold rounded-full p-2 bg-primaryHex-100 hover:bg-primaryHex-200 cursor-pointer"
-        >
-          <Pencil className="w-5 h-5" />
-        </span> */}
+        <h2 className="text-xl font-semibold mb-2">
+          {tCommon("interviewDetails")}
+        </h2>
       </div>
       <div className="p-6 shadow-md rounded-lg border">
         <div className="flex items-center mb-2">
           <CalendarIcon className="h-5 w-5 text-primaryHex-500 mr-2" />
           <p className="text-md text-gray-700 dark:text-gray-300">
-            Date: <span className="font-bold">{selectedDate}</span>
+            {tCommon("dateLabel")}:{" "}
+            <span className="font-bold">{selectedDate}</span>
           </p>
         </div>
         <div className="flex items-center">
           <ClockIcon className="h-5 w-5 text-primaryHex-500 mr-2" />
           <p className="text-md text-gray-700 dark:text-gray-300">
-            Heure: <span className="font-bold">{selectedHour}</span>
+            {tCommon("hour")}: <span className="font-bold">{selectedHour}</span>
           </p>
         </div>
       </div>
       <Button className="mt-4 w-full" onClick={handleConfirm}>
-        Confirmer
+        {tCommon("actions.confirm")}
       </Button>
       <Button variant="outline" className="mt-4 w-full" onClick={onModify}>
-        Modifier
+        {tCommon("actions.edit")}
       </Button>
     </div>
   );

@@ -51,7 +51,7 @@ function profileFormSchema(t: (key: string) => string) {
     last_name: z.string().min(2, t("lastName.minLength")),
     phone: z
       .string()
-      .min(1, t("phone.required"))
+      .min(1, t("phoneRequired"))
       .nullish()
       .transform((v) => v || null),
     address: z

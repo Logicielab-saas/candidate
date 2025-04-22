@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { InterviewTypeDetails } from "@/components/shared/InterviewTypeDetails";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface InterviewReporterProps {
   interview: Interview | undefined;
@@ -59,6 +60,8 @@ function getWeekTitle(days: { date: Date }[]): string {
 }
 
 export function InterviewReporter({ interview }: InterviewReporterProps) {
+  const t = useTranslations("myInterviewActionPage.reporter");
+  const tCommon = useTranslations("common");
   const router = useRouter();
   const { toast } = useToast();
   const {
@@ -90,8 +93,8 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
     });
     toast({
       variant: "success",
-      title: "Disponibilités envoyées",
-      description: "Vos disponibilités ont été envoyées avec succès",
+      title: t("toast.success.title"),
+      description: t("toast.success.description"),
     });
     router.replace(`/profile/my-jobs?tab=interviews`);
   }
@@ -102,9 +105,7 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
         jobTitle={interview?.jobTitle || ""}
         companyName={interview?.company.name || ""}
       />
-      <h2 className="text-xl font-semibold mb-2">
-        Indiquez vos disponibilités à l&apos;employeur
-      </h2>
+      <h2 className="text-xl font-semibold mb-2">{t("title")}</h2>
       <InterviewTypeDetails interview={interview} />
 
       <Separator />
@@ -182,22 +183,20 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
       </div>
       {errors.nextWeek && (
         <p className="mt-2 text-sm text-destructive">
-          {errors.nextWeek.message}
+          {t("validation.selectAvailability")}
         </p>
       )}
       <Separator />
 
       {/* Message section */}
       <div className="p-4 rounded-lg bg-accent/20 shadow">
-        <h3 className="text-lg font-semibold mb-2">
-          Ajouter un message pour l&apos;employeur (optionnel)
-        </h3>
+        <h3 className="text-lg font-semibold mb-2">{t("message.title")}</h3>
         <Controller
           control={control}
           name="message"
           render={({ field }) => (
             <Textarea
-              placeholder="Votre message ici..."
+              placeholder={t("message.placeholder")}
               className="w-full p-2 border border-gray-300 rounded"
               rows={4}
               {...field}
@@ -209,7 +208,7 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
       <Separator />
 
       <Button type="submit" className="w-full">
-        Continuer
+        {tCommon("actions.continue")}
       </Button>
       <Button
         variant="outline"
@@ -217,7 +216,7 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
         type="button"
         onClick={() => router.back()}
       >
-        Retour
+        {tCommon("actions.back")}
       </Button>
     </form>
   );
