@@ -7,6 +7,7 @@ import { useState } from "react";
 import type { ResumeCertifications } from "@/core/interfaces";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
+import { useTranslations } from "next-intl";
 
 // Dynamically import dialogs with loading states
 const AddCertificationDialog = dynamic(
@@ -67,10 +68,12 @@ export function CertificationsList({
   const [selectedCertification, setSelectedCertification] =
     useState<ResumeCertifications | null>(null);
 
+  const t = useTranslations("resumePage.certifications");
+
   return (
     <div className="border p-4 rounded-lg shadow-sm">
       <SectionHeader
-        title="Certifications"
+        title={t("title")}
         icon={<Award className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={() => setDialogOpen(true)}
       />
@@ -90,9 +93,7 @@ export function CertificationsList({
           />
         ))}
         {!certifications?.length && (
-          <p className="text-muted-foreground text-center py-4">
-            No certifications added yet
-          </p>
+          <p className="text-muted-foreground text-center py-4">{t("empty")}</p>
         )}
       </div>
       {dialogOpen && (

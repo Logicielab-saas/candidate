@@ -78,8 +78,52 @@
     "exDate": "Sélectionner une date",
     "endDate": "Date de fin",
     "currentPosition": "Je travaille actuellement à ce poste",
+    "school": "École / Établissement",
+    "exSchool": "Ex: Université de XYZ",
+    "degree": "Diplôme / Formation",
+    "exDegree": "Ex: Licence en Informatique",
+    "currentStudying": "Je suis actuellement étudiant(e)",
+    "description": "Description",
+    "exDescription": "Décrivez votre expérience",
+    "fileTooLarge": "Fichier trop volumineux",
+    "fileTooLargeDescription": "La taille maximale du fichier est plus de {taille} Mo",
+    "invalidFileType": "Type de fichier invalide",
+    "invalidFileTypeDescription": "N'est pas un type d'image pris en charge",
+    "viewProject": "Voir le projet",
+    "tasksLabel": "Tâches",
+    "projectName": "Nom du projet",
+    "exProjectName": "Ex: Application de gestion de projet",
+    "url": "Lien du projet",
+    "exUrl": "Ex: github.com/username/project",
+    "images": {
+      "imageLabel": "Images du projet",
+      "uploadText": "Glissez-déposez des images ou cliquez pour parcourir",
+      "imageRequirement": "JPG, PNG ou GIF jusqu'à 5MB",
+      "selected": "{count} image(s) sélectionnée(s)",
+      "preview": "Aperçu de l'image {index}"
+    },
+    "tasks": {
+      "label": "Tâches clés",
+      "addTask": "Ajouter une tâche",
+      "nameLabel": "Nom de la tâche",
+      "namePlaceholder": "Ex: Conception de l'interface utilisateur",
+      "taskDescription": "Description de la tâche",
+      "taskDescriptionPlaceholder": "Ex: Création des maquettes et prototypes",
+      "statusLabel": "Statut",
+      "statusPlaceholder": "Sélectionner un statut",
+      "inProgress": "En cours",
+      "completed": "Terminé"
+    },
+    "certfName": "Nom de la certification",
+    "exCertfName": "Ex: Certification Google",
+    "certfOrganization": "Organisme de certification",
+    "exCertfOrganization": "Ex: Google",
+    "certfDate": "Date d'obtention",
+    "exCertfDate": "Sélectionner une date",
+    "certfExpDate": "Date d'expiration",
     "validation": {
       "required": "Ce champ est requis",
+      "startDateRequired": "La date de début est requise",
       "email": "Adresse e-mail invalide",
       "phoneRequired": "Le numéro de téléphone est requis",
       "minLength": "Minimum {count} caractères",
@@ -94,7 +138,14 @@
       "selectTimeFirst": "Veuillez sélectionner une heure pour l'entretien",
       "jobTitleRequired": "L'intitulé du poste est requis",
       "companyNameRequired": "Le nom de l'entreprise est requis",
-      "startDateRequired": "La date de début est requise",
+      "schoolNameRequired": "Le nom de l'école est requis",
+      "degreeRequired": "Le diplôme / formation est requis",
+      "projectNameRequired": "Le nom du projet est requis",
+      "urlInvalid": "Le lien du projet est invalide",
+      "taskNameRequired": "Le nom de la tâche est requis",
+      "certfNameRequired": "Le nom de la certification est requis",
+      "certfOrganizationRequired": "L'organisme de certification est requis",
+      "certfDateRequired": "La date d'obtention est requise",
       "jobTypes": {
         "required": "Le type de poste est requis",
         "minSelection": "Sélectionnez au moins un type de poste"
@@ -1678,6 +1729,63 @@
           "title": "Supprimer l'expérience",
           "descriptionStart": "Vous êtes sur le point de supprimer votre expérience en tant que",
           "warning": "Cette action est irréversible et supprimera définitivement cette expérience de votre CV."
+        }
+      }
+    },
+    "education": {
+      "title": "Formation",
+      "empty": "Aucune formation ajoutée",
+      "dialog": {
+        "add": {
+          "title": "Ajouter une formation",
+          "description": "Ajoutez les détails de votre formation"
+        },
+        "edit": {
+          "title": "Modifier la formation",
+          "description": "Modifiez les détails de votre formation"
+        },
+        "delete": {
+          "title": "Supprimer la formation",
+          "descriptionStart": "Vous êtes sur le point de supprimer votre formation en tant que",
+          "warning": "Cette action est irréversible et supprimera définitivement cette formation de votre CV."
+        }
+      }
+    },
+    "projects": {
+      "title": "Projets",
+      "empty": "Aucun projet ajouté",
+      "dialog": {
+        "add": {
+          "title": "Ajouter un projet",
+          "description": "Ajoutez les détails de votre projet"
+        },
+        "edit": {
+          "title": "Modifier le projet",
+          "description": "Modifiez les détails de votre projet"
+        },
+        "delete": {
+          "title": "Supprimer le projet",
+          "descriptionStart": "Vous êtes sur le point de supprimer votre projet intitulé",
+          "warning": "Cette action est irréversible et supprimera définitivement ce projet de votre CV."
+        }
+      }
+    },
+    "certifications": {
+      "title": "Certifications",
+      "empty": "Aucune certification ajoutée",
+      "dialog": {
+        "add": {
+          "title": "Ajouter une certification",
+          "description": "Ajoutez les détails de votre certification"
+        },
+        "edit": {
+          "title": "Modifier la certification",
+          "description": "Modifiez les détails de votre certification"
+        },
+        "delete": {
+          "title": "Supprimer la certification",
+          "descriptionStart": "Vous êtes sur le point de supprimer votre certification intitulée",
+          "warning": "Cette action est irréversible et supprimera définitivement cette certification de votre CV."
         }
       }
     }

@@ -5,6 +5,7 @@ import { SectionHeader } from "./SectionHeader";
 import type { ResumeEducation } from "@/core/interfaces/";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
+import { useTranslations } from "next-intl";
 
 // Dynamically import dialogs with loading states
 const AddEducationDialog = dynamic(
@@ -63,10 +64,12 @@ export function EducationList({ educations }: EducationListProps) {
   const [selectedEducation, setSelectedEducation] =
     useState<ResumeEducation | null>(null);
 
+  const t = useTranslations("resumePage.education");
+
   return (
     <div className="border p-4 rounded-lg shadow-sm">
       <SectionHeader
-        title="Education"
+        title={t("title")}
         icon={<GraduationCap className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={() => setDialogOpen(true)}
       />
@@ -86,9 +89,7 @@ export function EducationList({ educations }: EducationListProps) {
           />
         ))}
         {!educations?.length && (
-          <p className="text-muted-foreground text-center py-4">
-            No education added yet
-          </p>
+          <p className="text-muted-foreground text-center py-4">{t("empty")}</p>
         )}
       </div>
 

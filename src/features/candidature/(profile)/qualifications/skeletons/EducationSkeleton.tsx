@@ -1,12 +1,14 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { SectionHeader } from "../SectionHeader";
 import { GraduationCap } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function EducationSkeleton() {
+  const t = useTranslations("resumePage.education");
   return (
     <div className="border p-4 rounded-lg shadow-sm">
       <SectionHeader
-        title="Education"
+        title={t("title")}
         icon={<GraduationCap className="w-6 h-6 text-primaryHex-400 mr-2" />}
       />
 

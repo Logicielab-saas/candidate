@@ -117,7 +117,7 @@ export function EditExperienceDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[500px]">
-        <ScrollArea className="px-3 max-h-[60vh]">
+        <ScrollArea className="px-3 max-h-[90vh]">
           <DialogHeader className="p-6 pb-4">
             <DialogTitle>{t("title")}</DialogTitle>
             <DialogDescription>{t("description")}</DialogDescription>
@@ -335,7 +335,7 @@ export function EditExperienceDialog({
             <Button
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={isPending || !form.formState.isValid}
+              disabled={isPending}
             >
               {isPending ? tCommon("actions.saving") : tCommon("actions.save")}
             </Button>

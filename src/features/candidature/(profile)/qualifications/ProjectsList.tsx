@@ -12,6 +12,7 @@ import type { ResumeProject } from "@/core/interfaces/";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
+import { useTranslations } from "next-intl";
 
 // Dynamically import dialogs and ImageLightbox with loading states
 const AddProjectDialog = dynamic(
@@ -91,6 +92,9 @@ export function ProjectsList({ projects }: ProjectsListProps) {
   >([]);
   const [initialImageIndex, setInitialImageIndex] = useState(0);
 
+  const t = useTranslations("resumePage.projects");
+  const tCommon = useTranslations("common");
+
   const formatDate = (dateString: string) => {
     return format(new Date(dateString), "d MMMM yyyy", { locale: fr });
   };
@@ -122,7 +126,7 @@ export function ProjectsList({ projects }: ProjectsListProps) {
   return (
     <div className="border p-4 rounded-lg shadow-sm">
       <SectionHeader
-        title="Projects"
+        title={t("title")}
         icon={<Code2 className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={() => setDialogOpen(true)}
       />
@@ -193,7 +197,7 @@ export function ProjectsList({ projects }: ProjectsListProps) {
                 {formatDate(project.date_start)}
                 {project.date_end
                   ? ` - ${formatDate(project.date_end)}`
-                  : " - Present"}
+                  : ` - ${t("current")}`}
               </p>
               {project.description && (
                 <p className="mt-2">{project.description}</p>
@@ -205,12 +209,14 @@ export function ProjectsList({ projects }: ProjectsListProps) {
                   rel="noopener noreferrer"
                   className="text-primaryHex-600 hover:underline block mt-2 w-fit"
                 >
-                  View Project
+                  {tCommon("viewProject")}
                 </a>
               )}
               {project.tasks && project.tasks.length > 0 && (
                 <div className="mt-4">
-                  <h5 className="font-semibold mb-2">Tasks</h5>
+                  <h5 className="font-semibold mb-2">
+                    {tCommon("tasksLabel")}
+                  </h5>
                   <ul className="list-disc list-inside space-y-1">
                     {project.tasks.map((task) => (
                       <li key={task.uuid} className="text-sm">
@@ -239,9 +245,7 @@ export function ProjectsList({ projects }: ProjectsListProps) {
           </CircleLineWrapper>
         ))}
         {!projects?.length && (
-          <p className="text-muted-foreground text-center py-4">
-            No projects added yet
-          </p>
+          <p className="text-muted-foreground text-center py-4">{t("empty")}</p>
         )}
       </div>
       {dialogOpen && (

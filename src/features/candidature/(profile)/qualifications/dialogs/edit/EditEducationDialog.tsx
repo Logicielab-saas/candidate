@@ -32,24 +32,26 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { ResumeEducation } from "@/core/interfaces/resume-education.interface";
 import { useUpdateResumeEducation } from "../../hooks/use-resume-education";
+import { useTranslations } from "next-intl";
 
 // Internal form schema uses Date objects for better date handling
-const educationFormSchema = z.object({
-  title: z.string().min(1, "School name is required"),
-  degree: z.string().min(1, "Degree is required"),
-  date_start: z.date({
-    required_error: "Start date is required",
-  }),
-  date_end: z.date().nullable(),
-  is_current: z.boolean().default(false),
-  description: z.string().optional(),
-});
+const educationFormSchema = (t: (key: string) => string) =>
+  z.object({
+    title: z.string().min(1, t("validation.schoolNameRequired")),
+    degree: z.string().min(1, t("validation.degreeRequired")),
+    date_start: z.date({
+      required_error: t("validation.startDateRequired"),
+    }),
+    date_end: z.date().nullable(),
+    is_current: z.boolean().default(false),
+    description: z.string().optional(),
+  });
 
-type EducationFormValues = z.infer<typeof educationFormSchema>;
+type EducationFormValues = z.infer<ReturnType<typeof educationFormSchema>>;
 
 interface EditEducationDialogProps {
   open: boolean;
@@ -62,13 +64,20 @@ export function EditEducationDialog({
   onOpenChange,
   education,
 }: EditEducationDialogProps) {
+  const t = useTranslations("resumePage.education.dialog.edit");
+  const tCommon = useTranslations("common");
   const { mutate: updateEducation, isPending } = useUpdateResumeEducation();
 
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
 
+  const editEducationFormSchema = useMemo(
+    () => educationFormSchema(tCommon),
+    [tCommon]
+  );
+
   const form = useForm<EducationFormValues>({
-    resolver: zodResolver(educationFormSchema),
+    resolver: zodResolver(editEducationFormSchema),
     defaultValues: {
       title: "",
       degree: "",
@@ -116,12 +125,10 @@ export function EditEducationDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[500px]">
-        <ScrollArea className="px-3 max-h-[60vh]">
+        <ScrollArea className="px-3 max-h-[90vh]">
           <DialogHeader className="p-6 pb-4">
-            <DialogTitle>Edit Education</DialogTitle>
-            <DialogDescription>
-              Update your education information.
-            </DialogDescription>
+            <DialogTitle>{t("title")}</DialogTitle>
+            <DialogDescription>{t("description")}</DialogDescription>
           </DialogHeader>
 
           <Form {...form}>
@@ -136,13 +143,13 @@ export function EditEducationDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      School <span className="text-destructive">*</span>
+                      {tCommon("school")}{" "}
+                      <span className="text-destructive">
+                        {tCommon("form.required")}
+                      </span>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="e.g. University of Paris"
-                        {...field}
-                      />
+                      <Input placeholder={tCommon("exSchool")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -156,13 +163,13 @@ export function EditEducationDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Degree <span className="text-destructive">*</span>
+                      {tCommon("degree")}{" "}
+                      <span className="text-destructive">
+                        {tCommon("form.required")}
+                      </span>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="e.g. Master in Computer Science"
-                        {...field}
-                      />
+                      <Input placeholder={tCommon("exDegree")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -177,7 +184,10 @@ export function EditEducationDialog({
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>
-                        Start Date <span className="text-destructive">*</span>
+                        {tCommon("startDate")}{" "}
+                        <span className="text-destructive">
+                          {tCommon("form.required")}
+                        </span>
                       </FormLabel>
                       <div className="flex gap-2">
                         <Popover
@@ -198,7 +208,7 @@ export function EditEducationDialog({
                                     locale: fr,
                                   })
                                 ) : (
-                                  <span>Pick a date</span>
+                                  <span>{tCommon("exDate")}</span>
                                 )}
                                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                               </Button>
@@ -224,16 +234,6 @@ export function EditEducationDialog({
                             />
                           </PopoverContent>
                         </Popover>
-                        {/* {field.value && (
-                          <Button
-                            variant="outline"
-                            className="w-10"
-                            type="button"
-                            onClick={() => field.onChange(undefined)}
-                          >
-                            <X className="w-4 h-4" />
-                          </Button>
-                        )} */}
                       </div>
                       <FormMessage />
                     </FormItem>
@@ -246,7 +246,7 @@ export function EditEducationDialog({
                   name="date_end"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>End Date</FormLabel>
+                      <FormLabel>{tCommon("endDate")}</FormLabel>
                       <div className="flex gap-2">
                         <Popover
                           open={endDateOpen}
@@ -267,7 +267,7 @@ export function EditEducationDialog({
                                     locale: fr,
                                   })
                                 ) : (
-                                  <span>Pick a date</span>
+                                  <span>{tCommon("exDate")}</span>
                                 )}
                                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                               </Button>
@@ -327,7 +327,7 @@ export function EditEducationDialog({
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel>Currently studying here</FormLabel>
+                      <FormLabel>{tCommon("currentStudying")}</FormLabel>
                     </div>
                   </FormItem>
                 )}
@@ -339,10 +339,10 @@ export function EditEducationDialog({
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>{tCommon("description")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Describe your education, specializations..."
+                        placeholder={tCommon("exDescription")}
                         {...field}
                         value={field.value || ""}
                       />
@@ -360,14 +360,14 @@ export function EditEducationDialog({
               onClick={() => onOpenChange(false)}
               disabled={isPending}
             >
-              Cancel
+              {tCommon("actions.cancel")}
             </Button>
             <Button
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={isPending || !form.formState.isValid}
+              disabled={isPending}
             >
-              {isPending ? "Saving..." : "Save Changes"}
+              {isPending ? tCommon("actions.saving") : tCommon("actions.save")}
             </Button>
           </DialogFooter>
         </ScrollArea>

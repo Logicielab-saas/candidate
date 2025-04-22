@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon, X, ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { useUpdateResumeProject } from "../../hooks/use-resume-project";
@@ -42,34 +42,40 @@ import {
   ACCEPTED_IMAGE_TYPES,
 } from "@/core/constants/image-constraints";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from "next-intl";
 
-const projectFormSchema = z.object({
-  name: z.string().min(2, "Project name is required"),
-  description: z.string().optional(),
-  url: z.string().url("Must be a valid URL").optional().or(z.literal("")),
-  date_start: z.date({
-    required_error: "Start date is required",
-  }),
-  date_end: z.date().optional(),
-  tasks: z
-    .array(
-      z.object({
-        name: z.string().min(2, "Task name is required"),
-        description: z.string().optional(),
-        status: z.enum(["In Progress", "Completed"]),
-      })
-    )
-    .default([]),
-  image: z
-    .any()
-    .optional()
-    .transform((files) => {
-      if (!files || !(files instanceof FileList)) return null;
-      return Array.from(files);
+const projectFormSchema = (t: (key: string) => string) =>
+  z.object({
+    name: z.string().min(2, t("validation.projectNameRequired")),
+    description: z.string().optional(),
+    url: z
+      .string()
+      .url(t("validation.urlInvalid"))
+      .optional()
+      .or(z.literal("")),
+    date_start: z.date({
+      required_error: t("validation.startDateRequired"),
     }),
-});
+    date_end: z.date().optional(),
+    tasks: z
+      .array(
+        z.object({
+          name: z.string().min(2, t("validation.taskNameRequired")),
+          description: z.string().optional(),
+          status: z.enum(["In Progress", "Completed"]),
+        })
+      )
+      .default([]),
+    image: z
+      .any()
+      .optional()
+      .transform((files) => {
+        if (!files || !(files instanceof FileList)) return null;
+        return Array.from(files);
+      }),
+  });
 
-type ProjectFormValues = z.infer<typeof projectFormSchema>;
+type ProjectFormValues = z.infer<ReturnType<typeof projectFormSchema>>;
 
 interface EditProjectDialogProps {
   open: boolean;
@@ -82,15 +88,22 @@ export function EditProjectDialog({
   onOpenChange,
   project,
 }: EditProjectDialogProps) {
+  const t = useTranslations("resumePage.projects.dialog.edit");
+  const tCommon = useTranslations("common");
   const { mutate: updateProject, isPending } = useUpdateResumeProject();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const previewUrlsRef = useRef<string[]>([]);
+  const { toast } = useToast();
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
-  const { toast } = useToast();
+
+  const createProjectFormSchema = useMemo(
+    () => projectFormSchema(tCommon),
+    [tCommon]
+  );
 
   const form = useForm<ProjectFormValues>({
-    resolver: zodResolver(projectFormSchema),
+    resolver: zodResolver(createProjectFormSchema),
     defaultValues: {
       name: "",
       description: "",
@@ -132,8 +145,10 @@ export function EditProjectDialog({
       if (file.size > MAX_FILE_SIZE) {
         toast({
           variant: "destructive",
-          title: "File too large",
-          description: `${file.name} is larger than 5MB`,
+          title: tCommon("fileTooLarge"),
+          description: tCommon("fileTooLargeDescription", {
+            size: MAX_FILE_SIZE / (1024 * 1024),
+          }),
         });
         return false;
       }
@@ -141,8 +156,8 @@ export function EditProjectDialog({
       if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
         toast({
           variant: "destructive",
-          title: "Invalid file type",
-          description: `${file.name} is not a supported image type`,
+          title: tCommon("invalidFileType"),
+          description: tCommon("invalidFileTypeDescription"),
         });
         return false;
       }
@@ -180,12 +195,10 @@ export function EditProjectDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[500px]">
-        <ScrollArea className="px-3 max-h-[60vh]">
+        <ScrollArea className="px-3 max-h-[90vh]">
           <DialogHeader className="p-6 pb-4">
-            <DialogTitle>Edit Project</DialogTitle>
-            <DialogDescription>
-              Update your project details. Click save when you&apos;re done.
-            </DialogDescription>
+            <DialogTitle>{t("title")}</DialogTitle>
+            <DialogDescription>{t("description")}</DialogDescription>
           </DialogHeader>
 
           <Form {...form}>
@@ -201,11 +214,14 @@ export function EditProjectDialog({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Project Name <span className="text-destructive">*</span>
+                        {tCommon("projectName")}{" "}
+                        <span className="text-destructive">
+                          {tCommon("form.required")}
+                        </span>
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="e.g. E-commerce Platform"
+                          placeholder={tCommon("exProjectName")}
                           {...field}
                         />
                       </FormControl>
@@ -222,7 +238,10 @@ export function EditProjectDialog({
                     render={({ field }) => (
                       <FormItem className="flex flex-col">
                         <FormLabel>
-                          Start Date <span className="text-destructive">*</span>
+                          {tCommon("startDate")}{" "}
+                          <span className="text-destructive">
+                            {tCommon("form.required")}
+                          </span>
                         </FormLabel>
                         <div className="flex gap-2">
                           <Popover
@@ -243,7 +262,7 @@ export function EditProjectDialog({
                                       locale: fr,
                                     })
                                   ) : (
-                                    <span>Pick a date</span>
+                                    <span>{tCommon("exDate")}</span>
                                   )}
                                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                 </Button>
@@ -290,7 +309,7 @@ export function EditProjectDialog({
                     name="date_end"
                     render={({ field }) => (
                       <FormItem className="flex flex-col">
-                        <FormLabel>End Date</FormLabel>
+                        <FormLabel>{tCommon("endDate")}</FormLabel>
                         <div className="flex gap-2">
                           <Popover
                             open={endDateOpen}
@@ -310,7 +329,7 @@ export function EditProjectDialog({
                                       locale: fr,
                                     })
                                   ) : (
-                                    <span>Pick a date</span>
+                                    <span>{tCommon("exDate")}</span>
                                   )}
                                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                 </Button>
@@ -357,10 +376,10 @@ export function EditProjectDialog({
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Description</FormLabel>
+                      <FormLabel>{tCommon("description")}</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Describe your project, technologies used..."
+                          placeholder={tCommon("exDescription")}
                           className="min-h-[120px]"
                           {...field}
                           value={field.value || ""}
@@ -377,7 +396,7 @@ export function EditProjectDialog({
                   name="image"
                   render={({ field: { onChange, value } }) => (
                     <FormItem>
-                      <FormLabel>Project Images</FormLabel>
+                      <FormLabel>{tCommon("images.imageLabel")}</FormLabel>
                       <FormControl>
                         <div
                           role="button"
@@ -394,10 +413,10 @@ export function EditProjectDialog({
                           <div className="flex flex-col items-center gap-2 text-muted-foreground">
                             <ImageIcon className="h-8 w-8" />
                             <p className="text-sm font-medium">
-                              Click to upload project images
+                              {tCommon("images.uploadText")}
                             </p>
                             <p className="text-xs">
-                              Maximum size: 5MB. Formats: PNG, JPEG, GIF
+                              {tCommon("images.imageRequirement")}
                             </p>
                           </div>
                           <input
@@ -426,9 +445,9 @@ export function EditProjectDialog({
                             <>
                               <div className="mt-4 text-center">
                                 <p className="text-sm text-muted-foreground">
-                                  {value.length}{" "}
-                                  {value.length === 1 ? "image" : "images"}{" "}
-                                  selected
+                                  {tCommon("images.selected", {
+                                    count: value.length,
+                                  })}
                                 </p>
                               </div>
                               <div className="mt-4 grid grid-cols-2 gap-4">
@@ -439,7 +458,9 @@ export function EditProjectDialog({
                                   >
                                     <Image
                                       src={URL.createObjectURL(file as Blob)}
-                                      alt={`Preview ${index + 1}`}
+                                      alt={tCommon("images.preview", {
+                                        index: index + 1,
+                                      })}
                                       className="object-cover"
                                       fill
                                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -485,10 +506,10 @@ export function EditProjectDialog({
                   name="url"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Project URL</FormLabel>
+                      <FormLabel>{tCommon("url")}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="e.g. https://github.com/your-project"
+                          placeholder={tCommon("exUrl")}
                           {...field}
                           value={field.value || ""}
                         />
@@ -502,7 +523,9 @@ export function EditProjectDialog({
               {/* Tasks Section */}
               <div className="space-y-4 pt-4">
                 <div className="flex items-center justify-between">
-                  <FormLabel className="text-base">Tasks</FormLabel>
+                  <FormLabel className="text-base">
+                    {tCommon("tasks.label")}
+                  </FormLabel>
                   <Button
                     type="button"
                     variant="outline"
@@ -515,7 +538,7 @@ export function EditProjectDialog({
                       ]);
                     }}
                   >
-                    Add Task
+                    {tCommon("tasks.addTask")}
                   </Button>
                 </div>
 
@@ -547,12 +570,14 @@ export function EditProjectDialog({
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            Task Name{" "}
-                            <span className="text-destructive">*</span>
+                            {tCommon("tasks.nameLabel")}{" "}
+                            <span className="text-destructive">
+                              {tCommon("form.required")}
+                            </span>
                           </FormLabel>
                           <FormControl>
                             <Input
-                              placeholder="e.g. Implement Authentication"
+                              placeholder={tCommon("tasks.namePlaceholder")}
                               {...field}
                             />
                           </FormControl>
@@ -567,10 +592,14 @@ export function EditProjectDialog({
                       name={`tasks.${index}.description`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Task Description</FormLabel>
+                          <FormLabel>
+                            {tCommon("tasks.taskDescription")}
+                          </FormLabel>
                           <FormControl>
                             <Input
-                              placeholder="e.g. Implemented JWT-based authentication system"
+                              placeholder={tCommon(
+                                "tasks.taskDescriptionPlaceholder"
+                              )}
                               {...field}
                               value={field.value || ""}
                             />
@@ -587,17 +616,22 @@ export function EditProjectDialog({
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            Status <span className="text-destructive">*</span>
+                            {tCommon("tasks.statusLabel")}{" "}
+                            <span className="text-destructive">
+                              {tCommon("form.required")}
+                            </span>
                           </FormLabel>
-                          <FormControl>
-                            <select
-                              {...field}
-                              className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
-                            >
-                              <option value="In Progress">In Progress</option>
-                              <option value="Completed">Completed</option>
-                            </select>
-                          </FormControl>
+                          <select
+                            {...field}
+                            className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
+                          >
+                            <option value="In Progress">
+                              {tCommon("tasks.inProgress")}
+                            </option>
+                            <option value="Completed">
+                              {tCommon("tasks.completed")}
+                            </option>
+                          </select>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -614,14 +648,14 @@ export function EditProjectDialog({
               onClick={() => onOpenChange(false)}
               disabled={isPending}
             >
-              Cancel
+              {tCommon("actions.cancel")}
             </Button>
             <Button
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={isPending || !form.formState.isValid}
+              disabled={isPending}
             >
-              {isPending ? "Saving..." : "Save Changes"}
+              {isPending ? tCommon("actions.saving") : tCommon("actions.save")}
             </Button>
           </DialogFooter>
         </ScrollArea>

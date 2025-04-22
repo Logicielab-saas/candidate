@@ -13,6 +13,7 @@ import {
 import type { ResumeCertifications } from "@/core/interfaces";
 import { useDeleteResumeCertification } from "../../hooks/use-resume-certification";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface DeleteCertificationDialogProps {
   open: boolean;
@@ -28,6 +29,9 @@ export function DeleteCertificationDialog({
   const { mutate: deleteCertification, isPending } =
     useDeleteResumeCertification();
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const t = useTranslations("resumePage.certifications.dialog.delete");
+  const tCommon = useTranslations("common");
 
   const handleConfirm = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -57,20 +61,25 @@ export function DeleteCertificationDialog({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t("title")}</AlertDialogTitle>
           <AlertDialogDescription>
-            You are about to delete the certification &quot;{certification.name}
-            &quot;. This action cannot be undone.
+            {t("descriptionStart")}:{" "}
+            <span className="font-bold">{certification.name}</span>{" "}
+            {t("warning")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isDeleting}>
+            {tCommon("actions.cancel")}
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             className="bg-destructive hover:bg-destructive/90"
             disabled={isPending || isDeleting}
           >
-            {isDeleting ? "Deleting..." : "Delete"}
+            {isDeleting
+              ? tCommon("actions.deleting")
+              : tCommon("actions.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

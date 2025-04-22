@@ -10,10 +10,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useToast } from "@/hooks/use-toast";
 import type { ResumeProject } from "@/core/interfaces";
 import { useDeleteResumeProject } from "../../hooks/use-resume-project";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface DeleteProjectDialogProps {
   open: boolean;
@@ -29,7 +29,8 @@ export function DeleteProjectDialog({
   const { mutate: deleteProject, isPending } = useDeleteResumeProject();
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const { toast } = useToast();
+  const t = useTranslations("resumePage.projects.dialog.delete");
+  const tCommon = useTranslations("common");
 
   const handleConfirm = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -47,15 +48,7 @@ export function DeleteProjectDialog({
           },
         });
       });
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description:
-          error instanceof Error
-            ? error.message
-            : "An error occurred while deleting the project.",
-      });
+    } catch (_error) {
     } finally {
       setIsDeleting(false);
       onOpenChange(false);
@@ -75,20 +68,22 @@ export function DeleteProjectDialog({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+          <AlertDialogTitle>{t("title")}</AlertDialogTitle>
           <AlertDialogDescription>
-            Vous êtes sur le point de supprimer le projet &quot;{project.name}
-            &quot; Cette action est irréversible.
+            {t("descriptionStart")}:{" "}
+            <span className="font-bold">{project.name}</span>: {t("warning")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Annuler</AlertDialogCancel>
+          <AlertDialogCancel>{tCommon("actions.cancel")}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             disabled={isLoading}
             className="bg-destructive hover:bg-destructive/90"
           >
-            {isLoading ? "Suppression en cours..." : "Supprimer"}
+            {isLoading
+              ? tCommon("actions.deleting")
+              : tCommon("actions.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
