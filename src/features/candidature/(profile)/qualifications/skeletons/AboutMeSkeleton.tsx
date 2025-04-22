@@ -1,12 +1,14 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { SectionHeader } from "../SectionHeader";
 import { UserCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function AboutMeSkeleton() {
+  const t = useTranslations("resumePage.aboutMe");
   return (
     <div className="border p-4 rounded-lg shadow-sm space-y-6">
       <SectionHeader
-        title="About Me"
+        title={t("title")}
         icon={<UserCircle className="w-6 h-6 text-primaryHex-400 mr-2" />}
       />
       <div className="flex items-center">

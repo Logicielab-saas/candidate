@@ -5,6 +5,7 @@ import TimeLineListItem from "./TimeLineListItem";
 import { SectionHeader } from "./SectionHeader";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
+import { useTranslations } from "next-intl";
 
 // Dynamically import dialogs with loading states
 const AddExperienceDialog = dynamic(
@@ -63,10 +64,12 @@ export function WorkExperienceList({ experiences }: WorkExperienceListProps) {
   const [selectedExperience, setSelectedExperience] =
     useState<ResumeExperience | null>(null);
 
+  const t = useTranslations("resumePage.workExperience");
+
   return (
     <div className="border p-4 rounded-lg shadow-sm">
       <SectionHeader
-        title="Work Experience"
+        title={t("title")}
         icon={<Briefcase className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={() => setDialogOpen(true)}
       />
@@ -86,9 +89,7 @@ export function WorkExperienceList({ experiences }: WorkExperienceListProps) {
           />
         ))}
         {!experiences?.length && (
-          <p className="text-muted-foreground text-center py-4">
-            No work experience added yet
-          </p>
+          <p className="text-muted-foreground text-center py-4">{t("empty")}</p>
         )}
       </div>
 

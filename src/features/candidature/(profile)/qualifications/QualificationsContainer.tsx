@@ -26,9 +26,7 @@ export function QualificationsContainer() {
     return (
       <div className="space-y-6">
         <div className="border p-4 rounded-lg shadow-sm">
-          <p className="text-red-500">
-            Failed to load profile data. Please try again later.
-          </p>
+          <p className="text-red-500">{error.message}</p>
         </div>
       </div>
     );

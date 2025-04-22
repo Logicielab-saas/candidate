@@ -36,6 +36,7 @@ import { useEffect, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useUpdateResumeExperience } from "../../hooks/use-resume-experience";
 import type { ResumeExperience } from "@/core/interfaces";
+import { useTranslations } from "next-intl";
 
 // Internal form schema uses Date objects for better date handling
 const experienceFormSchema = z.object({
@@ -61,8 +62,10 @@ export function EditExperienceDialog({
   onOpenChange,
   experience,
 }: EditExperienceDialogProps) {
-  const { mutate: updateExperience, isPending } = useUpdateResumeExperience();
+  const t = useTranslations("resumePage.workExperience.dialog.edit");
+  const tCommon = useTranslations("common");
 
+  const { mutate: updateExperience, isPending } = useUpdateResumeExperience();
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
 
@@ -116,10 +119,8 @@ export function EditExperienceDialog({
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[500px]">
         <ScrollArea className="px-3 max-h-[60vh]">
           <DialogHeader className="p-6 pb-4">
-            <DialogTitle>Edit Work Experience</DialogTitle>
-            <DialogDescription>
-              Update your professional experience information.
-            </DialogDescription>
+            <DialogTitle>{t("title")}</DialogTitle>
+            <DialogDescription>{t("description")}</DialogDescription>
           </DialogHeader>
 
           <Form {...form}>
@@ -134,10 +135,13 @@ export function EditExperienceDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Job Title <span className="text-destructive">*</span>
+                      {tCommon("poste")}{" "}
+                      <span className="text-destructive">
+                        {tCommon("form.required")}
+                      </span>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g. Frontend Developer" {...field} />
+                      <Input placeholder={tCommon("exPoste")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -151,10 +155,13 @@ export function EditExperienceDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Company <span className="text-destructive">*</span>
+                      {tCommon("company")}{" "}
+                      <span className="text-destructive">
+                        {tCommon("form.required")}
+                      </span>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g. Acme Inc." {...field} />
+                      <Input placeholder={tCommon("exCompany")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -169,7 +176,10 @@ export function EditExperienceDialog({
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>
-                        Start Date <span className="text-destructive">*</span>
+                        {tCommon("startDate")}{" "}
+                        <span className="text-destructive">
+                          {tCommon("form.required")}
+                        </span>
                       </FormLabel>
                       <div className="flex gap-2">
                         <Popover
@@ -190,7 +200,7 @@ export function EditExperienceDialog({
                                     locale: fr,
                                   })
                                 ) : (
-                                  <span>Pick a date</span>
+                                  <span>{tCommon("exDate")}</span>
                                 )}
                                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                               </Button>
@@ -216,16 +226,6 @@ export function EditExperienceDialog({
                             />
                           </PopoverContent>
                         </Popover>
-                        {/* {field.value && (
-                          <Button
-                            variant="outline"
-                            className="w-10"
-                            type="button"
-                            onClick={() => field.onChange(undefined)}
-                          >
-                            <X className="w-4 h-4" />
-                          </Button>
-                        )} */}
                       </div>
                       <FormMessage />
                     </FormItem>
@@ -238,7 +238,7 @@ export function EditExperienceDialog({
                   name="date_end"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>End Date</FormLabel>
+                      <FormLabel>{tCommon("endDate")}</FormLabel>
                       <div className="flex gap-2">
                         <Popover
                           open={endDateOpen}
@@ -259,7 +259,7 @@ export function EditExperienceDialog({
                                     locale: fr,
                                   })
                                 ) : (
-                                  <span>Pick a date</span>
+                                  <span>{tCommon("exDate")}</span>
                                 )}
                                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                               </Button>
@@ -316,7 +316,7 @@ export function EditExperienceDialog({
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel>Current Position</FormLabel>
+                      <FormLabel>{tCommon("currentPosition")}</FormLabel>
                     </div>
                   </FormItem>
                 )}
@@ -330,14 +330,14 @@ export function EditExperienceDialog({
               onClick={() => onOpenChange(false)}
               disabled={isPending}
             >
-              Cancel
+              {tCommon("actions.cancel")}
             </Button>
             <Button
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
               disabled={isPending || !form.formState.isValid}
             >
-              {isPending ? "Saving..." : "Save Changes"}
+              {isPending ? tCommon("actions.saving") : tCommon("actions.save")}
             </Button>
           </DialogFooter>
         </ScrollArea>

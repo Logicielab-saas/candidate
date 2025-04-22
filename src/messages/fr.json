@@ -47,10 +47,11 @@
     "locationUndefined": "Lieu non spécifié",
     "noVarFound": "Aucune {variable} trouvée",
     "undefined": "Non spécifié",
+    "at": "chez",
+    "and": "et",
     "detailsCandidature": "Détails de la candidature",
     "infoContact": "Informations de contact",
     "fullName": "Nom complet",
-    "company": "Entreprise",
     "programmed": "Programmé",
     "interviewDetails": "Détails de l'entretien",
     "dateLabel": "Date",
@@ -68,6 +69,15 @@
     "phoneCall": "Appel téléphonique",
     "map": "Localisation",
     "videoLink": "Lien de la réunion",
+    "current": "Present",
+    "poste": "Intitulé du poste",
+    "exPoste": "Ex: Développeur Frontend",
+    "company": "Entreprise",
+    "exCompany": "Ex: Microsoft",
+    "startDate": "Date de début",
+    "exDate": "Sélectionner une date",
+    "endDate": "Date de fin",
+    "currentPosition": "Je travaille actuellement à ce poste",
     "validation": {
       "required": "Ce champ est requis",
       "email": "Adresse e-mail invalide",
@@ -82,6 +92,9 @@
       "otpLength": "Le code doit contenir {length} chiffres",
       "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer.",
       "selectTimeFirst": "Veuillez sélectionner une heure pour l'entretien",
+      "jobTitleRequired": "L'intitulé du poste est requis",
+      "companyNameRequired": "Le nom de l'entreprise est requis",
+      "startDateRequired": "La date de début est requise",
       "jobTypes": {
         "required": "Le type de poste est requis",
         "minSelection": "Sélectionnez au moins un type de poste"
@@ -146,6 +159,25 @@
         "confirm": "Confirmer le mot de passe",
         "requirements": "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre."
       }
+    },
+    "labels": {
+      "search": "Recherche",
+      "salary": "Salaire",
+      "additionalInfo": "Informations complémentaires",
+      "jobDetails": "Détails du poste",
+      "contractType": "Type de contrat",
+      "duration": "Durée",
+      "schedule": "Horaires",
+      "questions": "Questions",
+      "yourAnswer": "Votre réponse",
+      "contactInfo": "Informations de contact",
+      "phone": "Téléphone",
+      "address": "Adresse",
+      "birthDate": "Date de naissance",
+      "gender": "Genre",
+      "bio": "Bio",
+      "skills": "Compétences",
+      "resume": "CV"
     },
     "actions": {
       "create": "Créer",
@@ -212,6 +244,7 @@
       "editProfile": "Modifier le profil",
       "generateCV": "Générer le CV",
       "add": "Ajouter",
+      "adding": "Ajout en cours...",
       "enabled": "Activé",
       "disabled": "Désactivé",
       "enable": "Activer",
@@ -284,25 +317,6 @@
         "spam": "Spam"
       },
       "searchPlaceholder": "Rechercher..."
-    },
-    "labels": {
-      "search": "Recherche",
-      "salary": "Salaire",
-      "additionalInfo": "Informations complémentaires",
-      "jobDetails": "Détails du poste",
-      "contractType": "Type de contrat",
-      "duration": "Durée",
-      "schedule": "Horaires",
-      "questions": "Questions",
-      "yourAnswer": "Votre réponse",
-      "contactInfo": "Informations de contact",
-      "phone": "Téléphone",
-      "address": "Adresse",
-      "birthDate": "Date de naissance",
-      "gender": "Genre",
-      "bio": "Bio",
-      "skills": "Compétences",
-      "resume": "CV"
     },
     "selectorsSearch": {
       "citySelector": {
@@ -1640,6 +1654,30 @@
         "success": {
           "title": "Disponibilités envoyées",
           "description": "Vos créneaux de disponibilité ont été envoyés avec succès"
+        }
+      }
+    }
+  },
+  "resumePage": {
+    "aboutMe": {
+      "title": "À propos de moi"
+    },
+    "workExperience": {
+      "title": "Expérience professionnelle",
+      "empty": "Aucun Expérience professionnelle ajouté",
+      "dialog": {
+        "add": {
+          "title": "Ajouter une expérience professionnelle",
+          "description": "Ajoutez les détails de votre expérience professionnelle"
+        },
+        "edit": {
+          "title": "Modifier l'expérience professionnelle",
+          "description": "Modifiez les détails de votre expérience professionnelle"
+        },
+        "delete": {
+          "title": "Supprimer l'expérience",
+          "descriptionStart": "Vous êtes sur le point de supprimer votre expérience en tant que",
+          "warning": "Cette action est irréversible et supprimera définitivement cette expérience de votre CV."
         }
       }
     }

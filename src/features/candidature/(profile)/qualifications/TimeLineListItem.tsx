@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { PencilIcon, Trash } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { useTranslations } from "next-intl";
 
 interface TimeLineListItemProps {
   data: ResumeEducation | ResumeExperience | ResumeCertifications;
@@ -21,6 +22,7 @@ export default function TimeLineListItem({
   onEdit,
   onDelete,
 }: TimeLineListItemProps) {
+  const tCommon = useTranslations("common");
   const getTitle = () => {
     if ("job_title" in data) return data.job_title;
     if ("degree" in data) return data.degree;
@@ -69,7 +71,7 @@ export default function TimeLineListItem({
       }
     }
 
-    if (isCurrent) return `${startDate} - Present`;
+    if (isCurrent) return `${startDate} - ${tCommon("current")}`;
     if (endDate) return `${startDate} - ${endDate}`;
     return startDate;
   };
