@@ -1539,8 +1539,10 @@
       "archived": "Offres archivées"
     },
     "empty": {
-      "title": "Aucune {title}",
-      "description": "Vous n'avez pas encore {description}."
+      "titleSavedJobs": "Aucune offre sauvegradée",
+      "descriptionSavedJobs": "Vous n'avez pas encore sauvegradé d'offres d'emploi. Commencez à explorer les offres et à les sauvegrader pour les consulter plus tard.",
+      "descriptionSentApplications": "Vous n'avez pas encore envoyé de candidatures. Explorez les offres et postulez pour celles qui vous intéressent.",
+      "descriptionArchived": "Vous n'avez pas encore archivé d'offres d'emploi. Explorez les offres et archivez celles qui ne vous intéressent plus."
     },
     "sentApplications": {
       "status": {

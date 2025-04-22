@@ -65,16 +65,8 @@ export default function SavedJobsList({
   if (!savedJobsData || savedJobsData.saved.length === 0) {
     return (
       <div className="text-center py-10 border rounded-lg">
-        <h3 className="font-medium text-lg mb-2">
-          {" "}
-          {t("title", { title: "Aucune offre sauvegradée" })}{" "}
-        </h3>
-        <p className="text-muted-foreground">
-          {t("description", {
-            description:
-              "Vous n'avez pas encore sauvegradé d'offres d'emploi. Commencez à explorer les offres et à les sauvegrader pour les consulter plus tard.",
-          })}
-        </p>
+        <h3 className="font-medium text-lg mb-2"> {t("titleSavedJobs")} </h3>
+        <p className="text-muted-foreground">{t("descriptionSavedJobs")}</p>
       </div>
     );
   }

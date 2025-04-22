@@ -66,7 +66,7 @@ export default function ArchivedJobsList({
   onPageChange,
 }: ArchivedJobsListProps) {
   const tCommon = useTranslations("common");
-
+  const t = useTranslations("myJobsPage.empty");
   if (isLoading) {
     return <ArchivedJobsSkeleton />;
   }
@@ -85,11 +85,7 @@ export default function ArchivedJobsList({
   if (!archivedJobs?.archives || archivedJobs.archives.length === 0) {
     return (
       <Alert>
-        <AlertDescription>
-          {tCommon("empty.description", {
-            description: "Vous n'avez pas d'emplois archivés.",
-          })}
-        </AlertDescription>
+        <AlertDescription>{t("descriptionArchived")}</AlertDescription>
       </Alert>
     );
   }

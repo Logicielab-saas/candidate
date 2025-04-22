@@ -72,9 +72,7 @@ export default function SentApplicationsList({
   if (!sentApplicationsData || sentApplicationsData.emplois.length === 0)
     return (
       <div className="text-center py-6 text-muted-foreground">
-        {t("empty.description", {
-          description: "Vous n'avez encore envoyé aucune candidature.",
-        })}
+        {t("empty.descriptionSentApplications")}
       </div>
     );
 
