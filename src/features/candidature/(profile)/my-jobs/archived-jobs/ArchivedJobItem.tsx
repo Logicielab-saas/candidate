@@ -28,6 +28,9 @@ import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { useUnarchiveJob } from "../hooks/use-my-archived-jobs";
+import { useTranslations } from "next-intl";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 const ReportJobDialog = dynamic(
   () => import("@/components/shared/ReportJobDialog"),
@@ -60,6 +63,7 @@ export function ArchivedJobItem({
   location,
   savedDate,
 }: ArchivedJobItemProps) {
+  const tCommon = useTranslations("common");
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const { mutate: unarchiveJob, isPending: isUnarchiving } = useUnarchiveJob();
 
@@ -92,7 +96,14 @@ export function ArchivedJobItem({
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              <span>Archivé le {savedDate}</span>
+              <span>
+                {" "}
+                {tCommon("actions.archivedAt", {
+                  date: format(new Date(savedDate), "d MMM yyyy", {
+                    locale: fr,
+                  }),
+                })}
+              </span>
             </div>
           </div>
         </div>
@@ -102,7 +113,9 @@ export function ArchivedJobItem({
             size="sm"
             disabled={isUnarchiving}
           >
-            {isUnarchiving ? "Désarchivage..." : "Désarchiver"}
+            {isUnarchiving
+              ? tCommon("actions.unArchiving")
+              : tCommon("actions.unArchive")}
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -115,7 +128,7 @@ export function ArchivedJobItem({
                 onClick={() => setIsReportDialogOpen(true)}
                 className="text-destructive"
               >
-                Signaler l&apos;offre d&apos;emploi
+                {tCommon("actions.reportJob")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

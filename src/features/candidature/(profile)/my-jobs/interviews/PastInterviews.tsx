@@ -5,19 +5,19 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { AnimatePresence, motion } from "framer-motion";
 import { Building2, MapPin, Calendar, Clock, Zap } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface PastInterviewsProps {
   interviews: Interview[];
 }
 
 export function PastInterviews({ interviews }: PastInterviewsProps) {
+  const t = useTranslations("myJobsPage.interviews");
   return (
     <div>
       <div className="border  p-4 rounded-lg shadow-md mb-4">
-        <h2 className="text-xl font-bold mb-4">Entretiens Passés</h2>
-        <p className="text-md mb-4">
-          Voici les entretiens que vous avez complétés.
-        </p>
+        <h2 className="text-xl font-bold mb-4">{t("titlePast")}</h2>
+        <p className="text-md mb-4">{t("descriptionPast")}</p>
       </div>
 
       <AnimatePresence>

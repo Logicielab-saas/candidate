@@ -50,6 +50,8 @@
     "detailsCandidature": "Détails de la candidature",
     "infoContact": "Informations de contact",
     "fullName": "Nom complet",
+    "company": "Entreprise",
+    "programmed": "Programmé",
     "validation": {
       "required": "Ce champ est requis",
       "email": "Adresse e-mail invalide",
@@ -147,10 +149,13 @@
       "viewDetails": "Voir les détails",
       "archive": "Archiver",
       "archiving": "Archivage en cours...",
+      "unArchive": "Désarchiver",
+      "unArchiving": "Désarchivage en cours...",
       "withdraw": "Retirer",
       "loadMore": "Charger plus",
       "savedAt": "Enregistré le {date}",
       "applicationSentAt": "Candidature envoyée le {date}",
+      "archivedAt": "Archivé le {date}",
       "reportJob": "Signaler l'offre",
       "error": "Erreur",
       "openMenu": "Ouvrir le menu",
@@ -161,6 +166,7 @@
       "loggingOut": "Déconnexion...",
       "manage": "Gérer",
       "report": "Signaler",
+      "reporter": "Reporter",
       "share": "Partager",
       "alreadyApplied": "Déjà postulé",
       "yes": "Oui",
@@ -175,6 +181,7 @@
       "download": "Télécharger",
       "schedule": "Programmer",
       "refuse": "Refuser",
+      "program": "Programmer",
       "zoom": "Agrandir",
       "restore": "Restaurer",
       "previous": "Précédent",
@@ -644,6 +651,17 @@
           }
         }
       }
+    }
+  },
+  "pagination": {
+    "showing": "Affichage de {start} à {end} sur {total} résultats",
+    "currentOfTotal": "Page {current} sur {total}",
+    "aria": {
+      "firstPage": "Première page",
+      "previousPage": "Page précédente",
+      "nextPage": "Page suivante",
+      "lastPage": "Dernière page",
+      "pageX": "Page {page}"
     }
   },
   "auth": {
@@ -1529,6 +1547,14 @@
       "title": "Êtes-vous sûr de vouloir retirer votre candidature ?",
       "description": "Vous êtes sur le point de retirer votre candidature pour ",
       "description2": " Cette action est irréversible."
+    },
+    "interviews": {
+      "titleProgrammed": "Entretiens Programmés",
+      "descriptionProgrammed": "Ce sont les entretiens auxquels vous avez été invité.",
+      "titleWaiting": "Entretiens en Attente",
+      "descriptionWaiting": "Ces entretiens attendent votre confirmation.",
+      "titlePast": "Entretiens Passés",
+      "descriptionPast": "Voici les entretiens que vous avez complétés."
     }
   }
 }

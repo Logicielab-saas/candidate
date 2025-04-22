@@ -22,6 +22,7 @@ import {
   ChevronsRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface PaginationProps {
   currentPage: number;
@@ -40,6 +41,8 @@ export function Pagination({
   onPageChange,
   className,
 }: PaginationProps) {
+  const t = useTranslations("pagination");
+
   // Function to generate visible page numbers
   const getPageNumbers = () => {
     const pageNumbers = [];
@@ -102,9 +105,11 @@ export function Pagination({
     <div className={cn("flex flex-col space-y-2 md:space-y-0", className)}>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <p className="text-sm text-muted-foreground text-center md:text-left">
-          Affichage de <span className="font-medium">{startItem}</span> à{" "}
-          <span className="font-medium">{endItem}</span> sur{" "}
-          <span className="font-medium">{totalItems}</span> résultats
+          {t("showing", {
+            start: startItem,
+            end: endItem,
+            total: totalItems,
+          })}
         </p>
 
         <div className="flex items-center justify-center space-x-2">
@@ -114,7 +119,7 @@ export function Pagination({
             onClick={() => onPageChange(1)}
             disabled={currentPage === 1}
             className="hidden sm:flex"
-            aria-label="Première page"
+            aria-label={t("aria.firstPage")}
           >
             <ChevronsLeft className="h-4 w-4" />
           </Button>
@@ -123,7 +128,7 @@ export function Pagination({
             size="icon"
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            aria-label="Page précédente"
+            aria-label={t("aria.previousPage")}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
@@ -144,7 +149,7 @@ export function Pagination({
                   variant={currentPage === page ? "default" : "outline"}
                   size="icon"
                   onClick={() => onPageChange(page as number)}
-                  aria-label={`Page ${page}`}
+                  aria-label={t("aria.pageX", { page })}
                   aria-current={currentPage === page ? "page" : undefined}
                 >
                   {page}
@@ -155,7 +160,10 @@ export function Pagination({
 
           <div className="md:hidden">
             <span className="text-sm">
-              Page {currentPage} sur {totalPages}
+              {t("currentOfTotal", {
+                current: currentPage,
+                total: totalPages,
+              })}
             </span>
           </div>
 
@@ -164,7 +172,7 @@ export function Pagination({
             size="icon"
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            aria-label="Page suivante"
+            aria-label={t("aria.nextPage")}
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
@@ -174,7 +182,7 @@ export function Pagination({
             onClick={() => onPageChange(totalPages)}
             disabled={currentPage === totalPages}
             className="hidden sm:flex"
-            aria-label="Dernière page"
+            aria-label={t("aria.lastPage")}
           >
             <ChevronsRight className="h-4 w-4" />
           </Button>

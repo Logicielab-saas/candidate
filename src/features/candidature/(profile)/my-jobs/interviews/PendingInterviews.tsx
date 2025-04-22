@@ -7,19 +7,20 @@ import { format } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { Building2, MapPin, Calendar, Clock, Zap } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 interface PendingInterviewsProps {
   interviews: Interview[];
 }
 
 export function PendingInterviews({ interviews }: PendingInterviewsProps) {
+  const t = useTranslations("myJobsPage.interviews");
+  const tCommon = useTranslations("common");
   return (
     <div>
       <div className="border border-gray-700 p-4 rounded-lg shadow-md mb-4">
-        <h2 className="text-xl font-bold mb-4">Entretiens En Attente</h2>
-        <p className="text-md mb-4">
-          Ces entretiens attendent votre confirmation.
-        </p>
+        <h2 className="text-xl font-bold mb-4">{t("titleWaiting")}</h2>
+        <p className="text-md mb-4">{t("descriptionWaiting")}</p>
       </div>
       <AnimatePresence>
         <div className="relative">
@@ -67,12 +68,12 @@ export function PendingInterviews({ interviews }: PendingInterviewsProps) {
                   asChild
                 >
                   <Link href={`/interviews/reporter/${interview.jobKey}`}>
-                    Reporter
+                    {tCommon("actions.reporter")}
                   </Link>
                 </Button>
                 <Button variant="outline" asChild>
                   <Link href={`/interviews/annuler/${interview.jobKey}`}>
-                    Annuler
+                    {tCommon("actions.cancel")}
                   </Link>
                 </Button>
               </div>
