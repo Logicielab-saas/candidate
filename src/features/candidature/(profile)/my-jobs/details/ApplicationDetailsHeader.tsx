@@ -4,6 +4,7 @@ import { fr } from "date-fns/locale";
 import type { EmploisApplied } from "@/core/interfaces";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Building2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ApplicationDetailsHeaderProps {
   application: EmploisApplied;
@@ -12,6 +13,7 @@ interface ApplicationDetailsHeaderProps {
 export function ApplicationDetailsHeader({
   application,
 }: ApplicationDetailsHeaderProps) {
+  const t = useTranslations("common");
   return (
     <Card className="p-0">
       <CardContent className="p-0">
@@ -34,12 +36,13 @@ export function ApplicationDetailsHeader({
               {application.company_name}
             </p>
             <p className="text-sm text-muted-foreground">
-              {application.city_name || "Inconnu"}
+              {application.city_name || t("locationUndefined")}
             </p>
             <p className="text-sm text-muted-foreground mt-1">
-              Candidature envoyée le{" "}
-              {format(new Date(application.created_at), "d MMM yyyy", {
-                locale: fr,
+              {t("actions.applicationSentAt", {
+                date: format(new Date(application.created_at), "d MMM yyyy", {
+                  locale: fr,
+                }),
               })}
             </p>
           </div>

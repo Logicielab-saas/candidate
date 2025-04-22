@@ -45,6 +45,11 @@
     "passwordMask": "••••••••",
     "companyUndefined": "Entreprise",
     "locationUndefined": "Lieu non spécifié",
+    "noVarFound": "Aucune {variable} trouvée",
+    "undefined": "Non spécifié",
+    "detailsCandidature": "Détails de la candidature",
+    "infoContact": "Informations de contact",
+    "fullName": "Nom complet",
     "validation": {
       "required": "Ce champ est requis",
       "email": "Adresse e-mail invalide",
