@@ -41,9 +41,10 @@ const ReportJobDialog = dynamic(
 
 interface JobCardMenuProps {
   jobId: string;
+  jobSlug: string;
 }
 
-export function JobCardMenu({ jobId }: JobCardMenuProps) {
+export function JobCardMenu({ jobId, jobSlug }: JobCardMenuProps) {
   const [isSignalerOpen, setIsSignalerOpen] = useState(false);
   const [isNotInterestedOpen, setIsNotInterestedOpen] = useState(false);
 
@@ -55,9 +56,9 @@ export function JobCardMenu({ jobId }: JobCardMenuProps) {
   const isBookmarked = isSaved(jobId);
 
   // Save/Cancel save job mutations
-  const { mutate: saveEmplois, isPending: isSaving } = useSaveEmplois();
+  const { mutate: saveEmplois, isPending: isSaving } = useSaveEmplois(jobSlug);
   const { mutate: cancelSaveEmplois, isPending: isCanceling } =
-    useCancelSaveEmplois();
+    useCancelSaveEmplois(jobSlug);
 
   const handleBookmarkClick = (e: React.MouseEvent) => {
     e.stopPropagation();

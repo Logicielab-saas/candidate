@@ -38,6 +38,7 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useEmplois } from "../hooks/use-emplois";
 import { useTranslations } from "next-intl";
+import NotInterestedDialog from "./NotInterestedDialog";
 
 const ReportJobDialog = dynamic(
   () => import("@/components/shared/ReportJobDialog"),
@@ -47,9 +48,11 @@ const ReportJobDialog = dynamic(
 export function JobDetails() {
   const [selectedJobId, setSelectedJobId] = useQueryState("job");
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
+  const [isNotInterestedOpen, setIsNotInterestedOpen] = useState(false);
   const { data: jobs } = useEmplois();
 
   const t = useTranslations("emplois.jobDetails");
+  const tCommon = useTranslations("common.actions");
 
   // Set default job if none is selected and jobs are available
   useEffect(() => {
@@ -84,6 +87,11 @@ export function JobDetails() {
       </Card>
     );
   }
+
+  const handleNotInterestedClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsNotInterestedOpen(true);
+  };
 
   // Format salary based on type and available values
   const formatSalary = () => {
@@ -146,6 +154,7 @@ export function JobDetails() {
               <TooltipProvider delayDuration={100}>
                 <JobBookmarkButton
                   jobId={job.uuid}
+                  jobSlug={job.slug}
                   initialIsSaved={job.saved}
                   jobTitle={job.title}
                   tooltipPosition="top"
@@ -179,7 +188,7 @@ export function JobDetails() {
                     </span>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>{t("actions.report")}</p>
+                    <p>{tCommon("reportJob")}</p>
                   </TooltipContent>
                 </Tooltip>
                 <Tooltip>
@@ -189,6 +198,7 @@ export function JobDetails() {
                         "h-9 w-9 flex items-center justify-center cursor-pointer",
                         "text-yellow-600 hover:text-yellow-700 hover:bg-accent rounded-full"
                       )}
+                      onClick={handleNotInterestedClick}
                     >
                       <XCircle className="h-6 w-6" />
                     </span>
@@ -290,6 +300,13 @@ export function JobDetails() {
         <ReportJobDialog
           open={isReportDialogOpen}
           onOpenChange={setIsReportDialogOpen}
+          jobId={job.uuid}
+        />
+      )}
+      {isNotInterestedOpen && (
+        <NotInterestedDialog
+          open={isNotInterestedOpen}
+          onOpenChange={setIsNotInterestedOpen}
           jobId={job.uuid}
         />
       )}

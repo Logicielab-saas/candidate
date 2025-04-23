@@ -20,6 +20,7 @@ export function AnnonceActions({ annonce }: AnnonceActionsProps) {
   const { isSaved, isProcessing, toggleSaved } = useJobBookmark({
     initialIsSaved: annonce.saved,
     jobId: annonce.uuid,
+    jobSlug: annonce.slug,
     jobTitle: annonce.title,
   });
 

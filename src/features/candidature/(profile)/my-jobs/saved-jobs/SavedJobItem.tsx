@@ -125,6 +125,7 @@ export function SavedJobItem({ saved }: SavedJobItemProps) {
 
           <JobBookmarkButton
             jobId={saved.emploi.uuid}
+            jobSlug={saved.emploi.slug}
             initialIsSaved={true}
             jobTitle={saved.emploi.title}
             onUnsaveSuccess={handleUnsaveSuccess}

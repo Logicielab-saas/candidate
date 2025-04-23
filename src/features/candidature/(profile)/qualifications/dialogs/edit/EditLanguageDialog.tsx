@@ -17,7 +17,7 @@ import { useLanguages } from "@/hooks/use-languages";
 import { PROFICIENCY_OPTIONS } from "../../constants/language-proficiency";
 import { useUpdateResumeLanguage } from "../../hooks/use-resume-language";
 import type { ResumeLanguage } from "@/core/interfaces";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import {
   Dialog,
@@ -42,17 +42,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTranslations } from "next-intl";
 
-const formSchema = z.object({
-  language_uuid: z.string({
-    required_error: "Please select a language",
-  }),
-  level: z.number({
-    required_error: "Please select a proficiency level",
-  }),
-});
+const formSchema = (t: (key: string) => string) =>
+  z.object({
+    language_uuid: z.string({
+      required_error: t("validation.selectALanguage"),
+    }),
+    level: z.number({
+      required_error: t("validation.languageProficiencyLevelRequired"),
+    }),
+  });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer<ReturnType<typeof formSchema>>;
 
 interface EditLanguageDialogProps {
   open: boolean;
@@ -68,8 +70,13 @@ export function EditLanguageDialog({
   const { data: languages, isLoading } = useLanguages();
   const { mutate: updateLanguage, isPending } = useUpdateResumeLanguage();
 
+  const t = useTranslations("resumePage.languages.dialog.edit");
+  const tCommon = useTranslations("common");
+
+  const editLanguageSchema = useMemo(() => formSchema(tCommon), [tCommon]);
+
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(editLanguageSchema),
     defaultValues: {
       language_uuid: "",
       level: 1,
@@ -105,10 +112,8 @@ export function EditLanguageDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit Language</DialogTitle>
-          <DialogDescription>
-            Update your language proficiency level.
-          </DialogDescription>
+          <DialogTitle>{t("title")}</DialogTitle>
+          <DialogDescription>{t("description")}</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -118,7 +123,7 @@ export function EditLanguageDialog({
               name="language_uuid"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Language</FormLabel>
+                  <FormLabel>{tCommon("language")}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -126,7 +131,7 @@ export function EditLanguageDialog({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select language" />
+                        <SelectValue placeholder={tCommon("exLangue")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -147,7 +152,7 @@ export function EditLanguageDialog({
               name="level"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Proficiency Level</FormLabel>
+                  <FormLabel>{tCommon("langueProficiencyLevel")}</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(Number(value))}
                     defaultValue={field.value?.toString()}
@@ -155,7 +160,9 @@ export function EditLanguageDialog({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select level" />
+                        <SelectValue
+                          placeholder={tCommon("exLangueProficiencyLevel")}
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -164,7 +171,7 @@ export function EditLanguageDialog({
                           key={option.value}
                           value={option.value.toString()}
                         >
-                          {option.label}
+                          {tCommon(`${option.label}`)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -181,10 +188,12 @@ export function EditLanguageDialog({
                 onClick={() => onOpenChange(false)}
                 disabled={isPending}
               >
-                Cancel
+                {tCommon("actions.cancel")}
               </Button>
               <Button type="submit" disabled={isPending}>
-                {isPending ? "Saving..." : "Save Changes"}
+                {isPending
+                  ? tCommon("actions.saving")
+                  : tCommon("actions.save")}
               </Button>
             </div>
           </form>

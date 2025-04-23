@@ -10,12 +10,15 @@ import { SectionHeader } from "../SectionHeader";
 import { Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getSkillBadgeStyle } from "@/core/styles/skill-badge.style";
+import { useTranslations } from "next-intl";
 
 export function SkillsSkeleton() {
+  const tCommon = useTranslations("common");
+
   return (
     <div className="border p-4 rounded-lg shadow-sm">
       <SectionHeader
-        title="Skills"
+        title={tCommon("skills")}
         icon={<Zap className="w-6 h-6 text-primaryHex-400 mr-2" />}
       />
       <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 p-2">

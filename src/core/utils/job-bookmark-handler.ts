@@ -8,18 +8,14 @@
 import {
   useSaveEmplois,
   useCancelSaveEmplois,
-  SAVED_EMPLOIS_QUERY_KEY,
 } from "@/features/candidature/(profile)/my-jobs/hooks/use-my-saved-jobs";
 import { useState, useCallback, useEffect } from "react";
-import { useToast } from "@/hooks/use-toast";
 import { useSavedJobsStore } from "@/features/Emplois/store/saved-jobs.store";
-import { useQueryClient } from "@tanstack/react-query";
-import { EMPLOIS_QUERY_KEY } from "@/features/Emplois/hooks/use-emplois";
 
 interface UseJobBookmarkProps {
   initialIsSaved: boolean;
   jobId: string;
-  jobTitle?: string;
+  jobSlug: string;
   onSaveSuccess?: () => void;
   onUnsaveSuccess?: () => void;
 }
@@ -45,7 +41,7 @@ interface JobBookmarkReturn {
 export function useJobBookmark({
   initialIsSaved,
   jobId,
-  jobTitle = "emploi",
+  jobSlug,
   onSaveSuccess,
   onUnsaveSuccess,
 }: UseJobBookmarkProps): JobBookmarkReturn {
@@ -55,7 +51,6 @@ export function useJobBookmark({
 
   // Global saved jobs store
   const { saveJob, removeSavedJob } = useSavedJobsStore();
-  const queryClient = useQueryClient();
 
   // Update local state when initialIsSaved changes
   useEffect(() => {
@@ -63,34 +58,10 @@ export function useJobBookmark({
   }, [initialIsSaved, jobId]);
 
   // Hooks for API operations
-  const { mutate: saveJobMutation, isPending: isSaving } = useSaveEmplois();
+  const { mutate: saveJobMutation, isPending: isSaving } =
+    useSaveEmplois(jobSlug);
   const { mutate: unsaveJobMutation, isPending: isUnsaving } =
-    useCancelSaveEmplois();
-  const { toast } = useToast();
-
-  /**
-   * Invalidate all relevant queries
-   */
-  const invalidateQueries = useCallback(async () => {
-    await Promise.all([
-      // Invalidate all emplois list queries
-      queryClient.invalidateQueries({
-        queryKey: EMPLOIS_QUERY_KEY,
-        refetchType: "all",
-      }),
-      // Invalidate saved emplois queries
-      queryClient.invalidateQueries({
-        queryKey: SAVED_EMPLOIS_QUERY_KEY,
-        refetchType: "all",
-      }),
-      // Invalidate individual job queries
-      queryClient.invalidateQueries({
-        queryKey: EMPLOIS_QUERY_KEY,
-        type: "all",
-        exact: false,
-      }),
-    ]);
-  }, [queryClient]);
+    useCancelSaveEmplois(jobSlug);
 
   /**
    * Handle saving a job
@@ -106,7 +77,6 @@ export function useJobBookmark({
           onSuccess: async () => {
             setIsSaved(true);
             saveJob(jobId); // Update global store
-            await invalidateQueries();
             if (onSaveSuccess) onSaveSuccess();
             resolve();
           },
@@ -118,7 +88,6 @@ export function useJobBookmark({
             ) {
               setIsSaved(true);
               saveJob(jobId); // Update global store
-              await invalidateQueries();
               if (onSaveSuccess) onSaveSuccess();
               resolve();
             } else {
@@ -128,11 +97,6 @@ export function useJobBookmark({
         });
       });
     } catch (_error) {
-      toast({
-        variant: "destructive",
-        title: "Échec de l'enregistrement",
-        description: `Impossible d'enregistrer "${jobTitle}". Veuillez réessayer.`,
-      });
     } finally {
       setIsProcessing(false);
     }
@@ -141,11 +105,9 @@ export function useJobBookmark({
     isProcessing,
     isSaved,
     saveJobMutation,
-    toast,
-    jobTitle,
     onSaveSuccess,
     saveJob,
-    invalidateQueries,
+    // invalidateQueries,
   ]);
 
   /**
@@ -162,7 +124,7 @@ export function useJobBookmark({
           onSuccess: async () => {
             setIsSaved(false);
             removeSavedJob(jobId); // Update global store
-            await invalidateQueries();
+            // await invalidateQueries();
             if (onUnsaveSuccess) onUnsaveSuccess();
             resolve();
           },
@@ -172,11 +134,6 @@ export function useJobBookmark({
         });
       });
     } catch (_error) {
-      toast({
-        variant: "destructive",
-        title: "Échec de la suppression",
-        description: `Impossible de supprimer "${jobTitle}" des enregistrements. Veuillez réessayer.`,
-      });
     } finally {
       setIsProcessing(false);
     }
@@ -185,11 +142,9 @@ export function useJobBookmark({
     isProcessing,
     isSaved,
     unsaveJobMutation,
-    toast,
-    jobTitle,
     onUnsaveSuccess,
     removeSavedJob,
-    invalidateQueries,
+    // invalidateQueries,
   ]);
 
   /**

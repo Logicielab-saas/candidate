@@ -36,7 +36,7 @@ export function useFetchSavedEmplois(page: number = 1, per_page: number = 10) {
   return result;
 }
 
-export function useSaveEmplois() {
+export function useSaveEmplois(jobSlug: string) {
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -46,16 +46,16 @@ export function useSaveEmplois() {
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: EMPLOIS_QUERY_KEY,
-          refetchType: "all",
+          type: "all",
+          exact: false,
         }),
         queryClient.invalidateQueries({
           queryKey: SAVED_EMPLOIS_QUERY_KEY,
-          refetchType: "all",
-        }),
-        queryClient.invalidateQueries({
-          queryKey: EMPLOIS_QUERY_KEY,
           type: "all",
           exact: false,
+        }),
+        queryClient.invalidateQueries({
+          queryKey: [EMPLOIS_QUERY_KEY, jobSlug],
         }),
       ]);
 
@@ -88,7 +88,7 @@ export function useSaveEmplois() {
   return { mutate, isPending };
 }
 
-export function useCancelSaveEmplois() {
+export function useCancelSaveEmplois(jobSlug: string) {
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -98,16 +98,16 @@ export function useCancelSaveEmplois() {
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: EMPLOIS_QUERY_KEY,
-          refetchType: "all",
+          type: "all",
+          exact: false,
         }),
         queryClient.invalidateQueries({
           queryKey: SAVED_EMPLOIS_QUERY_KEY,
-          refetchType: "all",
-        }),
-        queryClient.invalidateQueries({
-          queryKey: EMPLOIS_QUERY_KEY,
           type: "all",
           exact: false,
+        }),
+        queryClient.invalidateQueries({
+          queryKey: [EMPLOIS_QUERY_KEY, jobSlug],
         }),
       ]);
 

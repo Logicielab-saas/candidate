@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
+import { useTranslations } from "next-intl";
 
 // Dynamically import dialogs with loading states
 const AddLanguageDialog = dynamic(
@@ -80,6 +81,9 @@ export function LanguagesList({ resumeLanguages }: LanguagesListProps) {
   const [languageToDelete, setLanguageToDelete] =
     useState<ResumeLanguage | null>(null);
 
+  const t = useTranslations("resumePage.languages");
+  const tCommon = useTranslations("common");
+
   const handleAdd = () => {
     setIsAddLanguageOpen(true);
   };
@@ -99,7 +103,7 @@ export function LanguagesList({ resumeLanguages }: LanguagesListProps) {
   return (
     <div className="border p-4 rounded-lg shadow-sm space-y-4">
       <SectionHeader
-        title="Languages"
+        title={tCommon("languages")}
         icon={<LanguagesIcon className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={() => setIsAddLanguageOpen(true)}
       />
@@ -107,7 +111,7 @@ export function LanguagesList({ resumeLanguages }: LanguagesListProps) {
         {!resumeLanguages?.length ? (
           <>
             <div className="text-muted-foreground text-center items-center py-4">
-              No languages added yet
+              {t("empty")}
             </div>
             <button className="hidden" data-add-button onClick={handleAdd} />
           </>
@@ -153,8 +157,8 @@ export function LanguagesList({ resumeLanguages }: LanguagesListProps) {
                     className="mt-2 px-3 py-1 text-sm font-medium"
                   >
                     {isValidProficiencyLevel(lang.level)
-                      ? getProficiencyLabel(lang.level)
-                      : "Unknown"}
+                      ? getProficiencyLabel(lang.level, tCommon)
+                      : tCommon("undefined")}
                   </Badge>
                 </div>
               </div>

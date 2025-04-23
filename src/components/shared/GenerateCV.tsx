@@ -26,7 +26,7 @@ export default function GenerateCV() {
   const [template, setTemplate] = useState<CVTemplate>("classic");
   const { data: resume, isLoading, error } = useProfileResume();
   const t = useTranslations("postulyCVPage");
-  const tCommon = useTranslations("common.actions");
+  const tCommon = useTranslations("common");
 
   const handleGeneratePDF = async () => {
     if (!resumeRef.current || !resume) return;
@@ -84,7 +84,7 @@ export default function GenerateCV() {
           >
             {!hasImageError && !isImageLoaded
               ? tCommon("loading")
-              : tCommon("download")}
+              : tCommon("actions.download")}
           </button>
         </div>
       </div>

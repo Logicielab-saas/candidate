@@ -19,7 +19,7 @@ export function ProfileAboutInfo({ bio, skills }: ProfileAboutInfoProps) {
       </div>
 
       <div>
-        <h3 className="text-lg font-medium">{tCommon("labels.skills")}</h3>
+        <h3 className="text-lg font-medium">{tCommon("skills")}</h3>
         {skills && skills.length > 0 ? (
           <div className="mt-2 flex flex-wrap gap-2">
             {skills.map((skill, index) => (

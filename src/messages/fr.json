@@ -32,7 +32,10 @@
       }
     },
     "search": "Rechercher",
+    "searching": "Recherche en cours...",
     "writing": "Écrivant...",
+    "languages": "Langues",
+    "language": "Langue",
     "suggestionsLoading": "Chargement des suggestions...",
     "searchNoResults": "Aucun résultat trouvé pour \"{localValue}\"",
     "loading": "Chargement...",
@@ -95,6 +98,16 @@
     "exProjectName": "Ex: Application de gestion de projet",
     "url": "Lien du projet",
     "exUrl": "Ex: github.com/username/project",
+    "skills": "Compétences",
+    "beginner": "Débutant",
+    "intermediate": "Intermédiaire",
+    "advanced": "Avancé",
+    "expert": "Expert",
+    "master": "Maître",
+    "conversational": "Conversationnel",
+    "proficient": "Compétent",
+    "fluent": "Courant",
+    "native": "Langue maternelle",
     "images": {
       "imageLabel": "Images du projet",
       "uploadText": "Glissez-déposez des images ou cliquez pour parcourir",
@@ -121,6 +134,16 @@
     "certfDate": "Date d'obtention",
     "exCertfDate": "Sélectionner une date",
     "certfExpDate": "Date d'expiration",
+    "skill": "Compétence",
+    "exSkill": "Sélectionner une compétence",
+    "searchSkill": "Rechercher des compétence",
+    "addNew": "Ajouter \"{name}\" comme nouvelle compétence",
+    "skillLevel": "Niveau de compétence",
+    "exSkillLevel": "Sélectionner un niveau",
+    "addToList": "Ajouter à la liste",
+    "exLangue": "Sélectionner une langue",
+    "langueProficiencyLevel": "Niveau de maîtrise",
+    "exLangueProficiencyLevel": "Sélectionner un niveau",
     "validation": {
       "required": "Ce champ est requis",
       "startDateRequired": "La date de début est requise",
@@ -146,6 +169,10 @@
       "certfNameRequired": "Le nom de la certification est requis",
       "certfOrganizationRequired": "L'organisme de certification est requis",
       "certfDateRequired": "La date d'obtention est requise",
+      "skillDuplicate": "Cette compétence a déjà été ajoutée",
+      "skillLevelRequired": "Le niveau de compétence est requis",
+      "selectALanguage": "Veuillez sélectionner une langue",
+      "languageProficiencyLevelRequired": "Le niveau de maîtrise est requis",
       "jobTypes": {
         "required": "Le type de poste est requis",
         "minSelection": "Sélectionnez au moins un type de poste"
@@ -227,7 +254,6 @@
       "birthDate": "Date de naissance",
       "gender": "Genre",
       "bio": "Bio",
-      "skills": "Compétences",
       "resume": "CV"
     },
     "actions": {
@@ -236,6 +262,7 @@
       "view": "Voir",
       "save": "Enregistrer",
       "saved": "Sauvegardé",
+      "saveAll": "Tout enregistrer",
       "saving": "Enregistrement en cours...",
       "change": "Changer",
       "changing": "Changement en cours...",
@@ -812,8 +839,8 @@
     "jobCard": {
       "views": "{count} vue",
       "viewsPlural": "{count} vues",
-      "applied": "{count} postulation",
-      "appliedPlural": "{count} postulations",
+      "applied": "{count} candidature",
+      "appliedPlural": "{count} candidatures",
       "status": {
         "open": "Actif",
         "closed": "Fermé",
@@ -1786,6 +1813,42 @@
           "title": "Supprimer la certification",
           "descriptionStart": "Vous êtes sur le point de supprimer votre certification intitulée",
           "warning": "Cette action est irréversible et supprimera définitivement cette certification de votre CV."
+        }
+      }
+    },
+    "skills": {
+      "empty": "Aucune compétence ajoutée",
+      "dialog": {
+        "add": {
+          "title": "Ajouter une compétence",
+          "description": "Ajoutez les détails de votre compétence"
+        },
+        "edit": {
+          "title": "Modifier la compétence",
+          "description": "Modifiez les détails de votre compétence"
+        },
+        "delete": {
+          "title": "Supprimer la compétence",
+          "descriptionStart": "Vous êtes sur le point de supprimer votre compétence intitulée",
+          "warning": "Cette action est irréversible et supprimera définitivement cette compétence de votre CV."
+        }
+      }
+    },
+    "languages": {
+      "empty": "Aucune langue ajoutée",
+      "dialog": {
+        "add": {
+          "title": "Ajouter une langue",
+          "description": "Ajoutez les détails de votre langue"
+        },
+        "edit": {
+          "title": "Modifier la langue",
+          "description": "Modifiez les détails de votre langue"
+        },
+        "delete": {
+          "title": "Supprimer la langue",
+          "descriptionStart": "Vous êtes sur le point de supprimer votre langue intitulée",
+          "warning": "Cette action est irréversible et supprimera définitivement cette langue de votre CV."
         }
       }
     }

@@ -26,6 +26,7 @@ import { useTranslations } from "next-intl";
 
 interface JobBookmarkButtonProps {
   jobId: string;
+  jobSlug: string;
   initialIsSaved: boolean;
   jobTitle?: string;
   tooltipPosition?: "top" | "bottom" | "left" | "right";
@@ -41,6 +42,7 @@ interface JobBookmarkButtonProps {
 
 export function JobBookmarkButton({
   jobId,
+  jobSlug,
   initialIsSaved,
   jobTitle,
   tooltipPosition = "top",
@@ -65,6 +67,7 @@ export function JobBookmarkButton({
   const { isProcessing, toggleSaved } = useJobBookmark({
     initialIsSaved: localIsSaved,
     jobId,
+    jobSlug,
     jobTitle,
     onSaveSuccess: () => {
       setLocalIsSaved(true);

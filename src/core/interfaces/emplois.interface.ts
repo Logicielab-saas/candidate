@@ -5,6 +5,7 @@ export interface Emplois {
   title: string;
   city_name: string | null;
   company_name: string | null;
+  created_at: string;
   slug: string;
   status: "closed" | "open" | "suspended";
   company_logo: string | null;

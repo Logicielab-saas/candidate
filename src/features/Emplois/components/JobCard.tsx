@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { JobCardMenu } from "./JobCardMenu";
 import { useTranslations } from "next-intl";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 interface JobCardProps {
   job: Emplois;
@@ -50,7 +52,7 @@ export function JobCard({ job, isSelected }: JobCardProps) {
             <div className="flex items-start justify-between">
               <h3 className="font-semibold leading-none">{job.title}</h3>
               <div className="flex items-center gap-2">
-                <JobCardMenu jobId={job.uuid} />
+                <JobCardMenu jobId={job.uuid} jobSlug={job.slug} />
               </div>
             </div>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -59,8 +61,12 @@ export function JobCard({ job, isSelected }: JobCardProps) {
                 <span>{job.company_name}</span>
               </div>
               <div className="flex items-center gap-1">
-                <MapPin className="h-3 w-3" />
-                <span>{job.city_name}</span>
+                {job.city_name && job.city_name !== "null" && (
+                  <>
+                    <MapPin className="h-3 w-3" />
+                    <span>{job.city_name}</span>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -99,7 +105,7 @@ export function JobCard({ job, isSelected }: JobCardProps) {
               ))}
             </div>
           )} */}
-          <div className="text-xs text-muted-foreground">
+          <div className="text-xs text-muted-foreground flex justify-between">
             {job.views === 1
               ? t("views", { count: job.views })
               : t("viewsPlural", { count: job.views })}
@@ -110,6 +116,11 @@ export function JobCard({ job, isSelected }: JobCardProps) {
             {" • "}
             {t(`status.${job.status}`)}
             {job.saved && ` • ${tCommon("saved")}`}
+            <div className="text-end">
+              {format(new Date(job.created_at), "PPP", {
+                locale: fr,
+              })}
+            </div>
           </div>
         </div>
       </CardContent>
