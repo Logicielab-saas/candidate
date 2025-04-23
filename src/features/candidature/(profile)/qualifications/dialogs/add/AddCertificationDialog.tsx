@@ -211,6 +211,16 @@ export function AddCertificationDialog({
                             />
                           </PopoverContent>
                         </Popover>
+                        {/* {field.value && (
+                          <Button
+                            variant="outline"
+                            className="w-10"
+                            type="button"
+                            onClick={() => field.onChange(undefined)}
+                          >
+                            <X className="w-4 h-4" />
+                          </Button>
+                        )} */}
                       </div>
                       <FormMessage />
                     </FormItem>

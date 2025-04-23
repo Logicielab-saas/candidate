@@ -46,7 +46,7 @@ const educationFormSchema = (t: (key: string) => string) =>
     date_start: z.date({
       required_error: t("validation.startDateRequired"),
     }),
-    date_end: z.date().nullable(),
+    date_end: z.date().nullable().optional(),
     is_current: z.boolean().default(false),
     description: z.string().optional(),
   });
@@ -297,7 +297,11 @@ export function EditEducationDialog({
                             variant="outline"
                             className="w-10"
                             type="button"
-                            onClick={() => field.onChange(null)}
+                            onClick={(e: React.MouseEvent) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                              field.onChange(null);
+                            }}
                           >
                             <X className="w-4 h-4" />
                           </Button>

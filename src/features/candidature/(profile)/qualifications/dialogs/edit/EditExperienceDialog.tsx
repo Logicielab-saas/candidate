@@ -45,7 +45,7 @@ const experienceFormSchema = z.object({
   date_start: z.date({
     required_error: "Start date is required",
   }),
-  date_end: z.date().nullable(),
+  date_end: z.date().nullable().optional(),
   current_time: z.boolean().default(false),
 });
 
@@ -286,7 +286,11 @@ export function EditExperienceDialog({
                             variant="outline"
                             className="w-10"
                             type="button"
-                            onClick={() => field.onChange(null)}
+                            onClick={(e: React.MouseEvent) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                              field.onChange(null);
+                            }}
                           >
                             <X className="w-4 h-4" />
                           </Button>

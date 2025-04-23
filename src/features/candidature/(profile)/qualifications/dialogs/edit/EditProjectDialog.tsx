@@ -56,7 +56,7 @@ const projectFormSchema = (t: (key: string) => string) =>
     date_start: z.date({
       required_error: t("validation.startDateRequired"),
     }),
-    date_end: z.date().optional(),
+    date_end: z.date().nullable().optional(),
     tasks: z
       .array(
         z.object({
@@ -341,7 +341,7 @@ export function EditProjectDialog({
                             >
                               <Calendar
                                 mode="single"
-                                selected={field.value}
+                                selected={field.value || undefined}
                                 onSelect={(date) => {
                                   field.onChange(date);
                                   setEndDateOpen(false);
@@ -358,7 +358,11 @@ export function EditProjectDialog({
                               variant="outline"
                               className="w-10"
                               type="button"
-                              onClick={() => field.onChange(undefined)}
+                              onClick={(e: React.MouseEvent) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                field.onChange(null);
+                              }}
                             >
                               <X className="w-4 h-4" />
                             </Button>
