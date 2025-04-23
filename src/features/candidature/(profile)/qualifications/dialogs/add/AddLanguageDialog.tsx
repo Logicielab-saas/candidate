@@ -64,11 +64,12 @@ export function AddLanguageDialog({
   open,
   onOpenChange,
 }: AddLanguageDialogProps) {
-  const { data: languages, isLoading } = useLanguages();
-  const { mutate: createLanguage, isPending } = useCreateResumeLanguage();
-
   const t = useTranslations("resumePage.languages.dialog.add");
   const tCommon = useTranslations("common");
+
+  const { data: languages, isLoading } = useLanguages();
+  const { mutate: createLanguage, isPending } =
+    useCreateResumeLanguage(tCommon);
 
   const addLanguageSchema = useMemo(() => formSchema(tCommon), [tCommon]);
 

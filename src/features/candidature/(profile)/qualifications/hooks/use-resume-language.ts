@@ -10,9 +10,8 @@ import {
 } from "../services/resume-language";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
-import { AxiosError } from "axios";
 
-export function useCreateResumeLanguage() {
+export function useCreateResumeLanguage(t: (key: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -25,17 +24,15 @@ export function useCreateResumeLanguage() {
 
       toast({
         variant: "success",
-        title: "Language added",
-        description: "Language has been added successfully.",
+        title: t("toast.resumeLanguage.create.title"),
+        description: t("toast.resumeLanguage.create.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Failed to add language",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });
@@ -43,7 +40,7 @@ export function useCreateResumeLanguage() {
   return { mutate, isPending };
 }
 
-export function useDeleteResumeLanguage() {
+export function useDeleteResumeLanguage(t: (key: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -56,17 +53,15 @@ export function useDeleteResumeLanguage() {
 
       toast({
         variant: "success",
-        title: "Language deleted",
-        description: "Language has been deleted successfully.",
+        title: t("toast.resumeLanguage.delete.title"),
+        description: t("toast.resumeLanguage.delete.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Failed to delete language",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });
@@ -74,7 +69,7 @@ export function useDeleteResumeLanguage() {
   return { mutate, isPending };
 }
 
-export function useUpdateResumeLanguage() {
+export function useUpdateResumeLanguage(t: (key: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -87,17 +82,15 @@ export function useUpdateResumeLanguage() {
 
       toast({
         variant: "success",
-        title: "Language updated",
-        description: "Language has been updated successfully.",
+        title: t("toast.resumeLanguage.update.title"),
+        description: t("toast.resumeLanguage.update.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Failed to update language",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });

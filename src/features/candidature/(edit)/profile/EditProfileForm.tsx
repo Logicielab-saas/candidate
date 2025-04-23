@@ -124,7 +124,7 @@ export function EditProfileForm({
   const { mutate: updateProfile, isPending: isProfileUpdating } =
     useUpdateProfile(tCommon);
   const { mutate: updateResume, isPending: isResumeUpdating } =
-    useUpdateProfileResume();
+    useUpdateProfileResume(tCommon);
   const { data: cities, isLoading: isCitiesLoading } = useCities();
 
   const isPending = isProfileUpdating || isResumeUpdating || isCitiesLoading;

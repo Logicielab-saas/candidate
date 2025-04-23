@@ -456,6 +456,82 @@
           "title": "Offre retirée",
           "description": "L'offre a été retirée de vos favoris avec succès."
         }
+      },
+      "resumeProfile": {
+        "update": {
+          "title": "CV mis à jour",
+          "description": "Votre CV a été mis à jour avec succès."
+        }
+      },
+      "resumeCertification": {
+        "create": {
+          "title": "Certification ajoutée",
+          "description": "Votre certification a été ajoutée avec succès."
+        },
+        "update": {
+          "title": "Certification mise à jour",
+          "description": "Votre certification a été mise à jour avec succès."
+        },
+        "delete": {
+          "title": "Certification supprimée",
+          "description": "Votre certification a été supprimée avec succès."
+        }
+      },
+      "resumeEducation": {
+        "create": {
+          "title": "Formation ajoutée",
+          "description": "Votre formation a été ajoutée avec succès."
+        },
+        "update": {
+          "title": "Formation mise à jour",
+          "description": "Votre formation a été mise à jour avec succès."
+        },
+        "delete": {
+          "title": "Formation supprimée",
+          "description": "Votre formation a été supprimée avec succès."
+        }
+      },
+      "resumeExperience": {
+        "create": {
+          "title": "Expérience ajoutée",
+          "description": "Votre expérience a été ajoutée avec succès."
+        },
+        "update": {
+          "title": "Expérience mise à jour",
+          "description": "Votre expérience a été mise à jour avec succès."
+        },
+        "delete": {
+          "title": "Expérience supprimée",
+          "description": "Votre expérience a été supprimée avec succès."
+        }
+      },
+      "resumeFiles": {
+        "create": {
+          "title": "Fichier ajouté",
+          "description": "Votre fichier a été ajouté avec succès."
+        },
+        "update": {
+          "title": "Fichier mis à jour",
+          "description": "Votre fichier a été mis à jour avec succès."
+        },
+        "delete": {
+          "title": "Fichier supprimé",
+          "description": "Votre fichier a été supprimé avec succès."
+        }
+      },
+      "resumeLanguage": {
+        "create": {
+          "title": "Langue ajoutée",
+          "description": "Votre langue a été ajoutée avec succès."
+        },
+        "update": {
+          "title": "Langue mise à jour",
+          "description": "Votre langue a été mise à jour avec succès."
+        },
+        "delete": {
+          "title": "Langue supprimée",
+          "description": "Votre langue a été supprimée avec succès."
+        }
       }
     },
     "warnings": {

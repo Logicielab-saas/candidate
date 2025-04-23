@@ -29,7 +29,8 @@ export function DeleteEducationDialog({
   const t = useTranslations("resumePage.education.dialog.delete");
   const tCommon = useTranslations("common");
 
-  const { mutate: deleteEducation, isPending } = useDeleteResumeEducation();
+  const { mutate: deleteEducation, isPending } =
+    useDeleteResumeEducation(tCommon);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleConfirm = async (e: React.MouseEvent) => {

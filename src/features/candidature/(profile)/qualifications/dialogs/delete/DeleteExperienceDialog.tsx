@@ -28,7 +28,8 @@ export function DeleteExperienceDialog({
 }: DeleteExperienceDialogProps) {
   const t = useTranslations("resumePage.workExperience.dialog.delete");
   const tCommon = useTranslations("common");
-  const { mutate: deleteExperience, isPending } = useDeleteResumeExperience();
+  const { mutate: deleteExperience, isPending } =
+    useDeleteResumeExperience(tCommon);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleConfirm = async (e: React.MouseEvent) => {

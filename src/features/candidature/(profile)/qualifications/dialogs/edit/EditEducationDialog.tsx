@@ -66,7 +66,8 @@ export function EditEducationDialog({
 }: EditEducationDialogProps) {
   const t = useTranslations("resumePage.education.dialog.edit");
   const tCommon = useTranslations("common");
-  const { mutate: updateEducation, isPending } = useUpdateResumeEducation();
+  const { mutate: updateEducation, isPending } =
+    useUpdateResumeEducation(tCommon);
 
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);

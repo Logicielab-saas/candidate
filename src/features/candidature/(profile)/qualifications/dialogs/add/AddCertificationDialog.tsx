@@ -65,7 +65,7 @@ export function AddCertificationDialog({
   const tCommon = useTranslations("common");
 
   const { mutate: createCertification, isPending } =
-    useCreateResumeCertification();
+    useCreateResumeCertification(tCommon);
 
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);

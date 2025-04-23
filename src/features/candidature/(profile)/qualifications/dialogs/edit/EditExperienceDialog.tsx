@@ -65,7 +65,8 @@ export function EditExperienceDialog({
   const t = useTranslations("resumePage.workExperience.dialog.edit");
   const tCommon = useTranslations("common");
 
-  const { mutate: updateExperience, isPending } = useUpdateResumeExperience();
+  const { mutate: updateExperience, isPending } =
+    useUpdateResumeExperience(tCommon);
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
 

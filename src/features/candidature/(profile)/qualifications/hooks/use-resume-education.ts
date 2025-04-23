@@ -7,9 +7,8 @@ import {
 } from "../services/resume-education";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
-import { AxiosError } from "axios";
 
-export function useCreateResumeEducation() {
+export function useCreateResumeEducation(t: (k: string) => string) {
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -23,17 +22,15 @@ export function useCreateResumeEducation() {
 
       toast.toast({
         variant: "success",
-        title: "Education added",
-        description: "Your education has been added successfully.",
+        title: t("toast.resumeEducation.create.title"),
+        description: t("toast.resumeEducation.create.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast.toast({
         variant: "destructive",
-        title: "Failed to add education",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });
@@ -41,7 +38,7 @@ export function useCreateResumeEducation() {
   return { mutate, isPending };
 }
 
-export function useDeleteResumeEducation() {
+export function useDeleteResumeEducation(t: (k: string) => string) {
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -55,17 +52,15 @@ export function useDeleteResumeEducation() {
 
       toast.toast({
         variant: "success",
-        title: "Education deleted",
-        description: "Your education has been deleted successfully.",
+        title: t("toast.resumeEducation.delete.title"),
+        description: t("toast.resumeEducation.delete.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast.toast({
         variant: "destructive",
-        title: "Failed to delete education",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });
@@ -73,7 +68,7 @@ export function useDeleteResumeEducation() {
   return { mutate, isPending };
 }
 
-export function useUpdateResumeEducation() {
+export function useUpdateResumeEducation(t: (k: string) => string) {
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -87,17 +82,15 @@ export function useUpdateResumeEducation() {
 
       toast.toast({
         variant: "success",
-        title: "Education updated",
-        description: "Your education has been updated successfully.",
+        title: t("toast.resumeEducation.update.title"),
+        description: t("toast.resumeEducation.update.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast.toast({
         variant: "destructive",
-        title: "Failed to update education",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });

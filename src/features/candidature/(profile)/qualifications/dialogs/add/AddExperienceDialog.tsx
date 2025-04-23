@@ -69,7 +69,8 @@ export function AddExperienceDialog({
     [tValidation]
   );
 
-  const { mutate: createExperience, isPending } = useCreateResumeExperience();
+  const { mutate: createExperience, isPending } =
+    useCreateResumeExperience(tCommon);
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
 

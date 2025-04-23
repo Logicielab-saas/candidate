@@ -67,11 +67,12 @@ export function EditLanguageDialog({
   onOpenChange,
   language,
 }: EditLanguageDialogProps) {
-  const { data: languages, isLoading } = useLanguages();
-  const { mutate: updateLanguage, isPending } = useUpdateResumeLanguage();
-
   const t = useTranslations("resumePage.languages.dialog.edit");
   const tCommon = useTranslations("common");
+
+  const { data: languages, isLoading } = useLanguages();
+  const { mutate: updateLanguage, isPending } =
+    useUpdateResumeLanguage(tCommon);
 
   const editLanguageSchema = useMemo(() => formSchema(tCommon), [tCommon]);
 

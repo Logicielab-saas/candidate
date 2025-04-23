@@ -26,11 +26,12 @@ export function DeleteLanguageDialog({
   onOpenChange,
   language,
 }: DeleteLanguageDialogProps) {
-  const { mutate: deleteLanguage, isPending } = useDeleteResumeLanguage();
-  const [isDeleting, setIsDeleting] = useState(false);
-
   const t = useTranslations("resumePage.languages.dialog.delete");
   const tCommon = useTranslations("common");
+
+  const { mutate: deleteLanguage, isPending } =
+    useDeleteResumeLanguage(tCommon);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleConfirm = async (e: React.MouseEvent) => {
     e.preventDefault();

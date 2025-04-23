@@ -67,7 +67,7 @@ export function EditCertificationDialog({
   const t = useTranslations("resumePage.certifications.dialog");
   const tCommon = useTranslations("common");
   const { mutate: updateCertification, isPending } =
-    useUpdateResumeCertification();
+    useUpdateResumeCertification(tCommon);
 
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);

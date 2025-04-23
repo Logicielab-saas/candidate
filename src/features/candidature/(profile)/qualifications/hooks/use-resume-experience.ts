@@ -7,9 +7,8 @@ import {
 } from "../services/resume-experience";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
-import { AxiosError } from "axios";
 
-export function useCreateResumeExperience() {
+export function useCreateResumeExperience(t: (k: string) => string) {
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -23,17 +22,15 @@ export function useCreateResumeExperience() {
 
       toast.toast({
         variant: "success",
-        title: "Experience added",
-        description: "Your experience has been added successfully.",
+        title: t("toast.resumeExperience.create.title"),
+        description: t("toast.resumeExperience.create.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast.toast({
         variant: "destructive",
-        title: "Failed to add experience",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });
@@ -41,7 +38,7 @@ export function useCreateResumeExperience() {
   return { mutate, isPending };
 }
 
-export function useDeleteResumeExperience() {
+export function useDeleteResumeExperience(t: (k: string) => string) {
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -55,17 +52,15 @@ export function useDeleteResumeExperience() {
 
       toast.toast({
         variant: "success",
-        title: "Experience deleted",
-        description: "Your experience has been deleted successfully.",
+        title: t("toast.resumeExperience.delete.title"),
+        description: t("toast.resumeExperience.delete.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast.toast({
         variant: "destructive",
-        title: "Failed to delete experience",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });
@@ -73,7 +68,7 @@ export function useDeleteResumeExperience() {
   return { mutate, isPending };
 }
 
-export function useUpdateResumeExperience() {
+export function useUpdateResumeExperience(t: (k: string) => string) {
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -87,17 +82,15 @@ export function useUpdateResumeExperience() {
 
       toast.toast({
         variant: "success",
-        title: "Experience updated",
-        description: "Your experience has been updated successfully.",
+        title: t("toast.resumeExperience.update.title"),
+        description: t("toast.resumeExperience.update.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast.toast({
         variant: "destructive",
-        title: "Failed to update experience",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });

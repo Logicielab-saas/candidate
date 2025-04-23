@@ -68,6 +68,9 @@ export function ResumeItem({
   source = "qualifications",
   removeAdd = false,
 }: ResumeItemProps) {
+  const tCommon = useTranslations("common");
+  const tValidation = useTranslations("common.validation");
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const updateFileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -75,12 +78,12 @@ export function ResumeItem({
     ResumeFile | Files | ProfileFiles | null
   >(null);
   const [selectedFileUuid, setSelectedFileUuid] = useState<string | null>(null);
-  const { mutate: createFile, isPending: isUploading } = useCreateResumeFiles();
-  const { mutate: updateFile, isPending: isUpdating } = useUpdateResumeFiles();
-  const { isPending: isDeleting } = useDeleteResumeFiles();
 
-  const tCommon = useTranslations("common");
-  const tValidation = useTranslations("common.validation");
+  const { mutate: createFile, isPending: isUploading } =
+    useCreateResumeFiles(tCommon);
+  const { mutate: updateFile, isPending: isUpdating } =
+    useUpdateResumeFiles(tCommon);
+  const { isPending: isDeleting } = useDeleteResumeFiles(tCommon);
 
   const handleChangeCV = () => {
     fileInputRef.current?.click();

@@ -40,9 +40,10 @@ export function DeleteResumeDialog({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   source = "qualifications",
 }: DeleteResumeDialogProps) {
-  const { mutate: deleteFile, isPending } = useDeleteResumeFiles();
-  const [isDeleting, setIsDeleting] = useState(false);
   const tCommon = useTranslations("common");
+
+  const { mutate: deleteFile, isPending } = useDeleteResumeFiles(tCommon);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleConfirm = async (e: React.MouseEvent) => {
     e.preventDefault();

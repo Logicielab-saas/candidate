@@ -26,12 +26,12 @@ export function DeleteCertificationDialog({
   onOpenChange,
   certification,
 }: DeleteCertificationDialogProps) {
-  const { mutate: deleteCertification, isPending } =
-    useDeleteResumeCertification();
-  const [isDeleting, setIsDeleting] = useState(false);
-
   const t = useTranslations("resumePage.certifications.dialog.delete");
   const tCommon = useTranslations("common");
+
+  const { mutate: deleteCertification, isPending } =
+    useDeleteResumeCertification(tCommon);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleConfirm = async (e: React.MouseEvent) => {
     e.preventDefault();

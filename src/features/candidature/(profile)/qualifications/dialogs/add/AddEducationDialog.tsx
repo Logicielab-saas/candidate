@@ -64,7 +64,8 @@ export function AddEducationDialog({
 }: AddEducationDialogProps) {
   const t = useTranslations("resumePage.education.dialog.add");
   const tCommon = useTranslations("common");
-  const { mutate: createEducation, isPending } = useCreateResumeEducation();
+  const { mutate: createEducation, isPending } =
+    useCreateResumeEducation(tCommon);
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
 
