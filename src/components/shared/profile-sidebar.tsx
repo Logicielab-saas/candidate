@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { SidebarNavItem } from "@/core/constants/sidebar-nav";
+import { useTranslations } from "next-intl";
 
 interface ProfileSidebarProps {
   navItems: SidebarNavItem[];
@@ -13,6 +14,7 @@ export function ProfileSidebar({ navItems }: ProfileSidebarProps) {
   const pathname = usePathname();
   // Mobile navigation items (limited to 4-5 items for better UX)
   const mobileNavItems = navItems.slice(0, 5);
+  const t = useTranslations("nav");
 
   return (
     <>
@@ -47,7 +49,7 @@ export function ProfileSidebar({ navItems }: ProfileSidebarProps) {
                 )}
                 aria-hidden="true"
               />
-              <span>{item.title}</span>
+              <span>{t(item.title)}</span>
             </Link>
           );
         })}
@@ -75,7 +77,7 @@ export function ProfileSidebar({ navItems }: ProfileSidebarProps) {
               >
                 <Icon className={cn("h-5 w-5", isActive && "text-primary")} />
                 <span className="text-xs font-medium text-center line-clamp-1 w-full">
-                  {item.title}
+                  {t(item.title)}
                 </span>
               </Link>
             );

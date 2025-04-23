@@ -27,27 +27,27 @@ export interface SidebarNavItem {
 
 export const sidebarProfileNav: SidebarNavItem[] = [
   {
-    title: "Overview",
+    title: "overview",
     href: "/profile",
     icon: User,
   },
   {
-    title: "Resume",
+    title: "resume",
     href: "/profile/resume",
     icon: File,
   },
   {
-    title: "Mes Emplois",
+    title: "myJobs",
     href: "/profile/my-jobs",
     icon: Briefcase,
   },
   {
-    title: "Mes avis",
+    title: "myReviews",
     href: "/profile/my-reviews",
     icon: Star,
   },
   {
-    title: "Settings",
+    title: "settings",
     href: "/settings/account",
     icon: Settings,
   },
@@ -55,22 +55,22 @@ export const sidebarProfileNav: SidebarNavItem[] = [
 
 export const sidebarSettingsNav: SidebarNavItem[] = [
   {
-    title: "Paramètres du compte",
+    title: "accountSettings",
     href: "/settings/account",
     icon: Settings,
   },
   {
-    title: "Communication connectée",
+    title: "communicationSettings",
     href: "/settings/communication",
     icon: MessageSquare,
   },
   {
-    title: "Supervision des appareils",
+    title: "deviceSettings",
     href: "/settings/devices",
     icon: Smartphone,
   },
   {
-    title: "Réglages de confidentialité",
+    title: "privacySettings",
     href: "/settings/privacy",
     icon: ShieldEllipsis,
   },

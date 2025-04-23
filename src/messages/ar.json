@@ -1849,5 +1849,23 @@
         }
       }
     }
+  },
+  "nav": {
+    "title": "Postuly",
+    "description": "التنقل عبر التطبيق",
+    "jobs": "الوظائف",
+    "formations": "التدريبات",
+    "profile": "الملف الشخصي",
+    "companies": "الشركات",
+    "myJobs": "وظائفي",
+    "myReviews": "تقييماتي",
+    "settings": "الإعدادات",
+    "help": "المساعدة",
+    "overview": "نظرة عامة",
+    "resume": "السيرة الذاتية",
+    "accountSettings": "إعدادات الحساب",
+    "communicationSettings": "إعدادات التواصل",
+    "deviceSettings": "إعدادات الجهاز",
+    "privacySettings": "إعدادات الخصوصية"
   }
 }

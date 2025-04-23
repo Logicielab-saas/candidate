@@ -1852,5 +1852,23 @@
         }
       }
     }
+  },
+  "nav": {
+    "title": "Postuly",
+    "description": "Navigate through the app",
+    "jobs": "Jobs",
+    "formations": "Training",
+    "profile": "Profile",
+    "companies": "Companies",
+    "myJobs": "My Jobs",
+    "myReviews": "My Reviews",
+    "settings": "Settings",
+    "help": "Help",
+    "overview": "Overview",
+    "resume": "Resume",
+    "accountSettings": "Account Settings",
+    "communicationSettings": "Connected Communication",
+    "deviceSettings": "Device Supervision",
+    "privacySettings": "Privacy Settings"
   }
 }
