@@ -10,6 +10,8 @@ import { ThemeProvider } from "@/lib/providers/ThemeProvider";
 import { NotificationsProvider } from "@/features/notifications/context/notifications-context";
 import { getUserLocaleOnServer } from "@/lib/actions/getUserLocale.action";
 import { NextIntlClientProvider } from "next-intl";
+import { fetchLocaleMessages } from "@/lib/i18n-api";
+import type { Locale } from "@/i18n/config";
 
 export const metadata: Metadata = {
   title: "JobsApp",
@@ -40,7 +42,7 @@ export default async function RootLayout({
   const locale = await getUserLocaleOnServer();
 
   // load the messages for this locale
-  const messages = (await import(`@/messages/${locale}.json`)).default;
+  const messages = await fetchLocaleMessages(locale as Locale);
 
   // only arabic should flip for now
   const isRTL = locale === "ar";
