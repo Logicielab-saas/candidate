@@ -10,26 +10,27 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Illustration } from "../Illustration";
 import Link from "next/link";
 import { signupAction } from "../actions/signup";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { SignupCredentials } from "../common/interfaces";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-const _signupSchema = z
-  .object({
-    name: z.string().min(6, "Name must be at least 6 characters"),
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    password_confirmation: z.string().min(6, "Please confirm your password"),
-    user_type: z.enum(["employee", "recruiter"]),
-  })
-  .refine((data) => data.password === data.password_confirmation, {
-    message: "Passwords do not match",
-    path: ["password_confirmation"],
-  });
+const _signupSchema = (t: (key: string) => string) =>
+  z
+    .object({
+      name: z.string().min(6, t("min6Length")),
+      email: z.string().email(t("email")),
+      password: z.string().min(8, t("passwordPattern")),
+      password_confirmation: z.string().min(8, t("required")),
+      user_type: z.enum(["employee", "recruiter"]),
+    })
+    .refine((data) => data.password === data.password_confirmation, {
+      message: t("passwordMatch"),
+      path: ["password_confirmation"],
+    });
 
-type SignupFormData = z.infer<typeof _signupSchema>;
+type SignupFormData = z.infer<ReturnType<typeof _signupSchema>>;
 
 interface SignupFormProps {
   className?: string;
@@ -51,26 +52,18 @@ export function SignupForm({
   const tAuth = useTranslations("common.auth.signup");
   const tValidation = useTranslations("common.validation");
 
+  const signupSchemaForm = useMemo(
+    () => _signupSchema(tValidation),
+    [tValidation]
+  );
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
   } = useForm<SignupFormData>({
-    resolver: zodResolver(
-      z
-        .object({
-          name: z.string().min(6, tValidation("minLength", { count: 6 })),
-          email: z.string().email(tValidation("email")),
-          password: z.string().min(6, tValidation("minLength", { count: 6 })),
-          password_confirmation: z.string().min(6, tValidation("required")),
-          user_type: z.enum(["employee", "recruiter"]),
-        })
-        .refine((data) => data.password === data.password_confirmation, {
-          message: tValidation("passwordMatch"),
-          path: ["password_confirmation"],
-        })
-    ),
+    resolver: zodResolver(signupSchemaForm),
     mode: "onChange",
     defaultValues: {
       user_type: selectedType === "employee" ? "employee" : "recruiter",

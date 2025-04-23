@@ -115,15 +115,17 @@ export function EditProfileForm({
   profile,
   resumeDescription,
 }: EditProfileFormProps) {
-  const router = useRouter();
-  const { mutate: updateProfile, isPending: isProfileUpdating } =
-    useUpdateProfile();
-  const { mutate: updateResume, isPending: isResumeUpdating } =
-    useUpdateProfileResume();
-  const { data: cities, isLoading: isCitiesLoading } = useCities();
   const tCommon = useTranslations("common");
   const tValidation = useTranslations("common.validation");
   const tProfile = useTranslations("editProfile");
+
+  const router = useRouter();
+
+  const { mutate: updateProfile, isPending: isProfileUpdating } =
+    useUpdateProfile(tCommon);
+  const { mutate: updateResume, isPending: isResumeUpdating } =
+    useUpdateProfileResume();
+  const { data: cities, isLoading: isCitiesLoading } = useCities();
 
   const isPending = isProfileUpdating || isResumeUpdating || isCitiesLoading;
 

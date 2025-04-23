@@ -65,7 +65,8 @@ export function ArchivedJobItem({
 }: ArchivedJobItemProps) {
   const tCommon = useTranslations("common");
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
-  const { mutate: unarchiveJob, isPending: isUnarchiving } = useUnarchiveJob();
+  const { mutate: unarchiveJob, isPending: isUnarchiving } =
+    useUnarchiveJob(tCommon);
 
   return (
     <motion.div

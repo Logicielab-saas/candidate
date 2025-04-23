@@ -11,6 +11,7 @@ import {
 } from "@/features/candidature/(profile)/my-jobs/hooks/use-my-saved-jobs";
 import { useState, useCallback, useEffect } from "react";
 import { useSavedJobsStore } from "@/features/Emplois/store/saved-jobs.store";
+import { useTranslations } from "next-intl";
 
 interface UseJobBookmarkProps {
   initialIsSaved: boolean;
@@ -45,6 +46,7 @@ export function useJobBookmark({
   onSaveSuccess,
   onUnsaveSuccess,
 }: UseJobBookmarkProps): JobBookmarkReturn {
+  const tCommon = useTranslations("common");
   // State for tracking saved status and loading state
   const [isSaved, setIsSaved] = useState(initialIsSaved);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -58,10 +60,12 @@ export function useJobBookmark({
   }, [initialIsSaved, jobId]);
 
   // Hooks for API operations
-  const { mutate: saveJobMutation, isPending: isSaving } =
-    useSaveEmplois(jobSlug);
+  const { mutate: saveJobMutation, isPending: isSaving } = useSaveEmplois(
+    jobSlug,
+    tCommon
+  );
   const { mutate: unsaveJobMutation, isPending: isUnsaving } =
-    useCancelSaveEmplois(jobSlug);
+    useCancelSaveEmplois(jobSlug, tCommon);
 
   /**
    * Handle saving a job
@@ -81,18 +85,7 @@ export function useJobBookmark({
             resolve();
           },
           onError: async (error) => {
-            // If already saved, we still want to set the state correctly
-            if (
-              (error.response?.data as { message: string })?.message ===
-              "You have already saved to this emploi"
-            ) {
-              setIsSaved(true);
-              saveJob(jobId); // Update global store
-              if (onSaveSuccess) onSaveSuccess();
-              resolve();
-            } else {
-              reject(error);
-            }
+            reject(error);
           },
         });
       });

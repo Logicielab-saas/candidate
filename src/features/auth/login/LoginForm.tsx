@@ -11,20 +11,21 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { loginAction } from "../actions/login";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { LoginCredentials } from "../common/interfaces";
 import { Illustration } from "../Illustration";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  user_type: z.enum(["employee", "recruiter"]),
-});
+const loginSchema = (t: (key: string) => string) =>
+  z.object({
+    email: z.string().email(t("email")),
+    password: z.string().min(1, t("passwordRequired")),
+    user_type: z.enum(["employee", "recruiter"]),
+  });
 
-type LoginFormData = z.infer<typeof loginSchema>;
+type LoginFormData = z.infer<ReturnType<typeof loginSchema>>;
 
 interface LoginFormProps {
   className?: string;
@@ -45,12 +46,17 @@ export function LoginForm({
   const tCommon = useTranslations("common");
   const tValidation = useTranslations("common.validation");
 
+  const loginSchemaForm = useMemo(
+    () => loginSchema(tValidation),
+    [tValidation]
+  );
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(loginSchemaForm),
     mode: "onChange",
     defaultValues: {
       user_type: selectedType || "employee",

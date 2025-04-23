@@ -43,7 +43,7 @@ export default function ArchiveJobDialog({
   const tCommon = useTranslations("common");
   const t = useTranslations("myJobsPage.archiveJobDialog");
 
-  const { mutate: archiveJob, isPending } = useArchiveJob();
+  const { mutate: archiveJob, isPending } = useArchiveJob(tCommon);
   const [error, setError] = useState<string | null>(null);
 
   const handleArchive = () => {

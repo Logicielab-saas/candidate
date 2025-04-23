@@ -30,7 +30,8 @@ export function RemoveApplyEmploi({
   const t = useTranslations("myJobsPage.removeApplyDialog");
   const tCommon = useTranslations("common");
 
-  const { mutate: deleteApplied, isPending } = useDeleteSentApplication();
+  const { mutate: deleteApplied, isPending } =
+    useDeleteSentApplication(tCommon);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleConfirm = async (e: React.MouseEvent) => {

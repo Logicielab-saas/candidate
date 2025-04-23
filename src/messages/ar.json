@@ -150,6 +150,7 @@
       "email": "البريد الإلكتروني غير صالح",
       "phoneRequired": "رقم الهاتف مطلوب",
       "minLength": "الحد الأدنى {count} حرف",
+      "min6Length": "الحد الأدنى 6 أحرف",
       "passwordMatch": "كلمات المرور غير متطابقة",
       "passwordRequired": "كلمة المرور مطلوبة",
       "passwordMinLength": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",

@@ -150,6 +150,7 @@
       "email": "Invalid email address",
       "phoneRequired": "Phone number is required",
       "minLength": "Minimum {count} characters",
+      "min6Length": "Minimum 6 characters",
       "passwordMatch": "Passwords do not match",
       "passwordRequired": "Password is required",
       "passwordMinLength": "Password must be at least 8 characters",

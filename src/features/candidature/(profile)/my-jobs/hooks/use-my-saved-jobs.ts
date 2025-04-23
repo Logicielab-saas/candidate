@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { AxiosError } from "axios";
 import {
   cancelSaveEmplois,
   fetchSavedJobs,
@@ -36,7 +35,7 @@ export function useFetchSavedEmplois(page: number = 1, per_page: number = 10) {
   return result;
 }
 
-export function useSaveEmplois(jobSlug: string) {
+export function useSaveEmplois(jobSlug: string, t: (key: string) => string) {
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -61,34 +60,26 @@ export function useSaveEmplois(jobSlug: string) {
 
       toast.toast({
         variant: "success",
-        title: "Emploi saved",
-        description: "Your emploi has been saved successfully.",
+        title: t("toast.mySavedJobs.save.title"),
+        description: t("toast.mySavedJobs.save.description"),
       });
     },
-    onError: (error: AxiosError) => {
-      if (
-        (error.response?.data as { message: string }).message ===
-        "You have already saved to this emploi"
-      ) {
-        toast.toast({
-          variant: "info",
-          title: "Emploi already saved",
-          description: (error.response?.data as { message: string }).message,
-        });
-      } else {
-        toast.toast({
-          variant: "destructive",
-          title: "Failed to save emploi",
-          description: "An unexpected error occurred. Please try again.",
-        });
-      }
+    onError: () => {
+      toast.toast({
+        variant: "destructive",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
+      });
     },
   });
 
   return { mutate, isPending };
 }
 
-export function useCancelSaveEmplois(jobSlug: string) {
+export function useCancelSaveEmplois(
+  jobSlug: string,
+  t: (key: string) => string
+) {
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -113,17 +104,15 @@ export function useCancelSaveEmplois(jobSlug: string) {
 
       toast.toast({
         variant: "success",
-        title: "Emploi removed",
-        description: "Your emploi has been removed successfully.",
+        title: t("toast.mySavedJobs.unsave.title"),
+        description: t("toast.mySavedJobs.unsave.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast.toast({
         variant: "destructive",
-        title: "Failed to remove emploi",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });

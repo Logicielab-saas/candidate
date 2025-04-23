@@ -150,10 +150,11 @@
       "email": "Adresse e-mail invalide",
       "phoneRequired": "Le numéro de téléphone est requis",
       "minLength": "Minimum {count} caractères",
+      "min6Length": "Minimum 6 caractères",
       "passwordMatch": "Les mots de passe ne correspondent pas",
       "passwordRequired": "Le mot de passe est requis",
       "passwordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
-      "passwordPattern": "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre",
+      "passwordPattern": "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre, et Minimum 8 caractères",
       "passwordMismatch": "Les mots de passe ne correspondent pas",
       "passwordIncorrect": "Mot de passe incorrect",
       "otpLength": "Le code doit contenir {length} chiffres",
@@ -419,6 +420,42 @@
       "error": {
         "title": "Erreur",
         "description": "Une erreur s'est produite. Veuillez réessayer."
+      },
+      "profile": {
+        "update": {
+          "title": "Profil mis à jour",
+          "description": "Votre profil a été mis à jour avec succès."
+        }
+      },
+      "myAppliedJobs": {
+        "delete": {
+          "title": "Application supprimée",
+          "description": "Votre application a été supprimée avec succès."
+        },
+        "update": {
+          "title": "Application mise à jour",
+          "description": "Votre application a été mise à jour avec succès."
+        }
+      },
+      "myArchivedJobs": {
+        "update": {
+          "title": "Offre archivée",
+          "description": "L'offre a été archivée avec succès."
+        },
+        "delete": {
+          "title": "Offre unarchivée",
+          "description": "L'offre a été unarchivée avec succès."
+        }
+      },
+      "mySavedJobs": {
+        "save": {
+          "title": "Offre saved",
+          "description": "Your emploi has been saved successfully."
+        },
+        "unsave": {
+          "title": "Offre retirée",
+          "description": "L'offre a été retirée de vos favoris avec succès."
+        }
       }
     },
     "warnings": {

@@ -56,9 +56,12 @@ export function JobCardMenu({ jobId, jobSlug }: JobCardMenuProps) {
   const isBookmarked = isSaved(jobId);
 
   // Save/Cancel save job mutations
-  const { mutate: saveEmplois, isPending: isSaving } = useSaveEmplois(jobSlug);
+  const { mutate: saveEmplois, isPending: isSaving } = useSaveEmplois(
+    jobSlug,
+    tCommon
+  );
   const { mutate: cancelSaveEmplois, isPending: isCanceling } =
-    useCancelSaveEmplois(jobSlug);
+    useCancelSaveEmplois(jobSlug, tCommon);
 
   const handleBookmarkClick = (e: React.MouseEvent) => {
     e.stopPropagation();
