@@ -26,11 +26,11 @@ export function DeleteSkillDialog({
   onOpenChange,
   skill,
 }: DeleteSkillDialogProps) {
-  const { mutate: deleteSkill, isPending } = useDeleteResumeSkill();
-  const [isDeleting, setIsDeleting] = useState(false);
-
   const t = useTranslations("resumePage.skills.dialog.delete");
   const tCommon = useTranslations("common");
+
+  const { mutate: deleteSkill, isPending } = useDeleteResumeSkill(tCommon);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleConfirm = async (e: React.MouseEvent) => {
     e.preventDefault();

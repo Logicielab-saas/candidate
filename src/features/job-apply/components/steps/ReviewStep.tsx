@@ -29,6 +29,7 @@ import { ResumeItem } from "@/components/shared/ResumeItem";
 import Image from "next/image";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Profile } from "@/features/candidature/(profile)/common/interface";
+import { useTranslations } from "next-intl";
 
 interface ReviewStepProps {
   jobDetails: EmploisDetails;
@@ -36,9 +37,12 @@ interface ReviewStepProps {
 }
 
 export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
+  const tCommon = useTranslations("common");
+
   const router = useRouter();
   const { questionsData, prevStep, resetForm } = useJobApplyStore();
-  const { mutate: applyToJob, isPending } = useApplyToJob();
+  const { mutate: applyToJob, isPending } = useApplyToJob(tCommon);
+
   const [error, setError] = useState<string | null>(null);
   const [coverLetter, setCoverLetter] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
@@ -92,11 +96,7 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
           setError(error.message);
         },
       });
-    } catch (_error) {
-      setError(
-        "Une erreur est survenue lors de la soumission de votre candidature."
-      );
-    }
+    } catch (_error) {}
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -420,6 +420,182 @@
       "error": {
         "title": "خطأ",
         "description": "حدث خطأ. يرجى المحاولة مرة أخرى."
+      },
+      "profile": {
+        "update": {
+          "title": "تم تحديث الملف الشخصي",
+          "description": "تم تحديث ملفك الشخصي بنجاح."
+        }
+      },
+      "myAppliedJobs": {
+        "delete": {
+          "title": "تم حذف الطلب",
+          "description": "تم حذف طلبك بنجاح."
+        },
+        "update": {
+          "title": "تم تحديث الطلب",
+          "description": "تم تحديث طلبك بنجاح."
+        }
+      },
+      "myArchivedJobs": {
+        "update": {
+          "title": "تم أرشفة الوظيفة",
+          "description": "تمت أرشفة الوظيفة بنجاح."
+        },
+        "delete": {
+          "title": "تم إلغاء أرشفة الوظيفة",
+          "description": "تم إلغاء أرشفة الوظيفة بنجاح."
+        }
+      },
+      "mySavedJobs": {
+        "save": {
+          "title": "تم حفظ الوظيفة",
+          "description": "تم حفظ الوظيفة بنجاح."
+        },
+        "unsave": {
+          "title": "تم إزالة الوظيفة",
+          "description": "تمت إزالة الوظيفة من المفضلة بنجاح."
+        }
+      },
+      "resumeProfile": {
+        "update": {
+          "title": "تم تحديث السيرة الذاتية",
+          "description": "تم تحديث سيرتك الذاتية بنجاح."
+        }
+      },
+      "resumeCertification": {
+        "create": {
+          "title": "تمت إضافة الشهادة",
+          "description": "تمت إضافة شهادتك بنجاح."
+        },
+        "update": {
+          "title": "تم تحديث الشهادة",
+          "description": "تم تحديث شهادتك بنجاح."
+        },
+        "delete": {
+          "title": "تم حذف الشهادة",
+          "description": "تم حذف شهادتك بنجاح."
+        }
+      },
+      "resumeEducation": {
+        "create": {
+          "title": "تمت إضافة التعليم",
+          "description": "تمت إضافة تعليمك بنجاح."
+        },
+        "update": {
+          "title": "تم تحديث التعليم",
+          "description": "تم تحديث تعليمك بنجاح."
+        },
+        "delete": {
+          "title": "تم حذف التعليم",
+          "description": "تم حذف تعليمك بنجاح."
+        }
+      },
+      "resumeExperience": {
+        "create": {
+          "title": "تمت إضافة الخبرة",
+          "description": "تمت إضافة خبرتك بنجاح."
+        },
+        "update": {
+          "title": "تم تحديث الخبرة",
+          "description": "تم تحديث خبرتك بنجاح."
+        },
+        "delete": {
+          "title": "تم حذف الخبرة",
+          "description": "تم حذف خبرتك بنجاح."
+        }
+      },
+      "resumeFiles": {
+        "create": {
+          "title": "تمت إضافة الملف",
+          "description": "تمت إضافة ملفك بنجاح."
+        },
+        "update": {
+          "title": "تم تحديث الملف",
+          "description": "تم تحديث ملفك بنجاح."
+        },
+        "delete": {
+          "title": "تم حذف الملف",
+          "description": "تم حذف ملفك بنجاح."
+        }
+      },
+      "resumeLanguage": {
+        "create": {
+          "title": "تمت إضافة اللغة",
+          "description": "تمت إضافة لغتك بنجاح."
+        },
+        "update": {
+          "title": "تم تحديث اللغة",
+          "description": "تم تحديث لغتك بنجاح."
+        },
+        "delete": {
+          "title": "تم حذف اللغة",
+          "description": "تم حذف لغتك بنجاح."
+        }
+      },
+      "resumeProject": {
+        "create": {
+          "title": "تمت إضافة المشروع",
+          "description": "تمت إضافة مشروعك بنجاح."
+        },
+        "update": {
+          "title": "تم تحديث المشروع",
+          "description": "تم تحديث مشروعك بنجاح."
+        },
+        "delete": {
+          "title": "تم حذف المشروع",
+          "description": "تم حذف مشروعك بنجاح."
+        }
+      },
+      "resumeSkill": {
+        "create": {
+          "title": "تمت إضافة المهارة",
+          "description": "تمت إضافة مهارتك بنجاح."
+        },
+        "update": {
+          "title": "تم تحديث المهارة",
+          "description": "تم تحديث مهارتك بنجاح."
+        },
+        "delete": {
+          "title": "تم حذف المهارة",
+          "description": "تم حذف مهارتك بنجاح."
+        }
+      },
+      "jobApply": {
+        "create": {
+          "title": "تم إرسال الطلب",
+          "description": "تم إرسال طلبك بنجاح."
+        }
+      },
+      "deleteAccount": {
+        "success": {
+          "title": "تم حذف الحساب",
+          "description": "تم حذف الحساب بنجاح."
+        }
+      },
+      "updatePassword": {
+        "success": {
+          "title": "تم تغيير كلمة المرور",
+          "description": "تم تغيير كلمة المرور بنجاح."
+        }
+      },
+      "verifyPassword": {
+        "success": {
+          "title": "تم التحقق من كلمة المرور",
+          "description": "كلمة المرور المقدمة صحيحة"
+        }
+      },
+      "maskEmploi": {
+        "mask": {
+          "title": "تم إخفاء الوظيفة",
+          "description": "تم إخفاء الوظيفة بنجاح."
+        }
+      },
+      "reportEmploi": {
+        "success": {
+          "title": "تم إرسال التقرير",
+          "description": "تم إرسال تقريرك بنجاح."
+        }
       }
     },
     "warnings": {

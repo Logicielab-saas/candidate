@@ -57,13 +57,17 @@ export function PhoneChangeDialog({
   currentPhone,
   trigger,
 }: PhoneChangeDialogProps) {
+  const t = useTranslations();
+  const tCommon = useTranslations("common");
+
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState<Step>("verify-current");
+
   const { toast } = useToast();
-  const verifyPasswordMutation = useVerifyPassword();
-  const updatePhoneMutation = useUpdatePhone();
-  const t = useTranslations();
   const steps = getSteps(t);
+
+  const verifyPasswordMutation = useVerifyPassword(tCommon);
+  const updatePhoneMutation = useUpdatePhone(tCommon);
 
   const verificationForm = useForm<VerificationForm>({
     resolver: zodResolver(verificationSchema(t)),

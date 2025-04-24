@@ -71,7 +71,7 @@ export function AddSkillDialog({ open, onOpenChange }: AddSkillDialogProps) {
   const [selectedSkills, setSelectedSkills] = useState<SelectedSkill[]>([]);
 
   // Queries and mutations
-  const { mutate: createSkill, isPending } = useCreateResumeSkill();
+  const { mutate: createSkill, isPending } = useCreateResumeSkill(tCommon);
 
   const skillFormSchema = useMemo(() => formSchema(tCommon), [tCommon]);
 

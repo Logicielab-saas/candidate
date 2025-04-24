@@ -26,7 +26,6 @@ import { Label } from "@/components/ui/label";
 import { useVerifyPassword } from "../hooks/use-verify-password";
 import { useDeleteAccount } from "../hooks/use-delete-account";
 import { logout } from "@/features/auth/services/logout";
-import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "next-intl";
 
 export function DeleteAccountDialog() {
@@ -37,13 +36,13 @@ export function DeleteAccountDialog() {
   const [showPasswordError, setShowPasswordError] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const { toast } = useToast();
-  const { mutateAsync: verifyPassword, isPending: isVerifying } =
-    useVerifyPassword();
-  const { deleteAccount, isPending: isDeletingAccount } = useDeleteAccount();
-
   const t = useTranslations("settings.account");
   const tCommon = useTranslations("common");
+
+  const { mutateAsync: verifyPassword, isPending: isVerifying } =
+    useVerifyPassword(tCommon);
+  const { deleteAccount, isPending: isDeletingAccount } =
+    useDeleteAccount(tCommon);
 
   const DELETE_CONFIRMATION = t("accountSettings.deleteConfirmationValue");
 
@@ -74,16 +73,9 @@ export function DeleteAccountDialog() {
         token_device: "", // This will be handled by the backend
       });
 
-      toast({
-        variant: "success",
-        title: "Compte supprimé",
-        description: "Votre compte a été supprimé avec succès",
-      });
-
       // Use the auth service's logout function to handle cleanup and redirect
       await logout();
-    } catch (error) {
-      console.error("Failed to delete account:", error);
+    } catch (_error) {
       // Error handling is managed by the hooks, but we'll reset the deleting state
       setIsDeleting(false);
     }

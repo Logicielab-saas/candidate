@@ -6,7 +6,7 @@ import { EMPLOIS_QUERY_KEY } from "@/features/Emplois/hooks/use-emplois";
 
 const MASK_EMPLOI_QUERY_KEY = "mask-emploi";
 
-export function useMaskEmploi() {
+export function useMaskEmploi(t: (key: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -25,16 +25,15 @@ export function useMaskEmploi() {
 
       toast({
         variant: "success",
-        title: "Emploi masqué",
-        description: "Votre emploi a été masqué avec succès.",
+        title: t("toast.maskEmploi.success.title"),
+        description: t("toast.maskEmploi.success.description"),
       });
     },
-    onError: (error: Error) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Erreur",
-        description:
-          error.message || "Une erreur est survenue. Veuillez réessayer.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });

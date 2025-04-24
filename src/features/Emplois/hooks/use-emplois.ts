@@ -66,7 +66,6 @@ export function useSearchSuggestions(query: string) {
     queryKey: [EMPLOIS_QUERY_KEY, "search-suggestions", query],
     queryFn: () => fetchSearchSuggestions(query),
     enabled: query.length >= 2, // Only fetch when query is at least 2 characters
-    staleTime: 1000 * 60 * 5, // Cache results for 5 minutes
   });
 
   return {

@@ -70,14 +70,16 @@ export function EmailChangeDialog({
   onEmailChange,
   trigger,
 }: EmailChangeDialogProps) {
+  const t = useTranslations();
+  const tCommon = useTranslations("common");
+
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState<Step>("verify-password");
   const [newEmailAddress, setNewEmailAddress] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
   const { toast } = useToast();
-  const verifyPasswordMutation = useVerifyPassword();
-  const t = useTranslations();
-  const tCommon = useTranslations("common");
+
+  const verifyPasswordMutation = useVerifyPassword(tCommon);
   const steps = getSteps(t);
 
   const verificationForm = useForm<VerificationForm>({

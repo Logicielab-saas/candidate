@@ -97,7 +97,9 @@ export function AddProjectDialog({
 }: AddProjectDialogProps) {
   const t = useTranslations("resumePage.projects.dialog.add");
   const tCommon = useTranslations("common");
-  const { mutate: createProject, isPending } = useCreateResumeProject();
+
+  const { mutate: createProject, isPending } = useCreateResumeProject(tCommon);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const previewUrlsRef = useRef<string[]>([]);
   const { toast } = useToast();

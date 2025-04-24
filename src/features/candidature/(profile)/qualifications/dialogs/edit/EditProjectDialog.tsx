@@ -90,7 +90,9 @@ export function EditProjectDialog({
 }: EditProjectDialogProps) {
   const t = useTranslations("resumePage.projects.dialog.edit");
   const tCommon = useTranslations("common");
-  const { mutate: updateProject, isPending } = useUpdateResumeProject();
+
+  const { mutate: updateProject, isPending } = useUpdateResumeProject(tCommon);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const previewUrlsRef = useRef<string[]>([]);
   const { toast } = useToast();

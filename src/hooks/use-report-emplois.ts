@@ -22,7 +22,7 @@ export function useFetchReportEmploi() {
   return { data, isLoading, error };
 }
 
-export function useReportEmploi() {
+export function useReportEmploi(t: (key: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -41,16 +41,15 @@ export function useReportEmploi() {
 
       toast({
         variant: "success",
-        title: "Report envoyé",
-        description: "Votre report a été envoyé avec succès.",
+        title: t("toast.reportEmploi.success.title"),
+        description: t("toast.reportEmploi.success.description"),
       });
     },
-    onError: (error: Error) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Erreur",
-        description:
-          error.message || "Une erreur est survenue. Veuillez réessayer.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });

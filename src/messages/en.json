@@ -420,6 +420,182 @@
       "error": {
         "title": "Error",
         "description": "An error occurred. Please try again."
+      },
+      "profile": {
+        "update": {
+          "title": "Profile updated",
+          "description": "Your profile has been updated successfully."
+        }
+      },
+      "myAppliedJobs": {
+        "delete": {
+          "title": "Application deleted",
+          "description": "Your application has been deleted successfully."
+        },
+        "update": {
+          "title": "Application updated",
+          "description": "Your application has been updated successfully."
+        }
+      },
+      "myArchivedJobs": {
+        "update": {
+          "title": "Job archived",
+          "description": "The job has been archived successfully."
+        },
+        "delete": {
+          "title": "Job unarchived",
+          "description": "The job has been unarchived successfully."
+        }
+      },
+      "mySavedJobs": {
+        "save": {
+          "title": "Job saved",
+          "description": "Your job has been saved successfully."
+        },
+        "unsave": {
+          "title": "Job removed",
+          "description": "The job has been removed from your favorites successfully."
+        }
+      },
+      "resumeProfile": {
+        "update": {
+          "title": "Resume updated",
+          "description": "Your resume has been updated successfully."
+        }
+      },
+      "resumeCertification": {
+        "create": {
+          "title": "Certification added",
+          "description": "Your certification has been added successfully."
+        },
+        "update": {
+          "title": "Certification updated",
+          "description": "Your certification has been updated successfully."
+        },
+        "delete": {
+          "title": "Certification deleted",
+          "description": "Your certification has been deleted successfully."
+        }
+      },
+      "resumeEducation": {
+        "create": {
+          "title": "Education added",
+          "description": "Your education has been added successfully."
+        },
+        "update": {
+          "title": "Education updated",
+          "description": "Your education has been updated successfully."
+        },
+        "delete": {
+          "title": "Education deleted",
+          "description": "Your education has been deleted successfully."
+        }
+      },
+      "resumeExperience": {
+        "create": {
+          "title": "Experience added",
+          "description": "Your experience has been added successfully."
+        },
+        "update": {
+          "title": "Experience updated",
+          "description": "Your experience has been updated successfully."
+        },
+        "delete": {
+          "title": "Experience deleted",
+          "description": "Your experience has been deleted successfully."
+        }
+      },
+      "resumeFiles": {
+        "create": {
+          "title": "File added",
+          "description": "Your file has been added successfully."
+        },
+        "update": {
+          "title": "File updated",
+          "description": "Your file has been updated successfully."
+        },
+        "delete": {
+          "title": "File deleted",
+          "description": "Your file has been deleted successfully."
+        }
+      },
+      "resumeLanguage": {
+        "create": {
+          "title": "Language added",
+          "description": "Your language has been added successfully."
+        },
+        "update": {
+          "title": "Language updated",
+          "description": "Your language has been updated successfully."
+        },
+        "delete": {
+          "title": "Language deleted",
+          "description": "Your language has been deleted successfully."
+        }
+      },
+      "resumeProject": {
+        "create": {
+          "title": "Project added",
+          "description": "Your project has been added successfully."
+        },
+        "update": {
+          "title": "Project updated",
+          "description": "Your project has been updated successfully."
+        },
+        "delete": {
+          "title": "Project deleted",
+          "description": "Your project has been deleted successfully."
+        }
+      },
+      "resumeSkill": {
+        "create": {
+          "title": "Skill added",
+          "description": "Your skill has been added successfully."
+        },
+        "update": {
+          "title": "Skill updated",
+          "description": "Your skill has been updated successfully."
+        },
+        "delete": {
+          "title": "Skill deleted",
+          "description": "Your skill has been deleted successfully."
+        }
+      },
+      "jobApply": {
+        "create": {
+          "title": "Application sent",
+          "description": "Your application has been sent successfully."
+        }
+      },
+      "deleteAccount": {
+        "success": {
+          "title": "Account deleted",
+          "description": "The account has been deleted successfully."
+        }
+      },
+      "updatePassword": {
+        "success": {
+          "title": "Password changed",
+          "description": "The password has been changed successfully."
+        }
+      },
+      "verifyPassword": {
+        "success": {
+          "title": "Password verified",
+          "description": "The provided password is correct"
+        }
+      },
+      "maskEmploi": {
+        "mask": {
+          "title": "Job hidden",
+          "description": "The job has been hidden successfully."
+        }
+      },
+      "reportEmploi": {
+        "success": {
+          "title": "Report sent",
+          "description": "Your report has been sent successfully."
+        }
       }
     },
     "warnings": {

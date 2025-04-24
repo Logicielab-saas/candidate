@@ -26,11 +26,11 @@ export function DeleteProjectDialog({
   onOpenChange,
   project,
 }: DeleteProjectDialogProps) {
-  const { mutate: deleteProject, isPending } = useDeleteResumeProject();
-  const [isDeleting, setIsDeleting] = useState(false);
-
   const t = useTranslations("resumePage.projects.dialog.delete");
   const tCommon = useTranslations("common");
+
+  const { mutate: deleteProject, isPending } = useDeleteResumeProject(tCommon);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleConfirm = async (e: React.MouseEvent) => {
     e.preventDefault();

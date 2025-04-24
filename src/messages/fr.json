@@ -532,6 +532,70 @@
           "title": "Langue supprimée",
           "description": "Votre langue a été supprimée avec succès."
         }
+      },
+      "resumeProject": {
+        "create": {
+          "title": "Projet ajouté",
+          "description": "Votre projet a été ajouté avec succès."
+        },
+        "update": {
+          "title": "Projet mis à jour",
+          "description": "Votre projet a été mis à jour avec succès."
+        },
+        "delete": {
+          "title": "Projet supprimé",
+          "description": "Votre projet a été supprimé avec succès."
+        }
+      },
+      "resumeSkill": {
+        "create": {
+          "title": "Compétence ajoutée",
+          "description": "Votre compétence a été ajoutée avec succès."
+        },
+        "update": {
+          "title": "Compétence mise à jour",
+          "description": "Votre compétence a été mise à jour avec succès."
+        },
+        "delete": {
+          "title": "Compétence supprimée",
+          "description": "Votre compétence a été supprimée avec succès."
+        }
+      },
+      "jobApply": {
+        "create": {
+          "title": "Candidature envoyée",
+          "description": "Votre candidature a été envoyée avec succès."
+        }
+      },
+      "deleteAccount": {
+        "success": {
+          "title": "Compte supprimé",
+          "description": "Le compte a été supprimé avec succès."
+        }
+      },
+      "updatePassword": {
+        "success": {
+          "title": "Mot de passe changé",
+          "description": "Le mot de passe a été changé avec succès."
+        }
+      },
+      "verifyPassword": {
+        "success": {
+          "title": "Mot de passe vérifié",
+          "description": "Le mot de passe fourni est correct"
+        }
+      },
+      "maskEmploi": {
+        "mask": {
+          "title": "Emploi masqué",
+          "description": "L'emploi a été masqué avec succès."
+        }
+      },
+      "reportEmploi": {
+        "success": {
+          "title": "Rapport envoyé",
+          "description": "Votre rapport a été envoyé avec succès."
+        }
       }
     },
     "warnings": {

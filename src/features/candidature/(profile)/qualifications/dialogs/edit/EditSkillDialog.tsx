@@ -62,7 +62,7 @@ export function EditSkillDialog({
   const tCommon = useTranslations("common");
 
   // Queries and mutations
-  const { mutate: updateSkill, isPending } = useUpdateResumeSkill();
+  const { mutate: updateSkill, isPending } = useUpdateResumeSkill(tCommon);
 
   // Form
   const form = useForm<FormValues>({
