@@ -1008,7 +1008,7 @@
       "title": "Postes disponibles",
       "loading": "Chargement...",
       "error": "Erreur lors du chargement des emplois",
-      "noResults": "Aucun emploi ne correspond à vos critères de recherche.",
+      "noResults": "Aucun emploi trouvé. Essayez à nouveau plus tard ou explorez d'autres opportunités d'emploi.",
       "jobsFound": "{count} emploi trouvé",
       "jobsFoundPlural": "{count} emplois trouvés",
       "remainingJobs": "{count} restant"

@@ -38,8 +38,15 @@ export function useEmplois(params?: UseEmploisParams) {
         selectedCity || undefined
       ),
     getNextPageParam: (lastPage) => {
-      if (lastPage.pagination.current_page < lastPage.pagination.last_page) {
-        return lastPage.pagination.current_page + 1;
+      if (
+        lastPage &&
+        lastPage.pagination &&
+        typeof lastPage.pagination.current_page === "number" &&
+        typeof lastPage.pagination.last_page === "number"
+      ) {
+        if (lastPage.pagination.current_page < lastPage.pagination.last_page) {
+          return lastPage.pagination.current_page + 1;
+        }
       }
       return undefined;
     },
@@ -61,11 +68,19 @@ export function useEmplois(params?: UseEmploisParams) {
   };
 }
 
-export function useSearchSuggestions(query: string) {
+export function useSearchSuggestions(params: string | { q?: string; city?: string }) {
+  // Support both legacy (string) and new (object) usage
+  let fetchParams: { q?: string; city?: string } = {};
+  if (typeof params === 'string') {
+    fetchParams.q = params;
+  } else {
+    fetchParams = params;
+  }
+  const enabled = !!((fetchParams.q && fetchParams.q.length >= 2) || (fetchParams.city && fetchParams.city.length >= 2));
   const { data, isLoading, error } = useQuery({
-    queryKey: [EMPLOIS_QUERY_KEY, "search-suggestions", query],
-    queryFn: () => fetchSearchSuggestions(query),
-    enabled: query.length >= 2, // Only fetch when query is at least 2 characters
+    queryKey: [EMPLOIS_QUERY_KEY, "search-suggestions", fetchParams],
+    queryFn: () => fetchSearchSuggestions(fetchParams),
+    enabled,
   });
 
   return {

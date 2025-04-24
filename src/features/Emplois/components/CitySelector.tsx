@@ -26,9 +26,10 @@ import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { useState, useEffect } from "react";
 import { useDebounce } from "use-debounce";
-import { useCities } from "@/hooks/use-cities";
+
 import LoaderOne from "@/components/ui/loader-one";
 import { useTranslations } from "next-intl";
+import { useSearchSuggestions } from "../hooks/use-emplois";
 
 // Define props interface to expose city value and setter
 interface CitySelectorProps {
@@ -43,8 +44,12 @@ export function CitySelector({ value, onChange }: CitySelectorProps) {
   const [open, setOpen] = useState(false);
   const [urlCity] = useQueryState("city");
 
+  // Debounce the city search
+  const [debouncedCitySearch] = useDebounce(citySearch, 300);
   // Fetch cities using the hook
-  const { data: cities, isLoading } = useCities();
+  const { suggestions: cities, isLoading } = useSearchSuggestions({
+    city: debouncedCitySearch,
+  });
 
   // Sync with URL on initial load and navigation
   useEffect(() => {
@@ -53,18 +58,6 @@ export function CitySelector({ value, onChange }: CitySelectorProps) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlCity]);
-
-  // Debounce the city search
-  const [debouncedCitySearch] = useDebounce(citySearch, 300);
-
-  // Filter cities based on debounced search
-  const filteredCities =
-    cities?.filter((city) =>
-      city.name.toLowerCase().includes(debouncedCitySearch.toLowerCase())
-    ) || [];
-
-  // Get the current city
-  const currentCity = cities?.find((city) => city.uuid === value);
 
   return (
     <div className="w-full sm:w-[250px] space-y-1.5">
@@ -86,7 +79,7 @@ export function CitySelector({ value, onChange }: CitySelectorProps) {
             aria-expanded={open}
             className="w-full justify-between"
           >
-            {currentCity?.name ?? t("allCities")}
+            {value ?? t("allCities")}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -102,14 +95,16 @@ export function CitySelector({ value, onChange }: CitySelectorProps) {
                 <div className="flex items-center justify-center py-6">
                   <LoaderOne />
                 </div>
-              ) : filteredCities.length === 0 ? (
+              ) : !debouncedCitySearch ? (
+                <CommandEmpty>{t("searchPlaceholder")}</CommandEmpty>
+              ) : cities?.length === 0 ? (
                 <CommandEmpty>{t("noCitiesFound")}</CommandEmpty>
               ) : (
                 <CommandGroup>
-                  {filteredCities.map((city) => (
+                  {cities?.map((city, index) => (
                     <CommandItem
-                      key={city.uuid}
-                      value={city.uuid}
+                      key={index + city.title}
+                      value={city.title}
                       onSelect={(currentValue) => {
                         onChange(currentValue === value ? null : currentValue);
                         setCitySearch("");
@@ -119,10 +114,10 @@ export function CitySelector({ value, onChange }: CitySelectorProps) {
                       <Check
                         className={cn(
                           "mr-2 h-4 w-4",
-                          value === city.uuid ? "opacity-100" : "opacity-0"
+                          value === city.title ? "opacity-100" : "opacity-0"
                         )}
                       />
-                      {city.name}
+                      {city.title}
                     </CommandItem>
                   ))}
                 </CommandGroup>

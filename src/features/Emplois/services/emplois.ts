@@ -49,7 +49,20 @@ export async function fetchEmplois(
     const response = await api.get<EmploisResponse>(endpoint, {
       params: Object.keys(params).length ? params : undefined,
     });
-    return response.data;
+    // Normalize response to always have emplois and pagination
+    const data = response.data;
+    if (typeof data !== "object" || data === null) {
+      return { emplois: [], pagination: null, message: "No Emplois Found" };
+    }
+    // If emplois is missing, treat as empty array
+    if (!Array.isArray(data.emplois)) {
+      data.emplois = [];
+    }
+    // If pagination is missing, set to default Pagination object
+    if (!data.pagination) {
+      data.pagination = { current_page: 1, last_page: 1, per_page: 10, total: 0 };
+    }
+    return data;
   } catch (error) {
     if (error instanceof AxiosError) {
       const apiError = error.response?.data as ApiError;
@@ -65,11 +78,14 @@ export async function fetchEmploisBySlug(slug: string) {
 }
 
 // TODO: Implement this FUNCTIONALITY NO APP TOMORROW (FRIDAY)
-export async function fetchSearchSuggestions(query: string) {
+export async function fetchSearchSuggestions(params: { q?: string; city?: string }) {
   const response = await api.get<SearchSuggestionsResponse>(
     `${endpointSuggestions}`,
     {
-      params: { q: query },
+      params: {
+        ...(params.q ? { q: params.q } : {}),
+        ...(params.city ? { city: params.city } : {}),
+      },
     }
   );
   return response.data;

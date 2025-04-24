@@ -1008,7 +1008,7 @@
       "title": "Available positions",
       "loading": "Loading...",
       "error": "Error loading jobs",
-      "noResults": "No jobs match your search criteria.",
+      "noResults": "No job found. Try again later or explore other job opportunities.",
       "jobsFound": "{count} job found",
       "jobsFoundPlural": "{count} jobs found",
       "remainingJobs": "{count} remaining"
