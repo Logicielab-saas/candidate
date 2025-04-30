@@ -23,13 +23,19 @@ import { useState, useRef } from "react";
 import { useApplyToJob } from "@/features/job-apply/hooks/use-job-apply";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { PencilIcon, ImageIcon, UserIcon, AlertCircle } from "lucide-react";
+import {
+  PencilIcon,
+  ImageIcon,
+  UserIcon,
+  AlertCircle,
+  FileIcon,
+} from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { ResumeItem } from "@/components/shared/ResumeItem";
 import Image from "next/image";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Profile } from "@/features/candidature/(profile)/common/interface";
 import { useTranslations } from "next-intl";
+import { StepNavigation } from "../shared/StepNavigation";
 
 interface ReviewStepProps {
   jobDetails: EmploisDetails;
@@ -38,15 +44,25 @@ interface ReviewStepProps {
 
 export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
   const tCommon = useTranslations("common");
-
   const router = useRouter();
-  const { questionsData, prevStep, resetForm } = useJobApplyStore();
+  const { questionsData, prevStep, resetForm, personalInfo } =
+    useJobApplyStore();
   const { mutate: applyToJob, isPending } = useApplyToJob(tCommon);
 
   const [error, setError] = useState<string | null>(null);
   const [coverLetter, setCoverLetter] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // If no personal info, redirect to first step
+  if (!personalInfo) {
+    router.push(`/job-apply/${jobDetails.slug}`);
+    return null;
+  }
+
+  const selectedResume = profile.files?.find(
+    (file) => file.uuid === personalInfo.resume_uuid
+  );
 
   const handleSubmit = async () => {
     try {
@@ -55,6 +71,12 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
       // Create FormData for file upload
       const formData = new FormData();
       formData.append("emploi_uuid", jobDetails.uuid);
+      formData.append("first_name", personalInfo.first_name);
+      formData.append("last_name", personalInfo.last_name);
+      formData.append("email", personalInfo.email);
+      formData.append("phone", personalInfo.phone);
+      formData.append("resume_uuid", personalInfo.resume_uuid);
+
       if (coverLetter) {
         formData.append("cover_letter", coverLetter);
       }
@@ -116,8 +138,6 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
     }
   };
 
-  const hasResumes = profile?.files && profile.files.length > 0;
-
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
@@ -139,7 +159,7 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
               variant="ghost"
               size="sm"
               className="text-muted-foreground hover:text-foreground"
-              onClick={() => router.push("/profile")}
+              onClick={() => prevStep()}
             >
               <PencilIcon className="h-4 w-4 mr-2" />
               Modifier
@@ -149,24 +169,16 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
             <div>
               <p className="font-medium">Nom complet</p>
               <p className="text-muted-foreground">
-                {profile?.first_name} {profile?.last_name}
+                {personalInfo.first_name} {personalInfo.last_name}
               </p>
             </div>
             <div>
               <p className="font-medium">Email</p>
-              <p className="text-muted-foreground">{profile?.email}</p>
+              <p className="text-muted-foreground">{personalInfo.email}</p>
             </div>
             <div>
               <p className="font-medium">Téléphone</p>
-              <p className="text-muted-foreground">
-                {profile?.phone || "Non renseigné"}
-              </p>
-            </div>
-            <div>
-              <p className="font-medium">Adresse</p>
-              <p className="text-muted-foreground">
-                {profile?.address || "Non renseignée"}
-              </p>
+              <p className="text-muted-foreground">{personalInfo.phone}</p>
             </div>
           </div>
         </div>
@@ -175,20 +187,27 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
 
         {/* Resume Section */}
         <div className="space-y-4">
-          <ResumeItem
-            subtitle="Votre CV principal"
-            resumeFiles={profile?.files || []}
-            source="profile"
-          />
-          {hasResumes && (
-            <Alert>
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Information importante</AlertTitle>
-              <AlertDescription>
-                Tous vos CV seront envoyés avec votre candidature. Assurez-vous
-                qu&apos;ils sont à jour avant de soumettre.
-              </AlertDescription>
-            </Alert>
+          <div className="flex items-center justify-between">
+            <h3 className="font-semibold flex items-center gap-2">
+              CV sélectionné
+            </h3>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-muted-foreground hover:text-foreground"
+              onClick={() => prevStep()}
+            >
+              <PencilIcon className="h-4 w-4 mr-2" />
+              Modifier
+            </Button>
+          </div>
+          {selectedResume && (
+            <div className="border rounded-lg p-4">
+              <div className="flex items-center gap-2">
+                <FileIcon className="h-4 w-4" />
+                <span>{selectedResume.name}</span>
+              </div>
+            </div>
           )}
         </div>
 
@@ -346,17 +365,15 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
         {error && <p className="text-sm text-destructive mt-2">{error}</p>}
       </CardContent>
 
-      <CardFooter className="flex justify-end gap-4">
-        <Button
-          variant="outline"
-          onClick={() => router.push("/emplois")}
-          disabled={isPending}
-        >
-          Annuler
-        </Button>
-        <Button onClick={handleSubmit} disabled={isPending}>
-          {isPending ? "Soumission en cours..." : "Soumettre ma candidature"}
-        </Button>
+      <CardFooter>
+        <StepNavigation
+          onBack={prevStep}
+          isLoading={isPending}
+          continueButtonText={
+            isPending ? "Soumission en cours..." : "Soumettre ma candidature"
+          }
+          onNext={handleSubmit}
+        />
       </CardFooter>
     </Card>
   );

@@ -2,7 +2,7 @@
  * StepIndicator - Visual indicator for multi-step form progress
  *
  * Displays the current step and overall progress in the job application process
- * Shows questions step only if job has questions, otherwise just review
+ * Shows all steps: personal info, questions (if job has questions), and review
  */
 
 "use client";
@@ -28,10 +28,14 @@ export function StepIndicator({ jobDetails }: StepIndicatorProps) {
   const steps: StepConfig[] =
     jobDetails.emploi_questions?.length > 0
       ? [
+          { id: "personal-info", label: "Informations" },
           { id: "questions", label: "Questions" },
           { id: "review", label: "Révision" },
         ]
-      : [{ id: "review", label: "Révision" }];
+      : [
+          { id: "personal-info", label: "Informations" },
+          { id: "review", label: "Révision" },
+        ];
 
   // Find the index of the current step
   const currentStepIndex = steps.findIndex((step) => step.id === currentStep);

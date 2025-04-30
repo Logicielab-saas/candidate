@@ -2,15 +2,17 @@
  * useJobApplyStore - Job application state management
  *
  * Manages the state for the job application process including:
- * - Current step tracking (questions if present, then review)
+ * - Current step tracking (personal info, questions if present, then review)
+ * - Personal information and selected resume
  * - Questions answers if job has questions
  * - Form submission status
  */
 
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import type { PersonalInfoFormData } from "../types/personal-info-form";
 
-export type JobApplyStep = "questions" | "review";
+export type JobApplyStep = "personal-info" | "questions" | "review";
 
 export interface QuestionAnswer {
   id: string;
@@ -25,6 +27,9 @@ export interface JobApplyState {
   // Current step in the application process
   currentStep: JobApplyStep;
 
+  // Personal information
+  personalInfo: PersonalInfoFormData | null;
+
   // Form data
   questionsData: QuestionsData;
 
@@ -36,17 +41,19 @@ export interface JobApplyState {
   setCurrentStep: (step: JobApplyStep) => void;
   nextStep: () => void;
   prevStep: () => void;
+  setPersonalInfo: (data: PersonalInfoFormData) => void;
   setQuestionsData: (data: Partial<QuestionsData>) => void;
   resetForm: () => void;
 }
 
 // Define the step order for navigation
-const stepOrder: JobApplyStep[] = ["questions", "review"];
+const stepOrder: JobApplyStep[] = ["personal-info", "questions", "review"];
 
 export const useJobApplyStore = create<JobApplyState>()(
   devtools((set, get) => ({
     // Initial state
-    currentStep: "questions",
+    currentStep: "personal-info",
+    personalInfo: null,
     questionsData: {
       answers: [],
     },
@@ -74,6 +81,8 @@ export const useJobApplyStore = create<JobApplyState>()(
       }
     },
 
+    setPersonalInfo: (data) => set({ personalInfo: data }),
+
     setQuestionsData: (data) =>
       set((state) => ({
         questionsData: { ...state.questionsData, ...data },
@@ -81,7 +90,8 @@ export const useJobApplyStore = create<JobApplyState>()(
 
     resetForm: () =>
       set({
-        currentStep: "questions",
+        currentStep: "personal-info",
+        personalInfo: null,
         questionsData: {
           answers: [],
         },

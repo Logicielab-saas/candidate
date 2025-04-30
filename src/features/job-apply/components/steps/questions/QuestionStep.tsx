@@ -6,8 +6,7 @@
 
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { useJobApplyStore } from "@/features/job-apply/store/useJobApplyStore";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -20,6 +19,7 @@ import { ExperienceQuestion } from "./ExperienceQuestion";
 import { OpenQuestion } from "./OpenQuestion";
 import { YesNoQuestion } from "./YesNoQuestion";
 import type { QuestionFormData } from "@/features/job-apply/types/question-form";
+import { StepNavigation } from "../../shared/StepNavigation";
 
 interface QuestionStepProps {
   questions: EmploisQuestions[];
@@ -57,7 +57,8 @@ function createQuestionSchema(questions: EmploisQuestions[]) {
 }
 
 export function QuestionStep({ questions }: QuestionStepProps) {
-  const { nextStep, questionsData, setQuestionsData } = useJobApplyStore();
+  const { nextStep, prevStep, questionsData, setQuestionsData } =
+    useJobApplyStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<QuestionFormData>({
@@ -163,17 +164,24 @@ export function QuestionStep({ questions }: QuestionStepProps) {
   };
 
   return (
-    <Card className="p-6">
-      <h2 className="text-2xl font-semibold mb-6">Questions supplémentaires</h2>
+    <Card className="w-full max-w-4xl mx-auto">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          {questions.map((question) => renderQuestion(question))}
+          <CardContent>
+            <h2 className="text-2xl font-semibold mb-6">
+              Questions supplémentaires
+            </h2>
+            {questions.map((question) => renderQuestion(question))}
+          </CardContent>
 
-          <div className="flex justify-end pt-4">
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Enregistrement..." : "Continuer"}
-            </Button>
-          </div>
+          <CardFooter>
+            <StepNavigation
+              onBack={prevStep}
+              onNext={form.handleSubmit(onSubmit)}
+              isLoading={isSubmitting}
+              continueButtonText="Continuer"
+            />
+          </CardFooter>
         </form>
       </Form>
     </Card>

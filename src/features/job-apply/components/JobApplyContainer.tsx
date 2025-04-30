@@ -1,7 +1,8 @@
 /**
  * JobApplyContainer - Main container for the job application process
  *
- * Manages the simplified application flow:
+ * Manages the application flow:
+ * - Shows personal info step first
  * - Shows questions step if job has questions
  * - Shows review step for final submission
  */
@@ -12,6 +13,7 @@ import { useJobApplyStore } from "../store/useJobApplyStore";
 import { StepIndicator } from "./StepIndicator";
 import { QuestionStep } from "./steps/questions/QuestionStep";
 import { ReviewStep } from "./steps/ReviewStep";
+import { PersonalInfoStep } from "./steps/PersonalInfoStep";
 import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { useEmploisBySlug } from "@/features/Emplois/hooks/use-emplois";
@@ -35,9 +37,7 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
   // Set initial step based on whether job has questions
   useEffect(() => {
     if (jobDetails) {
-      setCurrentStep(
-        jobDetails.emploi_questions?.length > 0 ? "questions" : "review"
-      );
+      setCurrentStep("personal-info");
     }
   }, [jobDetails, setCurrentStep]);
 
@@ -59,6 +59,8 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
     }
 
     switch (currentStep) {
+      case "personal-info":
+        return <PersonalInfoStep />;
       case "questions":
         return <QuestionStep questions={jobDetails.emploi_questions} />;
       case "review":
