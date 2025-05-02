@@ -31,6 +31,10 @@
         "noResults": "No reviews match your search."
       }
     },
+    "dragHere": "Drop your file here",
+    "browseFiles": "Browse your files",
+    "acceptedTypes": "Accepted types: {types}",
+    "or": "or",
     "jobNotFound": "Job not found. Please check the URL and try again.",
     "profileNotFound": "Profile not found. Please check the URL and try again.",
     "unknownStep": "Unknown step",
@@ -235,7 +239,8 @@
       },
       "fileType": {
         "title": "Invalid file type",
-        "description": "Only PDF, DOC and DOCX files are accepted"
+        "description": "Only PDF, DOC and DOCX files are accepted",
+        "description2": "Invalid file type. Accepted types: {types}"
       },
       "jobTitle": {
         "required": "Job title is required"

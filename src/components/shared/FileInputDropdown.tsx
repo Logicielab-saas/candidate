@@ -18,6 +18,7 @@ import { Upload, X, FileIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useDropzone } from "react-dropzone";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface FileInputDropdownProps {
   value?: File | null;
@@ -36,6 +37,7 @@ export function FileInputDropdown({
   accept = ".pdf,.doc,.docx",
   placeholder = "Cliquez pour télécharger votre fichier",
 }: FileInputDropdownProps) {
+  const tCommon = useTranslations("common");
   const { toast } = useToast();
 
   // Convert accept string to object format required by react-dropzone
@@ -70,8 +72,10 @@ export function FileInputDropdown({
     if (file.size > maxSize * 1024 * 1024) {
       toast({
         variant: "destructive",
-        title: "Fichier trop volumineux",
-        description: `Le fichier doit faire moins de ${maxSize}MB`,
+        title: tCommon("validation.fileSize.title"),
+        description: tCommon("validation.fileSize.description", {
+          size: maxSize,
+        }),
       });
       return;
     }
@@ -89,11 +93,15 @@ export function FileInputDropdown({
       if (error) {
         toast({
           variant: "destructive",
-          title: "Erreur de fichier",
+          title: tCommon("actions.error"),
           description:
             error.code === "file-too-large"
-              ? `Le fichier doit faire moins de ${maxSize}MB`
-              : `Format de fichier non accepté. Types acceptés : ${accept}`,
+              ? tCommon("validation.fileSize.description", {
+                  size: maxSize,
+                })
+              : tCommon("validation.fileType.description2", {
+                  types: accept,
+                }),
         });
       }
     },
@@ -166,16 +174,18 @@ export function FileInputDropdown({
                       isDragActive ? "text-primary" : "text-foreground"
                     )}
                   >
-                    {isDragActive ? "Déposez le fichier ici" : placeholder}
+                    {isDragActive ? tCommon("dragHere") : placeholder}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    ou{" "}
+                    {tCommon("or")}{" "}
                     <span className="text-primary font-medium">
-                      parcourir vos fichiers
+                      {tCommon("browseFiles")}
                     </span>
                   </p>
                   <p className="text-xs text-muted-foreground mt-2">
-                    Formats acceptés : {getAcceptedTypesDisplay()}
+                    {tCommon("acceptedTypes", {
+                      types: getAcceptedTypesDisplay(),
+                    })}
                   </p>
                 </div>
               </div>

@@ -31,6 +31,9 @@
         "noResults": "Aucun avis ne correspond à votre recherche."
       }
     },
+    "dragHere": "Déposez le fichier ici",
+    "browseFiles": "Parcourir vos fichiers",
+    "or": "ou",
     "jobNotFound": "Offre d'emploi introuvable. Veuillez vérifier l'URL et réessayer.",
     "profileNotFound": "Profil introuvable. Veuillez vérifier l'URL et réessayer.",
     "unknownStep": "Étape inconnue",
@@ -235,7 +238,8 @@
       },
       "fileType": {
         "title": "Type de fichier invalide",
-        "description": "Seuls les fichiers PDF, DOC et DOCX sont acceptés"
+        "description": "Seuls les fichiers PDF, DOC et DOCX sont acceptés",
+        "description2": "Format de fichier non accepté. Types acceptés : {types}"
       },
       "jobTitle": {
         "required": "L'intitulé du poste est requis"
