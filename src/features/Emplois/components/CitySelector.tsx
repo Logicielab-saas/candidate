@@ -39,7 +39,7 @@ interface CitySelectorProps {
 }
 
 export function CitySelector({ value, onChange }: CitySelectorProps) {
-  const t = useTranslations("common.selectorsSearch.citySelector");
+  const t = useTranslations("common");
   // Local state
   const [citySearch, setCitySearch] = useState("");
   const [open, setOpen] = useState(false);
@@ -70,7 +70,7 @@ export function CitySelector({ value, onChange }: CitySelectorProps) {
           "peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         )}
       >
-        {t("label")}
+        {t("selectorsSearch.citySelector.label")}
       </label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
@@ -80,14 +80,14 @@ export function CitySelector({ value, onChange }: CitySelectorProps) {
             aria-expanded={open}
             className="w-full justify-between"
           >
-            {value ?? t("allCities")}
+            {value ?? t("selectorsSearch.citySelector.allCities")}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[250px] p-0">
           <Command>
             <CommandInput
-              placeholder={t("searchPlaceholder")}
+              placeholder={t("selectorsSearch.citySelector.searchPlaceholder")}
               value={citySearch}
               onValueChange={setCitySearch}
             />
@@ -97,9 +97,13 @@ export function CitySelector({ value, onChange }: CitySelectorProps) {
                   <LoaderOne />
                 </div>
               ) : !debouncedCitySearch ? (
-                <CommandEmpty>{t("searchPlaceholder")}</CommandEmpty>
+                <CommandEmpty>
+                  {t("selectorsSearch.citySelector.searchPlaceholder")}
+                </CommandEmpty>
               ) : cities?.length === 0 ? (
-                <CommandEmpty>{t("noCitiesFound")}</CommandEmpty>
+                <CommandEmpty>
+                  {t("selectorsSearch.citySelector.noCitiesFound")}
+                </CommandEmpty>
               ) : (
                 <CommandGroup>
                   {cities?.map((city, index) => (
@@ -136,7 +140,7 @@ export function CitySelector({ value, onChange }: CitySelectorProps) {
                       className="justify-center text-sm text-muted-foreground cursor-pointer"
                     >
                       <X className="mr-2 h-4 w-4" />
-                      {t("clear")}
+                      {t("actions.reset")}
                     </CommandItem>
                   </CommandGroup>
                 </>
