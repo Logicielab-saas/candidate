@@ -106,7 +106,9 @@ const personalInfoSchema = (t: (key: string) => string) =>
     }),
   ]);
 
-type PersonalInfoFormData = z.infer<ReturnType<typeof personalInfoSchema>>;
+export type PersonalInfoFormData = z.infer<
+  ReturnType<typeof personalInfoSchema>
+>;
 
 // Function to get the base URL for storage
 function getStorageUrl(path: string) {
@@ -137,24 +139,29 @@ export function PersonalInfoStep({
 
   const isAuthenticated = hasAccessToken();
 
+  const defaultValues = isAuthenticated
+    ? {
+        isAuthenticated: true as const,
+        first_name: personalInfo?.first_name || "",
+        last_name: personalInfo?.last_name || "",
+        email: personalInfo?.email || "",
+        phone: personalInfo?.phone || "",
+        resume_uuid: personalInfo?.resume_uuid || "",
+        resume_file: undefined,
+      }
+    : {
+        isAuthenticated: false as const,
+        first_name: personalInfo?.first_name || "",
+        last_name: personalInfo?.last_name || "",
+        email: personalInfo?.email || "",
+        phone: personalInfo?.phone || "",
+        resume_uuid: undefined,
+        resume_file: undefined,
+      };
+
   const form = useForm<PersonalInfoFormData>({
     resolver: zodResolver(personalInfoSchema(tCommon)),
-    defaultValues: {
-      isAuthenticated,
-      first_name: personalInfo?.first_name || "",
-      last_name: personalInfo?.last_name || "",
-      email: personalInfo?.email || "",
-      phone: personalInfo?.phone || "",
-      ...(isAuthenticated
-        ? {
-            resume_uuid: personalInfo?.resume_uuid || "",
-            resume_file: undefined,
-          }
-        : {
-            resume_uuid: undefined,
-            resume_file: personalInfo?.resume_file || null,
-          }),
-    },
+    defaultValues,
   });
 
   // Pre-fill form with profile data if available for authenticated users

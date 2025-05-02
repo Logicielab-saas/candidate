@@ -127,6 +127,10 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
 
       // Handle resume file based on authentication status
       if (isAuthenticated) {
+        if (!personalInfo.resume_uuid) {
+          setError(tCommon("validation.resumeRequired"));
+          return;
+        }
         formData.append("file_uuid", personalInfo.resume_uuid);
       } else if (personalInfo.resume_file instanceof File) {
         formData.append("file", personalInfo.resume_file);

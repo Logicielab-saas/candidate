@@ -28,7 +28,6 @@ interface JobBookmarkButtonProps {
   jobId: string;
   jobSlug: string;
   initialIsSaved: boolean;
-  jobTitle?: string;
   tooltipPosition?: "top" | "bottom" | "left" | "right";
   className?: string;
   iconClassName?: string;
@@ -44,7 +43,6 @@ export function JobBookmarkButton({
   jobId,
   jobSlug,
   initialIsSaved,
-  jobTitle,
   tooltipPosition = "top",
   className,
   iconClassName,
@@ -68,7 +66,6 @@ export function JobBookmarkButton({
     initialIsSaved: localIsSaved,
     jobId,
     jobSlug,
-    jobTitle,
     onSaveSuccess: () => {
       setLocalIsSaved(true);
       onSaveSuccess?.();

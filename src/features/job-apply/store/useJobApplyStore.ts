@@ -10,7 +10,7 @@
 
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import type { PersonalInfoFormData } from "../types/personal-info-form";
+import { PersonalInfoFormData } from "../components/steps/PersonalInfoStep";
 
 export type JobApplyStep = "personal-info" | "questions" | "review";
 

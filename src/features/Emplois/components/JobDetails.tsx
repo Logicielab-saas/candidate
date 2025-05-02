@@ -160,7 +160,6 @@ export function JobDetails() {
                     jobId={job.uuid}
                     jobSlug={job.slug}
                     initialIsSaved={job.saved}
-                    jobTitle={job.title}
                     tooltipPosition="top"
                     iconClassName="h-6 w-6"
                     buttonStyle="action"

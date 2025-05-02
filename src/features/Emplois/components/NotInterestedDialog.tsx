@@ -38,9 +38,9 @@ export default function NotInterestedDialog({
   onOpenChange,
   jobId,
 }: NotInterestedDialogProps) {
-  const { mutate: maskJob, isPending } = useMaskEmploi();
   const t = useTranslations("emplois.jobCard.notInterestedDialog");
-  const tCommon = useTranslations("common.actions");
+  const tCommon = useTranslations("common");
+  const { mutate: maskJob, isPending } = useMaskEmploi(tCommon);
 
   const handleConfirm = () => {
     maskJob(jobId, {
@@ -59,7 +59,7 @@ export default function NotInterestedDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending}>
-            {tCommon("cancel")}
+            {tCommon("actions.cancel")}
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
@@ -72,7 +72,7 @@ export default function NotInterestedDialog({
                 <span className="ml-2">{t("masking")}</span>
               </>
             ) : (
-              tCommon("confirm")
+              tCommon("actions.confirm")
             )}
           </AlertDialogAction>
         </AlertDialogFooter>

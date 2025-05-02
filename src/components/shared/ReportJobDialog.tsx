@@ -62,7 +62,7 @@ export default function ReportJobDialog({
 
   type ReportFormData = z.infer<typeof reportSchema>;
 
-  const { mutate: reportJob, isPending } = useReportEmploi();
+  const { mutate: reportJob, isPending } = useReportEmploi(tCommon);
   const [isDeleting, setIsDeleting] = useState(false);
   const {
     control,
