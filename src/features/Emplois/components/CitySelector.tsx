@@ -15,13 +15,14 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
+  CommandSeparator,
 } from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { useState, useEffect } from "react";
@@ -121,6 +122,24 @@ export function CitySelector({ value, onChange }: CitySelectorProps) {
                     </CommandItem>
                   ))}
                 </CommandGroup>
+              )}
+              {value && (
+                <>
+                  <CommandSeparator />
+                  <CommandGroup>
+                    <CommandItem
+                      onSelect={() => {
+                        onChange(null);
+                        setCitySearch("");
+                        setOpen(false);
+                      }}
+                      className="justify-center text-sm text-muted-foreground cursor-pointer"
+                    >
+                      <X className="mr-2 h-4 w-4" />
+                      {t("clear")}
+                    </CommandItem>
+                  </CommandGroup>
+                </>
               )}
             </CommandList>
           </Command>
