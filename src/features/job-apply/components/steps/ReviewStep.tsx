@@ -117,7 +117,7 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
 
       // Check for required questions
       if (hasUnansweredQuestions) {
-        setError("Veuillez répondre à toutes les questions obligatoires");
+        setError(tCommon("validation.requiredAnswers"));
         return;
       }
 
@@ -135,7 +135,7 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
         formData.append("email", personalInfo.email);
         formData.append("phone", personalInfo.phone);
       } else {
-        setError("Veuillez sélectionner un CV");
+        setError(tCommon("validation.resumeRequired"));
         return;
       }
 
@@ -183,10 +183,10 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">Révision</CardTitle>
-        <CardDescription>
-          Vérifiez les informations de votre candidature avant de la soumettre
-        </CardDescription>
+        <CardTitle className="text-2xl font-bold">
+          {tCommon("review")}
+        </CardTitle>
+        <CardDescription>{tCommon("reviewDescription")}</CardDescription>
       </CardHeader>
 
       <Form {...form}>
@@ -197,7 +197,7 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold flex items-center gap-2">
                   <UserIcon className="h-4 w-4" />
-                  Informations personnelles
+                  {tCommon("personalInfo")}
                 </h3>
                 <Button
                   variant="ghost"
@@ -206,7 +206,7 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
                   onClick={handleModifyPersonalInfo}
                 >
                   <PencilIcon className="h-4 w-4 mr-2" />
-                  Modifier
+                  {tCommon("actions.edit")}
                 </Button>
               </div>
               <div className="grid grid-cols-2 gap-4 text-sm">
@@ -239,7 +239,7 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold flex items-center gap-2">
-                  CV sélectionné
+                  {tCommon("selectedResume")}
                 </h3>
                 <Button
                   variant="ghost"
@@ -248,7 +248,7 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
                   onClick={handleModifyPersonalInfo}
                 >
                   <PencilIcon className="h-4 w-4 mr-2" />
-                  Modifier
+                  {tCommon("actions.edit")}
                 </Button>
               </div>
               {isAuthenticated ? (
@@ -288,7 +288,7 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
                 <div>
                   <div className="flex items-center justify-between">
                     <h3 className="font-semibold mb-2">
-                      Réponses aux questions
+                      {tCommon("answerQuestions")}
                     </h3>
                     <Button
                       variant="ghost"
@@ -297,7 +297,7 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
                       onClick={handleModifyQuestions}
                     >
                       <PencilIcon className="h-4 w-4 mr-2" />
-                      Modifier
+                      {tCommon("actions.edit")}
                     </Button>
                   </div>
                   <div className="space-y-4">
@@ -320,10 +320,12 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
                             </p>
                           )}
                           <p className="text-sm mt-2">
-                            <span className="font-medium">Réponse : </span>
+                            <span className="font-medium">
+                              {tCommon("answer")} :{" "}
+                            </span>
                             {Array.isArray(answer)
                               ? answer.join(", ")
-                              : answer || "Pas de réponse"}
+                              : answer || tCommon("noAnswer")}
                           </p>
                         </div>
                       );
@@ -341,10 +343,12 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
                 name="cover_letter"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Lettre de motivation (optionnelle)</FormLabel>
+                    <FormLabel>
+                      {tCommon("coverLetter")} {tCommon("form.optional")}
+                    </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Écrivez votre lettre de motivation..."
+                        placeholder={tCommon("writeYourCoverLetter")}
                         className="min-h-[200px]"
                         {...field}
                       />
@@ -365,10 +369,12 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
                   <FileInputDropdown
                     value={value}
                     onChange={onChange}
-                    label="Document complémentaire (optionnel)"
+                    label={`${tCommon("additionalFile")} ${tCommon(
+                      "form.optional"
+                    )}`}
                     maxSize={2}
                     accept=".jpg,.jpeg,.png"
-                    placeholder="Cliquez pour télécharger un document complémentaire"
+                    placeholder={tCommon("clickToDownload")}
                   />
                 )}
               />
@@ -383,8 +389,8 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
               isLoading={isPending}
               continueButtonText={
                 isPending
-                  ? "Soumission en cours..."
-                  : "Soumettre ma candidature"
+                  ? tCommon("actions.sending")
+                  : tCommon("actions.submit")
               }
               onNext={form.handleSubmit(handleSubmit)}
             />

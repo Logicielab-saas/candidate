@@ -16,8 +16,10 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { QuestionProps } from "@/features/job-apply/types/question-form";
+import { useTranslations } from "next-intl";
 
 export function YesNoQuestion({ question, form }: QuestionProps) {
+  const tCommon = useTranslations("common");
   return (
     <FormField
       control={form.control}
@@ -43,11 +45,11 @@ export function YesNoQuestion({ question, form }: QuestionProps) {
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="yes" id={`${question.id}-yes`} />
-                <Label htmlFor={`${question.id}-yes`}>Oui</Label>
+                <Label htmlFor={`${question.id}-yes`}>{tCommon("yes")}</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="no" id={`${question.id}-no`} />
-                <Label htmlFor={`${question.id}-no`}>Non</Label>
+                <Label htmlFor={`${question.id}-no`}>{tCommon("no")}</Label>
               </div>
             </RadioGroup>
           </FormControl>

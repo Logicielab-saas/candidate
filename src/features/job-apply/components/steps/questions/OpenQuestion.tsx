@@ -16,6 +16,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { UseFormReturn } from "react-hook-form";
 import { type QuestionFormData } from "@/features/job-apply/types/question-form";
+import { useTranslations } from "next-intl";
 
 interface OpenQuestionProps {
   question: {
@@ -28,6 +29,7 @@ interface OpenQuestionProps {
 }
 
 export function OpenQuestion({ question, form }: OpenQuestionProps) {
+  const tCommon = useTranslations("common");
   return (
     <FormField
       control={form.control}
@@ -47,7 +49,7 @@ export function OpenQuestion({ question, form }: OpenQuestionProps) {
           )}
           <FormControl>
             <Textarea
-              placeholder="Votre réponse..."
+              placeholder={tCommon("yourAnswer")}
               className="resize-none"
               {...field}
             />

@@ -24,12 +24,14 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { EmploisDetails } from "@/core/interfaces";
+import { useTranslations } from "next-intl";
 
 interface JobDescriptionPanelProps {
   jobDetails: EmploisDetails;
 }
 
 export function JobDescriptionPanel({ jobDetails }: JobDescriptionPanelProps) {
+  const tCommon = useTranslations("common");
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLongDescription, setIsLongDescription] = useState(false);
 
@@ -55,7 +57,7 @@ export function JobDescriptionPanel({ jobDetails }: JobDescriptionPanelProps) {
     if (jobDetails.normalPrice) {
       return `${jobDetails.normalPrice} MAD`;
     }
-    return "Non spécifié";
+    return tCommon("undefined");
   };
 
   return (
@@ -101,8 +103,9 @@ export function JobDescriptionPanel({ jobDetails }: JobDescriptionPanelProps) {
               className="text-xs flex items-center gap-1"
             >
               <Calendar className="h-3 w-3" />
-              Postuler avant le{" "}
-              {new Date(jobDetails.expireDate).toLocaleDateString()}
+              {tCommon("applyBefore", {
+                date: new Date(jobDetails.expireDate).toLocaleDateString(),
+              })}
             </Badge>
           )}
         </div>
@@ -133,12 +136,12 @@ export function JobDescriptionPanel({ jobDetails }: JobDescriptionPanelProps) {
           >
             {isExpanded ? (
               <>
-                <span>Voir moins</span>
+                <span>{tCommon("seeLess")}</span>
                 <ChevronUp className="ml-1 h-4 w-4" />
               </>
             ) : (
               <>
-                <span>Voir plus</span>
+                <span>{tCommon("seeMore")}</span>
                 <ChevronDown className="ml-1 h-4 w-4" />
               </>
             )}

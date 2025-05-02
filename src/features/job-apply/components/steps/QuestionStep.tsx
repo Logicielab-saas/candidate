@@ -20,33 +20,37 @@ import { OpenQuestion } from "./questions/OpenQuestion";
 import { YesNoQuestion } from "./questions/YesNoQuestion";
 import type { QuestionFormData } from "@/features/job-apply/types/question-form";
 import { StepNavigation } from "../../../../components/shared/StepNavigation";
+import { useTranslations } from "next-intl";
 
 interface QuestionStepProps {
   questions: EmploisQuestions[];
 }
 
 // Create dynamic schema based on questions
-function createQuestionSchema(questions: EmploisQuestions[]) {
+function createQuestionSchema(
+  questions: EmploisQuestions[],
+  t: (key: string) => string
+) {
   const answersSchema: Record<string, z.ZodType> = {};
 
   questions.forEach((question) => {
     if (question.type === "selection") {
       if (question.is_multiple) {
         answersSchema[question.uuid] = question.is_required
-          ? z.array(z.string()).min(1, "Ce champ est requis")
+          ? z.array(z.string()).min(1, t("validation.required"))
           : z.array(z.string()).optional();
       } else {
         answersSchema[question.uuid] = question.is_required
-          ? z.string().min(1, "Ce champ est requis")
+          ? z.string().min(1, t("validation.required"))
           : z.string().optional();
       }
     } else if (question.type === "yes_no") {
       answersSchema[question.uuid] = question.is_required
-        ? z.enum(["yes", "no"], { required_error: "Ce champ est requis" })
+        ? z.enum(["yes", "no"], { required_error: t("validation.required") })
         : z.enum(["yes", "no"]).optional();
     } else {
       answersSchema[question.uuid] = question.is_required
-        ? z.string().min(1, "Ce champ est requis")
+        ? z.string().min(1, t("validation.required"))
         : z.string().optional();
     }
   });
@@ -77,6 +81,7 @@ function getDefaultValue(
 }
 
 export function QuestionStep({ questions }: QuestionStepProps) {
+  const tCommon = useTranslations("common");
   const { nextStep, prevStep, questionsData, setQuestionsData } =
     useJobApplyStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -95,7 +100,7 @@ export function QuestionStep({ questions }: QuestionStepProps) {
   };
 
   const form = useForm<QuestionFormData>({
-    resolver: zodResolver(createQuestionSchema(questions || [])),
+    resolver: zodResolver(createQuestionSchema(questions || [], tCommon)),
     defaultValues,
   });
 
@@ -130,8 +135,7 @@ export function QuestionStep({ questions }: QuestionStepProps) {
 
       setQuestionsData({ answers: formattedAnswers });
       nextStep();
-    } catch (error) {
-      console.error("Error submitting questions:", error);
+    } catch (_error) {
     } finally {
       setIsSubmitting(false);
     }
@@ -193,7 +197,7 @@ export function QuestionStep({ questions }: QuestionStepProps) {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardContent>
             <h2 className="text-2xl font-semibold mb-6">
-              Questions supplémentaires
+              {tCommon("supplementQuestions")}
             </h2>
             {questions.map((question) => renderQuestion(question))}
           </CardContent>
@@ -203,7 +207,7 @@ export function QuestionStep({ questions }: QuestionStepProps) {
               onBack={prevStep}
               onNext={form.handleSubmit(onSubmit)}
               isLoading={isSubmitting}
-              continueButtonText="Continuer"
+              continueButtonText={tCommon("actions.continue")}
             />
           </CardFooter>
         </form>

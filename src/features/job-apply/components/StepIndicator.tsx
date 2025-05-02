@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { useJobApplyStore, JobApplyStep } from "../store/useJobApplyStore";
 import { CheckIcon } from "lucide-react";
 import { EmploisDetails } from "@/core/interfaces";
+import { useTranslations } from "next-intl";
 
 interface StepConfig {
   id: JobApplyStep;
@@ -22,19 +23,20 @@ interface StepIndicatorProps {
 }
 
 export function StepIndicator({ jobDetails }: StepIndicatorProps) {
+  const tCommon = useTranslations("common");
   const { currentStep } = useJobApplyStore();
 
   // Determine steps based on whether job has questions
   const steps: StepConfig[] =
     jobDetails.emploi_questions?.length > 0
       ? [
-          { id: "personal-info", label: "Informations" },
-          { id: "questions", label: "Questions" },
-          { id: "review", label: "Révision" },
+          { id: "personal-info", label: tCommon("informations") },
+          { id: "questions", label: tCommon("questions") },
+          { id: "review", label: tCommon("review") },
         ]
       : [
-          { id: "personal-info", label: "Informations" },
-          { id: "review", label: "Révision" },
+          { id: "personal-info", label: tCommon("informations") },
+          { id: "review", label: tCommon("review") },
         ];
 
   // Find the index of the current step

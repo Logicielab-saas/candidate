@@ -22,12 +22,14 @@ import { AlreadyApplied } from "./AlreadyApplied";
 import LoaderOne from "@/components/ui/loader-one";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProfile } from "@/features/candidature/(profile)/hooks/use-profile";
+import { useTranslations } from "next-intl";
 
 interface JobApplyContainerProps {
   slug: string;
 }
 
 export function JobApplyContainer({ slug }: JobApplyContainerProps) {
+  const tCommon = useTranslations("common");
   const { data: jobDetails, isLoading } = useEmploisBySlug(slug);
   const { data: profile, isLoading: isLoadingUser } = useProfile();
   const { currentStep, setCurrentStep } = useJobApplyStore();
@@ -51,8 +53,7 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
       return (
         <Card className="w-full max-w-4xl mx-auto p-8 flex items-center justify-center">
           <p className="text-lg text-muted-foreground">
-            Offre d&apos;emploi introuvable. Veuillez vérifier l&apos;URL et
-            réessayer.
+            {tCommon("jobNotFound")}
           </p>
         </Card>
       );
@@ -68,7 +69,7 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
       case "review":
         return <ReviewStep jobDetails={jobDetails} profile={profile!} />;
       default:
-        return <div>Étape inconnue</div>;
+        return <div>{tCommon("unknownStep")}</div>;
     }
   };
 
@@ -87,11 +88,12 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
         ) : (
           <>
             <h1 className="text-3xl font-bold text-center mb-2">
-              Postuler pour:{" "}
-              <span className="text-primary">{jobDetails?.title}</span>
+              {tCommon("appliedFor", {
+                jobTitle: jobDetails?.title || "",
+              })}
             </h1>
             <p className="text-muted-foreground text-center">
-              Complétez les étapes suivantes pour soumettre votre candidature
+              {tCommon("jobApplySteps")}
             </p>
           </>
         )}

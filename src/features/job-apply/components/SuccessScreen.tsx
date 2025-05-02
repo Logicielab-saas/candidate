@@ -13,8 +13,10 @@ import { ArrowLeft, ClipboardList } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { AnimatedCheckmark } from "@/components/ui/animated-checkmark";
+import { useTranslations } from "next-intl";
 
 export function SuccessScreen() {
+  const tCommon = useTranslations("common");
   return (
     <div className="flex items-center justify-center">
       <div className="container max-w-2xl py-8">
@@ -40,10 +42,9 @@ export function SuccessScreen() {
                 transition={{ delay: 0.3 }}
                 className="space-y-2"
               >
-                <h1 className="text-2xl font-bold">Candidature envoyée !</h1>
+                <h1 className="text-2xl font-bold">{tCommon("success")}</h1>
                 <p className="text-muted-foreground">
-                  Votre candidature a été envoyée avec succès. Nous vous
-                  contacterons dès que possible.
+                  {tCommon("successDescription")}
                 </p>
               </motion.div>
 
@@ -53,11 +54,11 @@ export function SuccessScreen() {
                 transition={{ delay: 0.4 }}
                 className="bg-muted/50 p-4 rounded-lg space-y-2 w-full max-w-md mt-4"
               >
-                <h2 className="font-semibold">Prochaines étapes :</h2>
+                <h2 className="font-semibold">{tCommon("nextSteps")}</h2>
                 <ul className="text-sm text-muted-foreground text-left space-y-2">
-                  <li>• Vous recevrez un email de confirmation</li>
-                  <li>• Le recruteur examinera votre candidature</li>
-                  <li>• Vous serez contacté pour la suite du processus</li>
+                  <li>• {tCommon("receiveConfirmation")}</li>
+                  <li>• {tCommon("recruiterReview")}</li>
+                  <li>• {tCommon("contactForNextSteps")}</li>
                 </ul>
               </motion.div>
 
@@ -70,13 +71,13 @@ export function SuccessScreen() {
                 <Button variant="outline" className="w-full sm:w-1/2" asChild>
                   <Link href="/emplois">
                     <ArrowLeft className="mr-2 h-4 w-4" />
-                    Retour aux offres
+                    {tCommon("returnToJobs")}
                   </Link>
                 </Button>
                 <Button className="w-full sm:w-1/2" asChild>
                   <Link href="/profile/my-jobs?tab=sent-applications">
                     <ClipboardList className="mr-2 h-4 w-4" />
-                    Suivre mes candidatures
+                    {tCommon("followApplications")}
                   </Link>
                 </Button>
               </motion.div>

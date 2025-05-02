@@ -23,7 +23,7 @@ export async function fetchLocaleMessages(locale: Locale) {
       {
         next: {
           // Cache for 1 hour
-          revalidate: 3600,
+          // revalidate: 3600,
         },
       }
     );

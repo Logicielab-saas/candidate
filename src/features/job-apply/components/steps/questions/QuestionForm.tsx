@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { QuestionAnswer } from "@/features/job-apply/store/useJobApplyStore";
 import type { EmploisQuestions } from "@/core/interfaces";
+import { useTranslations } from "next-intl";
 
 interface QuestionFormProps {
   questions: EmploisQuestions[];
@@ -22,6 +23,7 @@ export function QuestionForm({
   answers,
   onChange,
 }: QuestionFormProps) {
+  const tCommon = useTranslations("common");
   const handleAnswerChange = (questionId: string, value: string) => {
     const newAnswers = [...answers];
     const existingAnswerIndex = newAnswers.findIndex(
@@ -54,7 +56,7 @@ export function QuestionForm({
               onChange={(e) =>
                 handleAnswerChange(question.uuid, e.target.value)
               }
-              placeholder="Votre réponse..."
+              placeholder={tCommon("yourAnswer")}
               className="min-h-[100px]"
             />
           </div>

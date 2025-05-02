@@ -53,42 +53,60 @@ import { hasAccessToken } from "@/lib/check-access-token";
 import { FileInputDropdown } from "@/components/shared/FileInputDropdown";
 
 // Schema for authenticated users (with resume_uuid)
-const authenticatedSchema = z.object({
-  first_name: z.string().min(1, "Le prénom est requis"),
-  last_name: z.string().min(1, "Le nom est requis"),
-  email: z.string().email("Email invalide").min(1, "L'email est requis"),
-  phone: z.string().min(1, "Le numéro de téléphone est requis"),
-  resume_uuid: z.string().min(1, "Veuillez sélectionner un CV"),
-  resume_file: z.undefined(),
-});
+const authenticatedSchema = (t: (key: string) => string) =>
+  z.object({
+    first_name: z.string().min(1, t("validation.required")),
+    last_name: z.string().min(1, t("validation.required")),
+    email: z
+      .string()
+      .email(t("validation.email"))
+      .min(1, t("validation.required")),
+    phone: z.string().min(1, t("validation.phoneRequired")),
+    resume_uuid: z.string().min(1, t("validation.resumeRequired")),
+    resume_file: z.undefined(),
+  });
 
 // Schema for public users (with resume_file)
-const publicSchema = z.object({
-  first_name: z.string().min(1, "Le prénom est requis"),
-  last_name: z.string().min(1, "Le nom est requis"),
-  email: z.string().email("Email invalide").min(1, "L'email est requis"),
-  phone: z.string().min(1, "Le numéro de téléphone est requis"),
-  resume_uuid: z.undefined(),
-  resume_file: z
-    .instanceof(File)
-    .refine(
-      (file) => file.size <= 2 * 1024 * 1024,
-      "Le fichier doit faire moins de 2MB"
-    )
-    .refine(
-      (file) =>
-        file.type === "application/pdf" ||
-        file.type === "application/msword" ||
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      "Seuls les fichiers PDF, DOC et DOCX sont acceptés"
-    ),
-});
+const publicSchema = (t: (key: string) => string) =>
+  z.object({
+    first_name: z.string().min(1, t("validation.required")),
+    last_name: z.string().min(1, t("validation.required")),
+    email: z
+      .string()
+      .email(t("validation.email"))
+      .min(1, t("validation.required")),
+    phone: z.string().min(1, t("validation.phoneRequired")),
+    resume_uuid: z.undefined(),
+    resume_file: z
+      .instanceof(File)
+      .refine(
+        (file) => file.size <= 2 * 1024 * 1024,
+        t("validation.fileSize.description")
+      )
+      .refine(
+        (file) =>
+          file.type === "application/pdf" ||
+          file.type === "application/msword" ||
+          file.type ===
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        t("validation.fileType.description")
+      ),
+  });
 
-// Combined schema type
-const personalInfoSchema = z.union([authenticatedSchema, publicSchema]);
+// Combined schema type that takes the translation function
+const personalInfoSchema = (t: (key: string) => string) =>
+  z.discriminatedUnion("isAuthenticated", [
+    z.object({
+      isAuthenticated: z.literal(true),
+      ...authenticatedSchema(t).shape,
+    }),
+    z.object({
+      isAuthenticated: z.literal(false),
+      ...publicSchema(t).shape,
+    }),
+  ]);
 
-type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
+type PersonalInfoFormData = z.infer<ReturnType<typeof personalInfoSchema>>;
 
 // Function to get the base URL for storage
 function getStorageUrl(path: string) {
@@ -120,8 +138,9 @@ export function PersonalInfoStep({
   const isAuthenticated = hasAccessToken();
 
   const form = useForm<PersonalInfoFormData>({
-    resolver: zodResolver(personalInfoSchema),
+    resolver: zodResolver(personalInfoSchema(tCommon)),
     defaultValues: {
+      isAuthenticated,
       first_name: personalInfo?.first_name || "",
       last_name: personalInfo?.last_name || "",
       email: personalInfo?.email || "",
@@ -142,6 +161,7 @@ export function PersonalInfoStep({
   useEffect(() => {
     if (profile && isAuthenticated) {
       form.reset({
+        isAuthenticated: true,
         first_name: profile.first_name || "",
         last_name: profile.last_name || "",
         email: profile.email || "",
@@ -195,11 +215,10 @@ export function PersonalInfoStep({
       <Card className="w-full max-w-4xl mx-auto">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-destructive">
-            Erreur de chargement
+            {tCommon("toast.error.title")}
           </CardTitle>
           <CardDescription>
-            Impossible de charger vos informations. Veuillez réessayer plus
-            tard.
+            {tCommon("toast.error.description")}
           </CardDescription>
         </CardHeader>
       </Card>
@@ -210,11 +229,9 @@ export function PersonalInfoStep({
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">
-          Informations personnelles
+          {tCommon("personalInfo")}
         </CardTitle>
-        <CardDescription>
-          Veuillez remplir vos informations personnelles pour continuer
-        </CardDescription>
+        <CardDescription>{tCommon("personalInfoDescription")}</CardDescription>
       </CardHeader>
 
       <Form {...form}>
@@ -223,10 +240,9 @@ export function PersonalInfoStep({
             {isAuthenticated && (
               <Alert>
                 <AlertCircle className="h-6 w-6" />
-                <AlertTitle>Modifications de votre profil</AlertTitle>
+                <AlertTitle>{tCommon("personalInfoAlertTitle")}</AlertTitle>
                 <AlertDescription>
-                  Toute modification effectuée ici sera mise à jour dans votre
-                  profil !
+                  {tCommon("personalInfoAlertDescription")}
                 </AlertDescription>
               </Alert>
             )}
@@ -238,7 +254,7 @@ export function PersonalInfoStep({
                 name="first_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Prénom</FormLabel>
+                    <FormLabel>{tCommon("firstName")}</FormLabel>
                     <FormControl>
                       <Input placeholder="John" {...field} />
                     </FormControl>
@@ -252,7 +268,7 @@ export function PersonalInfoStep({
                 name="last_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nom</FormLabel>
+                    <FormLabel>{tCommon("lastName")}</FormLabel>
                     <FormControl>
                       <Input placeholder="Doe" {...field} />
                     </FormControl>
@@ -266,7 +282,7 @@ export function PersonalInfoStep({
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{tCommon("email")}</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="john.doe@example.com"
@@ -284,7 +300,7 @@ export function PersonalInfoStep({
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Téléphone</FormLabel>
+                    <FormLabel>{tCommon("phone")}</FormLabel>
                     <FormControl>
                       <Input placeholder="+33 6 12 34 56 78" {...field} />
                     </FormControl>
@@ -301,7 +317,9 @@ export function PersonalInfoStep({
                 name="resume_uuid"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
-                    <FormLabel>Sélectionnez votre CV</FormLabel>
+                    <FormLabel>
+                      {tCommon("validation.resumeRequired")}
+                    </FormLabel>
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
@@ -332,7 +350,9 @@ export function PersonalInfoStep({
                                     {file.name}
                                   </p>
                                   <p className="text-sm text-muted-foreground">
-                                    Ajouté le {new Date().toLocaleDateString()}
+                                    {tCommon("addedAt", {
+                                      date: new Date().toLocaleDateString(),
+                                    })}
                                   </p>
                                 </div>
                               </div>
@@ -356,7 +376,9 @@ export function PersonalInfoStep({
                                 </DialogTrigger>
                                 <DialogContent className="max-w-4xl h-[80vh]">
                                   <DialogHeader>
-                                    <DialogTitle>Aperçu du CV</DialogTitle>
+                                    <DialogTitle>
+                                      {tCommon("preview")}
+                                    </DialogTitle>
                                   </DialogHeader>
                                   <ScrollArea className="h-full w-full rounded-md">
                                     {previewUrl && (
@@ -382,10 +404,10 @@ export function PersonalInfoStep({
                   <FileInputDropdown
                     value={value}
                     onChange={onChange}
-                    label="Téléchargez votre CV"
+                    label={tCommon("validation.resumeRequired")}
                     maxSize={2}
                     accept=".pdf,.doc,.docx"
-                    placeholder="Cliquez pour télécharger votre CV"
+                    placeholder={tCommon("clickToDownload")}
                   />
                 )}
               />
@@ -395,7 +417,11 @@ export function PersonalInfoStep({
           <CardFooter>
             <StepNavigation
               isLoading={isLoading || isUpdating}
-              continueButtonText={isUpdating ? "Mise à jour..." : "Continuer"}
+              continueButtonText={
+                isUpdating
+                  ? tCommon("actions.sending")
+                  : tCommon("actions.continue")
+              }
               onNext={form.handleSubmit(onSubmit)}
             />
           </CardFooter>
