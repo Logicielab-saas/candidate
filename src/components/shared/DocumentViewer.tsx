@@ -8,14 +8,24 @@
 "use client";
 
 import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
-import { Loader2 } from "lucide-react";
+import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+import "react-pdf/dist/esm/Page/TextLayer.css";
+import LoaderOne from "../ui/loader-one";
 
 interface DocumentViewerProps {
   url: string;
 }
 
 export function DocumentViewer({ url }: DocumentViewerProps) {
-  const docs = [{ uri: url }];
+  // Ensure the URL is absolute
+  const absoluteUrl = url.startsWith("http")
+    ? url
+    : `https://${url.replace(/^\/+/, "")}`;
+
+  // Create the proxy URL
+  const proxyUrl = `/api/proxy?url=${encodeURIComponent(absoluteUrl)}`;
+
+  const docs = [{ uri: proxyUrl }];
 
   return (
     <div className="w-full h-full">
@@ -34,10 +44,15 @@ export function DocumentViewer({ url }: DocumentViewerProps) {
           loadingRenderer: {
             overrideComponent: () => (
               <div className="flex items-center justify-center p-8">
-                <Loader2 className="h-8 w-8 animate-spin" />
+                <LoaderOne />
               </div>
             ),
           },
+          pdfZoom: {
+            defaultZoom: 1.1, // slightly larger default zoom
+            zoomJump: 0.2, // smoother zoom steps
+          },
+          pdfVerticalScrollByDefault: true, // enable vertical scrolling by default
         }}
       />
     </div>

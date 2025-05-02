@@ -14,12 +14,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
 import type { EmploisQuestions } from "@/core/interfaces";
-import { ChoiceQuestion } from "./ChoiceQuestion";
-import { ExperienceQuestion } from "./ExperienceQuestion";
-import { OpenQuestion } from "./OpenQuestion";
-import { YesNoQuestion } from "./YesNoQuestion";
+import { ChoiceQuestion } from "./questions/ChoiceQuestion";
+import { ExperienceQuestion } from "./questions/ExperienceQuestion";
+import { OpenQuestion } from "./questions/OpenQuestion";
+import { YesNoQuestion } from "./questions/YesNoQuestion";
 import type { QuestionFormData } from "@/features/job-apply/types/question-form";
-import { StepNavigation } from "../../shared/StepNavigation";
+import { StepNavigation } from "../../../../components/shared/StepNavigation";
 
 interface QuestionStepProps {
   questions: EmploisQuestions[];

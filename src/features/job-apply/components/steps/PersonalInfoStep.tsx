@@ -30,10 +30,6 @@ import { useJobApplyStore } from "@/features/job-apply/store/useJobApplyStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
-  personalInfoSchema,
-  type PersonalInfoFormData,
-} from "../../types/personal-info-form";
-import {
   useProfile,
   useUpdateProfile,
 } from "@/features/candidature/(profile)/hooks/use-profile";
@@ -51,14 +47,29 @@ import {
 } from "@/components/ui/dialog";
 import { DocumentViewer } from "@/components/shared/DocumentViewer";
 import { useTranslations } from "next-intl";
-import { StepNavigation } from "../shared/StepNavigation";
+import { StepNavigation } from "../../../../components/shared/StepNavigation";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { z } from "zod";
+
+const personalInfoSchema = z.object({
+  first_name: z.string().min(1, "Le prénom est requis"),
+  last_name: z.string().min(1, "Le nom est requis"),
+  email: z.string().email("Email invalide").min(1, "L'email est requis"),
+  phone: z.string().min(1, "Le numéro de téléphone est requis"),
+  resume_uuid: z.string().min(1, "Veuillez sélectionner un CV"),
+});
+
+type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
 
 // Function to get the base URL for storage
 function getStorageUrl(path: string) {
-  // Remove any leading slashes
+  if (path.startsWith("http")) {
+    return path;
+  }
+  // Remove any leading slashes and ensure we have the full URL
   const cleanPath = path.replace(/^\/+/, "");
-  return `${process.env.NEXT_PUBLIC_STORAGE_URL}/${cleanPath}`;
+  const storageUrl = process.env.NEXT_PUBLIC_STORAGE_URL || "";
+  return `${storageUrl}/${cleanPath}`.replace(/([^:]\/)\/+/g, "$1");
 }
 
 export function PersonalInfoStep() {
@@ -122,9 +133,8 @@ export function PersonalInfoStep() {
       // Proceed with job application
       setPersonalInfo(data);
       nextStep();
-    } catch (error) {
+    } catch (_error) {
       // Error is handled by the mutation
-      console.error("Error updating profile:", error);
     }
   };
 
@@ -246,7 +256,8 @@ export function PersonalInfoStep() {
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      value={field.value}
+                      defaultValue={personalInfo?.resume_uuid}
                       className="grid grid-cols-1 gap-4"
                     >
                       {profile?.files?.map((file) => (

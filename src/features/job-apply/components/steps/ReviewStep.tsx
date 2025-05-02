@@ -23,19 +23,13 @@ import { useState, useRef } from "react";
 import { useApplyToJob } from "@/features/job-apply/hooks/use-job-apply";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import {
-  PencilIcon,
-  ImageIcon,
-  UserIcon,
-  AlertCircle,
-  FileIcon,
-} from "lucide-react";
+import { PencilIcon, ImageIcon, UserIcon, FileIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Profile } from "@/features/candidature/(profile)/common/interface";
 import { useTranslations } from "next-intl";
-import { StepNavigation } from "../shared/StepNavigation";
+import { StepNavigation } from "../../../../components/shared/StepNavigation";
+import { hasAccessToken } from "@/lib/check-access-token";
 
 interface ReviewStepProps {
   jobDetails: EmploisDetails;
@@ -45,7 +39,7 @@ interface ReviewStepProps {
 export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
   const tCommon = useTranslations("common");
   const router = useRouter();
-  const { questionsData, prevStep, resetForm, personalInfo } =
+  const { questionsData, prevStep, resetForm, personalInfo, setCurrentStep } =
     useJobApplyStore();
   const { mutate: applyToJob, isPending } = useApplyToJob(tCommon);
 
@@ -64,7 +58,18 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
     (file) => file.uuid === personalInfo.resume_uuid
   );
 
+  // Handle navigation to specific steps
+  const handleModifyPersonalInfo = () => {
+    setCurrentStep("personal-info");
+  };
+
+  const handleModifyQuestions = () => {
+    setCurrentStep("questions");
+  };
+
   const handleSubmit = async () => {
+    // TODO: for user no authenticated (public) we will set different files
+    // const isAuthenticated = hasAccessToken();
     try {
       setError(null);
 
@@ -75,15 +80,14 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
       formData.append("last_name", personalInfo.last_name);
       formData.append("email", personalInfo.email);
       formData.append("phone", personalInfo.phone);
-      formData.append("resume_uuid", personalInfo.resume_uuid);
-
+      formData.append("file_uuid", personalInfo.resume_uuid);
       if (coverLetter) {
         formData.append("cover_letter", coverLetter);
       }
 
       // Only append file if it exists and is valid
       if (file instanceof File) {
-        formData.append("file", file);
+        formData.append("additional_file", file);
       }
 
       // Add questions answers if any
@@ -102,6 +106,11 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
         });
       }
 
+      // Log FormData entries
+      // for (const [key, value] of formData.entries()) {
+      //   console.log(`${key}:`, value);
+      // }
+
       // Submit application
       applyToJob(formData, {
         onSuccess: () => {
@@ -113,9 +122,6 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
             fileInputRef.current.value = "";
           }
           router.push("/job-apply/success");
-        },
-        onError: (error: Error) => {
-          setError(error.message);
         },
       });
     } catch (_error) {}
@@ -159,7 +165,7 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
               variant="ghost"
               size="sm"
               className="text-muted-foreground hover:text-foreground"
-              onClick={() => prevStep()}
+              onClick={handleModifyPersonalInfo}
             >
               <PencilIcon className="h-4 w-4 mr-2" />
               Modifier
@@ -167,10 +173,12 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
           </div>
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="font-medium">Nom complet</p>
-              <p className="text-muted-foreground">
-                {personalInfo.first_name} {personalInfo.last_name}
-              </p>
+              <p className="font-medium">Prénom</p>
+              <p className="text-muted-foreground">{personalInfo.first_name}</p>
+            </div>
+            <div>
+              <p className="font-medium">Nom</p>
+              <p className="text-muted-foreground">{personalInfo.last_name}</p>
             </div>
             <div>
               <p className="font-medium">Email</p>
@@ -195,7 +203,7 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
               variant="ghost"
               size="sm"
               className="text-muted-foreground hover:text-foreground"
-              onClick={() => prevStep()}
+              onClick={handleModifyPersonalInfo}
             >
               <PencilIcon className="h-4 w-4 mr-2" />
               Modifier
@@ -213,19 +221,6 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
 
         <Separator />
 
-        {/* Job Details Summary */}
-        <div>
-          <h3 className="font-semibold mb-2">Poste</h3>
-          <p className="text-muted-foreground">{jobDetails.title}</p>
-          {jobDetails.company_name && (
-            <p className="text-sm text-muted-foreground mt-1">
-              {jobDetails.company_name}
-            </p>
-          )}
-        </div>
-
-        <Separator />
-
         {/* Questions Summary */}
         {jobDetails.emploi_questions?.length > 0 && (
           <>
@@ -236,7 +231,7 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
                   variant="ghost"
                   size="sm"
                   className="text-muted-foreground hover:text-foreground"
-                  onClick={() => prevStep()}
+                  onClick={handleModifyQuestions}
                 >
                   <PencilIcon className="h-4 w-4 mr-2" />
                   Modifier

@@ -64,20 +64,33 @@ export const useJobApplyStore = create<JobApplyState>()(
     setCurrentStep: (step) => set({ currentStep: step }),
 
     nextStep: () => {
-      const { currentStep } = get();
+      const { currentStep, questionsData } = get();
       const currentIndex = stepOrder.indexOf(currentStep);
 
       if (currentIndex < stepOrder.length - 1) {
-        set({ currentStep: stepOrder[currentIndex + 1] });
+        // Skip questions step if no answers
+        if (
+          currentStep === "personal-info" &&
+          questionsData.answers.length === 0
+        ) {
+          set({ currentStep: "review" });
+        } else {
+          set({ currentStep: stepOrder[currentIndex + 1] });
+        }
       }
     },
 
     prevStep: () => {
-      const { currentStep } = get();
+      const { currentStep, questionsData } = get();
       const currentIndex = stepOrder.indexOf(currentStep);
 
       if (currentIndex > 0) {
-        set({ currentStep: stepOrder[currentIndex - 1] });
+        // If we're in review step and there are no questions, go directly to personal info
+        if (currentStep === "review" && questionsData.answers.length === 0) {
+          set({ currentStep: "personal-info" });
+        } else {
+          set({ currentStep: stepOrder[currentIndex - 1] });
+        }
       }
     },
 

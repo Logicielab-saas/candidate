@@ -11,7 +11,7 @@
 
 import { useJobApplyStore } from "../store/useJobApplyStore";
 import { StepIndicator } from "./StepIndicator";
-import { QuestionStep } from "./steps/questions/QuestionStep";
+import { QuestionStep } from "./steps/QuestionStep";
 import { ReviewStep } from "./steps/ReviewStep";
 import { PersonalInfoStep } from "./steps/PersonalInfoStep";
 import { useEffect } from "react";
@@ -22,6 +22,7 @@ import { AlreadyApplied } from "./AlreadyApplied";
 import LoaderOne from "@/components/ui/loader-one";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProfile } from "@/features/candidature/(profile)/hooks/use-profile";
+import { hasAccessToken } from "@/lib/check-access-token";
 
 interface JobApplyContainerProps {
   slug: string;

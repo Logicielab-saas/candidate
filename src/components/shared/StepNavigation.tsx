@@ -58,7 +58,7 @@ export function StepNavigation({
       {/* Continue button aligned to the right */}
       <div className="flex justify-end flex-1">
         {onNext && (
-          <Button type="submit" disabled={isLoading}>
+          <Button type="button" onClick={onNext} disabled={isLoading}>
             {isLoading ? "Chargement..." : continueButtonText}
           </Button>
         )}
