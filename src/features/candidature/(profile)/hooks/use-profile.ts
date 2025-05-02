@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCurrentUser, getProfile, updateProfile } from "../services/profile";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "../qualifications/hooks/use-profile-resume";
+import { hasAccessToken } from "@/lib/check-access-token";
 
 export const profileKeys = {
   all: ["profile"] as const,
@@ -12,6 +13,7 @@ export function useProfile() {
   return useQuery({
     queryKey: profileKeys.me(),
     queryFn: getProfile,
+    enabled: hasAccessToken(),
   });
 }
 

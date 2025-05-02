@@ -56,24 +56,47 @@ function createQuestionSchema(questions: EmploisQuestions[]) {
   });
 }
 
+// Helper function to get default value based on question type
+function getDefaultValue(
+  question: EmploisQuestions,
+  existingAnswer: string | string[] | undefined
+) {
+  if (existingAnswer !== undefined) return existingAnswer;
+
+  switch (question.type) {
+    case "selection":
+      return question.is_multiple ? [] : "";
+    case "yes_no":
+      return "";
+    case "experience":
+    case "open":
+      return "";
+    default:
+      return "";
+  }
+}
+
 export function QuestionStep({ questions }: QuestionStepProps) {
   const { nextStep, prevStep, questionsData, setQuestionsData } =
     useJobApplyStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Initialize form with proper default values
+  const defaultValues = {
+    answers: Object.fromEntries(
+      questions.map((question) => [
+        question.uuid,
+        getDefaultValue(
+          question,
+          questionsData.answers.find((a) => a.id === question.uuid)?.answer
+        ),
+      ])
+    ),
+  };
+
   const form = useForm<QuestionFormData>({
     resolver: zodResolver(createQuestionSchema(questions || [])),
-    defaultValues: {
-      answers: Object.fromEntries(
-        (questions || []).map((question) => [
-          question.uuid,
-          questionsData.answers.find((a) => a.id === question.uuid)?.answer ||
-            (question.type === "selection" && question.is_multiple
-              ? []
-              : undefined),
-        ])
-      ),
-    },
+    defaultValues,
   });
 
   // Handle auto-skip when no questions
@@ -96,12 +119,13 @@ export function QuestionStep({ questions }: QuestionStepProps) {
         .filter(([id, answer]) => {
           const question = questions.find((q) => q.uuid === id);
           return (
-            question?.is_required || (answer !== "" && answer !== undefined)
+            question?.is_required ||
+            (answer !== "" && answer !== undefined && answer !== null)
           );
         })
         .map(([id, answer]) => ({
           id,
-          answer,
+          answer: answer || "",
         }));
 
       setQuestionsData({ answers: formattedAnswers });

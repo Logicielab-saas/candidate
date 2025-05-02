@@ -45,6 +45,7 @@ export async function fetchEmplois(
     if (per_page !== 10) params.per_page = per_page;
     if (searchText) params.q = searchText;
     if (city) params.city = city;
+    if (!isAuthenticated) params.token_device = "STATIC_TOKEN";
 
     const response = await api.get<EmploisResponse>(endpoint, {
       params: Object.keys(params).length ? params : undefined,
@@ -60,7 +61,12 @@ export async function fetchEmplois(
     }
     // If pagination is missing, set to default Pagination object
     if (!data.pagination) {
-      data.pagination = { current_page: 1, last_page: 1, per_page: 10, total: 0 };
+      data.pagination = {
+        current_page: 1,
+        last_page: 1,
+        per_page: 10,
+        total: 0,
+      };
     }
     return data;
   } catch (error) {
@@ -73,12 +79,22 @@ export async function fetchEmplois(
 }
 
 export async function fetchEmploisBySlug(slug: string) {
-  const response = await api.get<EmploisDetailsResponse>(`${endpoint}/${slug}`);
+  const response = await api.get<EmploisDetailsResponse>(
+    `${endpoint}/${slug}`,
+    {
+      params: {
+        token_device: "STATIC_TOKEN",
+      },
+    }
+  );
   return response.data;
 }
 
 // TODO: Implement this FUNCTIONALITY NO APP TOMORROW (FRIDAY)
-export async function fetchSearchSuggestions(params: { q?: string; city?: string }) {
+export async function fetchSearchSuggestions(params: {
+  q?: string;
+  city?: string;
+}) {
   const response = await api.get<SearchSuggestionsResponse>(
     `${endpointSuggestions}`,
     {

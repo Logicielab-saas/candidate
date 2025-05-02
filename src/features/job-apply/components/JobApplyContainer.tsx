@@ -22,7 +22,6 @@ import { AlreadyApplied } from "./AlreadyApplied";
 import LoaderOne from "@/components/ui/loader-one";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProfile } from "@/features/candidature/(profile)/hooks/use-profile";
-import { hasAccessToken } from "@/lib/check-access-token";
 
 interface JobApplyContainerProps {
   slug: string;
@@ -61,7 +60,9 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
 
     switch (currentStep) {
       case "personal-info":
-        return <PersonalInfoStep />;
+        return (
+          <PersonalInfoStep profile={profile!} isLoading={isLoadingUser} />
+        );
       case "questions":
         return <QuestionStep questions={jobDetails.emploi_questions} />;
       case "review":

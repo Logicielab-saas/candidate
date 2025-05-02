@@ -8,8 +8,11 @@ import { ApiError } from "next/dist/server/api-utils";
 import api from "@/lib/axios";
 import { AxiosError } from "axios";
 import { JobApplyFormData } from "@/core/interfaces";
+import { hasAccessToken } from "@/lib/check-access-token";
 
-const endpoint = "/employee/emploi/apply";
+const isAuthenticated = hasAccessToken();
+console.log(isAuthenticated);
+const endpoint = isAuthenticated ? "/employee/emploi/apply" : "/emplois/apply";
 
 export async function ApplyToJob(data: JobApplyFormData) {
   try {
