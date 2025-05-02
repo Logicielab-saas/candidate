@@ -39,6 +39,7 @@ import dynamic from "next/dynamic";
 import { useEmplois } from "../hooks/use-emplois";
 import { useTranslations } from "next-intl";
 import NotInterestedDialog from "./NotInterestedDialog";
+import { hasAccessToken } from "@/lib/check-access-token";
 
 const ReportJobDialog = dynamic(
   () => import("@/components/shared/ReportJobDialog"),
@@ -53,6 +54,8 @@ export function JobDetails() {
 
   const t = useTranslations("emplois.jobDetails");
   const tCommon = useTranslations("common.actions");
+
+  const isAuthenticated = hasAccessToken();
 
   // Set default job if none is selected and jobs are available
   useEffect(() => {
@@ -152,15 +155,17 @@ export function JobDetails() {
             {/* Action Buttons */}
             <div className="flex items-center gap-2">
               <TooltipProvider delayDuration={100}>
-                <JobBookmarkButton
-                  jobId={job.uuid}
-                  jobSlug={job.slug}
-                  initialIsSaved={job.saved}
-                  jobTitle={job.title}
-                  tooltipPosition="top"
-                  iconClassName="h-6 w-6"
-                  buttonStyle="action"
-                />
+                {isAuthenticated && (
+                  <JobBookmarkButton
+                    jobId={job.uuid}
+                    jobSlug={job.slug}
+                    initialIsSaved={job.saved}
+                    jobTitle={job.title}
+                    tooltipPosition="top"
+                    iconClassName="h-6 w-6"
+                    buttonStyle="action"
+                  />
+                )}
 
                 <Tooltip>
                   <TooltipTrigger>
@@ -175,38 +180,44 @@ export function JobDetails() {
                     <p>{t("actions.share")}</p>
                   </TooltipContent>
                 </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <span
-                      className={cn(
-                        "h-9 w-9 flex items-center justify-center cursor-pointer",
-                        "text-destructive hover:bg-accent rounded-full"
-                      )}
-                      onClick={() => setIsReportDialogOpen(true)}
-                    >
-                      <Flag className="h-6 w-6" />
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{tCommon("reportJob")}</p>
-                  </TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <span
-                      className={cn(
-                        "h-9 w-9 flex items-center justify-center cursor-pointer",
-                        "text-yellow-600 hover:text-yellow-700 hover:bg-accent rounded-full"
-                      )}
-                      onClick={handleNotInterestedClick}
-                    >
-                      <XCircle className="h-6 w-6" />
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{t("actions.notInterested")}</p>
-                  </TooltipContent>
-                </Tooltip>
+                {isAuthenticated && (
+                  <>
+                    {/* Report job */}
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <span
+                          className={cn(
+                            "h-9 w-9 flex items-center justify-center cursor-pointer",
+                            "text-destructive hover:bg-accent rounded-full"
+                          )}
+                          onClick={() => setIsReportDialogOpen(true)}
+                        >
+                          <Flag className="h-6 w-6" />
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{tCommon("reportJob")}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    {/* Not interested */}
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <span
+                          className={cn(
+                            "h-9 w-9 flex items-center justify-center cursor-pointer",
+                            "text-yellow-600 hover:text-yellow-700 hover:bg-accent rounded-full"
+                          )}
+                          onClick={handleNotInterestedClick}
+                        >
+                          <XCircle className="h-6 w-6" />
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{t("actions.notInterested")}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </>
+                )}
               </TooltipProvider>
             </div>
           </div>

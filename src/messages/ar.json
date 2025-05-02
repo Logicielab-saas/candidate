@@ -1026,6 +1026,51 @@
       },
       "noAccount": "ليس لديك حساب؟",
       "signup": "إنشاء حساب"
+    },
+    "signup": {
+      "selectType": {
+        "title": "إنشاء حسابك",
+        "description": "الرجاء اختيار كيفية التسجيل",
+        "employee": {
+          "title": "تبحث عن وظيفة",
+          "imageAlt": "رسم توضيحي للباحث عن عمل"
+        },
+        "recruiter": {
+          "title": "توظيف لوظيفة",
+          "imageAlt": "رسم توضيحي للموظف"
+        },
+        "illustration": {
+          "alt": "رسم توضيحي لاختيار التسجيل"
+        }
+      },
+      "form": {
+        "title": "إنشاء حساب",
+        "description": "أنشئ حسابك في Postuly كـ {type}",
+        "name": {
+          "label": "الاسم",
+          "placeholder": "اسمك"
+        },
+        "email": {
+          "label": "البريد الإلكتروني",
+          "placeholder": "m@example.com"
+        },
+        "password": {
+          "label": "كلمة المرور",
+          "placeholder": "•••••••"
+        },
+        "passwordConfirm": {
+          "label": "تأكيد كلمة المرور",
+          "placeholder": "•••••••"
+        },
+        "haveAccount": "هل لديك حساب بالفعل؟"
+      },
+      "types": {
+        "employee": "باحث عن عمل",
+        "recruiter": "موظف"
+      },
+      "toast": {
+        "success": "تم إنشاء حسابك بنجاح"
+      }
     }
   },
   "emplois": {

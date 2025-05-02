@@ -115,6 +115,7 @@ export function JobCardMenu({ jobId, jobSlug }: JobCardMenuProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[200px]">
+          {/* Bookmark job */}
           <DropdownMenuItem
             className="flex items-center gap-2 cursor-pointer"
             onClick={handleBookmarkClick}
@@ -131,6 +132,7 @@ export function JobCardMenu({ jobId, jobSlug }: JobCardMenuProps) {
             </span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
+          {/* Not Interessted */}
           <DropdownMenuItem
             className="flex items-center gap-2 cursor-pointer text-yellow-600"
             onClick={handleNotInterestedClick}
@@ -138,6 +140,7 @@ export function JobCardMenu({ jobId, jobSlug }: JobCardMenuProps) {
             <XCircle className="h-4 w-4" />
             <span>{t("notInterested")}</span>
           </DropdownMenuItem>
+          {/* report */}
           <DropdownMenuItem
             className="flex items-center gap-2 cursor-pointer text-destructive"
             onClick={handleSignalerClick}

@@ -79,12 +79,12 @@ export async function fetchEmplois(
 }
 
 export async function fetchEmploisBySlug(slug: string) {
+  const params = !isAuthenticated ? { token_device: "STATIC_TOKEN" } : {};
+
   const response = await api.get<EmploisDetailsResponse>(
     `${endpoint}/${slug}`,
     {
-      params: {
-        token_device: "STATIC_TOKEN",
-      },
+      params,
     }
   );
   return response.data;

@@ -1026,6 +1026,51 @@
       },
       "noAccount": "Don't have an account?",
       "signup": "Sign up"
+    },
+    "signup": {
+      "selectType": {
+        "title": "Create Your Account",
+        "description": "Please choose how you would like to sign up.",
+        "employee": {
+          "title": "Looking for a job",
+          "imageAlt": "Job seeker illustration"
+        },
+        "recruiter": {
+          "title": "Hiring for a job",
+          "imageAlt": "Recruiter illustration"
+        },
+        "illustration": {
+          "alt": "Signup choice illustration"
+        }
+      },
+      "form": {
+        "title": "Sign up",
+        "description": "Create your Postuly account as a {type}",
+        "name": {
+          "label": "Name",
+          "placeholder": "Your Name"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "m@example.com"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "•••••••"
+        },
+        "passwordConfirm": {
+          "label": "Confirm Password",
+          "placeholder": "•••••••"
+        },
+        "haveAccount": "Already have an account?"
+      },
+      "types": {
+        "employee": "job seeker",
+        "recruiter": "recruiter"
+      },
+      "toast": {
+        "success": "Your account has been created successfully"
+      }
     }
   },
   "emplois": {

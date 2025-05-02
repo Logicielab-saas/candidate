@@ -1025,6 +1025,51 @@
       },
       "noAccount": "Vous n'avez pas de compte ?",
       "signup": "S'inscrire"
+    },
+    "signup": {
+      "selectType": {
+        "title": "Créez Votre Compte",
+        "description": "Veuillez choisir comment vous souhaitez vous inscrire.",
+        "employee": {
+          "title": "À la recherche d'un emploi",
+          "imageAlt": "Illustration du chercheur d'emploi"
+        },
+        "recruiter": {
+          "title": "Recruter pour un poste",
+          "imageAlt": "Illustration du recruteur"
+        },
+        "illustration": {
+          "alt": "Illustration du choix d'inscription"
+        }
+      },
+      "form": {
+        "title": "S'inscrire",
+        "description": "Créez votre compte Postuly en tant que {type}",
+        "name": {
+          "label": "Nom",
+          "placeholder": "Votre nom"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "m@example.com"
+        },
+        "password": {
+          "label": "Mot de passe",
+          "placeholder": "•••••••"
+        },
+        "passwordConfirm": {
+          "label": "Confirmer le mot de passe",
+          "placeholder": "•••••••"
+        },
+        "haveAccount": "Vous avez déjà un compte ?"
+      },
+      "types": {
+        "employee": "chercheur d'emploi",
+        "recruiter": "recruteur"
+      },
+      "toast": {
+        "success": "Votre compte a été créé avec succès"
+      }
     }
   },
   "emplois": {

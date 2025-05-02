@@ -18,18 +18,20 @@ export function SignupFirstStep({
   onSelect,
   selectedType,
 }: SignupFirstStepProps) {
-  const tAuth = useTranslations("common.auth.signup");
+  const tAuth = useTranslations("auth.signup");
   const tCommon = useTranslations("common");
 
   return (
-    <div className="flex flex-col gap-6 ">
+    <div className="flex flex-col gap-6">
       <Card className="overflow-hidden">
         <CardContent className="grid p-0 md:grid-cols-2">
           <div className="flex flex-col gap-6 p-6 mb-12">
             <div className="flex flex-col items-center text-center">
-              <h1 className="text-2xl font-bold">{tAuth("firstStep.title")}</h1>
+              <h1 className="text-2xl font-bold">
+                {tAuth("selectType.title")}
+              </h1>
               <p className="text-balance text-muted-foreground">
-                {tAuth("firstStep.description")}
+                {tAuth("selectType.description")}
               </p>
             </div>
             <RadioGroup className="grid grid-cols-1 md:grid-cols-1 gap-6">
@@ -71,16 +73,16 @@ export function SignupFirstStep({
                     </div>
                     <CardContent className="pt-6 space-y-4">
                       <div className="flex items-center gap-3">
-                        <div className=" p-2">
+                        <div className="p-2">
                           <Image
                             src="/signup/employ.svg"
-                            alt={tAuth("types.employee")}
+                            alt={tAuth("selectType.employee.imageAlt")}
                             width={100}
                             height={100}
                           />
                         </div>
                         <h3 className="text-xl font-semibold text-secondaryHex-900 dark:text-secondaryHex-50 text-center">
-                          {tAuth("firstStep.options.employee.title")}
+                          {tAuth("selectType.employee.title")}
                         </h3>
                       </div>
                     </CardContent>
@@ -129,13 +131,13 @@ export function SignupFirstStep({
                         <div className="p-2">
                           <Image
                             src="/signup/comany.svg"
-                            alt={tAuth("types.recruiter")}
+                            alt={tAuth("selectType.recruiter.imageAlt")}
                             width={100}
                             height={100}
                           />
                         </div>
                         <h3 className="text-xl font-semibold text-secondaryHex-900 dark:text-secondaryHex-50 text-center">
-                          {tAuth("firstStep.options.recruiter.title")}
+                          {tAuth("selectType.recruiter.title")}
                         </h3>
                       </div>
                     </CardContent>
@@ -146,12 +148,12 @@ export function SignupFirstStep({
           </div>
           <Illustration
             src="/signup/question.svg"
-            alt={tAuth("title")}
+            alt={tAuth("selectType.illustration.alt")}
             isFixedDimension={true}
           />
         </CardContent>
       </Card>
-      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
+      <div className="text-balance text-center text-xs text-muted-foreground">
         {tCommon
           .raw("legal.agreement")
           .replace("{terms}", "")

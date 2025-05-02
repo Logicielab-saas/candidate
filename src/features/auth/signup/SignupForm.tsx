@@ -49,7 +49,7 @@ export function SignupForm({
 
   // Translations
   const tCommon = useTranslations("common");
-  const tAuth = useTranslations("common.auth.signup");
+  const tAuth = useTranslations("auth.signup");
   const tValidation = useTranslations("common.validation");
 
   const signupSchemaForm = useMemo(
@@ -88,22 +88,22 @@ export function SignupForm({
       if (result.error) {
         toast({
           variant: "destructive",
-          title: tAuth("form.error"),
+          title: tCommon("actions.error"),
           description: result.error,
         });
       }
       if (result.success) {
         toast({
           variant: "default",
-          title: tAuth("form.success"),
-          description: tAuth("form.success"),
+          title: tAuth("toast.success"),
+          description: tAuth("toast.success"),
         });
         router.replace("/login");
       }
     } catch (_error) {
       toast({
         variant: "destructive",
-        title: tAuth("form.error"),
+        title: tCommon("actions.error"),
         description: tValidation("unexpectedError"),
       });
     } finally {
@@ -118,9 +118,9 @@ export function SignupForm({
           <form className="p-6 md:p-8" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
-                <h1 className="text-2xl font-bold">{tAuth("title")}</h1>
+                <h1 className="text-2xl font-bold">{tAuth("form.title")}</h1>
                 <p className="text-balance text-muted-foreground">
-                  {tAuth("description", {
+                  {tAuth("form.description", {
                     type:
                       selectedType === "employee"
                         ? tAuth("types.employee")
@@ -129,12 +129,12 @@ export function SignupForm({
                 </p>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="name">{tAuth("form.labels.name")}</Label>
+                <Label htmlFor="name">{tAuth("form.name.label")}</Label>
                 <div className="relative flex items-center">
                   <Input
                     id="name"
                     type="text"
-                    placeholder={tAuth("form.placeholders.name")}
+                    placeholder={tAuth("form.name.placeholder")}
                     {...register("name")}
                     disabled={isLoading}
                   />
@@ -149,12 +149,12 @@ export function SignupForm({
                 )}
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="email">{tAuth("form.labels.email")}</Label>
+                <Label htmlFor="email">{tAuth("form.email.label")}</Label>
                 <div className="relative flex items-center">
                   <Input
                     id="email"
                     type="email"
-                    placeholder={tAuth("form.placeholders.email")}
+                    placeholder={tAuth("form.email.placeholder")}
                     {...register("email")}
                     disabled={isLoading}
                   />
@@ -169,14 +169,12 @@ export function SignupForm({
                 )}
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="password">
-                  {tAuth("form.labels.password")}
-                </Label>
+                <Label htmlFor="password">{tAuth("form.password.label")}</Label>
                 <div className="relative flex items-center">
                   <Input
                     id="password"
                     type="password"
-                    placeholder={tAuth("form.placeholders.password")}
+                    placeholder={tAuth("form.password.placeholder")}
                     {...register("password")}
                     disabled={isLoading}
                   />
@@ -192,13 +190,13 @@ export function SignupForm({
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password_confirmation">
-                  {tAuth("form.labels.confirmPassword")}
+                  {tAuth("form.passwordConfirm.label")}
                 </Label>
                 <div className="relative flex items-center">
                   <Input
                     id="password_confirmation"
                     type="password"
-                    placeholder={tAuth("form.placeholders.confirmPassword")}
+                    placeholder={tAuth("form.passwordConfirm.placeholder")}
                     {...register("password_confirmation")}
                     disabled={isLoading}
                   />
@@ -217,13 +215,11 @@ export function SignupForm({
               </div>
               <input type="hidden" {...register("user_type")} />
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading
-                  ? tAuth("form.buttons.signingUp")
-                  : tAuth("form.buttons.signup")}
+                {isLoading ? tCommon("actions.sending") : tAuth("form.title")}
               </Button>
               <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
                 <span className="relative z-10 bg-background px-2 text-muted-foreground">
-                  {tAuth("form.orContinueWith")}
+                  {tCommon("actions.continueWith")}
                 </span>
               </div>
               <div className="flex justify-center">
@@ -235,14 +231,14 @@ export function SignupForm({
                     />
                   </svg>
                   <span className="sr-only">
-                    {tAuth("form.buttons.google")}
+                    {tCommon("actions.loginWith", { provider: "Google" })}
                   </span>
                 </Button>
               </div>
               <div className="text-center text-sm">
-                {tAuth("form.alreadyHaveAccount")}{" "}
+                {tAuth("form.haveAccount")}{" "}
                 <Link href="/login" className="underline underline-offset-4">
-                  {tAuth("form.login")}
+                  {tAuth("form.title")}
                 </Link>
               </div>
               <Button
@@ -251,8 +247,7 @@ export function SignupForm({
                 type="button"
                 disabled={isLoading}
               >
-                <ArrowLeft className="w-4 h-4 mr-2" />{" "}
-                {tAuth("form.buttons.back")}
+                <ArrowLeft className="w-4 h-4 mr-2" /> {tCommon("actions.back")}
               </Button>
             </div>
           </form>
@@ -264,8 +259,8 @@ export function SignupForm({
             }
             alt={
               selectedType === "employee"
-                ? tAuth("types.employee")
-                : tAuth("types.recruiter")
+                ? tAuth("selectType.employee.imageAlt")
+                : tAuth("selectType.recruiter.imageAlt")
             }
           />
         </CardContent>

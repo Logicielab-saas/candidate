@@ -9,6 +9,7 @@ import { JobCardMenu } from "./JobCardMenu";
 import { useTranslations } from "next-intl";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { hasAccessToken } from "@/lib/check-access-token";
 
 interface JobCardProps {
   job: Emplois;
@@ -18,6 +19,9 @@ interface JobCardProps {
 export function JobCard({ job, isSelected }: JobCardProps) {
   const t = useTranslations("emplois.jobCard");
   const tCommon = useTranslations("common.actions");
+
+  const isAuthenticated = hasAccessToken();
+
   const handleKeywordClick = (e: React.MouseEvent, skill: string) => {
     e.stopPropagation(); // Prevent job card click
     redirect(`/home?keyword=${encodeURIComponent(skill)}`);
@@ -51,9 +55,11 @@ export function JobCard({ job, isSelected }: JobCardProps) {
           <div className="flex flex-col gap-2 flex-1">
             <div className="flex items-start justify-between">
               <h3 className="font-semibold leading-none">{job.title}</h3>
-              <div className="flex items-center gap-2">
-                <JobCardMenu jobId={job.uuid} jobSlug={job.slug} />
-              </div>
+              {isAuthenticated && (
+                <div className="flex items-center gap-2">
+                  <JobCardMenu jobId={job.uuid} jobSlug={job.slug} />
+                </div>
+              )}
             </div>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">

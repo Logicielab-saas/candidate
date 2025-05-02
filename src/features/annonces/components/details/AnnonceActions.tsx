@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { useJobBookmark } from "@/core/utils/job-bookmark-handler";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { hasAccessToken } from "@/lib/check-access-token";
 
 interface AnnonceActionsProps {
   annonce: EmploisDetails;
@@ -17,11 +18,12 @@ export function AnnonceActions({ annonce }: AnnonceActionsProps) {
   const tCommon = useTranslations("common");
   const t = useTranslations("annonces");
 
+  const isAuthenticated = hasAccessToken();
+
   const { isSaved, isProcessing, toggleSaved } = useJobBookmark({
     initialIsSaved: annonce.saved,
     jobId: annonce.uuid,
     jobSlug: annonce.slug,
-    jobTitle: annonce.title,
   });
 
   return (
@@ -49,31 +51,33 @@ export function AnnonceActions({ annonce }: AnnonceActionsProps) {
           )}
 
           {/* Save Button */}
-          <Button
-            variant="outline"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleSaved();
-            }}
-            size="lg"
-            className={cn(
-              "w-full",
-              isProcessing && "opacity-50 cursor-not-allowed"
-            )}
-            disabled={isProcessing}
-          >
-            <Heart
+          {isAuthenticated && (
+            <Button
+              variant="outline"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleSaved();
+              }}
+              size="lg"
               className={cn(
-                "mr-2 h-4 w-4",
-                isSaved && "fill-current text-primary",
-                isProcessing && "animate-pulse"
+                "w-full",
+                isProcessing && "opacity-50 cursor-not-allowed"
               )}
-            />
-            <span>
-              {isSaved ? tCommon("actions.saved") : tCommon("actions.save")}
-            </span>
-          </Button>
+              disabled={isProcessing}
+            >
+              <Heart
+                className={cn(
+                  "mr-2 h-4 w-4",
+                  isSaved && "fill-current text-primary",
+                  isProcessing && "animate-pulse"
+                )}
+              />
+              <span>
+                {isSaved ? tCommon("actions.saved") : tCommon("actions.save")}
+              </span>
+            </Button>
+          )}
 
           {/* Deadline Info */}
           {annonce.expireDate && (
