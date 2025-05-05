@@ -1,11 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import { CalendarIcon, ClockIcon } from "lucide-react";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface FixedInterviewDetailsProps {
   fixedDate: string | null;
@@ -22,6 +21,7 @@ const FixedInterviewDetails = ({
 }: FixedInterviewDetailsProps) => {
   const t = useTranslations("myInterviewActionPage.fixed");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
 
   return (
     <div className="p-6 shadow-md rounded-lg border">
@@ -33,9 +33,7 @@ const FixedInterviewDetails = ({
         <p className="text-md text-gray-700 dark:text-gray-300">
           {tCommon("dateLabel")}:{" "}
           <span className="font-bold">
-            {format(new Date(fixedDate || ""), "PPP", {
-              locale: fr,
-            })}
+            {formatDate(fixedDate || "", "PPP", locale)}
           </span>
         </p>
       </div>

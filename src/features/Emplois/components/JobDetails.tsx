@@ -37,9 +37,10 @@ import { JobBookmarkButton } from "@/components/shared/JobBookmarkButton";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useEmplois } from "../hooks/use-emplois";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import NotInterestedDialog from "./NotInterestedDialog";
 import { hasAccessToken } from "@/lib/check-access-token";
+import { formatDate } from "@/core/utils/date";
 
 const ReportJobDialog = dynamic(
   () => import("@/components/shared/ReportJobDialog"),
@@ -54,6 +55,7 @@ export function JobDetails() {
 
   const t = useTranslations("emplois.jobDetails");
   const tCommon = useTranslations("common.actions");
+  const locale = useLocale();
 
   const isAuthenticated = hasAccessToken();
 
@@ -256,7 +258,7 @@ export function JobDetails() {
               <Calendar className="h-4 w-4" />
               <span>
                 {t("deadline", {
-                  date: new Date(job.expireDate).toLocaleDateString(),
+                  date: formatDate(job.expireDate, "PPP", locale),
                 })}
               </span>
             </div>

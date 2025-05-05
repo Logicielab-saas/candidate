@@ -28,9 +28,9 @@ import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { useUnarchiveJob } from "../hooks/use-my-archived-jobs";
-import { useTranslations } from "next-intl";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
+import { getCompanyInitials } from "@/core/utils";
 
 const ReportJobDialog = dynamic(
   () => import("@/components/shared/ReportJobDialog"),
@@ -47,15 +47,6 @@ interface ArchivedJobItemProps {
   savedDate: string;
 }
 
-const getCompanyInitials = (name: string) => {
-  return name
-    .split(" ")
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-};
-
 export function ArchivedJobItem({
   jobId,
   jobTitle,
@@ -67,6 +58,11 @@ export function ArchivedJobItem({
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const { mutate: unarchiveJob, isPending: isUnarchiving } =
     useUnarchiveJob(tCommon);
+
+  const locale = useLocale();
+
+  // Format the date once for use in translation
+  const formattedDate = formatDate(savedDate, "d MMM yyyy", locale);
 
   return (
     <motion.div
@@ -98,11 +94,8 @@ export function ArchivedJobItem({
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               <span>
-                {" "}
                 {tCommon("actions.archivedAt", {
-                  date: format(new Date(savedDate), "d MMM yyyy", {
-                    locale: fr,
-                  }),
+                  date: formattedDate,
                 })}
               </span>
             </div>

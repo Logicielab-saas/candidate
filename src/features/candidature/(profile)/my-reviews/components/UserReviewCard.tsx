@@ -9,8 +9,6 @@
 import { CompanyReview } from "@/core/interfaces";
 import { Button } from "@/components/ui/button";
 import { Star, Trash2 } from "lucide-react";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -25,7 +23,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { companyDetails } from "@/core/mockData/company";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface UserReviewCardProps {
   review: CompanyReview;
@@ -34,8 +33,10 @@ interface UserReviewCardProps {
 
 export function UserReviewCard({ review, onDelete }: UserReviewCardProps) {
   const { toast } = useToast();
-  const company = companyDetails.find((c) => c.slug === review.companySlug);
   const tCommon = useTranslations("common");
+  const locale = useLocale();
+
+  const company = companyDetails.find((c) => c.slug === review.companySlug);
 
   const handleDelete = () => {
     onDelete(review.id);
@@ -70,9 +71,7 @@ export function UserReviewCard({ review, onDelete }: UserReviewCardProps) {
             </div>
             <span className="text-sm text-muted-foreground">•</span>
             <span className="text-sm text-muted-foreground">
-              {format(new Date(review.createdAt), "d MMMM yyyy", {
-                locale: fr,
-              })}
+              {formatDate(review.createdAt, "d MMMM yyyy", locale)}
             </span>
           </div>
 

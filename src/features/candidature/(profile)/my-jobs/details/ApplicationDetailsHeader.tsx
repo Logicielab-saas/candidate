@@ -1,10 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import type { EmploisApplied } from "@/core/interfaces";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Building2 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface ApplicationDetailsHeaderProps {
   application: EmploisApplied;
@@ -14,6 +13,12 @@ export function ApplicationDetailsHeader({
   application,
 }: ApplicationDetailsHeaderProps) {
   const t = useTranslations("common");
+  const locale = useLocale();
+  const formattedDate = formatDate(
+    application.created_at,
+    "d MMM yyyy",
+    locale
+  );
   return (
     <Card className="p-0">
       <CardContent className="p-0">
@@ -40,9 +45,7 @@ export function ApplicationDetailsHeader({
             </p>
             <p className="text-sm text-muted-foreground mt-1">
               {t("actions.applicationSentAt", {
-                date: format(new Date(application.created_at), "d MMM yyyy", {
-                  locale: fr,
-                }),
+                date: formattedDate,
               })}
             </p>
           </div>

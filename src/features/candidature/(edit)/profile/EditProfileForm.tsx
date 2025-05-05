@@ -1,5 +1,16 @@
 "use client";
 
+/**
+ * EditProfileForm - Form for editing user profile information
+ *
+ * Allows users to edit their personal details, contact information,
+ * address, biography, and resume description with validation.
+ *
+ * Props:
+ * - profile: Profile - Current user profile data
+ * - resumeDescription: string | null - Optional resume description
+ */
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -38,12 +49,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { format, parse, parseISO, isValid } from "date-fns";
-import { fr } from "date-fns/locale";
+import { parse, parseISO, isValid } from "date-fns";
+import { useTranslations, useLocale } from "next-intl";
+import { useMemo } from "react";
+import { formatDate, getDateFnsLocale } from "@/core/utils/date";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
-import { useMemo } from "react";
 
 function profileFormSchema(t: (key: string) => string) {
   return z.object({
@@ -101,16 +112,6 @@ interface EditProfileFormProps {
   resumeDescription?: string | null;
 }
 
-/**
- * EditProfileForm - Form for editing user profile information
- *
- * Allows users to edit their personal details, contact information,
- * address, biography, and resume description with validation.
- *
- * Props:
- * - profile: Profile - Current user profile data
- * - resumeDescription: string | null - Optional resume description
- */
 export function EditProfileForm({
   profile,
   resumeDescription,
@@ -118,6 +119,8 @@ export function EditProfileForm({
   const tCommon = useTranslations("common");
   const tValidation = useTranslations("common.validation");
   const tProfile = useTranslations("editProfile");
+  const currentLocale = useLocale();
+  const dateLocale = getDateFnsLocale(currentLocale);
 
   const router = useRouter();
 
@@ -133,12 +136,6 @@ export function EditProfileForm({
     () => profileFormSchema(tValidation),
     [tValidation]
   );
-
-  // Format the date from ISO to YYYY-MM-DD for the input
-  const formatDateForInput = (dateString: string | null) => {
-    if (!dateString) return "";
-    return dateString.split("T")[0];
-  };
 
   // Keep track of the original image state
   const originalImage =
@@ -157,7 +154,7 @@ export function EditProfileForm({
       bio: profile.bio || "",
       description: resumeDescription || "",
       is_male: profile.is_male,
-      birthdate: formatDateForInput(profile.birthdate),
+      birthdate: profile.birthdate || "",
       image: null,
     },
   });
@@ -310,7 +307,7 @@ export function EditProfileForm({
                     >
                       {field.value ? (
                         <span>
-                          {format(
+                          {formatDate(
                             (() => {
                               try {
                                 const parsedDate = parse(
@@ -326,7 +323,7 @@ export function EditProfileForm({
                               }
                             })(),
                             "d MMMM yyyy",
-                            { locale: fr }
+                            currentLocale
                           )}
                         </span>
                       ) : (
@@ -360,14 +357,18 @@ export function EditProfileForm({
                         : undefined
                     }
                     onSelect={(date) =>
-                      field.onChange(date ? format(date, "yyyy-MM-dd") : "")
+                      field.onChange(
+                        date
+                          ? formatDate(date, "yyyy-MM-dd", currentLocale)
+                          : ""
+                      )
                     }
                     disabled={isPending}
                     initialFocus
                     captionLayout="dropdown-buttons"
                     fromYear={1940}
                     toYear={new Date().getFullYear()}
-                    locale={fr}
+                    locale={dateLocale}
                   />
                 </PopoverContent>
               </Popover>

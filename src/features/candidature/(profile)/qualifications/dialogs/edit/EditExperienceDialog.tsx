@@ -23,8 +23,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import {
   Popover,
   PopoverContent,
@@ -36,7 +34,8 @@ import { useEffect, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useUpdateResumeExperience } from "../../hooks/use-resume-experience";
 import type { ResumeExperience } from "@/core/interfaces";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 // Internal form schema uses Date objects for better date handling
 const experienceFormSchema = z.object({
@@ -64,6 +63,7 @@ export function EditExperienceDialog({
 }: EditExperienceDialogProps) {
   const t = useTranslations("resumePage.workExperience.dialog.edit");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
 
   const { mutate: updateExperience, isPending } =
     useUpdateResumeExperience(tCommon);
@@ -99,11 +99,11 @@ export function EditExperienceDialog({
       {
         ...values,
         uuid: experience.uuid,
-        date_start: format(values.date_start, "yyyy-MM-dd"),
+        date_start: formatDate(values.date_start, "yyyy-MM-dd", locale),
         date_end: values.current_time
-          ? format(new Date(), "yyyy-MM-dd")
+          ? formatDate(new Date(), "yyyy-MM-dd", locale)
           : values.date_end
-          ? format(values.date_end, "yyyy-MM-dd")
+          ? formatDate(values.date_end, "yyyy-MM-dd", locale)
           : null,
       },
       {
@@ -197,9 +197,7 @@ export function EditExperienceDialog({
                                 )}
                               >
                                 {field.value ? (
-                                  format(field.value, "d MMMM yyyy", {
-                                    locale: fr,
-                                  })
+                                  formatDate(field.value, "d MMMM yyyy", locale)
                                 ) : (
                                   <span>{tCommon("exDate")}</span>
                                 )}
@@ -256,9 +254,7 @@ export function EditExperienceDialog({
                                 disabled={form.watch("current_time")}
                               >
                                 {field.value ? (
-                                  format(field.value, "d MMMM yyyy", {
-                                    locale: fr,
-                                  })
+                                  formatDate(field.value, "d MMMM yyyy", locale)
                                 ) : (
                                   <span>{tCommon("exDate")}</span>
                                 )}

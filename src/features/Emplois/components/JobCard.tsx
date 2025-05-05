@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@/lib/utils";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import type { Emplois } from "@/core/interfaces";
@@ -6,9 +7,8 @@ import { spanBadgeStyle } from "@/core/styles/span-badge.style";
 import { redirect } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { JobCardMenu } from "./JobCardMenu";
-import { useTranslations } from "next-intl";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 import { hasAccessToken } from "@/lib/check-access-token";
 
 interface JobCardProps {
@@ -19,6 +19,7 @@ interface JobCardProps {
 export function JobCard({ job, isSelected }: JobCardProps) {
   const t = useTranslations("emplois.jobCard");
   const tCommon = useTranslations("common.actions");
+  const locale = useLocale();
 
   const isAuthenticated = hasAccessToken();
 
@@ -123,9 +124,7 @@ export function JobCard({ job, isSelected }: JobCardProps) {
             {t(`status.${job.status}`)}
             {job.saved && ` • ${tCommon("saved")}`}
             <div className="text-end">
-              {format(new Date(job.created_at), "PPP", {
-                locale: fr,
-              })}
+              {formatDate(job.created_at, "PPP", locale)}
             </div>
           </div>
         </div>

@@ -6,13 +6,12 @@ import { SectionHeader } from "./SectionHeader";
 import CircleLineWrapper from "./CircleLineWrapper";
 import { Button } from "@/components/ui/button";
 import { PencilIcon, Trash } from "lucide-react";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import type { ResumeProject } from "@/core/interfaces/";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 // Dynamically import dialogs and ImageLightbox with loading states
 const AddProjectDialog = dynamic(
@@ -94,9 +93,10 @@ export function ProjectsList({ projects }: ProjectsListProps) {
 
   const t = useTranslations("resumePage.projects");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
 
-  const formatDate = (dateString: string) => {
-    return format(new Date(dateString), "d MMMM yyyy", { locale: fr });
+  const formatedDate = (dateString: string) => {
+    return formatDate(dateString, "d MMMM yyyy", locale);
   };
 
   const handleImageClick = (project: ResumeProject, index: number) => {
@@ -194,9 +194,9 @@ export function ProjectsList({ projects }: ProjectsListProps) {
                 </div>
               )}
               <p className="text-gray-500">
-                {formatDate(project.date_start)}
+                {formatedDate(project.date_start)}
                 {project.date_end
-                  ? ` - ${formatDate(project.date_end)}`
+                  ? ` - ${formatedDate(project.date_end)}`
                   : ` - ${t("current")}`}
               </p>
               {project.description && (

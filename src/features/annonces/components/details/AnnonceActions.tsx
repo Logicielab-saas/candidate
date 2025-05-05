@@ -2,13 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { EmploisDetails } from "@/core/interfaces";
 import { ArrowRight, Heart } from "lucide-react";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { useJobBookmark } from "@/core/utils/job-bookmark-handler";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { hasAccessToken } from "@/lib/check-access-token";
+import { formatDate } from "@/core/utils/date";
 
 interface AnnonceActionsProps {
   annonce: EmploisDetails;
@@ -17,6 +16,7 @@ interface AnnonceActionsProps {
 export function AnnonceActions({ annonce }: AnnonceActionsProps) {
   const tCommon = useTranslations("common");
   const t = useTranslations("annonces");
+  const locale = useLocale();
 
   const isAuthenticated = hasAccessToken();
 
@@ -83,9 +83,11 @@ export function AnnonceActions({ annonce }: AnnonceActionsProps) {
           {annonce.expireDate && (
             <p className="text-sm text-muted-foreground text-center">
               {t("details.jobDetails.deadline", {
-                date: format(new Date(annonce.expireDate), "EEEE d MMMM yyyy", {
-                  locale: fr,
-                }),
+                date: formatDate(
+                  annonce.expireDate,
+                  "EEEE dd MMMM yyyy",
+                  locale
+                ),
               })}
             </p>
           )}

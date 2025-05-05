@@ -11,7 +11,6 @@
 "use client";
 
 import { Bell, Calendar, Briefcase } from "lucide-react";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import type { Notification } from "@/core/interfaces";
 import {
@@ -23,8 +22,8 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
-import { fr } from "date-fns/locale";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface NotificationItemProps {
   notification: Notification;
@@ -36,6 +35,7 @@ export function NotificationItem({
   onMarkAsRead,
 }: NotificationItemProps) {
   const tCommon = useTranslations("common");
+  const locale = useLocale();
 
   const getIcon = () => {
     switch (notification.type) {
@@ -71,9 +71,7 @@ export function NotificationItem({
         <div className="flex-1">
           <CardTitle className="text-base">{notification.title}</CardTitle>
           <CardDescription>
-            {format(new Date(notification.created_at), "d MMM yyyy HH:mm", {
-              locale: fr,
-            })}
+            {formatDate(notification.created_at, "d MMM yyyy HH:mm", locale)}
           </CardDescription>
         </div>
         {!notification.is_read && (

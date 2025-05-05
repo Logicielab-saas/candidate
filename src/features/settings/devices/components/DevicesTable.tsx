@@ -20,12 +20,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { LogOut } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface DevicesTableProps {
   devices: UserDevice[];
@@ -34,6 +33,7 @@ interface DevicesTableProps {
 export function DevicesTable({ devices }: DevicesTableProps) {
   const { toast } = useToast();
   const t = useTranslations("settings.devices.table");
+  const locale = useLocale();
 
   const handleLogout = (_deviceId: string) => {
     // Here you would typically call an API to log out the device
@@ -67,9 +67,7 @@ export function DevicesTable({ devices }: DevicesTableProps) {
               </div>
             </TableCell>
             <TableCell>
-              {format(new Date(device.lastLogin), "d MMMM yyyy", {
-                locale: fr,
-              })}
+              {formatDate(device.lastLogin, "d MMMM yyyy", locale)}
             </TableCell>
             <TableCell>
               <span className="text-muted-foreground">

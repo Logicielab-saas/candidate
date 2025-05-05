@@ -5,9 +5,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { daysOfWeek, availableHours } from "@/core/mockData/AvailableDates";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface SelectAvailabilityDateProps {
   selectedDay: number;
@@ -23,6 +22,7 @@ const SelectAvailabilityDate = ({
   setSelectedHour,
 }: SelectAvailabilityDateProps) => {
   const tCommon = useTranslations("common");
+  const locale = useLocale();
   useEffect(() => {
     if (selectedDay) {
       setSelectedHour(""); // Reset selected hour when day changes
@@ -32,7 +32,7 @@ const SelectAvailabilityDate = ({
   const formatDayDate = (dayNumber: number) => {
     const today = new Date();
     const date = new Date(today.getFullYear(), today.getMonth(), dayNumber);
-    return format(date, "d MMMM", { locale: fr });
+    return formatDate(date, "d MMM", locale);
   };
 
   return (

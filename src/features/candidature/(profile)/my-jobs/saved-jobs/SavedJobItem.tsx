@@ -22,9 +22,10 @@ import type { EmploiSaved } from "@/core/interfaces";
 import Link from "next/link";
 import { linkLikeButtonStyle } from "@/core/styles/links";
 import { JobBookmarkButton } from "@/components/shared/JobBookmarkButton";
-import { format } from "date-fns";
 import dynamic from "next/dynamic";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
+import { getCompanyInitials } from "@/core/utils";
 
 const ReportJobDialog = dynamic(
   () => import("../../../../../components/shared/ReportJobDialog"),
@@ -35,20 +36,12 @@ interface SavedJobItemProps {
   saved: EmploiSaved;
 }
 
-const getCompanyInitials = (name: string) => {
-  return name
-    .split(" ")
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-};
-
 export function SavedJobItem({ saved }: SavedJobItemProps) {
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
   const tCommon = useTranslations("common");
+  const locale = useLocale();
 
   // Handle successful unsave/removal
   const handleUnsaveSuccess = () => {
@@ -62,7 +55,7 @@ export function SavedJobItem({ saved }: SavedJobItemProps) {
     return null;
   }
 
-  const formattedDate = format(new Date(saved.saved_at), "d MMM yyyy");
+  const formattedDate = formatDate(saved.saved_at, "d MMM yyyy", locale);
 
   return (
     <motion.div

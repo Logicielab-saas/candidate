@@ -13,13 +13,12 @@ import {
 } from "@/core/utils/getAvailableWeeks";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { InterviewTypeDetails } from "@/components/shared/InterviewTypeDetails";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface InterviewReporterProps {
   interview: Interview | undefined;
@@ -50,13 +49,15 @@ const formSchema = z
 
 type InterviewFormInputs = z.infer<typeof formSchema>;
 
-function getWeekTitle(days: { date: Date }[]): string {
+function getWeekTitle(days: { date: Date }[], locale: string): string {
   if (days.length === 0) return "";
   const startDay = days[0].date;
   const endDay = days[days.length - 1].date;
-  return `${startDay.getDate()}-${endDay.getDate()} ${format(startDay, "MMMM", {
-    locale: fr,
-  })}`;
+  return `${startDay.getDate()}-${endDay.getDate()} ${formatDate(
+    startDay,
+    "MMMM",
+    locale
+  )}`;
 }
 
 export function InterviewReporter({ interview }: InterviewReporterProps) {
@@ -77,11 +78,13 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
     },
   });
 
+  const locale = useLocale();
+
   const thisWeekDays = getThisWeekDays();
   const nextWeekDays = getNextWeekDays();
 
-  const thisWeekTitle = getWeekTitle(thisWeekDays);
-  const nextWeekTitle = getWeekTitle(nextWeekDays);
+  const thisWeekTitle = getWeekTitle(thisWeekDays, locale);
+  const nextWeekTitle = getWeekTitle(nextWeekDays, locale);
 
   function handleSubmitForm(data: InterviewFormInputs) {
     console.log("Submitted data:", {
@@ -135,7 +138,7 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
                       }}
                     />
                     <span className="text-md text-gray-700 dark:text-gray-300">
-                      {format(day.date, "EEEE d MMMM", { locale: fr })}
+                      {formatDate(day.date, "EEEE d MMMM", locale)}
                     </span>
                   </label>
                 );
@@ -172,7 +175,7 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
                       }}
                     />
                     <span className="text-md text-gray-700 dark:text-gray-300">
-                      {format(day.date, "EEEE d MMMM", { locale: fr })}
+                      {formatDate(day.date, "EEEE d MMMM", locale)}
                     </span>
                   </label>
                 );

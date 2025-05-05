@@ -23,8 +23,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import {
   Popover,
   PopoverContent,
@@ -36,7 +34,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCreateResumeEducation } from "../../hooks/use-resume-education";
 import type { CreateEducationDTO } from "../../services/resume-education";
 import { useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 // Internal form schema uses Date objects for better date handling
 const educationFormSchema = (t: (key: string) => string) =>
@@ -64,6 +63,8 @@ export function AddEducationDialog({
 }: AddEducationDialogProps) {
   const t = useTranslations("resumePage.education.dialog.add");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
+
   const { mutate: createEducation, isPending } =
     useCreateResumeEducation(tCommon);
   const [startDateOpen, setStartDateOpen] = useState(false);
@@ -88,11 +89,11 @@ export function AddEducationDialog({
     const educationData: CreateEducationDTO = {
       title: values.title,
       degree: values.degree,
-      date_start: format(values.date_start, "yyyy-MM-dd"),
+      date_start: formatDate(values.date_start, "yyyy-MM-dd", locale),
       date_end: values.is_current
-        ? format(new Date(), "yyyy-MM-dd")
+        ? formatDate(new Date(), "yyyy-MM-dd", locale)
         : values.date_end
-        ? format(values.date_end, "yyyy-MM-dd")
+        ? formatDate(values.date_end, "yyyy-MM-dd", locale)
         : null,
       description: values.description || null,
       is_current: values.is_current,
@@ -185,9 +186,7 @@ export function AddEducationDialog({
                                 )}
                               >
                                 {field.value ? (
-                                  format(field.value, "d MMMM yyyy", {
-                                    locale: fr,
-                                  })
+                                  formatDate(field.value, "d MMMM yyyy", locale)
                                 ) : (
                                   <span>{tCommon("exDate")}</span>
                                 )}
@@ -239,9 +238,7 @@ export function AddEducationDialog({
                                 disabled={form.watch("is_current")}
                               >
                                 {field.value ? (
-                                  format(field.value, "d MMMM yyyy", {
-                                    locale: fr,
-                                  })
+                                  formatDate(field.value, "d MMMM yyyy", locale)
                                 ) : (
                                   <span>{tCommon("exDate")}</span>
                                 )}

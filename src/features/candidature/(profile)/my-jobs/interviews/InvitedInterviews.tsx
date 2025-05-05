@@ -6,9 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Building2, MapPin, Calendar, Clock, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface InvitedInterviewsProps {
   interviews: Interview[];
@@ -17,6 +16,8 @@ interface InvitedInterviewsProps {
 export function InvitedInterviews({ interviews }: InvitedInterviewsProps) {
   const t = useTranslations("myJobsPage.interviews");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
+
   return (
     <div>
       <div className="border border-primaryHex-500 p-4 rounded-lg shadow-md mb-4 relative">
@@ -53,9 +54,7 @@ export function InvitedInterviews({ interviews }: InvitedInterviewsProps) {
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Calendar className="h-4 w-4 mr-1" />
                   <span>
-                    {format(new Date(interview.interviewDate), "PPP", {
-                      locale: fr,
-                    })}
+                    {formatDate(interview.interviewDate, "PPP", locale)}
                   </span>
                 </div>
                 <div className="flex items-center text-sm text-gray-600 dark:text-gray-100">

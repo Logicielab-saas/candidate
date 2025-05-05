@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
-import { format } from "date-fns";
 import { CalendarIcon, ClockIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { InterviewDetails } from "./InterviewDetails";
@@ -12,9 +11,9 @@ import type { Interview } from "@/core/interfaces/";
 import Link from "next/link";
 import { JobHeader } from "../jobHeader";
 import { InterviewTypeDetails } from "@/components/shared/InterviewTypeDetails";
-import { fr } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface InterviewProgramProps {
   job: Interview | undefined;
@@ -34,16 +33,13 @@ export function InterviewProgram({ job }: InterviewProgramProps) {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [isDetailsVisible, setIsDetailsVisible] = useState<boolean>(false);
   const { toast } = useToast();
+  const locale = useLocale();
 
   console.log(job?.fixedInterviewDate);
   useEffect(() => {
     if (job?.fixedInterviewDate && job?.fixedInterviewHour) {
       setSelectedHour(job.fixedInterviewHour);
-      setSelectedDate(
-        format(new Date(job.fixedInterviewDate), "PPP", {
-          locale: fr,
-        })
-      );
+      setSelectedDate(formatDate(job.fixedInterviewDate, "PPP", locale));
     } else if (selectedDay) {
       // Get the current month's first day
       const today = new Date();
@@ -52,9 +48,9 @@ export function InterviewProgram({ job }: InterviewProgramProps) {
 
       // Calculate the date based on the selected day
       const date = new Date(currentYear, currentMonth, selectedDay);
-      setSelectedDate(format(date, "PPP", { locale: fr }));
+      setSelectedDate(formatDate(date, "PPP", locale));
     }
-  }, [job, selectedDay]);
+  }, [job, selectedDay, locale]);
 
   const handleContinue = () => {
     if (selectedHour) {

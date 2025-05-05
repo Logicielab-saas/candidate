@@ -22,8 +22,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import {
   Popover,
   PopoverContent,
@@ -48,7 +46,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 import { URL_PATTERN } from "@/core/constants/regex";
 
 // Internal form schema uses Date objects for better date handling
@@ -97,6 +96,7 @@ export function AddProjectDialog({
 }: AddProjectDialogProps) {
   const t = useTranslations("resumePage.projects.dialog.add");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
 
   const { mutate: createProject, isPending } = useCreateResumeProject(tCommon);
 
@@ -162,9 +162,9 @@ export function AddProjectDialog({
         name: values.name,
         description: values.description || null,
         url: values.url || null,
-        date_start: format(values.date_start, "yyyy-MM-dd"),
+        date_start: formatDate(values.date_start, "yyyy-MM-dd", locale),
         date_end: values.date_end
-          ? format(values.date_end, "yyyy-MM-dd")
+          ? formatDate(values.date_end, "yyyy-MM-dd", locale)
           : null,
         tasks: values.tasks.map((task) => ({
           name: task.name,
@@ -248,9 +248,11 @@ export function AddProjectDialog({
                                   )}
                                 >
                                   {field.value ? (
-                                    format(field.value, "d MMMM yyyy", {
-                                      locale: fr,
-                                    })
+                                    formatDate(
+                                      field.value,
+                                      "d MMMM yyyy",
+                                      locale
+                                    )
                                   ) : (
                                     <span>{tCommon("exDate")}</span>
                                   )}
@@ -315,9 +317,11 @@ export function AddProjectDialog({
                                   )}
                                 >
                                   {field.value ? (
-                                    format(field.value, "d MMMM yyyy", {
-                                      locale: fr,
-                                    })
+                                    formatDate(
+                                      field.value,
+                                      "d MMMM yyyy",
+                                      locale
+                                    )
                                   ) : (
                                     <span>{tCommon("exDate")}</span>
                                   )}

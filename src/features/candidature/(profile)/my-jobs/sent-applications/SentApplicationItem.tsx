@@ -8,27 +8,18 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion, AnimatePresence } from "framer-motion";
 import type { EmploisApplied } from "@/core/interfaces";
 import { SentApplicationItemMenu } from "./SentApplicationItemMenu";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
+import { getCompanyInitials } from "@/core/utils";
 
 interface SentApplicationItemProps {
   emploi: EmploisApplied;
 }
-
-const getCompanyInitials = (name: string) => {
-  return name
-    .split(" ")
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-};
-
 export function SentApplicationItem({ emploi }: SentApplicationItemProps) {
   const t = useTranslations("myJobsPage.sentApplications");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
 
   const getStatusInfo = () => {
     if (!emploi)
@@ -151,9 +142,7 @@ export function SentApplicationItem({ emploi }: SentApplicationItemProps) {
               <Calendar className="h-4 w-4" />
               <span>
                 {tCommon("actions.applicationSentAt", {
-                  date: format(new Date(emploi.created_at), "d MMM yyyy", {
-                    locale: fr,
-                  }),
+                  date: formatDate(emploi.created_at, "d MMM yyyy", locale),
                 })}
               </span>
             </div>

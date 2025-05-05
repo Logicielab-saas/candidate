@@ -22,8 +22,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import {
   Popover,
   PopoverContent,
@@ -42,7 +40,8 @@ import {
   ACCEPTED_IMAGE_TYPES,
 } from "@/core/constants/image-constraints";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 const projectFormSchema = (t: (key: string) => string) =>
   z.object({
@@ -90,6 +89,7 @@ export function EditProjectDialog({
 }: EditProjectDialogProps) {
   const t = useTranslations("resumePage.projects.dialog.edit");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
 
   const { mutate: updateProject, isPending } = useUpdateResumeProject(tCommon);
 
@@ -172,9 +172,9 @@ export function EditProjectDialog({
       {
         ...values,
         uuid: project.uuid,
-        date_start: format(values.date_start, "yyyy-MM-dd"),
+        date_start: formatDate(values.date_start, "yyyy-MM-dd", locale),
         date_end: values.date_end
-          ? format(values.date_end, "yyyy-MM-dd")
+          ? formatDate(values.date_end, "yyyy-MM-dd", locale)
           : null,
         description: values.description || null,
         url: values.url || null,
@@ -260,9 +260,11 @@ export function EditProjectDialog({
                                   )}
                                 >
                                   {field.value ? (
-                                    format(field.value, "d MMMM yyyy", {
-                                      locale: fr,
-                                    })
+                                    formatDate(
+                                      field.value,
+                                      "d MMMM yyyy",
+                                      locale
+                                    )
                                   ) : (
                                     <span>{tCommon("exDate")}</span>
                                   )}
@@ -327,9 +329,11 @@ export function EditProjectDialog({
                                   )}
                                 >
                                   {field.value ? (
-                                    format(field.value, "d MMMM yyyy", {
-                                      locale: fr,
-                                    })
+                                    formatDate(
+                                      field.value,
+                                      "d MMMM yyyy",
+                                      locale
+                                    )
                                   ) : (
                                     <span>{tCommon("exDate")}</span>
                                   )}

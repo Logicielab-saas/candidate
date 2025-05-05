@@ -14,6 +14,8 @@ import {
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker, DropdownProps } from "react-day-picker";
+import { useLocale } from "next-intl";
+import { getDateFnsLocale } from "@/core/utils/date";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -23,6 +25,9 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
+  const currentLocale = useLocale();
+  const dateLocale = getDateFnsLocale(currentLocale);
+
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
@@ -60,6 +65,7 @@ function Calendar({
         day_hidden: "invisible",
         ...classNames,
       }}
+      locale={dateLocale}
       components={{
         Dropdown: ({ value, onChange, children, ...props }: DropdownProps) => {
           const options = React.Children.toArray(

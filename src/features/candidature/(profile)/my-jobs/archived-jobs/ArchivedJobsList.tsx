@@ -108,7 +108,7 @@ export default function ArchivedJobsList({
                 name: job.emploi_title.split(" - ")[1] || tCommon("company"),
               }}
               location="France" // This should come from the API if available
-              savedDate={new Date(job.created_at).toLocaleDateString("fr-FR")}
+              savedDate={job.created_at}
             />
           ))}
         </AnimatePresence>

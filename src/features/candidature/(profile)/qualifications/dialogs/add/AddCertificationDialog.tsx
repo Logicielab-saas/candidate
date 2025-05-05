@@ -22,8 +22,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import {
   Popover,
   PopoverContent,
@@ -35,7 +33,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateResumeCertification } from "../../hooks/use-resume-certification";
 import { useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 const certificationFormSchema = (t: (key: string) => string) =>
   z.object({
@@ -63,6 +62,7 @@ export function AddCertificationDialog({
 }: AddCertificationDialogProps) {
   const t = useTranslations("resumePage.certifications.dialog");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
 
   const { mutate: createCertification, isPending } =
     useCreateResumeCertification(tCommon);
@@ -88,9 +88,9 @@ export function AddCertificationDialog({
     createCertification(
       {
         ...values,
-        date: format(values.date, "yyyy-MM-dd"),
+        date: formatDate(values.date, "yyyy-MM-dd", locale),
         expiration_date: values.expiration_date
-          ? format(values.expiration_date, "yyyy-MM-dd")
+          ? formatDate(values.expiration_date, "yyyy-MM-dd", locale)
           : null,
         description: values.description || null,
       },
@@ -185,9 +185,7 @@ export function AddCertificationDialog({
                                 )}
                               >
                                 {field.value ? (
-                                  format(field.value, "d MMMM yyyy", {
-                                    locale: fr,
-                                  })
+                                  formatDate(field.value, "d MMMM yyyy", locale)
                                 ) : (
                                   <span>{tCommon("exCertfDate")}</span>
                                 )}
@@ -248,9 +246,7 @@ export function AddCertificationDialog({
                                 )}
                               >
                                 {field.value ? (
-                                  format(field.value, "d MMMM yyyy", {
-                                    locale: fr,
-                                  })
+                                  formatDate(field.value, "d MMMM yyyy", locale)
                                 ) : (
                                   <span>{tCommon("exCertfDate")}</span>
                                 )}
