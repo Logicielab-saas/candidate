@@ -17,17 +17,6 @@ export const metadata: Metadata = {
   title: "JobsApp",
   description: "JobsApp description",
 };
-
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const _geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
-
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["400", "700"],

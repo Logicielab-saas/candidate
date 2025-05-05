@@ -1,6 +1,5 @@
 "use client";
 
-import { Metadata } from "next";
 import { JobTitleSection } from "./JobTitleSection";
 import { MinSalarySection } from "./MinSalarySection";
 import { JobTypesSection } from "./JobTypesSection";
@@ -11,25 +10,6 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
-
-export const metadata: Metadata = {
-  title: "Préférences d'emploi | Mon Profil",
-  description:
-    "Gérez vos préférences d'emploi, types de postes et critères de recherche.",
-  keywords: [
-    "préférences d'emploi",
-    "salaire minimum",
-    "types de postes",
-    "relocalisation",
-    "critères de recherche",
-  ],
-  openGraph: {
-    title: "Préférences d'emploi | Mon Profil",
-    description:
-      "Gérez vos préférences d'emploi, types de postes et critères de recherche.",
-    type: "profile",
-  },
-};
 
 export function PreferencesContainer() {
   const [hasRelocation, setHasRelocation] = useState(false);
