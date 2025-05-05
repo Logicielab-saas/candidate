@@ -24,39 +24,23 @@ import { Calendar } from "lucide-react";
 import { AdvancedFiltersDrawer } from "./AdvancedFiltersDrawer";
 import { SaveSearchAlert } from "./SaveSearchAlert";
 import { JobTypesFilter } from "./filters/ContractTypeFilter";
+import { useTranslations } from "next-intl";
 
 // Filter options
 const DATE_FILTERS = [
-  { value: "24h", label: "Last 24 hours" },
-  { value: "week", label: "Last week" },
-  { value: "month", label: "Last month" },
-  { value: "all", label: "All time" },
+  { value: "24h", label: "last24h" },
+  { value: "week", label: "lastWeek" },
+  { value: "month", label: "lastMonth" },
+  { value: "all", label: "allTime" },
 ] as const;
 
 export function JobFilters() {
   const [dateFilter, setDateFilter] = useQueryState("date");
-  // const [contractTypes] = useQueryState("contracts");
-  // const [urlKeywords] = useQueryState("keyword");
-
-  // Count active filters
-  // const activeFiltersCount = [
-  //   dateFilter && dateFilter !== "all",
-  //   contractTypes,
-  //   urlKeywords,
-  // ].filter(Boolean).length;
+  const t = useTranslations("emplois.jobsContainer.filters");
+  const tCommon = useTranslations("common");
 
   return (
     <div className="space-y-4">
-      {/* Active Filters Count */}
-      {/* {activeFiltersCount > 0 && (
-        <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="h-6">
-            {activeFiltersCount} active filter
-            {activeFiltersCount > 1 ? "s" : ""}
-          </Badge>
-        </div>
-      )} */}
-
       {/* Filters Row */}
       <div className="flex flex-wrap items-center gap-4">
         {/* Date Filter */}
@@ -75,13 +59,13 @@ export function JobFilters() {
           >
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4 text-muted-foreground" />
-              <SelectValue placeholder="Filter by date" />
+              <SelectValue placeholder={tCommon("filters.filterByDate")} />
             </div>
           </SelectTrigger>
           <SelectContent>
             {DATE_FILTERS.map((filter) => (
               <SelectItem key={filter.value} value={filter.value}>
-                {filter.label}
+                {t(`date.${filter.label}`)}
               </SelectItem>
             ))}
           </SelectContent>

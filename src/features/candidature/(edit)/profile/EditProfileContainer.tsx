@@ -7,8 +7,12 @@ import { useProfileResume } from "../../(profile)/qualifications/hooks/use-profi
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export function EditProfileContainer() {
+  const tEditProfile = useTranslations("editProfile");
+  const tCommon = useTranslations("common");
+
   const router = useRouter();
   const { data: profile, isLoading: isProfileLoading } = useProfile();
   const { data: resume, isLoading: isResumeLoading } = useProfileResume();
@@ -24,15 +28,14 @@ export function EditProfileContainer() {
         onClick={() => router.back()}
       >
         <ArrowLeft className="h-4 w-4" />
-        Back
+        {tCommon("actions.back")}
       </Button>
 
       <div className="space-y-0.5">
-        <h2 className="text-2xl font-bold tracking-tight">Edit Profile</h2>
-        <p className="text-muted-foreground">
-          Update your personal information and how others see you on the
-          platform.
-        </p>
+        <h2 className="text-2xl font-bold tracking-tight">
+          {tEditProfile("title")}
+        </h2>
+        <p className="text-muted-foreground">{tEditProfile("description")}</p>
       </div>
 
       {isLoading ? (

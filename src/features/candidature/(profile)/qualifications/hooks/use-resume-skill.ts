@@ -7,10 +7,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { handleResumeSkill, deleteResumeSkill } from "../services/resume-skill";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
-import { AxiosError } from "axios";
 import { SKILLS_QUERY_KEY } from "@/hooks/use-skills";
 
-export function useCreateResumeSkill() {
+export function useCreateResumeSkill(t: (k: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -28,17 +27,15 @@ export function useCreateResumeSkill() {
 
       toast({
         variant: "success",
-        title: "Skill added",
-        description: "Skill has been added successfully.",
+        title: t("toast.resumeSkill.create.title"),
+        description: t("toast.resumeSkill.create.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Failed to add skill",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });
@@ -46,7 +43,7 @@ export function useCreateResumeSkill() {
   return { mutate, isPending };
 }
 
-export function useDeleteResumeSkill() {
+export function useDeleteResumeSkill(t: (k: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -59,17 +56,15 @@ export function useDeleteResumeSkill() {
 
       toast({
         variant: "success",
-        title: "Skill deleted",
-        description: "Skill has been deleted successfully.",
+        title: t("toast.resumeSkill.delete.title"),
+        description: t("toast.resumeSkill.delete.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Failed to delete skill",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });
@@ -77,7 +72,7 @@ export function useDeleteResumeSkill() {
   return { mutate, isPending };
 }
 
-export function useUpdateResumeSkill() {
+export function useUpdateResumeSkill(t: (k: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -90,17 +85,15 @@ export function useUpdateResumeSkill() {
 
       toast({
         variant: "success",
-        title: "Skill updated",
-        description: "Skill has been updated successfully.",
+        title: t("toast.resumeSkill.update.title"),
+        description: t("toast.resumeSkill.update.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Failed to update skill",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });

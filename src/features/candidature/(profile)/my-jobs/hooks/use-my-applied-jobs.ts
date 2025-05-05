@@ -5,7 +5,6 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { AxiosError } from "axios";
 import { EMPLOIS_QUERY_KEY } from "@/features/Emplois/hooks/use-emplois";
 import {
   fetchSentApplications,
@@ -50,13 +49,13 @@ export function useFetchSentApplicationsDetails(slug: string) {
   return { data, isLoading, error };
 }
 
-export function useDeleteSentApplication() {
+export function useDeleteSentApplication(t: (key: string) => string) {
   const queryClient = useQueryClient();
   const toast = useToast();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (uuid: string) => deleteSentApplication(uuid),
-    onSuccess: async (data) => {
+    onSuccess: async () => {
       // Wait for the query invalidation to complete
       await Promise.all([
         queryClient.invalidateQueries({
@@ -66,21 +65,17 @@ export function useDeleteSentApplication() {
           queryKey: SENT_APPLICATIONS_QUERY_KEY,
         }),
       ]);
-      console.log(data);
       toast.toast({
         variant: "success",
-        title: "Application deleted",
-        description:
-          data.message || "Your application has been deleted successfully.",
+        title: t("toast.myAppliedJobs.delete.title"),
+        description: t("toast.myAppliedJobs.delete.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast.toast({
         variant: "destructive",
-        title: "Failed to delete application",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });

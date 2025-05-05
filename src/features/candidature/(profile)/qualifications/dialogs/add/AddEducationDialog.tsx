@@ -23,8 +23,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import {
   Popover,
   PopoverContent,
@@ -35,21 +33,24 @@ import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCreateResumeEducation } from "../../hooks/use-resume-education";
 import type { CreateEducationDTO } from "../../services/resume-education";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 // Internal form schema uses Date objects for better date handling
-const educationFormSchema = z.object({
-  title: z.string().min(1, "School name is required"),
-  degree: z.string().min(1, "Degree is required"),
-  date_start: z.date({
-    required_error: "Start date is required",
-  }),
-  date_end: z.date().optional(),
-  is_current: z.boolean().default(false),
-  description: z.string().optional(),
-});
+const educationFormSchema = (t: (key: string) => string) =>
+  z.object({
+    title: z.string().min(1, t("validation.schoolNameRequired")),
+    degree: z.string().min(1, t("validation.degreeRequired")),
+    date_start: z.date({
+      required_error: t("validation.startDateRequired"),
+    }),
+    date_end: z.date().optional(),
+    is_current: z.boolean().default(false),
+    description: z.string().optional(),
+  });
 
-type EducationFormValues = z.infer<typeof educationFormSchema>;
+type EducationFormValues = z.infer<ReturnType<typeof educationFormSchema>>;
 
 interface AddEducationDialogProps {
   open: boolean;
@@ -60,13 +61,22 @@ export function AddEducationDialog({
   open,
   onOpenChange,
 }: AddEducationDialogProps) {
-  const { mutate: createEducation, isPending } = useCreateResumeEducation();
+  const t = useTranslations("resumePage.education.dialog.add");
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
 
+  const { mutate: createEducation, isPending } =
+    useCreateResumeEducation(tCommon);
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
 
+  const createEducationFormSchema = useMemo(
+    () => educationFormSchema(tCommon),
+    [tCommon]
+  );
+
   const form = useForm<EducationFormValues>({
-    resolver: zodResolver(educationFormSchema),
+    resolver: zodResolver(createEducationFormSchema),
     defaultValues: {
       title: "",
       degree: "",
@@ -79,11 +89,11 @@ export function AddEducationDialog({
     const educationData: CreateEducationDTO = {
       title: values.title,
       degree: values.degree,
-      date_start: format(values.date_start, "yyyy-MM-dd"),
+      date_start: formatDate(values.date_start, "yyyy-MM-dd", locale),
       date_end: values.is_current
-        ? format(new Date(), "yyyy-MM-dd")
+        ? formatDate(new Date(), "yyyy-MM-dd", locale)
         : values.date_end
-        ? format(values.date_end, "yyyy-MM-dd")
+        ? formatDate(values.date_end, "yyyy-MM-dd", locale)
         : null,
       description: values.description || null,
       is_current: values.is_current,
@@ -100,12 +110,10 @@ export function AddEducationDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[500px]">
-        <ScrollArea className="px-3 max-h-[60vh]">
+        <ScrollArea className="px-3 max-h-[90vh]">
           <DialogHeader className="p-6 pb-4">
-            <DialogTitle>Add Education</DialogTitle>
-            <DialogDescription>
-              Add your education details. Click save when you&apos;re done.
-            </DialogDescription>
+            <DialogTitle>{t("title")}</DialogTitle>
+            <DialogDescription>{t("description")}</DialogDescription>
           </DialogHeader>
 
           <Form {...form}>
@@ -113,47 +121,44 @@ export function AddEducationDialog({
               onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-4 px-3"
             >
-              {/* School Name Section */}
               <FormField
                 control={form.control}
                 name="title"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      School <span className="text-destructive">*</span>
+                      {tCommon("school")}{" "}
+                      <span className="text-destructive">
+                        {tCommon("form.required")}
+                      </span>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="e.g. University of Paris"
-                        {...field}
-                      />
+                      <Input placeholder={tCommon("exSchool")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              {/* Degree Section */}
               <FormField
                 control={form.control}
                 name="degree"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Degree <span className="text-destructive">*</span>
+                      {tCommon("degree")}{" "}
+                      <span className="text-destructive">
+                        {tCommon("form.required")}
+                      </span>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="e.g. Master in Computer Science"
-                        {...field}
-                      />
+                      <Input placeholder={tCommon("exDegree")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              {/* Start Date Section */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
@@ -161,7 +166,10 @@ export function AddEducationDialog({
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>
-                        Start Date <span className="text-destructive">*</span>
+                        {tCommon("startDate")}{" "}
+                        <span className="text-destructive">
+                          {tCommon("form.required")}
+                        </span>
                       </FormLabel>
                       <div className="flex gap-2">
                         <Popover
@@ -178,11 +186,9 @@ export function AddEducationDialog({
                                 )}
                               >
                                 {field.value ? (
-                                  format(field.value, "d MMMM yyyy", {
-                                    locale: fr,
-                                  })
+                                  formatDate(field.value, "d MMMM yyyy", locale)
                                 ) : (
-                                  <span>Pick a date</span>
+                                  <span>{tCommon("exDate")}</span>
                                 )}
                                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                               </Button>
@@ -204,29 +210,18 @@ export function AddEducationDialog({
                             />
                           </PopoverContent>
                         </Popover>
-                        {/* {field.value && (
-                          <Button
-                            variant="outline"
-                            className="w-10"
-                            type="button"
-                            onClick={() => field.onChange(undefined)}
-                          >
-                            <X className="w-4 h-4" />
-                          </Button>
-                        )} */}
                       </div>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                {/* End Date Section */}
                 <FormField
                   control={form.control}
                   name="date_end"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>End Date</FormLabel>
+                      <FormLabel>{tCommon("endDate")}</FormLabel>
                       <div className="flex gap-2">
                         <Popover
                           open={endDateOpen}
@@ -243,11 +238,9 @@ export function AddEducationDialog({
                                 disabled={form.watch("is_current")}
                               >
                                 {field.value ? (
-                                  format(field.value, "d MMMM yyyy", {
-                                    locale: fr,
-                                  })
+                                  formatDate(field.value, "d MMMM yyyy", locale)
                                 ) : (
-                                  <span>Pick a date</span>
+                                  <span>{tCommon("exDate")}</span>
                                 )}
                                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                               </Button>
@@ -282,7 +275,6 @@ export function AddEducationDialog({
                 />
               </div>
 
-              {/* Currently Studying Section */}
               <FormField
                 control={form.control}
                 name="is_current"
@@ -300,22 +292,21 @@ export function AddEducationDialog({
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel>Currently studying here</FormLabel>
+                      <FormLabel>{tCommon("currentStudying")}</FormLabel>
                     </div>
                   </FormItem>
                 )}
               />
 
-              {/* Description Section */}
               <FormField
                 control={form.control}
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>{tCommon("description")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Describe your education, specializations..."
+                        placeholder={tCommon("exDescription")}
                         {...field}
                         value={field.value || ""}
                       />
@@ -333,14 +324,14 @@ export function AddEducationDialog({
               onClick={() => onOpenChange(false)}
               disabled={isPending}
             >
-              Cancel
+              {tCommon("actions.cancel")}
             </Button>
             <Button
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={isPending || !form.formState.isValid}
+              disabled={isPending}
             >
-              {isPending ? "Adding..." : "Add Education"}
+              {isPending ? tCommon("actions.adding") : tCommon("actions.add")}
             </Button>
           </DialogFooter>
         </ScrollArea>

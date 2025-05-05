@@ -39,6 +39,7 @@ import { type Message } from "@/core/mockData/messages-data";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useTranslations } from "next-intl";
 
 interface MessageHeaderProps {
   company: {
@@ -72,6 +73,10 @@ export function MessageHeader({
 
   const isArchived = message.status === "archived";
 
+  // Translations
+  const tCommon = useTranslations("common");
+  const tMessages = useTranslations("messages");
+
   const handleArchive = () => {
     if (onArchive) {
       onArchive();
@@ -103,7 +108,7 @@ export function MessageHeader({
           <div className="flex items-center gap-2">
             <h2 className="text-lg font-semibold truncate">{company.name}</h2>
             <Badge variant="outline" className="h-5 text-xs font-normal">
-              Entreprise
+              {tMessages("chat.company")}
             </Badge>
           </div>
 
@@ -125,7 +130,7 @@ export function MessageHeader({
                         {participants.length}
                       </span>{" "}
                       <span className="text-muted-foreground group-hover:text-foreground transition-colors">
-                        participants
+                        {tMessages("chat.participants")}
                       </span>
                     </span>
                   </button>
@@ -138,7 +143,7 @@ export function MessageHeader({
                     {/* Header */}
                     <div className="bg-primaryHex-500/10 px-3 py-2 border-b">
                       <p className="text-sm font-medium text-primaryHex-700">
-                        Participants à la discussion
+                        {tMessages("chat.participantsList")}
                       </p>
                     </div>
 
@@ -180,7 +185,7 @@ export function MessageHeader({
 
           {recruiter && (
             <p className="text-sm text-muted-foreground flex items-center gap-1.5">
-              En discussion avec{" "}
+              {tMessages("chat.discussingWith")}{" "}
               <span className="font-medium text-foreground">
                 {recruiter.name}
               </span>
@@ -208,12 +213,14 @@ export function MessageHeader({
                 className="flex"
               >
                 <ExternalLink className="h-4 w-4 mr-2" />
-                Voir l&apos;annonce
+                {tMessages("chat.viewJob")}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setIsArchiveDialogOpen(true)}>
               <Archive className="h-4 w-4 mr-2" />
-              {isArchived ? "Désarchiver" : "Archiver"} la conversation
+              {isArchived
+                ? tMessages("chat.unarchiveConversation")
+                : tMessages("chat.archiveConversation")}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -231,12 +238,12 @@ export function MessageHeader({
               {message.status === "spam" ? (
                 <>
                   <Archive className="h-4 w-4 mr-2" />
-                  Restaurer
+                  {tCommon("actions.restore")}
                 </>
               ) : (
                 <>
                   <Flag className="h-4 w-4 mr-2" />
-                  Signaler comme spam
+                  {tMessages("chat.reportSpam")}
                 </>
               )}
             </DropdownMenuItem>

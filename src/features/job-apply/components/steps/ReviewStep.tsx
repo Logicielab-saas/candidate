@@ -3,6 +3,7 @@
  *
  * Shows a summary of the application and handles submission
  * Includes user profile information, resumes, cover letter, and file upload
+ * Handles both authenticated and public user submissions
  */
 
 "use client";
@@ -19,45 +20,136 @@ import {
 import { useJobApplyStore } from "@/features/job-apply/store/useJobApplyStore";
 import type { EmploisDetails } from "@/core/interfaces";
 import { useRouter } from "next/navigation";
-import { useState, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useApplyToJob } from "@/features/job-apply/hooks/use-job-apply";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { PencilIcon, ImageIcon, UserIcon, AlertCircle } from "lucide-react";
+import { PencilIcon, UserIcon, FileIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { ResumeItem } from "@/components/shared/ResumeItem";
-import Image from "next/image";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Profile } from "@/features/candidature/(profile)/common/interface";
+import { useTranslations } from "next-intl";
+import { StepNavigation } from "../../../../components/shared/StepNavigation";
+import { hasAccessToken } from "@/lib/check-access-token";
+import { cn } from "@/lib/utils";
+import { FileInputDropdown } from "@/components/shared/FileInputDropdown";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
 interface ReviewStepProps {
   jobDetails: EmploisDetails;
   profile: Profile;
 }
 
-export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
-  const router = useRouter();
-  const { questionsData, prevStep, resetForm } = useJobApplyStore();
-  const { mutate: applyToJob, isPending } = useApplyToJob();
-  const [error, setError] = useState<string | null>(null);
-  const [coverLetter, setCoverLetter] = useState<string>("");
-  const [file, setFile] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+// Define form schema
+const reviewFormSchema = z.object({
+  cover_letter: z.string().optional(),
+  additional_file: z.custom<File | null>().optional(),
+});
 
-  const handleSubmit = async () => {
+type ReviewFormData = z.infer<typeof reviewFormSchema>;
+
+export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
+  const tCommon = useTranslations("common");
+  const router = useRouter();
+  const { questionsData, prevStep, resetForm, personalInfo, setCurrentStep } =
+    useJobApplyStore();
+  const { mutate: applyToJob, isPending } = useApplyToJob(tCommon);
+
+  const [error, setError] = useState<string | null>(null);
+
+  const form = useForm<ReviewFormData>({
+    resolver: zodResolver(reviewFormSchema),
+    defaultValues: {
+      cover_letter: "",
+      additional_file: null,
+    },
+  });
+
+  const isAuthenticated = hasAccessToken();
+
+  // Check if we have unanswered required questions
+  const hasUnansweredQuestions = jobDetails.emploi_questions?.some(
+    (question) => {
+      if (!question.is_required) return false;
+      const answer = questionsData.answers.find(
+        (a) => a.id === question.uuid
+      )?.answer;
+      return !answer || (Array.isArray(answer) && answer.length === 0);
+    }
+  );
+
+  // If we have questions but no answers, redirect to questions step
+  useEffect(() => {
+    if (jobDetails.emploi_questions?.length > 0 && hasUnansweredQuestions) {
+      setCurrentStep("questions");
+    }
+  }, [jobDetails.emploi_questions, hasUnansweredQuestions, setCurrentStep]);
+
+  // If no personal info, redirect to first step
+  if (!personalInfo) {
+    router.push(`/job-apply/${jobDetails.slug}`);
+    return null;
+  }
+
+  const selectedResume = isAuthenticated
+    ? profile.files?.find((file) => file.uuid === personalInfo.resume_uuid)
+    : null;
+
+  // Handle navigation to specific steps
+  const handleModifyPersonalInfo = () => {
+    setCurrentStep("personal-info");
+  };
+
+  const handleModifyQuestions = () => {
+    setCurrentStep("questions");
+  };
+
+  const handleSubmit = async (data: ReviewFormData) => {
     try {
       setError(null);
+
+      // Check for required questions
+      if (hasUnansweredQuestions) {
+        setError(tCommon("validation.requiredAnswers"));
+        return;
+      }
 
       // Create FormData for file upload
       const formData = new FormData();
       formData.append("emploi_uuid", jobDetails.uuid);
-      if (coverLetter) {
-        formData.append("cover_letter", coverLetter);
+
+      // Handle resume file based on authentication status
+      if (isAuthenticated) {
+        if (!personalInfo.resume_uuid) {
+          setError(tCommon("validation.resumeRequired"));
+          return;
+        }
+        formData.append("file_uuid", personalInfo.resume_uuid);
+      } else if (personalInfo.resume_file instanceof File) {
+        formData.append("file", personalInfo.resume_file);
+        formData.append("first_name", personalInfo.first_name);
+        formData.append("last_name", personalInfo.last_name);
+        formData.append("email", personalInfo.email);
+        formData.append("phone", personalInfo.phone);
+      } else {
+        setError(tCommon("validation.resumeRequired"));
+        return;
       }
 
-      // Only append file if it exists and is valid
-      if (file instanceof File) {
-        formData.append("file", file);
+      if (data.cover_letter) {
+        formData.append("cover_letter", data.cover_letter);
+      }
+
+      // Only append additional file if it exists and is valid
+      if (data.additional_file instanceof File) {
+        formData.append("additional_file", data.additional_file);
       }
 
       // Add questions answers if any
@@ -79,285 +171,236 @@ export function ReviewStep({ jobDetails, profile }: ReviewStepProps) {
       // Submit application
       applyToJob(formData, {
         onSuccess: () => {
-          // Reset all form states
-          resetForm();
-          setCoverLetter("");
-          setFile(null);
-          if (fileInputRef.current) {
-            fileInputRef.current.value = "";
-          }
           router.push("/job-apply/success");
-        },
-        onError: (error: Error) => {
-          setError(error.message);
+          resetForm();
         },
       });
-    } catch (_error) {
-      setError(
-        "Une erreur est survenue lors de la soumission de votre candidature."
-      );
-    }
+    } catch (_error) {}
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files?.length) return;
-
-    const selectedFile = files[0];
-    // Check file type
-    if (
-      selectedFile.type === "application/pdf" ||
-      selectedFile.type.startsWith("image/")
-    ) {
-      setFile(selectedFile);
-    } else {
-      setError("Veuillez sélectionner un fichier PDF ou une image");
-      e.target.value = "";
-    }
+  const getFileIcon = (fileName: string) => {
+    const extension = fileName.split(".").pop()?.toLowerCase();
+    const color = extension === "pdf" ? "text-red-500" : "text-blue-500";
+    return <FileIcon className={cn("h-5 w-5", color)} />;
   };
-
-  const hasResumes = profile?.files && profile.files.length > 0;
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">Révision</CardTitle>
-        <CardDescription>
-          Vérifiez les informations de votre candidature avant de la soumettre
-        </CardDescription>
+        <CardTitle className="text-2xl font-bold">
+          {tCommon("review")}
+        </CardTitle>
+        <CardDescription>{tCommon("reviewDescription")}</CardDescription>
       </CardHeader>
 
-      <CardContent className="space-y-6">
-        {/* User Profile Section */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="font-semibold flex items-center gap-2">
-              <UserIcon className="h-4 w-4" />
-              Informations personnelles
-            </h3>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-muted-foreground hover:text-foreground"
-              onClick={() => router.push("/profile")}
-            >
-              <PencilIcon className="h-4 w-4 mr-2" />
-              Modifier
-            </Button>
-          </div>
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>
-              <p className="font-medium">Nom complet</p>
-              <p className="text-muted-foreground">
-                {profile?.first_name} {profile?.last_name}
-              </p>
-            </div>
-            <div>
-              <p className="font-medium">Email</p>
-              <p className="text-muted-foreground">{profile?.email}</p>
-            </div>
-            <div>
-              <p className="font-medium">Téléphone</p>
-              <p className="text-muted-foreground">
-                {profile?.phone || "Non renseigné"}
-              </p>
-            </div>
-            <div>
-              <p className="font-medium">Adresse</p>
-              <p className="text-muted-foreground">
-                {profile?.address || "Non renseignée"}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <Separator />
-
-        {/* Resume Section */}
-        <div className="space-y-4">
-          <ResumeItem
-            subtitle="Votre CV principal"
-            resumeFiles={profile?.files || []}
-            source="profile"
-          />
-          {hasResumes && (
-            <Alert>
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Information importante</AlertTitle>
-              <AlertDescription>
-                Tous vos CV seront envoyés avec votre candidature. Assurez-vous
-                qu&apos;ils sont à jour avant de soumettre.
-              </AlertDescription>
-            </Alert>
-          )}
-        </div>
-
-        <Separator />
-
-        {/* Job Details Summary */}
-        <div>
-          <h3 className="font-semibold mb-2">Poste</h3>
-          <p className="text-muted-foreground">{jobDetails.title}</p>
-          {jobDetails.company_name && (
-            <p className="text-sm text-muted-foreground mt-1">
-              {jobDetails.company_name}
-            </p>
-          )}
-        </div>
-
-        <Separator />
-
-        {/* Questions Summary */}
-        {jobDetails.emploi_questions?.length > 0 && (
-          <>
-            <div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+          <CardContent className="space-y-6">
+            {/* User Profile Section */}
+            <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold mb-2">Réponses aux questions</h3>
+                <h3 className="font-semibold flex items-center gap-2">
+                  <UserIcon className="h-4 w-4" />
+                  {tCommon("personalInfo")}
+                </h3>
                 <Button
                   variant="ghost"
                   size="sm"
                   className="text-muted-foreground hover:text-foreground"
-                  onClick={() => prevStep()}
+                  onClick={handleModifyPersonalInfo}
                 >
                   <PencilIcon className="h-4 w-4 mr-2" />
-                  Modifier
+                  {tCommon("actions.edit")}
                 </Button>
               </div>
-              <div className="space-y-4">
-                {jobDetails.emploi_questions.map((question) => {
-                  const answer = questionsData.answers.find(
-                    (a) => a.id === question.uuid
-                  )?.answer;
-
-                  return (
-                    <div key={question.uuid} className="rounded-lg border p-4">
-                      <p className="font-medium text-sm">{question.title}</p>
-                      {question.description && (
-                        <p className="text-sm text-muted-foreground mt-1">
-                          {question.description}
-                        </p>
-                      )}
-                      <p className="text-sm mt-2">
-                        <span className="font-medium">Réponse : </span>
-                        {Array.isArray(answer)
-                          ? answer.join(", ")
-                          : answer || "Pas de réponse"}
-                      </p>
-                    </div>
-                  );
-                })}
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="font-medium">Prénom</p>
+                  <p className="text-muted-foreground">
+                    {personalInfo.first_name}
+                  </p>
+                </div>
+                <div>
+                  <p className="font-medium">Nom</p>
+                  <p className="text-muted-foreground">
+                    {personalInfo.last_name}
+                  </p>
+                </div>
+                <div>
+                  <p className="font-medium">Email</p>
+                  <p className="text-muted-foreground">{personalInfo.email}</p>
+                </div>
+                <div>
+                  <p className="font-medium">Téléphone</p>
+                  <p className="text-muted-foreground">{personalInfo.phone}</p>
+                </div>
               </div>
             </div>
+
             <Separator />
-          </>
-        )}
 
-        {/* Cover Letter */}
-        <div className="space-y-2">
-          <Label htmlFor="cover-letter">
-            Lettre de motivation (optionnelle)
-          </Label>
-          <Textarea
-            id="cover-letter"
-            value={coverLetter}
-            onChange={(e) => setCoverLetter(e.target.value)}
-            placeholder="Écrivez votre lettre de motivation..."
-            className="min-h-[200px]"
-          />
-        </div>
-
-        <Separator />
-
-        {/* File Upload */}
-        <div className="space-y-2">
-          <Label>Document complémentaire (optionnel)</Label>
-          <div
-            role="button"
-            tabIndex={0}
-            className="border-2 border-dashed rounded-lg p-6 hover:border-primary/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            onClick={() => fileInputRef.current?.click()}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                fileInputRef.current?.click();
-              }
-            }}
-          >
-            <input
-              ref={fileInputRef}
-              type="file"
-              className="hidden"
-              onChange={handleFileChange}
-              accept="application/pdf,image/*"
-            />
-            {!file ? (
-              <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                <ImageIcon className="h-8 w-8" />
-                <p className="text-sm font-medium">
-                  Cliquez pour télécharger un document
-                </p>
-                <p className="text-xs">
-                  Formats acceptés : PDF, images (JPG, PNG)
-                </p>
+            {/* Resume Section */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="font-semibold flex items-center gap-2">
+                  {tCommon("selectedResume")}
+                </h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-muted-foreground hover:text-foreground"
+                  onClick={handleModifyPersonalInfo}
+                >
+                  <PencilIcon className="h-4 w-4 mr-2" />
+                  {tCommon("actions.edit")}
+                </Button>
               </div>
-            ) : (
-              <div className="mt-4 grid grid-cols-1 gap-4">
-                <div className="group relative aspect-video rounded-lg overflow-hidden bg-muted">
-                  {file.type.startsWith("image/") ? (
-                    <Image
-                      src={URL.createObjectURL(file)}
-                      alt="Preview"
-                      className="object-cover"
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      priority
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center h-full">
-                      <ImageIcon className="h-16 w-16 text-muted-foreground" />
+              {isAuthenticated ? (
+                selectedResume && (
+                  <div className="border rounded-lg p-4">
+                    <div className="flex items-center gap-2">
+                      {getFileIcon(selectedResume.name)}
+                      <span>{selectedResume.name}</span>
                     </div>
-                  )}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/50">
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="sm"
-                      className="h-8"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setFile(null);
-                        if (fileInputRef.current) {
-                          fileInputRef.current.value = "";
-                        }
-                      }}
-                    >
-                      Supprimer
-                    </Button>
+                  </div>
+                )
+              ) : personalInfo.resume_file ? (
+                <div className="border rounded-lg p-4">
+                  <div className="flex items-center gap-2">
+                    {getFileIcon(personalInfo.resume_file.name)}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">
+                        {personalInfo.resume_file.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {(personalInfo.resume_file.size / 1024 / 1024).toFixed(
+                          2
+                        )}{" "}
+                        MB
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <p className="text-sm text-center text-muted-foreground">
-                  {file.name}
-                </p>
-              </div>
+              ) : null}
+            </div>
+
+            <Separator />
+
+            {/* Questions Summary */}
+            {jobDetails.emploi_questions?.length > 0 && (
+              <>
+                <div>
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold mb-2">
+                      {tCommon("answerQuestions")}
+                    </h3>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-muted-foreground hover:text-foreground"
+                      onClick={handleModifyQuestions}
+                    >
+                      <PencilIcon className="h-4 w-4 mr-2" />
+                      {tCommon("actions.edit")}
+                    </Button>
+                  </div>
+                  <div className="space-y-4">
+                    {jobDetails.emploi_questions.map((question) => {
+                      const answer = questionsData.answers.find(
+                        (a) => a.id === question.uuid
+                      )?.answer;
+
+                      return (
+                        <div
+                          key={question.uuid}
+                          className="rounded-lg border p-4"
+                        >
+                          <p className="font-medium text-sm">
+                            {question.title}
+                          </p>
+                          {question.description && (
+                            <p className="text-sm text-muted-foreground mt-1">
+                              {question.description}
+                            </p>
+                          )}
+                          <p className="text-sm mt-2">
+                            <span className="font-medium">
+                              {tCommon("answer")} :{" "}
+                            </span>
+                            {Array.isArray(answer)
+                              ? answer.join(", ")
+                              : answer || tCommon("noAnswer")}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                <Separator />
+              </>
             )}
-          </div>
-        </div>
 
-        {error && <p className="text-sm text-destructive mt-2">{error}</p>}
-      </CardContent>
+            {/* Cover Letter */}
+            <div className="space-y-2">
+              <FormField
+                control={form.control}
+                name="cover_letter"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      {tCommon("coverLetter")} {tCommon("form.optional")}
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder={tCommon("writeYourCoverLetter")}
+                        className="min-h-[200px]"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
 
-      <CardFooter className="flex justify-end gap-4">
-        <Button
-          variant="outline"
-          onClick={() => router.push("/emplois")}
-          disabled={isPending}
-        >
-          Annuler
-        </Button>
-        <Button onClick={handleSubmit} disabled={isPending}>
-          {isPending ? "Soumission en cours..." : "Soumettre ma candidature"}
-        </Button>
-      </CardFooter>
+            <Separator />
+
+            {/* Additional File Upload */}
+            <div className="space-y-2">
+              <FormField
+                control={form.control}
+                name="additional_file"
+                render={({ field: { value, onChange } }) => (
+                  <FileInputDropdown
+                    value={value}
+                    onChange={onChange}
+                    label={`${tCommon("additionalFile")} ${tCommon(
+                      "form.optional"
+                    )}`}
+                    maxSize={2}
+                    accept=".jpg,.jpeg,.png"
+                    placeholder={tCommon("clickToDownload")}
+                  />
+                )}
+              />
+            </div>
+
+            {error && <p className="text-sm text-destructive mt-2">{error}</p>}
+          </CardContent>
+
+          <CardFooter>
+            <StepNavigation
+              onBack={prevStep}
+              isLoading={isPending}
+              continueButtonText={
+                isPending
+                  ? tCommon("actions.sending")
+                  : tCommon("actions.submit")
+              }
+              onNext={form.handleSubmit(handleSubmit)}
+            />
+          </CardFooter>
+        </form>
+      </Form>
     </Card>
   );
 }

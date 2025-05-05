@@ -1,0 +1,2153 @@
+{
+  "common": {
+    "reviews": {
+      "title": "My Reviews",
+      "summary": "You have given {count} reviews in total.",
+      "deleteDialog": {
+        "title": "Delete Review",
+        "description": "Are you sure you want to delete this review? This action cannot be undone."
+      },
+      "deleteSuccess": "Your review has been successfully deleted.",
+      "sections": {
+        "positivePoints": "Positive Points",
+        "negativePoints": "Points to Improve"
+      },
+      "search": {
+        "label": "Search in my reviews",
+        "placeholder": "Search by title or content..."
+      },
+      "sort": {
+        "label": "Sort by",
+        "placeholder": "Sort by",
+        "options": {
+          "recent": "Most Recent",
+          "oldest": "Oldest",
+          "rating_high": "Rating - Highest",
+          "rating_low": "Rating - Lowest"
+        }
+      },
+      "empty": {
+        "noReviews": "You have not given any reviews yet.",
+        "noResults": "No reviews match your search."
+      }
+    },
+    "dragHere": "Drop your file here",
+    "browseFiles": "Browse your files",
+    "acceptedTypes": "Accepted types: {types}",
+    "or": "or",
+    "jobNotFound": "Job not found. Please check the URL and try again.",
+    "profileNotFound": "Profile not found. Please check the URL and try again.",
+    "unknownStep": "Unknown step",
+    "appliedFor": "Applying for: {jobTitle}",
+    "jobApplySteps": "Complete the following steps to submit your application",
+    "applyBefore": "Apply before {date}",
+    "seeLess": "See less",
+    "seeMore": "See more",
+    "informations": "Information",
+    "questions": "Questions",
+    "review": "Review",
+    "reviewDescription": "Please verify your application information before submitting",
+    "success": "Application submitted!",
+    "successDescription": "Your application has been successfully submitted. We will contact you as soon as possible.",
+    "nextSteps": "Next steps",
+    "receiveConfirmation": "Receive confirmation",
+    "recruiterReview": "Review by the recruiter",
+    "contactForNextSteps": "Contact for next steps",
+    "returnToJobs": "Return to job listings",
+    "followApplications": "Track my applications",
+    "alreadyApplied": "You have already applied for the position of",
+    "yourAnswer": "Your answer",
+    "selectAtLeastOne": "Please select at least one option",
+    "answersUpdated": "Responses updated",
+    "answersUpdatedDescription": "Your responses to the questions have been successfully updated",
+    "yourExperience": "Your experience...",
+    "editQuestions": "Edit your responses",
+    "editQuestionsDescription": "Modify your answers to the questions",
+    "noQuestions": "No questions to answer",
+    "personalInfoDescription": "Please fill in your personal information to continue",
+    "personalInfoAlertTitle": "Profile changes",
+    "personalInfoAlertDescription": "Any changes made here will be updated in your profile!",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "addedAt": "Added on {date}",
+    "preview": "Preview",
+    "clickToDownload": "Click to download your resume",
+    "supplementQuestions": "Additional questions",
+    "selectedResume": "Selected resume",
+    "answerQuestions": "Answers to questions",
+    "noAnswer": "No answer",
+    "answer": "Answer",
+    "coverLetter": "Cover letter",
+    "writeYourCoverLetter": "Write your cover letter...",
+    "additionalFile": "Additional document",
+    "search": "Search",
+    "searching": "Searching...",
+    "writing": "Writing...",
+    "languages": "Languages",
+    "language": "Language",
+    "suggestionsLoading": "Loading suggestions...",
+    "searchNoResults": "No results found for \"{localValue}\"",
+    "loading": "Loading...",
+    "notFound": "Not found",
+    "positions": "{count} position(s)",
+    "jobDescription": "Job Description",
+    "noDescription": "No description available",
+    "password": "Password",
+    "enterPassword": "Enter your password to confirm",
+    "passwordMask": "••••••••",
+    "companyUndefined": "Company",
+    "locationUndefined": "Location not specified",
+    "noVarFound": "No {variable} found",
+    "undefined": "Not specified",
+    "at": "at",
+    "and": "and",
+    "detailsCandidature": "Application Details",
+    "infoContact": "Contact Information",
+    "fullName": "Full Name",
+    "programmed": "Scheduled",
+    "interviewDetails": "Interview Details",
+    "dateLabel": "Date",
+    "hour": "Hour",
+    "email": "Email",
+    "programInterview": "Schedule Interview",
+    "phone": "Phone",
+    "personalInfo": "Personal Information",
+    "selectHour": "Select hour",
+    "selectDay": "Select day",
+    "suggestNewSlots": "Suggest other slots",
+    "formatInterview": "Interview format:",
+    "inPerson": "In person",
+    "videoCall": "Video call",
+    "phoneCall": "Phone call",
+    "map": "Location",
+    "videoLink": "Meeting link",
+    "current": "Current",
+    "poste": "Job Title",
+    "exPoste": "Ex: Frontend Developer",
+    "company": "Company",
+    "exCompany": "Ex: Microsoft",
+    "startDate": "Start Date",
+    "exDate": "Select a date",
+    "endDate": "End Date",
+    "currentPosition": "I am currently working in this position",
+    "school": "School / Institution",
+    "exSchool": "Ex: XYZ University",
+    "degree": "Degree / Training",
+    "exDegree": "Ex: Bachelor's in Computer Science",
+    "currentStudying": "I am currently a student",
+    "description": "Description",
+    "exDescription": "Describe your experience",
+    "fileTooLarge": "File too large",
+    "fileTooLargeDescription": "The maximum file size is more than {taille} MB",
+    "invalidFileType": "Invalid file type",
+    "invalidFileTypeDescription": "Not a supported image type",
+    "viewProject": "View project",
+    "tasksLabel": "Tasks",
+    "projectName": "Project Name",
+    "exProjectName": "Ex: Project management application",
+    "url": "Project link",
+    "exUrl": "Ex: github.com/username/project",
+    "skills": "Skills",
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert",
+    "master": "Master",
+    "conversational": "Conversational",
+    "proficient": "Proficient",
+    "fluent": "Fluent",
+    "native": "Native speaker",
+    "images": {
+      "imageLabel": "Project images",
+      "uploadText": "Drag and drop images or click to browse",
+      "imageRequirement": "JPG, PNG or GIF up to 5MB",
+      "selected": "{count} image(s) selected",
+      "preview": "Preview of image {index}"
+    },
+    "tasks": {
+      "label": "Key Tasks",
+      "addTask": "Add a task",
+      "nameLabel": "Task name",
+      "namePlaceholder": "Ex: UI design",
+      "taskDescription": "Task description",
+      "taskDescriptionPlaceholder": "Ex: Creating mockups and prototypes",
+      "statusLabel": "Status",
+      "statusPlaceholder": "Select a status",
+      "inProgress": "In progress",
+      "completed": "Completed"
+    },
+    "certfName": "Certification name",
+    "exCertfName": "Ex: Google Certification",
+    "certfOrganization": "Certification organization",
+    "exCertfOrganization": "Ex: Google",
+    "certfDate": "Date obtained",
+    "exCertfDate": "Select a date",
+    "certfExpDate": "Expiration date",
+    "skill": "Skill",
+    "exSkill": "Select a skill",
+    "searchSkill": "Search skills",
+    "addNew": "Add \"{name}\" as a new skill",
+    "skillLevel": "Skill level",
+    "exSkillLevel": "Select a level",
+    "addToList": "Add to list",
+    "exLangue": "Select a language",
+    "langueProficiencyLevel": "Proficiency level",
+    "exLangueProficiencyLevel": "Select a level",
+    "validation": {
+      "required": "This field is required",
+      "startDateRequired": "Start date is required",
+      "email": "Invalid email address",
+      "phoneRequired": "Phone number is required",
+      "minLength": "Minimum {count} characters",
+      "min6Length": "Minimum 6 characters",
+      "resumeRequired": "Please select a resume",
+      "requiredAnswers": "Please answer all required questions",
+      "passwordMatch": "Passwords do not match",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "passwordPattern": "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+      "passwordMismatch": "Passwords do not match",
+      "passwordIncorrect": "Incorrect password",
+      "otpLength": "The code must be {length} digits",
+      "unexpectedError": "An unexpected error occurred. Please try again.",
+      "selectTimeFirst": "Please select a time for the interview",
+      "jobTitleRequired": "Job title is required",
+      "companyNameRequired": "Company name is required",
+      "schoolNameRequired": "School name is required",
+      "degreeRequired": "Degree / training is required",
+      "projectNameRequired": "Project name is required",
+      "urlInvalid": "Project link is invalid",
+      "taskNameRequired": "Task name is required",
+      "certfNameRequired": "Certification name is required",
+      "certfOrganizationRequired": "Certification organization is required",
+      "certfDateRequired": "Date obtained is required",
+      "skillDuplicate": "This skill has already been added",
+      "skillLevelRequired": "Skill level is required",
+      "selectALanguage": "Please select a language",
+      "languageProficiencyLevelRequired": "Proficiency level is required",
+      "jobTypes": {
+        "required": "Job type is required",
+        "minSelection": "Select at least one job type"
+      },
+      "invalidType": {
+        "title": "Invalid file type",
+        "description": "Please upload a PDF file"
+      },
+      "fileSize": {
+        "title": "File too large",
+        "description": "The maximum file size is 2 MB (2048 KB)"
+      },
+      "fileType": {
+        "title": "Invalid file type",
+        "description": "Only PDF, DOC and DOCX files are accepted",
+        "description2": "Invalid file type. Accepted types: {types}"
+      },
+      "jobTitle": {
+        "required": "Job title is required"
+      },
+      "minSalary": {
+        "amount": {
+          "required": "Amount is required",
+          "invalid": "Amount must be a valid number"
+        },
+        "period": {
+          "required": "Period is required"
+        }
+      },
+      "firstName": {
+        "minLength": "First name must be at least 2 characters"
+      },
+      "lastName": {
+        "minLength": "Last name must be at least 2 characters"
+      },
+      "image": {
+        "size": "File size should be less than 5MB",
+        "format": "Only .jpg, .jpeg, .png and .gif formats are accepted"
+      }
+    },
+    "form": {
+      "required": "*",
+      "optional": "(optional)",
+      "placeholders": {
+        "shortAnswer": "Your answer",
+        "longAnswer": "Your detailed answer"
+      },
+      "submit": "Submit",
+      "sending": "Sending...",
+      "email": {
+        "label": "Email",
+        "placeholder": "m@example.com",
+        "verification": {
+          "title": "New email verification",
+          "description": "A verification code has been sent to {email}",
+          "code": {
+            "label": "Verification code",
+            "resend": "Resend code",
+            "verify": "Verify"
+          }
+        }
+      },
+      "password": {
+        "forgot": "Forgot password?",
+        "current": "Current password",
+        "new": "New password",
+        "confirm": "Confirm password",
+        "requirements": "Password must be at least 8 characters long, with an uppercase letter, a lowercase letter, and a number."
+      }
+    },
+    "labels": {
+      "search": "Search",
+      "salary": "Salary",
+      "additionalInfo": "Additional information",
+      "jobDetails": "Job details",
+      "contractType": "Contract type",
+      "duration": "Duration",
+      "schedule": "Schedule",
+      "questions": "Questions",
+      "yourAnswer": "Your answer",
+      "contactInfo": "Contact information",
+      "phone": "Phone",
+      "address": "Address",
+      "birthDate": "Date of birth",
+      "gender": "Gender",
+      "bio": "Bio",
+      "resume": "Resume"
+    },
+    "actions": {
+      "create": "Create",
+      "submit": "Submit",
+      "edit": "Edit",
+      "view": "View",
+      "save": "Save",
+      "saved": "Saved",
+      "saveAll": "Save all",
+      "saving": "Saving...",
+      "change": "Change",
+      "changing": "Changing...",
+      "close": "Close",
+      "cancel": "Cancel",
+      "update": "Update",
+      "apply": "Apply",
+      "reset": "Reset",
+      "viewDetails": "View details",
+      "archive": "Archive",
+      "archiving": "Archiving...",
+      "unArchive": "Unarchive",
+      "unArchiving": "Unarchiving...",
+      "withdraw": "Withdraw",
+      "loadMore": "Load more",
+      "savedAt": "Saved on {date}",
+      "applicationSentAt": "Application sent on {date}",
+      "archivedAt": "Archived on {date}",
+      "reportJob": "Report job",
+      "error": "Error",
+      "openMenu": "Open menu",
+      "confirm": "Confirm",
+      "send": "Send",
+      "sending": "Sending...",
+      "logout": "Logout",
+      "loggingOut": "Logging out...",
+      "manage": "Manage",
+      "report": "Report",
+      "reporter": "Reporter",
+      "share": "Share",
+      "alreadyApplied": "Already applied",
+      "yes": "Yes",
+      "no": "No",
+      "clearFilters": "Clear filters",
+      "markAsRead": "Mark as read",
+      "backToList": "Back to list",
+      "delete": "Delete",
+      "deleting": "Deleting...",
+      "removeApply": "Withdraw application",
+      "search": "Search",
+      "download": "Download",
+      "schedule": "Schedule",
+      "refuse": "Refuse",
+      "program": "Schedule",
+      "zoom": "Zoom",
+      "restore": "Restore",
+      "previous": "Previous",
+      "next": "Next",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "rotate": "Rotate",
+      "back": "Back",
+      "continue": "Continue",
+      "continueWith": "Or continue with",
+      "loginWith": "Login with {provider}",
+      "generate": "Generate",
+      "editProfile": "Edit profile",
+      "generateCV": "Generate CV",
+      "add": "Add",
+      "adding": "Adding...",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "enable": "Enable",
+      "disable": "Disable"
+    },
+    "filters": {
+      "activeFilters": "{count} active filter",
+      "activeFiltersPlural": "{count} active filters",
+      "filterByDate": "Filter by date",
+      "types": {
+        "contractTypes": "Contract types",
+        "employmentTypes": "Employment types",
+        "all": "All types",
+        "job": "Jobs",
+        "interview": "Interviews",
+        "application": "Applications",
+        "system": "System"
+      },
+      "jobType": {
+        "placeholder": "Filter by job type"
+      },
+      "advanced": {
+        "title": "Advanced filters",
+        "description": "Refine your job search with advanced filtering options.",
+        "sections": {
+          "salary": {
+            "title": "Salary range",
+            "min": "Minimum salary",
+            "max": "Maximum salary"
+          },
+          "experience": {
+            "title": "Experience level",
+            "placeholder": "Select a level",
+            "levels": {
+              "entry": "Entry (0-2 years)",
+              "mid": "Intermediate (3-5 years)",
+              "senior": "Senior (5+ years)",
+              "lead": "Lead/Manager (8+ years)"
+            }
+          },
+          "remote": {
+            "title": "Remote work",
+            "label": "Remote only",
+            "description": "Show only remote positions"
+          },
+          "industry": {
+            "title": "Industry",
+            "placeholder": "Select an industry",
+            "types": {
+              "tech": "Technology",
+              "finance": "Finance",
+              "healthcare": "Healthcare",
+              "education": "Education",
+              "retail": "Retail",
+              "manufacturing": "Manufacturing"
+            }
+          }
+        }
+      },
+      "filterBy": {
+        "type": "Filter by type",
+        "status": "Filter by status"
+      },
+      "status": {
+        "all": "All statuses",
+        "read": "Read",
+        "unread": "Unread",
+        "inbox": "Inbox",
+        "archive": "Archive",
+        "spam": "Spam"
+      },
+      "searchPlaceholder": "Search..."
+    },
+    "selectorsSearch": {
+      "citySelector": {
+        "label": "City",
+        "searchPlaceholder": "Search for a city...",
+        "noCitiesFound": "No cities found.",
+        "allCities": "All cities..."
+      }
+    },
+    "toast": {
+      "success": {
+        "title": "Success",
+        "description": "Your request has been sent successfully",
+        "resume": {
+          "delete": "Your resume has been deleted successfully."
+        },
+        "logout": {
+          "title": "Logout successful",
+          "description": "You have been logged out successfully"
+        }
+      },
+      "error": {
+        "title": "Error",
+        "description": "An error occurred. Please try again."
+      },
+      "profile": {
+        "update": {
+          "title": "Profile updated",
+          "description": "Your profile has been updated successfully."
+        }
+      },
+      "myAppliedJobs": {
+        "delete": {
+          "title": "Application deleted",
+          "description": "Your application has been deleted successfully."
+        },
+        "update": {
+          "title": "Application updated",
+          "description": "Your application has been updated successfully."
+        }
+      },
+      "myArchivedJobs": {
+        "update": {
+          "title": "Job archived",
+          "description": "The job has been archived successfully."
+        },
+        "delete": {
+          "title": "Job unarchived",
+          "description": "The job has been unarchived successfully."
+        }
+      },
+      "mySavedJobs": {
+        "save": {
+          "title": "Job saved",
+          "description": "Your job has been saved successfully."
+        },
+        "unsave": {
+          "title": "Job removed",
+          "description": "The job has been removed from your favorites successfully."
+        }
+      },
+      "resumeProfile": {
+        "update": {
+          "title": "Resume updated",
+          "description": "Your resume has been updated successfully."
+        }
+      },
+      "resumeCertification": {
+        "create": {
+          "title": "Certification added",
+          "description": "Your certification has been added successfully."
+        },
+        "update": {
+          "title": "Certification updated",
+          "description": "Your certification has been updated successfully."
+        },
+        "delete": {
+          "title": "Certification deleted",
+          "description": "Your certification has been deleted successfully."
+        }
+      },
+      "resumeEducation": {
+        "create": {
+          "title": "Education added",
+          "description": "Your education has been added successfully."
+        },
+        "update": {
+          "title": "Education updated",
+          "description": "Your education has been updated successfully."
+        },
+        "delete": {
+          "title": "Education deleted",
+          "description": "Your education has been deleted successfully."
+        }
+      },
+      "resumeExperience": {
+        "create": {
+          "title": "Experience added",
+          "description": "Your experience has been added successfully."
+        },
+        "update": {
+          "title": "Experience updated",
+          "description": "Your experience has been updated successfully."
+        },
+        "delete": {
+          "title": "Experience deleted",
+          "description": "Your experience has been deleted successfully."
+        }
+      },
+      "resumeFiles": {
+        "create": {
+          "title": "File added",
+          "description": "Your file has been added successfully."
+        },
+        "update": {
+          "title": "File updated",
+          "description": "Your file has been updated successfully."
+        },
+        "delete": {
+          "title": "File deleted",
+          "description": "Your file has been deleted successfully."
+        }
+      },
+      "resumeLanguage": {
+        "create": {
+          "title": "Language added",
+          "description": "Your language has been added successfully."
+        },
+        "update": {
+          "title": "Language updated",
+          "description": "Your language has been updated successfully."
+        },
+        "delete": {
+          "title": "Language deleted",
+          "description": "Your language has been deleted successfully."
+        }
+      },
+      "resumeProject": {
+        "create": {
+          "title": "Project added",
+          "description": "Your project has been added successfully."
+        },
+        "update": {
+          "title": "Project updated",
+          "description": "Your project has been updated successfully."
+        },
+        "delete": {
+          "title": "Project deleted",
+          "description": "Your project has been deleted successfully."
+        }
+      },
+      "resumeSkill": {
+        "create": {
+          "title": "Skill added",
+          "description": "Your skill has been added successfully."
+        },
+        "update": {
+          "title": "Skill updated",
+          "description": "Your skill has been updated successfully."
+        },
+        "delete": {
+          "title": "Skill deleted",
+          "description": "Your skill has been deleted successfully."
+        }
+      },
+      "jobApply": {
+        "create": {
+          "title": "Application sent",
+          "description": "Your application has been sent successfully."
+        }
+      },
+      "deleteAccount": {
+        "success": {
+          "title": "Account deleted",
+          "description": "The account has been deleted successfully."
+        }
+      },
+      "updatePassword": {
+        "success": {
+          "title": "Password changed",
+          "description": "The password has been changed successfully."
+        }
+      },
+      "verifyPassword": {
+        "success": {
+          "title": "Password verified",
+          "description": "The provided password is correct"
+        }
+      },
+      "maskEmploi": {
+        "mask": {
+          "title": "Job hidden",
+          "description": "The job has been hidden successfully."
+        }
+      },
+      "reportEmploi": {
+        "success": {
+          "title": "Report sent",
+          "description": "Your report has been sent successfully."
+        }
+      }
+    },
+    "warnings": {
+      "irreversibleAction": "This action is irreversible.",
+      "permanentDelete": {
+        "resume": "This will permanently delete your resume."
+      }
+    },
+    "status": {
+      "online": "Online",
+      "away": "Away",
+      "busy": "Do not disturb",
+      "offline": "Offline"
+    },
+    "counts": {
+      "messages": "{count} messages"
+    },
+    "fileUpload": {
+      "sharedFiles": "Shared files:",
+      "fileSize": {
+        "bytes": "Bytes",
+        "kb": "KB",
+        "mb": "MB",
+        "gb": "GB"
+      },
+      "title": "Share files",
+      "description": "Select up to {maxFiles} files to share.",
+      "dragDrop": {
+        "idle": "Drag and drop your files",
+        "active": "Drop files here",
+        "or": "or",
+        "browse": "browse"
+      },
+      "preview": {
+        "notAvailable": "Preview not available"
+      },
+      "validation": {
+        "maxFiles": {
+          "title": "File limit reached",
+          "description": "You cannot upload more than {maxFiles} files at once."
+        },
+        "fileType": {
+          "title": "Unsupported file type",
+          "description": "Accepted file types are: {types}"
+        },
+        "success": {
+          "title": "Files added",
+          "description": "{count} file(s) added successfully."
+        },
+        "upload": {
+          "success": {
+            "title": "Upload successful",
+            "description": "{count} file(s) uploaded successfully."
+          },
+          "error": {
+            "title": "Upload error",
+            "description": "An error occurred while uploading files."
+          }
+        },
+        "remove": {
+          "title": "File deleted",
+          "description": "{filename} has been deleted."
+        }
+      }
+    },
+    "templates": {
+      "title": "Message templates"
+    },
+    "navigation": {
+      "imageCount": "{current} / {total}"
+    },
+    "aria": {
+      "imageViewer": "Image viewer",
+      "imageDescription": "Image description"
+    },
+    "links": {
+      "termsOfService": "Terms of Service",
+      "privacyPolicy": "Privacy Policy"
+    },
+    "legal": {
+      "agreement": "By clicking continue, you accept our {terms} and our {privacy}"
+    },
+    "placeholders": {
+      "noName": "No name provided",
+      "noLocation": "No location provided",
+      "noPhone": "Phone not provided",
+      "noAddress": "Address not provided",
+      "noBirthdate": "Date of birth not provided",
+      "noPostalCode": "Postal code not provided",
+      "noCity": "City not provided",
+      "noCountry": "Country not provided",
+      "noBio": "No biography provided",
+      "noSkills": "No skills added. Click edit to add your skills.",
+      "noBioWithEdit": "No information provided. Click edit to add your description.",
+      "noResume": "No resume added"
+    },
+    "location": {
+      "format": "{city}, {country}"
+    },
+    "files": {
+      "pdf": {
+        "format": "PDF format",
+        "maxSize": "max {size}MB"
+      }
+    },
+    "gender": {
+      "male": "Male",
+      "female": "Female",
+      "notSpecified": "Not specified"
+    },
+    "date": {
+      "format": {
+        "long": {
+          "year": "numeric",
+          "month": "long",
+          "day": "numeric"
+        }
+      }
+    },
+    "dialogs": {
+      "confirmation": {
+        "title": "Are you sure?"
+      }
+    },
+    "preferences": {
+      "title": "Preferences",
+      "employmentPreferences": {
+        "title": "Employment Preferences",
+        "description": "Specify information such as minimum salary and desired schedule."
+      },
+      "hideJobDetails": {
+        "title": "Hide jobs with these details",
+        "description": "Manage qualifications and preferences to hide certain jobs from your search.",
+        "dialog": {
+          "description": "We will do our best to hide jobs that require these qualifications or preferences.",
+          "empty": {
+            "description": "When you give feedback on jobs shown in your search results and email notifications, you will find the details here."
+          }
+        }
+      },
+      "availability": {
+        "title": "Available now",
+        "description": "Let employers know you can start as soon as possible.",
+        "dialog": {
+          "description": "Let employers know you can start working right now.",
+          "switch": {
+            "label": "I can start immediately.",
+            "description": "This information will be visible to employers."
+          }
+        }
+      },
+      "page": {
+        "title": "Job Preferences | My Profile",
+        "description": "Manage your job preferences, job types, and search criteria.",
+        "keywords": [
+          "job preferences",
+          "minimum salary",
+          "job types",
+          "relocation",
+          "search criteria"
+        ]
+      },
+      "sections": {
+        "jobTitles": {
+          "title": "Job Titles",
+          "empty": "No job title added",
+          "add": "Add a job title",
+          "dialog": {
+            "add": {
+              "title": "Add a job title",
+              "description": "Add a new job title to your profile.",
+              "form": {
+                "label": "Job title",
+                "placeholder": "Ex: Frontend Developer"
+              },
+              "toast": {
+                "success": {
+                  "title": "Title added",
+                  "description": "The job title has been added successfully."
+                }
+              }
+            },
+            "edit": {
+              "title": "Edit job title",
+              "description": "Edit the selected job title.",
+              "form": {
+                "label": "Job title",
+                "placeholder": "Ex: Frontend Developer"
+              },
+              "toast": {
+                "success": {
+                  "title": "Title edited",
+                  "description": "The job title has been edited successfully."
+                }
+              }
+            },
+            "delete": {
+              "title": "Are you sure?",
+              "description": "This action cannot be undone. This job title will be permanently deleted from your profile.",
+              "action": "Delete"
+            }
+          }
+        },
+        "minSalary": {
+          "title": "Minimum base salary",
+          "description": "This information will not be shared with employers.",
+          "placeholder": "No minimum salary added",
+          "periods": {
+            "monthly": "per month",
+            "yearly": "per year"
+          },
+          "dialog": {
+            "add": {
+              "title": "Add minimum salary",
+              "description": "What minimum salary are you looking for?"
+            },
+            "edit": {
+              "title": "Edit minimum salary",
+              "description": "What minimum salary are you looking for?"
+            },
+            "delete": {
+              "title": "Are you sure?",
+              "description": "This action cannot be undone. The minimum salary will be permanently deleted from your profile."
+            },
+            "form": {
+              "amount": {
+                "label": "Minimum base salary",
+                "placeholder": "4,000",
+                "currency": "MAD"
+              },
+              "period": {
+                "label": "Pay period",
+                "placeholder": "Select a period"
+              }
+            },
+            "toast": {
+              "add": {
+                "title": "Minimum salary added",
+                "description": "The minimum salary has been added successfully."
+              },
+              "edit": {
+                "title": "Minimum salary edited",
+                "description": "The minimum salary has been edited successfully."
+              }
+            }
+          }
+        },
+        "jobTypes": {
+          "title": "Job Types",
+          "empty": "No job type added",
+          "dialog": {
+            "add": {
+              "title": "Add a job type",
+              "description": "Select a job type to add to your profile."
+            },
+            "edit": {
+              "title": "Edit job type",
+              "description": "Edit the selected job type."
+            },
+            "delete": {
+              "title": "Delete job type",
+              "description": "This action cannot be undone. The job type will be permanently deleted from your profile."
+            },
+            "form": {
+              "type": {
+                "label": "Job type",
+                "placeholder": "Select a job type"
+              }
+            },
+            "toast": {
+              "add": {
+                "title": "Job type added",
+                "description": "The job type has been added successfully."
+              },
+              "edit": {
+                "title": "Job type edited",
+                "description": "The job type has been edited successfully."
+              }
+            }
+          }
+        },
+        "relocation": {
+          "title": "Relocation",
+          "empty": "No relocation preference added",
+          "status": {
+            "noRelocation": "No relocation",
+            "anywhereRelocation": "Willing to relocate anywhere",
+            "specificLocation": {
+              "title": "Near:"
+            }
+          },
+          "dialog": {
+            "add": {
+              "title": "Add relocation preference",
+              "description": "Specify your relocation preferences"
+            },
+            "edit": {
+              "title": "Edit relocation preference",
+              "description": "Edit your relocation preferences"
+            },
+            "delete": {
+              "title": "Delete relocation preference",
+              "description": "This action cannot be undone. The relocation preference will be permanently deleted from your profile."
+            },
+            "form": {
+              "willRelocate": {
+                "label": "Willing to relocate",
+                "description": "I am willing to relocate for a job"
+              },
+              "locationType": {
+                "label": "Location type",
+                "options": {
+                  "anywhere": "Anywhere",
+                  "specific": "Specific cities"
+                }
+              },
+              "location": {
+                "label": "Preferred cities",
+                "placeholder": "Enter cities, separated by commas",
+                "description": "List the cities where you would like to work"
+              }
+            },
+            "toast": {
+              "add": {
+                "title": "Relocation preference added",
+                "description": "Your relocation preferences have been added successfully."
+              },
+              "edit": {
+                "title": "Relocation preference edited",
+                "description": "Your relocation preferences have been edited successfully."
+              },
+              "delete": {
+                "title": "Relocation preference deleted",
+                "description": "Your relocation preferences have been deleted successfully."
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "pagination": {
+    "showing": "Showing {start} to {end} of {total} results",
+    "currentOfTotal": "Page {current} of {total}",
+    "aria": {
+      "firstPage": "First page",
+      "previousPage": "Previous page",
+      "nextPage": "Next page",
+      "lastPage": "Last page",
+      "pageX": "Page {page}"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Select login type",
+      "description": "Please choose how you want to log in.",
+      "welcomeBack": "Welcome",
+      "welcomeDescription": {
+        "employee": "Log in to your Postuly account as a Candidate",
+        "recruiter": "Log in to your Postuly account as a Recruiter"
+      },
+      "options": {
+        "employee": {
+          "title": "I'm looking for a job",
+          "description": "Log in as a candidate to apply"
+        },
+        "recruiter": {
+          "title": "I'm recruiting",
+          "description": "Log in as a recruiter to post jobs"
+        }
+      },
+      "noAccount": "Don't have an account?",
+      "signup": "Sign up"
+    },
+    "signup": {
+      "selectType": {
+        "title": "Create Your Account",
+        "description": "Please choose how you would like to sign up.",
+        "employee": {
+          "title": "Looking for a job",
+          "imageAlt": "Job seeker illustration"
+        },
+        "recruiter": {
+          "title": "Hiring for a job",
+          "imageAlt": "Recruiter illustration"
+        },
+        "illustration": {
+          "alt": "Signup choice illustration"
+        }
+      },
+      "form": {
+        "title": "Sign up",
+        "description": "Create your Postuly account as a {type}",
+        "name": {
+          "label": "Name",
+          "placeholder": "Your Name"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "m@example.com"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "•••••••"
+        },
+        "passwordConfirm": {
+          "label": "Confirm Password",
+          "placeholder": "•••••••"
+        },
+        "haveAccount": "Already have an account?"
+      },
+      "types": {
+        "employee": "job seeker",
+        "recruiter": "recruiter"
+      },
+      "toast": {
+        "success": "Your account has been created successfully"
+      }
+    }
+  },
+  "emplois": {
+    "page": {
+      "title": "Discover your dream career",
+      "description": "Explore thousands of job opportunities and find the perfect role matching your skills and aspirations"
+    },
+    "searchInput": {
+      "label": "Search for a job",
+      "placeholder": "Search by job title, company or keywords..."
+    },
+    "jobsContainer": {
+      "tabs": {
+        "recommended": "For you",
+        "recentSearches": "Recent Searches",
+        "resume": "Upload your resume"
+      },
+      "filters": {
+        "title": "Filters",
+        "keywords": "Keywords",
+        "contractTypes": "Contract types",
+        "apply": "Apply",
+        "reset": "Reset",
+        "date": {
+          "last24h": "Last 24 hours",
+          "lastWeek": "Last week",
+          "lastMonth": "Last month",
+          "allTime": "All"
+        }
+      },
+      "noActiveSearch": {
+        "title": "Start your search",
+        "description": "Use the search bar above to find jobs"
+      }
+    },
+    "jobsList": {
+      "title": "Available positions",
+      "loading": "Loading...",
+      "error": "Error loading jobs",
+      "noResults": "No job found. Try again later or explore other job opportunities.",
+      "jobsFound": "{count} job found",
+      "jobsFoundPlural": "{count} jobs found",
+      "remainingJobs": "{count} remaining"
+    },
+    "jobCard": {
+      "views": "{count} view",
+      "viewsPlural": "{count} views",
+      "applied": "{count} application",
+      "appliedPlural": "{count} applications",
+      "status": {
+        "open": "Active",
+        "closed": "Closed",
+        "suspended": "Suspended"
+      },
+      "menu": {
+        "bookmark": {
+          "add": "Add to favorites",
+          "remove": "Remove from favorites"
+        },
+        "notInterested": "Not interested",
+        "report": "Report this job"
+      },
+      "notInterestedDialog": {
+        "title": "Confirm your choice",
+        "description": "This job will no longer be visible in your main feed. You can always find it in your settings.",
+        "masking": "Hiding..."
+      },
+      "reportDialog": {
+        "title": "Report this job offer",
+        "description": "Select a reason and provide additional information if necessary.",
+        "reasons": {
+          "offensive": "Offensive or discriminatory offer",
+          "fraudulent": "Potentially fraudulent offer",
+          "inaccurate": "Inaccurate offer",
+          "advertising": "This is an advertisement",
+          "other": "Other"
+        },
+        "validation": {
+          "reasonRequired": "Please select a reason",
+          "maxLength": "Maximum 300 characters"
+        }
+      }
+    },
+    "alerts": {
+      "create": "Create an Alert",
+      "active": "Active alert",
+      "viewTooltip": "View alert",
+      "editTooltip": "Edit alert",
+      "success": {
+        "title": "Alert created successfully",
+        "description": "You will receive notifications for new positions matching your criteria."
+      },
+      "dialog": {
+        "view": {
+          "title": "Alert details",
+          "searchCriteria": "Search criteria"
+        },
+        "edit": {
+          "title": "Edit alert",
+          "searchCriteria": "Search criteria"
+        }
+      }
+    },
+    "jobDetails": {
+      "selectJob": "Select a position to see details",
+      "positions": "{count} position(s)",
+      "salary": {
+        "range": "{start} - {end} MAD",
+        "fixed": "{amount} MAD",
+        "unspecified": "Not specified"
+      },
+      "workingHours": {
+        "range": "{min}-{max}h{duration}",
+        "fixed": "{hours}h{duration}",
+        "unspecified": "Not specified"
+      },
+      "deadline": "Deadline: {date}",
+      "apply": "Apply",
+      "alreadyApplied": "Already applied",
+      "actions": {
+        "share": "Share job",
+        "notInterested": "Dismiss job"
+      },
+      "sections": {
+        "description": "Job description",
+        "requirements": "Requirements"
+      },
+      "share": {
+        "title": "Share this job offer",
+        "description": "Share this opportunity with your network",
+        "copyLink": "Copy link",
+        "copied": "Link copied!",
+        "shareNative": "Share via...",
+        "platforms": {
+          "twitter": "Share on Twitter",
+          "linkedin": "Share on LinkedIn",
+          "facebook": "Share on Facebook",
+          "whatsapp": "Share on WhatsApp"
+        },
+        "shareText": {
+          "default": "Check out this interesting job offer: {title} at {company}",
+          "twitter": "🚀 Great opportunity: {title} at {company}! Check the offer here:",
+          "linkedin": "I just found this interesting position: {title} at {company}. More details here:",
+          "facebook": "A great opportunity not to be missed: {title} at {company}. Find out more:",
+          "whatsapp": "Hi! I thought this job might interest you: {title} at {company}. Here is the link:"
+        },
+        "toast": {
+          "copySuccess": {
+            "title": "Link copied!",
+            "description": "The link has been copied to your clipboard"
+          },
+          "copyError": {
+            "title": "Copy error",
+            "description": "Unable to copy the link. Please try again."
+          },
+          "shareError": {
+            "title": "Share error",
+            "description": "Unable to share the offer. Please try again."
+          }
+        },
+        "errors": {
+          "unsupportedPlatform": "Sharing platform not supported",
+          "nativeShareUnavailable": "Native sharing is not available on your device"
+        }
+      }
+    },
+    "recentSearches": {
+      "noSearches": "No recent searches.",
+      "searchTip": "Try searching for jobs by title, keyword, or location.",
+      "removeSearch": "Remove search"
+    },
+    "resumeUpload": {
+      "tips": {
+        "title": "Tips for your resume",
+        "list": {
+          "format": "Use a clear and professional format",
+          "achievements": "Highlight your achievements rather than your responsibilities",
+          "tailored": "Tailor your resume to targeted jobs",
+          "grammar": "Check spelling and grammar"
+        }
+      }
+    }
+  },
+  "resume": {
+    "title": "Resume",
+    "noResume": "No resume added",
+    "uploading": "Uploading...",
+    "deleting": "Deleting...",
+    "actions": {
+      "view": "View resume",
+      "change": "Change resume",
+      "download": "Download resume",
+      "delete": "Delete resume"
+    },
+    "validation": {
+      "invalidType": {
+        "title": "Invalid file type",
+        "description": "Please upload a PDF file"
+      },
+      "fileSize": {
+        "title": "File too large",
+        "description": "The maximum file size is 2 MB (2048 KB)"
+      }
+    },
+    "error": {
+      "title": "Resume management error",
+      "description": "An error occurred while managing your resume. Please try again."
+    }
+  },
+  "annonces": {
+    "details": {
+      "header": {
+        "reportDialog": {
+          "title": "Report this job"
+        }
+      },
+      "error": {
+        "notFound": "Job not found"
+      },
+      "jobDetails": {
+        "salary": {
+          "perDuration": "/{duration}",
+          "range": "{start}€ - {end}€",
+          "fixed": "{amount}€"
+        },
+        "schedule": {
+          "range": "{min}-{max}h/{duration}"
+        },
+        "deadline": "Application deadline: {date}"
+      },
+      "questions": {
+        "title": "Questions",
+        "types": {
+          "experience": {
+            "placeholder": "Describe your experience..."
+          },
+          "open": {
+            "placeholder": "Your answer"
+          }
+        }
+      }
+    }
+  },
+  "help": {
+    "page": {
+      "title": "Help Center",
+      "description": "We're here to help. Describe your issue and we'll get back to you as soon as possible."
+    },
+    "form": {
+      "title": "How can we help you?",
+      "submit": "Send",
+      "sending": "Sending..."
+    },
+    "selectIssue": {
+      "label": "Issue type",
+      "placeholder": "Select an issue type",
+      "options": {
+        "technical": "Technical issue",
+        "account": "Account issue",
+        "billing": "Billing issue",
+        "other": "Other"
+      }
+    },
+    "messageArea": {
+      "label": "Your message",
+      "placeholder": "Describe your issue in detail..."
+    },
+    "toast": {
+      "success": {
+        "title": "Message sent",
+        "description": "We have received your message. We will get back to you as soon as possible."
+      },
+      "error": {
+        "title": "Error",
+        "description": "An error occurred while sending your message. Please try again."
+      }
+    }
+  },
+  "notifications": {
+    "page": {
+      "title": "Notifications"
+    },
+    "errors": {
+      "loadFailed": "Unable to load notifications. Please try again later.",
+      "noNotifications": "You don't have any notifications yet.",
+      "noMatchingFilters": "No notifications match your filters."
+    }
+  },
+  "messages": {
+    "delete": {
+      "title": "Delete conversation",
+      "description": "Are you sure you want to delete this conversation with {company} regarding the position of {job}?"
+    },
+    "search": {
+      "placeholder": "Search a message..."
+    },
+    "filters": {
+      "title": "Filters"
+    },
+    "chat": {
+      "company": "Company",
+      "participants": "participants",
+      "participantsList": "Chat participants",
+      "discussingWith": "Discussing with",
+      "viewJob": "View job post",
+      "archiveConversation": "Archive conversation",
+      "unarchiveConversation": "Unarchive conversation",
+      "reportSpam": "Report as spam",
+      "noMessageSelected": "Select a message to display its content",
+      "writeMessage": "Write your message...",
+      "interview": {
+        "invitation": "Interview invitation",
+        "details": {
+          "location": "Location",
+          "date": "Date",
+          "time": "Time",
+          "type": "Interview type"
+        }
+      },
+      "attachments": {
+        "preview": {
+          "size": "{size} {unit}"
+        }
+      },
+      "templates": {
+        "categories": {
+          "general": "General",
+          "interview": "Interview",
+          "offer": "Offer",
+          "followUp": "Follow-up",
+          "candidature": "Application",
+          "entretiens": "Interviews",
+          "suivi": "Follow-up",
+          "documents": "Documents",
+          "questions": "Questions"
+        }
+      },
+      "archive": {
+        "archive": "Archive",
+        "unarchive": "Unarchive",
+        "confirmMessage": "Are you sure you want to {action} this conversation with {company}{hasRecruiter, select, true { regarding the position of {job}} other {}}?",
+        "archiveDescription": "The conversation will be moved to the archives. You can find it in the \"Archive\" tab.",
+        "unarchiveDescription": "The conversation will be moved to the inbox."
+      },
+      "report": {
+        "title": "Report a problem",
+        "confirmMessage": "You want to report the conversation with {company}{hasRecruiter, select, true { regarding the position of {job}} other {}}.",
+        "description": "Your report will help us maintain a safe and professional environment for all users.",
+        "reasonLabel": "Why do you want to report this conversation?",
+        "additionalInfo": "Additional information",
+        "additionalInfoPlaceholder": "Add details to help us better understand the situation...",
+        "submit": "Send report",
+        "reasons": [
+          {
+            "id": "advertising",
+            "label": "Unsolicited advertising",
+            "description": "Unwanted promotional or advertising message"
+          },
+          {
+            "id": "inappropriate",
+            "label": "Inappropriate or offensive content",
+            "description": "Message containing discriminatory or offensive content"
+          },
+          {
+            "id": "scam",
+            "label": "Scam attempt",
+            "description": "Fraudulent message or scam attempt"
+          },
+          {
+            "id": "misleading",
+            "label": "Misleading information",
+            "description": "False information about the position or company"
+          },
+          {
+            "id": "irrelevant",
+            "label": "Not related to my application",
+            "description": "Message unrelated to my applications"
+          },
+          {
+            "id": "other",
+            "label": "Other",
+            "description": "Other reason not listed"
+          }
+        ]
+      }
+    }
+  },
+  "profile": {
+    "resume": {
+      "section": {
+        "title": "Resume",
+        "subtitle": "PDF format, max 2MB"
+      }
+    }
+  },
+  "editProfile": {
+    "title": "Edit your profile",
+    "description": "Update your personal information and how other users see you on the platform.",
+    "form": {
+      "firstName": {
+        "label": "First name",
+        "placeholder": "John"
+      },
+      "lastName": {
+        "label": "Last name",
+        "placeholder": "Doe"
+      },
+      "phone": {
+        "label": "Phone number",
+        "placeholder": "+1234567890"
+      },
+      "birthdate": {
+        "label": "Date of birth",
+        "placeholder": "Select a date"
+      },
+      "gender": {
+        "label": "Gender",
+        "options": {
+          "male": "Male",
+          "female": "Female"
+        }
+      },
+      "address": {
+        "label": "Address",
+        "placeholder": "123 Peace Street"
+      },
+      "city": {
+        "label": "City",
+        "placeholder": "Select a city"
+      },
+      "country": {
+        "label": "Country",
+        "placeholder": "France"
+      },
+      "postalCode": {
+        "label": "Postal code",
+        "placeholder": "75000"
+      },
+      "bio": {
+        "label": "Bio",
+        "placeholder": "Describe yourself"
+      },
+      "description": {
+        "label": "Resume description",
+        "placeholder": "Describe your professional experience and goals"
+      }
+    }
+  },
+  "settings": {
+    "account": {
+      "page": {
+        "title": "Account settings",
+        "description": "Manage your account settings and preferences."
+      },
+      "info": {
+        "title": "Account information",
+        "accountType": "Account type",
+        "email": "Email",
+        "phone": "Phone number",
+        "phoneNotSet": "Not provided",
+        "emailChange": {
+          "success": {
+            "title": "Email changed successfully",
+            "description": "Your email address has been changed successfully"
+          },
+          "error": {
+            "title": "Email change failed",
+            "description": "An error occurred while changing your email address"
+          },
+          "dialog": {
+            "steps": {
+              "verification": {
+                "title": "Password verification",
+                "description": "Enter your password to continue."
+              },
+              "change": {
+                "title": "Change email address",
+                "description": "Enter your new email address."
+              },
+              "confirm": {
+                "title": "New email verification",
+                "description": "Enter the verification code sent to your new email address."
+              }
+            },
+            "stepIndicator": [
+              { "title": "Verification" },
+              { "title": "New email" },
+              { "title": "Confirmation" }
+            ],
+            "form": {
+              "newEmail": {
+                "label": "New email",
+                "placeholder": "new@email.com"
+              },
+              "confirmEmail": {
+                "label": "Confirm new email",
+                "placeholder": "new@email.com"
+              },
+              "verification": {
+                "codeLabel": "Verification code",
+                "codePlaceholder": "Enter the 6-digit code",
+                "codeSent": "Verification code sent",
+                "codeSentDescription": "A verification code has been sent to {email}",
+                "resendCode": "Resend code"
+              }
+            },
+            "validation": {
+              "emailRequired": "Email is required",
+              "emailInvalid": "Invalid email address",
+              "confirmEmailRequired": "Email confirmation is required",
+              "emailMismatch": "Email addresses do not match",
+              "emailSame": "The new email address must be different from the current one",
+              "codeIncorrect": "Incorrect verification code",
+              "codeRequired": "Verification code is required"
+            }
+          }
+        },
+        "phoneChange": {
+          "success": {
+            "title": "Number changed",
+            "description": "Your phone number has been changed successfully"
+          },
+          "error": {
+            "title": "Phone number change failed",
+            "description": "An error occurred while changing your phone number"
+          },
+          "dialog": {
+            "steps": {
+              "verification": {
+                "title": "Password verification",
+                "description": "Enter your password to continue."
+              },
+              "change": {
+                "title": "Change phone number",
+                "description": "Enter your new phone number."
+              }
+            },
+            "stepIndicator": [
+              { "title": "Verification" },
+              { "title": "New number" }
+            ],
+            "form": {
+              "newPhone": {
+                "label": "New number",
+                "placeholder": "612345678"
+              }
+            },
+            "validation": {
+              "phoneRequired": "Phone number is required",
+              "phoneInvalid": "Invalid phone format",
+              "phoneMinLength": "The number must contain at least 9 digits",
+              "phoneSame": "The new number must be different from the current one"
+            }
+          }
+        },
+        "passwordChange": {
+          "success": {
+            "title": "Password changed",
+            "description": "Your password has been changed successfully"
+          },
+          "error": {
+            "title": "Password change failed",
+            "description": "An error occurred while changing your password"
+          },
+          "dialog": {
+            "title": "Change password"
+          }
+        }
+      },
+      "accountSettings": {
+        "title": "Account actions",
+        "logoutFromAccount": "Log out of your account",
+        "deleteAccountLabel": "Delete account",
+        "deleteAccountDescription": "Permanently delete your account and all your data",
+        "deleteAccountConfirm": "Are you sure you want to delete your account?",
+        "deleteAccountConfirmDescription": "This action is irreversible. All your data will be permanently deleted.",
+        "reConfirmation": "To confirm, write \"{DELETE_CONFIRMATION}\" below:",
+        "deleteConfirmationValue": "DELETE MY ACCOUNT"
+      }
+    },
+    "communication": {
+      "page": {
+        "title": "Communication settings",
+        "description": "Manage your communication settings and alert preferences."
+      },
+      "alerts": {
+        "title": "Alerts Configuration",
+        "jobAlerts": {
+          "title": "Job alerts",
+          "description": "Receive notifications for new jobs matching your criteria."
+        },
+        "companyAlerts": {
+          "title": "Company alerts",
+          "description": "Follow updates from companies you are interested in."
+        }
+      },
+      "notificationPreferences": {
+        "title": "Notification preferences"
+      },
+      "privacy": {
+        "title": "Privacy settings",
+        "description": "Manage who can see your status and information",
+        "toast": {
+          "toggle": {
+            "title": "Privacy setting updated",
+            "description": "Your privacy preferences have been updated"
+          }
+        },
+        "switch": {
+          "ariaLabel": "{action} {setting}"
+        }
+      },
+      "notifications": {
+        "toast": {
+          "toggle": {
+            "title": "Notification {state}",
+            "description": "Notification preference has been {state}"
+          }
+        },
+        "switch": {
+          "ariaLabel": "{action} notifications for {preference}"
+        }
+      },
+      "companyAlerts": {
+        "title": "Company alerts",
+        "description": "Set up company alerts to receive notifications when new opportunities are available at companies you are interested in.",
+        "empty": {
+          "description": "No active company alerts."
+        },
+        "toast": {
+          "toggle": {
+            "enable": {
+              "title": "Company alert enabled"
+            },
+            "disable": {
+              "title": "Company alert disabled"
+            },
+            "description": "The alert has been {state}"
+          },
+          "delete": {
+            "title": "Alert deleted",
+            "description": "The company alert has been deleted successfully"
+          }
+        },
+        "deleteDialog": {
+          "title": "Delete alert",
+          "description": "Are you sure you want to delete the alert for {company}?"
+        },
+        "switch": {
+          "ariaLabel": "{action} alerts for {company}"
+        }
+      },
+      "jobAlerts": {
+        "title": "Job alerts",
+        "description": "Set up job alerts to receive notifications when new jobs matching your criteria are posted.",
+        "myAlerts": "My alerts",
+        "empty": {
+          "title": "No alerts",
+          "description": "You have not set up any job alerts yet."
+        },
+        "salary": "Salary",
+        "switch": {
+          "ariaLabel": "{action} alert for {alert}"
+        },
+        "toast": {
+          "toggle": {
+            "enable": {
+              "title": "Alert enabled"
+            },
+            "disable": {
+              "title": "Alert disabled"
+            },
+            "description": "The alert has been {state}"
+          },
+          "delete": {
+            "title": "Alert deleted",
+            "description": "The job alert has been deleted successfully"
+          },
+          "edit": {
+            "title": "Alert edited",
+            "description": "The job alert has been updated successfully"
+          }
+        },
+        "deleteDialog": {
+          "title": "Delete alert",
+          "description": "Are you sure you want to delete this job alert?"
+        },
+        "editDialog": {
+          "title": "Edit alert"
+        },
+        "form": {
+          "post": {
+            "label": "Job title",
+            "placeholder": "Ex: Frontend Developer",
+            "description": "Enter the job title you are looking for"
+          },
+          "city": {
+            "label": "City",
+            "placeholder": "Ex: Paris",
+            "description": "Enter the city where you want to work"
+          },
+          "salary": {
+            "label": "Salary range",
+            "description": "Select the desired salary range",
+            "moveToChange": "Move the slider to change the range"
+          }
+        }
+      }
+    },
+    "devices": {
+      "title": "Connected devices",
+      "description": "Manage the devices connected to your account and their access.",
+      "table": {
+        "headers": {
+          "device": "Device",
+          "loginDate": "Login date",
+          "ipAddress": "IP address",
+          "actions": "Actions"
+        },
+        "currentDevice": "Current device",
+        "logout": {
+          "button": "Disconnect",
+          "toast": {
+            "title": "Device disconnected",
+            "description": "The device has been disconnected successfully"
+          }
+        }
+      }
+    },
+    "privacyPage": {
+      "title": "Privacy",
+      "description": "Manage your privacy settings and personal data.",
+      "dataTypes": {
+        "title": "Types of data collected",
+        "description": "We collect the following information to improve your experience:",
+        "items": {
+          "profile": "Profile information (name, email, etc.)",
+          "resume": "Resume and professional documents",
+          "preferences": "Job search preferences",
+          "history": "Site browsing history"
+        }
+      },
+      "dataUsage": {
+        "title": "Use and disclosure of my data",
+        "description": "Your data is used for:",
+        "items": {
+          "personalization": "Personalizing your job search",
+          "improvement": "Improving our services and recommendations",
+          "communication": "Communicating with recruiters (with your consent)"
+        }
+      },
+      "cookies": {
+        "title": "Cookies",
+        "description": "We use cookies to:",
+        "items": {
+          "session": "Maintain your session",
+          "preferences": "Remember your preferences",
+          "analytics": "Analyze site usage"
+        }
+      },
+      "dataAccess": {
+        "title": "Access and delete my data",
+        "description": "You can access your personal data or request its deletion at any time.",
+        "actions": {
+          "download": "Download my data",
+          "delete": "Delete my data"
+        }
+      }
+    }
+  },
+  "postulyCVPage": {
+    "title": "Postuly CV",
+    "generateResume": "Resume Generator",
+    "error": {
+      "title": "Error loading resume",
+      "description": "Unable to load your resume data. Please try again later."
+    },
+    "templates": {
+      "classic": "Classic",
+      "modern": "Modern",
+      "selector": {
+        "label": "Choose a template"
+      }
+    },
+    "colors": {
+      "title": "Colors",
+      "primary": "Primary",
+      "accent": "Accent"
+    },
+    "resume": {
+      "templates": {
+        "shared": {
+          "sections": {
+            "contact": "Contact",
+            "skills": "Skills",
+            "languages": "Languages",
+            "experience": "Professional Experience",
+            "projects": "Projects",
+            "education": "Education",
+            "certifications": "Certifications"
+          },
+          "skills": {
+            "level": "Level"
+          },
+          "languages": {
+            "level": "Level"
+          },
+          "professional": "Professional",
+          "noDescription": "No description provided",
+          "present": "Present",
+          "projects": {
+            "viewProject": "View project",
+            "keyTasks": "Key tasks",
+            "status": {
+              "completed": "Completed",
+              "in_progress": "In progress"
+            }
+          },
+          "certifications": {
+            "expires": "Expires"
+          }
+        },
+        "modern": {
+          "sections": {
+            "about": "About"
+          }
+        }
+      }
+    }
+  },
+  "myJobsPage": {
+    "title": "My job offers",
+    "tabs": {
+      "savedJobs": "Saved offers",
+      "sentApplications": "Sent applications",
+      "interviews": "Interviews",
+      "archived": "Archived offers"
+    },
+    "empty": {
+      "titleSavedJobs": "No saved offers",
+      "descriptionSavedJobs": "You have not saved any job offers yet. Start exploring offers and save them to view later.",
+      "descriptionSentApplications": "You have not sent any applications yet. Explore offers and apply to those that interest you.",
+      "descriptionArchived": "You have not archived any job offers yet. Explore offers and archive those you are no longer interested in."
+    },
+    "sentApplications": {
+      "status": {
+        "unknown": "Unknown status",
+        "expired": "Offer expired",
+        "applied": "Application sent",
+        "open": "Offer open"
+      },
+      "aria": {
+        "openOptions": "Open application options"
+      }
+    },
+    "archiveJobDialog": {
+      "title": "Archive this job offer?",
+      "description": "Are you sure you want to archive the offer \"{jobTitle}\"?",
+      "warning": "This action will move the offer to your archives. You can restore it later if needed."
+    },
+    "removeApplyDialog": {
+      "title": "Are you sure you want to withdraw your application?",
+      "description": "You are about to withdraw your application for ",
+      "description2": " This action is irreversible."
+    },
+    "interviews": {
+      "titleProgrammed": "Scheduled Interviews",
+      "descriptionProgrammed": "These are the interviews you have been invited to.",
+      "titleWaiting": "Pending Interviews",
+      "descriptionWaiting": "These interviews are awaiting your confirmation.",
+      "titlePast": "Past Interviews",
+      "descriptionPast": "Here are the interviews you have completed."
+    }
+  },
+  "myInterviewActionPage": {
+    "unavailable": {
+      "title": "Not available?",
+      "action": "Indicate my unavailability"
+    },
+    "details": {
+      "toast": {
+        "success": {
+          "title": "Interview confirmed",
+          "description": "Your interview has been successfully scheduled"
+        }
+      }
+    },
+    "refuser": {
+      "title": {
+        "refuse": "Refuse interview",
+        "cancel": "Cancel interview"
+      },
+      "reason": {
+        "label": "What is the reason?"
+      },
+      "reasons": {
+        "notInterested": "I am no longer interested in this position",
+        "acceptedOther": "I have accepted another offer",
+        "tooFar": "The location is too far",
+        "suspicious": "The offer seems suspicious",
+        "other": "Other reason"
+      },
+      "message": {
+        "label": "Message (optional)",
+        "placeholder": "Explain your decision...",
+        "counter": "{current}/500 characters"
+      },
+      "validation": {
+        "reasonRequired": "Please select a reason",
+        "messageMaxLength": "The message must not exceed 500 characters"
+      },
+      "actions": {
+        "refuse": "Refuse interview",
+        "cancel": "Cancel interview",
+        "maintain": "Maintain my application"
+      },
+      "toast": {
+        "refuse": {
+          "title": "Interview refused",
+          "description": "Your refusal has been sent successfully"
+        },
+        "cancel": {
+          "title": "Interview cancelled",
+          "description": "Your cancellation has been sent successfully"
+        }
+      }
+    },
+    "reporter": {
+      "title": "Propose new slots",
+      "message": {
+        "title": "Additional message (optional)",
+        "placeholder": "Add more information about your availability..."
+      },
+      "validation": {
+        "selectAvailability": "Please select at least one availability"
+      },
+      "toast": {
+        "success": {
+          "title": "Availability sent",
+          "description": "Your availability slots have been sent successfully"
+        }
+      }
+    }
+  },
+  "resumePage": {
+    "aboutMe": {
+      "title": "About me"
+    },
+    "workExperience": {
+      "title": "Work experience",
+      "empty": "No work experience added",
+      "dialog": {
+        "add": {
+          "title": "Add work experience",
+          "description": "Add details of your work experience"
+        },
+        "edit": {
+          "title": "Edit work experience",
+          "description": "Edit details of your work experience"
+        },
+        "delete": {
+          "title": "Delete experience",
+          "descriptionStart": "You are about to delete your experience as",
+          "warning": "This action is irreversible and will permanently remove this experience from your resume."
+        }
+      }
+    },
+    "education": {
+      "title": "Education",
+      "empty": "No education added",
+      "dialog": {
+        "add": {
+          "title": "Add education",
+          "description": "Add details of your education"
+        },
+        "edit": {
+          "title": "Edit education",
+          "description": "Edit details of your education"
+        },
+        "delete": {
+          "title": "Delete education",
+          "descriptionStart": "You are about to delete your education as",
+          "warning": "This action is irreversible and will permanently remove this education from your resume."
+        }
+      }
+    },
+    "projects": {
+      "title": "Projects",
+      "empty": "No project added",
+      "dialog": {
+        "add": {
+          "title": "Add project",
+          "description": "Add details of your project"
+        },
+        "edit": {
+          "title": "Edit project",
+          "description": "Edit details of your project"
+        },
+        "delete": {
+          "title": "Delete project",
+          "descriptionStart": "You are about to delete your project titled",
+          "warning": "This action is irreversible and will permanently remove this project from your resume."
+        }
+      }
+    },
+    "certifications": {
+      "title": "Certifications",
+      "empty": "No certification added",
+      "dialog": {
+        "add": {
+          "title": "Add certification",
+          "description": "Add details of your certification"
+        },
+        "edit": {
+          "title": "Edit certification",
+          "description": "Edit details of your certification"
+        },
+        "delete": {
+          "title": "Delete certification",
+          "descriptionStart": "You are about to delete your certification titled",
+          "warning": "This action is irreversible and will permanently remove this certification from your resume."
+        }
+      }
+    },
+    "skills": {
+      "empty": "No skill added",
+      "dialog": {
+        "add": {
+          "title": "Add skill",
+          "description": "Add details of your skill"
+        },
+        "edit": {
+          "title": "Edit skill",
+          "description": "Edit details of your skill"
+        },
+        "delete": {
+          "title": "Delete skill",
+          "descriptionStart": "You are about to delete your skill titled",
+          "warning": "This action is irreversible and will permanently remove this skill from your resume."
+        }
+      }
+    },
+    "languages": {
+      "empty": "No language added",
+      "dialog": {
+        "add": {
+          "title": "Add language",
+          "description": "Add details of your language"
+        },
+        "edit": {
+          "title": "Edit language",
+          "description": "Edit details of your language"
+        },
+        "delete": {
+          "title": "Delete language",
+          "descriptionStart": "You are about to delete your language titled",
+          "warning": "This action is irreversible and will permanently remove this language from your resume."
+        }
+      }
+    }
+  },
+  "nav": {
+    "title": "Postuly",
+    "description": "Navigate through the app",
+    "jobs": "Jobs",
+    "formations": "Training",
+    "profile": "Profile",
+    "companies": "Companies",
+    "myJobs": "My Jobs",
+    "myReviews": "My Reviews",
+    "settings": "Settings",
+    "help": "Help",
+    "overview": "Overview",
+    "resume": "Resume",
+    "accountSettings": "Account Settings",
+    "communicationSettings": "Connected Communication",
+    "deviceSettings": "Device Supervision",
+    "privacySettings": "Privacy Settings"
+  }
+}

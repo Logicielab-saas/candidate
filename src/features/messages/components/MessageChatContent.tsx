@@ -41,6 +41,7 @@ import {
 import { MOCK_CHAT_MESSAGES } from "@/core/mockData/messages-data";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 interface MessageChatContentProps {
   message?: Message;
@@ -53,10 +54,13 @@ function InterviewInvitation({
 }: {
   interview: NonNullable<ChatMessage["interview"]>;
 }) {
+  const t = useTranslations("messages.chat.interview");
+  const tCommon = useTranslations("common");
+
   return (
     <div className="bg-card border rounded-lg p-4 mt-2">
       <Badge variant="default" className="mb-2">
-        Invitation à un entretien
+        {t("invitation")}
       </Badge>
       <h3 className="text-lg font-semibold text-foreground">
         {interview.jobTitle}
@@ -86,11 +90,13 @@ function InterviewInvitation({
       <div className="flex gap-2 mt-4">
         <Button asChild>
           <Link href={`/interviews/programmer/${interview.jobKey}`}>
-            Programmer
+            {tCommon("actions.schedule")}
           </Link>
         </Button>
         <Button variant="outline" className="text-foreground" asChild>
-          <Link href={`/interviews/refuser/${interview.jobKey}`}>Refuser</Link>
+          <Link href={`/interviews/refuser/${interview.jobKey}`}>
+            {tCommon("actions.refuse")}
+          </Link>
         </Button>
       </div>
     </div>
@@ -112,6 +118,9 @@ export function MessageChatContent({
   onArchive,
   onReport,
 }: MessageChatContentProps) {
+  const t = useTranslations("messages.chat");
+  const tCommon = useTranslations("common");
+
   const [newMessage, setNewMessage] = useState("");
   const [chatMessages, setChatMessages] = useState(MOCK_CHAT_MESSAGES);
   const [isTyping, setIsTyping] = useState(false);
@@ -338,9 +347,17 @@ export function MessageChatContent({
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const sizes = [
+      tCommon("fileUpload.fileSize.bytes"),
+      tCommon("fileUpload.fileSize.kb"),
+      tCommon("fileUpload.fileSize.mb"),
+      tCommon("fileUpload.fileSize.gb"),
+    ];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+    return t("attachments.preview.size", {
+      size: parseFloat((bytes / Math.pow(k, i)).toFixed(2)),
+      unit: sizes[i],
+    });
   };
 
   const handleTemplateSelect = (template: MessageTemplate) => {
@@ -360,7 +377,7 @@ export function MessageChatContent({
     return (
       <Card className="h-[calc(100vh-180px)] overflow-hidden">
         <CardContent className="flex h-full items-center justify-center text-muted-foreground">
-          Sélectionnez un message pour afficher son contenu
+          {t("noMessageSelected")}
         </CardContent>
       </Card>
     );
@@ -445,7 +462,9 @@ export function MessageChatContent({
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="start" className="w-72">
-                      <DropdownMenuLabel>Modèles de messages</DropdownMenuLabel>
+                      <DropdownMenuLabel>
+                        {tCommon("templates.title")}
+                      </DropdownMenuLabel>
                       {Object.entries(
                         MESSAGE_TEMPLATES.reduce<
                           Record<string, MessageTemplate[]>
@@ -460,7 +479,9 @@ export function MessageChatContent({
                         <div key={category}>
                           <DropdownMenuGroup>
                             <DropdownMenuLabel className="text-xs text-muted-foreground pl-2">
-                              {category}
+                              {t(
+                                `templates.categories.${category.toLowerCase()}`
+                              )}
                             </DropdownMenuLabel>
                             {templates.map((template) => (
                               <DropdownMenuItem
@@ -488,7 +509,7 @@ export function MessageChatContent({
                 <div className="flex-1">
                   <Textarea
                     ref={textareaRef}
-                    placeholder="Écrivez votre message..."
+                    placeholder={t("writeMessage")}
                     value={newMessage}
                     onChange={handleInputChange}
                     onKeyDown={handleKeyPress}

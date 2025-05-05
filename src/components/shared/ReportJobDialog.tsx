@@ -30,21 +30,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useReportEmploi } from "@/hooks/use-report-emplois";
 import { useState } from "react";
-
-const reportReasons = [
-  "Offre offensante ou discriminatoire",
-  "Offre potentiellement frauduleuse",
-  "Offre inexacte",
-  "Il s'agit d'une publicité",
-  "Autre",
-];
-
-const reportSchema = z.object({
-  reason: z.string().min(1, "Veuillez sélectionner une raison"),
-  additionalInfo: z.string().max(300, "Maximum 300 caractères"),
-});
-
-type ReportFormData = z.infer<typeof reportSchema>;
+import { useTranslations } from "next-intl";
 
 interface ReportJobDialogProps {
   open: boolean;
@@ -57,7 +43,26 @@ export default function ReportJobDialog({
   jobId,
   onOpenChange,
 }: ReportJobDialogProps) {
-  const { mutate: reportJob, isPending } = useReportEmploi();
+  const t = useTranslations("emplois.jobCard.reportDialog");
+  const tCommon = useTranslations("common");
+  const tActions = useTranslations("common.actions");
+
+  const reportReasons = [
+    { id: "offensive", label: t("reasons.offensive") },
+    { id: "fraudulent", label: t("reasons.fraudulent") },
+    { id: "inaccurate", label: t("reasons.inaccurate") },
+    { id: "advertising", label: t("reasons.advertising") },
+    { id: "other", label: t("reasons.other") },
+  ];
+
+  const reportSchema = z.object({
+    reason: z.string().min(1, t("validation.reasonRequired")),
+    additionalInfo: z.string().max(300, t("validation.maxLength")),
+  });
+
+  type ReportFormData = z.infer<typeof reportSchema>;
+
+  const { mutate: reportJob, isPending } = useReportEmploi(tCommon);
   const [isDeleting, setIsDeleting] = useState(false);
   const {
     control,
@@ -110,13 +115,8 @@ export default function ReportJobDialog({
     >
       <AlertDialogContent className="sm:max-w-[425px]">
         <AlertDialogHeader>
-          <AlertDialogTitle>
-            Signaler cette offre d&apos;emploi
-          </AlertDialogTitle>
-          <AlertDialogDescription>
-            Sélectionnez une raison et fournissez des informations
-            supplémentaires si nécessaire.
-          </AlertDialogDescription>
+          <AlertDialogTitle>{t("title")}</AlertDialogTitle>
+          <AlertDialogDescription>{t("description")}</AlertDialogDescription>
         </AlertDialogHeader>
         <div className="space-y-4">
           <Controller
@@ -129,10 +129,15 @@ export default function ReportJobDialog({
                 className="space-y-4"
               >
                 {reportReasons.map((reason) => (
-                  <div key={reason} className="flex items-center space-x-3">
-                    <RadioGroupItem value={reason} id={reason} />
-                    <Label htmlFor={reason} className="flex-1 cursor-pointer">
-                      <span className="font-medium break-words">{reason}</span>
+                  <div key={reason.id} className="flex items-center space-x-3">
+                    <RadioGroupItem value={reason.label} id={reason.id} />
+                    <Label
+                      htmlFor={reason.id}
+                      className="flex-1 cursor-pointer"
+                    >
+                      <span className="font-medium break-words">
+                        {reason.label}
+                      </span>
                     </Label>
                   </div>
                 ))}
@@ -144,7 +149,7 @@ export default function ReportJobDialog({
           )}
 
           <div className="space-y-2">
-            <Label>Informations complémentaires</Label>
+            <Label>{tCommon("labels.additionalInfo")}</Label>
             <Textarea
               className="w-full border rounded-md p-2"
               rows={4}
@@ -166,7 +171,7 @@ export default function ReportJobDialog({
               }}
               disabled={isLoading}
             >
-              Annuler
+              {tActions("cancel")}
             </AlertDialogCancel>
             <AlertDialogAction asChild disabled={!watch("reason") || isLoading}>
               <button
@@ -174,7 +179,7 @@ export default function ReportJobDialog({
                 onClick={handleSubmit(onSubmit)}
                 disabled={!watch("reason") || isLoading}
               >
-                {isLoading ? "Envoi..." : "Envoyer"}
+                {isLoading ? tActions("sending") : tActions("send")}
               </button>
             </AlertDialogAction>
           </AlertDialogFooter>

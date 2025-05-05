@@ -9,6 +9,7 @@ import { Building2, Trash2 } from "lucide-react";
 import { type Message } from "@/core/mockData/messages-data";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useTranslations } from "next-intl";
 
 interface MessageItemProps {
   message: Message;
@@ -23,6 +24,7 @@ export function MessageItem({
   onDelete,
   isSelected,
 }: MessageItemProps) {
+  const tCommon = useTranslations("common");
   const recruiter = message.participants.find((p) => p.role === "Recruteur");
 
   return (
@@ -121,7 +123,7 @@ export function MessageItem({
             )}
           >
             <Trash2 className="h-4 w-4" />
-            Supprimer
+            {tCommon("actions.delete")}
           </button>
         </div>
       </div>

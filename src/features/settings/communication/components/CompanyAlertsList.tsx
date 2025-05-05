@@ -22,6 +22,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from "next-intl";
 
 export function CompanyAlertsList() {
   const [alerts, setAlerts] = useState<UserCompanyAlert[]>(initialAlerts);
@@ -30,6 +31,8 @@ export function CompanyAlertsList() {
     null
   );
   const { toast } = useToast();
+  const t = useTranslations("settings.communication.companyAlerts");
+  const tCommon = useTranslations("common.actions");
 
   const handleToggleAlert = (id: string, isEnabled: boolean) => {
     setAlerts(
@@ -37,10 +40,12 @@ export function CompanyAlertsList() {
     );
 
     toast({
-      title: isEnabled ? "Alerte activée" : "Alerte désactivée",
-      description: `L'alerte a été ${
-        isEnabled ? "activée" : "désactivée"
-      } avec succès.`,
+      title: isEnabled
+        ? t("toast.toggle.enable.title")
+        : t("toast.toggle.disable.title"),
+      description: t("toast.toggle.description", {
+        state: isEnabled ? tCommon("enabled") : tCommon("disabled"),
+      }),
     });
   };
 
@@ -55,8 +60,8 @@ export function CompanyAlertsList() {
       setIsDeleteDialogOpen(false);
 
       toast({
-        title: "Alerte supprimée",
-        description: "L'alerte a été supprimée avec succès.",
+        title: t("toast.delete.title"),
+        description: t("toast.delete.description"),
       });
     }
   };
@@ -65,9 +70,7 @@ export function CompanyAlertsList() {
     <div className="space-y-4">
       {alerts.length === 0 ? (
         <div className="text-center p-8 border rounded-lg">
-          <p className="text-muted-foreground">
-            Vous n&apos;avez pas encore créé d&apos;alertes d&apos;entreprise.
-          </p>
+          <p className="text-muted-foreground">{t("empty.description")}</p>
         </div>
       ) : (
         alerts.map((alert) => (
@@ -87,6 +90,12 @@ export function CompanyAlertsList() {
                     onCheckedChange={(checked) =>
                       handleToggleAlert(alert.id, checked)
                     }
+                    aria-label={t("switch.ariaLabel", {
+                      action: alert.isEnabled
+                        ? tCommon("disable")
+                        : tCommon("enable"),
+                      company: alert.company,
+                    })}
                   />
                   <Button
                     variant="ghost"
@@ -106,21 +115,22 @@ export function CompanyAlertsList() {
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Supprimer l&apos;alerte</DialogTitle>
+            <DialogTitle>{t("deleteDialog.title")}</DialogTitle>
           </DialogHeader>
           <p>
-            Êtes-vous sûr de vouloir supprimer cette alerte pour{" "}
-            <span className="font-medium">{selectedAlert?.company}</span> ?
+            {t("deleteDialog.description", {
+              company: selectedAlert?.company || "",
+            })}
           </p>
           <DialogFooter>
             <Button
               variant="outline"
               onClick={() => setIsDeleteDialogOpen(false)}
             >
-              Annuler
+              {tCommon("cancel")}
             </Button>
             <Button variant="destructive" onClick={handleDelete}>
-              Supprimer
+              {tCommon("delete")}
             </Button>
           </DialogFooter>
         </DialogContent>

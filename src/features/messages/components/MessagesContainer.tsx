@@ -18,6 +18,7 @@ import { useState } from "react";
 import { type Message, MOCK_MESSAGES } from "@/core/mockData/messages-data";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
+import { useTranslations } from "next-intl";
 
 /**
  * MessagesContainer - Manages the messages list and chat content display.
@@ -25,6 +26,7 @@ import { useQueryState } from "nuqs";
  * Uses nuqs to manage the "message" URL state without defaulting to the first message.
  */
 export function MessagesContainer() {
+  const tCommon = useTranslations("common");
   const [isMobileView, setIsMobileView] = useState(false);
   const [messages, setMessages] = useState<Message[]>(MOCK_MESSAGES);
 
@@ -133,7 +135,7 @@ export function MessagesContainer() {
               className="gap-2"
             >
               <ArrowLeft className="h-4 w-4" />
-              Retour à la liste
+              {tCommon("actions.backToList")}
             </Button>
           </div>
           <MessageChatContent

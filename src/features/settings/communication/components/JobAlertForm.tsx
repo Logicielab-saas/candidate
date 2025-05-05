@@ -1,8 +1,5 @@
 /**
  * JobAlertForm - Form component for creating and editing job alerts
- *
- * Provides form fields for job post, city, and salary range
- * with validation and submit handling.
  */
 
 "use client";
@@ -24,14 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { useState } from "react";
 import { UserAlert } from "@/core/interfaces/user-alert.interface";
-
-const formSchema = z.object({
-  id: z.string(),
-  post: z.string().min(2, "Le poste doit contenir au moins 2 caractères"),
-  city: z.string().optional(),
-  salaryRange: z.string().optional(),
-  isEnabled: z.boolean(),
-});
+import { useTranslations } from "next-intl";
 
 // Constants for salary range
 const MIN_SALARY = 20000;
@@ -49,8 +39,10 @@ export function JobAlertForm({
   onSave,
   onCancel,
 }: JobAlertFormProps) {
-  // Track whether the user has moved the salary slider
   const [hasMovedSalarySlider, setHasMovedSalarySlider] = useState(false);
+  const t = useTranslations("settings.communication.jobAlerts.form");
+  const tCommon = useTranslations("common.actions");
+  const tValidation = useTranslations("common.validation");
 
   // Parse initial salary range to array of [min, max] for the slider
   const parseSalaryRange = (rangeString?: string): [number, number] => {
@@ -72,6 +64,16 @@ export function JobAlertForm({
   const [sliderValues, setSliderValues] =
     useState<[number, number]>(initialSalaryRange);
 
+  const formSchema = z.object({
+    id: z.string(),
+    post: z.string().min(2, {
+      message: tValidation("minLength", { count: 2 }),
+    }),
+    city: z.string().optional(),
+    salaryRange: z.string().optional(),
+    isEnabled: z.boolean(),
+  });
+
   const form = useForm<UserAlert>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -90,7 +92,6 @@ export function JobAlertForm({
         sliderValues[1] / 1000
       )}`;
     }
-
     onSave(data);
   };
 
@@ -111,13 +112,11 @@ export function JobAlertForm({
           name="post"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Poste recherché</FormLabel>
+              <FormLabel>{t("post.label")}</FormLabel>
               <FormControl>
-                <Input placeholder="Développeur Web" {...field} />
+                <Input placeholder={t("post.placeholder")} {...field} />
               </FormControl>
-              <FormDescription>
-                Type de poste pour lequel vous souhaitez recevoir des alertes
-              </FormDescription>
+              <FormDescription>{t("post.description")}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -128,13 +127,11 @@ export function JobAlertForm({
           name="city"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Ville (optionnel)</FormLabel>
+              <FormLabel>{t("city.label")}</FormLabel>
               <FormControl>
-                <Input placeholder="Paris" {...field} />
+                <Input placeholder={t("city.placeholder")} {...field} />
               </FormControl>
-              <FormDescription>
-                Laissez vide pour chercher dans toutes les villes
-              </FormDescription>
+              <FormDescription>{t("city.description")}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -143,21 +140,23 @@ export function JobAlertForm({
         <FormField
           control={form.control}
           name="salaryRange"
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          render={({ field }) => (
+          render={() => (
             <FormItem>
-              <FormLabel>Fourchette de salaire (optionnel)</FormLabel>
-              <div className="space-y-3">
+              <FormLabel>{t("salary.label")}</FormLabel>
+              <div className="space-y-4">
                 <FormControl>
                   <Slider
-                    defaultValue={initialSalaryRange}
+                    defaultValue={[sliderValues[0], sliderValues[1]]}
                     max={MAX_SALARY}
                     min={MIN_SALARY}
                     step={STEP_SALARY}
+                    value={[sliderValues[0], sliderValues[1]]}
                     onValueChange={handleSliderChange}
+                    className="w-full"
+                    minStepsBetweenThumbs={2}
                   />
                 </FormControl>
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
                   <span className="font-medium">
                     {Math.round(sliderValues[0] / 1000)}K€
                   </span>
@@ -167,10 +166,10 @@ export function JobAlertForm({
                 </div>
               </div>
               <FormDescription>
-                Fourchette de salaire annuel brut souhaité en euros
+                {t("salary.description")}
                 {!hasMovedSalarySlider && initialValues.salaryRange && (
                   <span className="block text-xs text-muted-foreground mt-1">
-                    Déplacez le curseur pour modifier la fourchette de salaire
+                    {t("salary.moveToChange")}
                   </span>
                 )}
               </FormDescription>
@@ -181,9 +180,9 @@ export function JobAlertForm({
 
         <div className="flex justify-end space-x-4">
           <Button type="button" variant="outline" onClick={onCancel}>
-            Annuler
+            {tCommon("cancel")}
           </Button>
-          <Button type="submit">Enregistrer</Button>
+          <Button type="submit">{tCommon("save")}</Button>
         </div>
       </form>
     </Form>

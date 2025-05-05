@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Search } from "lucide-react";
 import { Label } from "@/components/ui/label";
+import { useTranslations } from "next-intl";
 
 interface UserReviewsListProps {
   initialReviews: CompanyReview[];
@@ -28,6 +29,7 @@ export function UserReviewsList({ initialReviews }: UserReviewsListProps) {
   const [reviews, setReviews] = useState(initialReviews);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<string>("recent");
+  const tCommon = useTranslations("common");
 
   const handleDeleteReview = (reviewId: string) => {
     setReviews((prev) => prev.filter((review) => review.id !== reviewId));
@@ -70,29 +72,39 @@ export function UserReviewsList({ initialReviews }: UserReviewsListProps) {
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1 space-y-1.5">
-          <Label htmlFor="search-reviews">Rechercher dans mes avis</Label>
+          <Label htmlFor="search-reviews">
+            {tCommon("reviews.search.label")}
+          </Label>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               id="search-reviews"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Rechercher par titre ou contenu..."
+              placeholder={tCommon("reviews.search.placeholder")}
               className="pl-10"
             />
           </div>
         </div>
         <div className="w-full sm:w-[200px] space-y-1.5">
-          <Label>Trier par</Label>
+          <Label>{tCommon("reviews.sort.label")}</Label>
           <Select value={sortBy} onValueChange={setSortBy}>
             <SelectTrigger>
-              <SelectValue placeholder="Trier par" />
+              <SelectValue placeholder={tCommon("reviews.sort.placeholder")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="recent">Plus récents</SelectItem>
-              <SelectItem value="oldest">Plus anciens</SelectItem>
-              <SelectItem value="rating_high">Note - Plus élevée</SelectItem>
-              <SelectItem value="rating_low">Note - Plus basse</SelectItem>
+              <SelectItem value="recent">
+                {tCommon("reviews.sort.options.recent")}
+              </SelectItem>
+              <SelectItem value="oldest">
+                {tCommon("reviews.sort.options.oldest")}
+              </SelectItem>
+              <SelectItem value="rating_high">
+                {tCommon("reviews.sort.options.rating_high")}
+              </SelectItem>
+              <SelectItem value="rating_low">
+                {tCommon("reviews.sort.options.rating_low")}
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -104,8 +116,8 @@ export function UserReviewsList({ initialReviews }: UserReviewsListProps) {
           <div className="text-center p-8 border rounded-lg">
             <p className="text-muted-foreground">
               {searchQuery
-                ? "Aucun avis ne correspond à votre recherche."
-                : "Vous n'avez pas encore donné d'avis."}
+                ? tCommon("reviews.empty.noResults")
+                : tCommon("reviews.empty.noReviews")}
             </p>
           </div>
         ) : (

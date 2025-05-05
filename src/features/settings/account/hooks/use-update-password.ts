@@ -19,7 +19,7 @@ export interface ChangePassword {
   password_confirmation: string;
 }
 
-export function useUpdatePassword() {
+export function useUpdatePassword(t: (key: string) => string) {
   const { toast } = useToast();
 
   return useMutation<
@@ -33,24 +33,18 @@ export function useUpdatePassword() {
         password: data.newPassword,
         password_confirmation: data.password_confirmation,
       }),
-    onSuccess: (response) => {
+    onSuccess: () => {
       toast({
         variant: "success",
-        title: "Mot de passe changé",
-        description:
-          response.message || "Le mot de passe a été changé avec succès",
+        title: t("toast.updatePassword.success.title"),
+        description: t("toast.updatePassword.success.description"),
       });
     },
-    onError: (error) => {
-      const errors = error.response?.data?.errors;
-      const errorMessage = errors
-        ? Object.values(errors).flat().join(", ")
-        : "Une erreur est survenue lors du changement du mot de passe";
-
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Erreur de changement",
-        description: errorMessage,
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });

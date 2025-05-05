@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import LoaderOne from "@/components/ui/loader-one";
 import { useMaskEmploi } from "@/hooks/use-mask-emploi";
+import { useTranslations } from "next-intl";
 
 interface NotInterestedDialogProps {
   open: boolean;
@@ -37,7 +38,9 @@ export default function NotInterestedDialog({
   onOpenChange,
   jobId,
 }: NotInterestedDialogProps) {
-  const { mutate: maskJob, isPending } = useMaskEmploi();
+  const t = useTranslations("emplois.jobCard.notInterestedDialog");
+  const tCommon = useTranslations("common");
+  const { mutate: maskJob, isPending } = useMaskEmploi(tCommon);
 
   const handleConfirm = () => {
     maskJob(jobId, {
@@ -51,14 +54,13 @@ export default function NotInterestedDialog({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Confirmer votre choix</AlertDialogTitle>
-          <AlertDialogDescription>
-            Cette offre ne sera plus visible dans votre flux principal. Vous
-            pouvez toujours la retrouver dans vos paramètres.
-          </AlertDialogDescription>
+          <AlertDialogTitle>{t("title")}</AlertDialogTitle>
+          <AlertDialogDescription>{t("description")}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>Annuler</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>
+            {tCommon("actions.cancel")}
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             className="bg-yellow-600 hover:bg-yellow-700"
@@ -67,10 +69,10 @@ export default function NotInterestedDialog({
             {isPending ? (
               <>
                 <LoaderOne />
-                <span className="ml-2">Masquage...</span>
+                <span className="ml-2">{t("masking")}</span>
               </>
             ) : (
-              "Confirmer"
+              tCommon("actions.confirm")
             )}
           </AlertDialogAction>
         </AlertDialogFooter>

@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/tooltip";
 import { AlertViewDialog } from "./AlertViewDialog";
 import { AlertEditDialog } from "./AlertEditDialog";
+import { useTranslations } from "next-intl";
 
 export function SaveSearchAlert() {
   const [searchText] = useQueryState("q");
@@ -33,6 +34,8 @@ export function SaveSearchAlert() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const { toast } = useToast();
 
+  const t = useTranslations("emplois.alerts");
+
   // Don't show the button if there's no search query
   if (!searchText) return null;
 
@@ -42,9 +45,8 @@ export function SaveSearchAlert() {
     setIsEditDialogOpen(false);
 
     toast({
-      title: "Alert créée avec succès",
-      description:
-        "Vous recevrez des notifications pour les nouveaux postes correspondant à vos critères.",
+      title: t("success.title"),
+      description: t("success.description"),
     });
   };
 
@@ -63,7 +65,7 @@ export function SaveSearchAlert() {
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <BellRing className="h-4 w-4 text-primary" />
-            <span>Alerte active</span>
+            <span>{t("active")}</span>
           </div>
           <TooltipProvider>
             <Tooltip>
@@ -77,7 +79,7 @@ export function SaveSearchAlert() {
                   <Eye className="h-4 w-4 text-primaryHex-600" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>Voir l&apos;alerte</TooltipContent>
+              <TooltipContent>{t("viewTooltip")}</TooltipContent>
             </Tooltip>
           </TooltipProvider>
           <TooltipProvider>
@@ -92,7 +94,7 @@ export function SaveSearchAlert() {
                   <Edit2 className="h-4 w-4 text-primaryHex-600" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>Modifier l&apos;alerte</TooltipContent>
+              <TooltipContent>{t("editTooltip")}</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </div>
@@ -123,7 +125,7 @@ export function SaveSearchAlert() {
       <DialogTrigger asChild>
         <Button variant="default" size="sm" className="gap-2">
           <Bell className="h-4 w-4" />
-          <span>Créer une Alerte</span>
+          <span>{t("create")}</span>
         </Button>
       </DialogTrigger>
 

@@ -20,12 +20,14 @@ import { SearchInput } from "./SearchInput";
 import { CitySelector } from "./CitySelector";
 import { useState, useEffect } from "react";
 import { useQueryState } from "nuqs";
+import { useTranslations } from "next-intl";
 
 export function HomeHeader() {
   // Local state for form inputs
   const [inputText, setInputText] = useState("");
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
 
+  const t = useTranslations("common");
   // URL state
   const [searchText, setSearchText] = useQueryState("q", {
     history: "push",
@@ -69,7 +71,7 @@ export function HomeHeader() {
         className="sm:w-[120px]"
         onClick={handleSearch}
       >
-        Search
+        {t("search")}
       </Button>
     </div>
   );

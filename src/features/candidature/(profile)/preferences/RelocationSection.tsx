@@ -6,6 +6,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { AddRelocationDialog } from "./dialogs/add/AddRelocationDialog";
 import { EditRelocationDialog } from "./dialogs/edit/EditRelocationDialog";
 import { DeleteRelocationDialog } from "./dialogs/delete/DeleteRelocationDialog";
+import { useTranslations } from "next-intl";
 
 interface Relocation {
   id: string;
@@ -23,6 +24,7 @@ export function RelocationSection({ onDataChange }: RelocationSectionProps) {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const tCommon = useTranslations("common");
 
   useEffect(() => {
     onDataChange(!!relocation);
@@ -61,15 +63,24 @@ export function RelocationSection({ onDataChange }: RelocationSectionProps) {
   };
 
   const getLocationText = () => {
-    if (!relocation?.willRelocate) return "Pas de relocalisation";
-    if (relocation.locationType === "anywhere")
-      return "Déménagement possible n'importe où";
+    if (!relocation?.willRelocate) {
+      return tCommon("preferences.sections.relocation.status.noRelocation");
+    }
+    if (relocation.locationType === "anywhere") {
+      return tCommon(
+        "preferences.sections.relocation.status.anywhereRelocation"
+      );
+    }
 
     const cities =
       relocation.location?.split(",").map((city) => city.trim()) || [];
     return (
       <div className="space-y-1">
-        <p className="font-medium">À proximité de :</p>
+        <p className="font-medium">
+          {tCommon(
+            "preferences.sections.relocation.status.specificLocation.title"
+          )}
+        </p>
         <div className="pl-4 space-y-0.5">
           {cities.map((city, index) => (
             <p key={index} className="font-semibold text-muted-foreground">
@@ -85,7 +96,7 @@ export function RelocationSection({ onDataChange }: RelocationSectionProps) {
     <>
       {!relocation ? (
         <div className="text-center text-muted-foreground py-8">
-          Aucune préférence de relocalisation ajoutée
+          {tCommon("preferences.sections.relocation.empty")}
         </div>
       ) : (
         <div className="rounded-lg border">
@@ -97,6 +108,7 @@ export function RelocationSection({ onDataChange }: RelocationSectionProps) {
                 size="icon"
                 className="h-8 w-8"
                 onClick={handleEdit}
+                aria-label={tCommon("actions.edit")}
               >
                 <Pencil className="h-4 w-4 text-muted-foreground" />
               </Button>
@@ -105,6 +117,7 @@ export function RelocationSection({ onDataChange }: RelocationSectionProps) {
                 size="icon"
                 className="h-8 w-8"
                 onClick={handleDelete}
+                aria-label={tCommon("actions.delete")}
               >
                 <Trash2 className="h-4 w-4 text-destructive" />
               </Button>
@@ -113,7 +126,12 @@ export function RelocationSection({ onDataChange }: RelocationSectionProps) {
         </div>
       )}
 
-      <button className="hidden" data-add-button onClick={handleAdd} />
+      <button
+        className="hidden"
+        data-add-button
+        onClick={handleAdd}
+        aria-label={tCommon("actions.add")}
+      />
 
       <AddRelocationDialog
         open={isAddOpen}

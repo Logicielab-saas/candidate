@@ -16,6 +16,7 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import type { Resume } from "@/core/interfaces";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 interface ClassicCVProps {
   primaryColor: string;
@@ -28,9 +29,9 @@ interface ClassicCVProps {
 function formatDate(dateString: string | null): string {
   if (!dateString) return "Present";
   const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
+  return date.toLocaleDateString("fr-FR", {
     year: "numeric",
-    month: "short",
+    month: "long",
   });
 }
 
@@ -41,6 +42,8 @@ export function ClassicCVTemplate({
   setImageError,
   resume,
 }: ClassicCVProps) {
+  const t = useTranslations("postulyCVPage.resume.templates.shared");
+
   const fullName = `${resume.first_name || ""} ${
     resume.last_name || ""
   }`.trim();
@@ -58,6 +61,7 @@ export function ClassicCVTemplate({
         className="md:w-1/3 text-white p-6 space-y-6"
         style={{ backgroundColor: primaryColor, minHeight: "296.86mm" }}
       >
+        {/* Avatar section */}
         <div className="flex flex-col items-center text-center">
           <Avatar
             className="w-48 h-48 rounded-full mb-4"
@@ -92,7 +96,7 @@ export function ClassicCVTemplate({
             className="text-xl font-semibold border-b-2 pb-2"
             style={{ color: accentColor, borderColor: accentColor }}
           >
-            CONTACT
+            {t("sections.contact")}
           </h3>
           <div className="space-y-3">
             {resume.phone && (
@@ -127,7 +131,7 @@ export function ClassicCVTemplate({
               className="text-xl font-semibold border-b-2 pb-2"
               style={{ color: accentColor, borderColor: accentColor }}
             >
-              SKILLS
+              {t("sections.skills")}
             </h3>
             <ul className="space-y-2">
               {resume.resume.skills.map((skill) => (
@@ -136,8 +140,8 @@ export function ClassicCVTemplate({
                   {skill.resumeskill_name || skill.skill_uuid}
                   {skill.resumeskill_level && (
                     <span className="text-sm opacity-75">
-                      {" - Level "}
-                      {skill.resumeskill_level}
+                      {" - "}
+                      {t("skills.level")} {skill.resumeskill_level}
                     </span>
                   )}
                 </li>
@@ -153,7 +157,7 @@ export function ClassicCVTemplate({
               className="text-xl font-semibold border-b-2 pb-2"
               style={{ color: accentColor, borderColor: accentColor }}
             >
-              LANGUAGES
+              {t("sections.languages")}
             </h3>
             <div className="space-y-3">
               {resume.resume.resumeLanguages.map((language) => (
@@ -161,7 +165,9 @@ export function ClassicCVTemplate({
                   <div className="flex items-center gap-2">
                     <div className="flex justify-between flex-1">
                       <span>{language.name}</span>
-                      <span>Level {language.level}</span>
+                      <span>
+                        {t("languages.level")} {language.level}
+                      </span>
                     </div>
                   </div>
                   <div className="w-full bg-gray-700 rounded-full h-1.5">
@@ -188,10 +194,10 @@ export function ClassicCVTemplate({
             {fullName}
           </h1>
           <h2 className="text-2xl" style={{ color: accentColor }}>
-            {resume.resume.resumeExperiences[0]?.job_title || "Professional"}
+            {resume.resume.resumeExperiences[0]?.job_title || t("professional")}
           </h2>
           <p className="text-gray-600 mt-4">
-            {resume.resume.description || "No description provided"}
+            {resume.resume.description || t("noDescription")}
           </p>
         </div>
 
@@ -202,7 +208,7 @@ export function ClassicCVTemplate({
               className="text-2xl font-semibold border-b-2 pb-2"
               style={{ color: primaryColor, borderColor: accentColor }}
             >
-              WORK EXPERIENCE
+              {t("sections.experience")}
             </h3>
             <div className="space-y-6">
               {resume.resume.resumeExperiences.map((exp) => (
@@ -228,7 +234,9 @@ export function ClassicCVTemplate({
                     <span>{exp.company_name}</span>
                     <span>
                       {formatDate(exp.date_start)} -{" "}
-                      {exp.current_time ? "Present" : formatDate(exp.date_end)}
+                      {exp.current_time
+                        ? t("present")
+                        : formatDate(exp.date_end)}
                     </span>
                   </div>
                 </div>
@@ -244,7 +252,7 @@ export function ClassicCVTemplate({
               className="text-2xl font-semibold border-b-2 pb-2"
               style={{ color: primaryColor, borderColor: accentColor }}
             >
-              PROJECTS
+              {t("sections.projects")}
             </h3>
             <div className="space-y-6">
               {resume.resume.resumeProjects.map((project) => (
@@ -272,7 +280,7 @@ export function ClassicCVTemplate({
                         className="text-sm hover:underline"
                         style={{ color: accentColor }}
                       >
-                        🔗 View Project
+                        🔗 {t("projects.viewProject")}
                       </a>
                     )}
                   </div>
@@ -294,7 +302,7 @@ export function ClassicCVTemplate({
                         className="text-sm font-semibold mb-1"
                         style={{ color: primaryColor }}
                       >
-                        Key Tasks:
+                        {t("projects.keyTasks")}:
                       </h5>
                       <ul className="list-disc list-inside space-y-1">
                         {project.tasks.map((task) => (
@@ -302,8 +310,8 @@ export function ClassicCVTemplate({
                             {task.name}
                             {task.description && (
                               <span className="text-gray-500">
-                                {" "}
-                                - {task.description}
+                                {" - "}
+                                {task.description}
                               </span>
                             )}
                             <span
@@ -313,7 +321,9 @@ export function ClassicCVTemplate({
                                   : "bg-yellow-100 text-yellow-800"
                               }`}
                             >
-                              {task.status}
+                              {t(
+                                `projects.status.${task.status.toLowerCase()}`
+                              )}
                             </span>
                           </li>
                         ))}
@@ -333,7 +343,7 @@ export function ClassicCVTemplate({
               className="text-2xl font-semibold border-b-2 pb-2"
               style={{ color: primaryColor, borderColor: accentColor }}
             >
-              EDUCATION
+              {t("sections.education")}
             </h3>
             <div className="space-y-6">
               {resume.resume.resumeEducations.map((edu) => (
@@ -359,7 +369,7 @@ export function ClassicCVTemplate({
                     <span>{edu.degree}</span>
                     <span>
                       {formatDate(edu.date_start)} -{" "}
-                      {edu.is_current ? "Present" : formatDate(edu.date_end)}
+                      {edu.is_current ? t("present") : formatDate(edu.date_end)}
                     </span>
                   </div>
                   {edu.description && (
@@ -378,7 +388,7 @@ export function ClassicCVTemplate({
               className="text-2xl font-semibold border-b-2 pb-2"
               style={{ color: primaryColor, borderColor: accentColor }}
             >
-              CERTIFICATIONS
+              {t("sections.certifications")}
             </h3>
             <div className="space-y-6">
               {resume.resume.resumeCertifications.map((cert) => (
@@ -405,7 +415,9 @@ export function ClassicCVTemplate({
                     <span>
                       {formatDate(cert.date)}{" "}
                       {cert.expiration_date &&
-                        `- Expires: ${formatDate(cert.expiration_date)}`}
+                        `- ${t("certifications.expires")}: ${formatDate(
+                          cert.expiration_date
+                        )}`}
                     </span>
                   </div>
                   {cert.description && (

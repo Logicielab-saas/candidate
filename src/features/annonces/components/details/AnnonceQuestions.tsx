@@ -5,16 +5,20 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface AnnonceQuestionsProps {
   annonce: JobDetails;
 }
 
 export function AnnonceQuestions({ annonce }: AnnonceQuestionsProps) {
+  const tCommon = useTranslations("common");
+  const t = useTranslations("annonces");
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Questions</CardTitle>
+        <CardTitle>{tCommon("labels.questions")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         {annonce.questions.map((question) => (
@@ -24,7 +28,9 @@ export function AnnonceQuestions({ annonce }: AnnonceQuestionsProps) {
               className={cn(
                 "block text-base",
                 question.isRequired &&
-                  "after:content-['*'] after:ml-1 after:text-destructive"
+                  `after:content-['${tCommon(
+                    "form.required"
+                  )}'] after:ml-1 after:text-destructive`
               )}
             >
               {question.question}
@@ -35,7 +41,11 @@ export function AnnonceQuestions({ annonce }: AnnonceQuestionsProps) {
               <Input
                 id={question.id}
                 type="text"
-                placeholder="Votre réponse"
+                placeholder={
+                  question.type === "experience"
+                    ? t("details.questions.types.experience.placeholder")
+                    : t("details.questions.types.open.placeholder")
+                }
                 required={question.isRequired}
               />
             )}
@@ -44,7 +54,7 @@ export function AnnonceQuestions({ annonce }: AnnonceQuestionsProps) {
             {question.type === "experience" && question.isMultipleChoices && (
               <Textarea
                 id={question.id}
-                placeholder="Votre réponse"
+                placeholder={tCommon("form.placeholders.longAnswer")}
                 required={question.isRequired}
                 className="min-h-[100px]"
               />
@@ -78,11 +88,15 @@ export function AnnonceQuestions({ annonce }: AnnonceQuestionsProps) {
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="yes" id={`${question.id}-yes`} />
-                  <Label htmlFor={`${question.id}-yes`}>Oui</Label>
+                  <Label htmlFor={`${question.id}-yes`}>
+                    {tCommon("actions.yes")}
+                  </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="no" id={`${question.id}-no`} />
-                  <Label htmlFor={`${question.id}-no`}>Non</Label>
+                  <Label htmlFor={`${question.id}-no`}>
+                    {tCommon("actions.no")}
+                  </Label>
                 </div>
               </RadioGroup>
             )}

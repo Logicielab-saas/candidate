@@ -1,4 +1,5 @@
 import { spanBadgeStyle } from "@/core/styles/span-badge.style";
+import { useTranslations } from "next-intl";
 
 interface ProfileAboutInfoProps {
   bio: string | null;
@@ -6,18 +7,19 @@ interface ProfileAboutInfoProps {
 }
 
 export function ProfileAboutInfo({ bio, skills }: ProfileAboutInfoProps) {
+  const tCommon = useTranslations("common");
+
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="text-lg font-medium">Bio</h3>
+        <h3 className="text-lg font-medium">{tCommon("labels.bio")}</h3>
         <p className="mt-2 text-sm text-muted-foreground">
-          {bio ||
-            "No about information provided yet. Click edit to add your description."}
+          {bio || tCommon("placeholders.noBioWithEdit")}
         </p>
       </div>
 
       <div>
-        <h3 className="text-lg font-medium">Skills</h3>
+        <h3 className="text-lg font-medium">{tCommon("skills")}</h3>
         {skills && skills.length > 0 ? (
           <div className="mt-2 flex flex-wrap gap-2">
             {skills.map((skill, index) => (
@@ -28,7 +30,7 @@ export function ProfileAboutInfo({ bio, skills }: ProfileAboutInfoProps) {
           </div>
         ) : (
           <p className="mt-2 text-sm text-muted-foreground">
-            No skills added yet. Click edit to add your skills.
+            {tCommon("placeholders.noSkills")}
           </p>
         )}
       </div>

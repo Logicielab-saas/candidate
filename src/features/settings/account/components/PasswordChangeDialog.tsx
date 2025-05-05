@@ -17,19 +17,27 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { PasswordChangeForm, passwordChangeSchema } from "./PasswordChangeForm";
+import {
+  PasswordChangeForm,
+  passwordChangeSchema,
+  type PasswordChangeForm as PasswordChangeFormType,
+} from "./PasswordChangeForm";
 import { useUpdatePassword } from "../hooks/use-update-password";
+import { useTranslations } from "next-intl";
 
 interface PasswordChangeDialogProps {
   trigger: React.ReactNode;
 }
 
 export function PasswordChangeDialog({ trigger }: PasswordChangeDialogProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const { mutate: updatePassword, isPending } = useUpdatePassword();
+  const t = useTranslations();
+  const tCommon = useTranslations("common");
 
-  const form = useForm<PasswordChangeForm>({
-    resolver: zodResolver(passwordChangeSchema),
+  const [isOpen, setIsOpen] = useState(false);
+  const { mutate: updatePassword, isPending } = useUpdatePassword(tCommon);
+
+  const form = useForm<PasswordChangeFormType>({
+    resolver: zodResolver(passwordChangeSchema(t)),
     defaultValues: {
       currentPassword: "",
       newPassword: "",
@@ -37,7 +45,7 @@ export function PasswordChangeDialog({ trigger }: PasswordChangeDialogProps) {
     },
   });
 
-  const handleSubmit = async (data: PasswordChangeForm) => {
+  const handleSubmit = async (data: PasswordChangeFormType) => {
     updatePassword(
       {
         currentPassword: data.currentPassword,
@@ -65,7 +73,9 @@ export function PasswordChangeDialog({ trigger }: PasswordChangeDialogProps) {
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Changer le mot de passe</DialogTitle>
+          <DialogTitle>
+            {t("settings.account.info.passwordChange.dialog.title")}
+          </DialogTitle>
         </DialogHeader>
         <PasswordChangeForm
           form={form}

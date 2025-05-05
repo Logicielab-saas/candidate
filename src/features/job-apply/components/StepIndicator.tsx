@@ -2,7 +2,7 @@
  * StepIndicator - Visual indicator for multi-step form progress
  *
  * Displays the current step and overall progress in the job application process
- * Shows questions step only if job has questions, otherwise just review
+ * Shows all steps: personal info, questions (if job has questions), and review
  */
 
 "use client";
@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { useJobApplyStore, JobApplyStep } from "../store/useJobApplyStore";
 import { CheckIcon } from "lucide-react";
 import { EmploisDetails } from "@/core/interfaces";
+import { useTranslations } from "next-intl";
 
 interface StepConfig {
   id: JobApplyStep;
@@ -22,16 +23,21 @@ interface StepIndicatorProps {
 }
 
 export function StepIndicator({ jobDetails }: StepIndicatorProps) {
+  const tCommon = useTranslations("common");
   const { currentStep } = useJobApplyStore();
 
   // Determine steps based on whether job has questions
   const steps: StepConfig[] =
     jobDetails.emploi_questions?.length > 0
       ? [
-          { id: "questions", label: "Questions" },
-          { id: "review", label: "Révision" },
+          { id: "personal-info", label: tCommon("informations") },
+          { id: "questions", label: tCommon("questions") },
+          { id: "review", label: tCommon("review") },
         ]
-      : [{ id: "review", label: "Révision" }];
+      : [
+          { id: "personal-info", label: tCommon("informations") },
+          { id: "review", label: tCommon("review") },
+        ];
 
   // Find the index of the current step
   const currentStepIndex = steps.findIndex((step) => step.id === currentStep);

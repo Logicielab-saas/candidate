@@ -3,9 +3,23 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
-import { AddMinSalaryDialog } from "./dialogs/add/AddMinSalaryDialog";
-import { EditMinSalaryDialog } from "./dialogs/edit/EditMinSalaryDialog";
-import { DeleteMinSalaryDialog } from "./dialogs/delete/DeleteMinSalaryDialog";
+import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
+
+const AddMinSalaryDialog = dynamic(
+  () => import("./dialogs/add/AddMinSalaryDialog"),
+  { ssr: false }
+);
+
+const EditMinSalaryDialog = dynamic(
+  () => import("./dialogs/edit/EditMinSalaryDialog"),
+  { ssr: false }
+);
+
+const DeleteMinSalaryDialog = dynamic(
+  () => import("./dialogs/delete/DeleteMinSalaryDialog"),
+  { ssr: false }
+);
 
 export interface MinSalary {
   id: string;
@@ -14,6 +28,7 @@ export interface MinSalary {
 }
 
 export function MinSalarySection() {
+  const tCommon = useTranslations("common");
   const [minSalary, setMinSalary] = useState<MinSalary | null>(null);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -55,7 +70,7 @@ export function MinSalarySection() {
     <>
       {!minSalary ? (
         <div className="text-center text-muted-foreground py-8">
-          Aucun salaire minimum ajouté
+          {tCommon("preferences.sections.minSalary.placeholder")}
         </div>
       ) : (
         <div className="rounded-lg border">
@@ -65,7 +80,7 @@ export function MinSalarySection() {
                 {minSalary.amount} MAD {minSalary.period}
               </p>
               <p className="text-sm text-muted-foreground">
-                Cette information ne sera pas communiquée aux employeurs.
+                {tCommon("preferences.sections.minSalary.description")}
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -92,11 +107,13 @@ export function MinSalarySection() {
 
       <button className="hidden" data-add-button onClick={handleAdd} />
 
-      <AddMinSalaryDialog
-        open={isAddOpen}
-        onOpenChange={setIsAddOpen}
-        onSubmit={handleSubmit}
-      />
+      {isAddOpen && (
+        <AddMinSalaryDialog
+          open={isAddOpen}
+          onOpenChange={setIsAddOpen}
+          onSubmit={handleSubmit}
+        />
+      )}
 
       {minSalary && isEditOpen && (
         <EditMinSalaryDialog

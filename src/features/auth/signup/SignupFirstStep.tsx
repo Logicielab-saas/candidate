@@ -5,10 +5,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { CheckCircle2, CheckCircle } from "lucide-react";
-import { RecruiterSignupForm } from "@/features/auth/signup/RecruiterSignupForm";
-import { CandidateSignupForm } from "@/features/auth/signup/CandidateSignupForm";
 import { Illustration } from "../Illustration";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 interface SignupFirstStepProps {
   onSelect: (type: "recruiter" | "employee" | null) => void;
@@ -19,15 +18,20 @@ export function SignupFirstStep({
   onSelect,
   selectedType,
 }: SignupFirstStepProps) {
+  const tAuth = useTranslations("auth.signup");
+  const tCommon = useTranslations("common");
+
   return (
-    <div className="flex flex-col gap-6 ">
+    <div className="flex flex-col gap-6">
       <Card className="overflow-hidden">
         <CardContent className="grid p-0 md:grid-cols-2">
           <div className="flex flex-col gap-6 p-6 mb-12">
             <div className="flex flex-col items-center text-center">
-              <h1 className="text-2xl font-bold">Select Signup Type</h1>
+              <h1 className="text-2xl font-bold">
+                {tAuth("selectType.title")}
+              </h1>
               <p className="text-balance text-muted-foreground">
-                Please choose how you would like to sign up.
+                {tAuth("selectType.description")}
               </p>
             </div>
             <RadioGroup className="grid grid-cols-1 md:grid-cols-1 gap-6">
@@ -69,16 +73,16 @@ export function SignupFirstStep({
                     </div>
                     <CardContent className="pt-6 space-y-4">
                       <div className="flex items-center gap-3">
-                        <div className=" p-2">
+                        <div className="p-2">
                           <Image
                             src="/signup/employ.svg"
-                            alt="Employ Icon"
+                            alt={tAuth("selectType.employee.imageAlt")}
                             width={100}
                             height={100}
                           />
                         </div>
                         <h3 className="text-xl font-semibold text-secondaryHex-900 dark:text-secondaryHex-50 text-center">
-                          Looking for a job
+                          {tAuth("selectType.employee.title")}
                         </h3>
                       </div>
                     </CardContent>
@@ -127,13 +131,13 @@ export function SignupFirstStep({
                         <div className="p-2">
                           <Image
                             src="/signup/comany.svg"
-                            alt="Company Icon"
+                            alt={tAuth("selectType.recruiter.imageAlt")}
                             width={100}
                             height={100}
                           />
                         </div>
                         <h3 className="text-xl font-semibold text-secondaryHex-900 dark:text-secondaryHex-50 text-center">
-                          Hiring for a job
+                          {tAuth("selectType.recruiter.title")}
                         </h3>
                       </div>
                     </CardContent>
@@ -144,21 +148,29 @@ export function SignupFirstStep({
           </div>
           <Illustration
             src="/signup/question.svg"
-            alt="Signup Illustration"
+            alt={tAuth("selectType.illustration.alt")}
             isFixedDimension={true}
           />
         </CardContent>
       </Card>
-      {selectedType === "recruiter" && (
-        <RecruiterSignupForm onSelect={onSelect} />
-      )}
-      {selectedType === "employee" && (
-        <CandidateSignupForm onSelect={onSelect} />
-      )}
-      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-        By clicking continue, you agree to our{" "}
-        <Link href="#">Terms of Service</Link> and{" "}
-        <Link href="#">Privacy Policy</Link>.
+      <div className="text-balance text-center text-xs text-muted-foreground">
+        {tCommon
+          .raw("legal.agreement")
+          .replace("{terms}", "")
+          .replace("{privacy}", "")}
+        <Link
+          href="/terms"
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          {tCommon("links.termsOfService")}
+        </Link>
+        {" et "}
+        <Link
+          href="/privacy"
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          {tCommon("links.privacyPolicy")}
+        </Link>
       </div>
     </div>
   );

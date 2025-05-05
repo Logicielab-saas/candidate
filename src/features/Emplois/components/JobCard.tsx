@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@/lib/utils";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import type { Emplois } from "@/core/interfaces";
@@ -6,6 +7,9 @@ import { spanBadgeStyle } from "@/core/styles/span-badge.style";
 import { redirect } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { JobCardMenu } from "./JobCardMenu";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/core/utils/date";
+import { hasAccessToken } from "@/lib/check-access-token";
 
 interface JobCardProps {
   job: Emplois;
@@ -13,6 +17,12 @@ interface JobCardProps {
 }
 
 export function JobCard({ job, isSelected }: JobCardProps) {
+  const t = useTranslations("emplois.jobCard");
+  const tCommon = useTranslations("common.actions");
+  const locale = useLocale();
+
+  const isAuthenticated = hasAccessToken();
+
   const handleKeywordClick = (e: React.MouseEvent, skill: string) => {
     e.stopPropagation(); // Prevent job card click
     redirect(`/home?keyword=${encodeURIComponent(skill)}`);
@@ -46,9 +56,11 @@ export function JobCard({ job, isSelected }: JobCardProps) {
           <div className="flex flex-col gap-2 flex-1">
             <div className="flex items-start justify-between">
               <h3 className="font-semibold leading-none">{job.title}</h3>
-              <div className="flex items-center gap-2">
-                <JobCardMenu jobId={job.uuid} />
-              </div>
+              {isAuthenticated && (
+                <div className="flex items-center gap-2">
+                  <JobCardMenu jobId={job.uuid} jobSlug={job.slug} />
+                </div>
+              )}
             </div>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
@@ -56,8 +68,12 @@ export function JobCard({ job, isSelected }: JobCardProps) {
                 <span>{job.company_name}</span>
               </div>
               <div className="flex items-center gap-1">
-                <MapPin className="h-3 w-3" />
-                <span>{job.city_name}</span>
+                {job.city_name && job.city_name !== "null" && (
+                  <>
+                    <MapPin className="h-3 w-3" />
+                    <span>{job.city_name}</span>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -96,14 +112,20 @@ export function JobCard({ job, isSelected }: JobCardProps) {
               ))}
             </div>
           )} */}
-          <div className="text-xs text-muted-foreground">
-            {job.views} views • {job.postule} applied •{" "}
-            {job.status === "open"
-              ? "Active"
-              : job.status === "closed"
-              ? "Closed"
-              : "Suspended"}
-            {job.saved && " • Saved"}
+          <div className="text-xs text-muted-foreground flex justify-between">
+            {job.views === 1
+              ? t("views", { count: job.views })
+              : t("viewsPlural", { count: job.views })}
+            {" • "}
+            {job.postule === 1
+              ? t("applied", { count: job.postule })
+              : t("appliedPlural", { count: job.postule })}
+            {" • "}
+            {t(`status.${job.status}`)}
+            {job.saved && ` • ${tCommon("saved")}`}
+            <div className="text-end">
+              {formatDate(job.created_at, "PPP", locale)}
+            </div>
           </div>
         </div>
       </CardContent>

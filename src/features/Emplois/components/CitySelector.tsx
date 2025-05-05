@@ -15,39 +15,42 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
+  CommandSeparator,
 } from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { useState, useEffect } from "react";
 import { useDebounce } from "use-debounce";
-import { useCities } from "@/hooks/use-cities";
+
 import LoaderOne from "@/components/ui/loader-one";
+import { useTranslations } from "next-intl";
+import { useSearchSuggestions } from "../hooks/use-emplois";
 
 // Define props interface to expose city value and setter
 interface CitySelectorProps {
   value: string | null;
   onChange: (value: string | null) => void;
-  label?: string;
 }
 
-export function CitySelector({
-  value,
-  onChange,
-  label = "City",
-}: CitySelectorProps) {
+export function CitySelector({ value, onChange }: CitySelectorProps) {
+  const t = useTranslations("common");
   // Local state
   const [citySearch, setCitySearch] = useState("");
   const [open, setOpen] = useState(false);
   const [urlCity] = useQueryState("city");
 
+  // Debounce the city search
+  const [debouncedCitySearch] = useDebounce(citySearch, 300);
   // Fetch cities using the hook
-  const { data: cities, isLoading } = useCities();
+  const { suggestions: cities, isLoading } = useSearchSuggestions({
+    city: debouncedCitySearch,
+  });
 
   // Sync with URL on initial load and navigation
   useEffect(() => {
@@ -56,18 +59,6 @@ export function CitySelector({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlCity]);
-
-  // Debounce the city search
-  const [debouncedCitySearch] = useDebounce(citySearch, 300);
-
-  // Filter cities based on debounced search
-  const filteredCities =
-    cities?.filter((city) =>
-      city.name.toLowerCase().includes(debouncedCitySearch.toLowerCase())
-    ) || [];
-
-  // Get the current city
-  const currentCity = cities?.find((city) => city.uuid === value);
 
   return (
     <div className="w-full sm:w-[250px] space-y-1.5">
@@ -79,7 +70,7 @@ export function CitySelector({
           "peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         )}
       >
-        {label}
+        {t("selectorsSearch.citySelector.label")}
       </label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
@@ -89,14 +80,14 @@ export function CitySelector({
             aria-expanded={open}
             className="w-full justify-between"
           >
-            {currentCity?.name ?? "Toutes les villes..."}
+            {value ?? t("selectorsSearch.citySelector.allCities")}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[250px] p-0">
           <Command>
             <CommandInput
-              placeholder="Rechercher une ville..."
+              placeholder={t("selectorsSearch.citySelector.searchPlaceholder")}
               value={citySearch}
               onValueChange={setCitySearch}
             />
@@ -105,14 +96,20 @@ export function CitySelector({
                 <div className="flex items-center justify-center py-6">
                   <LoaderOne />
                 </div>
-              ) : filteredCities.length === 0 ? (
-                <CommandEmpty>Aucune ville trouvée.</CommandEmpty>
+              ) : !debouncedCitySearch ? (
+                <CommandEmpty>
+                  {t("selectorsSearch.citySelector.searchPlaceholder")}
+                </CommandEmpty>
+              ) : cities?.length === 0 ? (
+                <CommandEmpty>
+                  {t("selectorsSearch.citySelector.noCitiesFound")}
+                </CommandEmpty>
               ) : (
                 <CommandGroup>
-                  {filteredCities.map((city) => (
+                  {cities?.map((city, index) => (
                     <CommandItem
-                      key={city.uuid}
-                      value={city.uuid}
+                      key={index + city.title}
+                      value={city.title}
                       onSelect={(currentValue) => {
                         onChange(currentValue === value ? null : currentValue);
                         setCitySearch("");
@@ -122,13 +119,31 @@ export function CitySelector({
                       <Check
                         className={cn(
                           "mr-2 h-4 w-4",
-                          value === city.uuid ? "opacity-100" : "opacity-0"
+                          value === city.title ? "opacity-100" : "opacity-0"
                         )}
                       />
-                      {city.name}
+                      {city.title}
                     </CommandItem>
                   ))}
                 </CommandGroup>
+              )}
+              {value && (
+                <>
+                  <CommandSeparator />
+                  <CommandGroup>
+                    <CommandItem
+                      onSelect={() => {
+                        onChange(null);
+                        setCitySearch("");
+                        setOpen(false);
+                      }}
+                      className="justify-center text-sm text-muted-foreground cursor-pointer"
+                    >
+                      <X className="mr-2 h-4 w-4" />
+                      {t("actions.reset")}
+                    </CommandItem>
+                  </CommandGroup>
+                </>
               )}
             </CommandList>
           </Command>

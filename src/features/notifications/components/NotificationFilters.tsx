@@ -17,11 +17,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { NOTIFICATION_TYPES, type NotificationType } from "../types";
+import { useTranslations } from "next-intl";
 
 type FilterType = NotificationType | "all";
 type ReadStatusType = "all" | "read" | "unread";
 
 export function NotificationFilters() {
+  const tCommon = useTranslations("common");
   const [type, setType] = useQueryState<FilterType>("type", {
     parse: (value: string): FilterType =>
       Object.values(NOTIFICATION_TYPES).includes(value as NotificationType) ||
@@ -47,18 +49,22 @@ export function NotificationFilters() {
           onValueChange={(value: FilterType) => setType(value)}
         >
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Filter by type" />
+            <SelectValue placeholder={tCommon("filters.filterBy.type")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
-            <SelectItem value={NOTIFICATION_TYPES.JOB}>Jobs</SelectItem>
+            <SelectItem value="all">{tCommon("filters.types.all")}</SelectItem>
+            <SelectItem value={NOTIFICATION_TYPES.JOB}>
+              {tCommon("filters.types.job")}
+            </SelectItem>
             <SelectItem value={NOTIFICATION_TYPES.INTERVIEW}>
-              Interviews
+              {tCommon("filters.types.interview")}
             </SelectItem>
             <SelectItem value={NOTIFICATION_TYPES.APPLICATION}>
-              Applications
+              {tCommon("filters.types.application")}
             </SelectItem>
-            <SelectItem value={NOTIFICATION_TYPES.SYSTEM}>System</SelectItem>
+            <SelectItem value={NOTIFICATION_TYPES.SYSTEM}>
+              {tCommon("filters.types.system")}
+            </SelectItem>
           </SelectContent>
         </Select>
 
@@ -67,12 +73,16 @@ export function NotificationFilters() {
           onValueChange={(value: ReadStatusType) => setReadStatus(value)}
         >
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Filter by status" />
+            <SelectValue placeholder={tCommon("filters.filterBy.status")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Status</SelectItem>
-            <SelectItem value="read">Read</SelectItem>
-            <SelectItem value="unread">Unread</SelectItem>
+            <SelectItem value="all">{tCommon("filters.status.all")}</SelectItem>
+            <SelectItem value="read">
+              {tCommon("filters.status.read")}
+            </SelectItem>
+            <SelectItem value="unread">
+              {tCommon("filters.status.unread")}
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -84,7 +94,7 @@ export function NotificationFilters() {
           setReadStatus("all");
         }}
       >
-        Clear Filters
+        {tCommon("actions.clearFilters")}
       </Button>
     </div>
   );

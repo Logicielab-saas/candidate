@@ -8,27 +8,24 @@
 import { useMutation } from "@tanstack/react-query";
 import { verifyPassword } from "@/features/auth/services/verify-password";
 import { useToast } from "@/hooks/use-toast";
-import { AxiosError } from "axios";
 
-export function useVerifyPassword() {
+export function useVerifyPassword(t: (key: string) => string) {
   const { toast } = useToast();
 
   return useMutation({
     mutationFn: verifyPassword,
-    onSuccess: (response) => {
+    onSuccess: () => {
       toast({
         variant: "success",
-        title: "Mot de passe vérifié",
-        description: response.message || "Le mot de passe fourni est correct",
+        title: t("toast.verifyPassword.success.title"),
+        description: t("toast.verifyPassword.success.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Erreur de vérification",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "Une erreur est survenue lors de la vérification du mot de passe",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });

@@ -20,6 +20,7 @@ import {
 import { type Message } from "@/core/mockData/messages-data";
 import { Archive, ArchiveRestore } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface ArchiveMessageDialogProps {
   isOpen: boolean;
@@ -34,6 +35,10 @@ export function ArchiveMessageDialog({
   messageToArchive,
   onConfirm,
 }: ArchiveMessageDialogProps) {
+  // Translations
+  const tCommon = useTranslations("common");
+  const tMessages = useTranslations("messages");
+
   if (!messageToArchive) return null;
 
   const recruiter = messageToArchive.participants.find(
@@ -58,41 +63,36 @@ export function ArchiveMessageDialog({
               <Archive className="h-5 w-5 text-muted-foreground" />
             )}
             {isArchived
-              ? "Désarchiver la conversation"
-              : "Archiver la conversation"}
+              ? tMessages("chat.unarchiveConversation")
+              : tMessages("chat.archiveConversation")}
           </AlertDialogTitle>
           <div className="space-y-2.5">
             <AlertDialogDescription>
-              Êtes-vous sûr de vouloir {isArchived ? "désarchiver" : "archiver"}{" "}
-              cette conversation avec{" "}
-              <span className="font-medium text-foreground">
-                {messageToArchive.company.name}
-              </span>
-              {recruiter && (
-                <>
-                  {" "}
-                  concernant le poste de{" "}
-                  <span className="font-medium text-foreground">
-                    {messageToArchive.job.name}
-                  </span>{" "}
-                  ?
-                </>
-              )}
+              {tMessages("chat.archive.confirmMessage", {
+                action: isArchived
+                  ? tMessages("chat.archive.unarchive")
+                  : tMessages("chat.archive.archive"),
+                company: messageToArchive.company.name,
+                job: messageToArchive.job.name,
+                hasRecruiter: recruiter ? "true" : "false",
+              })}
             </AlertDialogDescription>
             <AlertDialogDescription className="text-sm text-muted-foreground">
               {isArchived
-                ? "La conversation sera déplacée vers la boîte de réception."
-                : 'La conversation sera déplacée vers les archives. Vous pourrez la retrouver dans l\'onglet "Archive".'}
+                ? tMessages("chat.archive.unarchiveDescription")
+                : tMessages("chat.archive.archiveDescription")}
             </AlertDialogDescription>
           </div>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Annuler</AlertDialogCancel>
+          <AlertDialogCancel>{tCommon("actions.cancel")}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             className={cn(isArchived && "bg-primary hover:bg-primary/90")}
           >
-            {isArchived ? "Désarchiver" : "Archiver"}
+            {isArchived
+              ? tMessages("chat.archive.unarchive")
+              : tMessages("chat.archive.archive")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

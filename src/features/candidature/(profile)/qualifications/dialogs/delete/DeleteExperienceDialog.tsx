@@ -13,7 +13,7 @@ import {
 import type { ResumeExperience } from "@/core/interfaces/";
 import { useDeleteResumeExperience } from "../../hooks/use-resume-experience";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from "next-intl";
 
 interface DeleteExperienceDialogProps {
   open: boolean;
@@ -26,10 +26,11 @@ export function DeleteExperienceDialog({
   onOpenChange,
   experience,
 }: DeleteExperienceDialogProps) {
-  const { mutate: deleteExperience, isPending } = useDeleteResumeExperience();
+  const t = useTranslations("resumePage.workExperience.dialog.delete");
+  const tCommon = useTranslations("common");
+  const { mutate: deleteExperience, isPending } =
+    useDeleteResumeExperience(tCommon);
   const [isDeleting, setIsDeleting] = useState(false);
-
-  const { toast } = useToast();
 
   const handleConfirm = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -52,14 +53,6 @@ export function DeleteExperienceDialog({
       onOpenChange(false);
     } catch (_error) {
       setIsDeleting(false);
-      toast({
-        variant: "destructive",
-        title: "Erreur",
-        description:
-          _error instanceof Error
-            ? _error.message
-            : "Une erreur est survenue lors de la suppression de l'expérience.",
-      });
     }
   };
 
@@ -76,23 +69,28 @@ export function DeleteExperienceDialog({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+          <AlertDialogTitle>{t("title")}</AlertDialogTitle>
           <AlertDialogDescription>
-            Vous êtes sur le point de supprimer l&apos;expérience:{" "}
-            <span className="font-bold">{experience.job_title}</span> à{" "}
+            {t("descriptionStart")}{" "}
+            <span className="font-bold">{experience.job_title}</span>{" "}
+            {tCommon("at")}{" "}
             <span className="font-bold">{experience.company_name}</span>.
             <br />
-            Cette action ne peut être annulée.
+            {t("warning")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>
+            {tCommon("actions.cancel")}
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             className="bg-destructive hover:bg-destructive/90"
             disabled={isLoading}
           >
-            {isLoading ? "Suppression..." : "Supprimer"}
+            {isLoading
+              ? tCommon("actions.deleting")
+              : tCommon("actions.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

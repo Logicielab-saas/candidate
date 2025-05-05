@@ -7,12 +7,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApplyToJob } from "../services/job-apply";
 import { useToast } from "@/hooks/use-toast";
-import { JobApplyFormData } from "@/core/interfaces";
+import type { JobApplyFormData } from "@/core/interfaces";
 import { EMPLOIS_QUERY_KEY } from "@/features/Emplois/hooks/use-emplois";
 
 export const JOB_APPLY_QUERY_KEY = ["job-apply"];
 
-export function useApplyToJob() {
+export function useApplyToJob(t: (k: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -25,16 +25,15 @@ export function useApplyToJob() {
 
       toast({
         variant: "success",
-        title: "Candidature envoyée",
-        description: "Votre candidature a été envoyée avec succès.",
+        title: t("toast.jobApply.create.title"),
+        description: t("toast.jobApply.create.description"),
       });
     },
-    onError: (error: Error) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Erreur",
-        description:
-          error.message || "Une erreur est survenue. Veuillez réessayer.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });

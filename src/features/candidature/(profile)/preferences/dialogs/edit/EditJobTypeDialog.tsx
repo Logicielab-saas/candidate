@@ -30,14 +30,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useTranslations } from "next-intl";
+import { useMemo } from "react";
 
-const jobTypeFormSchema = z.object({
-  type: z.nativeEnum(ContractType, {
-    required_error: "Le type de poste est requis",
-  }),
-});
+function jobTypeFormSchema(t: (key: string) => string) {
+  return z.object({
+    type: z.nativeEnum(ContractType, {
+      required_error: t("jobTypes.required"),
+    }),
+  });
+}
 
-type JobTypeFormValues = z.infer<typeof jobTypeFormSchema>;
+type JobTypeFormValues = z.infer<ReturnType<typeof jobTypeFormSchema>>;
 
 interface EditJobTypeDialogProps {
   open: boolean;
@@ -50,7 +54,7 @@ interface EditJobTypeDialogProps {
   selectedTypes: ContractType[];
 }
 
-export function EditJobTypeDialog({
+export default function EditJobTypeDialog({
   open,
   onOpenChange,
   onSubmit,
@@ -58,8 +62,16 @@ export function EditJobTypeDialog({
   selectedTypes,
 }: EditJobTypeDialogProps) {
   const { toast } = useToast();
+  const tCommon = useTranslations("common");
+  const tValidation = useTranslations("common.validation");
+
+  const jobTypeForm = useMemo(
+    () => jobTypeFormSchema(tValidation),
+    [tValidation]
+  );
+
   const form = useForm<JobTypeFormValues>({
-    resolver: zodResolver(jobTypeFormSchema),
+    resolver: zodResolver(jobTypeForm),
     defaultValues: {
       type: jobType.type,
     },
@@ -71,8 +83,10 @@ export function EditJobTypeDialog({
     onOpenChange(false);
     toast({
       variant: "success",
-      title: "Type de poste modifié",
-      description: "Le type de poste a été modifié avec succès.",
+      title: tCommon("preferences.sections.jobTypes.dialog.toast.edit.title"),
+      description: tCommon(
+        "preferences.sections.jobTypes.dialog.toast.edit.description"
+      ),
     });
   };
 
@@ -84,26 +98,30 @@ export function EditJobTypeDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[400px]">
-        <ScrollArea className="px-3 max-h-[60vh]">
+        <ScrollArea className="px-3 max-h-[90vh]">
           <DialogHeader className="p-6 pb-4">
-            <DialogTitle>Modifier le type de poste</DialogTitle>
+            <DialogTitle>
+              {tCommon("preferences.sections.jobTypes.dialog.edit.title")}
+            </DialogTitle>
             <DialogDescription>
-              Modifiez le type de poste sélectionné.
+              {tCommon("preferences.sections.jobTypes.dialog.edit.description")}
             </DialogDescription>
           </DialogHeader>
 
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className="space-y-4"
-            >
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="px-3">
               <FormField
                 control={form.control}
                 name="type"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Type de poste <span className="text-destructive">*</span>
+                      {tCommon(
+                        "preferences.sections.jobTypes.dialog.form.type.label"
+                      )}{" "}
+                      <span className="text-destructive">
+                        {tCommon("form.required")}
+                      </span>
                     </FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -111,7 +129,11 @@ export function EditJobTypeDialog({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Sélectionnez un type de poste" />
+                          <SelectValue
+                            placeholder={tCommon(
+                              "preferences.sections.jobTypes.dialog.form.type.placeholder"
+                            )}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -135,10 +157,10 @@ export function EditJobTypeDialog({
               variant="outline"
               onClick={() => onOpenChange(false)}
             >
-              Annuler
+              {tCommon("actions.cancel")}
             </Button>
             <Button onClick={form.handleSubmit(handleSubmit)}>
-              Enregistrer
+              {tCommon("actions.save")}
             </Button>
           </DialogFooter>
         </ScrollArea>

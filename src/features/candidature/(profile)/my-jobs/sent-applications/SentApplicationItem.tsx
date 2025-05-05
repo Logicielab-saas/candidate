@@ -1,100 +1,92 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-import {
-  Building2,
-  MapPin,
-  Calendar,
-  AlertCircle,
-  CheckCircle2,
-  Clock,
-  XCircle,
-  Ban,
-  ThumbsUp,
-} from "lucide-react";
+import { Building2, MapPin, Calendar, AlertCircle, Ban } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { statusStyles } from "@/core/styles/status-styles.style";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion, AnimatePresence } from "framer-motion";
 import type { EmploisApplied } from "@/core/interfaces";
 import { SentApplicationItemMenu } from "./SentApplicationItemMenu";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
+import { getCompanyInitials } from "@/core/utils";
 
 interface SentApplicationItemProps {
-  applied: EmploisApplied;
+  emploi: EmploisApplied;
 }
+export function SentApplicationItem({ emploi }: SentApplicationItemProps) {
+  const t = useTranslations("myJobsPage.sentApplications");
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
 
-const getCompanyInitials = (name: string) => {
-  return name
-    .split(" ")
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-};
-
-export function SentApplicationItem({ applied }: SentApplicationItemProps) {
   const getStatusInfo = () => {
-    if (applied.emploi.status === "closed") {
+    if (!emploi)
+      return {
+        icon: <AlertCircle className="h-3.5 w-3.5" />,
+        label: t("status.unknown"),
+        style: statusStyles.expired,
+      };
+
+    if (emploi.status === "closed") {
       return {
         icon: <Ban className="h-3.5 w-3.5" />,
-        label: "Offre expirée",
+        label: t("status.expired"),
         style: statusStyles.expired,
       };
     }
 
-    switch (applied.status) {
-      case "APPLIED":
-        return {
-          icon: <Clock className="h-3.5 w-3.5" />,
-          label: "Candidature envoyée",
-          style: statusStyles.applied,
-        };
-      case "INTERVIEWED":
-        return {
-          icon: <CheckCircle2 className="h-3.5 w-3.5" />,
-          label: "Entretien programmé",
-          style: statusStyles.interviewed,
-        };
-      case "OFFER_RECEIVED":
-        return {
-          icon: <ThumbsUp className="h-3.5 w-3.5" />,
-          label: "Offre reçue",
-          style: statusStyles.interviewed,
-        };
-      case "REJECTED":
-        return {
-          icon: <XCircle className="h-3.5 w-3.5" />,
-          label: "Candidature rejetée",
-          style: statusStyles.rejected,
-        };
-      case "HIRED":
-        return {
-          icon: <CheckCircle2 className="h-3.5 w-3.5" />,
-          label: "Candidature acceptée",
-          style: statusStyles.hired,
-        };
-      case "NOT_INTERESTED":
-        return {
-          icon: <Ban className="h-3.5 w-3.5" />,
-          label: "Plus intéressé",
-          style: statusStyles.expired,
-        };
-      case "WITHDRAWN":
-        return {
-          icon: <XCircle className="h-3.5 w-3.5" />,
-          label: "Candidature retirée",
-          style: statusStyles.withdrawn,
-        };
-      default:
-        return {
-          icon: <AlertCircle className="h-3.5 w-3.5" />,
-          label: "Statut inconnu",
-          style: statusStyles.expired,
-        };
-    }
+    // switch (emploi.status) {
+    //   case "APPLIED":
+    //     return {
+    //       icon: <Clock className="h-3.5 w-3.5" />,
+    //       label: "Candidature envoyée",
+    //       style: statusStyles.applied,
+    //     };
+    //   case "INTERVIEWED":
+    //     return {
+    //       icon: <CheckCircle2 className="h-3.5 w-3.5" />,
+    //       label: "Entretien programmé",
+    //       style: statusStyles.interviewed,
+    //     };
+    //   case "OFFER_RECEIVED":
+    //     return {
+    //       icon: <ThumbsUp className="h-3.5 w-3.5" />,
+    //       label: "Offre reçue",
+    //       style: statusStyles.interviewed,
+    //     };
+    //   case "REJECTED":
+    //     return {
+    //       icon: <XCircle className="h-3.5 w-3.5" />,
+    //       label: "Candidature rejetée",
+    //       style: statusStyles.rejected,
+    //     };
+    //   case "HIRED":
+    //     return {
+    //       icon: <CheckCircle2 className="h-3.5 w-3.5" />,
+    //       label: "Candidature acceptée",
+    //       style: statusStyles.hired,
+    //     };
+    //   case "NOT_INTERESTED":
+    //     return {
+    //       icon: <Ban className="h-3.5 w-3.5" />,
+    //       label: "Plus intéressé",
+    //       style: statusStyles.expired,
+    //     };
+    //   case "WITHDRAWN":
+    //     return {
+    //       icon: <XCircle className="h-3.5 w-3.5" />,
+    //       label: "Candidature retirée",
+    //       style: statusStyles.withdrawn,
+    //     };
+    //   default:
+    //     return {
+    //       icon: <AlertCircle className="h-3.5 w-3.5" />,
+    //       label: "Statut inconnu",
+    //       style: statusStyles.expired,
+    //     };
+    // }
   };
 
   const statusInfo = getStatusInfo();
@@ -114,55 +106,58 @@ export function SentApplicationItem({ applied }: SentApplicationItemProps) {
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               <Avatar className="h-10 w-10">
-                <AvatarImage
-                  src={applied.emploi.company_logo || ""}
-                  alt={applied.emploi.company_name || ""}
-                />
+                {emploi?.company_logo && (
+                  <AvatarImage
+                    src={emploi.company_logo}
+                    alt={emploi?.company_name || tCommon("companyUndefined")}
+                  />
+                )}
                 <AvatarFallback className="text-xs font-medium">
-                  {getCompanyInitials(applied.emploi.company_name || "")}
+                  {emploi?.company_name
+                    ? getCompanyInitials(emploi.company_name)
+                    : "CO"}
                 </AvatarFallback>
               </Avatar>
             </motion.div>
             <Link
-              href={`/profile/my-jobs/application-details/${applied.slug}`}
+              href={`/profile/my-jobs/application-details/${emploi.slug}`}
               target="_blank"
               rel="noopener noreferrer"
               className="font-medium hover:underline"
             >
-              {applied.emploi.title}
+              {emploi.title}
             </Link>
           </div>
 
           <div className="space-y-1 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Building2 className="h-4 w-4" />
-              <span>{applied.emploi.company_name}</span>
+              <span>{emploi.company_name}</span>
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="h-4 w-4" />
-              <span>{applied.emploi.city_name || "Inconnu"}</span>
+              <span>{emploi.city_name || tCommon("locationUndefined")}</span>
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               <span>
-                Candidature envoyée le{" "}
-                {format(new Date(applied.applied_at), "d MMM yyyy", {
-                  locale: fr,
+                {tCommon("actions.applicationSentAt", {
+                  date: formatDate(emploi.created_at, "d MMM yyyy", locale),
                 })}
               </span>
             </div>
             <AnimatePresence mode="popLayout">
               <motion.div
-                key={applied.status}
+                key={emploi.status}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
                 transition={{ duration: 0.2 }}
                 className="mt-2"
               >
-                <div className={cn(statusStyles.base, statusInfo.style)}>
-                  {statusInfo.icon}
-                  <span>{statusInfo.label}</span>
+                <div className={cn(statusStyles.base, statusInfo?.style)}>
+                  {statusInfo?.icon}
+                  <span>{statusInfo?.label}</span>
                 </div>
               </motion.div>
             </AnimatePresence>
@@ -186,7 +181,7 @@ export function SentApplicationItem({ applied }: SentApplicationItemProps) {
             }
           /> */}
 
-          <SentApplicationItemMenu applied={applied} />
+          <SentApplicationItemMenu applied={emploi} />
         </div>
       </div>
       <Separator />

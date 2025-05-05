@@ -3,11 +3,11 @@
  */
 
 export const LANGUAGE_PROFICIENCY = {
-  1: "Basic",
-  2: "Conversational",
-  3: "Proficient",
-  4: "Fluent",
-  5: "Native",
+  1: "beginner",
+  2: "conversational",
+  3: "proficient",
+  4: "fluent",
+  5: "native",
 } as const;
 
 export type LanguageProficiencyLevel = keyof typeof LANGUAGE_PROFICIENCY;
@@ -15,9 +15,10 @@ export type LanguageProficiencyLabel =
   (typeof LANGUAGE_PROFICIENCY)[LanguageProficiencyLevel];
 
 export function getProficiencyLabel(
-  level: LanguageProficiencyLevel
-): LanguageProficiencyLabel {
-  return LANGUAGE_PROFICIENCY[level];
+  level: LanguageProficiencyLevel,
+  t: (key: string) => string
+): string {
+  return t(`${LANGUAGE_PROFICIENCY[level]}`);
 }
 
 export function isValidProficiencyLevel(

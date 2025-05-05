@@ -17,7 +17,8 @@
 
 "use server";
 
-import { signup } from "../services/auth";
+import { employeeSignup } from "../services/employee-auth";
+import { recruiterSignup } from "../services/recruiter-auth";
 import { SignupCredentials } from "../common/interfaces";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
@@ -54,12 +55,19 @@ export async function signupAction(
       name: data.name,
       email: data.email,
       password: data.password,
+      password_confirmation: data.password_confirmation,
       user_type: data.user_type,
       device_name: combinedUA,
     };
 
-    // Call the signup service.
-    await signup(signupData);
+    // Call the appropriate signup service based on user type
+    if (data.user_type === "employee") {
+      await employeeSignup(signupData);
+    } else if (data.user_type === "recruiter") {
+      await recruiterSignup(signupData);
+    } else {
+      throw new Error("Invalid user type");
+    }
 
     // Revalidate relevant paths.
     revalidatePath("/");

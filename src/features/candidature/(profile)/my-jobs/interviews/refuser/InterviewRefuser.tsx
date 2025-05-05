@@ -13,6 +13,7 @@ import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { InterviewTypeDetails } from "@/components/shared/InterviewTypeDetails";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 // Define Zod schema for form validation
 const formSchema = z.object({
@@ -20,7 +21,6 @@ const formSchema = z.object({
   message: z.string().max(500, "Message must be 500 characters or less."),
 });
 
-// Define TypeScript type for form data
 type FormData = z.infer<typeof formSchema>;
 
 interface InterviewRefuserProps {
@@ -28,20 +28,23 @@ interface InterviewRefuserProps {
   source?: "annuler" | "refuser";
 }
 
-const reasons = [
-  "Cet emploi ne m'intéresse plus.",
-  "J'ai accepté un autre poste.",
-  "Le lieu de travail est trop éloigné.",
-  "Le contenu est suspect.",
-  "Autre",
-];
-
 export function InterviewRefuser({
   interview,
   source = "refuser",
 }: InterviewRefuserProps) {
+  const t = useTranslations("myInterviewActionPage.refuser");
+  const tCommon = useTranslations("common");
   const router = useRouter();
   const { toast } = useToast();
+
+  const reasons = [
+    t("reasons.notInterested"),
+    t("reasons.acceptedOther"),
+    t("reasons.tooFar"),
+    t("reasons.suspicious"),
+    t("reasons.other"),
+  ];
+
   const {
     register,
     handleSubmit,
@@ -57,18 +60,19 @@ export function InterviewRefuser({
   });
 
   const onSubmit = (data: FormData) => {
-    console.log("Interview refused with data:", data);
+    console.log("Form Data:", data);
+    // Here you would typically send the data to your server or API
     if (source === "annuler") {
       toast({
         variant: "success",
-        title: "Entretien annulé",
-        description: "L'entretien a été annulé avec succès",
+        title: t("toast.cancel.title"),
+        description: t("toast.cancel.description"),
       });
     } else {
       toast({
         variant: "success",
-        title: "Entretien refusé",
-        description: "L'entretien a été refusé avec succès",
+        title: t("toast.refuse.title"),
+        description: t("toast.refuse.description"),
       });
       router.replace(`/profile/my-jobs?tab=interviews`);
     }
@@ -76,25 +80,22 @@ export function InterviewRefuser({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {/* Job details */}
       <JobHeader
         jobTitle={interview?.jobTitle || ""}
         companyName={interview?.company.name || ""}
       />
       <Separator />
-      {/* Refuser/Annuler interview */}
       <h2 className="text-xl font-semibold mb-2">
-        {source === "annuler" ? "Annuler l'entretien" : "Refuser l'entretien"}
+        {source === "annuler" ? t("title.cancel") : t("title.refuse")}
       </h2>
 
       <InterviewTypeDetails interview={interview} />
 
       <Separator />
 
-      {/* Reason selection section using shadcn/ui RadioGroup */}
       <div className="p-4 rounded-lg bg-accent/20 shadow">
         <h3 className="text-lg font-semibold mb-2">
-          Sélectionnez un motif <span className="text-red-500">*</span>
+          {t("reason.label")} <span className="text-red-500">*</span>
         </h3>
         <RadioGroup
           {...register("reason")}
@@ -113,34 +114,35 @@ export function InterviewRefuser({
           ))}
         </RadioGroup>
         {errors.reason && (
-          <p className="text-red-500">{errors.reason.message}</p>
+          <p className="text-red-500">{t("validation.reasonRequired")}</p>
         )}
       </div>
       <Separator />
 
-      {/* Message section using shadcn/ui Textarea */}
       <div className="p-4 rounded-lg bg-accent/20 shadow">
-        <h3 className="text-lg font-semibold mb-2">
-          Ajouter un message pour l&apos;employeur (optionnel)
-        </h3>
+        <h3 className="text-lg font-semibold mb-2">{t("message.label")}</h3>
         <Textarea
           {...register("message")}
           rows={4}
           maxLength={500}
           className="w-full p-2 border border-gray-300 rounded"
-          placeholder="Votre message ici..."
+          placeholder={t("message.placeholder")}
         />
         {errors.message && (
-          <p className="text-red-500">{errors.message.message}</p>
+          <p className="text-red-500">{t("validation.messageMaxLength")}</p>
         )}
-        <p className="text-sm text-gray-500">{watch("message")?.length}/500</p>
+        <p className="text-sm text-gray-500">
+          {t("message.counter", {
+            current: watch("message")?.length || 0,
+            max: 500,
+          })}
+        </p>
       </div>
       <Separator />
 
-      {/* Action buttons */}
       <div className="flex space-x-4">
         <Button type="submit" className="w-full">
-          {source === "annuler" ? "Annuler l'entretien" : "Refuser l'entretien"}
+          {source === "annuler" ? t("actions.cancel") : t("actions.refuse")}
         </Button>
         {source === "refuser" ? (
           <Button className="w-full" variant="outline" asChild>
@@ -148,7 +150,7 @@ export function InterviewRefuser({
               href={`/interviews/programmer/${interview?.jobKey}`}
               className="w-full"
             >
-              Maintenir cet entretien
+              {t("actions.maintain")}
             </Link>
           </Button>
         ) : (
@@ -157,7 +159,7 @@ export function InterviewRefuser({
               href={`/interviews/reporter/${interview?.jobKey}`}
               className="w-full"
             >
-              Suggérer un nouveau créneau
+              {tCommon("suggestNewSlots")}
             </Link>
           </Button>
         )}

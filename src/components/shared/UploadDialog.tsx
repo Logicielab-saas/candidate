@@ -1,3 +1,12 @@
+/**
+ * UploadDialog - A dialog component for file uploads
+ *
+ * Provides a drag-and-drop interface for file uploads with preview support
+ * and file type validation. Uses react-dropzone for handling file drops.
+ */
+
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,12 +17,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { File, Image as ImageIcon, Paperclip, X } from "lucide-react";
+import { File, Image as ImageIcon, X } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
 import LoaderOne from "../ui/loader-one";
+import { useDropzone } from "react-dropzone";
+import { useTranslations } from "next-intl";
 
 interface FileWithPreview extends File {
   preview?: string;
@@ -37,7 +48,9 @@ export function UploadDialog({
   const { toast } = useToast();
   const [selectedFiles, setSelectedFiles] = useState<FileWithPreview[]>([]);
   const [isUploading, setIsUploading] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
+
+  // Translations
+  const tCommon = useTranslations("common");
 
   // Clean up previews when component unmounts
   useEffect(() => {
@@ -66,8 +79,10 @@ export function UploadDialog({
       if (newFiles.length + selectedFiles.length > maxFiles) {
         toast({
           variant: "warning",
-          title: "Limite de fichiers atteinte",
-          description: `Vous ne pouvez pas télécharger plus de ${maxFiles} fichiers à la fois.`,
+          title: tCommon("fileUpload.validation.maxFiles.title"),
+          description: tCommon("fileUpload.validation.maxFiles.description", {
+            maxFiles,
+          }),
         });
         return;
       }
@@ -77,8 +92,10 @@ export function UploadDialog({
       if (invalidFiles.length > 0) {
         toast({
           variant: "destructive",
-          title: "Type de fichier non pris en charge",
-          description: `Les types de fichiers acceptés sont : ${acceptedTypes}`,
+          title: tCommon("fileUpload.validation.fileType.title"),
+          description: tCommon("fileUpload.validation.fileType.description", {
+            types: acceptedTypes,
+          }),
         });
         return;
       }
@@ -95,49 +112,27 @@ export function UploadDialog({
       // Show success toast
       toast({
         variant: "default",
-        title: "Fichiers ajoutés",
-        description: `${newFiles.length} fichier${
-          newFiles.length > 1 ? "s" : ""
-        } ajouté${newFiles.length > 1 ? "s" : ""} avec succès.`,
+        title: tCommon("fileUpload.validation.success.title"),
+        description: tCommon("fileUpload.validation.success.description", {
+          count: newFiles.length,
+        }),
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [maxFiles, selectedFiles.length, toast, acceptedTypes]
+    [maxFiles, selectedFiles.length, toast, acceptedTypes, tCommon]
   );
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    processFiles(files);
-  };
-
-  const handleDragEnter = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-  }, []);
-
-  const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-  }, []);
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent<HTMLDivElement>) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging(false);
-
-      const files = Array.from(e.dataTransfer.files);
-      processFiles(files);
-    },
-    [processFiles]
-  );
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: processFiles,
+    noClick: false,
+    noKeyboard: false,
+    maxFiles,
+    accept: acceptedTypes.split(",").reduce((acc, type) => {
+      const mimeType = type.replace(".", "");
+      acc[`${mimeType === "jpg" ? "jpeg" : mimeType}`] = [];
+      return acc;
+    }, {} as Record<string, string[]>),
+  });
 
   const removeFile = (index: number) => {
     const fileToRemove = selectedFiles[index];
@@ -152,13 +147,13 @@ export function UploadDialog({
     setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
 
     // Show toast after state update
-    setTimeout(() => {
-      toast({
-        variant: "info",
-        title: "Fichier supprimé",
-        description: `${fileName} a été supprimé.`,
-      });
-    }, 0);
+    toast({
+      variant: "info",
+      title: tCommon("fileUpload.validation.remove.title"),
+      description: tCommon("fileUpload.validation.remove.description", {
+        filename: fileName,
+      }),
+    });
   };
 
   const handleUpload = async () => {
@@ -175,19 +170,20 @@ export function UploadDialog({
       // Show success toast
       toast({
         variant: "success",
-        title: "Téléchargement réussi",
-        description: `${selectedFiles.length} fichier${
-          selectedFiles.length > 1 ? "s" : ""
-        } téléchargé${selectedFiles.length > 1 ? "s" : ""} avec succès.`,
+        title: tCommon("fileUpload.validation.upload.success.title"),
+        description: tCommon(
+          "fileUpload.validation.upload.success.description",
+          {
+            count: selectedFiles.length,
+          }
+        ),
       });
     } catch (error) {
       console.error("Upload failed:", error);
-      // Show error toast
       toast({
         variant: "destructive",
-        title: "Erreur de téléchargement",
-        description:
-          "Une erreur s'est produite lors du téléchargement des fichiers.",
+        title: tCommon("fileUpload.validation.upload.error.title"),
+        description: tCommon("fileUpload.validation.upload.error.description"),
       });
     } finally {
       setIsUploading(false);
@@ -199,61 +195,51 @@ export function UploadDialog({
     const k = 1024;
     const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+    return (
+      parseFloat((bytes / Math.pow(k, i)).toFixed(2)) +
+      " " +
+      tCommon(`fileUpload.fileSize.${sizes[i].toLowerCase()}`)
+    );
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Partager des fichiers</DialogTitle>
+          <DialogTitle>{tCommon("fileUpload.title")}</DialogTitle>
           <DialogDescription>
-            Sélectionnez jusqu&apos;à {maxFiles} fichiers à partager.
+            {tCommon("fileUpload.description", { maxFiles })}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
           <div
+            {...getRootProps()}
             className={cn(
               "border-2 border-dashed rounded-lg p-6 text-center transition-all duration-200",
-              isDragging
+              isDragActive
                 ? "border-primary bg-primary/5 scale-[0.99]"
                 : "hover:border-primary/50",
               "cursor-pointer relative"
             )}
-            onClick={() => document.getElementById("file-upload")?.click()}
-            onDragEnter={handleDragEnter}
-            onDragLeave={handleDragLeave}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
           >
-            <input
-              type="file"
-              id="file-upload"
-              className="hidden"
-              multiple
-              accept={acceptedTypes}
-              onChange={handleFileSelect}
-            />
-            <Paperclip
-              className={cn(
-                "h-8 w-8 mx-auto mb-2 transition-colors duration-200",
-                isDragging ? "text-primary" : "text-muted-foreground"
-              )}
-            />
+            <input {...getInputProps()} />
             <div className="space-y-1">
               <p
                 className={cn(
                   "text-sm font-medium transition-colors duration-200",
-                  isDragging ? "text-primary" : "text-foreground"
+                  isDragActive ? "text-primary" : "text-foreground"
                 )}
               >
-                {isDragging
-                  ? "Déposez les fichiers ici"
-                  : "Glissez et déposez vos fichiers"}
+                {isDragActive
+                  ? tCommon("fileUpload.dragDrop.active")
+                  : tCommon("fileUpload.dragDrop.idle")}
               </p>
               <p className="text-sm text-muted-foreground">
-                ou cliquez pour sélectionner
+                {tCommon("fileUpload.dragDrop.or")}{" "}
+                <span className="text-primary">
+                  {tCommon("fileUpload.dragDrop.browse")}
+                </span>
               </p>
             </div>
           </div>
@@ -306,7 +292,9 @@ export function UploadDialog({
                         ) : (
                           <File className="h-6 w-6" />
                         )}
-                        <span className="text-sm">Aperçu non disponible</span>
+                        <span className="text-sm">
+                          {tCommon("fileUpload.preview.notAvailable")}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -322,7 +310,7 @@ export function UploadDialog({
             onClick={() => onOpenChange(false)}
             disabled={isUploading}
           >
-            Annuler
+            {tCommon("actions.cancel")}
           </Button>
           <Button
             onClick={handleUpload}
@@ -330,7 +318,7 @@ export function UploadDialog({
             className="gap-2"
           >
             {isUploading && <LoaderOne />}
-            {isUploading ? "Envoi en cours..." : "Envoyer"}
+            {isUploading ? tCommon("actions.sending") : tCommon("actions.send")}
           </Button>
         </DialogFooter>
       </DialogContent>

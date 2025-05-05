@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 import { AxiosError } from "axios";
 import { setAuthToken, setUserRole } from "@/lib/cookies";
 import jsCookie from "js-cookie";
-import { AuthResponse, SignupCredentials } from "../common/interfaces";
+import { RecruiterAuthResponse, SignupCredentials } from "../common/interfaces";
 import { LoginCredentials } from "../common/interfaces";
 
 interface ApiError {
@@ -18,14 +18,11 @@ interface ApiError {
 }
 
 // Server Actions
-export async function login(
+export async function recruiterLogin(
   credentials: LoginCredentials
-): Promise<AuthResponse> {
+): Promise<RecruiterAuthResponse> {
   try {
-    const response = await api.post<AuthResponse>(
-      `employee/login`,
-      credentials
-    );
+    const response = await api.post(`recruiter/login`, credentials);
 
     // Set the token in an HTTP-only cookie
     await setAuthToken(response.data.token);
@@ -43,14 +40,11 @@ export async function login(
   }
 }
 
-export async function signup(
+export async function recruiterSignup(
   credentials: SignupCredentials
-): Promise<AuthResponse> {
+): Promise<RecruiterAuthResponse> {
   try {
-    const response = await api.post<AuthResponse>(
-      `employee/register`,
-      credentials
-    );
+    const response = await api.post(`recruiter/register`, credentials);
 
     return response.data;
   } catch (error) {
@@ -62,28 +56,24 @@ export async function signup(
   }
 }
 
-// export async function forgotPassword(email: string) {
-//   try {
-//     await api.post(`employee/forgot-password`, { email });
-//   } catch (error) {
-//     if (error instanceof AxiosError) {
-//       const apiError = error.response?.data as ApiError;
-//       throw new Error(
-//         apiError?.message || "Failed to send reset password email"
-//       );
-//     }
-//     throw error;
-//   }
-// }
+export async function recruiterLogout() {
+  try {
+    const response = await api.post("recruiter/logout");
+    if (response.status === 200) {
+      // Clear the token cookie
+      jsCookie.remove("accessToken");
 
-// export async function resetPassword(token: string, password: string) {
-//   try {
-//     await api.post(`employee/reset-password`, { token, password });
-//   } catch (error) {
-//     if (error instanceof AxiosError) {
-//       const apiError = error.response?.data as ApiError;
-//       throw new Error(apiError?.message || "Failed to reset password");
-//     }
-//     throw error;
-//   }
-// }
+      // Clear the user role cookie
+      jsCookie.remove("userRole");
+
+      // Redirect to login page
+      redirect("/login");
+    }
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      const apiError = error.response?.data as ApiError;
+      throw new Error(apiError?.message || "Failed to logout");
+    }
+    throw error;
+  }
+}

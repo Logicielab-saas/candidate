@@ -38,6 +38,7 @@ import { SectionHeader } from "../../features/candidature/(profile)/qualificatio
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
 import type { ProfileFiles } from "@/features/candidature/(profile)/common/interface";
+import { useTranslations } from "next-intl";
 
 // Dynamically import dialog with loading state
 const DeleteResumeDialog = dynamic(
@@ -67,6 +68,9 @@ export function ResumeItem({
   source = "qualifications",
   removeAdd = false,
 }: ResumeItemProps) {
+  const tCommon = useTranslations("common");
+  const tValidation = useTranslations("common.validation");
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const updateFileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -74,9 +78,12 @@ export function ResumeItem({
     ResumeFile | Files | ProfileFiles | null
   >(null);
   const [selectedFileUuid, setSelectedFileUuid] = useState<string | null>(null);
-  const { mutate: createFile, isPending: isUploading } = useCreateResumeFiles();
-  const { mutate: updateFile, isPending: isUpdating } = useUpdateResumeFiles();
-  const { isPending: isDeleting } = useDeleteResumeFiles();
+
+  const { mutate: createFile, isPending: isUploading } =
+    useCreateResumeFiles(tCommon);
+  const { mutate: updateFile, isPending: isUpdating } =
+    useUpdateResumeFiles(tCommon);
+  const { isPending: isDeleting } = useDeleteResumeFiles(tCommon);
 
   const handleChangeCV = () => {
     fileInputRef.current?.click();
@@ -98,8 +105,8 @@ export function ResumeItem({
     if (file.type !== "application/pdf") {
       toast({
         variant: "destructive",
-        title: "Invalid file type",
-        description: "Please upload a PDF file",
+        title: tValidation("invalidType.title"),
+        description: tValidation("invalidType.description"),
       });
       return;
     }
@@ -108,8 +115,8 @@ export function ResumeItem({
     if (file.size > 2048 * 1024) {
       toast({
         variant: "destructive",
-        title: "File too large",
-        description: "Maximum file size is 2MB (2048KB)",
+        title: tValidation("fileSize.title"),
+        description: tValidation("fileSize.description"),
       });
       return;
     }
@@ -127,13 +134,9 @@ export function ResumeItem({
         formData.append("file", file);
         createFile(formData);
       }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Error managing CV",
-        description: "There was an error managing your CV. Please try again.",
-      });
-      console.error(error);
+    } catch (_error) {
+      // handled by the mutation hook
+      // console.error(error);
     }
 
     // Clear the input
@@ -166,7 +169,7 @@ export function ResumeItem({
   return (
     <div className="space-y-4">
       <SectionHeader
-        title="Resume"
+        title={tCommon("labels.resume")}
         icon={<File className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={type === "custom" ? handleChangeCV : undefined}
         removeAdd={removeAdd}
@@ -190,7 +193,7 @@ export function ResumeItem({
 
       {!resumeFiles?.length && (
         <p className="text-muted-foreground text-center py-4">
-          No CV added yet
+          {tCommon("placeholders.noResume")}
         </p>
       )}
 
@@ -213,7 +216,7 @@ export function ResumeItem({
             <div className="flex items-center gap-2">
               <LoaderOne />
               <span className="text-sm text-muted-foreground">
-                {isUploading ? "Uploading..." : "Deleting..."}
+                {isUploading ? tCommon("loading") : tCommon("actions.deleting")}
               </span>
             </div>
           ) : (
@@ -227,19 +230,19 @@ export function ResumeItem({
                 <DropdownMenuItem className="flex items-center" asChild>
                   <Link href={getFileUrl(file)} target="_blank">
                     <Eye className="mr-2 h-4 w-4" />
-                    View CV
+                    {tCommon("actions.view")}
                   </Link>
                 </DropdownMenuItem>
                 {type === "custom" && (
                   <>
                     <DropdownMenuItem onClick={() => handleUpdateCV(file.uuid)}>
                       <Upload className="mr-2 h-4 w-4" />
-                      Change Resume
+                      {tCommon("actions.edit")}
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <Link href={getFileUrl(file)} target="_blank">
                         <Download className="mr-2 h-4 w-4" />
-                        Download CV
+                        {tCommon("actions.download")}
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -251,7 +254,7 @@ export function ResumeItem({
                       }}
                     >
                       <Trash2 className="mr-2 h-4 w-4" />
-                      Delete CV
+                      {tCommon("actions.delete")}
                     </DropdownMenuItem>
                   </>
                 )}

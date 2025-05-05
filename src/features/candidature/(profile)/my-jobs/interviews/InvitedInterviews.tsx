@@ -1,28 +1,30 @@
 "use client";
 
-import { Interview } from "@/core/interfaces/";
+import type { Interview } from "@/core/interfaces/";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Building2, MapPin, Calendar, Clock, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface InvitedInterviewsProps {
   interviews: Interview[];
 }
 
 export function InvitedInterviews({ interviews }: InvitedInterviewsProps) {
+  const t = useTranslations("myJobsPage.interviews");
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
+
   return (
     <div>
       <div className="border border-primaryHex-500 p-4 rounded-lg shadow-md mb-4 relative">
         <h2 className="text-xl font-bold mb-4 relative z-10">
-          Entretiens Programmés
+          {t("titleProgrammed")}
         </h2>
-        <p className="text-md mb-4">
-          Ce sont les entretiens auxquels vous avez été invité.
-        </p>
+        <p className="text-md mb-4">{t("descriptionProgrammed")}</p>
       </div>
       <AnimatePresence>
         <div className="relative">
@@ -38,7 +40,7 @@ export function InvitedInterviews({ interviews }: InvitedInterviewsProps) {
             >
               <div className="flex-1">
                 <Badge variant="default" className="mb-2">
-                  Invité
+                  {tCommon("programmed")}
                 </Badge>
                 <h3 className="text-lg font-semibold">{interview.jobTitle}</h3>
                 <div className="flex items-center text-sm text-muted-foreground">
@@ -52,9 +54,7 @@ export function InvitedInterviews({ interviews }: InvitedInterviewsProps) {
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Calendar className="h-4 w-4 mr-1" />
                   <span>
-                    {format(new Date(interview.interviewDate), "PPP", {
-                      locale: fr,
-                    })}
+                    {formatDate(interview.interviewDate, "PPP", locale)}
                   </span>
                 </div>
                 <div className="flex items-center text-sm text-gray-600 dark:text-gray-100">
@@ -69,12 +69,12 @@ export function InvitedInterviews({ interviews }: InvitedInterviewsProps) {
               <div className="flex flex-row space-x-2 ml-4">
                 <Button className="mb-2" asChild>
                   <Link href={`/interviews/programmer/${interview.jobKey}`}>
-                    Programmer
+                    {tCommon("actions.program")}
                   </Link>
                 </Button>
                 <Button variant="outline" asChild>
                   <Link href={`/interviews/refuser/${interview.jobKey}`}>
-                    Refuser
+                    {tCommon("actions.refuse")}
                   </Link>
                 </Button>
               </div>

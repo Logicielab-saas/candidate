@@ -2,15 +2,17 @@
  * useJobApplyStore - Job application state management
  *
  * Manages the state for the job application process including:
- * - Current step tracking (questions if present, then review)
+ * - Current step tracking (personal info, questions if present, then review)
+ * - Personal information and selected resume
  * - Questions answers if job has questions
  * - Form submission status
  */
 
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import { PersonalInfoFormData } from "../components/steps/PersonalInfoStep";
 
-export type JobApplyStep = "questions" | "review";
+export type JobApplyStep = "personal-info" | "questions" | "review";
 
 export interface QuestionAnswer {
   id: string;
@@ -25,6 +27,9 @@ export interface JobApplyState {
   // Current step in the application process
   currentStep: JobApplyStep;
 
+  // Personal information
+  personalInfo: PersonalInfoFormData | null;
+
   // Form data
   questionsData: QuestionsData;
 
@@ -36,17 +41,19 @@ export interface JobApplyState {
   setCurrentStep: (step: JobApplyStep) => void;
   nextStep: () => void;
   prevStep: () => void;
+  setPersonalInfo: (data: PersonalInfoFormData) => void;
   setQuestionsData: (data: Partial<QuestionsData>) => void;
   resetForm: () => void;
 }
 
 // Define the step order for navigation
-const stepOrder: JobApplyStep[] = ["questions", "review"];
+const stepOrder: JobApplyStep[] = ["personal-info", "questions", "review"];
 
 export const useJobApplyStore = create<JobApplyState>()(
   devtools((set, get) => ({
     // Initial state
-    currentStep: "questions",
+    currentStep: "personal-info",
+    personalInfo: null,
     questionsData: {
       answers: [],
     },
@@ -57,22 +64,37 @@ export const useJobApplyStore = create<JobApplyState>()(
     setCurrentStep: (step) => set({ currentStep: step }),
 
     nextStep: () => {
-      const { currentStep } = get();
+      const { currentStep, questionsData } = get();
       const currentIndex = stepOrder.indexOf(currentStep);
 
       if (currentIndex < stepOrder.length - 1) {
-        set({ currentStep: stepOrder[currentIndex + 1] });
+        // Skip questions step if no answers
+        if (
+          currentStep === "personal-info" &&
+          questionsData.answers.length === 0
+        ) {
+          set({ currentStep: "review" });
+        } else {
+          set({ currentStep: stepOrder[currentIndex + 1] });
+        }
       }
     },
 
     prevStep: () => {
-      const { currentStep } = get();
+      const { currentStep, questionsData } = get();
       const currentIndex = stepOrder.indexOf(currentStep);
 
       if (currentIndex > 0) {
-        set({ currentStep: stepOrder[currentIndex - 1] });
+        // If we're in review step and there are no questions, go directly to personal info
+        if (currentStep === "review" && questionsData.answers.length === 0) {
+          set({ currentStep: "personal-info" });
+        } else {
+          set({ currentStep: stepOrder[currentIndex - 1] });
+        }
       }
     },
+
+    setPersonalInfo: (data) => set({ personalInfo: data }),
 
     setQuestionsData: (data) =>
       set((state) => ({
@@ -81,7 +103,8 @@ export const useJobApplyStore = create<JobApplyState>()(
 
     resetForm: () =>
       set({
-        currentStep: "questions",
+        currentStep: "personal-info",
+        personalInfo: null,
         questionsData: {
           answers: [],
         },

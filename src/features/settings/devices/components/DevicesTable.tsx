@@ -20,11 +20,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { LogOut } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface DevicesTableProps {
   devices: UserDevice[];
@@ -32,12 +32,14 @@ interface DevicesTableProps {
 
 export function DevicesTable({ devices }: DevicesTableProps) {
   const { toast } = useToast();
+  const t = useTranslations("settings.devices.table");
+  const locale = useLocale();
 
   const handleLogout = (_deviceId: string) => {
     // Here you would typically call an API to log out the device
     toast({
-      title: "Appareil déconnecté",
-      description: "L'appareil a été déconnecté avec succès.",
+      title: t("logout.toast.title"),
+      description: t("logout.toast.description"),
     });
   };
 
@@ -45,10 +47,10 @@ export function DevicesTable({ devices }: DevicesTableProps) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Appareil</TableHead>
-          <TableHead>Date de connexion</TableHead>
-          <TableHead>Adresse IP</TableHead>
-          <TableHead className="text-center">Actions</TableHead>
+          <TableHead>{t("headers.device")}</TableHead>
+          <TableHead>{t("headers.loginDate")}</TableHead>
+          <TableHead>{t("headers.ipAddress")}</TableHead>
+          <TableHead className="text-center">{t("headers.actions")}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -59,15 +61,13 @@ export function DevicesTable({ devices }: DevicesTableProps) {
                 {device.name}
                 {device.isCurrentDevice && (
                   <Badge variant="default" className="text-xs">
-                    Appareil actuel
+                    {t("currentDevice")}
                   </Badge>
                 )}
               </div>
             </TableCell>
             <TableCell>
-              {format(new Date(device.lastLogin), "d MMMM yyyy", {
-                locale: fr,
-              })}
+              {formatDate(device.lastLogin, "d MMMM yyyy", locale)}
             </TableCell>
             <TableCell>
               <span className="text-muted-foreground">
@@ -84,11 +84,11 @@ export function DevicesTable({ devices }: DevicesTableProps) {
                   onClick={() => handleLogout(device.id)}
                 >
                   <LogOut className="h-4 w-4 mr-2" />
-                  Déconnexion
+                  {t("logout.button")}
                 </Button>
               ) : (
                 <Badge variant="default" className="text-xs text-center">
-                  Appareil actuel
+                  {t("currentDevice")}
                 </Badge>
               )}
             </TableCell>

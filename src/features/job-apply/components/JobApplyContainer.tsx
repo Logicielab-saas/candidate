@@ -1,7 +1,8 @@
 /**
  * JobApplyContainer - Main container for the job application process
  *
- * Manages the simplified application flow:
+ * Manages the application flow:
+ * - Shows personal info step first
  * - Shows questions step if job has questions
  * - Shows review step for final submission
  */
@@ -10,8 +11,9 @@
 
 import { useJobApplyStore } from "../store/useJobApplyStore";
 import { StepIndicator } from "./StepIndicator";
-import { QuestionStep } from "./steps/questions/QuestionStep";
+import { QuestionStep } from "./steps/QuestionStep";
 import { ReviewStep } from "./steps/ReviewStep";
+import { PersonalInfoStep } from "./steps/PersonalInfoStep";
 import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { useEmploisBySlug } from "@/features/Emplois/hooks/use-emplois";
@@ -20,12 +22,14 @@ import { AlreadyApplied } from "./AlreadyApplied";
 import LoaderOne from "@/components/ui/loader-one";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProfile } from "@/features/candidature/(profile)/hooks/use-profile";
+import { useTranslations } from "next-intl";
 
 interface JobApplyContainerProps {
   slug: string;
 }
 
 export function JobApplyContainer({ slug }: JobApplyContainerProps) {
+  const tCommon = useTranslations("common");
   const { data: jobDetails, isLoading } = useEmploisBySlug(slug);
   const { data: profile, isLoading: isLoadingUser } = useProfile();
   const { currentStep, setCurrentStep } = useJobApplyStore();
@@ -35,9 +39,7 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
   // Set initial step based on whether job has questions
   useEffect(() => {
     if (jobDetails) {
-      setCurrentStep(
-        jobDetails.emploi_questions?.length > 0 ? "questions" : "review"
-      );
+      setCurrentStep("personal-info");
     }
   }, [jobDetails, setCurrentStep]);
 
@@ -51,20 +53,23 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
       return (
         <Card className="w-full max-w-4xl mx-auto p-8 flex items-center justify-center">
           <p className="text-lg text-muted-foreground">
-            Offre d&apos;emploi introuvable. Veuillez vérifier l&apos;URL et
-            réessayer.
+            {tCommon("jobNotFound")}
           </p>
         </Card>
       );
     }
 
     switch (currentStep) {
+      case "personal-info":
+        return (
+          <PersonalInfoStep profile={profile!} isLoading={isLoadingUser} />
+        );
       case "questions":
         return <QuestionStep questions={jobDetails.emploi_questions} />;
       case "review":
         return <ReviewStep jobDetails={jobDetails} profile={profile!} />;
       default:
-        return <div>Étape inconnue</div>;
+        return <div>{tCommon("unknownStep")}</div>;
     }
   };
 
@@ -83,11 +88,12 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
         ) : (
           <>
             <h1 className="text-3xl font-bold text-center mb-2">
-              Postuler pour:{" "}
-              <span className="text-primary">{jobDetails?.title}</span>
+              {tCommon("appliedFor", {
+                jobTitle: jobDetails?.title || "",
+              })}
             </h1>
             <p className="text-muted-foreground text-center">
-              Complétez les étapes suivantes pour soumettre votre candidature
+              {tCommon("jobApplySteps")}
             </p>
           </>
         )}

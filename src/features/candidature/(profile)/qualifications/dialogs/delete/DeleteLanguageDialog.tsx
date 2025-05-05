@@ -10,10 +10,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useToast } from "@/hooks/use-toast";
 import type { ResumeLanguage } from "@/core/interfaces";
 import { useDeleteResumeLanguage } from "../../hooks/use-resume-language";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface DeleteLanguageDialogProps {
   open: boolean;
@@ -26,9 +26,12 @@ export function DeleteLanguageDialog({
   onOpenChange,
   language,
 }: DeleteLanguageDialogProps) {
-  const { mutate: deleteLanguage, isPending } = useDeleteResumeLanguage();
+  const t = useTranslations("resumePage.languages.dialog.delete");
+  const tCommon = useTranslations("common");
+
+  const { mutate: deleteLanguage, isPending } =
+    useDeleteResumeLanguage(tCommon);
   const [isDeleting, setIsDeleting] = useState(false);
-  const { toast } = useToast();
 
   const handleConfirm = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -39,22 +42,9 @@ export function DeleteLanguageDialog({
       onSuccess: () => {
         setIsDeleting(false);
         onOpenChange(false);
-        toast({
-          variant: "success",
-          title: "Langue supprimée",
-          description: "La langue a été supprimée avec succès.",
-        });
       },
-      onError: (error) => {
+      onError: (_error) => {
         setIsDeleting(false);
-        toast({
-          variant: "destructive",
-          title: "Erreur",
-          description:
-            error instanceof Error
-              ? error.message
-              : "La langue n'a pas été supprimée.",
-        });
       },
     });
   };
@@ -72,20 +62,25 @@ export function DeleteLanguageDialog({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t("title")}</AlertDialogTitle>
           <AlertDialogDescription>
-            Vous êtes sur le point de supprimer la langue &quot;
-            {language.name}&quot;. Cette action est irréversible.
+            {t("descriptionStart")} &quot;
+            <span className="font-bold">{language.name}</span>&quot;{" "}
+            {t("warning")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>
+            {tCommon("actions.cancel")}
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             className="bg-destructive hover:bg-destructive/90"
             disabled={isLoading}
           >
-            {isLoading ? "Suppression..." : "Supprimer"}
+            {isLoading
+              ? tCommon("actions.deleting")
+              : tCommon("actions.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

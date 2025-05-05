@@ -24,6 +24,7 @@ import {
   isValidProficiencyLevel,
 } from "./constants/skill-proficiency";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 // Dynamically import dialogs with loading states
 const AddSkillDialog = dynamic(
@@ -76,6 +77,9 @@ export function SkillsList({ resumeSkills }: SkillsListProps) {
   const [skillToEdit, setSkillToEdit] = useState<ResumeSkill | null>(null);
   const [skillToDelete, setSkillToDelete] = useState<ResumeSkill | null>(null);
 
+  const t = useTranslations("resumePage.skills");
+  const tCommon = useTranslations("common");
+
   const handleEdit = (uuid: string) => {
     setSkillToEdit(resumeSkills?.find((skill) => skill.uuid === uuid) || null);
   };
@@ -89,7 +93,7 @@ export function SkillsList({ resumeSkills }: SkillsListProps) {
   return (
     <div className="border p-4 rounded-lg shadow-sm">
       <SectionHeader
-        title="Skills"
+        title={tCommon("skills")}
         icon={<Zap className="w-6 h-6 text-primaryHex-400 mr-2" />}
         onAdd={() => setIsAddSkillOpen(true)}
       />
@@ -100,8 +104,8 @@ export function SkillsList({ resumeSkills }: SkillsListProps) {
             const level = Number(skill.resumeskill_level);
             const isValidLevel = isValidProficiencyLevel(level);
             const proficiencyLabel = isValidLevel
-              ? getProficiencyLabel(level)
-              : "N/A";
+              ? getProficiencyLabel(level, tCommon)
+              : tCommon("undefined");
 
             return (
               <div key={skill.uuid} className={cn(getSkillBadgeStyle())}>
@@ -142,9 +146,7 @@ export function SkillsList({ resumeSkills }: SkillsListProps) {
       </div>
 
       {resumeSkills && resumeSkills.length === 0 && (
-        <p className="text-muted-foreground text-center py-4">
-          No skills added yet
-        </p>
+        <p className="text-muted-foreground text-center py-4">{t("empty")}</p>
       )}
 
       {isAddSkillOpen && (

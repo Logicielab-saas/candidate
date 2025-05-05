@@ -5,6 +5,7 @@ export interface Emplois {
   title: string;
   city_name: string | null;
   company_name: string | null;
+  created_at: string;
   slug: string;
   status: "closed" | "open" | "suspended";
   company_logo: string | null;
@@ -31,11 +32,6 @@ export interface EmploisCategories {
   uuid: string;
   title: string;
 }
-
-export interface EmploisQuestionOption {
-  value: string;
-}
-
 export interface EmploisQuestions {
   uuid: string;
   title: string;
@@ -43,5 +39,5 @@ export interface EmploisQuestions {
   is_required: boolean;
   type: EmploiQuestionType | null;
   is_multiple: boolean;
-  options: EmploisQuestionOption[] | null;
+  options: string[] | null;
 }

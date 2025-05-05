@@ -10,10 +10,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useToast } from "@/hooks/use-toast";
 import type { ResumeSkill } from "@/core/interfaces/";
 import { useDeleteResumeSkill } from "../../hooks/use-resume-skill";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface DeleteSkillDialogProps {
   open: boolean;
@@ -26,10 +26,11 @@ export function DeleteSkillDialog({
   onOpenChange,
   skill,
 }: DeleteSkillDialogProps) {
-  const { mutate: deleteSkill, isPending } = useDeleteResumeSkill();
-  const [isDeleting, setIsDeleting] = useState(false);
+  const t = useTranslations("resumePage.skills.dialog.delete");
+  const tCommon = useTranslations("common");
 
-  const { toast } = useToast();
+  const { mutate: deleteSkill, isPending } = useDeleteResumeSkill(tCommon);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleConfirm = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -52,12 +53,6 @@ export function DeleteSkillDialog({
       onOpenChange(false);
     } catch (_error) {
       setIsDeleting(false);
-      toast({
-        variant: "destructive",
-        title: "Erreur",
-        description:
-          "Une erreur est survenue lors de la suppression de la compétence.",
-      });
     }
   };
 
@@ -74,21 +69,25 @@ export function DeleteSkillDialog({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+          <AlertDialogTitle>{t("title")}</AlertDialogTitle>
           <AlertDialogDescription>
-            Vous êtes sur le point de retirer la compétence &quot;
-            {skill.resumeskill_name}
-            &quot;. Cette action est irréversible.
+            {t("descriptionStart")} &quot;
+            <span className="font-bold">{skill.resumeskill_name}</span>
+            &quot; {t("warning")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>Annuler</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>
+            {tCommon("actions.cancel")}
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             className="bg-destructive hover:bg-destructive/90"
             disabled={isLoading}
           >
-            {isLoading ? "Suppression..." : "Supprimer"}
+            {isLoading
+              ? tCommon("actions.deleting")
+              : tCommon("actions.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -35,12 +35,16 @@ import { useToast } from "@/hooks/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEmploiTypes } from "@/hooks/use-emploi-types";
+import { useTranslations } from "next-intl";
+import { useMemo } from "react";
 
-const jobTypeFormSchema = z.object({
-  types: z.array(z.string()).min(1, "Sélectionnez au moins un type de poste"),
-});
+function jobTypeFormSchema(t: (key: string) => string) {
+  return z.object({
+    types: z.array(z.string()).min(1, t("jobTypes.minSelection")),
+  });
+}
 
-type JobTypeFormValues = z.infer<typeof jobTypeFormSchema>;
+type JobTypeFormValues = z.infer<ReturnType<typeof jobTypeFormSchema>>;
 
 interface AddJobTypeDialogProps {
   open: boolean;
@@ -53,9 +57,16 @@ export default function AddJobTypeDialog({
 }: AddJobTypeDialogProps) {
   const { data: emploiTypes, isLoading } = useEmploiTypes();
   const { toast } = useToast();
+  const tCommon = useTranslations("common");
+  const tValidation = useTranslations("common.validation");
+
+  const jobTypeForm = useMemo(
+    () => jobTypeFormSchema(tValidation),
+    [tValidation]
+  );
 
   const form = useForm<JobTypeFormValues>({
-    resolver: zodResolver(jobTypeFormSchema),
+    resolver: zodResolver(jobTypeForm),
     defaultValues: {
       types: [],
     },
@@ -67,8 +78,10 @@ export default function AddJobTypeDialog({
 
     toast({
       variant: "success",
-      title: "Types de poste ajoutés",
-      description: "Les types de poste ont été ajoutés avec succès.",
+      title: tCommon("preferences.sections.jobTypes.dialog.toast.add.title"),
+      description: tCommon(
+        "preferences.sections.jobTypes.dialog.toast.add.description"
+      ),
     });
 
     form.reset();
@@ -82,21 +95,18 @@ export default function AddJobTypeDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[500px]">
-        <ScrollArea className="px-3 max-h-[60vh]">
+        <ScrollArea className="px-3 max-h-[90vh]">
           <DialogHeader className="p-6 pb-4">
             <DialogTitle className="text-xl">
-              Ajouter des types de postes
+              {tCommon("preferences.sections.jobTypes.dialog.add.title")}
             </DialogTitle>
             <DialogDescription className="text-base">
-              Quels types de postes recherchez-vous ?
+              {tCommon("preferences.sections.jobTypes.dialog.add.description")}
             </DialogDescription>
           </DialogHeader>
 
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className="space-y-6"
-            >
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="px-3">
               <FormField
                 control={form.control}
                 name="types"
@@ -155,13 +165,13 @@ export default function AddJobTypeDialog({
               onClick={() => onOpenChange(false)}
               className="text-base"
             >
-              Annuler
+              {tCommon("actions.cancel")}
             </Button>
             <Button
               onClick={form.handleSubmit(handleSubmit)}
               className="text-base"
             >
-              Enregistrer
+              {tCommon("actions.save")}
             </Button>
           </DialogFooter>
         </ScrollArea>

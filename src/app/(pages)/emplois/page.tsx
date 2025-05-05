@@ -4,8 +4,11 @@ import { JobsContainer } from "@/features/Emplois/components/JobsContainer";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import LoaderOne from "@/components/ui/loader-one";
+import { getTranslations } from "next-intl/server";
 
-export default function HomePage() {
+export default async function EmploisPage() {
+  const t = await getTranslations("emplois.page");
+
   return (
     <div className="pt-10">
       {/* Header Section */}
@@ -18,7 +21,7 @@ export default function HomePage() {
             "animate-in fade-in duration-1000"
           )}
         >
-          Discover Your Dream Career
+          {t("title")}
         </h1>
         <p
           className={cn(
@@ -27,8 +30,7 @@ export default function HomePage() {
             "animate-in fade-in duration-1000 delay-200"
           )}
         >
-          Explore thousands of job opportunities and find the perfect role that
-          matches your skills and aspirations
+          {t("description")}
         </p>
       </div>
 

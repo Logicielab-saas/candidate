@@ -3,9 +3,23 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
-import { AddJobTitleDialog } from "./dialogs/add/AddJobTitleDialog";
-import { EditJobTitleDialog } from "./dialogs/edit/EditJobTitleDialog";
-import { DeleteJobTitleDialog } from "./dialogs/delete/DeleteJobTitleDialog";
+import { useTranslations } from "next-intl";
+import dynamic from "next/dynamic";
+
+const AddJobTitleDialog = dynamic(
+  () => import("./dialogs/add/AddJobTitleDialog"),
+  { ssr: false }
+);
+
+const EditJobTitleDialog = dynamic(
+  () => import("./dialogs/edit/EditJobTitleDialog"),
+  { ssr: false }
+);
+
+const DeleteJobTitleDialog = dynamic(
+  () => import("./dialogs/delete/DeleteJobTitleDialog"),
+  { ssr: false }
+);
 
 export interface JobTitle {
   id: string;
@@ -19,6 +33,7 @@ export function JobTitleSection() {
   const [jobTitleToDelete, setJobTitleToDelete] = useState<JobTitle | null>(
     null
   );
+  const tCommon = useTranslations("common");
 
   const handleAdd = () => {
     setIsAddOpen(true);
@@ -63,7 +78,7 @@ export function JobTitleSection() {
     <>
       {!jobTitles?.length ? (
         <div className="text-center text-muted-foreground py-8">
-          Aucun intitulé de poste ajouté
+          {tCommon("preferences.sections.jobTitles.empty")}
         </div>
       ) : (
         <div className="rounded-lg border divide-y">
@@ -96,13 +111,19 @@ export function JobTitleSection() {
         </div>
       )}
 
-      <button className="hidden" data-add-button onClick={handleAdd} />
-
-      <AddJobTitleDialog
-        open={isAddOpen}
-        onOpenChange={setIsAddOpen}
-        onSubmit={handleSubmit}
+      <button
+        className="hidden"
+        data-add-button
+        onClick={handleAdd}
+        aria-label={tCommon("preferences.sections.jobTitles.add")}
       />
+      {isAddOpen && (
+        <AddJobTitleDialog
+          open={isAddOpen}
+          onOpenChange={setIsAddOpen}
+          onSubmit={handleSubmit}
+        />
+      )}
 
       {jobTitleToEdit && (
         <EditJobTitleDialog

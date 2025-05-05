@@ -12,6 +12,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { ContractType } from "@/core/enums/contract-type.enum";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 interface DeleteJobTypeDialogProps {
   open: boolean;
@@ -23,21 +26,24 @@ interface DeleteJobTypeDialogProps {
   };
 }
 
-export function DeleteJobTypeDialog({
+export default function DeleteJobTypeDialog({
   open,
   onOpenChange,
   onConfirm,
   jobType,
 }: DeleteJobTypeDialogProps) {
   const { toast } = useToast();
+  const tCommon = useTranslations("common");
 
   const handleConfirm = () => {
     onConfirm(jobType.id);
     onOpenChange(false);
     toast({
       variant: "success",
-      title: "Type de poste supprimé",
-      description: "Le type de poste a été supprimé avec succès.",
+      title: tCommon("preferences.sections.jobTypes.dialog.delete.title"),
+      description: tCommon(
+        "preferences.sections.jobTypes.dialog.delete.description"
+      ),
     });
   };
 
@@ -45,19 +51,20 @@ export function DeleteJobTypeDialog({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+          <AlertDialogTitle>
+            {tCommon("dialogs.confirmation.title")}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            Cette action ne peut pas être annulée. Ce type de poste sera
-            supprimé définitivement de votre profil.
+            {tCommon("preferences.sections.jobTypes.dialog.delete.description")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Annuler</AlertDialogCancel>
+          <AlertDialogCancel>{tCommon("actions.cancel")}</AlertDialogCancel>
           <AlertDialogAction
-            className="bg-destructive hover:bg-destructive/90"
+            className={cn(buttonVariants({ variant: "destructive" }))}
             onClick={handleConfirm}
           >
-            Supprimer
+            {tCommon("actions.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface PreferenceSectionProps {
   title: string;
@@ -14,6 +15,7 @@ export function PreferenceSection({
   children,
   showAddButton = true,
 }: PreferenceSectionProps) {
+  const tCommon = useTranslations("common");
   return (
     <section className="space-y-4 border p-4 rounded-lg shadow-sm">
       <div className="flex items-center justify-between">
@@ -33,7 +35,7 @@ export function PreferenceSection({
             }}
           >
             <Plus className="mr-1" />
-            Ajouter
+            {tCommon("actions.add")}
           </Button>
         )}
       </div>

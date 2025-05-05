@@ -1,3 +1,16 @@
+/**
+ * EditRelocationDialog - Dialog for editing relocation preferences
+ *
+ * Allows users to modify their existing relocation preferences including willingness to relocate
+ * and preferred locations.
+ *
+ * Props:
+ * - open: boolean - Controls dialog visibility
+ * - onOpenChange: (open: boolean) => void - Handles dialog open state changes
+ * - onSubmit: (id: string, values: RelocateFormValues) => void - Handles form submission
+ * - relocation: Relocation - Current relocation preferences to edit
+ */
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,6 +40,7 @@ import { Plus, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import React from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useTranslations } from "next-intl";
 
 const relocateFormSchema = z.object({
   willRelocate: z.boolean(),
@@ -58,6 +72,7 @@ export function EditRelocationDialog({
   relocation,
 }: EditRelocationDialogProps) {
   const { toast } = useToast();
+  const tCommon = useTranslations("common");
   const initialLocations = relocation.location
     ? relocation.location.split(",").map((loc) => loc.trim())
     : [""];
@@ -108,9 +123,10 @@ export function EditRelocationDialog({
     onOpenChange(false);
     toast({
       variant: "success",
-      title: "Préférence de relocalisation modifiée",
-      description:
-        "Votre préférence de relocalisation a été modifiée avec succès.",
+      title: tCommon("preferences.sections.relocation.dialog.toast.edit.title"),
+      description: tCommon(
+        "preferences.sections.relocation.dialog.toast.edit.description"
+      ),
     });
   };
 
@@ -140,28 +156,27 @@ export function EditRelocationDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[500px]">
-        <ScrollArea className="px-3 max-h-[60vh]">
+        <ScrollArea className="px-3 max-h-[90vh]">
           <DialogHeader className="p-6 pb-4">
             <DialogTitle className="text-xl">
-              Modifier la relocalisation
+              {tCommon("preferences.sections.relocation.dialog.edit.title")}
             </DialogTitle>
             <DialogDescription className="text-base">
-              Accepteriez-vous de déménager ?
+              {tCommon(
+                "preferences.sections.relocation.dialog.edit.description"
+              )}
             </DialogDescription>
           </DialogHeader>
 
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className="space-y-6"
-            >
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="px-3">
               <FormField
                 control={form.control}
                 name="willRelocate"
                 render={({ field }) => (
                   <FormItem className="space-y-4">
                     <FormControl>
-                      <div className="items-top flex space-x-3">
+                      <div className="items-top flex ml-3 space-x-3">
                         <div className="flex items-center space-x-3">
                           <Checkbox
                             id="willRelocate"
@@ -173,7 +188,9 @@ export function EditRelocationDialog({
                             htmlFor="willRelocate"
                             className="text-base font-normal cursor-pointer"
                           >
-                            Oui, j&apos;accepterais de déménager
+                            {tCommon(
+                              "preferences.sections.relocation.dialog.form.willRelocate.label"
+                            )}
                           </label>
                         </div>
                       </div>
@@ -206,7 +223,9 @@ export function EditRelocationDialog({
                               htmlFor="anywhere"
                               className="text-base font-normal cursor-pointer"
                             >
-                              N&apos;importe où
+                              {tCommon(
+                                "preferences.sections.relocation.dialog.form.locationType.options.anywhere"
+                              )}
                             </label>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3">
@@ -221,7 +240,9 @@ export function EditRelocationDialog({
                               htmlFor="specific"
                               className="text-base font-normal cursor-pointer"
                             >
-                              Uniquement à proximité de...
+                              {tCommon(
+                                "preferences.sections.relocation.dialog.form.locationType.options.specific"
+                              )}
                             </label>
                           </FormItem>
                         </RadioGroup>
@@ -234,7 +255,9 @@ export function EditRelocationDialog({
               {willRelocate && locationType === "specific" && (
                 <div className="space-y-3">
                   <p className="text-sm text-muted-foreground ml-9">
-                    Ajoutez jusqu&apos;à trois lieux.
+                    {tCommon(
+                      "preferences.sections.relocation.dialog.form.location.description"
+                    )}
                   </p>
                   <FormField
                     control={form.control}
@@ -253,7 +276,9 @@ export function EditRelocationDialog({
                                   updateLocation(index, e.target.value)
                                 }
                                 className="text-base h-12"
-                                placeholder="Ex: Tanger"
+                                placeholder={tCommon(
+                                  "preferences.sections.relocation.dialog.form.location.placeholder"
+                                )}
                               />
                               {locations.length > 1 && (
                                 <Button
@@ -281,7 +306,7 @@ export function EditRelocationDialog({
                       onClick={addLocation}
                     >
                       <Plus className="mr-2 h-4 w-4" />
-                      Ajouter un autre lieu
+                      {tCommon("actions.add")}
                     </Button>
                   )}
                 </div>
@@ -296,13 +321,13 @@ export function EditRelocationDialog({
               onClick={() => onOpenChange(false)}
               className="text-base"
             >
-              Annuler
+              {tCommon("actions.cancel")}
             </Button>
             <Button
               onClick={form.handleSubmit(handleSubmit)}
               className="text-base"
             >
-              Enregistrer
+              {tCommon("actions.save")}
             </Button>
           </DialogFooter>
         </ScrollArea>

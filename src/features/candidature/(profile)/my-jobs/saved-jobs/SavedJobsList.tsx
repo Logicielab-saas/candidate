@@ -11,6 +11,7 @@ import { SavedJobItem } from "./SavedJobItem";
 import { SavedJobsItemSkeleton } from "../skeletons/SavedJobsItemSkeleton";
 import type { SavedJobsResponse } from "../services/my-saved-jobs";
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
 
 const Pagination = dynamic(
   () => import("@/components/ui/pagination").then((mod) => mod.Pagination),
@@ -43,6 +44,7 @@ export default function SavedJobsList({
   error,
   onPageChange,
 }: SavedJobsListProps) {
+  const t = useTranslations("myJobsPage.empty");
   if (isLoading) {
     return (
       <motion.div
@@ -63,12 +65,8 @@ export default function SavedJobsList({
   if (!savedJobsData || savedJobsData.saved.length === 0) {
     return (
       <div className="text-center py-10 border rounded-lg">
-        <h3 className="font-medium text-lg mb-2">Aucun emploi enregistré</h3>
-        <p className="text-muted-foreground">
-          Vous n&apos;avez pas encore enregistré d&apos;offres d&apos;emploi.
-          Parcourez les offres disponibles et cliquez sur le cœur pour les
-          ajouter ici.
-        </p>
+        <h3 className="font-medium text-lg mb-2"> {t("titleSavedJobs")} </h3>
+        <p className="text-muted-foreground">{t("descriptionSavedJobs")}</p>
       </div>
     );
   }

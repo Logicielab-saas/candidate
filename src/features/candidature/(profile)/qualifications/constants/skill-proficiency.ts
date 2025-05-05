@@ -3,11 +3,11 @@
  */
 
 export const SKILL_PROFICIENCY = {
-  1: "Beginner",
-  2: "Intermediate",
-  3: "Advanced",
-  4: "Expert",
-  5: "Master",
+  1: "beginner",
+  2: "intermediate",
+  3: "advanced",
+  4: "expert",
+  5: "master",
 } as const;
 
 export type SkillProficiencyLevel = keyof typeof SKILL_PROFICIENCY;
@@ -15,9 +15,10 @@ export type SkillProficiencyLabel =
   (typeof SKILL_PROFICIENCY)[SkillProficiencyLevel];
 
 export function getProficiencyLabel(
-  level: SkillProficiencyLevel
-): SkillProficiencyLabel {
-  return SKILL_PROFICIENCY[level];
+  level: SkillProficiencyLevel,
+  t: (key: string) => string
+): string {
+  return t(`${SKILL_PROFICIENCY[level]}`);
 }
 
 export function isValidProficiencyLevel(

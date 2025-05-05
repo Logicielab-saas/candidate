@@ -24,12 +24,18 @@ import {
 } from "@/components/ui/input-otp";
 import { UseFormReturn } from "react-hook-form";
 import * as z from "zod";
+import { useTranslations } from "next-intl";
 
-export const otpVerificationSchema = z.object({
-  verificationCode: z.string().length(6, "Le code doit contenir 6 chiffres"),
-});
+export const otpVerificationSchema = (t: ReturnType<typeof useTranslations>) =>
+  z.object({
+    verificationCode: z
+      .string()
+      .length(6, t("common.validation.otpLength", { length: 6 })),
+  });
 
-export type OtpVerificationForm = z.infer<typeof otpVerificationSchema>;
+export type OtpVerificationForm = z.infer<
+  ReturnType<typeof otpVerificationSchema>
+>;
 
 interface EmailVerificationFormProps {
   form: UseFormReturn<OtpVerificationForm>;
@@ -48,13 +54,18 @@ export function EmailVerificationForm({
   onSubmit,
   onResendCode,
 }: EmailVerificationFormProps) {
+  const tCommon = useTranslations("common");
+
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2">
-        <p className="text-sm font-medium">Vérification du nouvel email</p>
+        <p className="text-sm font-medium">
+          {tCommon("form.email.verification.title")}
+        </p>
         <p className="text-sm text-muted-foreground">
-          Un code de vérification a été envoyé à{" "}
-          <span className="font-medium text-foreground">{newEmailAddress}</span>
+          {tCommon("form.email.verification.description", {
+            email: newEmailAddress,
+          })}
         </p>
       </div>
       <Form {...form}>
@@ -65,7 +76,7 @@ export function EmailVerificationForm({
             render={({ field }) => (
               <FormItem className="space-y-3">
                 <FormLabel className="text-center block">
-                  Code de vérification
+                  {tCommon("form.email.verification.code.label")}
                 </FormLabel>
                 <FormControl>
                   <div className="flex justify-center">
@@ -100,17 +111,17 @@ export function EmailVerificationForm({
               disabled={isVerifying}
               className="block mx-auto"
             >
-              Renvoyer le code
+              {tCommon("form.email.verification.code.resend")}
             </Button>
             <div className="flex justify-end gap-2">
               <Button type="button" variant="ghost" onClick={onBack}>
-                Retour
+                {tCommon("actions.back")}
               </Button>
               <Button
                 type="submit"
                 disabled={form.formState.isSubmitting || isVerifying}
               >
-                Vérifier
+                {tCommon("form.email.verification.code.verify")}
               </Button>
             </div>
           </div>

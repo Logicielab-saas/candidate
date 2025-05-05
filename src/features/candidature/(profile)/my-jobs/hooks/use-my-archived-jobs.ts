@@ -17,7 +17,6 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { AxiosError } from "axios";
 import { EMPLOIS_QUERY_KEY } from "@/features/Emplois/hooks/use-emplois";
 import { useTabsCountStore } from "../store/tabs-count.store";
 import { useEffect } from "react";
@@ -49,13 +48,13 @@ export function useFetchArchivedJobs(page: number = 1, perPage: number = 10) {
   return { data, isLoading, error };
 }
 
-export function useArchiveJob() {
+export function useArchiveJob(t: (key: string) => string) {
   const queryClient = useQueryClient();
   const toast = useToast();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (uuid: string) => archiveEmplois(uuid),
-    onSuccess: async (data) => {
+    onSuccess: async () => {
       // Invalidate both emplois and archived jobs queries
       await Promise.all([
         queryClient.invalidateQueries({
@@ -68,17 +67,15 @@ export function useArchiveJob() {
 
       toast.toast({
         variant: "success",
-        title: "Job archived",
-        description: data.message || "Job has been archived successfully.",
+        title: t("toast.myArchivedJobs.archive.title"),
+        description: t("toast.myArchivedJobs.archive.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast.toast({
         variant: "destructive",
-        title: "Failed to archive job",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });
@@ -86,13 +83,13 @@ export function useArchiveJob() {
   return { mutate, isPending };
 }
 
-export function useUnarchiveJob() {
+export function useUnarchiveJob(t: (key: string) => string) {
   const queryClient = useQueryClient();
   const toast = useToast();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (uuid: string) => cancelArchiveEmplois(uuid),
-    onSuccess: async (data) => {
+    onSuccess: async () => {
       // Invalidate both emplois and archived jobs queries
       await Promise.all([
         queryClient.invalidateQueries({
@@ -105,17 +102,15 @@ export function useUnarchiveJob() {
 
       toast.toast({
         variant: "success",
-        title: "Job unarchived",
-        description: data.message || "Job has been unarchived successfully.",
+        title: t("toast.myArchivedJobs.delete.title"),
+        description: t("toast.myArchivedJobs.delete.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast.toast({
         variant: "destructive",
-        title: "Failed to unarchive job",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });

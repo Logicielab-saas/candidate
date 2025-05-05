@@ -22,12 +22,14 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { UseFormReturn } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import * as z from "zod";
+import { useTranslations } from "next-intl";
 
-export const verificationSchema = z.object({
-  currentPassword: z.string().min(1, "Le mot de passe actuel est requis"),
-});
+export const verificationSchema = (t: (key: string) => string) =>
+  z.object({
+    currentPassword: z.string().min(1, t("common.validation.passwordRequired")),
+  });
 
-export type VerificationForm = z.infer<typeof verificationSchema>;
+export type VerificationForm = z.infer<ReturnType<typeof verificationSchema>>;
 
 interface PasswordVerificationFormProps {
   form: UseFormReturn<VerificationForm>;
@@ -43,6 +45,7 @@ export function PasswordVerificationForm({
   isLoading = false,
 }: PasswordVerificationFormProps) {
   const [showPassword, setShowPassword] = useState(false);
+  const tCommon = useTranslations("common");
 
   return (
     <Form {...form}>
@@ -52,12 +55,12 @@ export function PasswordVerificationForm({
           name="currentPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mot de passe actuel</FormLabel>
+              <FormLabel>{tCommon("form.password.current")}</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
                     type={showPassword ? "text" : "password"}
-                    placeholder="••••••••"
+                    placeholder={tCommon("passwordMask")}
                     autoComplete="current-password"
                     disabled={isLoading}
                     {...field}
@@ -89,10 +92,10 @@ export function PasswordVerificationForm({
             onClick={onCancel}
             disabled={isLoading}
           >
-            Annuler
+            {tCommon("actions.cancel")}
           </Button>
           <Button type="submit" disabled={isLoading}>
-            Continuer
+            {tCommon("actions.continue")}
           </Button>
         </DialogFooter>
       </form>

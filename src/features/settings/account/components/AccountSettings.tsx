@@ -16,6 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 import jsCookie from "js-cookie";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 // Dynamic import of DeleteAccountDialog with loading fallback
 const DeleteAccountDialog = dynamic(
@@ -29,6 +30,8 @@ export function AccountSettings() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
+  const t = useTranslations("settings.account.accountSettings");
+  const tCommon = useTranslations("common");
 
   const handleLogout = async () => {
     try {
@@ -38,15 +41,14 @@ export function AccountSettings() {
 
       toast({
         variant: "success",
-        title: "Déconnexion réussie",
-        description: "Vous avez été déconnecté avec succès",
+        title: tCommon("toast.success.title"),
+        description: tCommon("toast.success.description"),
       });
-    } catch (error) {
-      console.error("Logout failed:", error);
+    } catch (_error) {
       toast({
         variant: "destructive",
-        title: "Erreur",
-        description: "Impossible de déconnecter",
+        title: tCommon("toast.error.title"),
+        description: tCommon("toast.error.description"),
       });
     } finally {
       setIsLoggingOut(false);
@@ -61,9 +63,11 @@ export function AccountSettings() {
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-2">
           <div className="space-y-1">
-            <p className="text-sm font-medium leading-none">Déconnexion</p>
+            <p className="text-sm font-medium leading-none">
+              {tCommon("actions.logout")}
+            </p>
             <p className="text-sm text-muted-foreground">
-              Déconnectez-vous de votre compte
+              {t("logoutFromAccount")}
             </p>
           </div>
           <Button
@@ -72,7 +76,9 @@ export function AccountSettings() {
             disabled={isLoggingOut}
             className="w-full sm:w-auto"
           >
-            {isLoggingOut ? "Déconnexion..." : "Déconnexion"}
+            {isLoggingOut
+              ? tCommon("actions.loggingOut")
+              : tCommon("actions.logout")}
           </Button>
         </div>
 
@@ -81,10 +87,10 @@ export function AccountSettings() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-2">
           <div className="space-y-1">
             <p className="text-sm font-medium leading-none text-destructive">
-              Supprimer le compte
+              {t("deleteAccountLabel")}
             </p>
             <p className="text-sm text-muted-foreground">
-              Supprimez définitivement votre compte et toutes vos données
+              {t("deleteAccountDescription")}
             </p>
           </div>
 

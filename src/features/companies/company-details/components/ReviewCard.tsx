@@ -10,8 +10,6 @@ import { CompanyReview } from "@/core/interfaces";
 import { User } from "@/core/interfaces/user.interface";
 import { Button } from "@/components/ui/button";
 import { Star, Flag } from "lucide-react";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -24,6 +22,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useLocale } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface ReviewCardProps {
   review: CompanyReview;
@@ -32,6 +32,7 @@ interface ReviewCardProps {
 
 export function ReviewCard({ review, user }: ReviewCardProps) {
   const { toast } = useToast();
+  const locale = useLocale();
 
   const handleReport = () => {
     toast({
@@ -55,7 +56,7 @@ export function ReviewCard({ review, user }: ReviewCardProps) {
             </div>
           </div>
           <p className="text-sm text-muted-foreground">
-            {format(new Date(review.createdAt), "d MMMM yyyy", { locale: fr })}
+            {formatDate(review.createdAt, "d MMMM yyyy", locale)}
           </p>
         </div>
 

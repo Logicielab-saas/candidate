@@ -1,9 +1,9 @@
 import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
-import type { EmploisApplied, GetMeResponse } from "@/core/interfaces";
-import { FileText } from "lucide-react";
+import type { EmploisApplied } from "@/core/interfaces";
 import { Separator } from "@/components/ui/separator";
-import { ResumeItem } from "@/components/shared/ResumeItem";
-import Link from "next/link";
+import type { Profile } from "../../common/interface";
+import { useTranslations } from "next-intl";
+// TODO: Comeback here to fix the details cover_letter & files does not exist on current data modify api response
 
 interface ResponseQuestion {
   uuid: string;
@@ -15,7 +15,7 @@ interface ResponseQuestion {
 
 interface ApplicationDetailsBodyProps {
   application: EmploisApplied;
-  profile?: GetMeResponse;
+  profile?: Profile;
   reponse_questions?: ResponseQuestion[];
 }
 
@@ -24,33 +24,25 @@ export function ApplicationDetailsBody({
   profile,
   reponse_questions = [],
 }: ApplicationDetailsBodyProps) {
-  // Format resume files for ResumeItem component
-  const resumeFiles =
-    profile?.resume?.resumeFiles?.map((file) => ({
-      ...file,
-      uuid: file.uuid,
-      name: file.name,
-      file: file.file_url,
-    })) || [];
-
+  const tCommon = useTranslations("common");
   return (
     <Card className="flex flex-col gap-4 shadow-md rounded-lg">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">
-          Détails de la candidature
+          {tCommon("detailsCandidature")}
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
         {/* Candidate Informations */}
         <div className="shadow dark:border p-4 rounded-lg flex flex-col gap-4">
           <h6 className="text-muted-foreground font-semibold text-lg">
-            Informations de contact
+            {tCommon("infoContact")}
           </h6>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                 <span className="font-semibold min-w-[120px]">
-                  Nom complet:
+                  {tCommon("fullName")}:
                 </span>
                 <span className="text-muted-foreground break-all">
                   {profile?.first_name} {profile?.last_name}
@@ -67,13 +59,13 @@ export function ApplicationDetailsBody({
               <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                 <span className="font-semibold min-w-[120px]">Téléphone:</span>
                 <span className="text-muted-foreground">
-                  {profile?.phone || "Non spécifié"}
+                  {profile?.phone || tCommon("undefined")}
                 </span>
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                 <span className="font-semibold min-w-[120px]">Adresse:</span>
                 <span className="text-muted-foreground break-all">
-                  {profile?.address || "Non spécifié"}
+                  {profile?.address || tCommon("undefined")}
                 </span>
               </div>
             </div>
@@ -82,8 +74,8 @@ export function ApplicationDetailsBody({
 
         <Separator />
 
-        {/* Resume Section */}
-        {resumeFiles.length > 0 && (
+        {/* Resume Section from applied */}
+        {/* {resumeFiles.length > 0 && (
           <>
             <div className="shadow dark:border p-4 rounded-lg">
               <ResumeItem
@@ -95,10 +87,11 @@ export function ApplicationDetailsBody({
             </div>
             <Separator />
           </>
-        )}
+        )} */}
 
         {/* Cover Letter if exists */}
-        {application.cover_letter && (
+
+        {/* {application.cover_letter && (
           <>
             <div className="shadow dark:border p-4 rounded-lg flex flex-col items-start gap-2">
               <h6 className="text-muted-foreground font-semibold">
@@ -110,10 +103,10 @@ export function ApplicationDetailsBody({
             </div>
             <Separator />
           </>
-        )}
+        )} */}
 
         {/* Additional Files if exists */}
-        {application.file && (
+        {/* {application.file && (
           <>
             <div className="shadow dark:border p-4 rounded-lg flex flex-col items-start gap-2">
               <h6 className="text-muted-foreground font-semibold">
@@ -130,7 +123,7 @@ export function ApplicationDetailsBody({
             </div>
             <Separator />
           </>
-        )}
+        )} */}
 
         {/* Response Questions Section */}
         {reponse_questions.length > 0 && (

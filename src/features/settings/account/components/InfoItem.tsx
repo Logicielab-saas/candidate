@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 interface InfoItemProps {
   label: string;
@@ -15,6 +16,7 @@ export function InfoItem({
   changeButton,
   showChangeButton = true,
 }: InfoItemProps) {
+  const tCommon = useTranslations("common");
   return (
     <div className="flex items-center justify-between py-4">
       <div className="space-y-1">
@@ -24,7 +26,7 @@ export function InfoItem({
       {showChangeButton &&
         (changeButton || (
           <Button variant="outline" size="sm" onClick={onChangeClick}>
-            Changer
+            {tCommon("actions.change")}
           </Button>
         ))}
     </div>

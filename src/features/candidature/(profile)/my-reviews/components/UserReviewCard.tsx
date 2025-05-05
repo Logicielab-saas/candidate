@@ -9,8 +9,6 @@
 import { CompanyReview } from "@/core/interfaces";
 import { Button } from "@/components/ui/button";
 import { Star, Trash2 } from "lucide-react";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -25,6 +23,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { companyDetails } from "@/core/mockData/company";
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface UserReviewCardProps {
   review: CompanyReview;
@@ -33,13 +33,16 @@ interface UserReviewCardProps {
 
 export function UserReviewCard({ review, onDelete }: UserReviewCardProps) {
   const { toast } = useToast();
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
+
   const company = companyDetails.find((c) => c.slug === review.companySlug);
 
   const handleDelete = () => {
     onDelete(review.id);
     toast({
-      title: "Avis supprimé",
-      description: "Votre avis a été supprimé avec succès.",
+      title: tCommon("reviews.deleteDialog.title"),
+      description: tCommon("reviews.deleteSuccess"),
     });
   };
 
@@ -68,9 +71,7 @@ export function UserReviewCard({ review, onDelete }: UserReviewCardProps) {
             </div>
             <span className="text-sm text-muted-foreground">•</span>
             <span className="text-sm text-muted-foreground">
-              {format(new Date(review.createdAt), "d MMMM yyyy", {
-                locale: fr,
-              })}
+              {formatDate(review.createdAt, "d MMMM yyyy", locale)}
             </span>
           </div>
 
@@ -83,19 +84,22 @@ export function UserReviewCard({ review, onDelete }: UserReviewCardProps) {
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Supprimer l&apos;avis</AlertDialogTitle>
+                  <AlertDialogTitle>
+                    {tCommon("reviews.deleteDialog.title")}
+                  </AlertDialogTitle>
                   <AlertDialogDescription>
-                    Êtes-vous sûr de vouloir supprimer cet avis ? Cette action
-                    ne peut pas être annulée.
+                    {tCommon("reviews.deleteDialog.description")}
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Annuler</AlertDialogCancel>
+                  <AlertDialogCancel>
+                    {tCommon("actions.cancel")}
+                  </AlertDialogCancel>
                   <AlertDialogAction
                     onClick={handleDelete}
                     className="bg-destructive hover:bg-destructive/90"
                   >
-                    Supprimer
+                    {tCommon("actions.delete")}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
@@ -114,7 +118,7 @@ export function UserReviewCard({ review, onDelete }: UserReviewCardProps) {
           {review.positivePoints && review.positivePoints.length > 0 && (
             <div className="space-y-2">
               <h4 className="text-sm font-medium text-green-600">
-                Points positifs
+                {tCommon("reviews.sections.positivePoints")}
               </h4>
               <ul className="list-disc list-inside text-sm space-y-1">
                 {review.positivePoints.map((point, index) => (
@@ -128,7 +132,7 @@ export function UserReviewCard({ review, onDelete }: UserReviewCardProps) {
           {review.negativePoints && review.negativePoints.length > 0 && (
             <div className="space-y-2">
               <h4 className="text-sm font-medium text-red-600">
-                Points à améliorer
+                {tCommon("reviews.sections.negativePoints")}
               </h4>
               <ul className="list-disc list-inside text-sm space-y-1">
                 {review.negativePoints.map((point, index) => (

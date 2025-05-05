@@ -1,11 +1,5 @@
 /**
  * EditSkillDialog - Dialog for editing an existing skill in the resume
- *
- * Features:
- * - Skill selection via searchable combobox
- * - Level selection
- * - Form validation
- * - Loading states
  */
 
 "use client";
@@ -13,13 +7,12 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSkills } from "@/hooks/use-skills";
-import { useState } from "react";
-import { useDebounce } from "use-debounce";
 import { useUpdateResumeSkill } from "../../hooks/use-resume-skill";
 import { PROFICIENCY_OPTIONS } from "../../constants/skill-proficiency";
 import type { ResumeSkill } from "@/core/interfaces";
-
+import { useTranslations } from "next-intl";
+import { SearchSkillSelect } from "@/components/shared/SearchSkillSelect";
+import { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -37,37 +30,22 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
-import LoaderOne from "@/components/ui/loader-one";
 
-const formSchema = z.object({
-  skill_uuid: z.string({
-    required_error: "Please select a skill",
-  }),
-  resumeskill_level: z.string().optional(),
-});
+const formSchema = (t: (key: string) => string) =>
+  z.object({
+    skill_uuid: z.string({
+      required_error: t("validation.required"),
+    }),
+    resumeskill_level: z.string().optional(),
+  });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer<ReturnType<typeof formSchema>>;
 
 interface EditSkillDialogProps {
   open: boolean;
@@ -80,23 +58,30 @@ export function EditSkillDialog({
   onOpenChange,
   skill,
 }: EditSkillDialogProps) {
-  // Search state
-  const [search, setSearch] = useState("");
-  const [debouncedSearch] = useDebounce(search, 600); // 600ms debounce
-  const [commandOpen, setCommandOpen] = useState(false);
+  const t = useTranslations("resumePage.skills.dialog");
+  const tCommon = useTranslations("common");
 
   // Queries and mutations
-  const { data: skills, isLoading } = useSkills(debouncedSearch);
-  const { mutate: updateSkill, isPending } = useUpdateResumeSkill();
+  const { mutate: updateSkill, isPending } = useUpdateResumeSkill(tCommon);
 
   // Form
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema(tCommon)),
     defaultValues: {
       skill_uuid: skill.skill_uuid || undefined,
       resumeskill_level: skill.resumeskill_level || undefined,
     },
   });
+
+  // Update form when skill changes
+  useEffect(() => {
+    if (skill) {
+      form.reset({
+        skill_uuid: skill.skill_uuid || undefined,
+        resumeskill_level: skill.resumeskill_level || undefined,
+      });
+    }
+  }, [skill, form]);
 
   function onSubmit(values: FormValues) {
     updateSkill(
@@ -117,18 +102,12 @@ export function EditSkillDialog({
     );
   }
 
-  const selectedSkill = skills?.find(
-    (s) => s.uuid === form.watch("skill_uuid")
-  );
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit Skill</DialogTitle>
-          <DialogDescription>
-            Update your skill proficiency level.
-          </DialogDescription>
+          <DialogTitle>{t("edit.title")}</DialogTitle>
+          <DialogDescription>{t("edit.description")}</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -137,69 +116,22 @@ export function EditSkillDialog({
               control={form.control}
               name="skill_uuid"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Skill</FormLabel>
-                  <Popover open={commandOpen} onOpenChange={setCommandOpen}>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          aria-expanded={commandOpen}
-                          className={cn(
-                            "w-full justify-between",
-                            !field.value && "text-muted-foreground"
-                          )}
-                          disabled={isPending}
-                        >
-                          {selectedSkill?.name ?? "Select skill..."}
-                          {isLoading ? (
-                            <LoaderOne />
-                          ) : (
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                          )}
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-                      <Command shouldFilter={false}>
-                        <CommandInput
-                          placeholder="Search skills..."
-                          value={search}
-                          onValueChange={setSearch}
-                        />
-                        <CommandList>
-                          <CommandEmpty>
-                            {isLoading ? "Searching..." : "No skills found."}
-                          </CommandEmpty>
-                          <CommandGroup>
-                            {skills?.map((s) => (
-                              <CommandItem
-                                key={s.uuid}
-                                value={s.uuid}
-                                onSelect={(value) => {
-                                  form.setValue("skill_uuid", value);
-                                  setCommandOpen(false);
-                                }}
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 h-4 w-4",
-                                    field.value === s.uuid
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  )}
-                                />
-                                {s.name}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
+                <SearchSkillSelect
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={form.formState.errors.skill_uuid?.message}
+                  disabled={isPending}
+                  label="skill"
+                  required
+                  selectedSkill={
+                    skill?.skill_uuid
+                      ? {
+                          uuid: skill.skill_uuid,
+                          name: skill.resumeskill_name || "",
+                        }
+                      : undefined
+                  }
+                />
               )}
             />
 
@@ -208,7 +140,7 @@ export function EditSkillDialog({
               name="resumeskill_level"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Proficiency Level</FormLabel>
+                  <FormLabel>{tCommon("skillLevel")}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -216,7 +148,7 @@ export function EditSkillDialog({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select proficiency level" />
+                        <SelectValue placeholder={tCommon("exSkillLevel")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -225,7 +157,7 @@ export function EditSkillDialog({
                           key={option.value}
                           value={option.value.toString()}
                         >
-                          {option.label}
+                          {tCommon(option.label)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -242,13 +174,15 @@ export function EditSkillDialog({
                 onClick={() => onOpenChange(false)}
                 disabled={isPending}
               >
-                Cancel
+                {tCommon("actions.cancel")}
               </Button>
               <Button
                 type="submit"
                 disabled={isPending || !form.watch("skill_uuid")}
               >
-                {isPending ? "Saving..." : "Save Changes"}
+                {isPending
+                  ? tCommon("actions.saving")
+                  : tCommon("actions.save")}
               </Button>
             </div>
           </form>

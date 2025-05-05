@@ -8,12 +8,14 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SectionHeader } from "../SectionHeader";
 import { LanguagesIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function LanguagesSkeleton() {
+  const tCommon = useTranslations("common");
   return (
     <div className="border p-4 rounded-lg shadow-sm space-y-4">
       <SectionHeader
-        title="Languages"
+        title={tCommon("languages")}
         icon={<LanguagesIcon className="w-6 h-6 text-primaryHex-400 mr-2" />}
       />
 

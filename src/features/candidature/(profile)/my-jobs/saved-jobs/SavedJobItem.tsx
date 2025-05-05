@@ -22,8 +22,10 @@ import type { EmploiSaved } from "@/core/interfaces";
 import Link from "next/link";
 import { linkLikeButtonStyle } from "@/core/styles/links";
 import { JobBookmarkButton } from "@/components/shared/JobBookmarkButton";
-import { format } from "date-fns";
 import dynamic from "next/dynamic";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
+import { getCompanyInitials } from "@/core/utils";
 
 const ReportJobDialog = dynamic(
   () => import("../../../../../components/shared/ReportJobDialog"),
@@ -34,18 +36,12 @@ interface SavedJobItemProps {
   saved: EmploiSaved;
 }
 
-const getCompanyInitials = (name: string) => {
-  return name
-    .split(" ")
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-};
-
 export function SavedJobItem({ saved }: SavedJobItemProps) {
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
 
   // Handle successful unsave/removal
   const handleUnsaveSuccess = () => {
@@ -58,6 +54,8 @@ export function SavedJobItem({ saved }: SavedJobItemProps) {
   if (!isVisible) {
     return null;
   }
+
+  const formattedDate = formatDate(saved.saved_at, "d MMM yyyy", locale);
 
   return (
     <motion.div
@@ -101,9 +99,7 @@ export function SavedJobItem({ saved }: SavedJobItemProps) {
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              <span>
-                Enregistré le {format(new Date(saved.saved_at), "d MMM yyyy")}
-              </span>
+              <span>{tCommon("actions.savedAt", { date: formattedDate })}</span>
             </div>
           </div>
         </div>
@@ -116,14 +112,14 @@ export function SavedJobItem({ saved }: SavedJobItemProps) {
               rel="noopener noreferrer"
               className={linkLikeButtonStyle}
             >
-              Postuler
+              {tCommon("actions.apply")}
             </Link>
           </motion.div>
 
           <JobBookmarkButton
             jobId={saved.emploi.uuid}
+            jobSlug={saved.emploi.slug}
             initialIsSaved={true}
-            jobTitle={saved.emploi.title}
             onUnsaveSuccess={handleUnsaveSuccess}
           />
 
@@ -138,8 +134,8 @@ export function SavedJobItem({ saved }: SavedJobItemProps) {
                 className="text-destructive"
                 onClick={() => setIsReportDialogOpen(true)}
               >
-                <AlertTriangle className="h-4 w-4" /> Signaler l&apos;offre
-                d&apos;emploi
+                <AlertTriangle className="h-4 w-4" />{" "}
+                {tCommon("actions.reportJob")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

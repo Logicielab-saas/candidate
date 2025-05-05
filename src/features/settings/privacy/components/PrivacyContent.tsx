@@ -7,74 +7,70 @@
 
 import { Button } from "@/components/ui/button";
 import { PrivacySection } from "./PrivacySection";
-import { ResumeVisibility } from "./ResumeVisibility";
 import { FileDown, Shield } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function PrivacyContent() {
+  const t = useTranslations("settings.privacyPage");
+
   return (
     <div className="space-y-6">
-      <PrivacySection title="Types de données collectées">
+      <PrivacySection title={t("dataTypes.title")}>
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Nous collectons les informations suivantes pour améliorer votre
-            expérience :
+            {t("dataTypes.description")}
           </p>
           <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
-            <li>Informations de profil (nom, email, etc.)</li>
-            <li>CV et documents professionnels</li>
-            <li>Préférences de recherche d&apos;emploi</li>
-            <li>Historique de navigation sur le site</li>
+            <li>{t("dataTypes.items.profile")}</li>
+            <li>{t("dataTypes.items.resume")}</li>
+            <li>{t("dataTypes.items.preferences")}</li>
+            <li>{t("dataTypes.items.history")}</li>
           </ul>
         </div>
       </PrivacySection>
 
-      <PrivacySection title="Utilisation et divulgation de mes données">
+      <PrivacySection title={t("dataUsage.title")}>
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Vos données sont utilisées pour :
+            {t("dataUsage.description")}
           </p>
           <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
-            <li>Personnaliser votre recherche d&apos;emploi</li>
-            <li>Améliorer nos services et recommandations</li>
-            <li>Communiquer avec les recruteurs (avec votre accord)</li>
+            <li>{t("dataUsage.items.personalization")}</li>
+            <li>{t("dataUsage.items.improvement")}</li>
+            <li>{t("dataUsage.items.communication")}</li>
           </ul>
         </div>
       </PrivacySection>
 
-      <PrivacySection title="Cookies">
+      <PrivacySection title={t("cookies.title")}>
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Nous utilisons des cookies pour :
+            {t("cookies.description")}
           </p>
           <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
-            <li>Maintenir votre session</li>
-            <li>Mémoriser vos préférences</li>
-            <li>Analyser l&apos;utilisation du site</li>
+            <li>{t("cookies.items.session")}</li>
+            <li>{t("cookies.items.preferences")}</li>
+            <li>{t("cookies.items.analytics")}</li>
           </ul>
         </div>
       </PrivacySection>
 
-      <PrivacySection title="Accéder à mes données et les supprimer">
+      <PrivacySection title={t("dataAccess.title")}>
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Vous pouvez à tout moment accéder à vos données personnelles ou
-            demander leur suppression.
+            {t("dataAccess.description")}
           </p>
           <div className="flex gap-4">
             <Button variant="outline" size="sm">
               <FileDown className="h-4 w-4 mr-2" />
-              Télécharger mes données
+              {t("dataAccess.actions.download")}
             </Button>
             <Button variant="destructive" size="sm">
               <Shield className="h-4 w-4 mr-2" />
-              Supprimer mes données
+              {t("dataAccess.actions.delete")}
             </Button>
           </div>
         </div>
-      </PrivacySection>
-
-      <PrivacySection title="Visibilité du profil">
-        <ResumeVisibility />
       </PrivacySection>
     </div>
   );

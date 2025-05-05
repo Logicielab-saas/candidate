@@ -1,5 +1,16 @@
 "use client";
 
+/**
+ * EditProfileForm - Form for editing user profile information
+ *
+ * Allows users to edit their personal details, contact information,
+ * address, biography, and resume description with validation.
+ *
+ * Props:
+ * - profile: Profile - Current user profile data
+ * - resumeDescription: string | null - Optional resume description
+ */
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -38,100 +49,100 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { format, parse, parseISO, isValid } from "date-fns";
-import { fr } from "date-fns/locale";
+import { parse, parseISO, isValid } from "date-fns";
+import { useTranslations, useLocale } from "next-intl";
+import { useMemo } from "react";
+import { formatDate, getDateFnsLocale } from "@/core/utils/date";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const formSchema = z.object({
-  first_name: z.string().min(2, "First name must be at least 2 characters"),
-  last_name: z.string().min(2, "Last name must be at least 2 characters"),
-  phone: z
-    .string()
-    .min(1, "Phone number is required")
-    .nullish()
-    .transform((v) => v || null),
-  address: z
-    .string()
-    .nullish()
-    .transform((v) => v || null),
-  city_uuid: z
-    .string()
-    .nullish()
-    .transform((v) => v || null),
-  country: z
-    .string()
-    .nullish()
-    .transform((v) => v || null),
-  postal_code: z
-    .string()
-    .nullish()
-    .transform((v) => v || null),
-  bio: z
-    .string()
-    .nullish()
-    .transform((v) => v || null),
-  description: z
-    .string()
-    .nullish()
-    .transform((v) => v || null),
-  is_male: z.boolean().nullable(),
-  birthdate: z
-    .string()
-    .nullish()
-    .transform((v) => v || null),
-  image: z
-    .instanceof(File)
-    .nullable()
-    .refine(
-      (file) => !file || file.size <= MAX_FILE_SIZE,
-      "File size should be less than 5MB"
-    )
-    .refine(
-      (file) => !file || ACCEPTED_IMAGE_TYPES.includes(file.type),
-      "Only .jpg, .jpeg, .png and .gif formats are accepted"
-    ),
-});
+function profileFormSchema(t: (key: string) => string) {
+  return z.object({
+    first_name: z.string().min(2, t("firstName.minLength")),
+    last_name: z.string().min(2, t("lastName.minLength")),
+    phone: z
+      .string()
+      .min(1, t("phoneRequired"))
+      .nullish()
+      .transform((v) => v || null),
+    address: z
+      .string()
+      .nullish()
+      .transform((v) => v || null),
+    city_uuid: z
+      .string()
+      .nullish()
+      .transform((v) => v || null),
+    country: z
+      .string()
+      .nullish()
+      .transform((v) => v || null),
+    postal_code: z
+      .string()
+      .nullish()
+      .transform((v) => v || null),
+    bio: z
+      .string()
+      .nullish()
+      .transform((v) => v || null),
+    description: z
+      .string()
+      .nullish()
+      .transform((v) => v || null),
+    is_male: z.boolean().nullable(),
+    birthdate: z
+      .string()
+      .nullish()
+      .transform((v) => v || null),
+    image: z
+      .instanceof(File)
+      .nullable()
+      .refine((file) => !file || file.size <= MAX_FILE_SIZE, t("image.size"))
+      .refine(
+        (file) => !file || ACCEPTED_IMAGE_TYPES.includes(file.type),
+        t("image.format")
+      ),
+  });
+}
 
-type FormData = z.infer<typeof formSchema>;
+type FormData = z.infer<ReturnType<typeof profileFormSchema>>;
 
 interface EditProfileFormProps {
   profile: Profile;
   resumeDescription?: string | null;
 }
 
-/**
- * EditProfileForm - Form for editing user profile information
- *
- * Allows users to edit their personal details, contact information,
- * address, biography, and resume description with validation.
- */
 export function EditProfileForm({
   profile,
   resumeDescription,
 }: EditProfileFormProps) {
-  const router = useRouter();
-  const { mutate: updateProfile, isPending: isProfileUpdating } =
-    useUpdateProfile();
-  const { mutate: updateResume, isPending: isResumeUpdating } =
-    useUpdateProfileResume();
+  const tCommon = useTranslations("common");
+  const tValidation = useTranslations("common.validation");
+  const tProfile = useTranslations("editProfile");
+  const currentLocale = useLocale();
+  const dateLocale = getDateFnsLocale(currentLocale);
 
+  const router = useRouter();
+
+  const { mutate: updateProfile, isPending: isProfileUpdating } =
+    useUpdateProfile(tCommon);
+  const { mutate: updateResume, isPending: isResumeUpdating } =
+    useUpdateProfileResume(tCommon);
   const { data: cities, isLoading: isCitiesLoading } = useCities();
 
   const isPending = isProfileUpdating || isResumeUpdating || isCitiesLoading;
 
-  // Format the date from ISO to YYYY-MM-DD for the input
-  const formatDateForInput = (dateString: string | null) => {
-    if (!dateString) return "";
-    return dateString.split("T")[0];
-  };
+  const profileForm = useMemo(
+    () => profileFormSchema(tValidation),
+    [tValidation]
+  );
 
   // Keep track of the original image state
   const originalImage =
     typeof profile.image === "string" ? profile.image : null;
 
   const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(profileForm),
     defaultValues: {
       first_name: profile.first_name || "",
       last_name: profile.last_name || "",
@@ -143,7 +154,7 @@ export function EditProfileForm({
       bio: profile.bio || "",
       description: resumeDescription || "",
       is_male: profile.is_male,
-      birthdate: formatDateForInput(profile.birthdate),
+      birthdate: profile.birthdate || "",
       image: null,
     },
   });
@@ -152,7 +163,6 @@ export function EditProfileForm({
     // Update profile and resume concurrently
     await Promise.all([
       new Promise((resolve) => {
-        //* Use object destructuring to omit description
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { description, ...profileData } = values;
         updateProfile(profileData, { onSuccess: resolve });
@@ -177,7 +187,7 @@ export function EditProfileForm({
       .toUpperCase() || "?";
 
   function handleCancel() {
-    form.reset(); // Reset form to initial values
+    form.reset();
     router.back();
   }
 
@@ -211,10 +221,15 @@ export function EditProfileForm({
             name="first_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>First Name</FormLabel>
+                <FormLabel>
+                  {tProfile("form.firstName.label")}{" "}
+                  <span className="text-destructive">
+                    {tCommon("form.required")}
+                  </span>
+                </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="John"
+                    placeholder={tProfile("form.firstName.placeholder")}
                     {...field}
                     value={field.value || ""}
                   />
@@ -229,10 +244,15 @@ export function EditProfileForm({
             name="last_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Last Name</FormLabel>
+                <FormLabel>
+                  {tProfile("form.lastName.label")}{" "}
+                  <span className="text-destructive">
+                    {tCommon("form.required")}
+                  </span>
+                </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Doe"
+                    placeholder={tProfile("form.lastName.placeholder")}
                     {...field}
                     value={field.value || ""}
                   />
@@ -249,10 +269,15 @@ export function EditProfileForm({
           name="phone"
           render={({ field }) => (
             <FormItem className="w-full md:w-2/3 lg:w-1/2">
-              <FormLabel>Phone Number</FormLabel>
+              <FormLabel>
+                {tProfile("form.phone.label")}{" "}
+                <span className="text-destructive">
+                  {tCommon("form.required")}
+                </span>
+              </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="+1234567890"
+                  placeholder={tProfile("form.phone.placeholder")}
                   {...field}
                   value={field.value || ""}
                 />
@@ -268,7 +293,7 @@ export function EditProfileForm({
           name="birthdate"
           render={({ field }) => (
             <FormItem className="w-full md:w-72 flex flex-col gap-2">
-              <FormLabel>Birth Date</FormLabel>
+              <FormLabel>{tProfile("form.birthdate.label")}</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -282,8 +307,7 @@ export function EditProfileForm({
                     >
                       {field.value ? (
                         <span>
-                          {format(
-                            // Safely parse ISO or YYYY-MM-DD format
+                          {formatDate(
                             (() => {
                               try {
                                 const parsedDate = parse(
@@ -299,12 +323,12 @@ export function EditProfileForm({
                               }
                             })(),
                             "d MMMM yyyy",
-                            { locale: fr }
+                            currentLocale
                           )}
                         </span>
                       ) : (
                         <span className="text-muted-foreground">
-                          Sélectionner une date
+                          {tProfile("form.birthdate.placeholder")}
                         </span>
                       )}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
@@ -333,14 +357,18 @@ export function EditProfileForm({
                         : undefined
                     }
                     onSelect={(date) =>
-                      field.onChange(date ? format(date, "yyyy-MM-dd") : "")
+                      field.onChange(
+                        date
+                          ? formatDate(date, "yyyy-MM-dd", currentLocale)
+                          : ""
+                      )
                     }
                     disabled={isPending}
                     initialFocus
                     captionLayout="dropdown-buttons"
                     fromYear={1940}
                     toYear={new Date().getFullYear()}
-                    locale={fr}
+                    locale={dateLocale}
                   />
                 </PopoverContent>
               </Popover>
@@ -355,7 +383,7 @@ export function EditProfileForm({
           name="is_male"
           render={({ field }) => (
             <FormItem className="space-y-3">
-              <FormLabel>Gender</FormLabel>
+              <FormLabel>{tProfile("form.gender.label")}</FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={(value) =>
@@ -372,13 +400,17 @@ export function EditProfileForm({
                     <FormControl>
                       <RadioGroupItem value="true" />
                     </FormControl>
-                    <FormLabel className="font-normal">Male</FormLabel>
+                    <FormLabel className="font-normal">
+                      {tProfile("form.gender.options.male")}
+                    </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-2">
                     <FormControl>
                       <RadioGroupItem value="false" />
                     </FormControl>
-                    <FormLabel className="font-normal">Female</FormLabel>
+                    <FormLabel className="font-normal">
+                      {tProfile("form.gender.options.female")}
+                    </FormLabel>
                   </FormItem>
                 </RadioGroup>
               </FormControl>
@@ -393,10 +425,10 @@ export function EditProfileForm({
           name="address"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Address</FormLabel>
+              <FormLabel>{tProfile("form.address.label")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="123 Main St"
+                  placeholder={tProfile("form.address.placeholder")}
                   {...field}
                   value={field.value || ""}
                 />
@@ -413,14 +445,16 @@ export function EditProfileForm({
             name="city_uuid"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>City</FormLabel>
+                <FormLabel>{tProfile("form.city.label")}</FormLabel>
                 <Select
                   onValueChange={(value) => field.onChange(value)}
                   value={field.value || ""}
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a city" />
+                      <SelectValue
+                        placeholder={tProfile("form.city.placeholder")}
+                      />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -441,10 +475,10 @@ export function EditProfileForm({
             name="country"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Country</FormLabel>
+                <FormLabel>{tProfile("form.country.label")}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="United States"
+                    placeholder={tProfile("form.country.placeholder")}
                     {...field}
                     value={field.value || ""}
                   />
@@ -459,10 +493,10 @@ export function EditProfileForm({
             name="postal_code"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Postal Code</FormLabel>
+                <FormLabel>{tProfile("form.postalCode.label")}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="10001"
+                    placeholder={tProfile("form.postalCode.placeholder")}
                     {...field}
                     value={field.value || ""}
                   />
@@ -479,10 +513,10 @@ export function EditProfileForm({
           name="bio"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Bio</FormLabel>
+              <FormLabel>{tProfile("form.bio.label")}</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Tell us about yourself"
+                  placeholder={tProfile("form.bio.placeholder")}
                   className="min-h-[112px]"
                   {...field}
                   value={field.value || ""}
@@ -499,10 +533,10 @@ export function EditProfileForm({
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Resume Description</FormLabel>
+              <FormLabel>{tProfile("form.description.label")}</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Describe your professional experience and goals"
+                  placeholder={tProfile("form.description.placeholder")}
                   className="min-h-[144px]"
                   {...field}
                   value={field.value || ""}
@@ -521,10 +555,10 @@ export function EditProfileForm({
             onClick={handleCancel}
             disabled={isPending}
           >
-            Cancel
+            {tCommon("actions.cancel")}
           </Button>
           <Button type="submit" disabled={isPending}>
-            {isPending ? "Saving..." : "Save Changes"}
+            {isPending ? tCommon("actions.saving") : tCommon("actions.save")}
           </Button>
         </div>
       </form>

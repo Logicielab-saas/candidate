@@ -13,12 +13,12 @@ import {
 } from "@/core/utils/getAvailableWeeks";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { InterviewTypeDetails } from "@/components/shared/InterviewTypeDetails";
 import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface InterviewReporterProps {
   interview: Interview | undefined;
@@ -49,16 +49,20 @@ const formSchema = z
 
 type InterviewFormInputs = z.infer<typeof formSchema>;
 
-function getWeekTitle(days: { date: Date }[]): string {
+function getWeekTitle(days: { date: Date }[], locale: string): string {
   if (days.length === 0) return "";
   const startDay = days[0].date;
   const endDay = days[days.length - 1].date;
-  return `${startDay.getDate()}-${endDay.getDate()} ${format(startDay, "MMMM", {
-    locale: fr,
-  })}`;
+  return `${startDay.getDate()}-${endDay.getDate()} ${formatDate(
+    startDay,
+    "MMMM",
+    locale
+  )}`;
 }
 
 export function InterviewReporter({ interview }: InterviewReporterProps) {
+  const t = useTranslations("myInterviewActionPage.reporter");
+  const tCommon = useTranslations("common");
   const router = useRouter();
   const { toast } = useToast();
   const {
@@ -74,11 +78,13 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
     },
   });
 
+  const locale = useLocale();
+
   const thisWeekDays = getThisWeekDays();
   const nextWeekDays = getNextWeekDays();
 
-  const thisWeekTitle = getWeekTitle(thisWeekDays);
-  const nextWeekTitle = getWeekTitle(nextWeekDays);
+  const thisWeekTitle = getWeekTitle(thisWeekDays, locale);
+  const nextWeekTitle = getWeekTitle(nextWeekDays, locale);
 
   function handleSubmitForm(data: InterviewFormInputs) {
     console.log("Submitted data:", {
@@ -90,8 +96,8 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
     });
     toast({
       variant: "success",
-      title: "Disponibilités envoyées",
-      description: "Vos disponibilités ont été envoyées avec succès",
+      title: t("toast.success.title"),
+      description: t("toast.success.description"),
     });
     router.replace(`/profile/my-jobs?tab=interviews`);
   }
@@ -102,9 +108,7 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
         jobTitle={interview?.jobTitle || ""}
         companyName={interview?.company.name || ""}
       />
-      <h2 className="text-xl font-semibold mb-2">
-        Indiquez vos disponibilités à l&apos;employeur
-      </h2>
+      <h2 className="text-xl font-semibold mb-2">{t("title")}</h2>
       <InterviewTypeDetails interview={interview} />
 
       <Separator />
@@ -134,7 +138,7 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
                       }}
                     />
                     <span className="text-md text-gray-700 dark:text-gray-300">
-                      {format(day.date, "EEEE d MMMM", { locale: fr })}
+                      {formatDate(day.date, "EEEE d MMMM", locale)}
                     </span>
                   </label>
                 );
@@ -171,7 +175,7 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
                       }}
                     />
                     <span className="text-md text-gray-700 dark:text-gray-300">
-                      {format(day.date, "EEEE d MMMM", { locale: fr })}
+                      {formatDate(day.date, "EEEE d MMMM", locale)}
                     </span>
                   </label>
                 );
@@ -182,22 +186,20 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
       </div>
       {errors.nextWeek && (
         <p className="mt-2 text-sm text-destructive">
-          {errors.nextWeek.message}
+          {t("validation.selectAvailability")}
         </p>
       )}
       <Separator />
 
       {/* Message section */}
       <div className="p-4 rounded-lg bg-accent/20 shadow">
-        <h3 className="text-lg font-semibold mb-2">
-          Ajouter un message pour l&apos;employeur (optionnel)
-        </h3>
+        <h3 className="text-lg font-semibold mb-2">{t("message.title")}</h3>
         <Controller
           control={control}
           name="message"
           render={({ field }) => (
             <Textarea
-              placeholder="Votre message ici..."
+              placeholder={t("message.placeholder")}
               className="w-full p-2 border border-gray-300 rounded"
               rows={4}
               {...field}
@@ -209,7 +211,7 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
       <Separator />
 
       <Button type="submit" className="w-full">
-        Continuer
+        {tCommon("actions.confirm")}
       </Button>
       <Button
         variant="outline"
@@ -217,7 +219,7 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
         type="button"
         onClick={() => router.back()}
       >
-        Retour
+        {tCommon("actions.back")}
       </Button>
     </form>
   );

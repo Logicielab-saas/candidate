@@ -20,21 +20,37 @@ import { Input } from "@/components/ui/input";
 import { DialogFooter } from "@/components/ui/dialog";
 import { UseFormReturn } from "react-hook-form";
 import * as z from "zod";
+import { useTranslations } from "next-intl";
 
-export const emailChangeSchema = z
-  .object({
-    newEmail: z
-      .string()
-      .email("Adresse email invalide")
-      .min(1, "L'email est requis"),
-    confirmEmail: z.string().min(1, "La confirmation de l'email est requise"),
-  })
-  .refine((data) => data.newEmail === data.confirmEmail, {
-    message: "Les adresses email ne correspondent pas",
-    path: ["confirmEmail"],
-  });
+export const emailChangeSchema = (t: (key: string) => string) =>
+  z
+    .object({
+      newEmail: z
+        .string()
+        .email(
+          t("settings.account.info.emailChange.dialog.validation.emailInvalid")
+        )
+        .min(
+          1,
+          t("settings.account.info.emailChange.dialog.validation.emailRequired")
+        ),
+      confirmEmail: z
+        .string()
+        .min(
+          1,
+          t(
+            "settings.account.info.emailChange.dialog.validation.confirmEmailRequired"
+          )
+        ),
+    })
+    .refine((data) => data.newEmail === data.confirmEmail, {
+      message: t(
+        "settings.account.info.emailChange.dialog.validation.emailMismatch"
+      ),
+      path: ["confirmEmail"],
+    });
 
-export type EmailChangeForm = z.infer<typeof emailChangeSchema>;
+export type EmailChangeForm = z.infer<ReturnType<typeof emailChangeSchema>>;
 
 interface EmailChangeFormProps {
   form: UseFormReturn<EmailChangeForm>;
@@ -49,6 +65,9 @@ export function EmailChangeForm({
   onSubmit,
   isLoading = false,
 }: EmailChangeFormProps) {
+  const t = useTranslations();
+  const tCommon = useTranslations("common");
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -57,10 +76,16 @@ export function EmailChangeForm({
           name="newEmail"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nouvel email</FormLabel>
+              <FormLabel>
+                {t(
+                  "settings.account.info.emailChange.dialog.form.newEmail.label"
+                )}
+              </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="nouvelle@email.com"
+                  placeholder={t(
+                    "settings.account.info.emailChange.dialog.form.newEmail.placeholder"
+                  )}
                   type="email"
                   disabled={isLoading}
                   {...field}
@@ -75,10 +100,16 @@ export function EmailChangeForm({
           name="confirmEmail"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Confirmer le nouvel email</FormLabel>
+              <FormLabel>
+                {t(
+                  "settings.account.info.emailChange.dialog.form.confirmEmail.label"
+                )}
+              </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="nouvelle@email.com"
+                  placeholder={t(
+                    "settings.account.info.emailChange.dialog.form.confirmEmail.placeholder"
+                  )}
                   type="email"
                   disabled={isLoading}
                   {...field}
@@ -95,10 +126,10 @@ export function EmailChangeForm({
             onClick={onCancel}
             disabled={isLoading}
           >
-            Annuler
+            {tCommon("actions.cancel")}
           </Button>
           <Button type="submit" disabled={isLoading}>
-            Continuer
+            {tCommon("actions.continue")}
           </Button>
         </DialogFooter>
       </form>

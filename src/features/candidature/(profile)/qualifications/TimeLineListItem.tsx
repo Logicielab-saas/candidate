@@ -5,8 +5,8 @@ import type { ResumeExperience } from "@/core/interfaces/resume-experience.inter
 import CircleLineWrapper from "./CircleLineWrapper";
 import { Button } from "@/components/ui/button";
 import { PencilIcon, Trash } from "lucide-react";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
+import { formatDate } from "@/core/utils/date";
+import { useLocale, useTranslations } from "next-intl";
 
 interface TimeLineListItemProps {
   data: ResumeEducation | ResumeExperience | ResumeCertifications;
@@ -21,6 +21,9 @@ export default function TimeLineListItem({
   onEdit,
   onDelete,
 }: TimeLineListItemProps) {
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
+
   const getTitle = () => {
     if ("job_title" in data) return data.job_title;
     if ("degree" in data) return data.degree;
@@ -34,8 +37,8 @@ export default function TimeLineListItem({
     return "";
   };
 
-  const formatDate = (dateString: string) => {
-    return format(new Date(dateString), "d MMMM yyyy", { locale: fr });
+  const formatedDate = (dateString: string) => {
+    return formatDate(dateString, "d MMMM yyyy", locale);
   };
 
   const getDateRange = () => {
@@ -45,7 +48,7 @@ export default function TimeLineListItem({
 
     // Handle work experience and education dates
     if ("date_start" in data && data.date_start) {
-      startDate = formatDate(data.date_start);
+      startDate = formatedDate(data.date_start);
 
       // Check for work experience
       if ("current_time" in data) {
@@ -58,18 +61,18 @@ export default function TimeLineListItem({
 
       // Set end date if it exists and not current
       if (data.date_end && !isCurrent) {
-        endDate = formatDate(data.date_end);
+        endDate = formatedDate(data.date_end);
       }
     }
     // Handle certifications
     else if ("date" in data && data.date) {
-      startDate = formatDate(data.date as string);
+      startDate = formatedDate(data.date as string);
       if ("expiration_date" in data && data.expiration_date) {
-        endDate = formatDate(data.expiration_date as string);
+        endDate = formatedDate(data.expiration_date as string);
       }
     }
 
-    if (isCurrent) return `${startDate} - Present`;
+    if (isCurrent) return `${startDate} - ${tCommon("current")}`;
     if (endDate) return `${startDate} - ${endDate}`;
     return startDate;
   };

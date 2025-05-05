@@ -23,27 +23,33 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { UseFormReturn } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import * as z from "zod";
+import { useTranslations } from "next-intl";
 
-export const passwordChangeSchema = z
-  .object({
-    currentPassword: z.string().min(1, "Le mot de passe actuel est requis"),
-    newPassword: z
-      .string()
-      .min(8, "Le mot de passe doit contenir au moins 8 caractères")
-      .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
-        "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre"
-      ),
-    confirmPassword: z
-      .string()
-      .min(1, "La confirmation du mot de passe est requise"),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Les mots de passe ne correspondent pas",
-    path: ["confirmPassword"],
-  });
+export const passwordChangeSchema = (t: (key: string) => string) =>
+  z
+    .object({
+      currentPassword: z
+        .string()
+        .min(1, t("common.validation.passwordRequired")),
+      newPassword: z
+        .string()
+        .min(8, t("common.validation.passwordMinLength"))
+        .regex(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+          t("common.validation.passwordPattern")
+        ),
+      confirmPassword: z
+        .string()
+        .min(1, t("common.validation.passwordRequired")),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+      message: t("common.validation.passwordMismatch"),
+      path: ["confirmPassword"],
+    });
 
-export type PasswordChangeForm = z.infer<typeof passwordChangeSchema>;
+export type PasswordChangeForm = z.infer<
+  ReturnType<typeof passwordChangeSchema>
+>;
 
 interface PasswordChangeFormProps {
   form: UseFormReturn<PasswordChangeForm>;
@@ -61,6 +67,7 @@ export function PasswordChangeForm({
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const tCommon = useTranslations("common");
 
   return (
     <Form {...form}>
@@ -70,12 +77,12 @@ export function PasswordChangeForm({
           name="currentPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mot de passe actuel</FormLabel>
+              <FormLabel>{tCommon("form.password.current")}</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
                     type={showCurrentPassword ? "text" : "password"}
-                    placeholder="••••••••"
+                    placeholder={tCommon("passwordMask")}
                     autoComplete="current-password"
                     disabled={isLoading}
                     {...field}
@@ -105,12 +112,12 @@ export function PasswordChangeForm({
           name="newPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nouveau mot de passe</FormLabel>
+              <FormLabel>{tCommon("form.password.new")}</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
                     type={showNewPassword ? "text" : "password"}
-                    placeholder="••••••••"
+                    placeholder={tCommon("passwordMask")}
                     autoComplete="new-password"
                     disabled={isLoading}
                     {...field}
@@ -132,8 +139,7 @@ export function PasswordChangeForm({
                 </div>
               </FormControl>
               <FormDescription className="text-xs">
-                Le mot de passe doit contenir au moins 8 caractères, une
-                majuscule, une minuscule et un chiffre.
+                {tCommon("form.password.requirements")}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -144,12 +150,12 @@ export function PasswordChangeForm({
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Confirmer le mot de passe</FormLabel>
+              <FormLabel>{tCommon("form.password.confirm")}</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
                     type={showConfirmPassword ? "text" : "password"}
-                    placeholder="••••••••"
+                    placeholder={tCommon("passwordMask")}
                     autoComplete="new-password"
                     disabled={isLoading}
                     {...field}
@@ -181,10 +187,12 @@ export function PasswordChangeForm({
             onClick={onCancel}
             disabled={isLoading}
           >
-            Annuler
+            {tCommon("actions.cancel")}
           </Button>
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Changement..." : "Changer le mot de passe"}
+            {isLoading
+              ? tCommon("actions.changing")
+              : tCommon("actions.change")}
           </Button>
         </DialogFooter>
       </form>

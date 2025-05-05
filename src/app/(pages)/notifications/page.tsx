@@ -8,12 +8,15 @@
 import { NotificationsList } from "@/features/notifications/components/NotificationsList";
 import { Suspense } from "react";
 import LoaderOne from "@/components/ui/loader-one";
+import { getTranslations } from "next-intl/server";
 
-export default function NotificationsPage() {
+export default async function NotificationsPage() {
+  const t = await getTranslations("notifications");
+
   return (
     <Suspense fallback={<LoaderOne />}>
       <div className="container py-6">
-        <h1 className="mb-8 text-3xl font-bold">Notifications</h1>
+        <h1 className="mb-8 text-3xl font-bold">{t("page.title")}</h1>
         <NotificationsList />
       </div>
     </Suspense>

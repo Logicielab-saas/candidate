@@ -26,9 +26,7 @@ export function QualificationsContainer() {
     return (
       <div className="space-y-6">
         <div className="border p-4 rounded-lg shadow-sm">
-          <p className="text-red-500">
-            Failed to load profile data. Please try again later.
-          </p>
+          <p className="text-red-500">{error.message}</p>
         </div>
       </div>
     );
@@ -53,7 +51,7 @@ export function QualificationsContainer() {
           <CertificationsSkeleton />
         </QualificationSection>
         <QualificationSection>
-          <ResumeSkeleton />
+          <ResumeSkeleton source="resume" />
         </QualificationSection>
         <QualificationSection>
           <SkillsSkeleton />
@@ -104,11 +102,7 @@ export function QualificationsContainer() {
 
       <QualificationSection>
         <div className="border p-4 rounded-lg shadow-sm">
-          <ResumeItem
-            subtitle="PDF format, max 2MB"
-            type="custom"
-            resumeFiles={resume?.resume?.resumeFiles}
-          />
+          <ResumeItem type="custom" resumeFiles={resume?.resume?.resumeFiles} />
         </div>
       </QualificationSection>
 

@@ -7,9 +7,8 @@ import {
 } from "../services/resume-project";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
-import { AxiosError } from "axios";
 
-export function useCreateResumeProject() {
+export function useCreateResumeProject(t: (key: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -22,17 +21,15 @@ export function useCreateResumeProject() {
 
       toast({
         variant: "success",
-        title: "Project added",
-        description: "Your project has been added successfully.",
+        title: t("toast.resumeProject.create.title"),
+        description: t("toast.resumeProject.create.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Failed to add project",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });
@@ -40,7 +37,7 @@ export function useCreateResumeProject() {
   return { mutate, isPending };
 }
 
-export function useDeleteResumeProject() {
+export function useDeleteResumeProject(t: (key: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -53,17 +50,15 @@ export function useDeleteResumeProject() {
 
       toast({
         variant: "success",
-        title: "Project deleted",
-        description: "Your project has been deleted successfully.",
+        title: t("toast.resumeProject.delete.title"),
+        description: t("toast.resumeProject.delete.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Failed to delete project",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });
@@ -71,7 +66,7 @@ export function useDeleteResumeProject() {
   return { mutate, isPending };
 }
 
-export function useUpdateResumeProject() {
+export function useUpdateResumeProject(t: (key: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -84,17 +79,15 @@ export function useUpdateResumeProject() {
 
       toast({
         variant: "success",
-        title: "Project updated",
-        description: "Your project has been updated successfully.",
+        title: t("toast.resumeProject.update.title"),
+        description: t("toast.resumeProject.update.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Failed to update project",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });

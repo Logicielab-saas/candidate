@@ -1,15 +1,20 @@
-import { Card } from "@/components/ui/card"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Label } from "@/components/ui/label"
+import { Card } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { useTranslations } from "next-intl";
 
-export type CVTemplate = 'classic' | 'modern'
+export type CVTemplate = "classic" | "modern";
 
 interface TemplateSelectorProps {
-  selectedTemplate: CVTemplate
-  onChange: (template: CVTemplate) => void
+  selectedTemplate: CVTemplate;
+  onChange: (template: CVTemplate) => void;
 }
 
-export function TemplateSelector({ selectedTemplate, onChange }: TemplateSelectorProps) {
+export function TemplateSelector({
+  selectedTemplate,
+  onChange,
+}: TemplateSelectorProps) {
+  const t = useTranslations("postulyCVPage.templates");
   return (
     <RadioGroup
       value={selectedTemplate}
@@ -17,9 +22,13 @@ export function TemplateSelector({ selectedTemplate, onChange }: TemplateSelecto
       className="flex space-x-4"
     >
       <div className="flex flex-col items-center space-y-2">
-        <Card className="relative w-32 h-44 border-2 cursor-pointer overflow-hidden transition-all hover:shadow-md"
-          style={{ borderColor: selectedTemplate === 'classic' ? '#29ABE2' : 'transparent' }}
-          onClick={() => onChange('classic')}
+        <Card
+          className="relative w-32 h-44 border-2 cursor-pointer overflow-hidden transition-all hover:shadow-md"
+          style={{
+            borderColor:
+              selectedTemplate === "classic" ? "#29ABE2" : "transparent",
+          }}
+          onClick={() => onChange("classic")}
         >
           {/* Classic Template Preview */}
           <div className="absolute inset-0 flex">
@@ -37,13 +46,19 @@ export function TemplateSelector({ selectedTemplate, onChange }: TemplateSelecto
           </div>
           <RadioGroupItem value="classic" className="sr-only" id="classic" />
         </Card>
-        <Label htmlFor="classic" className="text-sm">Classic</Label>
+        <Label htmlFor="classic" className="text-sm">
+          {t("classic")}
+        </Label>
       </div>
 
       <div className="flex flex-col items-center space-y-2">
-        <Card className="relative w-32 h-44 border-2 cursor-pointer overflow-hidden transition-all hover:shadow-md"
-          style={{ borderColor: selectedTemplate === 'modern' ? '#29ABE2' : 'transparent' }}
-          onClick={() => onChange('modern')}
+        <Card
+          className="relative w-32 h-44 border-2 cursor-pointer overflow-hidden transition-all hover:shadow-md"
+          style={{
+            borderColor:
+              selectedTemplate === "modern" ? "#29ABE2" : "transparent",
+          }}
+          onClick={() => onChange("modern")}
         >
           {/* Modern Template Preview */}
           <div className="absolute inset-0 flex flex-col">
@@ -69,8 +84,10 @@ export function TemplateSelector({ selectedTemplate, onChange }: TemplateSelecto
           </div>
           <RadioGroupItem value="modern" className="sr-only" id="modern" />
         </Card>
-        <Label htmlFor="modern" className="text-sm">Modern</Label>
+        <Label htmlFor="modern" className="text-sm">
+          {t("modern")}
+        </Label>
       </div>
     </RadioGroup>
-  )
+  );
 }

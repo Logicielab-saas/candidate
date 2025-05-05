@@ -2,21 +2,28 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { EmploisDetails } from "@/core/interfaces";
 import { ArrowRight, Heart } from "lucide-react";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { useJobBookmark } from "@/core/utils/job-bookmark-handler";
 import Link from "next/link";
+import { useTranslations, useLocale } from "next-intl";
+import { hasAccessToken } from "@/lib/check-access-token";
+import { formatDate } from "@/core/utils/date";
 
 interface AnnonceActionsProps {
   annonce: EmploisDetails;
 }
 
 export function AnnonceActions({ annonce }: AnnonceActionsProps) {
+  const tCommon = useTranslations("common");
+  const t = useTranslations("annonces");
+  const locale = useLocale();
+
+  const isAuthenticated = hasAccessToken();
+
   const { isSaved, isProcessing, toggleSaved } = useJobBookmark({
     initialIsSaved: annonce.saved,
     jobId: annonce.uuid,
-    jobTitle: annonce.title,
+    jobSlug: annonce.slug,
   });
 
   return (
@@ -26,7 +33,7 @@ export function AnnonceActions({ annonce }: AnnonceActionsProps) {
           {/* Apply Button */}
           {annonce.applied ? (
             <Button size="lg" className="w-full" disabled={annonce.applied}>
-              <span>{annonce.applied ? "Déjà postulé" : "Postuler"}</span>
+              <span>{tCommon("actions.alreadyApplied")}</span>
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           ) : (
@@ -37,46 +44,51 @@ export function AnnonceActions({ annonce }: AnnonceActionsProps) {
               asChild
             >
               <Link href={`/job-apply/${annonce.slug}`}>
-                <span>{annonce.applied ? "Déjà postulé" : "Postuler"}</span>
+                <span>{tCommon("actions.apply")}</span>
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
           )}
 
           {/* Save Button */}
-          <Button
-            variant="outline"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleSaved();
-            }}
-            size="lg"
-            className={cn(
-              "w-full",
-              isProcessing && "opacity-50 cursor-not-allowed"
-            )}
-            disabled={isProcessing}
-          >
-            <Heart
+          {isAuthenticated && (
+            <Button
+              variant="outline"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleSaved();
+              }}
+              size="lg"
               className={cn(
-                "mr-2 h-4 w-4",
-                isSaved && "fill-current text-primary",
-                isProcessing && "animate-pulse"
+                "w-full",
+                isProcessing && "opacity-50 cursor-not-allowed"
               )}
-            />
-            <span>{isSaved ? "Sauvegardé" : "Sauvegarder"}</span>
-          </Button>
+              disabled={isProcessing}
+            >
+              <Heart
+                className={cn(
+                  "mr-2 h-4 w-4",
+                  isSaved && "fill-current text-primary",
+                  isProcessing && "animate-pulse"
+                )}
+              />
+              <span>
+                {isSaved ? tCommon("actions.saved") : tCommon("actions.save")}
+              </span>
+            </Button>
+          )}
 
           {/* Deadline Info */}
           {annonce.expireDate && (
             <p className="text-sm text-muted-foreground text-center">
-              Date limite de candidature :{" "}
-              <span className="font-bold">
-                {format(new Date(annonce.expireDate), "EEEE d MMMM yyyy", {
-                  locale: fr,
-                })}
-              </span>
+              {t("details.jobDetails.deadline", {
+                date: formatDate(
+                  annonce.expireDate,
+                  "EEEE dd MMMM yyyy",
+                  locale
+                ),
+              })}
             </p>
           )}
         </div>

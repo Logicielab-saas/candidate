@@ -1,23 +1,24 @@
 "use client";
 
 import type { Interview } from "@/core/interfaces/";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import { AnimatePresence, motion } from "framer-motion";
 import { Building2, MapPin, Calendar, Clock, Zap } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface PastInterviewsProps {
   interviews: Interview[];
 }
 
 export function PastInterviews({ interviews }: PastInterviewsProps) {
+  const t = useTranslations("myJobsPage.interviews");
+  const locale = useLocale();
+
   return (
     <div>
       <div className="border  p-4 rounded-lg shadow-md mb-4">
-        <h2 className="text-xl font-bold mb-4">Entretiens Passés</h2>
-        <p className="text-md mb-4">
-          Voici les entretiens que vous avez complétés.
-        </p>
+        <h2 className="text-xl font-bold mb-4">{t("titlePast")}</h2>
+        <p className="text-md mb-4">{t("descriptionPast")}</p>
       </div>
 
       <AnimatePresence>
@@ -46,9 +47,7 @@ export function PastInterviews({ interviews }: PastInterviewsProps) {
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Calendar className="h-4 w-4 mr-1" />
                   <span>
-                    {format(new Date(interview.interviewDate), "PPP", {
-                      locale: fr,
-                    })}
+                    {formatDate(interview.interviewDate, "PPP", locale)}
                   </span>
                 </div>
                 <div className="flex items-center text-sm text-gray-600 dark:text-gray-100">

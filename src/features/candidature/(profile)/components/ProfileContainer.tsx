@@ -15,9 +15,42 @@ import { ResumeSkeleton } from "./ResumeSkeleton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { FileText, Edit } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function ProfileContainer() {
   const { data: profile, isLoading } = useProfile();
+  const t = useTranslations("profile");
+  const tCommon = useTranslations("common");
+
+  const getFullName = (
+    firstName: string | null | undefined,
+    lastName: string | null | undefined
+  ): string => {
+    if (!firstName && !lastName) return tCommon("placeholders.noName");
+    return [firstName, lastName]
+      .filter((name): name is string => Boolean(name))
+      .join(" ");
+  };
+
+  const getLocation = (
+    city: string | null | undefined,
+    country: string | null | undefined
+  ): string => {
+    if (!city || !country) return tCommon("placeholders.noLocation");
+    return tCommon("location.format", { city, country });
+  };
+
+  const getInitials = (
+    firstName: string | null | undefined,
+    lastName: string | null | undefined
+  ): string => {
+    if (!firstName && !lastName) return "?";
+    return [firstName, lastName]
+      .filter((name): name is string => Boolean(name))
+      .map((name) => name[0])
+      .join("")
+      .toUpperCase();
+  };
 
   return (
     <div className="space-y-6">
@@ -37,53 +70,37 @@ export function ProfileContainer() {
                       ? profile.image
                       : undefined
                   }
-                  alt={`${profile?.first_name} ${profile?.last_name}`}
+                  alt={getFullName(profile.first_name, profile.last_name)}
                 />
               ) : null}
               <AvatarFallback>
-                {profile
-                  ? [profile.first_name, profile.last_name]
-                      .filter(Boolean)
-                      .map((n) => n?.[0])
-                      .join("")
-                      .toUpperCase()
-                  : "?"}
+                {getInitials(profile?.first_name, profile?.last_name)}
               </AvatarFallback>
             </Avatar>
             <div className="space-y-1">
               <h3 className="text-xl sm:text-2xl font-semibold">
-                {profile
-                  ? [profile.first_name, profile.last_name]
-                      .filter(Boolean)
-                      .join(" ") || "No name provided"
-                  : "No name provided"}
+                {getFullName(profile?.first_name, profile?.last_name)}
               </h3>
               <p className="text-sm text-muted-foreground">
-                {profile?.city && profile?.country
-                  ? `${profile.city}, ${profile.country}`
-                  : "No location provided"}
+                {getLocation(profile?.city, profile?.country)}
               </p>
             </div>
           </div>
           <div className="flex flex-col gap-2 mt-4 sm:mt-0">
-            <Link href="/edit/profile">
+            <Link href="/edit/profile" className="w-full sm:w-[170px]">
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full sm:w-auto hover:bg-primary/10 transition-colors"
+                className="w-full hover:bg-primary/10 transition-colors"
               >
                 <Edit className="mr-2 h-4 w-4" />
-                Edit Profile
+                {tCommon("actions.editProfile")}
               </Button>
             </Link>
-            <Link href="/profile/postuly-cv">
-              <Button
-                variant="default"
-                size="sm"
-                className="w-full sm:w-auto gap-2"
-              >
+            <Link href="/profile/postuly-cv" className="w-full sm:w-[170px]">
+              <Button variant="default" size="sm" className="w-full gap-2">
                 <FileText className="h-4 w-4" />
-                Generate CV
+                {tCommon("actions.generateCV")}
               </Button>
             </Link>
           </div>
@@ -95,13 +112,15 @@ export function ProfileContainer() {
         <ProfileContactSkeleton />
       ) : (
         <ProfileContactInfo
-          phone={profile?.phone || "Phone not provided"}
-          address={profile?.address || "Address not provided"}
-          birthdate={profile?.birthdate || "Birthdate not provided"}
+          phone={profile?.phone || tCommon("placeholders.noPhone")}
+          address={profile?.address || tCommon("placeholders.noAddress")}
+          birthdate={profile?.birthdate || tCommon("placeholders.noBirthdate")}
           isMale={profile?.is_male || null}
-          postalCode={profile?.postal_code || "Postal code not provided"}
-          city={profile?.city || "City not provided"}
-          country={profile?.country || "Country not provided"}
+          postalCode={
+            profile?.postal_code || tCommon("placeholders.noPostalCode")
+          }
+          city={profile?.city || tCommon("placeholders.noCity")}
+          country={profile?.country || tCommon("placeholders.noCountry")}
         />
       )}
 
@@ -111,7 +130,7 @@ export function ProfileContainer() {
         <ProfileAboutSkeleton />
       ) : (
         <ProfileAboutInfo
-          bio={profile?.bio || "No biography provided"}
+          bio={profile?.bio || tCommon("placeholders.noBio")}
           skills={profile?.skills || []}
         />
       )}
@@ -125,7 +144,7 @@ export function ProfileContainer() {
         <div className="space-y-4">
           <div className="space-y-3">
             <ResumeItem
-              subtitle="PDF format, max 2MB"
+              subtitle={t("resume.section.subtitle")}
               type="custom"
               resumeFiles={profile?.files || []}
               source="profile"

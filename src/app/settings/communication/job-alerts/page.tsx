@@ -10,6 +10,7 @@ import { JobAlertsList } from "@/features/settings/communication/components/JobA
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { GhostLinkStyle } from "@/core/styles/links";
+import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "Alertes d'emploi | Paramètres",
@@ -17,20 +18,18 @@ export const metadata: Metadata = {
     "Gérez vos alertes d'emploi pour recevoir des notifications sur les nouvelles offres correspondant à vos critères.",
 };
 
-export default function JobAlertsPage() {
+export default async function JobAlertsPage() {
+  const t = await getTranslations("settings.communication.jobAlerts");
+  const tCommon = await getTranslations("common.actions");
   return (
     <div className="space-y-6">
       <div className="shadow rounded-lg p-4 dark:border">
         <Link href="/settings/communication" className={GhostLinkStyle}>
           <ChevronLeft className="h-4 w-4" />
-          Retour
+          {tCommon("back")}
         </Link>
-        <h2 className="text-2xl font-semibold mb-2">Alertes d&apos;emploi</h2>
-        <p className="text-muted-foreground">
-          Configurez vos alertes d&apos;emploi pour recevoir des notifications
-          lorsque de nouvelles offres correspondant à vos critères sont
-          publiées.
-        </p>
+        <h2 className="text-2xl font-semibold mb-2">{t("title")}</h2>
+        <p className="text-muted-foreground">{t("description")}</p>
       </div>
 
       <JobAlertsList />

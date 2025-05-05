@@ -1,3 +1,14 @@
+/**
+ * JobCardMenu - Menu component for job card actions
+ *
+ * Features:
+ * - Save/unsave job to favorites
+ * - Mark job as not interested
+ * - Report job
+ * - Handles loading states
+ * - Prevents event propagation
+ */
+
 "use client";
 
 import {
@@ -17,6 +28,7 @@ import {
   useSaveEmplois,
   useCancelSaveEmplois,
 } from "@/features/candidature/(profile)/my-jobs/hooks/use-my-saved-jobs";
+import { useTranslations } from "next-intl";
 
 const NotInterestedDialog = dynamic(() => import("./NotInterestedDialog"), {
   ssr: false,
@@ -29,20 +41,27 @@ const ReportJobDialog = dynamic(
 
 interface JobCardMenuProps {
   jobId: string;
+  jobSlug: string;
 }
 
-export function JobCardMenu({ jobId }: JobCardMenuProps) {
+export function JobCardMenu({ jobId, jobSlug }: JobCardMenuProps) {
   const [isSignalerOpen, setIsSignalerOpen] = useState(false);
   const [isNotInterestedOpen, setIsNotInterestedOpen] = useState(false);
+
+  const t = useTranslations("emplois.jobCard.menu");
+  const tCommon = useTranslations("common");
 
   // Global state for saved jobs
   const { isSaved, saveJob, removeSavedJob } = useSavedJobsStore();
   const isBookmarked = isSaved(jobId);
 
   // Save/Cancel save job mutations
-  const { mutate: saveEmplois, isPending: isSaving } = useSaveEmplois();
+  const { mutate: saveEmplois, isPending: isSaving } = useSaveEmplois(
+    jobSlug,
+    tCommon
+  );
   const { mutate: cancelSaveEmplois, isPending: isCanceling } =
-    useCancelSaveEmplois();
+    useCancelSaveEmplois(jobSlug, tCommon);
 
   const handleBookmarkClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -92,10 +111,11 @@ export function JobCardMenu({ jobId }: JobCardMenuProps) {
             disabled={isLoading}
           >
             <MoreVertical className="h-4 w-4" />
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">{tCommon("actions.openMenu")}</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[200px]">
+          {/* Bookmark job */}
           <DropdownMenuItem
             className="flex items-center gap-2 cursor-pointer"
             onClick={handleBookmarkClick}
@@ -108,23 +128,25 @@ export function JobCardMenu({ jobId }: JobCardMenuProps) {
               )}
             />
             <span>
-              {isBookmarked ? "Retirer des favoris" : "Ajouter aux favoris"}
+              {isBookmarked ? t("bookmark.remove") : t("bookmark.add")}
             </span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
+          {/* Not Interessted */}
           <DropdownMenuItem
             className="flex items-center gap-2 cursor-pointer text-yellow-600"
             onClick={handleNotInterestedClick}
           >
             <XCircle className="h-4 w-4" />
-            <span>Pas intéressé(e)</span>
+            <span>{t("notInterested")}</span>
           </DropdownMenuItem>
+          {/* report */}
           <DropdownMenuItem
             className="flex items-center gap-2 cursor-pointer text-destructive"
             onClick={handleSignalerClick}
           >
             <Flag className="h-4 w-4" />
-            <span>Signaler cette offre</span>
+            <span>{t("report")}</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

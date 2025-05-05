@@ -37,6 +37,10 @@ import { JobBookmarkButton } from "@/components/shared/JobBookmarkButton";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useEmplois } from "../hooks/use-emplois";
+import { useTranslations, useLocale } from "next-intl";
+import NotInterestedDialog from "./NotInterestedDialog";
+import { hasAccessToken } from "@/lib/check-access-token";
+import { formatDate } from "@/core/utils/date";
 
 const ReportJobDialog = dynamic(
   () => import("@/components/shared/ReportJobDialog"),
@@ -46,7 +50,14 @@ const ReportJobDialog = dynamic(
 export function JobDetails() {
   const [selectedJobId, setSelectedJobId] = useQueryState("job");
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
+  const [isNotInterestedOpen, setIsNotInterestedOpen] = useState(false);
   const { data: jobs } = useEmplois();
+
+  const t = useTranslations("emplois.jobDetails");
+  const tCommon = useTranslations("common.actions");
+  const locale = useLocale();
+
+  const isAuthenticated = hasAccessToken();
 
   // Set default job if none is selected and jobs are available
   useEffect(() => {
@@ -76,36 +87,47 @@ export function JobDetails() {
     return (
       <Card className="sticky top-1">
         <CardContent className="flex items-center justify-center h-[300px] text-muted-foreground">
-          Sélectionnez une offre pour voir les détails
+          {t("selectJob")}
         </CardContent>
       </Card>
     );
   }
 
+  const handleNotInterestedClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsNotInterestedOpen(true);
+  };
+
   // Format salary based on type and available values
   const formatSalary = () => {
     if (job.salaryType === "invoice" && job.startPrice && job.endPrice) {
-      return `${job.startPrice} - ${job.endPrice} MAD`;
+      return t("salary.range", {
+        start: job.startPrice,
+        end: job.endPrice,
+      });
     }
     if (job.normalPrice) {
-      return `${job.normalPrice} MAD`;
+      return t("salary.fixed", { amount: job.normalPrice });
     }
-    return "Non spécifié";
+    return t("salary.unspecified");
   };
 
   // Format working hours
   const formatWorkingHours = () => {
     if (job.minWorkingHours && job.maxWorkingHours) {
-      return `${job.minWorkingHours}-${job.maxWorkingHours}h${
-        job.durationType ? `/${job.durationType}` : ""
-      }`;
+      return t("workingHours.range", {
+        min: job.minWorkingHours,
+        max: job.maxWorkingHours,
+        duration: job.durationType ? `/${job.durationType}` : "",
+      });
     }
     if (job.workingHours) {
-      return `${job.workingHours}h${
-        job.durationType ? `/${job.durationType}` : ""
-      }`;
+      return t("workingHours.fixed", {
+        hours: job.workingHours,
+        duration: job.durationType ? `/${job.durationType}` : "",
+      });
     }
-    return "Non spécifié";
+    return t("workingHours.unspecified");
   };
 
   return (
@@ -135,14 +157,16 @@ export function JobDetails() {
             {/* Action Buttons */}
             <div className="flex items-center gap-2">
               <TooltipProvider delayDuration={100}>
-                <JobBookmarkButton
-                  jobId={job.uuid}
-                  initialIsSaved={job.saved}
-                  jobTitle={job.title}
-                  tooltipPosition="top"
-                  iconClassName="h-6 w-6"
-                  buttonStyle="action"
-                />
+                {isAuthenticated && (
+                  <JobBookmarkButton
+                    jobId={job.uuid}
+                    jobSlug={job.slug}
+                    initialIsSaved={job.saved}
+                    tooltipPosition="top"
+                    iconClassName="h-6 w-6"
+                    buttonStyle="action"
+                  />
+                )}
 
                 <Tooltip>
                   <TooltipTrigger>
@@ -154,41 +178,47 @@ export function JobDetails() {
                     />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Partager l&apos;offre</p>
+                    <p>{t("actions.share")}</p>
                   </TooltipContent>
                 </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <span
-                      className={cn(
-                        "h-9 w-9 flex items-center justify-center cursor-pointer",
-                        "text-destructive hover:bg-accent rounded-full"
-                      )}
-                      onClick={() => setIsReportDialogOpen(true)}
-                    >
-                      <Flag className="h-6 w-6" />
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Signaler l&apos;offre</p>
-                  </TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <span
-                      className={cn(
-                        "h-9 w-9 flex items-center justify-center cursor-pointer",
-                        "text-yellow-600 hover:text-yellow-700 hover:bg-accent rounded-full"
-                      )}
-                      // onClick={() => setIsNotInterestedOpen(true)}
-                    >
-                      <XCircle className="h-6 w-6" />
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Écarter l&apos;offre</p>
-                  </TooltipContent>
-                </Tooltip>
+                {isAuthenticated && (
+                  <>
+                    {/* Report job */}
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <span
+                          className={cn(
+                            "h-9 w-9 flex items-center justify-center cursor-pointer",
+                            "text-destructive hover:bg-accent rounded-full"
+                          )}
+                          onClick={() => setIsReportDialogOpen(true)}
+                        >
+                          <Flag className="h-6 w-6" />
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{tCommon("reportJob")}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    {/* Not interested */}
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <span
+                          className={cn(
+                            "h-9 w-9 flex items-center justify-center cursor-pointer",
+                            "text-yellow-600 hover:text-yellow-700 hover:bg-accent rounded-full"
+                          )}
+                          onClick={handleNotInterestedClick}
+                        >
+                          <XCircle className="h-6 w-6" />
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{t("actions.notInterested")}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </>
+                )}
               </TooltipProvider>
             </div>
           </div>
@@ -198,7 +228,7 @@ export function JobDetails() {
             {job.employeesNum && (
               <div className="flex items-center gap-1.5">
                 <Users className="h-4 w-4" />
-                <span>{job.employeesNum} poste(s)</span>
+                <span>{t("positions", { count: job.employeesNum })}</span>
               </div>
             )}
             <div className="flex items-center gap-1.5">
@@ -227,7 +257,9 @@ export function JobDetails() {
             <div className="flex items-center gap-1.5 text-sm text-yellow-600">
               <Calendar className="h-4 w-4" />
               <span>
-                Date limite: {new Date(job.expireDate).toLocaleDateString()}
+                {t("deadline", {
+                  date: formatDate(job.expireDate, "PPP", locale),
+                })}
               </span>
             </div>
           )}
@@ -242,7 +274,7 @@ export function JobDetails() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {job.applied ? "Déjà postulé" : "Postuler"}{" "}
+              {job.applied ? t("alreadyApplied") : t("apply")}{" "}
               <ArrowRight className="h-4 w-4 ml-2" />
             </Link>
           </Button>
@@ -255,7 +287,7 @@ export function JobDetails() {
         <div className="space-y-6 px-4">
           {/* Description */}
           <div>
-            <h3 className="font-semibold mb-2">Description du poste</h3>
+            <h3 className="font-semibold mb-2">{t("sections.description")}</h3>
             <div className="text-sm text-muted-foreground leading-relaxed prose prose-sm max-w-none dark:prose-invert">
               {parse(sanitizedHTML)}
             </div>
@@ -264,7 +296,9 @@ export function JobDetails() {
           {/* Requirements */}
           {job.emploi_requirements.length > 0 && (
             <div>
-              <h3 className="font-semibold mb-2">Prérequis</h3>
+              <h3 className="font-semibold mb-2">
+                {t("sections.requirements")}
+              </h3>
               <ul className="list-disc list-inside text-sm text-muted-foreground space-y-2">
                 {job.emploi_requirements.map((req) => (
                   <li key={req.requirement}>{req.requirement}</li>
@@ -272,45 +306,19 @@ export function JobDetails() {
               </ul>
             </div>
           )}
-
-          {/* Skills
-          {job.emploi_skills.length > 0 && (
-            <div>
-              <h3 className="font-semibold mb-2">Compétences requises</h3>
-              <div className="flex flex-wrap gap-2">
-                {job.emploi_skills.map((skill) => (
-                  <Badge key={skill.uuid} variant="outline">
-                    {skill.resumeskill_name}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          )}
-*/}
-          {/* Questions Preview
-          {job.emploi_questions.length > 0 && (
-            <div>
-              <h3 className="font-semibold mb-2">Questions de candidature</h3>
-              <div className="space-y-3">
-                {job.emploi_questions.map((question) => (
-                  <div key={question.uuid} className="text-sm">
-                    <p className="font-medium">{question.title}</p>
-                    {question.description && (
-                      <p className="text-muted-foreground mt-1">
-                        {question.description}
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )} */}
         </div>
       </CardContent>
       {isReportDialogOpen && (
         <ReportJobDialog
           open={isReportDialogOpen}
           onOpenChange={setIsReportDialogOpen}
+          jobId={job.uuid}
+        />
+      )}
+      {isNotInterestedOpen && (
+        <NotInterestedDialog
+          open={isNotInterestedOpen}
+          onOpenChange={setIsNotInterestedOpen}
           jobId={job.uuid}
         />
       )}

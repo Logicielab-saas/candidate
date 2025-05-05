@@ -1,9 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import type { EmploisApplied } from "@/core/interfaces";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Building2 } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface ApplicationDetailsHeaderProps {
   application: EmploisApplied;
@@ -12,15 +12,22 @@ interface ApplicationDetailsHeaderProps {
 export function ApplicationDetailsHeader({
   application,
 }: ApplicationDetailsHeaderProps) {
+  const t = useTranslations("common");
+  const locale = useLocale();
+  const formattedDate = formatDate(
+    application.created_at,
+    "d MMM yyyy",
+    locale
+  );
   return (
     <Card className="p-0">
       <CardContent className="p-0">
         <div className="p-4 flex items-start gap-4">
           <Avatar className="h-12 w-12">
-            {application.emploi.company_logo && (
+            {application.company_logo && (
               <AvatarImage
-                src={application.emploi.company_logo}
-                alt={application.emploi.company_name || ""}
+                src={application.company_logo}
+                alt={application.company_name || ""}
               />
             )}
             <AvatarFallback className="bg-muted">
@@ -29,17 +36,16 @@ export function ApplicationDetailsHeader({
           </Avatar>
 
           <div className="flex-1">
-            <h2 className="text-xl font-bold">{application.emploi.title}</h2>
+            <h2 className="text-xl font-bold">{application.title}</h2>
             <p className="text-md font-medium text-muted-foreground">
-              {application.emploi.company_name}
+              {application.company_name}
             </p>
             <p className="text-sm text-muted-foreground">
-              {application.emploi.city_name || "Inconnu"}
+              {application.city_name || t("locationUndefined")}
             </p>
             <p className="text-sm text-muted-foreground mt-1">
-              Candidature envoyée le{" "}
-              {format(new Date(application.applied_at), "d MMM yyyy", {
-                locale: fr,
+              {t("actions.applicationSentAt", {
+                date: formattedDate,
               })}
             </p>
           </div>

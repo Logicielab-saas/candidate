@@ -5,13 +5,14 @@
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { memo } from "react";
+import { useTranslations } from "next-intl";
 
 // Experience level options
 export const EXPERIENCE_LEVELS = [
-  { value: "entry", label: "Entry Level (0-2 years)" },
-  { value: "mid", label: "Mid Level (3-5 years)" },
-  { value: "senior", label: "Senior Level (5+ years)" },
-  { value: "lead", label: "Lead/Manager (8+ years)" },
+  { value: "entry", label: "entry" },
+  { value: "mid", label: "mid" },
+  { value: "senior", label: "senior" },
+  { value: "lead", label: "lead" },
 ] as const;
 
 interface ExperienceLevelFilterProps {
@@ -23,14 +24,20 @@ function ExperienceLevelFilterComponent({
   value,
   onChange,
 }: ExperienceLevelFilterProps) {
+  const tCommon = useTranslations(
+    "common.filters.advanced.sections.experience"
+  );
+
   return (
     <div className="space-y-4">
-      <Label>Experience Level</Label>
+      <Label>{tCommon("title")}</Label>
       <RadioGroup value={value} onValueChange={onChange}>
         {EXPERIENCE_LEVELS.map((level) => (
           <div key={level.value} className="flex items-center space-x-2">
             <RadioGroupItem value={level.value} id={level.value} />
-            <Label htmlFor={level.value}>{level.label}</Label>
+            <Label htmlFor={level.value}>
+              {tCommon(`levels.${level.label}`)}
+            </Label>
           </div>
         ))}
       </RadioGroup>

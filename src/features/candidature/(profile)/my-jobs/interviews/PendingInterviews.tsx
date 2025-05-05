@@ -2,24 +2,26 @@
 
 import { Button } from "@/components/ui/button";
 import type { Interview } from "@/core/interfaces/";
-import { fr } from "date-fns/locale";
-import { format } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { Building2, MapPin, Calendar, Clock, Zap } from "lucide-react";
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface PendingInterviewsProps {
   interviews: Interview[];
 }
 
 export function PendingInterviews({ interviews }: PendingInterviewsProps) {
+  const t = useTranslations("myJobsPage.interviews");
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
+
   return (
     <div>
       <div className="border border-gray-700 p-4 rounded-lg shadow-md mb-4">
-        <h2 className="text-xl font-bold mb-4">Entretiens En Attente</h2>
-        <p className="text-md mb-4">
-          Ces entretiens attendent votre confirmation.
-        </p>
+        <h2 className="text-xl font-bold mb-4">{t("titleWaiting")}</h2>
+        <p className="text-md mb-4">{t("descriptionWaiting")}</p>
       </div>
       <AnimatePresence>
         <div className="relative">
@@ -46,9 +48,7 @@ export function PendingInterviews({ interviews }: PendingInterviewsProps) {
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Calendar className="h-4 w-4 mr-1" />
                   <span>
-                    {format(new Date(interview.interviewDate), "PPP", {
-                      locale: fr,
-                    })}
+                    {formatDate(interview.interviewDate, "PPP", locale)}
                   </span>
                 </div>
                 <div className="flex items-center text-sm text-gray-600 dark:text-gray-100">
@@ -67,12 +67,12 @@ export function PendingInterviews({ interviews }: PendingInterviewsProps) {
                   asChild
                 >
                   <Link href={`/interviews/reporter/${interview.jobKey}`}>
-                    Reporter
+                    {tCommon("actions.reporter")}
                   </Link>
                 </Button>
                 <Button variant="outline" asChild>
                   <Link href={`/interviews/annuler/${interview.jobKey}`}>
-                    Annuler
+                    {tCommon("actions.cancel")}
                   </Link>
                 </Button>
               </div>

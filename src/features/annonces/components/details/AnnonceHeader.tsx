@@ -8,6 +8,8 @@ import dynamic from "next/dynamic";
 import { ShareJobPopover } from "@/features/Emplois/components/ShareJobPopover";
 import { cn } from "@/lib/utils";
 import type { EmploisDetails } from "@/core/interfaces";
+import { useTranslations } from "next-intl";
+import { hasAccessToken } from "@/lib/check-access-token";
 
 const ReportJobDialog = dynamic(
   () => import("@/components/shared/ReportJobDialog"),
@@ -20,6 +22,9 @@ interface AnnonceHeaderProps {
 
 export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
   const [openReportDialog, setOpenReportDialog] = useState(false);
+  const tCommon = useTranslations("common");
+
+  const isAuthenticated = hasAccessToken();
 
   const handleReport = useCallback(() => {
     setOpenReportDialog(true);
@@ -54,15 +59,14 @@ export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
                   <>
                     <MapPin className="h-4 w-4 flex-shrink-0" />
                     <span className="text-sm">{annonce.city_name}</span>
-                    <span className="text-xs hidden sm:inline">•</span>{" "}
                   </>
                 )}
                 {annonce.employeesNum && (
                   <>
+                    <span className="text-xs hidden sm:inline">•</span>{" "}
                     <Users2 className="h-4 w-4 flex-shrink-0" />
                     <span className="text-sm">
-                      {annonce.employeesNum} poste
-                      {annonce.employeesNum !== 1 && "s"}
+                      {tCommon("positions", { count: annonce.employeesNum })}
                     </span>
                   </>
                 )}
@@ -79,16 +83,19 @@ export function AnnonceHeader({ annonce }: AnnonceHeaderProps) {
                   slug={annonce.slug}
                 />
               </div>
-              <button
-                type="button"
-                className={cn(
-                  "h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center",
-                  "text-destructive hover:text-destructive/80 hover:bg-accent rounded-full"
-                )}
-                onClick={handleReport}
-              >
-                <Flag className="h-5 w-5 sm:h-6 sm:w-6" />
-              </button>
+              {isAuthenticated && (
+                <button
+                  type="button"
+                  className={cn(
+                    "h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center",
+                    "text-destructive hover:text-destructive/80 hover:bg-accent rounded-full"
+                  )}
+                  onClick={handleReport}
+                  aria-label={tCommon("actions.report")}
+                >
+                  <Flag className="h-5 w-5 sm:h-6 sm:w-6" />
+                </button>
+              )}
             </div>
           </div>
 

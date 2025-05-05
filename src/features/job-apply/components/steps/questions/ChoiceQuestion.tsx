@@ -19,10 +19,6 @@ import { UseFormReturn } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { type QuestionFormData } from "@/features/job-apply/types/question-form";
 
-interface Option {
-  value: string;
-}
-
 interface ChoiceQuestionProps {
   question: {
     id: string;
@@ -30,7 +26,7 @@ interface ChoiceQuestionProps {
     description?: string;
     isRequired: boolean;
     isMultipleChoices: boolean;
-    options: Option[];
+    options: string[];
   };
   form: UseFormReturn<QuestionFormData>;
 }
@@ -60,29 +56,22 @@ export function ChoiceQuestion({ question, form }: ChoiceQuestionProps) {
               // Checkboxes for multiple choices
               <div className="grid gap-4">
                 {question.options.map((option) => (
-                  <div
-                    key={option.value}
-                    className="flex items-center space-x-2"
-                  >
+                  <div key={option} className="flex items-center space-x-2">
                     <Checkbox
-                      id={`${question.id}-${option.value}`}
-                      checked={(field.value || []).includes(option.value)}
+                      id={`${question.id}-${option}`}
+                      checked={(field.value || []).includes(option)}
                       onCheckedChange={(checked) => {
                         const currentValue = (field.value || []) as string[];
                         if (checked) {
-                          field.onChange([...currentValue, option.value]);
+                          field.onChange([...currentValue, option]);
                         } else {
                           field.onChange(
-                            currentValue.filter(
-                              (value) => value !== option.value
-                            )
+                            currentValue.filter((value) => value !== option)
                           );
                         }
                       }}
                     />
-                    <Label htmlFor={`${question.id}-${option.value}`}>
-                      {option.value}
-                    </Label>
+                    <Label htmlFor={`${question.id}-${option}`}>{option}</Label>
                   </div>
                 ))}
               </div>
@@ -94,17 +83,12 @@ export function ChoiceQuestion({ question, form }: ChoiceQuestionProps) {
                 className="grid gap-4"
               >
                 {question.options.map((option) => (
-                  <div
-                    key={option.value}
-                    className="flex items-center space-x-2"
-                  >
+                  <div key={option} className="flex items-center space-x-2">
                     <RadioGroupItem
-                      value={option.value}
-                      id={`${question.id}-${option.value}`}
+                      value={option}
+                      id={`${question.id}-${option}`}
                     />
-                    <Label htmlFor={`${question.id}-${option.value}`}>
-                      {option.value}
-                    </Label>
+                    <Label htmlFor={`${question.id}-${option}`}>{option}</Label>
                   </div>
                 ))}
               </RadioGroup>

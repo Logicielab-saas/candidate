@@ -34,6 +34,7 @@ import { Label } from "@/components/ui/label";
 import { type SubmissionQuestion } from "@/core/mockData/annonces";
 import { isChoiceQuestion, type ChoiceQuestionWithId } from "@/core/types";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from "next-intl";
 
 interface EditQuestionsDialogProps {
   open: boolean;
@@ -46,6 +47,7 @@ export function EditQuestionsDialog({
   onOpenChange,
   questions,
 }: EditQuestionsDialogProps) {
+  const tCommon = useTranslations("common");
   const { questionsData, setQuestionsData } = useJobApplyStore();
   const { toast } = useToast();
 
@@ -68,18 +70,18 @@ export function EditQuestionsDialog({
 
             if (question.type === "choice" && question.isMultipleChoices) {
               acc[question.id] = question.isRequired
-                ? z.array(z.string()).min(1, "Sélectionnez au moins une option")
+                ? z.array(z.string()).min(1, tCommon("selectAtLeastOne"))
                 : z.array(z.string()).default([]);
             } else {
               acc[question.id] = question.isRequired
-                ? z.string().min(1, "Ce champ est requis")
+                ? z.string().min(1, tCommon("validation.required"))
                 : z.string().default("");
             }
             return acc;
           }, {} as Record<string, z.ZodTypeAny>)
         ),
       }),
-    [validQuestions]
+    [validQuestions, tCommon]
   );
 
   type FormData = z.infer<typeof schema>;
@@ -121,9 +123,8 @@ export function EditQuestionsDialog({
     setQuestionsData({ answers });
     toast({
       variant: "success",
-      title: "Réponses modifiées",
-      description:
-        "Vos réponses aux questions ont été mises à jour avec succès",
+      title: tCommon("answersUpdated"),
+      description: tCommon("answersUpdatedDescription"),
     });
     onOpenChange(false);
   };
@@ -148,7 +149,7 @@ export function EditQuestionsDialog({
                   {question.question}
                 </div>
                 <FormControl>
-                  <Input placeholder="Votre expérience..." {...field} />
+                  <Input placeholder={tCommon("yourExperience")} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -172,7 +173,7 @@ export function EditQuestionsDialog({
                 </FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Votre réponse..."
+                    placeholder={tCommon("yourAnswer")}
                     className="resize-none"
                     {...field}
                   />
@@ -283,11 +284,15 @@ export function EditQuestionsDialog({
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="yes" id={`${question.id}-yes`} />
-                      <Label htmlFor={`${question.id}-yes`}>Oui</Label>
+                      <Label htmlFor={`${question.id}-yes`}>
+                        {tCommon("yes")}
+                      </Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="no" id={`${question.id}-no`} />
-                      <Label htmlFor={`${question.id}-no`}>Non</Label>
+                      <Label htmlFor={`${question.id}-no`}>
+                        {tCommon("no")}
+                      </Label>
                     </div>
                   </RadioGroup>
                 </FormControl>
@@ -308,9 +313,9 @@ export function EditQuestionsDialog({
         <ScrollArea className="h-full max-h-[90vh]">
           <div className="p-6">
             <DialogHeader>
-              <DialogTitle>Modifier vos réponses</DialogTitle>
+              <DialogTitle>{tCommon("editQuestions")}</DialogTitle>
               <DialogDescription>
-                Modifiez vos réponses aux questions
+                {tCommon("editQuestionsDescription")}
               </DialogDescription>
             </DialogHeader>
 
@@ -327,9 +332,9 @@ export function EditQuestionsDialog({
                     variant="outline"
                     onClick={() => onOpenChange(false)}
                   >
-                    Annuler
+                    {tCommon("actions.cancel")}
                   </Button>
-                  <Button type="submit">Enregistrer</Button>
+                  <Button type="submit">{tCommon("actions.save")}</Button>
                 </div>
               </form>
             </Form>

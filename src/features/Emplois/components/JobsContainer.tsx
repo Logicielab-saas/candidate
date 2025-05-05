@@ -19,6 +19,8 @@ import { tabsListStyles, tabTriggerStyles } from "@/core/styles/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
+import { useTranslations } from "next-intl";
+import { getUserLocale } from "@/lib/i18n-utils";
 
 const JobFilters = dynamic(
   () => import("./JobFilters").then((mod) => mod.JobFilters),
@@ -56,6 +58,8 @@ export function JobsContainer() {
   });
   const addSearch = useRecentSearchesStore((state) => state.addSearch);
 
+  const t = useTranslations("emplois.jobsContainer");
+
   // Track searches in Zustand store
   useEffect(() => {
     // Only track when there's an actual search
@@ -75,23 +79,44 @@ export function JobsContainer() {
     }
   }, [hasActiveSearch, setActiveTab]);
 
+  // Get current locale (client-side)
+  const locale = typeof window !== "undefined" ? getUserLocale() : undefined;
+  const isArabic = locale === "ar";
+
   return (
     <div className="space-y-6 mt-5 mb-5">
       {hasActiveSearch ? (
         <>
           <JobFilters />
           <Separator />
-          <div className={cn("grid grid-cols-1 lg:grid-cols-5", "gap-8")}>
-            {/* Jobs List Section - 40% width */}
-            <div className="lg:col-span-2 lg:border-r lg:pr-8">
-              <JobsList isDesktop={isDesktop} />
-            </div>
-
-            {/* Job Details Section - 60% width, Only shown on desktop */}
-            {isDesktop && (
-              <div className="hidden lg:block lg:col-span-3">
-                <JobDetails />
-              </div>
+          <div className={cn("grid grid-cols-1 lg:grid-cols-5", "gap-8")}> 
+            {/* Flip order if Arabic */}
+            {isArabic ? (
+              <>
+                {/* Job Details Section - 60% width, Only shown on desktop */}
+                {isDesktop && (
+                  <div className="hidden lg:block lg:col-span-3">
+                    <JobDetails />
+                  </div>
+                )}
+                {/* Jobs List Section - 40% width */}
+                <div className="lg:col-span-2 lg:border-r lg:pr-8">
+                  <JobsList isDesktop={isDesktop} />
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Jobs List Section - 40% width */}
+                <div className="lg:col-span-2 lg:border-r lg:pr-8">
+                  <JobsList isDesktop={isDesktop} />
+                </div>
+                {/* Job Details Section - 60% width, Only shown on desktop */}
+                {isDesktop && (
+                  <div className="hidden lg:block lg:col-span-3">
+                    <JobDetails />
+                  </div>
+                )}
+              </>
             )}
           </div>
         </>
@@ -103,15 +128,15 @@ export function JobsContainer() {
                 value="recommended"
                 className={cn(tabTriggerStyles.home)}
               >
-                <Zap className="h-4 w-4 mr-2" /> Pour vous
+                <Zap className="h-4 w-4 mr-2" /> {t("tabs.recommended")}
               </TabsTrigger>
               <TabsTrigger value="recent" className={cn(tabTriggerStyles.home)}>
                 <Pin className="h-4 w-4 mr-2" />
-                Les Recherches Récentes
+                {t("tabs.recentSearches")}
               </TabsTrigger>
               <TabsTrigger value="resume" className={cn(tabTriggerStyles.home)}>
                 <FileText className="h-4 w-4 mr-2" />
-                Télécharger votre CV
+                {t("tabs.resume")}
               </TabsTrigger>
             </TabsList>
             <ScrollBar
@@ -122,17 +147,34 @@ export function JobsContainer() {
           <Separator />
 
           <TabsContent value="recommended" className="mt-6">
-            <div className={cn("grid grid-cols-1 lg:grid-cols-5", "gap-8")}>
-              {/* Jobs List Section - 40% width */}
-              <div className="lg:col-span-2 lg:border-r lg:pr-8">
-                <JobsList isDesktop={isDesktop} />
-              </div>
-
-              {/* Job Details Section - 60% width, Only shown on desktop */}
-              {isDesktop && (
-                <div className="hidden lg:block lg:col-span-3">
-                  <JobDetails />
-                </div>
+            <div className={cn("grid grid-cols-1 lg:grid-cols-5", "gap-8")}> 
+              {/* Flip order if Arabic */}
+              {isArabic ? (
+                <>
+                  {/* Job Details Section - 60% width, Only shown on desktop */}
+                  {isDesktop && (
+                    <div className="hidden lg:block lg:col-span-3">
+                      <JobDetails />
+                    </div>
+                  )}
+                  {/* Jobs List Section - 40% width */}
+                  <div className="lg:col-span-2 lg:border-r lg:pr-8">
+                    <JobsList isDesktop={isDesktop} />
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* Jobs List Section - 40% width */}
+                  <div className="lg:col-span-2 lg:border-r lg:pr-8">
+                    <JobsList isDesktop={isDesktop} />
+                  </div>
+                  {/* Job Details Section - 60% width, Only shown on desktop */}
+                  {isDesktop && (
+                    <div className="hidden lg:block lg:col-span-3">
+                      <JobDetails />
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </TabsContent>

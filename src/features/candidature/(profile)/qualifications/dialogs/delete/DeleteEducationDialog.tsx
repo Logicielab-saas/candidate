@@ -13,6 +13,7 @@ import {
 import type { ResumeEducation } from "@/core/interfaces/";
 import { useDeleteResumeEducation } from "../../hooks/use-resume-education";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface DeleteEducationDialogProps {
   open: boolean;
@@ -25,7 +26,11 @@ export function DeleteEducationDialog({
   onOpenChange,
   education,
 }: DeleteEducationDialogProps) {
-  const { mutate: deleteEducation, isPending } = useDeleteResumeEducation();
+  const t = useTranslations("resumePage.education.dialog.delete");
+  const tCommon = useTranslations("common");
+
+  const { mutate: deleteEducation, isPending } =
+    useDeleteResumeEducation(tCommon);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleConfirm = async (e: React.MouseEvent) => {
@@ -65,23 +70,28 @@ export function DeleteEducationDialog({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t("title")}</AlertDialogTitle>
           <AlertDialogDescription>
-            You are about to delete the education:{" "}
-            <span className="font-bold">{education.degree}</span> at{" "}
-            <span className="font-bold">{education.title}</span>.
+            {t("descriptionStart")}:{" "}
+            <span className="font-bold">{education.degree}</span>{" "}
+            {tCommon("at")} <span className="font-bold">{education.title}</span>
+            .
             <br />
-            This action cannot be undone.
+            {t("warning")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>
+            {tCommon("actions.cancel")}
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             className="bg-destructive hover:bg-destructive/90"
             disabled={isLoading}
           >
-            {isLoading ? "Deleting..." : "Delete"}
+            {isLoading
+              ? tCommon("actions.deleting")
+              : tCommon("actions.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

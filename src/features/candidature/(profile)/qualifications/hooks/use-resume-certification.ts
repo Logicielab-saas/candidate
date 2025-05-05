@@ -7,9 +7,8 @@ import {
 } from "../services/resume-certification";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
-import { AxiosError } from "axios";
 
-export function useCreateResumeCertification() {
+export function useCreateResumeCertification(t: (k: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -23,17 +22,15 @@ export function useCreateResumeCertification() {
 
       toast({
         variant: "success",
-        title: "Certification added",
-        description: "Your certification has been added successfully.",
+        title: t("toast.resumeCertification.create.title"),
+        description: t("toast.resumeCertification.create.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Failed to add certification",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });
@@ -41,7 +38,7 @@ export function useCreateResumeCertification() {
   return { mutate, isPending };
 }
 
-export function useDeleteResumeCertification() {
+export function useDeleteResumeCertification(t: (k: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -54,17 +51,15 @@ export function useDeleteResumeCertification() {
 
       toast({
         variant: "success",
-        title: "Certification deleted",
-        description: "Your certification has been deleted successfully.",
+        title: t("toast.resumeCertification.delete.title"),
+        description: t("toast.resumeCertification.delete.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Failed to delete certification",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });
@@ -72,7 +67,7 @@ export function useDeleteResumeCertification() {
   return { mutate, isPending };
 }
 
-export function useUpdateResumeCertification() {
+export function useUpdateResumeCertification(t: (k: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -86,17 +81,15 @@ export function useUpdateResumeCertification() {
 
       toast({
         variant: "success",
-        title: "Certification updated",
-        description: "Your certification has been updated successfully.",
+        title: t("toast.resumeCertification.update.title"),
+        description: t("toast.resumeCertification.update.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Failed to update certification",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });

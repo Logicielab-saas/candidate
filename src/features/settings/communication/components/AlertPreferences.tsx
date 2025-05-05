@@ -15,11 +15,14 @@ import { userAlertsPreferences as initialPreferences } from "@/core/mockData/use
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 import React from "react";
+import { useTranslations } from "next-intl";
 
 export function AlertPreferences() {
   const [preferences, setPreferences] =
     useState<UserAlertPreferences[]>(initialPreferences);
   const { toast } = useToast();
+  const t = useTranslations("settings.communication.notifications");
+  const tCommon = useTranslations("common.actions");
 
   const handleTogglePreference = (id: string, isEnabled: boolean) => {
     setPreferences(
@@ -30,10 +33,12 @@ export function AlertPreferences() {
 
     toast({
       variant: "success",
-      title: isEnabled ? "Notification activée" : "Notification désactivée",
-      description: `Les notifications ont été ${
-        isEnabled ? "activées" : "désactivées"
-      } avec succès.`,
+      title: t("toast.toggle.title", {
+        state: isEnabled ? tCommon("enabled") : tCommon("disabled"),
+      }),
+      description: t("toast.toggle.description", {
+        state: isEnabled ? tCommon("enabled") : tCommon("disabled"),
+      }),
     });
   };
 
@@ -55,11 +60,12 @@ export function AlertPreferences() {
                   onCheckedChange={(checked) =>
                     handleTogglePreference(preference.id, checked)
                   }
-                  aria-label={
-                    preference.isEnabled
-                      ? `Désactiver ${preference.title}`
-                      : `Activer ${preference.title}`
-                  }
+                  aria-label={t("switch.ariaLabel", {
+                    action: preference.isEnabled
+                      ? tCommon("disable")
+                      : tCommon("enable"),
+                    preference: preference.title,
+                  })}
                 />
               </div>
               {index < preferences.length - 1 && <Separator />}

@@ -40,6 +40,8 @@ import { Skeleton } from "../ui/skeleton";
 import { requestPermission } from "@/lib/request-permission";
 import { useEffect, useState } from "react";
 import { logout } from "@/features/auth/services/logout";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useTranslations } from "next-intl";
 
 // interface NavItem {
 //   name: string;
@@ -51,22 +53,26 @@ import { logout } from "@/features/auth/services/logout";
 //   items: NavItem[];
 //   className?: string;
 // }
-const navItems = [
-  { name: "Emplois", url: "/emplois", icon: Home },
-  { name: "Formations", url: "/formations", icon: User },
-  { name: "Profile", url: "/profile", icon: Briefcase },
-  {
-    name: "Entreprises",
-    url: "/companies/reviews",
-    icon: Star,
-  },
-];
 
 export function NavBar() {
   const pathname = usePathname();
   const router = useRouter();
   const { data: profile, isLoading } = useProfile();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const t = useTranslations("nav");
+  const tCommon = useTranslations("common");
+
+  const navItems = [
+    { name: t("jobs"), url: "/emplois", icon: Home },
+    { name: t("formations"), url: "/formations", icon: User },
+    { name: t("profile"), url: "/profile", icon: Briefcase },
+    {
+      name: t("companies"),
+      url: "/companies/reviews",
+      icon: Star,
+    },
+  ];
 
   useEffect(() => {
     // Only request permission if we're in a browser environment
@@ -115,11 +121,9 @@ export function NavBar() {
                   <SheetContent side="left">
                     <SheetHeader>
                       <SheetTitle className="text-primaryHex-500">
-                        Postuly
+                        {t("title")}
                       </SheetTitle>
-                      <SheetDescription>
-                        Navigate through the app
-                      </SheetDescription>
+                      <SheetDescription>{t("description")}</SheetDescription>
                     </SheetHeader>
                     <div className="mt-4 space-y-2">
                       {navItems.map((item) => {
@@ -149,7 +153,7 @@ export function NavBar() {
                 {/* Logo */}
                 <Link href="/emplois" className="flex items-center gap-2">
                   <span className="text-xl font-bold text-primary">
-                    Postuly
+                    {t("title")}
                   </span>
                 </Link>
 
@@ -204,6 +208,7 @@ export function NavBar() {
                   </Button>
 
                   <ThemeButton />
+                  <LanguageSwitcher />
 
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -256,10 +261,10 @@ export function NavBar() {
                                   ? `${profile.first_name || ""} ${
                                       profile.last_name || ""
                                     }`.trim()
-                                  : "@USER"}
+                                  : ""}
                               </p>
                               <p className="text-xs leading-none text-muted-foreground">
-                                {profile?.email || "m@example.com"}
+                                {profile?.email || ""}
                               </p>
                             </>
                           )}
@@ -274,7 +279,7 @@ export function NavBar() {
                       >
                         <Link href="/profile" className="flex w-full">
                           <User className="h-4 w-4" />
-                          <span>Profile</span>
+                          <span>{t("profile")}</span>
                         </Link>
                       </DropdownMenuItem>
 
@@ -285,7 +290,7 @@ export function NavBar() {
                       >
                         <Link href="/profile/my-jobs" className="flex  w-full">
                           <Briefcase className=" h-4 w-4" />
-                          <span>Mes emplois</span>
+                          <span>{t("myJobs")}</span>
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem
@@ -297,7 +302,7 @@ export function NavBar() {
                           className="flex w-full"
                         >
                           <Star className="h-4 w-4" />
-                          <span>Mes avis</span>
+                          <span>{t("myReviews")}</span>
                         </Link>
                       </DropdownMenuItem>
 
@@ -310,7 +315,7 @@ export function NavBar() {
                       >
                         <Link href="/settings/account" className="flex w-full">
                           <Settings className="h-4 w-4" />
-                          <span>Paramètres</span>
+                          <span>{t("settings")}</span>
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem
@@ -319,7 +324,7 @@ export function NavBar() {
                       >
                         <Link href="/help" className="flex w-full">
                           <HelpCircle className="h-4 w-4" />
-                          <span>Aide</span>
+                          <span>{t("help")}</span>
                         </Link>
                       </DropdownMenuItem>
 
@@ -333,8 +338,8 @@ export function NavBar() {
                           router.replace("/login");
                         }}
                       >
-                        <LogOut className="mr-2 h-4 w-4" />
-                        <span>Déconnexion</span>
+                        <LogOut className="h-4 w-4" />
+                        <span>{tCommon("actions.logout")}</span>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>

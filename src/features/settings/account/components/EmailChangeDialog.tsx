@@ -40,6 +40,7 @@ import {
   otpVerificationSchema,
 } from "./EmailVerificationForm";
 import { useVerifyPassword } from "../hooks/use-verify-password";
+import { useTranslations } from "next-intl";
 
 type Step = "verify-password" | "change" | "confirm";
 
@@ -49,10 +50,16 @@ interface EmailChangeDialogProps {
   trigger?: React.ReactNode;
 }
 
-const STEPS = [
-  { title: "Vérification" },
-  { title: "Nouvel email" },
-  { title: "Confirmation" },
+const getSteps = (t: ReturnType<typeof useTranslations>) => [
+  {
+    title: t("settings.account.info.emailChange.dialog.stepIndicator.0.title"),
+  },
+  {
+    title: t("settings.account.info.emailChange.dialog.stepIndicator.1.title"),
+  },
+  {
+    title: t("settings.account.info.emailChange.dialog.stepIndicator.2.title"),
+  },
 ];
 
 // Static verification code (this will be replaced with real email verification later)
@@ -63,22 +70,27 @@ export function EmailChangeDialog({
   onEmailChange,
   trigger,
 }: EmailChangeDialogProps) {
+  const t = useTranslations();
+  const tCommon = useTranslations("common");
+
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState<Step>("verify-password");
   const [newEmailAddress, setNewEmailAddress] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
   const { toast } = useToast();
-  const verifyPasswordMutation = useVerifyPassword();
+
+  const verifyPasswordMutation = useVerifyPassword(tCommon);
+  const steps = getSteps(t);
 
   const verificationForm = useForm<VerificationForm>({
-    resolver: zodResolver(verificationSchema),
+    resolver: zodResolver(verificationSchema(t)),
     defaultValues: {
       currentPassword: "",
     },
   });
 
   const changeForm = useForm<EmailChangeFormType>({
-    resolver: zodResolver(emailChangeSchema),
+    resolver: zodResolver(emailChangeSchema(t)),
     defaultValues: {
       newEmail: "",
       confirmEmail: "",
@@ -86,7 +98,7 @@ export function EmailChangeDialog({
   });
 
   const otpForm = useForm<OtpVerificationForm>({
-    resolver: zodResolver(otpVerificationSchema),
+    resolver: zodResolver(otpVerificationSchema(t)),
     defaultValues: {
       verificationCode: "",
     },
@@ -138,13 +150,19 @@ export function EmailChangeDialog({
       // Simulate email sending delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
       toast({
-        title: "Code de vérification envoyé",
-        description: `Un code de vérification a été envoyé à ${newEmailAddress}. Pour le test, utilisez le code: ${VERIFICATION_CODE}`,
+        title: t(
+          "settings.account.info.emailChange.dialog.form.verification.codeSent"
+        ),
+        description:
+          t.rich(
+            "settings.account.info.emailChange.dialog.form.verification.codeSentDescription",
+            { email: newEmailAddress }
+          ) + `. Pour le test, utilisez le code: ${VERIFICATION_CODE}`,
       });
     } catch (_error) {
       toast({
         variant: "destructive",
-        title: "Erreur",
+        title: tCommon("error.title"),
         description: "Impossible d'envoyer le code de vérification",
       });
     } finally {
@@ -155,7 +173,9 @@ export function EmailChangeDialog({
   const handleOtpSubmit = async (data: OtpVerificationForm) => {
     if (data.verificationCode !== VERIFICATION_CODE) {
       otpForm.setError("verificationCode", {
-        message: "Code de vérification incorrect",
+        message: t(
+          "settings.account.info.emailChange.dialog.validation.codeIncorrect"
+        ),
       });
       return;
     }
@@ -167,14 +187,14 @@ export function EmailChangeDialog({
       setStep("verify-password");
       toast({
         variant: "success",
-        title: "Email modifié",
-        description: "Votre adresse email a été modifiée avec succès",
+        title: t("settings.account.info.emailChange.success.title"),
+        description: t("settings.account.info.emailChange.success.description"),
       });
     } catch (_error) {
       toast({
         variant: "destructive",
-        title: "Erreur",
-        description: "Impossible de modifier l'adresse email",
+        title: t("settings.account.info.emailChange.error.title"),
+        description: t("settings.account.info.emailChange.error.description"),
       });
     }
   };
@@ -227,22 +247,32 @@ export function EmailChangeDialog({
   const getStepTitle = () => {
     switch (step) {
       case "verify-password":
-        return "Vérification du mot de passe";
+        return t(
+          "settings.account.info.emailChange.dialog.steps.verification.title"
+        );
       case "change":
-        return "Changer l'adresse email";
+        return t("settings.account.info.emailChange.dialog.steps.change.title");
       case "confirm":
-        return "Vérification du nouvel email";
+        return t(
+          "settings.account.info.emailChange.dialog.steps.confirm.title"
+        );
     }
   };
 
   const getStepDescription = () => {
     switch (step) {
       case "verify-password":
-        return "Entrez votre mot de passe pour continuer.";
+        return t(
+          "settings.account.info.emailChange.dialog.steps.verification.description"
+        );
       case "change":
-        return "Entrez votre nouvelle adresse email.";
+        return t(
+          "settings.account.info.emailChange.dialog.steps.change.description"
+        );
       case "confirm":
-        return "Entrez le code de vérification envoyé à votre nouvelle adresse email.";
+        return t(
+          "settings.account.info.emailChange.dialog.steps.confirm.description"
+        );
     }
   };
 
@@ -260,7 +290,7 @@ export function EmailChangeDialog({
           currentStep={
             step === "verify-password" ? 0 : step === "change" ? 1 : 2
           }
-          steps={STEPS}
+          steps={steps}
         />
         {getStepContent()}
       </DialogContent>

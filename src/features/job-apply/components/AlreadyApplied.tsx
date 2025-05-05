@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import type { EmploisDetails } from "@/core/interfaces";
 import { AnimatedCheckmark } from "@/components/ui/animated-checkmark";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 interface AlreadyAppliedProps {
   jobDetails: EmploisDetails;
@@ -20,6 +21,7 @@ interface AlreadyAppliedProps {
 
 export function AlreadyApplied({ jobDetails }: AlreadyAppliedProps) {
   const router = useRouter();
+  const tCommon = useTranslations("common");
 
   return (
     <div className="container py-8 max-w-7xl">
@@ -35,14 +37,14 @@ export function AlreadyApplied({ jobDetails }: AlreadyAppliedProps) {
           </motion.div>
           <h2 className="text-2xl font-semibold">Candidature déjà envoyée</h2>
           <p className="text-muted-foreground max-w-md">
-            Vous avez déjà postulé pour le poste de{" "}
+            {tCommon("alreadyApplied")}{" "}
             <span className="font-medium text-primaryHex-700">
               {jobDetails.title}
             </span>
             {jobDetails.company_name && (
               <>
                 {" "}
-                chez{" "}
+                {tCommon("at")}{" "}
                 <span className="font-medium text-primaryHex-700">
                   {jobDetails.company_name}
                 </span>
@@ -56,7 +58,7 @@ export function AlreadyApplied({ jobDetails }: AlreadyAppliedProps) {
             onClick={() => router.push("/emplois")}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Retour aux offres
+            {tCommon("returnToJobs")}
           </Button>
         </div>
       </Card>

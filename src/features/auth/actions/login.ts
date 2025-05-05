@@ -7,7 +7,8 @@
 
 "use server";
 
-import { login } from "../services/auth";
+import { employeeLogin } from "../services/employee-auth";
+import { recruiterLogin } from "../services/recruiter-auth";
 import { LoginCredentials } from "../common/interfaces";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
@@ -25,23 +26,46 @@ export async function loginAction(
   try {
     const headersList = await headers();
     const deviceName = await getUserAgentAndIp(headersList);
+    console.log("Login attempt for user type:", credentials.user_type);
 
-    // Call login service with credentials and device info
-    const result = await login({
+    // Create the credentials object with device name
+    const loginData = {
       ...credentials,
       device_name: deviceName,
-    });
-
-    // Revalidate relevant paths
-    revalidatePath("/");
-    revalidatePath("/login");
-    revalidatePath("/dashboard");
-
-    // Return success and redirect path based on user type
-    return {
-      success: true,
-      redirectTo: result.type === "employee" ? "/emplois" : "/recruiter",
     };
+
+    // Call the appropriate login service based on user type
+    if (credentials.user_type === "employee") {
+      console.log("Calling employeeLogin service");
+      const _result = await employeeLogin(loginData);
+
+      // Revalidate relevant paths
+      revalidatePath("/");
+      revalidatePath("/login");
+      revalidatePath("/emplois");
+
+      // Return success and redirect path
+      return {
+        success: true,
+        redirectTo: "/emplois",
+      };
+    } else if (credentials.user_type === "recruiter") {
+      console.log("Calling recruiterLogin service");
+      const _result = await recruiterLogin(loginData);
+
+      // Revalidate relevant paths
+      revalidatePath("/");
+      revalidatePath("/login");
+      revalidatePath("/recruiter");
+
+      // Return success and redirect path
+      return {
+        success: true,
+        redirectTo: "/recruiter/annonces",
+      };
+    } else {
+      throw new Error("Invalid user type");
+    }
   } catch (error) {
     console.error("Login error:", error);
     return {

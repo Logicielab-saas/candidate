@@ -11,27 +11,24 @@ import {
   DeleteMyAccount,
 } from "@/features/settings/account/services/delete-account";
 import { useToast } from "@/hooks/use-toast";
-import { AxiosError } from "axios";
 
-export function useDeleteAccount() {
+export function useDeleteAccount(t: (key: string) => string) {
   const { toast } = useToast();
 
   const { mutate: deleteAccount, isPending } = useMutation({
     mutationFn: (data: DeleteAccount) => DeleteMyAccount(data),
-    onSuccess: (response) => {
+    onSuccess: () => {
       toast({
         variant: "success",
-        title: "Compte supprimé",
-        description: response.message || "Le compte a été supprimé avec succès",
+        title: t("toast.deleteAccount.success.title"),
+        description: t("toast.deleteAccount.success.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Erreur de suppression",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "Une erreur est survenue lors de la suppression du compte",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });

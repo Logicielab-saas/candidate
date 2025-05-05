@@ -1,17 +1,28 @@
+/**
+ * DeleteRelocationDialog - Dialog for confirming relocation preference deletion
+ *
+ * Displays a confirmation dialog before deleting a relocation preference.
+ *
+ * Props:
+ * - open: boolean - Controls dialog visibility
+ * - onOpenChange: (open: boolean) => void - Handles dialog open state changes
+ * - onConfirm: (id: string) => void - Handles deletion confirmation
+ * - relocation: Relocation - The relocation preference to delete
+ */
+
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from "next-intl";
 
 interface DeleteRelocationDialogProps {
   open: boolean;
@@ -19,9 +30,6 @@ interface DeleteRelocationDialogProps {
   onConfirm: (id: string) => void;
   relocation: {
     id: string;
-    willRelocate: boolean;
-    locationType: "anywhere" | "specific";
-    location?: string;
   };
 }
 
@@ -31,39 +39,49 @@ export function DeleteRelocationDialog({
   onConfirm,
   relocation,
 }: DeleteRelocationDialogProps) {
-  const getLocationText = () => {
-    if (!relocation.willRelocate) return "Pas de relocalisation";
-    if (relocation.locationType === "anywhere") return "N'importe où";
-    return `À proximité de ${relocation.location}`;
+  const { toast } = useToast();
+  const tCommon = useTranslations("common");
+
+  const handleConfirm = () => {
+    onConfirm(relocation.id);
+    onOpenChange(false);
+    toast({
+      variant: "success",
+      title: tCommon(
+        "preferences.sections.relocation.dialog.toast.delete.title"
+      ),
+      description: tCommon(
+        "preferences.sections.relocation.dialog.toast.delete.description"
+      ),
+    });
   };
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
-          <AlertDialogDescription>
-            Cette action ne peut pas être annulée. La préférence de
-            relocalisation sera supprimée définitivement de votre profil.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-
-        <div className="flex flex-col gap-4">
-          <div className="rounded-md bg-muted p-3">
-            <p className="text-sm font-medium">{getLocationText()}</p>
-          </div>
-        </div>
-
-        <AlertDialogFooter>
-          <AlertDialogCancel>Annuler</AlertDialogCancel>
-          <AlertDialogAction
-            className={cn(buttonVariants({ variant: "destructive" }))}
-            onClick={() => onConfirm(relocation.id)}
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>
+            {tCommon("preferences.sections.relocation.dialog.delete.title")}
+          </DialogTitle>
+          <DialogDescription>
+            {tCommon(
+              "preferences.sections.relocation.dialog.delete.description"
+            )}
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => onOpenChange(false)}
           >
-            Supprimer
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+            {tCommon("actions.cancel")}
+          </Button>
+          <Button variant="destructive" onClick={handleConfirm}>
+            {tCommon("actions.delete")}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -22,8 +22,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import {
   Popover,
   PopoverContent,
@@ -31,23 +29,28 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { useUpdateResumeCertification } from "../../hooks/use-resume-certification";
 import type { ResumeCertifications } from "@/core/interfaces";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
-const certificationFormSchema = z.object({
-  name: z.string().min(1, "Certification name is required"),
-  organization: z.string().min(1, "Organization name is required"),
-  date: z.date({
-    required_error: "Issue date is required",
-  }),
-  expiration_date: z.date().optional(),
-  description: z.string().optional(),
-});
+const certificationFormSchema = (t: (key: string) => string) =>
+  z.object({
+    name: z.string().min(1, t("validation.certfNameRequired")),
+    organization: z.string().min(1, t("validation.certfOrganizationRequired")),
+    date: z.date({
+      required_error: t("validation.certfDateRequired"),
+    }),
+    expiration_date: z.date().nullable().optional(),
+    description: z.string().optional(),
+  });
 
-type CertificationFormValues = z.infer<typeof certificationFormSchema>;
+type CertificationFormValues = z.infer<
+  ReturnType<typeof certificationFormSchema>
+>;
 
 interface EditCertificationDialogProps {
   open: boolean;
@@ -60,14 +63,23 @@ export function EditCertificationDialog({
   onOpenChange,
   certification,
 }: EditCertificationDialogProps) {
+  const t = useTranslations("resumePage.certifications.dialog");
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
+
   const { mutate: updateCertification, isPending } =
-    useUpdateResumeCertification();
+    useUpdateResumeCertification(tCommon);
 
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
 
+  const editCertificationSchema = useMemo(
+    () => certificationFormSchema(tCommon),
+    [tCommon]
+  );
+
   const form = useForm<CertificationFormValues>({
-    resolver: zodResolver(certificationFormSchema),
+    resolver: zodResolver(editCertificationSchema),
     defaultValues: {
       name: "",
       organization: "",
@@ -95,9 +107,9 @@ export function EditCertificationDialog({
       {
         ...values,
         uuid: certification.uuid,
-        date: format(values.date, "yyyy-MM-dd"),
+        date: formatDate(values.date, "yyyy-MM-dd", locale),
         expiration_date: values.expiration_date
-          ? format(values.expiration_date, "yyyy-MM-dd")
+          ? formatDate(values.expiration_date, "yyyy-MM-dd", locale)
           : null,
         description: values.description || null,
       },
@@ -113,13 +125,10 @@ export function EditCertificationDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[500px]">
-        <ScrollArea className="px-3 max-h-[60vh]">
+        <ScrollArea className="px-3 max-h-[90vh]">
           <DialogHeader className="p-6 pb-4">
-            <DialogTitle>Edit Certification</DialogTitle>
-            <DialogDescription>
-              Update your certification details. Click save when you&apos;re
-              done.
-            </DialogDescription>
+            <DialogTitle>{t("edit.title")}</DialogTitle>
+            <DialogDescription>{t("edit.description")}</DialogDescription>
           </DialogHeader>
 
           <Form {...form}>
@@ -134,14 +143,11 @@ export function EditCertificationDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Certification Name{" "}
+                      {tCommon("certfName")}
                       <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="e.g. AWS Certified Developer"
-                        {...field}
-                      />
+                      <Input placeholder={tCommon("exCertfName")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -155,11 +161,12 @@ export function EditCertificationDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Organization <span className="text-destructive">*</span>
+                      {tCommon("certfOrganization")}
+                      <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="e.g. Amazon Web Services"
+                        placeholder={tCommon("exCertfOrganization")}
                         {...field}
                       />
                     </FormControl>
@@ -176,7 +183,8 @@ export function EditCertificationDialog({
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>
-                        Issue Date <span className="text-destructive">*</span>
+                        {tCommon("certfDate")}
+                        <span className="text-destructive">*</span>
                       </FormLabel>
                       <div className="flex gap-2">
                         <Popover
@@ -193,11 +201,9 @@ export function EditCertificationDialog({
                                 )}
                               >
                                 {field.value ? (
-                                  format(field.value, "d MMMM yyyy", {
-                                    locale: fr,
-                                  })
+                                  formatDate(field.value, "d MMMM yyyy", locale)
                                 ) : (
-                                  <span>Pick a date</span>
+                                  <span>{tCommon("exCertfDate")}</span>
                                 )}
                                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                               </Button>
@@ -240,7 +246,7 @@ export function EditCertificationDialog({
                   name="expiration_date"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>Expiration Date</FormLabel>
+                      <FormLabel>{tCommon("certfExpDate")}</FormLabel>
                       <div className="flex gap-2">
                         <Popover
                           open={endDateOpen}
@@ -256,11 +262,9 @@ export function EditCertificationDialog({
                                 )}
                               >
                                 {field.value ? (
-                                  format(field.value, "d MMMM yyyy", {
-                                    locale: fr,
-                                  })
+                                  formatDate(field.value, "d MMMM yyyy", locale)
                                 ) : (
-                                  <span>Pick a date</span>
+                                  <span>{tCommon("exCertfDate")}</span>
                                 )}
                                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                               </Button>
@@ -269,7 +273,7 @@ export function EditCertificationDialog({
                           <PopoverContent className="w-auto p-0" align="start">
                             <Calendar
                               mode="single"
-                              selected={field.value}
+                              selected={field.value ?? undefined}
                               onSelect={(date) => {
                                 field.onChange(date);
                                 setEndDateOpen(false);
@@ -283,7 +287,12 @@ export function EditCertificationDialog({
                           <Button
                             variant="outline"
                             className="w-10"
-                            onClick={() => field.onChange(undefined)}
+                            type="button"
+                            onClick={(e: React.MouseEvent) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                              field.onChange(null);
+                            }}
                           >
                             <X className="w-4 h-4" />
                           </Button>
@@ -301,10 +310,10 @@ export function EditCertificationDialog({
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>{tCommon("description")}</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Describe your certification, skills covered..."
+                        placeholder={tCommon("exDescription")}
                         className="min-h-[120px]"
                         {...field}
                         value={field.value || ""}
@@ -323,14 +332,14 @@ export function EditCertificationDialog({
               onClick={() => onOpenChange(false)}
               disabled={isPending}
             >
-              Cancel
+              {tCommon("actions.cancel")}
             </Button>
             <Button
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={isPending || !form.formState.isValid}
+              disabled={isPending}
             >
-              {isPending ? "Saving..." : "Save Changes"}
+              {isPending ? tCommon("actions.saving") : tCommon("actions.save")}
             </Button>
           </DialogFooter>
         </ScrollArea>

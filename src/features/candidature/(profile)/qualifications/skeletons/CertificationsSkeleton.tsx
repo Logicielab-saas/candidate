@@ -2,12 +2,14 @@ import { Award } from "lucide-react";
 import { SectionHeader } from "../SectionHeader";
 import { Skeleton } from "@/components/ui/skeleton";
 import CircleLineWrapper from "../CircleLineWrapper";
+import { useTranslations } from "next-intl";
 
 export function CertificationsSkeleton() {
+  const t = useTranslations("resumePage.certifications");
   return (
     <div className="border p-4 rounded-lg shadow-sm">
       <SectionHeader
-        title="Certifications"
+        title={t("title")}
         icon={<Award className="w-6 h-6 text-primaryHex-400 mr-2" />}
       />
       <div className="space-y-0">

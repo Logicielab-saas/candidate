@@ -21,7 +21,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import type { ArchivedJob } from "@/core/interfaces";
-
+import { useTranslations } from "next-intl";
+// TODO: Comeback to implement this later dynamic item
 // Animation configuration for the container
 const container = {
   hidden: { opacity: 0 },
@@ -64,6 +65,8 @@ export default function ArchivedJobsList({
   error,
   onPageChange,
 }: ArchivedJobsListProps) {
+  const tCommon = useTranslations("common");
+  const t = useTranslations("myJobsPage.empty");
   if (isLoading) {
     return <ArchivedJobsSkeleton />;
   }
@@ -73,8 +76,7 @@ export default function ArchivedJobsList({
       <Alert variant="destructive">
         <AlertCircle className="h-4 w-4" />
         <AlertDescription>
-          Une erreur est survenue lors du chargement des emplois archivés.
-          Veuillez réessayer plus tard.
+          {tCommon("actions.error")}: {error.message}{" "}
         </AlertDescription>
       </Alert>
     );
@@ -83,9 +85,7 @@ export default function ArchivedJobsList({
   if (!archivedJobs?.archives || archivedJobs.archives.length === 0) {
     return (
       <Alert>
-        <AlertDescription>
-          Vous n&apos;avez pas encore d&apos;emplois archivés.
-        </AlertDescription>
+        <AlertDescription>{t("descriptionArchived")}</AlertDescription>
       </Alert>
     );
   }
@@ -105,10 +105,10 @@ export default function ArchivedJobsList({
               jobId={job.emploi_uuid}
               jobTitle={job.emploi_title}
               company={{
-                name: job.emploi_title.split(" - ")[1] || "Entreprise",
+                name: job.emploi_title.split(" - ")[1] || tCommon("company"),
               }}
               location="France" // This should come from the API if available
-              savedDate={new Date(job.created_at).toLocaleDateString("fr-FR")}
+              savedDate={job.created_at}
             />
           ))}
         </AnimatePresence>

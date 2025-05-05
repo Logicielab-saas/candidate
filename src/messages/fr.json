@@ -1,0 +1,2152 @@
+{
+  "common": {
+    "reviews": {
+      "title": "Mes avis",
+      "summary": "Vous avez donné {count} avis au total.",
+      "deleteDialog": {
+        "title": "Supprimer l'avis",
+        "description": "Êtes-vous sûr de vouloir supprimer cet avis ? Cette action ne peut pas être annulée."
+      },
+      "deleteSuccess": "Votre avis a été supprimé avec succès.",
+      "sections": {
+        "positivePoints": "Points positifs",
+        "negativePoints": "Points à améliorer"
+      },
+      "search": {
+        "label": "Rechercher dans mes avis",
+        "placeholder": "Rechercher par titre ou contenu..."
+      },
+      "sort": {
+        "label": "Trier par",
+        "placeholder": "Trier par",
+        "options": {
+          "recent": "Plus récents",
+          "oldest": "Plus anciens",
+          "rating_high": "Note - Plus élevée",
+          "rating_low": "Note - Plus basse"
+        }
+      },
+      "empty": {
+        "noReviews": "Vous n'avez pas encore donné d'avis.",
+        "noResults": "Aucun avis ne correspond à votre recherche."
+      }
+    },
+    "dragHere": "Déposez le fichier ici",
+    "browseFiles": "Parcourir vos fichiers",
+    "or": "ou",
+    "jobNotFound": "Offre d'emploi introuvable. Veuillez vérifier l'URL et réessayer.",
+    "profileNotFound": "Profil introuvable. Veuillez vérifier l'URL et réessayer.",
+    "unknownStep": "Étape inconnue",
+    "appliedFor": "Postuler pour: {jobTitle}",
+    "jobApplySteps": "Complétez les étapes suivantes pour soumettre votre candidature",
+    "applyBefore": "Postuler avant le {date}",
+    "seeLess": "Voir moins",
+    "seeMore": "Voir plus",
+    "informations": "Informations",
+    "questions": "Questions",
+    "review": "Révision",
+    "reviewDescription": "Vérifiez les informations de votre candidature avant de la soumettre",
+    "success": "Candidature envoyée !",
+    "successDescription": "Votre candidature a été envoyée avec succès. Nous vous contacterons dès que possible.",
+    "nextSteps": "Prochaines étapes",
+    "receiveConfirmation": "Recevoir une confirmation",
+    "recruiterReview": "Examen par le recruteur",
+    "contactForNextSteps": "Contact pour les étapes suivantes",
+    "returnToJobs": "Retour aux offres",
+    "followApplications": "Suivre mes candidatures",
+    "alreadyApplied": "Vous avez déjà postulé pour le poste de",
+    "yourAnswer": "Votre réponse",
+    "selectAtLeastOne": "Sélectionnez au moins une option",
+    "answersUpdated": "Réponses modifiées",
+    "answersUpdatedDescription": "Vos réponses aux questions ont été mises à jour avec succès",
+    "yourExperience": "Votre expérience...",
+    "editQuestions": "Modifier vos réponses",
+    "editQuestionsDescription": "Modifiez vos réponses aux questions",
+    "noQuestions": "Aucune question à répondre",
+    "personalInfoDescription": "Veuillez remplir vos informations personnelles pour continuer",
+    "personalInfoAlertTitle": "Modifications de votre profil",
+    "personalInfoAlertDescription": "Toute modification effectuée ici sera mise à jour dans votre profil !",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "addedAt": "Ajouté le {date}",
+    "preview": "Aperçu",
+    "clickToDownload": "Cliquez pour télécharger votre CV",
+    "supplementQuestions": "Questions supplémentaires",
+    "selectedResume": "CV sélectionné",
+    "answerQuestions": "Réponses aux questions",
+    "noAnswer": "Pas de réponse",
+    "answer": "Réponse",
+    "coverLetter": "Lettre de motivation",
+    "writeYourCoverLetter": "Écrivez votre lettre de motivation...",
+    "additionalFile": "Document complémentaire",
+    "search": "Rechercher",
+    "searching": "Recherche en cours...",
+    "writing": "Écrivant...",
+    "languages": "Langues",
+    "language": "Langue",
+    "suggestionsLoading": "Chargement des suggestions...",
+    "searchNoResults": "Aucun résultat trouvé pour \"{localValue}\"",
+    "loading": "Chargement...",
+    "notFound": "Non trouvé",
+    "positions": "{count} poste(s)",
+    "jobDescription": "Description du poste",
+    "noDescription": "Aucune description disponible",
+    "password": "Mot de passe",
+    "enterPassword": "Entrez votre mot de passe pour confirmer",
+    "passwordMask": "••••••••",
+    "companyUndefined": "Entreprise",
+    "locationUndefined": "Lieu non spécifié",
+    "noVarFound": "Aucune {variable} trouvée",
+    "undefined": "Non spécifié",
+    "at": "chez",
+    "and": "et",
+    "detailsCandidature": "Détails de la candidature",
+    "infoContact": "Informations de contact",
+    "fullName": "Nom complet",
+    "programmed": "Programmé",
+    "interviewDetails": "Détails de l'entretien",
+    "dateLabel": "Date",
+    "hour": "Heure",
+    "email": "Email",
+    "programInterview": "Programmer l'entretien",
+    "phone": "Téléphone de téléphone",
+    "personalInfo": "Informations personnelles",
+    "selectHour": "Sélectionner l'heure",
+    "selectDay": "Sélectionner le jour",
+    "suggestNewSlots": "Proposer d'autres créneaux",
+    "formatInterview": "Format de l'entretien :",
+    "inPerson": "En présentiel",
+    "videoCall": "Visioconférence",
+    "phoneCall": "Appel téléphonique",
+    "map": "Localisation",
+    "videoLink": "Lien de la réunion",
+    "current": "Present",
+    "poste": "Intitulé du poste",
+    "exPoste": "Ex: Développeur Frontend",
+    "company": "Entreprise",
+    "exCompany": "Ex: Microsoft",
+    "startDate": "Date de début",
+    "exDate": "Sélectionner une date",
+    "endDate": "Date de fin",
+    "currentPosition": "Je travaille actuellement à ce poste",
+    "school": "École / Établissement",
+    "exSchool": "Ex: Université de XYZ",
+    "degree": "Diplôme / Formation",
+    "exDegree": "Ex: Licence en Informatique",
+    "currentStudying": "Je suis actuellement étudiant(e)",
+    "description": "Description",
+    "exDescription": "Décrivez votre expérience",
+    "fileTooLarge": "Fichier trop volumineux",
+    "fileTooLargeDescription": "La taille maximale du fichier est plus de {taille} Mo",
+    "invalidFileType": "Type de fichier invalide",
+    "invalidFileTypeDescription": "N'est pas un type d'image pris en charge",
+    "viewProject": "Voir le projet",
+    "tasksLabel": "Tâches",
+    "projectName": "Nom du projet",
+    "exProjectName": "Ex: Application de gestion de projet",
+    "url": "Lien du projet",
+    "exUrl": "Ex: github.com/username/project",
+    "skills": "Compétences",
+    "beginner": "Débutant",
+    "intermediate": "Intermédiaire",
+    "advanced": "Avancé",
+    "expert": "Expert",
+    "master": "Maître",
+    "conversational": "Conversationnel",
+    "proficient": "Compétent",
+    "fluent": "Courant",
+    "native": "Langue maternelle",
+    "images": {
+      "imageLabel": "Images du projet",
+      "uploadText": "Glissez-déposez des images ou cliquez pour parcourir",
+      "imageRequirement": "JPG, PNG ou GIF jusqu'à 5MB",
+      "selected": "{count} image(s) sélectionnée(s)",
+      "preview": "Aperçu de l'image {index}"
+    },
+    "tasks": {
+      "label": "Tâches clés",
+      "addTask": "Ajouter une tâche",
+      "nameLabel": "Nom de la tâche",
+      "namePlaceholder": "Ex: Conception de l'interface utilisateur",
+      "taskDescription": "Description de la tâche",
+      "taskDescriptionPlaceholder": "Ex: Création des maquettes et prototypes",
+      "statusLabel": "Statut",
+      "statusPlaceholder": "Sélectionner un statut",
+      "inProgress": "En cours",
+      "completed": "Terminé"
+    },
+    "certfName": "Nom de la certification",
+    "exCertfName": "Ex: Certification Google",
+    "certfOrganization": "Organisme de certification",
+    "exCertfOrganization": "Ex: Google",
+    "certfDate": "Date d'obtention",
+    "exCertfDate": "Sélectionner une date",
+    "certfExpDate": "Date d'expiration",
+    "skill": "Compétence",
+    "exSkill": "Sélectionner une compétence",
+    "searchSkill": "Rechercher des compétence",
+    "addNew": "Ajouter \"{name}\" comme nouvelle compétence",
+    "skillLevel": "Niveau de compétence",
+    "exSkillLevel": "Sélectionner un niveau",
+    "addToList": "Ajouter à la liste",
+    "exLangue": "Sélectionner une langue",
+    "langueProficiencyLevel": "Niveau de maîtrise",
+    "exLangueProficiencyLevel": "Sélectionner un niveau",
+    "validation": {
+      "required": "Ce champ est requis",
+      "startDateRequired": "La date de début est requise",
+      "email": "Adresse e-mail invalide",
+      "phoneRequired": "Le numéro de téléphone est requis",
+      "minLength": "Minimum {count} caractères",
+      "min6Length": "Minimum 6 caractères",
+      "resumeRequired": "Veuillez sélectionner un CV",
+      "requiredAnswers": "Veuillez répondre à toutes les questions obligatoires",
+      "passwordMatch": "Les mots de passe ne correspondent pas",
+      "passwordRequired": "Le mot de passe est requis",
+      "passwordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordPattern": "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre, et Minimum 8 caractères",
+      "passwordMismatch": "Les mots de passe ne correspondent pas",
+      "passwordIncorrect": "Mot de passe incorrect",
+      "otpLength": "Le code doit contenir {length} chiffres",
+      "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+      "selectTimeFirst": "Veuillez sélectionner une heure pour l'entretien",
+      "jobTitleRequired": "L'intitulé du poste est requis",
+      "companyNameRequired": "Le nom de l'entreprise est requis",
+      "schoolNameRequired": "Le nom de l'école est requis",
+      "degreeRequired": "Le diplôme / formation est requis",
+      "projectNameRequired": "Le nom du projet est requis",
+      "urlInvalid": "Le lien du projet est invalide",
+      "taskNameRequired": "Le nom de la tâche est requis",
+      "certfNameRequired": "Le nom de la certification est requis",
+      "certfOrganizationRequired": "L'organisme de certification est requis",
+      "certfDateRequired": "La date d'obtention est requise",
+      "skillDuplicate": "Cette compétence a déjà été ajoutée",
+      "skillLevelRequired": "Le niveau de compétence est requis",
+      "selectALanguage": "Veuillez sélectionner une langue",
+      "languageProficiencyLevelRequired": "Le niveau de maîtrise est requis",
+      "jobTypes": {
+        "required": "Le type de poste est requis",
+        "minSelection": "Sélectionnez au moins un type de poste"
+      },
+      "invalidType": {
+        "title": "Type de fichier invalide",
+        "description": "Veuillez télécharger un fichier PDF"
+      },
+      "fileSize": {
+        "title": "Fichier trop volumineux",
+        "description": "La taille maximale du fichier est de 2 Mo (2048 Ko)"
+      },
+      "fileType": {
+        "title": "Type de fichier invalide",
+        "description": "Seuls les fichiers PDF, DOC et DOCX sont acceptés",
+        "description2": "Format de fichier non accepté. Types acceptés : {types}"
+      },
+      "jobTitle": {
+        "required": "L'intitulé du poste est requis"
+      },
+      "minSalary": {
+        "amount": {
+          "required": "Le montant est requis",
+          "invalid": "Le montant doit être un nombre valide"
+        },
+        "period": {
+          "required": "La période est requise"
+        }
+      },
+      "firstName": {
+        "minLength": "First name must be at least 2 characters"
+      },
+      "lastName": {
+        "minLength": "Last name must be at least 2 characters"
+      },
+      "image": {
+        "size": "File size should be less than 5MB",
+        "format": "Only .jpg, .jpeg, .png and .gif formats are accepted"
+      }
+    },
+    "form": {
+      "required": "*",
+      "optional": "(facultatif)",
+      "placeholders": {
+        "shortAnswer": "Votre réponse",
+        "longAnswer": "Votre réponse détaillée"
+      },
+      "submit": "Envoyer",
+      "sending": "Envoi en cours...",
+      "email": {
+        "label": "Email",
+        "placeholder": "m@example.com",
+        "verification": {
+          "title": "Vérification du nouvel email",
+          "description": "Un code de vérification a été envoyé à {email}",
+          "code": {
+            "label": "Code de vérification",
+            "resend": "Renvoyer le code",
+            "verify": "Vérifier"
+          }
+        }
+      },
+      "password": {
+        "forgot": "Mot de passe oublié ?",
+        "current": "Mot de passe actuel",
+        "new": "Nouveau mot de passe",
+        "confirm": "Confirmer le mot de passe",
+        "requirements": "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre."
+      }
+    },
+    "labels": {
+      "search": "Recherche",
+      "salary": "Salaire",
+      "additionalInfo": "Informations complémentaires",
+      "jobDetails": "Détails du poste",
+      "contractType": "Type de contrat",
+      "duration": "Durée",
+      "schedule": "Horaires",
+      "questions": "Questions",
+      "yourAnswer": "Votre réponse",
+      "contactInfo": "Informations de contact",
+      "phone": "Téléphone",
+      "address": "Adresse",
+      "birthDate": "Date de naissance",
+      "gender": "Genre",
+      "bio": "Bio",
+      "resume": "CV"
+    },
+    "actions": {
+      "create": "Créer",
+      "submit": "Soumettre",
+      "edit": "Modifier",
+      "view": "Voir",
+      "save": "Enregistrer",
+      "saved": "Sauvegardé",
+      "saveAll": "Tout enregistrer",
+      "saving": "Enregistrement en cours...",
+      "change": "Changer",
+      "changing": "Changement en cours...",
+      "close": "Fermer",
+      "cancel": "Annuler",
+      "update": "Mettre à jour",
+      "apply": "Postuler",
+      "reset": "Réinitialiser",
+      "viewDetails": "Voir les détails",
+      "archive": "Archiver",
+      "archiving": "Archivage en cours...",
+      "unArchive": "Désarchiver",
+      "unArchiving": "Désarchivage en cours...",
+      "withdraw": "Retirer",
+      "loadMore": "Charger plus",
+      "savedAt": "Enregistré le {date}",
+      "applicationSentAt": "Candidature envoyée le {date}",
+      "archivedAt": "Archivé le {date}",
+      "reportJob": "Signaler l'offre",
+      "error": "Erreur",
+      "openMenu": "Ouvrir le menu",
+      "confirm": "Confirmer",
+      "send": "Envoyer",
+      "sending": "Envoi en cours...",
+      "logout": "Déconnexion",
+      "loggingOut": "Déconnexion...",
+      "manage": "Gérer",
+      "report": "Signaler",
+      "reporter": "Reporter",
+      "share": "Partager",
+      "alreadyApplied": "Déjà postulé",
+      "yes": "Oui",
+      "no": "Non",
+      "clearFilters": "Effacer les filtres",
+      "markAsRead": "Marquer comme lu",
+      "backToList": "Retour à la liste",
+      "delete": "Supprimer",
+      "deleting": "Suppression en cours...",
+      "removeApply": "Retirer la candidature",
+      "search": "Rechercher",
+      "download": "Télécharger",
+      "schedule": "Programmer",
+      "refuse": "Refuser",
+      "program": "Programmer",
+      "zoom": "Agrandir",
+      "restore": "Restaurer",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "zoomIn": "Zoom avant",
+      "zoomOut": "Zoom arrière",
+      "rotate": "Pivoter",
+      "back": "Retour",
+      "continue": "Continuer",
+      "continueWith": "Ou continuer avec",
+      "loginWith": "Se connecter avec {provider}",
+      "generate": "Générer",
+      "editProfile": "Modifier le profil",
+      "generateCV": "Générer le CV",
+      "add": "Ajouter",
+      "adding": "Ajout en cours...",
+      "enabled": "Activé",
+      "disabled": "Désactivé",
+      "enable": "Activer",
+      "disable": "Désactiver"
+    },
+    "filters": {
+      "activeFilters": "{count} filtre actif",
+      "activeFiltersPlural": "{count} filtres actifs",
+      "filterByDate": "Filtrer par date",
+      "types": {
+        "contractTypes": "Types de contrat",
+        "employmentTypes": "Types d'emploi",
+        "all": "Tous les types",
+        "job": "Emplois",
+        "interview": "Entretiens",
+        "application": "Candidatures",
+        "system": "Système"
+      },
+      "jobType": {
+        "placeholder": "Filtrer par type d'emploi"
+      },
+      "advanced": {
+        "title": "Filtres avancés",
+        "description": "Affinez votre recherche d'emploi avec des options de filtrage avancées.",
+        "sections": {
+          "salary": {
+            "title": "Fourchette de salaire",
+            "min": "Salaire minimum",
+            "max": "Salaire maximum"
+          },
+          "experience": {
+            "title": "Niveau d'expérience",
+            "placeholder": "Sélectionner un niveau",
+            "levels": {
+              "entry": "Débutant (0-2 ans)",
+              "mid": "Intermédiaire (3-5 ans)",
+              "senior": "Senior (5+ ans)",
+              "lead": "Lead/Manager (8+ ans)"
+            }
+          },
+          "remote": {
+            "title": "Travail à distance",
+            "label": "Travail à distance uniquement",
+            "description": "Afficher uniquement les postes en télétravail"
+          },
+          "industry": {
+            "title": "Secteur d'activité",
+            "placeholder": "Sélectionner un secteur",
+            "types": {
+              "tech": "Technologie",
+              "finance": "Finance",
+              "healthcare": "Santé",
+              "education": "Éducation",
+              "retail": "Commerce de détail",
+              "manufacturing": "Industrie"
+            }
+          }
+        }
+      },
+      "filterBy": {
+        "type": "Filtrer par type",
+        "status": "Filtrer par statut"
+      },
+      "status": {
+        "all": "Tous les statuts",
+        "read": "Lu",
+        "unread": "Non lu",
+        "inbox": "Boîte de réception",
+        "archive": "Archive",
+        "spam": "Spam"
+      },
+      "searchPlaceholder": "Rechercher..."
+    },
+    "selectorsSearch": {
+      "citySelector": {
+        "label": "Ville",
+        "searchPlaceholder": "Rechercher une ville...",
+        "noCitiesFound": "Aucune ville trouvée.",
+        "allCities": "Toutes les villes..."
+      }
+    },
+    "toast": {
+      "success": {
+        "title": "Succès",
+        "description": "Votre demande a été envoyée avec succès",
+        "resume": {
+          "delete": "Votre CV a été supprimé avec succès."
+        },
+        "logout": {
+          "title": "Déconnexion réussie",
+          "description": "Vous avez été déconnecté avec succès"
+        }
+      },
+      "error": {
+        "title": "Erreur",
+        "description": "Une erreur s'est produite. Veuillez réessayer."
+      },
+      "profile": {
+        "update": {
+          "title": "Profil mis à jour",
+          "description": "Votre profil a été mis à jour avec succès."
+        }
+      },
+      "myAppliedJobs": {
+        "delete": {
+          "title": "Application supprimée",
+          "description": "Votre application a été supprimée avec succès."
+        },
+        "update": {
+          "title": "Application mise à jour",
+          "description": "Votre application a été mise à jour avec succès."
+        }
+      },
+      "myArchivedJobs": {
+        "update": {
+          "title": "Offre archivée",
+          "description": "L'offre a été archivée avec succès."
+        },
+        "delete": {
+          "title": "Offre unarchivée",
+          "description": "L'offre a été unarchivée avec succès."
+        }
+      },
+      "mySavedJobs": {
+        "save": {
+          "title": "Offre saved",
+          "description": "Your emploi has been saved successfully."
+        },
+        "unsave": {
+          "title": "Offre retirée",
+          "description": "L'offre a été retirée de vos favoris avec succès."
+        }
+      },
+      "resumeProfile": {
+        "update": {
+          "title": "CV mis à jour",
+          "description": "Votre CV a été mis à jour avec succès."
+        }
+      },
+      "resumeCertification": {
+        "create": {
+          "title": "Certification ajoutée",
+          "description": "Votre certification a été ajoutée avec succès."
+        },
+        "update": {
+          "title": "Certification mise à jour",
+          "description": "Votre certification a été mise à jour avec succès."
+        },
+        "delete": {
+          "title": "Certification supprimée",
+          "description": "Votre certification a été supprimée avec succès."
+        }
+      },
+      "resumeEducation": {
+        "create": {
+          "title": "Formation ajoutée",
+          "description": "Votre formation a été ajoutée avec succès."
+        },
+        "update": {
+          "title": "Formation mise à jour",
+          "description": "Votre formation a été mise à jour avec succès."
+        },
+        "delete": {
+          "title": "Formation supprimée",
+          "description": "Votre formation a été supprimée avec succès."
+        }
+      },
+      "resumeExperience": {
+        "create": {
+          "title": "Expérience ajoutée",
+          "description": "Votre expérience a été ajoutée avec succès."
+        },
+        "update": {
+          "title": "Expérience mise à jour",
+          "description": "Votre expérience a été mise à jour avec succès."
+        },
+        "delete": {
+          "title": "Expérience supprimée",
+          "description": "Votre expérience a été supprimée avec succès."
+        }
+      },
+      "resumeFiles": {
+        "create": {
+          "title": "Fichier ajouté",
+          "description": "Votre fichier a été ajouté avec succès."
+        },
+        "update": {
+          "title": "Fichier mis à jour",
+          "description": "Votre fichier a été mis à jour avec succès."
+        },
+        "delete": {
+          "title": "Fichier supprimé",
+          "description": "Votre fichier a été supprimé avec succès."
+        }
+      },
+      "resumeLanguage": {
+        "create": {
+          "title": "Langue ajoutée",
+          "description": "Votre langue a été ajoutée avec succès."
+        },
+        "update": {
+          "title": "Langue mise à jour",
+          "description": "Votre langue a été mise à jour avec succès."
+        },
+        "delete": {
+          "title": "Langue supprimée",
+          "description": "Votre langue a été supprimée avec succès."
+        }
+      },
+      "resumeProject": {
+        "create": {
+          "title": "Projet ajouté",
+          "description": "Votre projet a été ajouté avec succès."
+        },
+        "update": {
+          "title": "Projet mis à jour",
+          "description": "Votre projet a été mis à jour avec succès."
+        },
+        "delete": {
+          "title": "Projet supprimé",
+          "description": "Votre projet a été supprimé avec succès."
+        }
+      },
+      "resumeSkill": {
+        "create": {
+          "title": "Compétence ajoutée",
+          "description": "Votre compétence a été ajoutée avec succès."
+        },
+        "update": {
+          "title": "Compétence mise à jour",
+          "description": "Votre compétence a été mise à jour avec succès."
+        },
+        "delete": {
+          "title": "Compétence supprimée",
+          "description": "Votre compétence a été supprimée avec succès."
+        }
+      },
+      "jobApply": {
+        "create": {
+          "title": "Candidature envoyée",
+          "description": "Votre candidature a été envoyée avec succès."
+        }
+      },
+      "deleteAccount": {
+        "success": {
+          "title": "Compte supprimé",
+          "description": "Le compte a été supprimé avec succès."
+        }
+      },
+      "updatePassword": {
+        "success": {
+          "title": "Mot de passe changé",
+          "description": "Le mot de passe a été changé avec succès."
+        }
+      },
+      "verifyPassword": {
+        "success": {
+          "title": "Mot de passe vérifié",
+          "description": "Le mot de passe fourni est correct"
+        }
+      },
+      "maskEmploi": {
+        "mask": {
+          "title": "Emploi masqué",
+          "description": "L'emploi a été masqué avec succès."
+        }
+      },
+      "reportEmploi": {
+        "success": {
+          "title": "Rapport envoyé",
+          "description": "Votre rapport a été envoyé avec succès."
+        }
+      }
+    },
+    "warnings": {
+      "irreversibleAction": "Cette action est irréversible.",
+      "permanentDelete": {
+        "resume": "Cela supprimera définitivement votre CV."
+      }
+    },
+    "status": {
+      "online": "En ligne",
+      "away": "Absent",
+      "busy": "Ne pas déranger",
+      "offline": "Hors ligne"
+    },
+    "counts": {
+      "messages": "{count} messages"
+    },
+    "fileUpload": {
+      "sharedFiles": "Fichiers partagés:",
+      "fileSize": {
+        "bytes": "Bytes",
+        "kb": "KB",
+        "mb": "MB",
+        "gb": "GB"
+      },
+      "title": "Partager des fichiers",
+      "description": "Sélectionnez jusqu'à {maxFiles} fichiers à partager.",
+      "dragDrop": {
+        "idle": "Glissez et déposez vos fichiers",
+        "active": "Déposez les fichiers ici",
+        "or": "ou",
+        "browse": "parcourir"
+      },
+      "preview": {
+        "notAvailable": "Aperçu non disponible"
+      },
+      "validation": {
+        "maxFiles": {
+          "title": "Limite de fichiers atteinte",
+          "description": "Vous ne pouvez pas télécharger plus de {maxFiles} fichiers à la fois."
+        },
+        "fileType": {
+          "title": "Type de fichier non pris en charge",
+          "description": "Les types de fichiers acceptés sont : {types}"
+        },
+        "success": {
+          "title": "Fichiers ajoutés",
+          "description": "{count} fichier(s) ajouté(s) avec succès."
+        },
+        "upload": {
+          "success": {
+            "title": "Téléchargement réussi",
+            "description": "{count} fichier(s) téléchargé(s) avec succès."
+          },
+          "error": {
+            "title": "Erreur de téléchargement",
+            "description": "Une erreur s'est produite lors du téléchargement des fichiers."
+          }
+        },
+        "remove": {
+          "title": "Fichier supprimé",
+          "description": "{filename} a été supprimé."
+        }
+      }
+    },
+    "templates": {
+      "title": "Modèles de messages"
+    },
+    "navigation": {
+      "imageCount": "{current} / {total}"
+    },
+    "aria": {
+      "imageViewer": "Visionneuse d'images",
+      "imageDescription": "Description de l'image"
+    },
+    "links": {
+      "termsOfService": "Conditions d'utilisation",
+      "privacyPolicy": "Politique de confidentialité"
+    },
+    "legal": {
+      "agreement": "En cliquant sur continuer, vous acceptez nos {terms} et notre {privacy}"
+    },
+    "placeholders": {
+      "noName": "Aucun nom fourni",
+      "noLocation": "Aucun lieu fourni",
+      "noPhone": "Téléphone non fourni",
+      "noAddress": "Adresse non fournie",
+      "noBirthdate": "Date de naissance non fournie",
+      "noPostalCode": "Code postal non fourni",
+      "noCity": "Ville non fournie",
+      "noCountry": "Pays non fourni",
+      "noBio": "Aucune biographie fournie",
+      "noSkills": "Aucune compétence ajoutée. Cliquez sur modifier pour ajouter vos compétences.",
+      "noBioWithEdit": "Aucune information fournie. Cliquez sur modifier pour ajouter votre description.",
+      "noResume": "Aucun CV ajouté"
+    },
+    "location": {
+      "format": "{city}, {country}"
+    },
+    "files": {
+      "pdf": {
+        "format": "Format PDF",
+        "maxSize": "max {size}MB"
+      }
+    },
+    "gender": {
+      "male": "Homme",
+      "female": "Femme",
+      "notSpecified": "Non spécifié"
+    },
+    "date": {
+      "format": {
+        "long": {
+          "year": "numeric",
+          "month": "long",
+          "day": "numeric"
+        }
+      }
+    },
+    "dialogs": {
+      "confirmation": {
+        "title": "Êtes-vous sûr ?"
+      }
+    },
+    "preferences": {
+      "title": "Préférences",
+      "employmentPreferences": {
+        "title": "Préférences d'emploi",
+        "description": "Précisez certaines informations, telles que le salaire minimum et l'horaire désirés."
+      },
+      "hideJobDetails": {
+        "title": "Masquer les emplois avec ces détails",
+        "description": "Gérez les qualifications et préférences à prendre en compte pour masquer certains emplois de votre recherche.",
+        "dialog": {
+          "description": "Nous allons faire notre possible pour masquer les emplois qui requièrent ces qualifications ou préférences.",
+          "empty": {
+            "description": "Lorsque vous donnez votre avis sur les emplois présentés dans vos résultats de recherche et vos notifications par email, vous en trouverez le détail ici."
+          }
+        }
+      },
+      "availability": {
+        "title": "Disponible maintenant",
+        "description": "Indiquez aux employeurs que vous pouvez commencer dès que possible.",
+        "dialog": {
+          "description": "Indiquez aux employeurs que vous pouvez commencer à travailler dès maintenant.",
+          "switch": {
+            "label": "Je peux commencer immédiatement.",
+            "description": "Cette information sera visible par les employeurs."
+          }
+        }
+      },
+      "page": {
+        "title": "Préférences d'emploi | Mon Profil",
+        "description": "Gérez vos préférences d'emploi, types de postes et critères de recherche.",
+        "keywords": [
+          "préférences d'emploi",
+          "salaire minimum",
+          "types de postes",
+          "relocalisation",
+          "critères de recherche"
+        ]
+      },
+      "sections": {
+        "jobTitles": {
+          "title": "Intitulés de poste",
+          "empty": "Aucun intitulé de poste ajouté",
+          "add": "Ajouter un intitulé de poste",
+          "dialog": {
+            "add": {
+              "title": "Ajouter un intitulé de poste",
+              "description": "Ajoutez un nouvel intitulé de poste à votre profil.",
+              "form": {
+                "label": "Intitulé du poste",
+                "placeholder": "Ex: Développeur Frontend"
+              },
+              "toast": {
+                "success": {
+                  "title": "Intitulé ajouté",
+                  "description": "L'intitulé du poste a été ajouté avec succès."
+                }
+              }
+            },
+            "edit": {
+              "title": "Modifier l'intitulé de poste",
+              "description": "Modifiez l'intitulé du poste sélectionné.",
+              "form": {
+                "label": "Intitulé du poste",
+                "placeholder": "Ex: Développeur Frontend"
+              },
+              "toast": {
+                "success": {
+                  "title": "Intitulé modifié",
+                  "description": "L'intitulé du poste a été modifié avec succès."
+                }
+              }
+            },
+            "delete": {
+              "title": "Êtes-vous sûr ?",
+              "description": "Cette action ne peut pas être annulée. Cet intitulé de poste sera supprimé définitivement de votre profil.",
+              "action": "Supprimer"
+            }
+          }
+        },
+        "minSalary": {
+          "title": "Salaire de base minimum",
+          "description": "Cette information ne sera pas communiquée aux employeurs.",
+          "placeholder": "Aucun salaire minimum ajouté",
+          "periods": {
+            "monthly": "par mois",
+            "yearly": "par an"
+          },
+          "dialog": {
+            "add": {
+              "title": "Ajouter un salaire minimum",
+              "description": "Quel salaire minimum recherchez-vous ?"
+            },
+            "edit": {
+              "title": "Modifier le salaire minimum",
+              "description": "Quel salaire minimum recherchez-vous ?"
+            },
+            "delete": {
+              "title": "Êtes-vous sûr ?",
+              "description": "Cette action ne peut pas être annulée. Le salaire minimum sera supprimé définitivement de votre profil."
+            },
+            "form": {
+              "amount": {
+                "label": "Salaire de base minimum",
+                "placeholder": "4.000",
+                "currency": "MAD"
+              },
+              "period": {
+                "label": "Période de paie",
+                "placeholder": "Sélectionnez une période"
+              }
+            },
+            "toast": {
+              "add": {
+                "title": "Salaire minimum ajouté",
+                "description": "Le salaire minimum a été ajouté avec succès."
+              },
+              "edit": {
+                "title": "Salaire minimum modifié",
+                "description": "Le salaire minimum a été modifié avec succès."
+              }
+            }
+          }
+        },
+        "jobTypes": {
+          "title": "Types de postes",
+          "empty": "Aucun type de poste ajouté",
+          "dialog": {
+            "add": {
+              "title": "Ajouter un type de poste",
+              "description": "Sélectionnez un type de poste à ajouter à votre profil."
+            },
+            "edit": {
+              "title": "Modifier le type de poste",
+              "description": "Modifiez le type de poste sélectionné."
+            },
+            "delete": {
+              "title": "Supprimer le type de poste",
+              "description": "Cette action ne peut pas être annulée. Le type de poste sera supprimé définitivement de votre profil."
+            },
+            "form": {
+              "type": {
+                "label": "Type de poste",
+                "placeholder": "Sélectionnez un type de poste"
+              }
+            },
+            "toast": {
+              "add": {
+                "title": "Type de poste ajouté",
+                "description": "Le type de poste a été ajouté avec succès."
+              },
+              "edit": {
+                "title": "Type de poste modifié",
+                "description": "Le type de poste a été modifié avec succès."
+              }
+            }
+          }
+        },
+        "relocation": {
+          "title": "Relocalisation",
+          "empty": "Aucune préférence de relocalisation ajoutée",
+          "status": {
+            "noRelocation": "Pas de relocalisation",
+            "anywhereRelocation": "Déménagement possible n'importe où",
+            "specificLocation": {
+              "title": "À proximité de :"
+            }
+          },
+          "dialog": {
+            "add": {
+              "title": "Ajouter une préférence de relocalisation",
+              "description": "Indiquez vos préférences de relocalisation"
+            },
+            "edit": {
+              "title": "Modifier la préférence de relocalisation",
+              "description": "Modifiez vos préférences de relocalisation"
+            },
+            "delete": {
+              "title": "Supprimer la préférence de relocalisation",
+              "description": "Cette action ne peut pas être annulée. La préférence de relocalisation sera supprimée définitivement de votre profil."
+            },
+            "form": {
+              "willRelocate": {
+                "label": "Prêt(e) à déménager",
+                "description": "Je suis disposé(e) à déménager pour un emploi"
+              },
+              "locationType": {
+                "label": "Type de localisation",
+                "options": {
+                  "anywhere": "N'importe où",
+                  "specific": "Villes spécifiques"
+                }
+              },
+              "location": {
+                "label": "Villes préférées",
+                "placeholder": "Entrez les villes, séparées par des virgules",
+                "description": "Listez les villes où vous souhaiteriez travailler"
+              }
+            },
+            "toast": {
+              "add": {
+                "title": "Préférence de relocalisation ajoutée",
+                "description": "Vos préférences de relocalisation ont été ajoutées avec succès."
+              },
+              "edit": {
+                "title": "Préférence de relocalisation modifiée",
+                "description": "Vos préférences de relocalisation ont été modifiées avec succès."
+              },
+              "delete": {
+                "title": "Préférence de relocalisation supprimée",
+                "description": "Vos préférences de relocalisation ont été supprimées avec succès."
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "pagination": {
+    "showing": "Affichage de {start} à {end} sur {total} résultats",
+    "currentOfTotal": "Page {current} sur {total}",
+    "aria": {
+      "firstPage": "Première page",
+      "previousPage": "Page précédente",
+      "nextPage": "Page suivante",
+      "lastPage": "Dernière page",
+      "pageX": "Page {page}"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Sélectionnez le type de connexion",
+      "description": "Veuillez choisir comment vous souhaitez vous connecter.",
+      "welcomeBack": "Bienvenue",
+      "welcomeDescription": {
+        "employee": "Connectez-vous à votre compte Postuly en tant que Candidat",
+        "recruiter": "Connectez-vous à votre compte Postuly en tant que Recruteur"
+      },
+      "options": {
+        "employee": {
+          "title": "Je cherche un emploi",
+          "description": "Connectez-vous en tant que candidat pour postuler"
+        },
+        "recruiter": {
+          "title": "Je recrute",
+          "description": "Connectez-vous en tant que recruteur pour publier des offres"
+        }
+      },
+      "noAccount": "Vous n'avez pas de compte ?",
+      "signup": "S'inscrire"
+    },
+    "signup": {
+      "selectType": {
+        "title": "Créez Votre Compte",
+        "description": "Veuillez choisir comment vous souhaitez vous inscrire.",
+        "employee": {
+          "title": "À la recherche d'un emploi",
+          "imageAlt": "Illustration du chercheur d'emploi"
+        },
+        "recruiter": {
+          "title": "Recruter pour un poste",
+          "imageAlt": "Illustration du recruteur"
+        },
+        "illustration": {
+          "alt": "Illustration du choix d'inscription"
+        }
+      },
+      "form": {
+        "title": "S'inscrire",
+        "description": "Créez votre compte Postuly en tant que {type}",
+        "name": {
+          "label": "Nom",
+          "placeholder": "Votre nom"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "m@example.com"
+        },
+        "password": {
+          "label": "Mot de passe",
+          "placeholder": "•••••••"
+        },
+        "passwordConfirm": {
+          "label": "Confirmer le mot de passe",
+          "placeholder": "•••••••"
+        },
+        "haveAccount": "Vous avez déjà un compte ?"
+      },
+      "types": {
+        "employee": "chercheur d'emploi",
+        "recruiter": "recruteur"
+      },
+      "toast": {
+        "success": "Votre compte a été créé avec succès"
+      }
+    }
+  },
+  "emplois": {
+    "page": {
+      "title": "Découvrez votre carrière de rêve",
+      "description": "Explorez des milliers d'opportunités d'emploi et trouvez le rôle parfait qui correspond à vos compétences et à vos aspirations"
+    },
+    "searchInput": {
+      "label": "Rechercher un emploi",
+      "placeholder": "Rechercher par titre d'emploi, entreprise ou mots-clés..."
+    },
+    "jobsContainer": {
+      "tabs": {
+        "recommended": "Pour vous",
+        "recentSearches": "Les Recherches Récentes",
+        "resume": "Télécharger votre CV"
+      },
+      "filters": {
+        "title": "Filtres",
+        "keywords": "Mots-clés",
+        "contractTypes": "Types de contrat",
+        "apply": "Appliquer",
+        "reset": "Réinitialiser",
+        "date": {
+          "last24h": "Dernières 24 heures",
+          "lastWeek": "Dernière semaine",
+          "lastMonth": "Dernier mois",
+          "allTime": "Tout"
+        }
+      },
+      "noActiveSearch": {
+        "title": "Commencez votre recherche",
+        "description": "Utilisez la barre de recherche ci-dessus pour trouver des emplois"
+      }
+    },
+    "jobsList": {
+      "title": "Postes disponibles",
+      "loading": "Chargement...",
+      "error": "Erreur lors du chargement des emplois",
+      "noResults": "Aucun emploi trouvé. Essayez à nouveau plus tard ou explorez d'autres opportunités d'emploi.",
+      "jobsFound": "{count} emploi trouvé",
+      "jobsFoundPlural": "{count} emplois trouvés",
+      "remainingJobs": "{count} restant"
+    },
+    "jobCard": {
+      "views": "{count} vue",
+      "viewsPlural": "{count} vues",
+      "applied": "{count} candidature",
+      "appliedPlural": "{count} candidatures",
+      "status": {
+        "open": "Actif",
+        "closed": "Fermé",
+        "suspended": "Suspendu"
+      },
+      "menu": {
+        "bookmark": {
+          "add": "Ajouter aux favoris",
+          "remove": "Retirer des favoris"
+        },
+        "notInterested": "Pas intéressé(e)",
+        "report": "Signaler cette offre"
+      },
+      "notInterestedDialog": {
+        "title": "Confirmer votre choix",
+        "description": "Cette offre ne sera plus visible dans votre flux principal. Vous pouvez toujours la retrouver dans vos paramètres.",
+        "masking": "Masquage..."
+      },
+      "reportDialog": {
+        "title": "Signaler cette offre d'emploi",
+        "description": "Sélectionnez une raison et fournissez des informations supplémentaires si nécessaire.",
+        "reasons": {
+          "offensive": "Offre offensante ou discriminatoire",
+          "fraudulent": "Offre potentiellement frauduleuse",
+          "inaccurate": "Offre inexacte",
+          "advertising": "Il s'agit d'une publicité",
+          "other": "Autre"
+        },
+        "validation": {
+          "reasonRequired": "Veuillez sélectionner une raison",
+          "maxLength": "Maximum 300 caractères"
+        }
+      }
+    },
+    "alerts": {
+      "create": "Créer une Alerte",
+      "active": "Alerte active",
+      "viewTooltip": "Voir l'alerte",
+      "editTooltip": "Modifier l'alerte",
+      "success": {
+        "title": "Alerte créée avec succès",
+        "description": "Vous recevrez des notifications pour les nouveaux postes correspondant à vos critères."
+      },
+      "dialog": {
+        "view": {
+          "title": "Détails de l'alerte",
+          "searchCriteria": "Critères de recherche"
+        },
+        "edit": {
+          "title": "Modifier l'alerte",
+          "searchCriteria": "Critères de recherche"
+        }
+      }
+    },
+    "jobDetails": {
+      "selectJob": "Sélectionnez un poste pour voir les détails",
+      "positions": "{count} poste(s)",
+      "salary": {
+        "range": "{start} - {end} MAD",
+        "fixed": "{amount} MAD",
+        "unspecified": "Non spécifié"
+      },
+      "workingHours": {
+        "range": "{min}-{max}h{duration}",
+        "fixed": "{hours}h{duration}",
+        "unspecified": "Non spécifié"
+      },
+      "deadline": "Date limite: {date}",
+      "apply": "Postuler",
+      "alreadyApplied": "Déjà postulé",
+      "actions": {
+        "share": "Partager l'offre",
+        "notInterested": "Écarter l'offre"
+      },
+      "sections": {
+        "description": "Description du poste",
+        "requirements": "Prérequis"
+      },
+      "share": {
+        "title": "Partager cette offre d'emploi",
+        "description": "Partagez cette opportunité avec votre réseau",
+        "copyLink": "Copier le lien",
+        "copied": "Lien copié !",
+        "shareNative": "Partager via...",
+        "platforms": {
+          "twitter": "Partager sur Twitter",
+          "linkedin": "Partager sur LinkedIn",
+          "facebook": "Partager sur Facebook",
+          "whatsapp": "Partager sur WhatsApp"
+        },
+        "shareText": {
+          "default": "Découvrez cette offre d'emploi intéressante : {title} chez {company}",
+          "twitter": "🚀 Superbe opportunité : {title} chez {company}! Consultez l'offre ici :",
+          "linkedin": "Je viens de découvrir ce poste intéressant : {title} chez {company}. Plus de détails ici :",
+          "facebook": "Une belle opportunité à ne pas manquer : {title} chez {company}. En savoir plus :",
+          "whatsapp": "Salut ! J'ai pensé que cette offre pourrait t'intéresser : {title} chez {company}. Voici le lien :"
+        },
+        "toast": {
+          "copySuccess": {
+            "title": "Lien copié !",
+            "description": "Le lien a été copié dans votre presse-papiers"
+          },
+          "copyError": {
+            "title": "Erreur de copie",
+            "description": "Impossible de copier le lien. Veuillez réessayer."
+          },
+          "shareError": {
+            "title": "Erreur de partage",
+            "description": "Impossible de partager l'offre. Veuillez réessayer."
+          }
+        },
+        "errors": {
+          "unsupportedPlatform": "Plateforme de partage non prise en charge",
+          "nativeShareUnavailable": "Le partage natif n'est pas disponible sur votre appareil"
+        }
+      }
+    },
+    "recentSearches": {
+      "noSearches": "Aucune recherche récente.",
+      "searchTip": "Essayez de rechercher des emplois par titre, mot-clé ou lieu.",
+      "removeSearch": "Supprimer la recherche"
+    },
+    "resumeUpload": {
+      "tips": {
+        "title": "Conseils pour votre CV",
+        "list": {
+          "format": "Utilisez un format clair et professionnel",
+          "achievements": "Mettez en avant vos réalisations plutôt que vos responsabilités",
+          "tailored": "Adaptez votre CV aux offres d'emploi ciblées",
+          "grammar": "Vérifiez l'orthographe et la grammaire"
+        }
+      }
+    }
+  },
+  "resume": {
+    "title": "CV",
+    "noResume": "Aucun CV ajouté",
+    "uploading": "Téléchargement en cours...",
+    "deleting": "Suppression en cours...",
+    "actions": {
+      "view": "Voir le CV",
+      "change": "Modifier le CV",
+      "download": "Télécharger le CV",
+      "delete": "Supprimer le CV"
+    },
+    "validation": {
+      "invalidType": {
+        "title": "Type de fichier invalide",
+        "description": "Veuillez télécharger un fichier PDF"
+      },
+      "fileSize": {
+        "title": "Fichier trop volumineux",
+        "description": "La taille maximale du fichier est de 2 Mo (2048 Ko)"
+      }
+    },
+    "error": {
+      "title": "Erreur de gestion du CV",
+      "description": "Une erreur s'est produite lors de la gestion de votre CV. Veuillez réessayer."
+    }
+  },
+  "annonces": {
+    "details": {
+      "header": {
+        "reportDialog": {
+          "title": "Signaler cette offre"
+        }
+      },
+      "error": {
+        "notFound": "Offre non trouvée"
+      },
+      "jobDetails": {
+        "salary": {
+          "perDuration": "/{duration}",
+          "range": "{start}€ - {end}€",
+          "fixed": "{amount}€"
+        },
+        "schedule": {
+          "range": "{min}-{max}h/{duration}"
+        },
+        "deadline": "Date limite de candidature : {date}"
+      },
+      "questions": {
+        "title": "Questions",
+        "types": {
+          "experience": {
+            "placeholder": "Décrivez votre expérience..."
+          },
+          "open": {
+            "placeholder": "Votre réponse"
+          }
+        }
+      }
+    }
+  },
+  "help": {
+    "page": {
+      "title": "Centre d'aide",
+      "description": "Nous sommes là pour vous aider. Décrivez votre problème et nous vous répondrons dans les plus brefs délais."
+    },
+    "form": {
+      "title": "Comment pouvons-nous vous aider ?",
+      "submit": "Envoyer",
+      "sending": "Envoi en cours..."
+    },
+    "selectIssue": {
+      "label": "Type de problème",
+      "placeholder": "Sélectionnez un type de problème",
+      "options": {
+        "technical": "Problème technique",
+        "account": "Problème de compte",
+        "billing": "Problème de facturation",
+        "other": "Autre"
+      }
+    },
+    "messageArea": {
+      "label": "Votre message",
+      "placeholder": "Décrivez votre problème en détail..."
+    },
+    "toast": {
+      "success": {
+        "title": "Message envoyé",
+        "description": "Nous avons bien reçu votre message. Nous vous répondrons dans les plus brefs délais."
+      },
+      "error": {
+        "title": "Erreur",
+        "description": "Une erreur s'est produite lors de l'envoi de votre message. Veuillez réessayer."
+      }
+    }
+  },
+  "notifications": {
+    "page": {
+      "title": "Notifications"
+    },
+    "errors": {
+      "loadFailed": "Impossible de charger les notifications. Veuillez réessayer plus tard.",
+      "noNotifications": "Vous n'avez pas encore de notifications.",
+      "noMatchingFilters": "Aucune notification ne correspond à vos filtres."
+    }
+  },
+  "messages": {
+    "delete": {
+      "title": "Supprimer la conversation",
+      "description": "Êtes-vous sûr de vouloir supprimer cette conversation avec {company} concernant le poste de {job} ?"
+    },
+    "search": {
+      "placeholder": "Rechercher un message..."
+    },
+    "filters": {
+      "title": "Filtres"
+    },
+    "chat": {
+      "company": "Entreprise",
+      "participants": "participants",
+      "participantsList": "Participants à la discussion",
+      "discussingWith": "En discussion avec",
+      "viewJob": "Voir l'annonce",
+      "archiveConversation": "Archiver la conversation",
+      "unarchiveConversation": "Désarchiver la conversation",
+      "reportSpam": "Signaler comme spam",
+      "noMessageSelected": "Sélectionnez un message pour afficher son contenu",
+      "writeMessage": "Écrivez votre message...",
+      "interview": {
+        "invitation": "Invitation à un entretien",
+        "details": {
+          "location": "Lieu",
+          "date": "Date",
+          "time": "Heure",
+          "type": "Type d'entretien"
+        }
+      },
+      "attachments": {
+        "preview": {
+          "size": "{size} {unit}"
+        }
+      },
+      "templates": {
+        "categories": {
+          "general": "Général",
+          "interview": "Entretien",
+          "offer": "Offre",
+          "followUp": "Suivi",
+          "candidature": "Candidature",
+          "entretiens": "Entretiens",
+          "suivi": "Suivi",
+          "documents": "Documents",
+          "questions": "Questions"
+        }
+      },
+      "archive": {
+        "archive": "Archiver",
+        "unarchive": "Désarchiver",
+        "confirmMessage": "Êtes-vous sûr de vouloir {action} cette conversation avec {company}{hasRecruiter, select, true { concernant le poste de {job}} other {}} ?",
+        "archiveDescription": "La conversation sera déplacée vers les archives. Vous pourrez la retrouver dans l'onglet \"Archive\".",
+        "unarchiveDescription": "La conversation sera déplacée vers la boîte de réception."
+      },
+      "report": {
+        "title": "Signaler un problème",
+        "confirmMessage": "Vous souhaitez signaler la conversation avec {company}{hasRecruiter, select, true { concernant le poste de {job}} other {}}.",
+        "description": "Votre signalement nous aidera à maintenir un environnement sûr et professionnel pour tous les utilisateurs.",
+        "reasonLabel": "Pour quelle raison souhaitez-vous signaler cette conversation ?",
+        "additionalInfo": "Informations complémentaires",
+        "additionalInfoPlaceholder": "Ajoutez des détails pour nous aider à mieux comprendre la situation...",
+        "submit": "Envoyer le signalement",
+        "reasons": [
+          {
+            "id": "advertising",
+            "label": "Publicité non sollicitée",
+            "description": "Message promotionnel ou publicitaire non désiré"
+          },
+          {
+            "id": "inappropriate",
+            "label": "Contenu inapproprié ou offensant",
+            "description": "Message contenant du contenu discriminatoire ou offensant"
+          },
+          {
+            "id": "scam",
+            "label": "Tentative d'arnaque",
+            "description": "Message frauduleux ou tentative d'escroquerie"
+          },
+          {
+            "id": "misleading",
+            "label": "Information trompeuse",
+            "description": "Fausses informations sur le poste ou l'entreprise"
+          },
+          {
+            "id": "irrelevant",
+            "label": "Sans rapport avec ma candidature",
+            "description": "Message sans lien avec mes postulations"
+          },
+          {
+            "id": "other",
+            "label": "Autre",
+            "description": "Autre raison non listée"
+          }
+        ]
+      }
+    }
+  },
+  "profile": {
+    "resume": {
+      "section": {
+        "title": "CV",
+        "subtitle": "Format PDF, max 2MB"
+      }
+    }
+  },
+  "editProfile": {
+    "title": "Modifier votre profil",
+    "description": "Mettez à jour vos informations personnelles et comment les autres utilisateurs vous voient sur la plateforme.",
+    "form": {
+      "firstName": {
+        "label": "Prénom",
+        "placeholder": "John"
+      },
+      "lastName": {
+        "label": "Nom de famille",
+        "placeholder": "Doe"
+      },
+      "phone": {
+        "label": "Numéro de téléphone",
+        "placeholder": "+1234567890"
+      },
+      "birthdate": {
+        "label": "Date de naissance",
+        "placeholder": "Sélectionner une date"
+      },
+      "gender": {
+        "label": "Gender",
+        "options": {
+          "male": "Masculin",
+          "female": "Féminin"
+        }
+      },
+      "address": {
+        "label": "Adresse",
+        "placeholder": "123 Rue de la Paix"
+      },
+      "city": {
+        "label": "Ville",
+        "placeholder": "Sélectionner une ville"
+      },
+      "country": {
+        "label": "Pays",
+        "placeholder": "France"
+      },
+      "postalCode": {
+        "label": "Code postal",
+        "placeholder": "75000"
+      },
+      "bio": {
+        "label": "Bio",
+        "placeholder": "Décrivez-vous"
+      },
+      "description": {
+        "label": "Description du CV",
+        "placeholder": "Décrivez votre expérience professionnelle et vos objectifs"
+      }
+    }
+  },
+  "settings": {
+    "account": {
+      "page": {
+        "title": "Paramètres du compte",
+        "description": "Gérez les paramètres de votre compte et vos préférences."
+      },
+      "info": {
+        "title": "Informations du compte",
+        "accountType": "Type de compte",
+        "email": "Email",
+        "phone": "Numéro de téléphone",
+        "phoneNotSet": "Non renseigné",
+        "emailChange": {
+          "success": {
+            "title": "Adresse email modifiée avec succès",
+            "description": "Votre adresse email a été modifiée avec succès"
+          },
+          "error": {
+            "title": "Échec de la modification de l'email",
+            "description": "Une erreur est survenue lors de la modification de votre adresse email"
+          },
+          "dialog": {
+            "steps": {
+              "verification": {
+                "title": "Vérification du mot de passe",
+                "description": "Entrez votre mot de passe pour continuer."
+              },
+              "change": {
+                "title": "Changer l'adresse email",
+                "description": "Entrez votre nouvelle adresse email."
+              },
+              "confirm": {
+                "title": "Vérification du nouvel email",
+                "description": "Entrez le code de vérification envoyé à votre nouvelle adresse email."
+              }
+            },
+            "stepIndicator": [
+              { "title": "Vérification" },
+              { "title": "Nouvel email" },
+              { "title": "Confirmation" }
+            ],
+            "form": {
+              "newEmail": {
+                "label": "Nouvel email",
+                "placeholder": "nouvelle@email.com"
+              },
+              "confirmEmail": {
+                "label": "Confirmer le nouvel email",
+                "placeholder": "nouvelle@email.com"
+              },
+              "verification": {
+                "codeLabel": "Code de vérification",
+                "codePlaceholder": "Entrez le code à 6 chiffres",
+                "codeSent": "Code de vérification envoyé",
+                "codeSentDescription": "Un code de vérification a été envoyé à {email}",
+                "resendCode": "Renvoyer le code"
+              }
+            },
+            "validation": {
+              "emailRequired": "L'email est requis",
+              "emailInvalid": "Adresse email invalide",
+              "confirmEmailRequired": "La confirmation de l'email est requise",
+              "emailMismatch": "Les adresses email ne correspondent pas",
+              "emailSame": "La nouvelle adresse email doit être différente de l'actuelle",
+              "codeIncorrect": "Code de vérification incorrect",
+              "codeRequired": "Le code de vérification est requis"
+            }
+          }
+        },
+        "phoneChange": {
+          "success": {
+            "title": "Numéro modifié",
+            "description": "Votre numéro de téléphone a été modifié avec succès"
+          },
+          "error": {
+            "title": "Échec de la modification du numéro",
+            "description": "Une erreur est survenue lors de la modification de votre numéro de téléphone"
+          },
+          "dialog": {
+            "steps": {
+              "verification": {
+                "title": "Vérification du mot de passe",
+                "description": "Entrez votre mot de passe pour continuer."
+              },
+              "change": {
+                "title": "Changer le numéro de téléphone",
+                "description": "Entrez votre nouveau numéro de téléphone."
+              }
+            },
+            "stepIndicator": [
+              { "title": "Vérification" },
+              { "title": "Nouveau numéro" }
+            ],
+            "form": {
+              "newPhone": {
+                "label": "Nouveau numéro",
+                "placeholder": "612345678"
+              }
+            },
+            "validation": {
+              "phoneRequired": "Le numéro de téléphone est requis",
+              "phoneInvalid": "Format de numéro invalide",
+              "phoneMinLength": "Le numéro doit contenir au moins 9 chiffres",
+              "phoneSame": "Le nouveau numéro doit être différent de l'actuel"
+            }
+          }
+        },
+        "passwordChange": {
+          "success": {
+            "title": "Mot de passe modifié",
+            "description": "Votre mot de passe a été modifié avec succès"
+          },
+          "error": {
+            "title": "Échec de la modification du mot de passe",
+            "description": "Une erreur est survenue lors de la modification de votre mot de passe"
+          },
+          "dialog": {
+            "title": "Changer le mot de passe"
+          }
+        }
+      },
+      "accountSettings": {
+        "title": "Actions du compte",
+        "logoutFromAccount": "Déconnectez-vous de votre compte",
+        "deleteAccountLabel": "Supprimer le compte",
+        "deleteAccountDescription": "Supprimez définitivement votre compte et toutes vos données",
+        "deleteAccountConfirm": "Êtes-vous sûr de vouloir supprimer votre compte ?",
+        "deleteAccountConfirmDescription": "Cette action est irréversible. Toutes vos données seront définitivement supprimées.",
+        "reConfirmation": "Pour confirmer, écrivez \"{DELETE_CONFIRMATION}\" ci-dessous :",
+        "deleteConfirmationValue": "SUPPRIMER MON COMPTE"
+      }
+    },
+    "communication": {
+      "page": {
+        "title": "Paramètres de communication",
+        "description": "Gérez les paramètres de communication et vos préférences d'alertes."
+      },
+      "alerts": {
+        "title": "Alertes Configuration",
+        "jobAlerts": {
+          "title": "Alertes d'emploi",
+          "description": "Recevez des notifications pour les nouveaux emplois correspondant à vos critères."
+        },
+        "companyAlerts": {
+          "title": "Alertes d'entreprise",
+          "description": "Suivez les mises à jour des entreprises qui vous intéressent."
+        }
+      },
+      "notificationPreferences": {
+        "title": "Préférences de notification"
+      },
+      "privacy": {
+        "title": "Paramètres de confidentialité",
+        "description": "Gérez qui peut voir votre statut et vos informations",
+        "toast": {
+          "toggle": {
+            "title": "Paramètre de confidentialité mis à jour",
+            "description": "Vos préférences de confidentialité ont été mises à jour"
+          }
+        },
+        "switch": {
+          "ariaLabel": "{action} {setting}"
+        }
+      },
+      "notifications": {
+        "toast": {
+          "toggle": {
+            "title": "Notification {state}e",
+            "description": "La préférence de notification a été {state}e"
+          }
+        },
+        "switch": {
+          "ariaLabel": "{action} les notifications pour {preference}"
+        }
+      },
+      "companyAlerts": {
+        "title": "Alertes d'entreprise",
+        "description": "Configurez vos alertes entreprise pour recevoir des notifications lorsque de nouvelles opportunités sont disponibles dans les entreprises qui vous intéressent.",
+        "empty": {
+          "description": "Aucune alerte d'entreprise active."
+        },
+        "toast": {
+          "toggle": {
+            "enable": {
+              "title": "Alerte d'entreprise activée"
+            },
+            "disable": {
+              "title": "Alerte d'entreprise désactivée"
+            },
+            "description": "L'alerte a été {state}e"
+          },
+          "delete": {
+            "title": "Alerte supprimée",
+            "description": "L'alerte d'entreprise a été supprimée avec succès"
+          }
+        },
+        "deleteDialog": {
+          "title": "Supprimer l'alerte",
+          "description": "Êtes-vous sûr de vouloir supprimer l'alerte pour {company} ?"
+        },
+        "switch": {
+          "ariaLabel": "{action} les alertes pour {company}"
+        }
+      },
+      "jobAlerts": {
+        "title": "Alertes d'emploi",
+        "description": "Configurez vos alertes d'emploi pour recevoir des notifications lorsque de nouvelles offres correspondant à vos critères sont publiées.",
+        "myAlerts": "Mes alertes",
+        "empty": {
+          "title": "Aucune alerte",
+          "description": "Vous n'avez pas encore configuré d'alertes d'emploi."
+        },
+        "salary": "Salaire",
+        "switch": {
+          "ariaLabel": "{action} l'alerte pour {alert}"
+        },
+        "toast": {
+          "toggle": {
+            "enable": {
+              "title": "Alerte activée"
+            },
+            "disable": {
+              "title": "Alerte désactivée"
+            },
+            "description": "L'alerte a été {state}e"
+          },
+          "delete": {
+            "title": "Alerte supprimée",
+            "description": "L'alerte d'emploi a été supprimée avec succès"
+          },
+          "edit": {
+            "title": "Alerte modifiée",
+            "description": "L'alerte d'emploi a été mise à jour avec succès"
+          }
+        },
+        "deleteDialog": {
+          "title": "Supprimer l'alerte",
+          "description": "Êtes-vous sûr de vouloir supprimer cette alerte d'emploi ?"
+        },
+        "editDialog": {
+          "title": "Modifier l'alerte"
+        },
+        "form": {
+          "post": {
+            "label": "Intitulé du poste",
+            "placeholder": "Ex: Développeur Frontend",
+            "description": "Entrez l'intitulé du poste que vous recherchez"
+          },
+          "city": {
+            "label": "Ville",
+            "placeholder": "Ex: Paris",
+            "description": "Entrez la ville où vous souhaitez travailler"
+          },
+          "salary": {
+            "label": "Fourchette de salaire",
+            "description": "Sélectionnez la fourchette de salaire souhaitée",
+            "moveToChange": "Déplacez le curseur pour modifier la fourchette"
+          }
+        }
+      }
+    },
+    "devices": {
+      "title": "Appareils connectés",
+      "description": "Gérez les appareils connectés à votre compte et leurs accès.",
+      "table": {
+        "headers": {
+          "device": "Appareil",
+          "loginDate": "Date de connexion",
+          "ipAddress": "Adresse IP",
+          "actions": "Actions"
+        },
+        "currentDevice": "Appareil actuel",
+        "logout": {
+          "button": "Déconnecter",
+          "toast": {
+            "title": "Appareil déconnecté",
+            "description": "L'appareil a été déconnecté avec succès"
+          }
+        }
+      }
+    },
+    "privacyPage": {
+      "title": "Confidentialité",
+      "description": "Gérez vos paramètres de confidentialité et vos données personnelles.",
+      "dataTypes": {
+        "title": "Types de données collectées",
+        "description": "Nous collectons les informations suivantes pour améliorer votre expérience :",
+        "items": {
+          "profile": "Informations de profil (nom, email, etc.)",
+          "resume": "CV et documents professionnels",
+          "preferences": "Préférences de recherche d'emploi",
+          "history": "Historique de navigation sur le site"
+        }
+      },
+      "dataUsage": {
+        "title": "Utilisation et divulgation de mes données",
+        "description": "Vos données sont utilisées pour :",
+        "items": {
+          "personalization": "Personnaliser votre recherche d'emploi",
+          "improvement": "Améliorer nos services et recommandations",
+          "communication": "Communiquer avec les recruteurs (avec votre accord)"
+        }
+      },
+      "cookies": {
+        "title": "Cookies",
+        "description": "Nous utilisons des cookies pour :",
+        "items": {
+          "session": "Maintenir votre session",
+          "preferences": "Mémoriser vos préférences",
+          "analytics": "Analyser l'utilisation du site"
+        }
+      },
+      "dataAccess": {
+        "title": "Accéder à mes données et les supprimer",
+        "description": "Vous pouvez à tout moment accéder à vos données personnelles ou demander leur suppression.",
+        "actions": {
+          "download": "Télécharger mes données",
+          "delete": "Supprimer mes données"
+        }
+      }
+    }
+  },
+  "postulyCVPage": {
+    "title": "Postuly CV",
+    "generateResume": "Générateur de CV",
+    "error": {
+      "title": "Erreur lors du chargement du CV",
+      "description": "Impossible de charger les données de votre CV. Veuillez réessayer plus tard."
+    },
+    "templates": {
+      "classic": "Classique",
+      "modern": "Moderne",
+      "selector": {
+        "label": "Choisir un template"
+      }
+    },
+    "colors": {
+      "title": "Couleurs",
+      "primary": "Principale",
+      "accent": "Accent"
+    },
+    "resume": {
+      "templates": {
+        "shared": {
+          "sections": {
+            "contact": "Contact",
+            "skills": "Compétences",
+            "languages": "Langues",
+            "experience": "Expérience Professionnelle",
+            "projects": "Projets",
+            "education": "Formation",
+            "certifications": "Certifications"
+          },
+          "skills": {
+            "level": "Niveau"
+          },
+          "languages": {
+            "level": "Niveau"
+          },
+          "professional": "Professionnel",
+          "noDescription": "Aucune description fournie",
+          "present": "Présent",
+          "projects": {
+            "viewProject": "Voir le projet",
+            "keyTasks": "Tâches clés",
+            "status": {
+              "completed": "Terminé",
+              "in_progress": "En cours"
+            }
+          },
+          "certifications": {
+            "expires": "Expire"
+          }
+        },
+        "modern": {
+          "sections": {
+            "about": "À propos"
+          }
+        }
+      }
+    }
+  },
+  "myJobsPage": {
+    "title": "Mes offres d'emploi",
+    "tabs": {
+      "savedJobs": "Offres sauvegardées",
+      "sentApplications": "Candidatures envoyées",
+      "interviews": "Entretiens",
+      "archived": "Offres archivées"
+    },
+    "empty": {
+      "titleSavedJobs": "Aucune offre sauvegradée",
+      "descriptionSavedJobs": "Vous n'avez pas encore sauvegradé d'offres d'emploi. Commencez à explorer les offres et à les sauvegrader pour les consulter plus tard.",
+      "descriptionSentApplications": "Vous n'avez pas encore envoyé de candidatures. Explorez les offres et postulez pour celles qui vous intéressent.",
+      "descriptionArchived": "Vous n'avez pas encore archivé d'offres d'emploi. Explorez les offres et archivez celles qui ne vous intéressent plus."
+    },
+    "sentApplications": {
+      "status": {
+        "unknown": "Statut inconnu",
+        "expired": "Offre expirée",
+        "applied": "Candidature envoyée",
+        "open": "Offre ouverte"
+      },
+      "aria": {
+        "openOptions": "Ouvrir les options de la candidature"
+      }
+    },
+    "archiveJobDialog": {
+      "title": "Archiver cette offre d'emploi ?",
+      "description": "Êtes-vous sûr de vouloir archiver l'offre \"{jobTitle}\" ?",
+      "warning": "Cette action déplacera l'offre dans vos archives. Vous pourrez la restaurer ultérieurement si nécessaire."
+    },
+    "removeApplyDialog": {
+      "title": "Êtes-vous sûr de vouloir retirer votre candidature ?",
+      "description": "Vous êtes sur le point de retirer votre candidature pour ",
+      "description2": " Cette action est irréversible."
+    },
+    "interviews": {
+      "titleProgrammed": "Entretiens Programmés",
+      "descriptionProgrammed": "Ce sont les entretiens auxquels vous avez été invité.",
+      "titleWaiting": "Entretiens en Attente",
+      "descriptionWaiting": "Ces entretiens attendent votre confirmation.",
+      "titlePast": "Entretiens Passés",
+      "descriptionPast": "Voici les entretiens que vous avez complétés."
+    }
+  },
+  "myInterviewActionPage": {
+    "unavailable": {
+      "title": "Vous n'êtes pas disponible ?",
+      "action": "Indiquer mon indisponibilité"
+    },
+    "details": {
+      "toast": {
+        "success": {
+          "title": "Entretien confirmé",
+          "description": "Votre entretien a été programmé avec succès"
+        }
+      }
+    },
+    "refuser": {
+      "title": {
+        "refuse": "Refuser l'entretien",
+        "cancel": "Annuler l'entretien"
+      },
+      "reason": {
+        "label": "Quelle est la raison ?"
+      },
+      "reasons": {
+        "notInterested": "Je ne suis plus intéressé(e) par ce poste",
+        "acceptedOther": "J'ai accepté une autre offre",
+        "tooFar": "Le lieu est trop éloigné",
+        "suspicious": "L'offre me semble suspecte",
+        "other": "Autre raison"
+      },
+      "message": {
+        "label": "Message (optionnel)",
+        "placeholder": "Expliquez votre décision...",
+        "counter": "{current}/500 caractères"
+      },
+      "validation": {
+        "reasonRequired": "Veuillez sélectionner une raison",
+        "messageMaxLength": "Le message ne doit pas dépasser 500 caractères"
+      },
+      "actions": {
+        "refuse": "Refuser l'entretien",
+        "cancel": "Annuler l'entretien",
+        "maintain": "Maintenir ma candidature"
+      },
+      "toast": {
+        "refuse": {
+          "title": "Entretien refusé",
+          "description": "Votre refus a été envoyé avec succès"
+        },
+        "cancel": {
+          "title": "Entretien annulé",
+          "description": "Votre annulation a été envoyée avec succès"
+        }
+      }
+    },
+    "reporter": {
+      "title": "Proposer de nouveaux créneaux",
+      "message": {
+        "title": "Message additionnel (optionnel)",
+        "placeholder": "Ajoutez des informations complémentaires sur vos disponibilités..."
+      },
+      "validation": {
+        "selectAvailability": "Veuillez sélectionner au moins une disponibilité"
+      },
+      "toast": {
+        "success": {
+          "title": "Disponibilités envoyées",
+          "description": "Vos créneaux de disponibilité ont été envoyés avec succès"
+        }
+      }
+    }
+  },
+  "resumePage": {
+    "aboutMe": {
+      "title": "À propos de moi"
+    },
+    "workExperience": {
+      "title": "Expérience professionnelle",
+      "empty": "Aucun Expérience professionnelle ajouté",
+      "dialog": {
+        "add": {
+          "title": "Ajouter une expérience professionnelle",
+          "description": "Ajoutez les détails de votre expérience professionnelle"
+        },
+        "edit": {
+          "title": "Modifier l'expérience professionnelle",
+          "description": "Modifiez les détails de votre expérience professionnelle"
+        },
+        "delete": {
+          "title": "Supprimer l'expérience",
+          "descriptionStart": "Vous êtes sur le point de supprimer votre expérience en tant que",
+          "warning": "Cette action est irréversible et supprimera définitivement cette expérience de votre CV."
+        }
+      }
+    },
+    "education": {
+      "title": "Formation",
+      "empty": "Aucune formation ajoutée",
+      "dialog": {
+        "add": {
+          "title": "Ajouter une formation",
+          "description": "Ajoutez les détails de votre formation"
+        },
+        "edit": {
+          "title": "Modifier la formation",
+          "description": "Modifiez les détails de votre formation"
+        },
+        "delete": {
+          "title": "Supprimer la formation",
+          "descriptionStart": "Vous êtes sur le point de supprimer votre formation en tant que",
+          "warning": "Cette action est irréversible et supprimera définitivement cette formation de votre CV."
+        }
+      }
+    },
+    "projects": {
+      "title": "Projets",
+      "empty": "Aucun projet ajouté",
+      "dialog": {
+        "add": {
+          "title": "Ajouter un projet",
+          "description": "Ajoutez les détails de votre projet"
+        },
+        "edit": {
+          "title": "Modifier le projet",
+          "description": "Modifiez les détails de votre projet"
+        },
+        "delete": {
+          "title": "Supprimer le projet",
+          "descriptionStart": "Vous êtes sur le point de supprimer votre projet intitulé",
+          "warning": "Cette action est irréversible et supprimera définitivement ce projet de votre CV."
+        }
+      }
+    },
+    "certifications": {
+      "title": "Certifications",
+      "empty": "Aucune certification ajoutée",
+      "dialog": {
+        "add": {
+          "title": "Ajouter une certification",
+          "description": "Ajoutez les détails de votre certification"
+        },
+        "edit": {
+          "title": "Modifier la certification",
+          "description": "Modifiez les détails de votre certification"
+        },
+        "delete": {
+          "title": "Supprimer la certification",
+          "descriptionStart": "Vous êtes sur le point de supprimer votre certification intitulée",
+          "warning": "Cette action est irréversible et supprimera définitivement cette certification de votre CV."
+        }
+      }
+    },
+    "skills": {
+      "empty": "Aucune compétence ajoutée",
+      "dialog": {
+        "add": {
+          "title": "Ajouter une compétence",
+          "description": "Ajoutez les détails de votre compétence"
+        },
+        "edit": {
+          "title": "Modifier la compétence",
+          "description": "Modifiez les détails de votre compétence"
+        },
+        "delete": {
+          "title": "Supprimer la compétence",
+          "descriptionStart": "Vous êtes sur le point de supprimer votre compétence intitulée",
+          "warning": "Cette action est irréversible et supprimera définitivement cette compétence de votre CV."
+        }
+      }
+    },
+    "languages": {
+      "empty": "Aucune langue ajoutée",
+      "dialog": {
+        "add": {
+          "title": "Ajouter une langue",
+          "description": "Ajoutez les détails de votre langue"
+        },
+        "edit": {
+          "title": "Modifier la langue",
+          "description": "Modifiez les détails de votre langue"
+        },
+        "delete": {
+          "title": "Supprimer la langue",
+          "descriptionStart": "Vous êtes sur le point de supprimer votre langue intitulée",
+          "warning": "Cette action est irréversible et supprimera définitivement cette langue de votre CV."
+        }
+      }
+    }
+  },
+  "nav": {
+    "title": "Postuly",
+    "description": "Naviguer dans l'application",
+    "jobs": "Emplois",
+    "formations": "Formations",
+    "profile": "Profil",
+    "companies": "Entreprises",
+    "myJobs": "Mes emplois",
+    "myReviews": "Mes avis",
+    "settings": "Paramètres",
+    "help": "Aide",
+    "overview": "Aperçu",
+    "resume": "CV",
+    "accountSettings": "Paramètres du compte",
+    "communicationSettings": "Communication connectée",
+    "deviceSettings": "Supervision des appareils",
+    "privacySettings": "Réglages de confidentialité"
+  }
+}

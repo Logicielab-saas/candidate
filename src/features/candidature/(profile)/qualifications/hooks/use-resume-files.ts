@@ -13,9 +13,8 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "./use-profile-resume";
 import { profileKeys } from "../../hooks/use-profile";
-import { AxiosError } from "axios";
 
-export function useCreateResumeFiles() {
+export function useCreateResumeFiles(t: (key: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -36,17 +35,15 @@ export function useCreateResumeFiles() {
 
       toast({
         variant: "success",
-        title: "Files added",
-        description: "Files has been added successfully.",
+        title: t("toast.resumeFiles.create.title"),
+        description: t("toast.resumeFiles.create.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Failed to add files",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });
@@ -54,7 +51,7 @@ export function useCreateResumeFiles() {
   return { mutate, isPending };
 }
 
-export function useDeleteResumeFiles() {
+export function useDeleteResumeFiles(t: (key: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -75,17 +72,15 @@ export function useDeleteResumeFiles() {
 
       toast({
         variant: "success",
-        title: "Files deleted",
-        description: "Files has been deleted successfully.",
+        title: t("toast.resumeFiles.delete.title"),
+        description: t("toast.resumeFiles.delete.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Failed to delete files",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });
@@ -93,7 +88,7 @@ export function useDeleteResumeFiles() {
   return { mutate, isPending };
 }
 
-export function useUpdateResumeFiles() {
+export function useUpdateResumeFiles(t: (key: string) => string) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -114,17 +109,15 @@ export function useUpdateResumeFiles() {
 
       toast({
         variant: "success",
-        title: "Files updated",
-        description: "Files has been updated successfully.",
+        title: t("toast.resumeFiles.update.title"),
+        description: t("toast.resumeFiles.update.description"),
       });
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       toast({
         variant: "destructive",
-        title: "Failed to update files",
-        description:
-          (error.response?.data as { message: string }).message ||
-          "An unexpected error occurred. Please try again.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });

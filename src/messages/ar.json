@@ -1,0 +1,2150 @@
+{
+  "common": {
+    "reviews": {
+      "title": "تقييماتي",
+      "summary": "لقد قدمت {count} تقييم(ات) في المجموع.",
+      "deleteDialog": {
+        "title": "حذف التقييم",
+        "description": "هل أنت متأكد أنك تريد حذف هذا التقييم؟ هذا الإجراء لا يمكن التراجع عنه."
+      },
+      "deleteSuccess": "تم حذف تقييمك بنجاح.",
+      "sections": {
+        "positivePoints": "نقاط إيجابية",
+        "negativePoints": "نقاط لتحسينها"
+      },
+      "search": {
+        "label": "البحث في تقييماتي",
+        "placeholder": "ابحث حسب العنوان أو المحتوى..."
+      },
+      "sort": {
+        "label": "ترتيب حسب",
+        "placeholder": "ترتيب حسب",
+        "options": {
+          "recent": "الأحدث",
+          "oldest": "الأقدم",
+          "rating_high": "التقييم - الأعلى",
+          "rating_low": "التقييم - الأقل"
+        }
+      },
+      "empty": {
+        "noReviews": "لم تقم بإعطاء أي تقييم بعد.",
+        "noResults": "لا توجد تقييمات مطابقة لبحثك."
+      }
+    },
+    "dragHere": "ضع الملف هنا",
+    "browseFiles": "تصفح الملفات",
+    "acceptedTypes": "الأنواع المقبولة: {types}",
+    "or": "أو",
+    "jobNotFound": "لم يتم العثور على عرض العمل. يرجى التحقق من عنوان URL وإعادة المحاولة.",
+    "profileNotFound": "لم يتم العثور على الملف الشخصي. يرجى التحقق من عنوان URL وإعادة المحاولة.",
+    "unknownStep": "خطوة غير معروفة",
+    "appliedFor": "قدمت طلبًا لوظيفة: {jobTitle}",
+    "jobApplySteps": "يرجى إكمال الخطوات التالية لتقديم طلبك",
+    "applyBefore": "تقدم بطلب قبل {date}",
+    "seeLess": "عرض أقل",
+    "seeMore": "عرض المزيد",
+    "informations": "معلومات",
+    "questions": "أسئلة",
+    "review": "مراجعة",
+    "reviewDescription": "يرجى التحقق من معلومات طلبك قبل تقديمه",
+    "success": "تم إرسال الطلب بنجاح!",
+    "successDescription": "تم إرسال طلبك بنجاح. سنتواصل معك في أقرب وقت ممكن.",
+    "nextSteps": "الخطوات التالية",
+    "receiveConfirmation": "استلام تأكيد",
+    "recruiterReview": "مراجعة من قبل المجند",
+    "contactForNextSteps": "الاتصال للخطوات التالية",
+    "returnToJobs": "العودة إلى الوظائف",
+    "followApplications": "متابعة طلباتي",
+    "alreadyApplied": "لقد قدمت طلبًا بالفعل لوظيفة",
+    "yourAnswer": "إجابتك",
+    "selectAtLeastOne": "يرجى اختيار خيار واحد على الأقل",
+    "answersUpdated": "تم تحديث الإجابات",
+    "answersUpdatedDescription": "تم تحديث إجاباتك على الأسئلة بنجاح",
+    "yourExperience": "خبرتك...",
+    "editQuestions": "تعديل إجاباتك",
+    "editQuestionsDescription": "قم بتعديل إجاباتك على الأسئلة",
+    "noQuestions": "لا توجد أسئلة للإجابة عليها",
+    "personalInfoDescription": "يرجى ملء معلوماتك الشخصية للمتابعة",
+    "personalInfoAlertTitle": "تعديلات على ملفك الشخصي",
+    "personalInfoAlertDescription": "أي تعديل يتم هنا سيتم تحديثه في ملفك الشخصي!",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "addedAt": "تم الإضافة في {date}",
+    "preview": "معاينة",
+    "clickToDownload": "اضغط لتنزيل سيرتك الذاتية",
+    "supplementQuestions": "أسئلة إضافية",
+    "selectedResume": "السيرة الذاتية المحددة",
+    "answerQuestions": "إجابات على الأسئلة",
+    "noAnswer": "لا توجد إجابة",
+    "answer": "إجابة",
+    "coverLetter": "خطاب التقديم",
+    "writeYourCoverLetter": "اكتب خطاب التقديم الخاص بك...",
+    "additionalFile": "ملف إضافي",
+    "search": "بحث",
+    "searching": "جاري البحث...",
+    "writing": "يكتب...",
+    "languages": "اللغات",
+    "language": "اللغة",
+    "suggestionsLoading": "جاري تحميل الاقتراحات...",
+    "searchNoResults": "لم يتم العثور على نتائج لـ \"{localValue}\"",
+    "loading": "جاري التحميل...",
+    "notFound": "غير موجود",
+    "positions": "{count} وظيفة",
+    "jobDescription": "وصف الوظيفة",
+    "noDescription": "لا يوجد وصف متاح",
+    "password": "كلمة المرور",
+    "enterPassword": "أدخل كلمة المرور للتأكيد",
+    "passwordMask": "••••••••",
+    "companyUndefined": "شركة",
+    "locationUndefined": "الموقع غير محدد",
+    "noVarFound": "لا يوجد {variable}",
+    "undefined": "غير محدد",
+    "at": "في",
+    "and": "و",
+    "detailsCandidature": "تفاصيل الطلب",
+    "infoContact": "معلومات التواصل",
+    "fullName": "الاسم الكامل",
+    "programmed": "مجدول",
+    "interviewDetails": "تفاصيل المقابلة",
+    "dateLabel": "التاريخ",
+    "hour": "الساعة",
+    "email": "البريد الإلكتروني",
+    "programInterview": "جدولة المقابلة",
+    "phone": "رقم الهاتف",
+    "personalInfo": "المعلومات الشخصية",
+    "selectHour": "اختر الساعة",
+    "selectDay": "اختر اليوم",
+    "suggestNewSlots": "اقتراح مواعيد أخرى",
+    "formatInterview": "نوع المقابلة:",
+    "inPerson": "حضوري",
+    "videoCall": "مكالمة فيديو",
+    "phoneCall": "مكالمة هاتفية",
+    "map": "الموقع",
+    "videoLink": "رابط الاجتماع",
+    "current": "حالي",
+    "poste": "المسمى الوظيفي",
+    "exPoste": "مثال: مطور واجهات أمامية",
+    "company": "الشركة",
+    "exCompany": "مثال: مايكروسوفت",
+    "startDate": "تاريخ البدء",
+    "exDate": "اختر تاريخًا",
+    "endDate": "تاريخ الانتهاء",
+    "currentPosition": "أنا أعمل حاليًا في هذا المنصب",
+    "school": "المدرسة / المؤسسة",
+    "exSchool": "مثال: جامعة XYZ",
+    "degree": "الشهادة / التخصص",
+    "exDegree": "مثال: بكالوريوس في علوم الحاسوب",
+    "currentStudying": "أنا طالب حاليًا",
+    "description": "الوصف",
+    "exDescription": "صف تجربتك",
+    "fileTooLarge": "الملف كبير جدًا",
+    "fileTooLargeDescription": "الحد الأقصى لحجم الملف هو {taille} ميجابايت",
+    "invalidFileType": "نوع الملف غير صالح",
+    "invalidFileTypeDescription": "هذا ليس نوع صورة مدعوم",
+    "viewProject": "عرض المشروع",
+    "tasksLabel": "المهام",
+    "projectName": "اسم المشروع",
+    "exProjectName": "مثال: تطبيق إدارة المشاريع",
+    "url": "رابط المشروع",
+    "exUrl": "مثال: github.com/username/project",
+    "skills": "المهارات",
+    "beginner": "مبتدئ",
+    "intermediate": "متوسط",
+    "advanced": "متقدم",
+    "expert": "خبير",
+    "master": "محترف",
+    "conversational": "محادثة",
+    "proficient": "متقن",
+    "fluent": "بطلاقة",
+    "native": "اللغة الأم",
+    "images": {
+      "imageLabel": "صور المشروع",
+      "uploadText": "اسحب وأفلت الصور أو انقر للتصفح",
+      "imageRequirement": "JPG، PNG أو GIF حتى 5 ميجابايت",
+      "selected": "{count} صورة محددة",
+      "preview": "معاينة الصورة {index}"
+    },
+    "tasks": {
+      "label": "المهام الرئيسية",
+      "addTask": "إضافة مهمة",
+      "nameLabel": "اسم المهمة",
+      "namePlaceholder": "مثال: تصميم واجهة المستخدم",
+      "taskDescription": "وصف المهمة",
+      "taskDescriptionPlaceholder": "مثال: إنشاء النماذج الأولية والتصاميم",
+      "statusLabel": "الحالة",
+      "statusPlaceholder": "اختر الحالة",
+      "inProgress": "قيد التنفيذ",
+      "completed": "مكتمل"
+    },
+    "certfName": "اسم الشهادة",
+    "exCertfName": "مثال: شهادة جوجل",
+    "certfOrganization": "جهة الشهادة",
+    "exCertfOrganization": "مثال: Google",
+    "certfDate": "تاريخ الحصول",
+    "exCertfDate": "اختر تاريخًا",
+    "certfExpDate": "تاريخ الانتهاء",
+    "skill": "مهارة",
+    "exSkill": "اختر مهارة",
+    "searchSkill": "ابحث عن مهارة",
+    "addNew": "أضف \"{name}\" كمهارة جديدة",
+    "skillLevel": "مستوى المهارة",
+    "exSkillLevel": "اختر مستوى",
+    "addToList": "أضف إلى القائمة",
+    "exLangue": "اختر لغة",
+    "langueProficiencyLevel": "مستوى الإتقان",
+    "exLangueProficiencyLevel": "اختر مستوى",
+    "validation": {
+      "required": "هذا الحقل مطلوب",
+      "startDateRequired": "تاريخ البدء مطلوب",
+      "email": "البريد الإلكتروني غير صالح",
+      "phoneRequired": "رقم الهاتف مطلوب",
+      "minLength": "الحد الأدنى {count} حرف",
+      "min6Length": "الحد الأدنى 6 أحرف",
+      "resumeRequired": "يرجى تحديد سيرة ذاتية",
+      "requiredAnswers": "يرجى الإجابة على جميع الأسئلة المطلوبة",
+      "passwordMatch": "كلمات المرور غير متطابقة",
+      "passwordRequired": "كلمة المرور مطلوبة",
+      "passwordMinLength": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+      "passwordPattern": "يجب أن تحتوي كلمة المرور على حرف كبير وحرف صغير ورقم واحد على الأقل",
+      "passwordMismatch": "كلمات المرور غير متطابقة",
+      "passwordIncorrect": "كلمة المرور غير صحيحة",
+      "otpLength": "يجب أن يحتوي الرمز على {length} أرقام",
+      "unexpectedError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.",
+      "selectTimeFirst": "يرجى اختيار وقت للمقابلة",
+      "jobTitleRequired": "المسمى الوظيفي مطلوب",
+      "companyNameRequired": "اسم الشركة مطلوب",
+      "schoolNameRequired": "اسم المدرسة مطلوب",
+      "degreeRequired": "الشهادة / التخصص مطلوبة",
+      "projectNameRequired": "اسم المشروع مطلوب",
+      "urlInvalid": "رابط المشروع غير صالح",
+      "taskNameRequired": "اسم المهمة مطلوب",
+      "certfNameRequired": "اسم الشهادة مطلوب",
+      "certfOrganizationRequired": "جهة الشهادة مطلوبة",
+      "certfDateRequired": "تاريخ الحصول مطلوب",
+      "skillDuplicate": "تمت إضافة هذه المهارة بالفعل",
+      "skillLevelRequired": "مستوى المهارة مطلوب",
+      "selectALanguage": "يرجى اختيار لغة",
+      "languageProficiencyLevelRequired": "مستوى الإتقان مطلوب",
+      "jobTypes": {
+        "required": "نوع الوظيفة مطلوب",
+        "minSelection": "اختر نوع وظيفة واحد على الأقل"
+      },
+      "invalidType": {
+        "title": "نوع الملف غير صالح",
+        "description": "يرجى تحميل ملف PDF"
+      },
+      "fileSize": {
+        "title": "الملف كبير جدًا",
+        "description": "الحد الأقصى لحجم الملف هو 2 ميجابايت (2048 كيلوبايت)"
+      },
+      "fileType": {
+        "title": "نوع الملف غير صالح",
+        "description": "يرجى تحميل ملف PDF, DOC و DOCX فقط",
+        "description2": "نوع الملف غير صالح. الأنواع المقبولة: {types}"
+      },
+      "jobTitle": {
+        "required": "المسمى الوظيفي مطلوب"
+      },
+      "minSalary": {
+        "amount": {
+          "required": "المبلغ مطلوب",
+          "invalid": "يجب أن يكون المبلغ رقمًا صالحًا"
+        },
+        "period": {
+          "required": "الفترة مطلوبة"
+        }
+      },
+      "firstName": {
+        "minLength": "يجب أن يكون الاسم الأول على الأقل حرفين"
+      },
+      "lastName": {
+        "minLength": "يجب أن يكون اسم العائلة على الأقل حرفين"
+      },
+      "image": {
+        "size": "يجب أن يكون حجم الملف أقل من 5 ميجابايت",
+        "format": "يتم قبول صيغ .jpg و .jpeg و .png و .gif فقط"
+      }
+    },
+    "form": {
+      "required": "*",
+      "optional": "(اختياري)",
+      "placeholders": {
+        "shortAnswer": "إجابتك",
+        "longAnswer": "إجابتك التفصيلية"
+      },
+      "submit": "إرسال",
+      "sending": "جاري الإرسال...",
+      "email": {
+        "label": "البريد الإلكتروني",
+        "placeholder": "m@example.com",
+        "verification": {
+          "title": "تأكيد البريد الإلكتروني الجديد",
+          "description": "تم إرسال رمز تأكيد إلى {email}",
+          "code": {
+            "label": "رمز التأكيد",
+            "resend": "إعادة إرسال الرمز",
+            "verify": "تحقق"
+          }
+        }
+      },
+      "password": {
+        "forgot": "هل نسيت كلمة المرور؟",
+        "current": "كلمة المرور الحالية",
+        "new": "كلمة المرور الجديدة",
+        "confirm": "تأكيد كلمة المرور",
+        "requirements": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل، وحرف كبير، وحرف صغير، ورقم."
+      }
+    },
+    "labels": {
+      "search": "بحث",
+      "salary": "الراتب",
+      "additionalInfo": "معلومات إضافية",
+      "jobDetails": "تفاصيل الوظيفة",
+      "contractType": "نوع العقد",
+      "duration": "المدة",
+      "schedule": "الجدول الزمني",
+      "questions": "الأسئلة",
+      "yourAnswer": "إجابتك",
+      "contactInfo": "معلومات التواصل",
+      "phone": "الهاتف",
+      "address": "العنوان",
+      "birthDate": "تاريخ الميلاد",
+      "gender": "الجنس",
+      "bio": "نبذة",
+      "resume": "السيرة الذاتية"
+    },
+    "actions": {
+      "create": "إنشاء",
+      "submit": "تقديم",
+      "edit": "تعديل",
+      "view": "عرض",
+      "save": "حفظ",
+      "saved": "تم الحفظ",
+      "saveAll": "حفظ الكل",
+      "saving": "جاري الحفظ...",
+      "change": "تغيير",
+      "changing": "جاري التغيير...",
+      "close": "إغلاق",
+      "cancel": "إلغاء",
+      "update": "تحديث",
+      "apply": "تقديم",
+      "reset": "إعادة تعيين",
+      "viewDetails": "عرض التفاصيل",
+      "archive": "أرشفة",
+      "archiving": "جاري الأرشفة...",
+      "unArchive": "إلغاء الأرشفة",
+      "unArchiving": "جاري إلغاء الأرشفة...",
+      "withdraw": "سحب",
+      "loadMore": "تحميل المزيد",
+      "savedAt": "تم الحفظ في {date}",
+      "applicationSentAt": "تم إرسال الطلب في {date}",
+      "archivedAt": "تمت الأرشفة في {date}",
+      "reportJob": "الإبلاغ عن الوظيفة",
+      "error": "خطأ",
+      "openMenu": "فتح القائمة",
+      "confirm": "تأكيد",
+      "send": "إرسال",
+      "sending": "جاري الإرسال...",
+      "logout": "تسجيل الخروج",
+      "loggingOut": "جاري تسجيل الخروج...",
+      "manage": "إدارة",
+      "report": "إبلاغ",
+      "reporter": "تأجيل",
+      "share": "مشاركة",
+      "alreadyApplied": "تم التقديم مسبقًا",
+      "yes": "نعم",
+      "no": "لا",
+      "clearFilters": "مسح الفلاتر",
+      "markAsRead": "وضع علامة كمقروء",
+      "backToList": "العودة إلى القائمة",
+      "delete": "حذف",
+      "deleting": "جاري الحذف...",
+      "removeApply": "سحب الطلب",
+      "search": "بحث",
+      "download": "تحميل",
+      "schedule": "جدولة",
+      "refuse": "رفض",
+      "program": "جدولة",
+      "zoom": "تكبير",
+      "restore": "استعادة",
+      "previous": "السابق",
+      "next": "التالي",
+      "zoomIn": "تكبير",
+      "zoomOut": "تصغير",
+      "rotate": "تدوير",
+      "back": "رجوع",
+      "continue": "متابعة",
+      "continueWith": "أو تابع مع",
+      "loginWith": "تسجيل الدخول باستخدام {provider}",
+      "generate": "توليد",
+      "editProfile": "تعديل الملف الشخصي",
+      "generateCV": "توليد السيرة الذاتية",
+      "add": "إضافة",
+      "adding": "جاري الإضافة...",
+      "enabled": "مفعل",
+      "disabled": "معطل",
+      "enable": "تفعيل",
+      "disable": "تعطيل"
+    },
+    "filters": {
+      "activeFilters": "{count} فلتر نشط",
+      "activeFiltersPlural": "{count} فلاتر نشطة",
+      "filterByDate": "تصفية حسب التاريخ",
+      "types": {
+        "contractTypes": "أنواع العقود",
+        "employmentTypes": "أنواع الوظائف",
+        "all": "كل الأنواع",
+        "job": "وظائف",
+        "interview": "مقابلات",
+        "application": "طلبات",
+        "system": "النظام"
+      },
+      "jobType": {
+        "placeholder": "تصفية حسب نوع الوظيفة"
+      },
+      "advanced": {
+        "title": "فلاتر متقدمة",
+        "description": "قم بتضييق نطاق بحثك عن وظيفة باستخدام خيارات التصفية المتقدمة.",
+        "sections": {
+          "salary": {
+            "title": "نطاق الراتب",
+            "min": "الحد الأدنى للراتب",
+            "max": "الحد الأقصى للراتب"
+          },
+          "experience": {
+            "title": "مستوى الخبرة",
+            "placeholder": "اختر مستوى",
+            "levels": {
+              "entry": "مبتدئ (0-2 سنوات)",
+              "mid": "متوسط (3-5 سنوات)",
+              "senior": "كبير (5+ سنوات)",
+              "lead": "قائد/مدير (8+ سنوات)"
+            }
+          },
+          "remote": {
+            "title": "العمل عن بعد",
+            "label": "العمل عن بعد فقط",
+            "description": "عرض الوظائف عن بعد فقط"
+          },
+          "industry": {
+            "title": "القطاع",
+            "placeholder": "اختر قطاعًا",
+            "types": {
+              "tech": "تقنية",
+              "finance": "مالية",
+              "healthcare": "صحة",
+              "education": "تعليم",
+              "retail": "تجزئة",
+              "manufacturing": "صناعة"
+            }
+          }
+        }
+      },
+      "filterBy": {
+        "type": "تصفية حسب النوع",
+        "status": "تصفية حسب الحالة"
+      },
+      "status": {
+        "all": "كل الحالات",
+        "read": "مقروء",
+        "unread": "غير مقروء",
+        "inbox": "الوارد",
+        "archive": "الأرشيف",
+        "spam": "بريد مزعج"
+      },
+      "searchPlaceholder": "بحث..."
+    },
+    "selectorsSearch": {
+      "citySelector": {
+        "label": "المدينة",
+        "searchPlaceholder": "ابحث عن مدينة...",
+        "noCitiesFound": "لم يتم العثور على أي مدينة.",
+        "allCities": "كل المدن..."
+      }
+    },
+    "toast": {
+      "success": {
+        "title": "نجاح",
+        "description": "تم إرسال طلبك بنجاح",
+        "resume": {
+          "delete": "تم حذف سيرتك الذاتية بنجاح."
+        },
+        "logout": {
+          "title": "تم تسجيل الخروج",
+          "description": "تم تسجيل خروجك بنجاح"
+        }
+      },
+      "error": {
+        "title": "خطأ",
+        "description": "حدث خطأ. يرجى المحاولة مرة أخرى."
+      },
+      "profile": {
+        "update": {
+          "title": "تم تحديث الملف الشخصي",
+          "description": "تم تحديث ملفك الشخصي بنجاح."
+        }
+      },
+      "myAppliedJobs": {
+        "delete": {
+          "title": "تم حذف الطلب",
+          "description": "تم حذف طلبك بنجاح."
+        },
+        "update": {
+          "title": "تم تحديث الطلب",
+          "description": "تم تحديث طلبك بنجاح."
+        }
+      },
+      "myArchivedJobs": {
+        "update": {
+          "title": "تم أرشفة الوظيفة",
+          "description": "تمت أرشفة الوظيفة بنجاح."
+        },
+        "delete": {
+          "title": "تم إلغاء أرشفة الوظيفة",
+          "description": "تم إلغاء أرشفة الوظيفة بنجاح."
+        }
+      },
+      "mySavedJobs": {
+        "save": {
+          "title": "تم حفظ الوظيفة",
+          "description": "تم حفظ الوظيفة بنجاح."
+        },
+        "unsave": {
+          "title": "تم إزالة الوظيفة",
+          "description": "تمت إزالة الوظيفة من المفضلة بنجاح."
+        }
+      },
+      "resumeProfile": {
+        "update": {
+          "title": "تم تحديث السيرة الذاتية",
+          "description": "تم تحديث سيرتك الذاتية بنجاح."
+        }
+      },
+      "resumeCertification": {
+        "create": {
+          "title": "تمت إضافة الشهادة",
+          "description": "تمت إضافة شهادتك بنجاح."
+        },
+        "update": {
+          "title": "تم تحديث الشهادة",
+          "description": "تم تحديث شهادتك بنجاح."
+        },
+        "delete": {
+          "title": "تم حذف الشهادة",
+          "description": "تم حذف شهادتك بنجاح."
+        }
+      },
+      "resumeEducation": {
+        "create": {
+          "title": "تمت إضافة التعليم",
+          "description": "تمت إضافة تعليمك بنجاح."
+        },
+        "update": {
+          "title": "تم تحديث التعليم",
+          "description": "تم تحديث تعليمك بنجاح."
+        },
+        "delete": {
+          "title": "تم حذف التعليم",
+          "description": "تم حذف تعليمك بنجاح."
+        }
+      },
+      "resumeExperience": {
+        "create": {
+          "title": "تمت إضافة الخبرة",
+          "description": "تمت إضافة خبرتك بنجاح."
+        },
+        "update": {
+          "title": "تم تحديث الخبرة",
+          "description": "تم تحديث خبرتك بنجاح."
+        },
+        "delete": {
+          "title": "تم حذف الخبرة",
+          "description": "تم حذف خبرتك بنجاح."
+        }
+      },
+      "resumeFiles": {
+        "create": {
+          "title": "تمت إضافة الملف",
+          "description": "تمت إضافة ملفك بنجاح."
+        },
+        "update": {
+          "title": "تم تحديث الملف",
+          "description": "تم تحديث ملفك بنجاح."
+        },
+        "delete": {
+          "title": "تم حذف الملف",
+          "description": "تم حذف ملفك بنجاح."
+        }
+      },
+      "resumeLanguage": {
+        "create": {
+          "title": "تمت إضافة اللغة",
+          "description": "تمت إضافة لغتك بنجاح."
+        },
+        "update": {
+          "title": "تم تحديث اللغة",
+          "description": "تم تحديث لغتك بنجاح."
+        },
+        "delete": {
+          "title": "تم حذف اللغة",
+          "description": "تم حذف لغتك بنجاح."
+        }
+      },
+      "resumeProject": {
+        "create": {
+          "title": "تمت إضافة المشروع",
+          "description": "تمت إضافة مشروعك بنجاح."
+        },
+        "update": {
+          "title": "تم تحديث المشروع",
+          "description": "تم تحديث مشروعك بنجاح."
+        },
+        "delete": {
+          "title": "تم حذف المشروع",
+          "description": "تم حذف مشروعك بنجاح."
+        }
+      },
+      "resumeSkill": {
+        "create": {
+          "title": "تمت إضافة المهارة",
+          "description": "تمت إضافة مهارتك بنجاح."
+        },
+        "update": {
+          "title": "تم تحديث المهارة",
+          "description": "تم تحديث مهارتك بنجاح."
+        },
+        "delete": {
+          "title": "تم حذف المهارة",
+          "description": "تم حذف مهارتك بنجاح."
+        }
+      },
+      "jobApply": {
+        "create": {
+          "title": "تم إرسال الطلب",
+          "description": "تم إرسال طلبك بنجاح."
+        }
+      },
+      "deleteAccount": {
+        "success": {
+          "title": "تم حذف الحساب",
+          "description": "تم حذف الحساب بنجاح."
+        }
+      },
+      "updatePassword": {
+        "success": {
+          "title": "تم تغيير كلمة المرور",
+          "description": "تم تغيير كلمة المرور بنجاح."
+        }
+      },
+      "verifyPassword": {
+        "success": {
+          "title": "تم التحقق من كلمة المرور",
+          "description": "كلمة المرور المقدمة صحيحة"
+        }
+      },
+      "maskEmploi": {
+        "mask": {
+          "title": "تم إخفاء الوظيفة",
+          "description": "تم إخفاء الوظيفة بنجاح."
+        }
+      },
+      "reportEmploi": {
+        "success": {
+          "title": "تم إرسال التقرير",
+          "description": "تم إرسال تقريرك بنجاح."
+        }
+      }
+    },
+    "warnings": {
+      "irreversibleAction": "هذا الإجراء لا يمكن التراجع عنه.",
+      "permanentDelete": {
+        "resume": "سيتم حذف سيرتك الذاتية نهائيًا."
+      }
+    },
+    "status": {
+      "online": "متصل",
+      "away": "بعيد",
+      "busy": "مشغول",
+      "offline": "غير متصل"
+    },
+    "counts": {
+      "messages": "{count} رسالة"
+    },
+    "fileUpload": {
+      "sharedFiles": "الملفات المشتركة:",
+      "fileSize": {
+        "bytes": "بايت",
+        "kb": "كيلوبايت",
+        "mb": "ميجابايت",
+        "gb": "جيجابايت"
+      },
+      "title": "مشاركة الملفات",
+      "description": "حدد حتى {maxFiles} ملفًا للمشاركة.",
+      "dragDrop": {
+        "idle": "اسحب وأفلت ملفاتك",
+        "active": "أسقط الملفات هنا",
+        "or": "أو",
+        "browse": "تصفح"
+      },
+      "preview": {
+        "notAvailable": "المعاينة غير متاحة"
+      },
+      "validation": {
+        "maxFiles": {
+          "title": "تم الوصول إلى حد الملفات",
+          "description": "لا يمكنك تحميل أكثر من {maxFiles} ملف في المرة الواحدة."
+        },
+        "fileType": {
+          "title": "نوع الملف غير مدعوم",
+          "description": "أنواع الملفات المقبولة: {types}"
+        },
+        "success": {
+          "title": "تمت إضافة الملفات",
+          "description": "تمت إضافة {count} ملف(ات) بنجاح."
+        },
+        "upload": {
+          "success": {
+            "title": "تم التحميل بنجاح",
+            "description": "تم تحميل {count} ملف(ات) بنجاح."
+          },
+          "error": {
+            "title": "خطأ في التحميل",
+            "description": "حدث خطأ أثناء تحميل الملفات."
+          }
+        },
+        "remove": {
+          "title": "تم حذف الملف",
+          "description": "تم حذف {filename}."
+        }
+      }
+    },
+    "templates": {
+      "title": "نماذج الرسائل"
+    },
+    "navigation": {
+      "imageCount": "{current} / {total}"
+    },
+    "aria": {
+      "imageViewer": "عارض الصور",
+      "imageDescription": "وصف الصورة"
+    },
+    "links": {
+      "termsOfService": "شروط الاستخدام",
+      "privacyPolicy": "سياسة الخصوصية"
+    },
+    "legal": {
+      "agreement": "بالنقر على متابعة، فإنك توافق على {terms} و {privacy} الخاصة بنا"
+    },
+    "placeholders": {
+      "noName": "لا يوجد اسم",
+      "noLocation": "لا يوجد موقع",
+      "noPhone": "لا يوجد هاتف",
+      "noAddress": "لا يوجد عنوان",
+      "noBirthdate": "لا يوجد تاريخ ميلاد",
+      "noPostalCode": "لا يوجد رمز بريدي",
+      "noCity": "لا توجد مدينة",
+      "noCountry": "لا يوجد بلد",
+      "noBio": "لا توجد نبذة",
+      "noSkills": "لا توجد مهارات مضافة. انقر على تعديل لإضافة مهاراتك.",
+      "noBioWithEdit": "لا توجد معلومات مضافة. انقر على تعديل لإضافة وصفك.",
+      "noResume": "لا توجد سيرة ذاتية مضافة"
+    },
+    "location": {
+      "format": "{city}, {country}"
+    },
+    "files": {
+      "pdf": {
+        "format": "تنسيق PDF",
+        "maxSize": "الحد الأقصى {size}ميجابايت"
+      }
+    },
+    "gender": {
+      "male": "ذكر",
+      "female": "أنثى",
+      "notSpecified": "غير محدد"
+    },
+    "date": {
+      "format": {
+        "long": {
+          "year": "رقمي",
+          "month": "طويل",
+          "day": "رقمي"
+        }
+      }
+    },
+    "dialogs": {
+      "confirmation": {
+        "title": "هل أنت متأكد؟"
+      }
+    },
+    "preferences": {
+      "title": "التفضيلات",
+      "employmentPreferences": {
+        "title": "تفضيلات الوظيفة",
+        "description": "حدد بعض المعلومات مثل الحد الأدنى للراتب والجدول الزمني المرغوب."
+      },
+      "hideJobDetails": {
+        "title": "إخفاء الوظائف بهذه التفاصيل",
+        "description": "قم بإدارة المؤهلات والتفضيلات التي يجب أخذها في الاعتبار لإخفاء بعض الوظائف من بحثك.",
+        "dialog": {
+          "description": "سنحاول قدر الإمكان إخفاء الوظائف التي تتطلب هذه المؤهلات أو التفضيلات.",
+          "empty": {
+            "description": "عندما تقدم ملاحظاتك حول الوظائف المعروضة في نتائج البحث والإشعارات عبر البريد الإلكتروني، ستجد التفاصيل هنا."
+          }
+        }
+      },
+      "availability": {
+        "title": "متاح الآن",
+        "description": "أخبر أصحاب العمل أنه يمكنك البدء في أقرب وقت ممكن.",
+        "dialog": {
+          "description": "أخبر أصحاب العمل أنه يمكنك البدء في العمل الآن.",
+          "switch": {
+            "label": "يمكنني البدء فورًا.",
+            "description": "ستكون هذه المعلومة مرئية لأصحاب العمل."
+          }
+        }
+      },
+      "page": {
+        "title": "تفضيلات الوظيفة | ملفي الشخصي",
+        "description": "قم بإدارة تفضيلاتك الوظيفية، وأنواع الوظائف، ومعايير البحث.",
+        "keywords": [
+          "تفضيلات الوظيفة",
+          "الحد الأدنى للراتب",
+          "أنواع الوظائف",
+          "إعادة التوطين",
+          "معايير البحث"
+        ]
+      },
+      "sections": {
+        "jobTitles": {
+          "title": "المسميات الوظيفية",
+          "empty": "لا توجد مسميات وظيفية مضافة",
+          "add": "إضافة مسمى وظيفي",
+          "dialog": {
+            "add": {
+              "title": "إضافة مسمى وظيفي",
+              "description": "أضف مسمى وظيفي جديد إلى ملفك الشخصي.",
+              "form": {
+                "label": "المسمى الوظيفي",
+                "placeholder": "مثال: مطور واجهات أمامية"
+              },
+              "toast": {
+                "success": {
+                  "title": "تمت الإضافة",
+                  "description": "تمت إضافة المسمى الوظيفي بنجاح."
+                }
+              }
+            },
+            "edit": {
+              "title": "تعديل المسمى الوظيفي",
+              "description": "قم بتعديل المسمى الوظيفي المحدد.",
+              "form": {
+                "label": "المسمى الوظيفي",
+                "placeholder": "مثال: مطور واجهات أمامية"
+              },
+              "toast": {
+                "success": {
+                  "title": "تم التعديل",
+                  "description": "تم تعديل المسمى الوظيفي بنجاح."
+                }
+              }
+            },
+            "delete": {
+              "title": "هل أنت متأكد؟",
+              "description": "هذا الإجراء لا يمكن التراجع عنه. سيتم حذف هذا المسمى الوظيفي نهائيًا من ملفك.",
+              "action": "حذف"
+            }
+          }
+        },
+        "minSalary": {
+          "title": "الحد الأدنى للراتب الأساسي",
+          "description": "لن يتم مشاركة هذه المعلومة مع أصحاب العمل.",
+          "placeholder": "لم تتم إضافة حد أدنى للراتب",
+          "periods": {
+            "monthly": "شهريًا",
+            "yearly": "سنويًا"
+          },
+          "dialog": {
+            "add": {
+              "title": "إضافة حد أدنى للراتب",
+              "description": "ما هو الحد الأدنى للراتب الذي تبحث عنه؟"
+            },
+            "edit": {
+              "title": "تعديل الحد الأدنى للراتب",
+              "description": "ما هو الحد الأدنى للراتب الذي تبحث عنه؟"
+            },
+            "delete": {
+              "title": "هل أنت متأكد؟",
+              "description": "هذا الإجراء لا يمكن التراجع عنه. سيتم حذف الحد الأدنى للراتب نهائيًا من ملفك."
+            },
+            "form": {
+              "amount": {
+                "label": "الحد الأدنى للراتب الأساسي",
+                "placeholder": "4.000",
+                "currency": "درهم"
+              },
+              "period": {
+                "label": "فترة الدفع",
+                "placeholder": "اختر فترة"
+              }
+            },
+            "toast": {
+              "add": {
+                "title": "تمت إضافة الحد الأدنى",
+                "description": "تمت إضافة الحد الأدنى للراتب بنجاح."
+              },
+              "edit": {
+                "title": "تم التعديل",
+                "description": "تم تعديل الحد الأدنى للراتب بنجاح."
+              }
+            }
+          }
+        },
+        "jobTypes": {
+          "title": "أنواع الوظائف",
+          "empty": "لا توجد أنواع وظائف مضافة",
+          "dialog": {
+            "add": {
+              "title": "إضافة نوع وظيفة",
+              "description": "اختر نوع وظيفة لإضافته إلى ملفك الشخصي."
+            },
+            "edit": {
+              "title": "تعديل نوع الوظيفة",
+              "description": "قم بتعديل نوع الوظيفة المحدد."
+            },
+            "delete": {
+              "title": "حذف نوع الوظيفة",
+              "description": "هذا الإجراء لا يمكن التراجع عنه. سيتم حذف نوع الوظيفة نهائيًا من ملفك."
+            },
+            "form": {
+              "type": {
+                "label": "نوع الوظيفة",
+                "placeholder": "اختر نوع الوظيفة"
+              }
+            },
+            "toast": {
+              "add": {
+                "title": "تمت الإضافة",
+                "description": "تمت إضافة نوع الوظيفة بنجاح."
+              },
+              "edit": {
+                "title": "تم التعديل",
+                "description": "تم تعديل نوع الوظيفة بنجاح."
+              }
+            }
+          }
+        },
+        "relocation": {
+          "title": "إعادة التوطين",
+          "empty": "لا توجد تفضيلات إعادة توطين مضافة",
+          "status": {
+            "noRelocation": "لا يوجد إعادة توطين",
+            "anywhereRelocation": "إمكانية الانتقال لأي مكان",
+            "specificLocation": {
+              "title": "بالقرب من:"
+            }
+          },
+          "dialog": {
+            "add": {
+              "title": "إضافة تفضيل إعادة توطين",
+              "description": "حدد تفضيلات إعادة التوطين الخاصة بك"
+            },
+            "edit": {
+              "title": "تعديل تفضيل إعادة التوطين",
+              "description": "قم بتعديل تفضيلات إعادة التوطين الخاصة بك"
+            },
+            "delete": {
+              "title": "حذف تفضيل إعادة التوطين",
+              "description": "هذا الإجراء لا يمكن التراجع عنه. سيتم حذف تفضيل إعادة التوطين نهائيًا من ملفك."
+            },
+            "form": {
+              "willRelocate": {
+                "label": "مستعد للانتقال",
+                "description": "أنا مستعد للانتقال من أجل وظيفة"
+              },
+              "locationType": {
+                "label": "نوع الموقع",
+                "options": {
+                  "anywhere": "أي مكان",
+                  "specific": "مدن محددة"
+                }
+              },
+              "location": {
+                "label": "المدن المفضلة",
+                "placeholder": "أدخل المدن، مفصولة بفواصل",
+                "description": "قائمة المدن التي ترغب في العمل بها"
+              }
+            },
+            "toast": {
+              "add": {
+                "title": "تمت إضافة التفضيل",
+                "description": "تمت إضافة تفضيلات إعادة التوطين بنجاح."
+              },
+              "edit": {
+                "title": "تم التعديل",
+                "description": "تم تعديل تفضيلات إعادة التوطين بنجاح."
+              },
+              "delete": {
+                "title": "تم الحذف",
+                "description": "تم حذف تفضيلات إعادة التوطين بنجاح."
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "pagination": {
+    "showing": "عرض من {start} إلى {end} من أصل {total} نتيجة",
+    "currentOfTotal": "الصفحة {current} من {total}",
+    "aria": {
+      "firstPage": "الصفحة الأولى",
+      "previousPage": "الصفحة السابقة",
+      "nextPage": "الصفحة التالية",
+      "lastPage": "الصفحة الأخيرة",
+      "pageX": "الصفحة {page}"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "اختر نوع تسجيل الدخول",
+      "description": "يرجى اختيار كيفية تسجيل الدخول.",
+      "welcomeBack": "مرحبًا بك",
+      "welcomeDescription": {
+        "employee": "سجّل الدخول إلى حسابك في Postuly كمرشح",
+        "recruiter": "سجّل الدخول إلى حسابك في Postuly كموظِّف"
+      },
+      "options": {
+        "employee": {
+          "title": "أبحث عن عمل",
+          "description": "سجّل الدخول كمرشح للتقديم على الوظائف"
+        },
+        "recruiter": {
+          "title": "أقوم بالتوظيف",
+          "description": "سجّل الدخول كموظِّف لنشر عروض العمل"
+        }
+      },
+      "noAccount": "ليس لديك حساب؟",
+      "signup": "إنشاء حساب"
+    },
+    "signup": {
+      "selectType": {
+        "title": "إنشاء حسابك",
+        "description": "الرجاء اختيار كيفية التسجيل",
+        "employee": {
+          "title": "تبحث عن وظيفة",
+          "imageAlt": "رسم توضيحي للباحث عن عمل"
+        },
+        "recruiter": {
+          "title": "توظيف لوظيفة",
+          "imageAlt": "رسم توضيحي للموظف"
+        },
+        "illustration": {
+          "alt": "رسم توضيحي لاختيار التسجيل"
+        }
+      },
+      "form": {
+        "title": "إنشاء حساب",
+        "description": "أنشئ حسابك في Postuly كـ {type}",
+        "name": {
+          "label": "الاسم",
+          "placeholder": "اسمك"
+        },
+        "email": {
+          "label": "البريد الإلكتروني",
+          "placeholder": "m@example.com"
+        },
+        "password": {
+          "label": "كلمة المرور",
+          "placeholder": "•••••••"
+        },
+        "passwordConfirm": {
+          "label": "تأكيد كلمة المرور",
+          "placeholder": "•••••••"
+        },
+        "haveAccount": "هل لديك حساب بالفعل؟"
+      },
+      "types": {
+        "employee": "باحث عن عمل",
+        "recruiter": "موظف"
+      },
+      "toast": {
+        "success": "تم إنشاء حسابك بنجاح"
+      }
+    }
+  },
+  "emplois": {
+    "page": {
+      "title": "اكتشف مسيرتك المهنية المثالية",
+      "description": "استكشف آلاف فرص العمل وابحث عن الدور المثالي الذي يناسب مهاراتك وطموحاتك"
+    },
+    "searchInput": {
+      "label": "ابحث عن وظيفة",
+      "placeholder": "ابحث حسب المسمى الوظيفي أو الشركة أو الكلمات المفتاحية..."
+    },
+    "jobsContainer": {
+      "tabs": {
+        "recommended": "مقترحة لك",
+        "recentSearches": "عمليات البحث الأخيرة",
+        "resume": "تحميل سيرتك الذاتية"
+      },
+      "filters": {
+        "title": "الفلاتر",
+        "keywords": "الكلمات المفتاحية",
+        "contractTypes": "أنواع العقود",
+        "apply": "تطبيق",
+        "reset": "إعادة تعيين",
+        "date": {
+          "last24h": "آخر 24 ساعة",
+          "lastWeek": "الأسبوع الماضي",
+          "lastMonth": "الشهر الماضي",
+          "allTime": "الكل"
+        }
+      },
+      "noActiveSearch": {
+        "title": "ابدأ البحث الخاص بك",
+        "description": "استخدم شريط البحث أعلاه للعثور على وظائف"
+      }
+    },
+    "jobsList": {
+      "title": "الوظائف المتاحة",
+      "loading": "جاري التحميل...",
+      "error": "حدث خطأ أثناء تحميل الوظائف",
+      "noResults": "لم يتم العثور على أي وظيفة. جرب مرة أخرى لاحقا أو استكشف فرص عمل أخرى.",
+      "jobsFound": "{count} وظيفة تم العثور عليها",
+      "jobsFoundPlural": "{count} وظائف تم العثور عليها",
+      "remainingJobs": "{count} متبقية"
+    },
+    "jobCard": {
+      "views": "{count} مشاهدة",
+      "viewsPlural": "{count} مشاهدات",
+      "applied": "{count} طلب",
+      "appliedPlural": "{count} طلبات",
+      "status": {
+        "open": "نشط",
+        "closed": "مغلق",
+        "suspended": "معلق"
+      },
+      "menu": {
+        "bookmark": {
+          "add": "إضافة إلى المفضلة",
+          "remove": "إزالة من المفضلة"
+        },
+        "notInterested": "غير مهتم",
+        "report": "الإبلاغ عن هذا العرض"
+      },
+      "notInterestedDialog": {
+        "title": "تأكيد اختيارك",
+        "description": "لن يظهر هذا العرض في صفحتك الرئيسية بعد الآن. يمكنك دائمًا العثور عليه في الإعدادات.",
+        "masking": "جاري الإخفاء..."
+      },
+      "reportDialog": {
+        "title": "الإبلاغ عن هذا العرض الوظيفي",
+        "description": "حدد سببًا وقدم معلومات إضافية إذا لزم الأمر.",
+        "reasons": {
+          "offensive": "عرض مسيء أو تمييزي",
+          "fraudulent": "عرض مشبوه أو احتيالي",
+          "inaccurate": "عرض غير دقيق",
+          "advertising": "هذا إعلان",
+          "other": "أخرى"
+        },
+        "validation": {
+          "reasonRequired": "يرجى تحديد سبب",
+          "maxLength": "الحد الأقصى 300 حرف"
+        }
+      }
+    },
+    "alerts": {
+      "create": "إنشاء تنبيه",
+      "active": "تنبيه نشط",
+      "viewTooltip": "عرض التنبيه",
+      "editTooltip": "تعديل التنبيه",
+      "success": {
+        "title": "تم إنشاء التنبيه بنجاح",
+        "description": "ستتلقى إشعارات للوظائف الجديدة التي تطابق معاييرك."
+      },
+      "dialog": {
+        "view": {
+          "title": "تفاصيل التنبيه",
+          "searchCriteria": "معايير البحث"
+        },
+        "edit": {
+          "title": "تعديل التنبيه",
+          "searchCriteria": "معايير البحث"
+        }
+      }
+    },
+    "jobDetails": {
+      "selectJob": "اختر وظيفة لعرض التفاصيل",
+      "positions": "{count} منصب(مناصب)",
+      "salary": {
+        "range": "{start} - {end} درهم",
+        "fixed": "{amount} درهم",
+        "unspecified": "غير محدد"
+      },
+      "workingHours": {
+        "range": "{min}-{max}س{duration}",
+        "fixed": "{hours}س{duration}",
+        "unspecified": "غير محدد"
+      },
+      "deadline": "آخر موعد: {date}",
+      "apply": "تقديم",
+      "alreadyApplied": "تم التقديم مسبقًا",
+      "actions": {
+        "share": "مشاركة العرض",
+        "notInterested": "تجاهل العرض"
+      },
+      "sections": {
+        "description": "وصف الوظيفة",
+        "requirements": "المتطلبات"
+      },
+      "share": {
+        "title": "مشاركة هذا العرض الوظيفي",
+        "description": "شارك هذه الفرصة مع شبكتك",
+        "copyLink": "نسخ الرابط",
+        "copied": "تم نسخ الرابط!",
+        "shareNative": "مشاركة عبر...",
+        "platforms": {
+          "twitter": "مشاركة على تويتر",
+          "linkedin": "مشاركة على لينكدإن",
+          "facebook": "مشاركة على فيسبوك",
+          "whatsapp": "مشاركة على واتساب"
+        },
+        "shareText": {
+          "default": "اكتشف هذا العرض الوظيفي المميز: {title} لدى {company}",
+          "twitter": "🚀 فرصة رائعة: {title} لدى {company}! اطلع على العرض هنا:",
+          "linkedin": "لقد وجدت هذا المنصب المميز: {title} لدى {company}. مزيد من التفاصيل هنا:",
+          "facebook": "فرصة لا تعوض: {title} لدى {company}. تعرف أكثر:",
+          "whatsapp": "مرحبًا! أعتقد أن هذا العرض قد يهمك: {title} لدى {company}. هذا هو الرابط:"
+        },
+        "toast": {
+          "copySuccess": {
+            "title": "تم النسخ!",
+            "description": "تم نسخ الرابط إلى الحافظة"
+          },
+          "copyError": {
+            "title": "خطأ في النسخ",
+            "description": "تعذر نسخ الرابط. يرجى المحاولة مرة أخرى."
+          },
+          "shareError": {
+            "title": "خطأ في المشاركة",
+            "description": "تعذر مشاركة العرض. يرجى المحاولة مرة أخرى."
+          }
+        },
+        "errors": {
+          "unsupportedPlatform": "منصة مشاركة غير مدعومة",
+          "nativeShareUnavailable": "المشاركة الأصلية غير متاحة على جهازك"
+        }
+      }
+    },
+    "recentSearches": {
+      "noSearches": "لا توجد عمليات بحث حديثة.",
+      "searchTip": "جرّب البحث عن وظائف حسب المسمى أو الكلمة المفتاحية أو الموقع.",
+      "removeSearch": "حذف البحث"
+    },
+    "resumeUpload": {
+      "tips": {
+        "title": "نصائح لسيرتك الذاتية",
+        "list": {
+          "format": "استخدم تنسيقًا واضحًا واحترافيًا",
+          "achievements": "سلط الضوء على إنجازاتك بدلاً من مسؤولياتك",
+          "tailored": "خصص سيرتك الذاتية للوظائف المستهدفة",
+          "grammar": "تحقق من الإملاء والنحو"
+        }
+      }
+    }
+  },
+  "resume": {
+    "title": "السيرة الذاتية",
+    "noResume": "لا توجد سيرة ذاتية مضافة",
+    "uploading": "جاري التحميل...",
+    "deleting": "جاري الحذف...",
+    "actions": {
+      "view": "عرض السيرة الذاتية",
+      "change": "تعديل السيرة الذاتية",
+      "download": "تحميل السيرة الذاتية",
+      "delete": "حذف السيرة الذاتية"
+    },
+    "validation": {
+      "invalidType": {
+        "title": "نوع الملف غير صالح",
+        "description": "يرجى تحميل ملف PDF"
+      },
+      "fileSize": {
+        "title": "الملف كبير جدًا",
+        "description": "الحد الأقصى لحجم الملف هو 2 ميجابايت (2048 كيلوبايت)"
+      }
+    },
+    "error": {
+      "title": "خطأ في إدارة السيرة الذاتية",
+      "description": "حدث خطأ أثناء إدارة سيرتك الذاتية. يرجى المحاولة مرة أخرى."
+    }
+  },
+  "annonces": {
+    "details": {
+      "header": {
+        "reportDialog": {
+          "title": "الإبلاغ عن هذا العرض"
+        }
+      },
+      "error": {
+        "notFound": "العرض غير موجود"
+      },
+      "jobDetails": {
+        "salary": {
+          "perDuration": "/{duration}",
+          "range": "{start}€ - {end}€",
+          "fixed": "{amount}€"
+        },
+        "schedule": {
+          "range": "{min}-{max}س/{duration}"
+        },
+        "deadline": "آخر موعد للتقديم: {date}"
+      },
+      "questions": {
+        "title": "الأسئلة",
+        "types": {
+          "experience": {
+            "placeholder": "صف خبرتك..."
+          },
+          "open": {
+            "placeholder": "إجابتك"
+          }
+        }
+      }
+    }
+  },
+  "help": {
+    "page": {
+      "title": "مركز المساعدة",
+      "description": "نحن هنا لمساعدتك. صف مشكلتك وسنرد عليك في أقرب وقت ممكن."
+    },
+    "form": {
+      "title": "كيف يمكننا مساعدتك؟",
+      "submit": "إرسال",
+      "sending": "جاري الإرسال..."
+    },
+    "selectIssue": {
+      "label": "نوع المشكلة",
+      "placeholder": "اختر نوع المشكلة",
+      "options": {
+        "technical": "مشكلة تقنية",
+        "account": "مشكلة في الحساب",
+        "billing": "مشكلة في الفوترة",
+        "other": "أخرى"
+      }
+    },
+    "messageArea": {
+      "label": "رسالتك",
+      "placeholder": "صف مشكلتك بالتفصيل..."
+    },
+    "toast": {
+      "success": {
+        "title": "تم إرسال الرسالة",
+        "description": "تم استلام رسالتك. سنرد عليك في أقرب وقت ممكن."
+      },
+      "error": {
+        "title": "خطأ",
+        "description": "حدث خطأ أثناء إرسال رسالتك. يرجى المحاولة مرة أخرى."
+      }
+    }
+  },
+  "notifications": {
+    "page": {
+      "title": "الإشعارات"
+    },
+    "errors": {
+      "loadFailed": "تعذر تحميل الإشعارات. يرجى المحاولة لاحقًا.",
+      "noNotifications": "لا توجد إشعارات بعد.",
+      "noMatchingFilters": "لا توجد إشعارات تطابق الفلاتر الخاصة بك."
+    }
+  },
+  "messages": {
+    "delete": {
+      "title": "حذف المحادثة",
+      "description": "هل أنت متأكد من رغبتك في حذف هذه المحادثة مع {company} بخصوص وظيفة {job}؟"
+    },
+    "search": {
+      "placeholder": "ابحث عن رسالة..."
+    },
+    "filters": {
+      "title": "الفلاتر"
+    },
+    "chat": {
+      "company": "الشركة",
+      "participants": "المشاركون",
+      "participantsList": "قائمة المشاركين في المحادثة",
+      "discussingWith": "تتحدث مع",
+      "viewJob": "عرض الإعلان",
+      "archiveConversation": "أرشفة المحادثة",
+      "unarchiveConversation": "إلغاء أرشفة المحادثة",
+      "reportSpam": "الإبلاغ عن سبام",
+      "noMessageSelected": "اختر رسالة لعرض محتواها",
+      "writeMessage": "اكتب رسالتك...",
+      "interview": {
+        "invitation": "دعوة لمقابلة",
+        "details": {
+          "location": "الموقع",
+          "date": "التاريخ",
+          "time": "الوقت",
+          "type": "نوع المقابلة"
+        }
+      },
+      "attachments": {
+        "preview": {
+          "size": "{size} {unit}"
+        }
+      },
+      "templates": {
+        "categories": {
+          "general": "عام",
+          "interview": "مقابلة",
+          "offer": "عرض",
+          "followUp": "متابعة",
+          "candidature": "طلب وظيفة",
+          "entretiens": "مقابلات",
+          "suivi": "متابعة",
+          "documents": "مستندات",
+          "questions": "أسئلة"
+        }
+      },
+      "archive": {
+        "archive": "أرشفة",
+        "unarchive": "إلغاء الأرشفة",
+        "confirmMessage": "هل أنت متأكد أنك تريد {action} هذه المحادثة مع {company}{hasRecruiter, select, true { بخصوص وظيفة {job}} other {}}؟",
+        "archiveDescription": "سيتم نقل المحادثة إلى الأرشيف. يمكنك العثور عليها في علامة التبويب \"الأرشيف\".",
+        "unarchiveDescription": "سيتم نقل المحادثة إلى البريد الوارد."
+      },
+      "report": {
+        "title": "الإبلاغ عن مشكلة",
+        "confirmMessage": "تريد الإبلاغ عن المحادثة مع {company}{hasRecruiter, select, true { بخصوص وظيفة {job}} other {}}.",
+        "description": "سيساعدنا بلاغك في الحفاظ على بيئة آمنة واحترافية لجميع المستخدمين.",
+        "reasonLabel": "ما سبب رغبتك في الإبلاغ عن هذه المحادثة؟",
+        "additionalInfo": "معلومات إضافية",
+        "additionalInfoPlaceholder": "أضف تفاصيل لمساعدتنا في فهم الموقف بشكل أفضل...",
+        "submit": "إرسال البلاغ",
+        "reasons": [
+          {
+            "id": "advertising",
+            "label": "إعلان غير مرغوب فيه",
+            "description": "رسالة ترويجية أو إعلانية غير مرغوب فيها"
+          },
+          {
+            "id": "inappropriate",
+            "label": "محتوى غير لائق أو مسيء",
+            "description": "رسالة تحتوي على محتوى تمييزي أو مسيء"
+          },
+          {
+            "id": "scam",
+            "label": "محاولة احتيال",
+            "description": "رسالة احتيالية أو محاولة نصب"
+          },
+          {
+            "id": "misleading",
+            "label": "معلومات مضللة",
+            "description": "معلومات خاطئة عن الوظيفة أو الشركة"
+          },
+          {
+            "id": "irrelevant",
+            "label": "لا علاقة له بطلب التوظيف",
+            "description": "رسالة لا علاقة لها بطلباتي"
+          },
+          {
+            "id": "other",
+            "label": "أخرى",
+            "description": "سبب آخر غير مذكور"
+          }
+        ]
+      }
+    }
+  },
+  "profile": {
+    "resume": {
+      "section": {
+        "title": "السيرة الذاتية",
+        "subtitle": "تنسيق PDF، الحد الأقصى 2 ميجابايت"
+      }
+    }
+  },
+  "editProfile": {
+    "title": "تعديل ملفك الشخصي",
+    "description": "قم بتحديث معلوماتك الشخصية وكيف يراك المستخدمون الآخرون على المنصة.",
+    "form": {
+      "firstName": {
+        "label": "الاسم الأول",
+        "placeholder": "محمد"
+      },
+      "lastName": {
+        "label": "اسم العائلة",
+        "placeholder": "أحمد"
+      },
+      "phone": {
+        "label": "رقم الهاتف",
+        "placeholder": "+212XXXXXXXXX"
+      },
+      "birthdate": {
+        "label": "تاريخ الميلاد",
+        "placeholder": "اختر تاريخًا"
+      },
+      "gender": {
+        "label": "الجنس",
+        "options": {
+          "male": "ذكر",
+          "female": "أنثى"
+        }
+      },
+      "address": {
+        "label": "العنوان",
+        "placeholder": "123 شارع السلام"
+      },
+      "city": {
+        "label": "المدينة",
+        "placeholder": "اختر مدينة"
+      },
+      "country": {
+        "label": "البلد",
+        "placeholder": "المغرب"
+      },
+      "postalCode": {
+        "label": "الرمز البريدي",
+        "placeholder": "10000"
+      },
+      "bio": {
+        "label": "نبذة",
+        "placeholder": "صف نفسك"
+      },
+      "description": {
+        "label": "وصف السيرة الذاتية",
+        "placeholder": "صف خبرتك المهنية وأهدافك"
+      }
+    }
+  },
+  "settings": {
+    "account": {
+      "page": {
+        "title": "إعدادات الحساب",
+        "description": "قم بإدارة إعدادات حسابك وتفضيلاتك."
+      },
+      "info": {
+        "title": "معلومات الحساب",
+        "accountType": "نوع الحساب",
+        "email": "البريد الإلكتروني",
+        "phone": "رقم الهاتف",
+        "phoneNotSet": "غير محدد",
+        "emailChange": {
+          "success": {
+            "title": "تم تغيير البريد الإلكتروني بنجاح",
+            "description": "تم تغيير بريدك الإلكتروني بنجاح"
+          },
+          "error": {
+            "title": "فشل تغيير البريد الإلكتروني",
+            "description": "حدث خطأ أثناء تغيير بريدك الإلكتروني"
+          },
+          "dialog": {
+            "steps": {
+              "verification": {
+                "title": "تأكيد كلمة المرور",
+                "description": "أدخل كلمة المرور للمتابعة."
+              },
+              "change": {
+                "title": "تغيير البريد الإلكتروني",
+                "description": "أدخل بريدك الإلكتروني الجديد."
+              },
+              "confirm": {
+                "title": "تأكيد البريد الإلكتروني الجديد",
+                "description": "أدخل رمز التحقق المرسل إلى بريدك الإلكتروني الجديد."
+              }
+            },
+            "stepIndicator": [
+              { "title": "تأكيد" },
+              { "title": "البريد الجديد" },
+              { "title": "تأكيد" }
+            ],
+            "form": {
+              "newEmail": {
+                "label": "البريد الإلكتروني الجديد",
+                "placeholder": "new@email.com"
+              },
+              "confirmEmail": {
+                "label": "تأكيد البريد الإلكتروني الجديد",
+                "placeholder": "new@email.com"
+              },
+              "verification": {
+                "codeLabel": "رمز التحقق",
+                "codePlaceholder": "أدخل الرمز المكون من 6 أرقام",
+                "codeSent": "تم إرسال رمز التحقق",
+                "codeSentDescription": "تم إرسال رمز تحقق إلى {email}",
+                "resendCode": "إعادة إرسال الرمز"
+              }
+            },
+            "validation": {
+              "emailRequired": "البريد الإلكتروني مطلوب",
+              "emailInvalid": "البريد الإلكتروني غير صالح",
+              "confirmEmailRequired": "تأكيد البريد الإلكتروني مطلوب",
+              "emailMismatch": "البريد الإلكتروني غير متطابق",
+              "emailSame": "يجب أن يكون البريد الإلكتروني الجديد مختلفًا عن الحالي",
+              "codeIncorrect": "رمز التحقق غير صحيح",
+              "codeRequired": "رمز التحقق مطلوب"
+            }
+          }
+        },
+        "phoneChange": {
+          "success": {
+            "title": "تم تغيير الرقم",
+            "description": "تم تغيير رقم هاتفك بنجاح"
+          },
+          "error": {
+            "title": "فشل تغيير الرقم",
+            "description": "حدث خطأ أثناء تغيير رقم هاتفك"
+          },
+          "dialog": {
+            "steps": {
+              "verification": {
+                "title": "تأكيد كلمة المرور",
+                "description": "أدخل كلمة المرور للمتابعة."
+              },
+              "change": {
+                "title": "تغيير رقم الهاتف",
+                "description": "أدخل رقم هاتفك الجديد."
+              }
+            },
+            "stepIndicator": [{ "title": "تأكيد" }, { "title": "رقم جديد" }],
+            "form": {
+              "newPhone": {
+                "label": "رقم جديد",
+                "placeholder": "612345678"
+              }
+            },
+            "validation": {
+              "phoneRequired": "رقم الهاتف مطلوب",
+              "phoneInvalid": "تنسيق الرقم غير صالح",
+              "phoneMinLength": "يجب أن يحتوي الرقم على 9 أرقام على الأقل",
+              "phoneSame": "يجب أن يكون الرقم الجديد مختلفًا عن الحالي"
+            }
+          }
+        },
+        "passwordChange": {
+          "success": {
+            "title": "تم تغيير كلمة المرور",
+            "description": "تم تغيير كلمة المرور بنجاح"
+          },
+          "error": {
+            "title": "فشل تغيير كلمة المرور",
+            "description": "حدث خطأ أثناء تغيير كلمة المرور"
+          },
+          "dialog": {
+            "title": "تغيير كلمة المرور"
+          }
+        }
+      },
+      "accountSettings": {
+        "title": "إجراءات الحساب",
+        "logoutFromAccount": "تسجيل الخروج من الحساب",
+        "deleteAccountLabel": "حذف الحساب",
+        "deleteAccountDescription": "احذف حسابك وجميع بياناتك نهائيًا",
+        "deleteAccountConfirm": "هل أنت متأكد أنك تريد حذف حسابك؟",
+        "deleteAccountConfirmDescription": "هذا الإجراء لا يمكن التراجع عنه. سيتم حذف جميع بياناتك نهائيًا.",
+        "reConfirmation": "للتأكيد، اكتب \"{DELETE_CONFIRMATION}\" أدناه:",
+        "deleteConfirmationValue": "حذف حسابي"
+      }
+    },
+    "communication": {
+      "page": {
+        "title": "إعدادات التواصل",
+        "description": "قم بإدارة إعدادات التواصل وتفضيلات التنبيهات."
+      },
+      "alerts": {
+        "title": "إعدادات التنبيهات",
+        "jobAlerts": {
+          "title": "تنبيهات الوظائف",
+          "description": "استلم إشعارات بالوظائف الجديدة التي تطابق معاييرك."
+        },
+        "companyAlerts": {
+          "title": "تنبيهات الشركات",
+          "description": "تابع تحديثات الشركات التي تهمك."
+        }
+      },
+      "notificationPreferences": {
+        "title": "تفضيلات الإشعارات"
+      },
+      "privacy": {
+        "title": "إعدادات الخصوصية",
+        "description": "قم بإدارة من يمكنه رؤية حالتك ومعلوماتك",
+        "toast": {
+          "toggle": {
+            "title": "تم تحديث إعدادات الخصوصية",
+            "description": "تم تحديث تفضيلات الخصوصية الخاصة بك"
+          }
+        },
+        "switch": {
+          "ariaLabel": "{action} {setting}"
+        }
+      },
+      "notifications": {
+        "toast": {
+          "toggle": {
+            "title": "تم {state} الإشعار",
+            "description": "تم {state} تفضيل الإشعار"
+          }
+        },
+        "switch": {
+          "ariaLabel": "{action} الإشعارات لـ {preference}"
+        }
+      },
+      "companyAlerts": {
+        "title": "تنبيهات الشركات",
+        "description": "قم بإعداد تنبيهات الشركات لتلقي إشعارات عند توفر فرص جديدة في الشركات التي تهمك.",
+        "empty": {
+          "description": "لا توجد تنبيهات شركات نشطة."
+        },
+        "toast": {
+          "toggle": {
+            "enable": {
+              "title": "تم تفعيل تنبيه الشركة"
+            },
+            "disable": {
+              "title": "تم تعطيل تنبيه الشركة"
+            },
+            "description": "تم {state} التنبيه"
+          },
+          "delete": {
+            "title": "تم حذف التنبيه",
+            "description": "تم حذف تنبيه الشركة بنجاح"
+          }
+        },
+        "deleteDialog": {
+          "title": "حذف التنبيه",
+          "description": "هل أنت متأكد أنك تريد حذف التنبيه لـ {company}؟"
+        },
+        "switch": {
+          "ariaLabel": "{action} التنبيهات لـ {company}"
+        }
+      },
+      "jobAlerts": {
+        "title": "تنبيهات الوظائف",
+        "description": "قم بإعداد تنبيهات الوظائف لتلقي إشعارات عند نشر عروض جديدة تطابق معاييرك.",
+        "myAlerts": "تنبيهاتي",
+        "empty": {
+          "title": "لا توجد تنبيهات",
+          "description": "لم تقم بعد بإعداد أي تنبيهات وظائف."
+        },
+        "salary": "الراتب",
+        "switch": {
+          "ariaLabel": "{action} التنبيه لـ {alert}"
+        },
+        "toast": {
+          "toggle": {
+            "enable": {
+              "title": "تم تفعيل التنبيه"
+            },
+            "disable": {
+              "title": "تم تعطيل التنبيه"
+            },
+            "description": "تم {state} التنبيه"
+          },
+          "delete": {
+            "title": "تم حذف التنبيه",
+            "description": "تم حذف تنبيه الوظيفة بنجاح"
+          },
+          "edit": {
+            "title": "تم تعديل التنبيه",
+            "description": "تم تحديث تنبيه الوظيفة بنجاح"
+          }
+        },
+        "deleteDialog": {
+          "title": "حذف التنبيه",
+          "description": "هل أنت متأكد أنك تريد حذف هذا التنبيه الوظيفي؟"
+        },
+        "editDialog": {
+          "title": "تعديل التنبيه"
+        },
+        "form": {
+          "post": {
+            "label": "المسمى الوظيفي",
+            "placeholder": "مثال: مطور واجهات أمامية",
+            "description": "أدخل المسمى الوظيفي الذي تبحث عنه"
+          },
+          "city": {
+            "label": "المدينة",
+            "placeholder": "مثال: الدار البيضاء",
+            "description": "أدخل المدينة التي ترغب في العمل بها"
+          },
+          "salary": {
+            "label": "نطاق الراتب",
+            "description": "حدد نطاق الراتب المطلوب",
+            "moveToChange": "حرك المؤشر لتعديل النطاق"
+          }
+        }
+      }
+    },
+    "devices": {
+      "title": "الأجهزة المتصلة",
+      "description": "قم بإدارة الأجهزة المتصلة بحسابك وصلاحياتها.",
+      "table": {
+        "headers": {
+          "device": "الجهاز",
+          "loginDate": "تاريخ الدخول",
+          "ipAddress": "عنوان IP",
+          "actions": "إجراءات"
+        },
+        "currentDevice": "الجهاز الحالي",
+        "logout": {
+          "button": "تسجيل الخروج",
+          "toast": {
+            "title": "تم تسجيل خروج الجهاز",
+            "description": "تم تسجيل خروج الجهاز بنجاح"
+          }
+        }
+      }
+    },
+    "privacyPage": {
+      "title": "الخصوصية",
+      "description": "قم بإدارة إعدادات الخصوصية وبياناتك الشخصية.",
+      "dataTypes": {
+        "title": "أنواع البيانات التي يتم جمعها",
+        "description": "نقوم بجمع المعلومات التالية لتحسين تجربتك:",
+        "items": {
+          "profile": "معلومات الملف الشخصي (الاسم، البريد الإلكتروني، إلخ)",
+          "resume": "السيرة الذاتية والمستندات المهنية",
+          "preferences": "تفضيلات البحث عن عمل",
+          "history": "سجل التصفح على الموقع"
+        }
+      },
+      "dataUsage": {
+        "title": "استخدام بياناتي والإفصاح عنها",
+        "description": "يتم استخدام بياناتك من أجل:",
+        "items": {
+          "personalization": "تخصيص بحثك عن وظيفة",
+          "improvement": "تحسين خدماتنا وتوصياتنا",
+          "communication": "التواصل مع أصحاب العمل (بموافقتك)"
+        }
+      },
+      "cookies": {
+        "title": "ملفات تعريف الارتباط (كوكيز)",
+        "description": "نستخدم الكوكيز من أجل:",
+        "items": {
+          "session": "الحفاظ على جلستك",
+          "preferences": "تذكر تفضيلاتك",
+          "analytics": "تحليل استخدام الموقع"
+        }
+      },
+      "dataAccess": {
+        "title": "الوصول إلى بياناتي وحذفها",
+        "description": "يمكنك في أي وقت الوصول إلى بياناتك الشخصية أو طلب حذفها.",
+        "actions": {
+          "download": "تحميل بياناتي",
+          "delete": "حذف بياناتي"
+        }
+      }
+    }
+  },
+  "postulyCVPage": {
+    "title": "Postuly السيرة الذاتية",
+    "generateResume": "مولد السيرة الذاتية",
+    "error": {
+      "title": "خطأ أثناء تحميل السيرة الذاتية",
+      "description": "تعذر تحميل بيانات سيرتك الذاتية. يرجى المحاولة لاحقًا."
+    },
+    "templates": {
+      "classic": "كلاسيكي",
+      "modern": "عصري",
+      "selector": {
+        "label": "اختر قالبًا"
+      }
+    },
+    "colors": {
+      "title": "الألوان",
+      "primary": "رئيسي",
+      "accent": "ثانوي"
+    },
+    "resume": {
+      "templates": {
+        "shared": {
+          "sections": {
+            "contact": "معلومات التواصل",
+            "skills": "المهارات",
+            "languages": "اللغات",
+            "experience": "الخبرة المهنية",
+            "projects": "المشاريع",
+            "education": "التعليم",
+            "certifications": "الشهادات"
+          },
+          "skills": {
+            "level": "المستوى"
+          },
+          "languages": {
+            "level": "المستوى"
+          },
+          "professional": "مهني",
+          "noDescription": "لا يوجد وصف",
+          "present": "الحالي",
+          "projects": {
+            "viewProject": "عرض المشروع",
+            "keyTasks": "المهام الرئيسية",
+            "status": {
+              "completed": "منجز",
+              "in_progress": "قيد التنفيذ"
+            }
+          },
+          "certifications": {
+            "expires": "تنتهي"
+          }
+        },
+        "modern": {
+          "sections": {
+            "about": "حول"
+          }
+        }
+      }
+    }
+  },
+  "myJobsPage": {
+    "title": "وظائفي",
+    "tabs": {
+      "savedJobs": "الوظائف المحفوظة",
+      "sentApplications": "الطلبات المرسلة",
+      "interviews": "المقابلات",
+      "archived": "الوظائف المؤرشفة"
+    },
+    "empty": {
+      "titleSavedJobs": "لا توجد وظائف محفوظة",
+      "descriptionSavedJobs": "لم تحفظ أي وظائف بعد. ابدأ في استكشاف الوظائف وحفظها للاطلاع عليها لاحقًا.",
+      "descriptionSentApplications": "لم ترسل أي طلبات بعد. استكشف الوظائف وقدّم على ما يناسبك.",
+      "descriptionArchived": "لم تقم بأرشفة أي وظائف بعد. استكشف الوظائف وأرشف ما لم تعد مهتمًا به."
+    },
+    "sentApplications": {
+      "status": {
+        "unknown": "الحالة غير معروفة",
+        "expired": "انتهت صلاحية الوظيفة",
+        "applied": "تم إرسال الطلب",
+        "open": "الوظيفة متاحة"
+      },
+      "aria": {
+        "openOptions": "فتح خيارات الطلب"
+      }
+    },
+    "archiveJobDialog": {
+      "title": "أرشفة هذه الوظيفة؟",
+      "description": "هل أنت متأكد أنك تريد أرشفة الوظيفة \"{jobTitle}\"؟",
+      "warning": "سيتم نقل الوظيفة إلى الأرشيف. يمكنك استعادتها لاحقًا إذا لزم الأمر."
+    },
+    "removeApplyDialog": {
+      "title": "هل أنت متأكد من سحب طلبك؟",
+      "description": "أنت على وشك سحب طلبك لـ ",
+      "description2": " هذا الإجراء لا يمكن التراجع عنه."
+    },
+    "interviews": {
+      "titleProgrammed": "المقابلات المجدولة",
+      "descriptionProgrammed": "هذه هي المقابلات التي تمت دعوتك إليها.",
+      "titleWaiting": "مقابلات بانتظار التأكيد",
+      "descriptionWaiting": "هذه المقابلات تنتظر تأكيدك.",
+      "titlePast": "المقابلات السابقة",
+      "descriptionPast": "هذه هي المقابلات التي أكملتها."
+    }
+  },
+  "myInterviewActionPage": {
+    "unavailable": {
+      "title": "لست متاحًا؟",
+      "action": "إعلام بعدم التوفر"
+    },
+    "details": {
+      "toast": {
+        "success": {
+          "title": "تم تأكيد المقابلة",
+          "description": "تمت جدولة مقابلتك بنجاح"
+        }
+      }
+    },
+    "refuser": {
+      "title": {
+        "refuse": "رفض المقابلة",
+        "cancel": "إلغاء المقابلة"
+      },
+      "reason": {
+        "label": "ما هو السبب؟"
+      },
+      "reasons": {
+        "notInterested": "لم أعد مهتمًا بهذا المنصب",
+        "acceptedOther": "قبلت عرضًا آخر",
+        "tooFar": "الموقع بعيد جدًا",
+        "suspicious": "أشعر أن العرض مشبوه",
+        "other": "سبب آخر"
+      },
+      "message": {
+        "label": "رسالة (اختياري)",
+        "placeholder": "اشرح قرارك...",
+        "counter": "{current}/500 حرف"
+      },
+      "validation": {
+        "reasonRequired": "يرجى اختيار سبب",
+        "messageMaxLength": "يجب ألا تتجاوز الرسالة 500 حرف"
+      },
+      "actions": {
+        "refuse": "رفض المقابلة",
+        "cancel": "إلغاء المقابلة",
+        "maintain": "الحفاظ على طلبي"
+      },
+      "toast": {
+        "refuse": {
+          "title": "تم رفض المقابلة",
+          "description": "تم إرسال رفضك بنجاح"
+        },
+        "cancel": {
+          "title": "تم إلغاء المقابلة",
+          "description": "تم إرسال إلغاءك بنجاح"
+        }
+      }
+    },
+    "reporter": {
+      "title": "اقتراح مواعيد جديدة",
+      "message": {
+        "title": "رسالة إضافية (اختياري)",
+        "placeholder": "أضف معلومات إضافية حول توافرك..."
+      },
+      "validation": {
+        "selectAvailability": "يرجى اختيار موعد واحد على الأقل"
+      },
+      "toast": {
+        "success": {
+          "title": "تم إرسال التوافر",
+          "description": "تم إرسال مواعيد توافرك بنجاح"
+        }
+      }
+    }
+  },
+  "resumePage": {
+    "aboutMe": {
+      "title": "نبذة عني"
+    },
+    "workExperience": {
+      "title": "الخبرة المهنية",
+      "empty": "لم تتم إضافة أي خبرة مهنية",
+      "dialog": {
+        "add": {
+          "title": "إضافة خبرة مهنية",
+          "description": "أضف تفاصيل خبرتك المهنية"
+        },
+        "edit": {
+          "title": "تعديل الخبرة المهنية",
+          "description": "قم بتعديل تفاصيل خبرتك المهنية"
+        },
+        "delete": {
+          "title": "حذف الخبرة",
+          "descriptionStart": "أنت على وشك حذف خبرتك كـ",
+          "warning": "هذا الإجراء لا يمكن التراجع عنه وسيحذف هذه الخبرة من سيرتك الذاتية نهائيًا."
+        }
+      }
+    },
+    "education": {
+      "title": "التعليم",
+      "empty": "لم تتم إضافة أي تعليم",
+      "dialog": {
+        "add": {
+          "title": "إضافة تعليم",
+          "description": "أضف تفاصيل تعليمك"
+        },
+        "edit": {
+          "title": "تعديل التعليم",
+          "description": "قم بتعديل تفاصيل تعليمك"
+        },
+        "delete": {
+          "title": "حذف التعليم",
+          "descriptionStart": "أنت على وشك حذف تعليمك كـ",
+          "warning": "هذا الإجراء لا يمكن التراجع عنه وسيحذف هذا التعليم من سيرتك الذاتية نهائيًا."
+        }
+      }
+    },
+    "projects": {
+      "title": "المشاريع",
+      "empty": "لم تتم إضافة أي مشروع",
+      "dialog": {
+        "add": {
+          "title": "إضافة مشروع",
+          "description": "أضف تفاصيل مشروعك"
+        },
+        "edit": {
+          "title": "تعديل المشروع",
+          "description": "قم بتعديل تفاصيل مشروعك"
+        },
+        "delete": {
+          "title": "حذف المشروع",
+          "descriptionStart": "أنت على وشك حذف مشروعك بعنوان",
+          "warning": "هذا الإجراء لا يمكن التراجع عنه وسيحذف هذا المشروع من سيرتك الذاتية نهائيًا."
+        }
+      }
+    },
+    "certifications": {
+      "title": "الشهادات",
+      "empty": "لم تتم إضافة أي شهادة",
+      "dialog": {
+        "add": {
+          "title": "إضافة شهادة",
+          "description": "أضف تفاصيل شهادتك"
+        },
+        "edit": {
+          "title": "تعديل الشهادة",
+          "description": "قم بتعديل تفاصيل شهادتك"
+        },
+        "delete": {
+          "title": "حذف الشهادة",
+          "descriptionStart": "أنت على وشك حذف شهادتك بعنوان",
+          "warning": "هذا الإجراء لا يمكن التراجع عنه وسيحذف هذه الشهادة من سيرتك الذاتية نهائيًا."
+        }
+      }
+    },
+    "skills": {
+      "empty": "لم تتم إضافة أي مهارة",
+      "dialog": {
+        "add": {
+          "title": "إضافة مهارة",
+          "description": "أضف تفاصيل مهارتك"
+        },
+        "edit": {
+          "title": "تعديل المهارة",
+          "description": "قم بتعديل تفاصيل مهارتك"
+        },
+        "delete": {
+          "title": "حذف المهارة",
+          "descriptionStart": "أنت على وشك حذف مهارتك بعنوان",
+          "warning": "هذا الإجراء لا يمكن التراجع عنه وسيحذف هذه المهارة من سيرتك الذاتية نهائيًا."
+        }
+      }
+    },
+    "languages": {
+      "empty": "لم تتم إضافة أي لغة",
+      "dialog": {
+        "add": {
+          "title": "إضافة لغة",
+          "description": "أضف تفاصيل لغتك"
+        },
+        "edit": {
+          "title": "تعديل اللغة",
+          "description": "قم بتعديل تفاصيل لغتك"
+        },
+        "delete": {
+          "title": "حذف اللغة",
+          "descriptionStart": "أنت على وشك حذف لغتك بعنوان",
+          "warning": "هذا الإجراء لا يمكن التراجع عنه وسيحذف هذه اللغة من سيرتك الذاتية نهائيًا."
+        }
+      }
+    }
+  },
+  "nav": {
+    "title": "Postuly",
+    "description": "التنقل عبر التطبيق",
+    "jobs": "الوظائف",
+    "formations": "التدريبات",
+    "profile": "الملف الشخصي",
+    "companies": "الشركات",
+    "myJobs": "وظائفي",
+    "myReviews": "تقييماتي",
+    "settings": "الإعدادات",
+    "help": "المساعدة",
+    "overview": "نظرة عامة",
+    "resume": "السيرة الذاتية",
+    "accountSettings": "إعدادات الحساب",
+    "communicationSettings": "إعدادات التواصل",
+    "deviceSettings": "إعدادات الجهاز",
+    "privacySettings": "إعدادات الخصوصية"
+  }
+}

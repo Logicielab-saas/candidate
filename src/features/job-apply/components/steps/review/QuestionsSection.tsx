@@ -12,12 +12,14 @@ import { useState } from "react";
 import { EditQuestionsDialog } from "./EditQuestionsDialog";
 import { useJobApplyStore } from "@/features/job-apply/store/useJobApplyStore";
 import { type SubmissionQuestion } from "@/core/mockData/annonces";
+import { useTranslations } from "next-intl";
 
 interface QuestionsSectionProps {
   questions: SubmissionQuestion[];
 }
 
 export function QuestionsSection({ questions }: QuestionsSectionProps) {
+  const tCommon = useTranslations("common");
   const { questionsData } = useJobApplyStore();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -40,7 +42,7 @@ export function QuestionsSection({ questions }: QuestionsSectionProps) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <MessageSquare className="h-5 w-5 text-primary" />
-          <h3 className="text-lg font-semibold">Questions</h3>
+          <h3 className="text-lg font-semibold">{tCommon("questions")}</h3>
         </div>
         <span
           className="text-primaryHex-600 font-bold rounded-full p-2 bg-primaryHex-100 hover:bg-primaryHex-200 hover:text-primaryHex-600 cursor-pointer"
@@ -67,9 +69,7 @@ export function QuestionsSection({ questions }: QuestionsSectionProps) {
           ))}
         </div>
       ) : (
-        <p className="text-muted-foreground italic">
-          Aucune question à répondre
-        </p>
+        <p className="text-muted-foreground italic">{tCommon("noQuestions")}</p>
       )}
 
       <EditQuestionsDialog

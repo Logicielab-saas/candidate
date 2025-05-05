@@ -1,3 +1,4 @@
+import { useLocale } from "next-intl";
 import React from "react";
 
 interface CircleLineWrapperProps {
@@ -11,13 +12,23 @@ const CircleLineWrapper: React.FC<CircleLineWrapperProps> = ({
   leftStyle = "0.5px",
   children,
 }) => {
+  const isRTL = useLocale() === "ar";
+  console.log(isRTL);
   return (
-    <div className="relative flex flex-col items-start w-full pl-2">
+    <div
+      className={`relative flex flex-col items-${
+        isRTL ? "end" : "start"
+      } w-full ${isRTL ? "pr-2" : "pl-2"}`}
+    >
       <div
         className={`absolute w-4 h-4 ${color} rounded-full`}
-        style={{ left: leftStyle }}
+        style={isRTL ? { right: leftStyle } : { left: leftStyle }}
       ></div>
-      <div className="border-l-2 border-primaryHex-400 pl-5 w-full mt-2">
+      <div
+        className={`${
+          isRTL ? "border-r-2 pr-5" : "border-l-2 pl-5"
+        } border-primaryHex-400 w-full mt-2`}
+      >
         {children}
       </div>
     </div>

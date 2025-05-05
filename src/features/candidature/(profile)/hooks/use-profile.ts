@@ -1,7 +1,10 @@
+"use client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCurrentUser, getProfile, updateProfile } from "../services/profile";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "../qualifications/hooks/use-profile-resume";
+import { hasAccessToken } from "@/lib/check-access-token";
+import { useEffect, useState } from "react";
 
 export const profileKeys = {
   all: ["profile"] as const,
@@ -9,9 +12,16 @@ export const profileKeys = {
 };
 
 export function useProfile() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return useQuery({
     queryKey: profileKeys.me(),
     queryFn: getProfile,
+    enabled: isClient && hasAccessToken(),
   });
 }
 
@@ -22,7 +32,7 @@ export function useCurrentUser() {
   });
 }
 
-export function useUpdateProfile() {
+export function useUpdateProfile(t: (key: string) => string) {
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -35,15 +45,15 @@ export function useUpdateProfile() {
 
       toast.toast({
         variant: "success",
-        title: "Profile updated successfully",
-        description: "Your profile has been updated successfully",
+        title: t("toast.profile.update.title"),
+        description: t("toast.profile.update.description"),
       });
     },
-    onError: (error) => {
+    onError: () => {
       toast.toast({
         variant: "destructive",
-        title: "Failed to update profile",
-        description: error.message || "Failed to update profile",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
       });
     },
   });
