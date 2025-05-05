@@ -19,7 +19,6 @@ const FixedInterviewDetails = ({
   onContinue,
   jobKey,
 }: FixedInterviewDetailsProps) => {
-  const t = useTranslations("myInterviewActionPage.fixed");
   const tCommon = useTranslations("common");
   const locale = useLocale();
 
@@ -49,7 +48,7 @@ const FixedInterviewDetails = ({
       </Button>
       <Button variant="outline" className="w-full mt-2" asChild>
         <Link href={`/interviews/reporter/${jobKey}`}>
-          {t("suggestNewSlots")}
+          {tCommon("suggestNewSlots")}
         </Link>
       </Button>
     </div>

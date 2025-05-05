@@ -211,7 +211,7 @@ export function InterviewReporter({ interview }: InterviewReporterProps) {
       <Separator />
 
       <Button type="submit" className="w-full">
-        {tCommon("actions.continue")}
+        {tCommon("actions.confirm")}
       </Button>
       <Button
         variant="outline"

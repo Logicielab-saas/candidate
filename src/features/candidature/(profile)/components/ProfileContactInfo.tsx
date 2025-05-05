@@ -1,5 +1,6 @@
 import { Phone, MapPin, Calendar, User } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/core/utils/date";
 
 interface ProfileContactInfoProps {
   phone: string | null;
@@ -21,6 +22,7 @@ export function ProfileContactInfo({
   country,
 }: ProfileContactInfoProps) {
   const tCommon = useTranslations("common");
+  const locale = useLocale();
 
   const fullAddress = [address, city, postalCode, country]
     .filter(Boolean)
@@ -29,14 +31,6 @@ export function ProfileContactInfo({
   const getGender = (isMale: boolean | null): string => {
     if (isMale === null) return tCommon("gender.notSpecified");
     return isMale ? tCommon("gender.male") : tCommon("gender.female");
-  };
-
-  const formatBirthdate = (date: string): string => {
-    return new Date(date).toLocaleDateString(undefined, {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
   };
 
   return (
@@ -79,8 +73,8 @@ export function ProfileContactInfo({
           <div>
             <p className="text-sm font-medium">{tCommon("labels.birthDate")}</p>
             <p className="text-sm text-muted-foreground">
-              {birthdate
-                ? formatBirthdate(birthdate)
+              {birthdate && !isNaN(Date.parse(birthdate))
+                ? formatDate(birthdate, "d MMMM yyyy", locale)
                 : tCommon("placeholders.noBirthdate")}
             </p>
           </div>
