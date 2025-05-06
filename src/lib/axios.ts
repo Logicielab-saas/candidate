@@ -1,9 +1,16 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-// Create axios instance with default config
+/**
+ * Axios instance configuration
+ *
+ * Creates and configures an axios instance that uses the Next.js API route
+ * as a proxy to the actual API endpoint. This helps hide the real API URL
+ * from the client.
+ */
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3010",
+  // Use relative URL to proxy through Next.js API route
+  baseURL: "/api/",
   headers: {
     "Content-Type": "application/json",
   },
