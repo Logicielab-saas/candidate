@@ -1,13 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import {
-  cancelSaveEmplois,
-  fetchSavedJobs,
-  saveEmplois,
-} from "@/features/candidature/(profile)/my-jobs/services/my-saved-jobs";
 import { EMPLOIS_QUERY_KEY } from "@/features/Emplois/hooks/use-emplois";
 import { useTabsCountStore } from "../store/tabs-count.store";
 import { useEffect, useRef } from "react";
+import {
+  fetchSavedJobsAction,
+  saveJobAction,
+  unsaveJobAction,
+} from "../actions/job-bookmark.actions";
 
 export const SAVED_EMPLOIS_QUERY_KEY = ["saved-emplois"];
 
@@ -20,7 +20,7 @@ export function useFetchSavedEmplois(page: number = 1, per_page: number = 10) {
 
   const result = useQuery({
     queryKey: [...SAVED_EMPLOIS_QUERY_KEY, page, per_page],
-    queryFn: () => fetchSavedJobs(page, per_page),
+    queryFn: () => fetchSavedJobsAction(page, per_page),
   });
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export function useSaveEmplois(jobSlug: string, t: (key: string) => string) {
   const toast = useToast();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (uuid: string) => saveEmplois(uuid),
+    mutationFn: (uuid: string) => saveJobAction(uuid),
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({
@@ -84,7 +84,7 @@ export function useCancelSaveEmplois(
   const toast = useToast();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (uuid: string) => cancelSaveEmplois(uuid),
+    mutationFn: (uuid: string) => unsaveJobAction(uuid),
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({

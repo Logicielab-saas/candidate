@@ -1,12 +1,12 @@
 import { QueryClient, isServer } from "@tanstack/react-query";
 
-const STALE_TIME = 1000 * 60 * 10; // 10 minutes
+const STALE_TIME = 1000 * 60 * 20; // 20 minutes
 
 function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: STALE_TIME, // 5 minutes
+        staleTime: STALE_TIME, // 20 minutes
         refetchOnWindowFocus: false, // Don't refetch when window regains focus
         retry: 1, // Only retry failed requests once
         refetchOnReconnect: "always", // Always refetch when reconnecting

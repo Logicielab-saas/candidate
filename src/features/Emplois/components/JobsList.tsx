@@ -15,7 +15,7 @@ import { useQueryState } from "nuqs";
 import { JobCard } from "./JobCard";
 import { useRouter } from "next/navigation";
 import { useEmplois } from "../hooks/use-emplois";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useSavedJobsStore } from "../store/saved-jobs.store";
 import { JobCardSkeleton } from "../skeletons/JobCardSkeleton";
 import { Button } from "@/components/ui/button";
@@ -29,7 +29,9 @@ interface JobsListProps {
 export function JobsList({ isDesktop }: JobsListProps) {
   const [_searchText] = useQueryState("q");
   const [_selectedCity] = useQueryState("city");
-  const [selectedJobId, setSelectedJobId] = useQueryState("job");
+  const [selectedJobId, setSelectedJobId] = useQueryState("job", {
+    shallow: true, // Prevent full page reload when changing job
+  });
   const router = useRouter();
   const initializeSavedJobs = useSavedJobsStore(
     (state) => state.initializeSavedJobs
@@ -63,13 +65,17 @@ export function JobsList({ isDesktop }: JobsListProps) {
   }, [jobs, initializeSavedJobs, isDesktop, selectedJobId, isLoading]);
 
   // Handle job card click
-  const handleJobClick = (jobSlug: string) => {
-    if (isDesktop) {
-      setSelectedJobId(jobSlug);
-    } else {
-      router.push(`/annonce-details/${jobSlug}`);
-    }
-  };
+  const handleJobClick = useCallback(
+    async (jobSlug: string) => {
+      if (isDesktop) {
+        // First update the URL state
+        await setSelectedJobId(jobSlug);
+      } else {
+        router.push(`/annonce-details/${jobSlug}`);
+      }
+    },
+    [isDesktop, router, setSelectedJobId]
+  );
 
   // Handle load more click
   const handleLoadMore = () => {

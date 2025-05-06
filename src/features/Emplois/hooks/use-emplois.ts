@@ -1,10 +1,10 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import {
-  fetchEmplois,
-  fetchEmploisBySlug,
-  fetchSearchSuggestions,
-} from "../services/emplois";
 import { useQueryState } from "nuqs";
+import {
+  fetchEmploisAction,
+  fetchSearchSuggestionsAction,
+  fetchEmploiBySlugAction,
+} from "../actions/emplois";
 
 export const EMPLOIS_QUERY_KEY = ["emplois"];
 
@@ -31,12 +31,12 @@ export function useEmplois(params?: UseEmploisParams) {
       { q: searchText, city: selectedCity },
     ],
     queryFn: ({ pageParam = 1 }) =>
-      fetchEmplois(
-        pageParam,
-        params?.per_page,
-        searchText || undefined,
-        selectedCity || undefined
-      ),
+      fetchEmploisAction({
+        page: pageParam,
+        per_page: params?.per_page,
+        q: searchText || undefined,
+        city: selectedCity || undefined,
+      }),
     getNextPageParam: (lastPage) => {
       if (
         lastPage &&
@@ -67,38 +67,46 @@ export function useEmplois(params?: UseEmploisParams) {
     hasNextPage,
   };
 }
-
-export function useSearchSuggestions(params: string | { q?: string; city?: string }) {
-  // Support both legacy (string) and new (object) usage
-  let fetchParams: { q?: string; city?: string } = {};
-  if (typeof params === 'string') {
-    fetchParams.q = params;
-  } else {
-    fetchParams = params;
-  }
-  const enabled = !!((fetchParams.q && fetchParams.q.length >= 2) || (fetchParams.city && fetchParams.city.length >= 2));
+export function useEmploisBySlug(slug: string | null) {
   const { data, isLoading, error } = useQuery({
-    queryKey: [EMPLOIS_QUERY_KEY, "search-suggestions", fetchParams],
-    queryFn: () => fetchSearchSuggestions(fetchParams),
-    enabled,
+    queryKey: [EMPLOIS_QUERY_KEY, slug],
+    queryFn: async () => {
+      // Wait for next tick to ensure we have the latest slug
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      return fetchEmploiBySlugAction(slug as string);
+    },
+    enabled: !!slug,
   });
 
   return {
-    suggestions: data?.results || [],
+    data: data?.emploi,
     isLoading,
     error,
   };
 }
 
-export function useEmploisBySlug(slug: string | null) {
+export function useSearchSuggestions(
+  params: string | { q?: string; city?: string }
+) {
+  // Support both legacy (string) and new (object) usage
+  let fetchParams: { q?: string; city?: string } = {};
+  if (typeof params === "string") {
+    fetchParams.q = params;
+  } else {
+    fetchParams = params;
+  }
+  const enabled = !!(
+    (fetchParams.q && fetchParams.q.length >= 2) ||
+    (fetchParams.city && fetchParams.city.length >= 2)
+  );
   const { data, isLoading, error } = useQuery({
-    queryKey: [EMPLOIS_QUERY_KEY, slug],
-    queryFn: () => fetchEmploisBySlug(slug as string),
-    enabled: !!slug, // Only fetch when we have a slug
+    queryKey: [EMPLOIS_QUERY_KEY, "search-suggestions", fetchParams],
+    queryFn: () => fetchSearchSuggestionsAction(fetchParams),
+    enabled,
   });
 
   return {
-    data: data?.emploi,
+    suggestions: data?.results || [],
     isLoading,
     error,
   };
