@@ -19,7 +19,6 @@ import { useTranslations } from "next-intl";
 
 export function ProfileContainer() {
   const { data: profile, isLoading } = useProfile();
-  const t = useTranslations("profile");
   const tCommon = useTranslations("common");
 
   const getFullName = (
@@ -144,7 +143,7 @@ export function ProfileContainer() {
         <div className="space-y-4">
           <div className="space-y-3">
             <ResumeItem
-              subtitle={t("resume.section.subtitle")}
+              // subtitle={t("resume.section.subtitle")}
               type="custom"
               resumeFiles={profile?.files || []}
               source="profile"

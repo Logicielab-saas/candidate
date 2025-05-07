@@ -84,28 +84,28 @@ export default function TimeLineListItem({
 
   return (
     <CircleLineWrapper>
-      <h4 className="text-base font-bold flex justify-between items-center">
+      <h4 className="text-base font-bold flex justify-between items-center dark:text-gray-100">
         {getTitle()}
         <div className="flex">
           <Button
             variant="ghost"
-            className="cursor-pointer text-primaryHex-600 hover:bg-primaryHex-100 hover:text-primaryHex-600"
+            className="cursor-pointer text-primaryHex-600 hover:bg-primaryHex-100 hover:text-primaryHex-600 dark:text-primaryHex-400 dark:hover:bg-primaryHex-900/50 dark:hover:text-primaryHex-300"
             onClick={() => onEdit(data)}
           >
             <PencilIcon className="w-4 h-4" />
           </Button>
           <Button
             variant="ghost"
-            className="cursor-pointer text-red-600 hover:bg-red-100 hover:text-red-600"
+            className="cursor-pointer text-red-600 hover:bg-red-100 hover:text-red-600 dark:text-red-400 dark:hover:bg-red-900/50 dark:hover:text-red-300"
             onClick={() => onDelete(data.uuid)}
           >
             <Trash className="w-4 h-4" />
           </Button>
         </div>
       </h4>
-      <p className="text-gray-600">{getSubtitle()}</p>
-      <p className="text-gray-500">{getDateRange()}</p>
-      <p className="mt-2">{getDescription()}</p>
+      <p className="text-gray-600 dark:text-gray-300">{getSubtitle()}</p>
+      <p className="text-gray-500 dark:text-gray-400">{getDateRange()}</p>
+      <p className="mt-2 dark:text-gray-200">{getDescription()}</p>
     </CircleLineWrapper>
   );
 }

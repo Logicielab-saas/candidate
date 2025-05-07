@@ -124,22 +124,24 @@ export function ProjectsList({ projects }: ProjectsListProps) {
   };
 
   return (
-    <div className="border p-4 rounded-lg shadow-sm">
+    <div className="border p-4 rounded-lg shadow-sm dark:border-gray-800 dark:shadow-none">
       <SectionHeader
         title={t("title")}
-        icon={<Code2 className="w-6 h-6 text-primaryHex-400 mr-2" />}
+        icon={
+          <Code2 className="w-6 h-6 text-primaryHex-400 dark:text-primaryHex-300 mr-2" />
+        }
         onAdd={() => setDialogOpen(true)}
       />
       <div className="space-y-0">
         {projects?.map((project) => (
           <CircleLineWrapper key={project.uuid}>
             <div className="space-y-2">
-              <h4 className="text-base font-bold flex justify-between items-center">
+              <h4 className="text-base font-bold flex justify-between items-center dark:text-gray-100">
                 {project.name}
                 <div className="flex">
                   <Button
                     variant="ghost"
-                    className="cursor-pointer text-primaryHex-600 hover:bg-primaryHex-100 hover:text-primaryHex-600"
+                    className="cursor-pointer text-primaryHex-600 hover:bg-primaryHex-100 hover:text-primaryHex-600 dark:text-primaryHex-400 dark:hover:bg-primaryHex-900/50 dark:hover:text-primaryHex-300"
                     onClick={() => {
                       setSelectedProject(project);
                       setEditDialogOpen(true);
@@ -149,7 +151,7 @@ export function ProjectsList({ projects }: ProjectsListProps) {
                   </Button>
                   <Button
                     variant="ghost"
-                    className="cursor-pointer text-red-600 hover:bg-red-100 hover:text-red-600"
+                    className="cursor-pointer text-red-600 hover:bg-red-100 hover:text-red-600 dark:text-red-400 dark:hover:bg-red-900/50 dark:hover:text-red-300"
                     onClick={() => {
                       setSelectedProject(project);
                       setDeleteDialogOpen(true);
@@ -165,7 +167,7 @@ export function ProjectsList({ projects }: ProjectsListProps) {
                     project.image.map((imageUrl, index) => (
                       <div
                         key={index}
-                        className="relative aspect-video rounded-lg overflow-hidden hover:opacity-90 transition-opacity cursor-pointer"
+                        className="relative aspect-video rounded-lg overflow-hidden hover:opacity-90 transition-opacity cursor-pointer dark:hover:opacity-80"
                         onClick={() => handleImageClick(project, index)}
                       >
                         <Image
@@ -179,7 +181,7 @@ export function ProjectsList({ projects }: ProjectsListProps) {
                     ))
                   ) : (
                     <div
-                      className="relative aspect-video rounded-lg overflow-hidden hover:opacity-90 transition-opacity cursor-pointer"
+                      className="relative aspect-video rounded-lg overflow-hidden hover:opacity-90 transition-opacity cursor-pointer dark:hover:opacity-80"
                       onClick={() => handleImageClick(project, 0)}
                     >
                       <Image
@@ -193,36 +195,41 @@ export function ProjectsList({ projects }: ProjectsListProps) {
                   )}
                 </div>
               )}
-              <p className="text-gray-500">
+              <p className="text-gray-500 dark:text-gray-400">
                 {formatedDate(project.date_start)}
                 {project.date_end
                   ? ` - ${formatedDate(project.date_end)}`
                   : ` - ${t("current")}`}
               </p>
               {project.description && (
-                <p className="mt-2">{project.description}</p>
+                <p className="mt-2 dark:text-gray-200">{project.description}</p>
               )}
               {project.url && (
                 <a
                   href={project.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primaryHex-600 hover:underline block mt-2 w-fit"
+                  className="text-primaryHex-600 hover:underline block mt-2 w-fit dark:text-primaryHex-400 dark:hover:text-primaryHex-300"
                 >
                   {tCommon("viewProject")}
                 </a>
               )}
               {project.tasks && project.tasks.length > 0 && (
                 <div className="mt-4">
-                  <h5 className="font-semibold mb-2">
+                  <h5 className="font-semibold mb-2 dark:text-gray-200">
                     {tCommon("tasksLabel")}
                   </h5>
                   <ul className="list-disc list-inside space-y-1">
                     {project.tasks.map((task) => (
-                      <li key={task.uuid} className="text-sm">
-                        <span className="font-medium">{task.name}</span>
+                      <li
+                        key={task.uuid}
+                        className="text-sm dark:text-gray-300"
+                      >
+                        <span className="font-medium dark:text-gray-200">
+                          {task.name}
+                        </span>
                         {task.description && (
-                          <span className="text-gray-600">
+                          <span className="text-gray-600 dark:text-gray-400">
                             {" "}
                             - {task.description}
                           </span>
@@ -230,8 +237,8 @@ export function ProjectsList({ projects }: ProjectsListProps) {
                         <span
                           className={`ml-2 text-xs px-2 py-1 rounded-full ${
                             task.status === "Completed"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-yellow-100 text-yellow-800"
+                              ? "bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300"
+                              : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300"
                           }`}
                         >
                           {task.status}
@@ -245,7 +252,9 @@ export function ProjectsList({ projects }: ProjectsListProps) {
           </CircleLineWrapper>
         ))}
         {!projects?.length && (
-          <p className="text-muted-foreground text-center py-4">{t("empty")}</p>
+          <p className="text-muted-foreground text-center py-4 dark:text-gray-400">
+            {t("empty")}
+          </p>
         )}
       </div>
       {dialogOpen && (

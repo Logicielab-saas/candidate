@@ -18,9 +18,6 @@ import {
   tabCounterStyles,
 } from "@/core/styles/tabs";
 import { useQueryState } from "nuqs";
-import { useState } from "react";
-import { mockInterviews } from "@/core/mockData/jobs";
-import type { Interview } from "@/core/interfaces/";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useTabsCountStore } from "./store/tabs-count.store";
 import { useFetchSavedEmplois } from "./hooks/use-my-saved-jobs";

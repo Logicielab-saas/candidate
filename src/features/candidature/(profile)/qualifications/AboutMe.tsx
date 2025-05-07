@@ -47,8 +47,12 @@ export function AboutMe({
           </Avatar>
           <div className="space-y-1">
             <p className="font-bold">{fullName}</p>
-            <p className="text-gray-600">{email || tCommon("undefined")}</p>
-            <p className="text-gray-600">{phone || tCommon("undefined")}</p>
+            <p className="text-gray-600 dark:text-secondaryHex-400">
+              {email || tCommon("undefined")}
+            </p>
+            <p className="text-gray-600 dark:text-secondaryHex-400">
+              {phone || tCommon("undefined")}
+            </p>
           </div>
         </div>
       </div>

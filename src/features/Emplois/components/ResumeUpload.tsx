@@ -14,12 +14,12 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import { ResumeItem } from "@/components/shared/ResumeItem";
-import { useFetchResumeFiles } from "@/features/candidature/(profile)/qualifications/hooks/use-resume-files";
 import { ResumeSkeleton } from "@/features/candidature/(profile)/components/ResumeSkeleton";
 import { useTranslations } from "next-intl";
+import { useProfile } from "@/features/candidature/(profile)/hooks/use-profile";
 
 export function ResumeUpload() {
-  const { data: resumeFiles, isLoading } = useFetchResumeFiles();
+  const { data: userProfile, isLoading } = useProfile();
   const t = useTranslations("emplois.resumeUpload");
 
   // Get the tips array from translations
@@ -41,7 +41,7 @@ export function ResumeUpload() {
               <ResumeItem
                 type="custom"
                 source="qualifications"
-                resumeFiles={resumeFiles?.files || []}
+                resumeFiles={userProfile?.files || []}
               />
             </div>
           )}

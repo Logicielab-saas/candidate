@@ -7,6 +7,7 @@
  * - Loading states and error handling
  * - Supports both profile and qualifications resume files
  */
+"use client";
 
 import {
   DropdownMenu,
@@ -101,8 +102,13 @@ export function ResumeItem({
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Check if file is PDF
-    if (file.type !== "application/pdf") {
+    // Check if file is PDF or Word document
+    if (
+      file.type !== "application/pdf" &&
+      file.type !== "application/msword" &&
+      file.type !==
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ) {
       toast({
         variant: "destructive",
         title: tValidation("invalidType.title"),
@@ -179,7 +185,7 @@ export function ResumeItem({
         type="file"
         ref={fileInputRef}
         className="hidden"
-        accept=".pdf"
+        accept=".pdf, .doc, .docx"
         onChange={(e) => handleFileChange(e)}
       />
 
@@ -187,7 +193,7 @@ export function ResumeItem({
         type="file"
         ref={updateFileInputRef}
         className="hidden"
-        accept=".pdf"
+        accept=".pdf, .doc, .docx"
         onChange={(e) => handleFileChange(e, selectedFileUuid || undefined)}
       />
 

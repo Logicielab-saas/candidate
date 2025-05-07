@@ -214,16 +214,16 @@ export function NavBar() {
                     <DropdownMenuTrigger asChild>
                       <Button
                         variant="ghost"
-                        className="relative h-8 w-8 rounded-full hover:cursor-pointer"
+                        className="relative h-10 w-10 rounded-full hover:cursor-pointer"
                       >
                         {isLoading ? (
-                          <Avatar className="h-8 w-8 border">
+                          <Avatar className="h-10 w-10 border">
                             <AvatarFallback className="bg-muted/50 p-0">
                               <Skeleton className="h-full w-full rounded-full" />
                             </AvatarFallback>
                           </Avatar>
                         ) : (
-                          <Avatar className="h-8 w-8">
+                          <Avatar className="h-10 w-10">
                             <AvatarImage
                               src={
                                 profile?.image &&
