@@ -15,11 +15,9 @@ import { useQueryState } from "nuqs";
 import { JobCard } from "./JobCard";
 import { useRouter } from "next/navigation";
 import { useEmplois } from "../hooks/use-emplois";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSavedJobsStore } from "../store/saved-jobs.store";
 import { JobCardSkeleton } from "../skeletons/JobCardSkeleton";
-import { Button } from "@/components/ui/button";
-import LoaderOne from "@/components/ui/loader-one";
 import { useTranslations } from "next-intl";
 
 interface JobsListProps {
@@ -34,9 +32,10 @@ export function JobsList({ isDesktop }: JobsListProps) {
   const initializeSavedJobs = useSavedJobsStore(
     (state) => state.initializeSavedJobs
   );
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   const t = useTranslations("emplois.jobsList");
-  const tCommon = useTranslations("common");
+  // const tCommon = useTranslations("common");
 
   // Fetch jobs from API with pagination
   const {
@@ -48,6 +47,30 @@ export function JobsList({ isDesktop }: JobsListProps) {
     fetchNextPage,
     hasNextPage,
   } = useEmplois();
+
+  // useEffect to observe the load more ref
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    const currentRef = loadMoreRef.current;
+
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [loadMoreRef, hasNextPage, fetchNextPage]);
 
   // Initialize saved jobs
   useEffect(() => {
@@ -72,11 +95,11 @@ export function JobsList({ isDesktop }: JobsListProps) {
   };
 
   // Handle load more click
-  const handleLoadMore = () => {
-    if (hasNextPage) {
-      fetchNextPage();
-    }
-  };
+  // const handleLoadMore = () => {
+  //   if (hasNextPage) {
+  //     fetchNextPage();
+  //   }
+  // };
 
   if (isLoading) {
     return (
@@ -107,7 +130,7 @@ export function JobsList({ isDesktop }: JobsListProps) {
   }
 
   const totalJobs = pagination?.total ?? 0;
-  const remainingJobs = jobs ? totalJobs - jobs.length : 0;
+  // const remainingJobs = jobs ? totalJobs - jobs.length : 0;
 
   return (
     <div className="space-y-4">
@@ -130,14 +153,22 @@ export function JobsList({ isDesktop }: JobsListProps) {
             <JobCard job={job} isSelected={job.slug === selectedJobId} />
           </div>
         ))}
-
         {!jobs?.length && (
           <div className="text-center p-8 border rounded-lg">
             <p className="text-muted-foreground">{t("noResults")}</p>
           </div>
         )}
 
-        {hasNextPage && (
+        {/* Empty div for intersection observer */}
+        <div ref={loadMoreRef} className="h-1" />
+
+        {isFetchingNextPage && (
+          <>
+            <JobCardSkeleton />
+          </>
+        )}
+
+        {/* {hasNextPage && (
           <div className="flex justify-center pt-4">
             <Button
               variant="outline"
@@ -158,7 +189,7 @@ export function JobsList({ isDesktop }: JobsListProps) {
               )}
             </Button>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
