@@ -7,43 +7,38 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { useToast } from "@/hooks/use-toast";
+import { useSendSupportTicket } from "../hooks/use-support-ticket";
 
 export function HelpForm() {
   const t = useTranslations("help");
-  const { toast } = useToast();
+  const tCommon = useTranslations("common");
   const [issueType, setIssueType] = useQueryState("issue");
   const [message, setMessage] = useState("");
-  const [isSending, setIsSending] = useState(false);
+
+  const { mutate: sendTicket, isPending } = useSendSupportTicket(tCommon);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!issueType || !message.trim()) return;
 
-    setIsSending(true);
     try {
-      // TODO: Implement API call to send help request
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
-      console.log({ issueType, message });
-
-      toast({
-        variant: "success",
-        title: t("toast.success.title"),
-        description: t("toast.success.description"),
-      });
-
-      // Reset form
-      setMessage("");
-      setIssueType(null);
-    } catch (error) {
-      console.error("Failed to send help request:", error);
-      toast({
-        variant: "destructive",
-        title: t("toast.error.title"),
-        description: t("toast.error.description"),
-      });
-    } finally {
-      setIsSending(false);
+      // TODO: Get the json dynamic data, support categories to set subject & category uuid from it
+      sendTicket(
+        {
+          support_categorie_uuid: "1",
+          subject: issueType,
+          description: message,
+        },
+        {
+          onSuccess: () => {
+            // Reset form
+            setMessage("");
+            setIssueType(null);
+          },
+        }
+      );
+    } catch (_error) {
+      // the hook already handle the toast error
     }
   };
 
@@ -67,9 +62,9 @@ export function HelpForm() {
         <div className="flex justify-end">
           <Button
             type="submit"
-            disabled={!issueType || !message.trim() || isSending}
+            disabled={!issueType || !message.trim() || isPending}
           >
-            {isSending ? t("form.sending") : t("form.submit")}
+            {isPending ? t("form.sending") : t("form.submit")}
           </Button>
         </div>
       </form>

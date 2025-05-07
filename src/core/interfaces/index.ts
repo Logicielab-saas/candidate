@@ -39,3 +39,4 @@ export * from "./archived-job.interface";
 export * from "./search-suggestions.interface";
 export * from "./notifications.interface";
 export * from "./interviews.inteface";
+export * from "./support-ticket.interface";
