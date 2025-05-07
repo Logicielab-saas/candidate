@@ -6,3 +6,4 @@ export * from "./generate-pdf";
 export * from "./get-user-agent-n-ip";
 export * from "./getAvailableWeeks";
 export * from "./job-bookmark-handler";
+export * from "./formatters.util";
