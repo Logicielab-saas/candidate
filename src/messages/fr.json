@@ -31,6 +31,10 @@
         "noResults": "Aucun avis ne correspond à votre recherche."
       }
     },
+    "minutes": "minutes",
+    "inPersonInterview": "Entretien en présentiel",
+    "videoInterview": "Entretien vidéo",
+    "phoneInterview": "Entretien téléphonique",
     "dragHere": "Déposez le fichier ici",
     "browseFiles": "Parcourir vos fichiers",
     "or": "ou",
@@ -1912,7 +1916,8 @@
       "titleSavedJobs": "Aucune offre sauvegradée",
       "descriptionSavedJobs": "Vous n'avez pas encore sauvegradé d'offres d'emploi. Commencez à explorer les offres et à les sauvegrader pour les consulter plus tard.",
       "descriptionSentApplications": "Vous n'avez pas encore envoyé de candidatures. Explorez les offres et postulez pour celles qui vous intéressent.",
-      "descriptionArchived": "Vous n'avez pas encore archivé d'offres d'emploi. Explorez les offres et archivez celles qui ne vous intéressent plus."
+      "descriptionArchived": "Vous n'avez pas encore archivé d'offres d'emploi. Explorez les offres et archivez celles qui ne vous intéressent plus.",
+      "noInterviews": "Vous n'avez pas encore de rendez-vous programmés."
     },
     "sentApplications": {
       "status": {
@@ -1936,12 +1941,15 @@
       "description2": " Cette action est irréversible."
     },
     "interviews": {
+      "noInvitedInterviews": "Aucun entretien invité",
+      "noPendingInterviews": "Aucun entretien en attente",
+      "noCancelledInterviews": "Aucun entretien annulé",
       "titleProgrammed": "Entretiens Programmés",
       "descriptionProgrammed": "Ce sont les entretiens auxquels vous avez été invité.",
       "titleWaiting": "Entretiens en Attente",
       "descriptionWaiting": "Ces entretiens attendent votre confirmation.",
-      "titlePast": "Entretiens Passés",
-      "descriptionPast": "Voici les entretiens que vous avez complétés."
+      "titleCancelled": "Entretiens Annulés",
+      "descriptionCancelled": "Voici les entretiens que vous avez annulé."
     }
   },
   "myInterviewActionPage": {

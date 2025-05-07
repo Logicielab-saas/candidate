@@ -46,12 +46,12 @@ export function useSaveEmplois(jobSlug: string, t: (key: string) => string) {
         queryClient.invalidateQueries({
           queryKey: EMPLOIS_QUERY_KEY,
           type: "all",
-          exact: false,
+          exact: true,
         }),
         queryClient.invalidateQueries({
           queryKey: SAVED_EMPLOIS_QUERY_KEY,
           type: "all",
-          exact: false,
+          exact: true,
         }),
         queryClient.invalidateQueries({
           queryKey: [EMPLOIS_QUERY_KEY, jobSlug],
@@ -90,12 +90,12 @@ export function useCancelSaveEmplois(
         queryClient.invalidateQueries({
           queryKey: EMPLOIS_QUERY_KEY,
           type: "all",
-          exact: false,
+          exact: true,
         }),
         queryClient.invalidateQueries({
           queryKey: SAVED_EMPLOIS_QUERY_KEY,
           type: "all",
-          exact: false,
+          exact: true,
         }),
         queryClient.invalidateQueries({
           queryKey: [EMPLOIS_QUERY_KEY, jobSlug],

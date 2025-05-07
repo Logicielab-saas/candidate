@@ -31,6 +31,10 @@
         "noResults": "لا توجد تقييمات مطابقة لبحثك."
       }
     },
+    "minutes": "دقيقة",
+    "inPersonInterview": "مقابلة في المكان",
+    "videoInterview": "مقابلة فيديو",
+    "phoneInterview": "مقابلة هاتفية",
     "dragHere": "ضع الملف هنا",
     "browseFiles": "تصفح الملفات",
     "acceptedTypes": "الأنواع المقبولة: {types}",
@@ -1910,7 +1914,8 @@
       "titleSavedJobs": "لا توجد وظائف محفوظة",
       "descriptionSavedJobs": "لم تحفظ أي وظائف بعد. ابدأ في استكشاف الوظائف وحفظها للاطلاع عليها لاحقًا.",
       "descriptionSentApplications": "لم ترسل أي طلبات بعد. استكشف الوظائف وقدّم على ما يناسبك.",
-      "descriptionArchived": "لم تقم بأرشفة أي وظائف بعد. استكشف الوظائف وأرشف ما لم تعد مهتمًا به."
+      "descriptionArchived": "لم تقم بأرشفة أي وظائف بعد. استكشف الوظائف وأرشف ما لم تعد مهتمًا به.",
+      "noInterviews": "ليس لديك مقابلات مجدولة في الوقت الحالي."
     },
     "sentApplications": {
       "status": {
@@ -1934,12 +1939,15 @@
       "description2": " هذا الإجراء لا يمكن التراجع عنه."
     },
     "interviews": {
+      "noInvitedInterviews": "لا توجد مقابلات مدعوة",
+      "noPendingInterviews": "لا توجد مقابلات بانتظار التأكيد",
+      "noCancelledInterviews": "لا توجد مقابلات ملغية",
       "titleProgrammed": "المقابلات المجدولة",
       "descriptionProgrammed": "هذه هي المقابلات التي تمت دعوتك إليها.",
       "titleWaiting": "مقابلات بانتظار التأكيد",
       "descriptionWaiting": "هذه المقابلات تنتظر تأكيدك.",
-      "titlePast": "المقابلات السابقة",
-      "descriptionPast": "هذه هي المقابلات التي أكملتها."
+      "titleCancelled": "المقابلات الملغية",
+      "descriptionCancelled": "هذه هي المقابلات التي قمت بإلغائها."
     }
   },
   "myInterviewActionPage": {

@@ -31,6 +31,10 @@
         "noResults": "No reviews match your search."
       }
     },
+    "minutes": "minutes",
+    "inPersonInterview": "In Person Interview",
+    "videoInterview": "Video Conference",
+    "phoneInterview": "Phone Call",
     "dragHere": "Drop your file here",
     "browseFiles": "Browse your files",
     "acceptedTypes": "Accepted types: {types}",
@@ -1913,7 +1917,8 @@
       "titleSavedJobs": "No saved offers",
       "descriptionSavedJobs": "You have not saved any job offers yet. Start exploring offers and save them to view later.",
       "descriptionSentApplications": "You have not sent any applications yet. Explore offers and apply to those that interest you.",
-      "descriptionArchived": "You have not archived any job offers yet. Explore offers and archive those you are no longer interested in."
+      "descriptionArchived": "You have not archived any job offers yet. Explore offers and archive those you are no longer interested in.",
+      "noInterviews": "You have no interviews scheduled at the moment."
     },
     "sentApplications": {
       "status": {
@@ -1937,12 +1942,15 @@
       "description2": " This action is irreversible."
     },
     "interviews": {
+      "noInvitedInterviews": "No invited interviews",
+      "noPendingInterviews": "No pending interviews",
+      "noCancelledInterviews": "No cancelled interviews",
       "titleProgrammed": "Scheduled Interviews",
       "descriptionProgrammed": "These are the interviews you have been invited to.",
       "titleWaiting": "Pending Interviews",
       "descriptionWaiting": "These interviews are awaiting your confirmation.",
-      "titlePast": "Past Interviews",
-      "descriptionPast": "Here are the interviews you have completed."
+      "titleCancelled": "Cancelled Interviews",
+      "descriptionCancelled": "Here are the interviews you have cancelled."
     }
   },
   "myInterviewActionPage": {

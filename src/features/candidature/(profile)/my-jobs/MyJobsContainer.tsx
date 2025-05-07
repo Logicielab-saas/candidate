@@ -31,6 +31,7 @@ import { SavedJobsItemSkeleton } from "./skeletons/SavedJobsItemSkeleton";
 import { SentApplicationItemSkeleton } from "./skeletons/SentApplicationItemSkeleton";
 import LoaderOne from "@/components/ui/loader-one";
 import { useTranslations } from "next-intl";
+import { useFetchInterviews } from "./hooks/use-my-interviews";
 
 const SavedJobsList = dynamic(() => import("./saved-jobs/SavedJobsList"), {
   ssr: false,
@@ -133,12 +134,18 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
     error: archivedJobsError,
   } = useFetchArchivedJobs(page, perPage);
 
+  const {
+    data: interviewsData,
+    isLoading: isInterviewsLoading,
+    error: interviewsError,
+  } = useFetchInterviews(page, perPage);
+
   // Combined loading state
   const _isLoading =
-    isSavedJobsLoading || isSentApplicationsLoading || isArchivedJobsLoading;
-
-  // Centralized state management for mock data (interviews only)
-  const [interviews] = useState<Interview[]>(mockInterviews);
+    isSavedJobsLoading ||
+    isSentApplicationsLoading ||
+    isArchivedJobsLoading ||
+    isInterviewsLoading;
 
   // Handle page change function to be passed to child components
   const handlePageChange = (newPage: number) => {
@@ -238,7 +245,11 @@ export function MyJobsContainer({ className }: MyJobsContainerProps) {
 
           <TabsContent value="interviews">
             {activeTab === "interviews" && (
-              <InterviewsList interviews={interviews} />
+              <InterviewsList
+                interviews={interviewsData?.interviews || []}
+                isLoading={isInterviewsLoading}
+                error={interviewsError}
+              />
             )}
           </TabsContent>
 

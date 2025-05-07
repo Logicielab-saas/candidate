@@ -67,8 +67,8 @@ export function useArchiveJob(t: (key: string) => string) {
 
       toast.toast({
         variant: "success",
-        title: t("toast.myArchivedJobs.archive.title"),
-        description: t("toast.myArchivedJobs.archive.description"),
+        title: t("toast.myArchivedJobs.update.title"),
+        description: t("toast.myArchivedJobs.update.description"),
       });
     },
     onError: () => {

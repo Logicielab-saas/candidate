@@ -1,5 +1,4 @@
 export * from "./saved-job.interface";
-export * from "./interview.interface";
 export * from "./contract.interface";
 export * from "./salary.interface";
 export * from "./jwt-payload.interface";
@@ -39,3 +38,4 @@ export * from "./emploi-report.interface";
 export * from "./archived-job.interface";
 export * from "./search-suggestions.interface";
 export * from "./notifications.interface";
+export * from "./interviews.inteface";
