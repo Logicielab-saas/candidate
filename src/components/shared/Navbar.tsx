@@ -42,23 +42,22 @@ import { useEffect, useState } from "react";
 import { logout } from "@/features/auth/services/logout";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { useTranslations } from "next-intl";
+import Cookies from "js-cookie";
+import { fetchStaticDataAction } from "@/lib/actions/static-data.action";
+import { useStaticDataStore } from "@/store/use-static-data-store";
 
-// interface NavItem {
-//   name: string;
-//   url: string;
-//   icon: LucideIcon;
-// }
+interface NavBarProps {
+  isNewVersion: boolean;
+  url: string;
+  version: string;
+}
 
-// interface NavBarProps {
-//   items: NavItem[];
-//   className?: string;
-// }
-
-export function NavBar() {
+export function NavBar({ isNewVersion, url, version }: NavBarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { data: profile, isLoading } = useProfile();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const { setStaticData } = useStaticDataStore();
 
   const t = useTranslations("nav");
   const tCommon = useTranslations("common");
@@ -73,6 +72,49 @@ export function NavBar() {
       icon: Star,
     },
   ];
+
+  // Log initial state
+  // useEffect(() => {
+  //   console.log("Current static data state:", {
+  //     emploi_contracts,
+  //     emploi_categories,
+  //     emploi_types,
+  //     languages,
+  //     support_categories,
+  //   });
+  // }, [
+  //   emploi_contracts,
+  //   emploi_categories,
+  //   emploi_types,
+  //   languages,
+  //   support_categories,
+  // ]);
+
+  useEffect(() => {
+    const initializeStaticData = async () => {
+      try {
+        // Always fetch cached data first
+        const cachedData = await fetchStaticDataAction(url);
+        setStaticData(cachedData);
+
+        // Check version and update cache if needed
+        const storedVersion = Cookies.get("versionwebjs");
+        if (!storedVersion || storedVersion !== version) {
+          Cookies.set("versionwebjs", version, { expires: 365 });
+
+          if (isNewVersion) {
+            // This will update the cache for future requests
+            const freshData = await fetchStaticDataAction(url);
+            setStaticData(freshData);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to initialize static data:", error);
+      }
+    };
+
+    initializeStaticData();
+  }, [isNewVersion, setStaticData, url, version]);
 
   useEffect(() => {
     // Only request permission if we're in a browser environment

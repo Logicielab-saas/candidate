@@ -16,6 +16,16 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useEffect } from "react";
+import { useStaticDataStore } from "@/store/use-static-data-store";
+import { fetchStaticDataAction } from "@/lib/actions/static-data.action";
+import Cookies from "js-cookie";
+
+interface PublicNavbarProps {
+  isNewVersion: boolean;
+  url: string;
+  version: string;
+}
 
 const navItems = [
   { name: "Emplois", url: "/emplois" },
@@ -23,8 +33,40 @@ const navItems = [
   { name: "Entreprises", url: "/companies/reviews" },
 ];
 
-export function PublicNavbar() {
+export function PublicNavbar({
+  isNewVersion,
+  url,
+  version,
+}: PublicNavbarProps) {
   const pathname = usePathname();
+  const { setStaticData } = useStaticDataStore();
+
+  useEffect(() => {
+    const initializeStaticData = async () => {
+      try {
+        // Always fetch cached data first
+        const cachedData = await fetchStaticDataAction(url);
+        setStaticData(cachedData);
+
+        // Check version and update cache if needed
+        const storedVersion = Cookies.get("versionwebjs");
+
+        if (!storedVersion || storedVersion !== version) {
+          Cookies.set("versionwebjs", version, { expires: 365 });
+
+          if (isNewVersion) {
+            // This will update the cache for future requests
+            const freshData = await fetchStaticDataAction(url);
+            setStaticData(freshData);
+          }
+        }
+      } catch (error) {
+        console.error("PublicNavbar: Failed to initialize static data:", error);
+      }
+    };
+
+    initializeStaticData();
+  }, [isNewVersion, setStaticData, url, version]);
 
   const activeTab =
     navItems.find(

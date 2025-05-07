@@ -40,3 +40,4 @@ export * from "./search-suggestions.interface";
 export * from "./notifications.interface";
 export * from "./interviews.inteface";
 export * from "./support-ticket.interface";
+export * from "./static-data.interface";

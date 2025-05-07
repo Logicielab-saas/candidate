@@ -139,6 +139,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const locale = await getUserLocaleOnServer();
+
   const messages = await fetchLocaleMessages(locale as Locale);
   const isRTL = locale === "ar";
 
