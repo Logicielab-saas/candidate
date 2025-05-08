@@ -56,13 +56,13 @@ export const userAlertsPreferences: UserAlertPreferences[] = [
       "Recevoir des notifications lorsqu'une nouvelle offre d'emploi est publiée",
     isEnabled: true,
   },
-  {
-    id: "2",
-    title: "Nouvelles entreprises",
-    description:
-      "Recevoir des notifications lorsqu'une nouvelle entreprise est ajoutée",
-    isEnabled: true,
-  },
+  // {
+  //   id: "2",
+  //   title: "Nouvelles entreprises",
+  //   description:
+  //     "Recevoir des notifications lorsqu'une nouvelle entreprise est ajoutée",
+  //   isEnabled: true,
+  // },
 ];
 
 export const privacyPreferences = [

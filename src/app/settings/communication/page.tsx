@@ -33,12 +33,12 @@ export default async function CommunicationSettingsPage() {
               description={t("alerts.jobAlerts.description")}
               href="/settings/communication/job-alerts"
             />
-            <Separator />
-            <AlertSection
+            {/* <Separator /> */}
+            {/* <AlertSection
               title={t("alerts.companyAlerts.title")}
               description={t("alerts.companyAlerts.description")}
               href="/settings/communication/company-alerts"
-            />
+            /> */}
           </div>
         </div>
 

@@ -61,29 +61,62 @@ async function handleRequest(
     // Construct the full URL
     const url = `${apiUrl}${path}${queryString ? `?${queryString}` : ""}`;
 
+    // Get the original content type
+    const contentType =
+      request.headers.get("Content-Type") || "application/json";
+
+    // Prepare the request body based on content type
+    let body: string | FormData | undefined;
+    const headers: Record<string, string> = {};
+
+    // Copy original headers except problematic ones
+    request.headers.forEach((value, key) => {
+      if (
+        !["content-length", "host", "connection"].includes(key.toLowerCase())
+      ) {
+        headers[key] = value;
+      }
+    });
+
+    if (method !== "GET") {
+      if (contentType.includes("multipart/form-data")) {
+        body = await request.formData();
+        // Let the fetch API handle the content-type header for FormData
+        delete headers["content-type"];
+      } else {
+        body = await request.text();
+      }
+    }
+
     // Forward the request
     const response = await fetch(url, {
       method,
-      headers: {
-        ...Object.fromEntries(request.headers),
-        "Content-Type": "application/json",
-      },
-      body: method !== "GET" ? await request.text() : undefined,
+      headers,
+      body,
     });
 
-    // Forward the response
-    const data = await response.json();
+    // Handle the response based on its content type
+    const responseContentType = response.headers.get("Content-Type") || "";
 
-    return NextResponse.json(data, {
-      status: response.status,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    if (responseContentType.includes("application/json")) {
+      const data = await response.json();
+      return NextResponse.json(data, {
+        status: response.status,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
+    // For non-JSON responses, return as is
+    return response;
   } catch (error) {
     console.error("Proxy error:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      {
+        error: "Internal Server Error",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
       { status: 500 }
     );
   }

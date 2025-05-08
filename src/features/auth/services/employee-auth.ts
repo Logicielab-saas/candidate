@@ -23,6 +23,7 @@ export async function employeeLogin(
 ): Promise<EmployeeAuthResponse> {
   try {
     const response = await api.post(`employee/login`, credentials);
+    console.log(response);
 
     // Set the token in an HTTP-only cookie
     await setAuthToken(response.data.token);
