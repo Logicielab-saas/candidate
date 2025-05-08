@@ -61,7 +61,7 @@ export function AnnonceQuestions({ annonce }: AnnonceQuestionsProps) {
             )}
 
             {/* Multiple Choice */}
-            {question.type === "choice" && question.options && (
+            {question.type === "selection" && question.options && (
               <RadioGroup
                 id={question.id}
                 className="space-y-2"
@@ -80,7 +80,7 @@ export function AnnonceQuestions({ annonce }: AnnonceQuestionsProps) {
             )}
 
             {/* Yes/No */}
-            {question.type === "yesno" && (
+            {question.type === "yes_no" && (
               <RadioGroup
                 id={question.id}
                 className="space-y-2"

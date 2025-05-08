@@ -68,7 +68,7 @@ export function EditQuestionsDialog({
           validQuestions.reduce((acc, question) => {
             if (!question.id) return acc;
 
-            if (question.type === "choice" && question.isMultipleChoices) {
+            if (question.type === "selection" && question.isMultipleChoices) {
               acc[question.id] = question.isRequired
                 ? z.array(z.string()).min(1, tCommon("selectAtLeastOne"))
                 : z.array(z.string()).default([]);
@@ -95,7 +95,9 @@ export function EditQuestionsDialog({
         )?.answer;
         acc[question.id] =
           existingAnswer ||
-          (question.type === "choice" && question.isMultipleChoices ? [] : "");
+          (question.type === "selection" && question.isMultipleChoices
+            ? []
+            : "");
         return acc;
       }, {} as Record<string, string | string[]>),
     }),
@@ -184,7 +186,7 @@ export function EditQuestionsDialog({
           />
         );
 
-      case "choice":
+      case "selection":
         if (!isChoiceQuestion(question)) return null;
 
         const choiceQuestion = question as ChoiceQuestionWithId;
@@ -262,7 +264,7 @@ export function EditQuestionsDialog({
           />
         );
 
-      case "yesno":
+      case "yes_no":
         return (
           <FormField
             key={question.id}

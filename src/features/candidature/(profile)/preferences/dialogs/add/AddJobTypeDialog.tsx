@@ -34,9 +34,9 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useEmploiTypes } from "@/hooks/use-emploi-types";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
+import { useStaticDataStore } from "@/store/use-static-data-store";
 
 function jobTypeFormSchema(t: (key: string) => string) {
   return z.object({
@@ -55,7 +55,7 @@ export default function AddJobTypeDialog({
   open,
   onOpenChange,
 }: AddJobTypeDialogProps) {
-  const { data: emploiTypes, isLoading } = useEmploiTypes();
+  const { emploi_types } = useStaticDataStore();
   const { toast } = useToast();
   const tCommon = useTranslations("common");
   const tValidation = useTranslations("common.validation");
@@ -88,10 +88,6 @@ export default function AddJobTypeDialog({
     onOpenChange(false);
   };
 
-  if (isLoading) {
-    return null; // Or show a loading spinner
-  }
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] p-0 sm:max-w-[500px]">
@@ -113,7 +109,7 @@ export default function AddJobTypeDialog({
                 render={() => (
                   <FormItem className="space-y-4">
                     <div className="space-y-4">
-                      {emploiTypes?.map((type) => (
+                      {emploi_types?.map((type) => (
                         <FormField
                           key={type.uuid}
                           control={form.control}

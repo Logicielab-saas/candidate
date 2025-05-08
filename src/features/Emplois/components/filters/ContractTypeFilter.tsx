@@ -15,18 +15,15 @@ import { Briefcase } from "lucide-react";
 import { memo, useState, useEffect, useCallback, useMemo } from "react";
 import { useDebounce } from "use-debounce";
 import { useQueryState } from "nuqs";
-import { useEmploiContracts } from "@/hooks/use-emploi-contracts";
-import { useEmploiTypes } from "@/hooks/use-emploi-types";
 import { useTranslations } from "next-intl";
+import { useStaticDataStore } from "@/store/use-static-data-store";
 
 function JobTypesFilterComponent() {
   const tCommon = useTranslations("common");
 
   // Fetch both contract types and employment types from API
-  const { data: contractTypesData, isLoading: isLoadingContracts } =
-    useEmploiContracts();
-  const { data: employmentTypesData, isLoading: isLoadingTypes } =
-    useEmploiTypes();
+
+  const { emploi_contracts, emploi_types } = useStaticDataStore();
 
   // URL state
   const [selectedTypes, setSelectedTypes] = useQueryState("types", {
@@ -45,21 +42,21 @@ function JobTypesFilterComponent() {
   // Combine and memoize options
   const combinedOptions = useMemo(() => {
     const contractOptions =
-      contractTypesData?.map((type) => ({
+      emploi_contracts?.map((type) => ({
         label: type.name,
         value: `contract-${type.uuid}`,
         group: tCommon("filters.types.contractTypes"),
       })) || [];
 
     const employmentOptions =
-      employmentTypesData?.map((type) => ({
+      emploi_types?.map((type) => ({
         label: type.title,
         value: `employment-${type.uuid}`,
         group: tCommon("filters.types.employmentTypes"),
       })) || [];
 
     return [...contractOptions, ...employmentOptions];
-  }, [contractTypesData, employmentTypesData, tCommon]);
+  }, [emploi_contracts, emploi_types, tCommon]);
 
   // Update URL when debounced value changes
   useEffect(() => {
@@ -87,8 +84,6 @@ function JobTypesFilterComponent() {
     setLocalSelectedTypes(values);
   }, []);
 
-  const isLoading = isLoadingContracts || isLoadingTypes;
-
   return (
     <div className="relative">
       <MultiSelect
@@ -103,7 +98,6 @@ function JobTypesFilterComponent() {
           localSelectedTypes.length > 0 && "border-primary"
         )}
         contentClassName="w-[220px]"
-        isLoading={isLoading}
       />
       <Briefcase className="absolute left-2.5 top-3 h-4 w-4 text-muted-foreground pointer-events-none" />
     </div>

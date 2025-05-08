@@ -1,6 +1,6 @@
 "use client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getCurrentUser, getProfile, updateProfile } from "../services/profile";
+import { getProfile, updateProfile } from "../services/profile";
 import { useToast } from "@/hooks/use-toast";
 import { PROFILE_RESUME_QUERY_KEY } from "../qualifications/hooks/use-profile-resume";
 import { hasAccessToken } from "@/lib/check-access-token";
@@ -22,13 +22,6 @@ export function useProfile() {
     queryKey: profileKeys.me(),
     queryFn: getProfile,
     enabled: isClient && hasAccessToken(),
-  });
-}
-
-export function useCurrentUser() {
-  return useQuery({
-    queryKey: profileKeys.me(),
-    queryFn: getCurrentUser,
   });
 }
 

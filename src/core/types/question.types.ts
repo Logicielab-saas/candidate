@@ -5,7 +5,7 @@ export type BaseQuestionWithId = SubmissionQuestion & { id: string };
 
 // Specific type for choice questions that must have options
 export interface ChoiceQuestionWithId extends BaseQuestionWithId {
-  type: "choice";
+  type: "selection";
   options: string[];
   isMultipleChoices?: boolean;
 }
@@ -15,7 +15,7 @@ export function isChoiceQuestion(
   question: BaseQuestionWithId
 ): question is ChoiceQuestionWithId {
   return (
-    question.type === "choice" &&
+    question.type === "selection" &&
     Array.isArray(question.options) &&
     question.options.length > 0
   );

@@ -45,7 +45,7 @@ export function PastInterviews({ interviews }: PastInterviewsProps) {
               <div className="absolute left-0 top-0 h-full border-l-4 border-dashed shadow-lg z-0"></div>
               {interviews.map((interview) => (
                 <motion.div
-                  key={interview.uuid}
+                  key={interview.interview_uuid}
                   className="flex justify-between items-center shadow rounded-lg p-4 mb-4 ml-4 dark:border"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}

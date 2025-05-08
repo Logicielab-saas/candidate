@@ -7,43 +7,44 @@ import { NextRequest, NextResponse } from "next/server";
  * hiding the real API endpoint from the client. It maintains headers,
  * method, and body of the original request.
  */
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
-) {
-  const { path } = await params;
-  return handleRequest(request, path, "GET");
+  { params }: { params: Promise<{ path: string[] }> }
+): Promise<Response> {
+  const resolvedParams = await params;
+  return handleRequest(request, resolvedParams.path, "GET");
 }
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
-) {
-  const { path } = await params;
-  return handleRequest(request, path, "POST");
+  { params }: { params: Promise<{ path: string[] }> }
+): Promise<Response> {
+  const resolvedParams = await params;
+  return handleRequest(request, resolvedParams.path, "POST");
 }
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
-) {
-  const { path } = await params;
-  return handleRequest(request, path, "PUT");
+  { params }: { params: Promise<{ path: string[] }> }
+): Promise<Response> {
+  const resolvedParams = await params;
+  return handleRequest(request, resolvedParams.path, "PUT");
 }
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
-) {
-  const { path } = await params;
-  return handleRequest(request, path, "DELETE");
+  { params }: { params: Promise<{ path: string[] }> }
+): Promise<Response> {
+  const resolvedParams = await params;
+  return handleRequest(request, resolvedParams.path, "DELETE");
 }
 
 async function handleRequest(
   request: NextRequest,
   pathSegments: string[],
   method: string
-) {
+): Promise<Response> {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     if (!apiUrl) {

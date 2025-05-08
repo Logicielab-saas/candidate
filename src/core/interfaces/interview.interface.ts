@@ -1,10 +1,10 @@
-import { Company } from "../types/job";
-
 export interface Interview {
   jobTitle: string;
   jobKey: string;
   jobUrl: string;
-  company: Company;
+  company: {
+    name: string;
+  };
   location: string;
   interviewTime: string;
   interviewDate: string;

@@ -7,7 +7,7 @@
 import { ApiError } from "next/dist/server/api-utils";
 import api from "@/lib/axios";
 import { AxiosError } from "axios";
-import { JobApplyFormData } from "@/core/interfaces";
+import type { JobApplyFormData } from "@/core/types";
 import { hasAccessToken } from "@/lib/check-access-token";
 
 const isAuthenticated = hasAccessToken();

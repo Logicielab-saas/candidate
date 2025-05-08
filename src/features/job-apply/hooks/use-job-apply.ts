@@ -7,7 +7,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApplyToJob } from "../services/job-apply";
 import { useToast } from "@/hooks/use-toast";
-import type { JobApplyFormData } from "@/core/interfaces";
+import type { JobApplyFormData } from "@/core/types";
 import { EMPLOIS_QUERY_KEY } from "@/features/Emplois/hooks/use-emplois";
 
 export const JOB_APPLY_QUERY_KEY = ["job-apply"];

@@ -49,7 +49,7 @@ export function InvitedInterviews({ interviews }: InvitedInterviewsProps) {
               <div className="absolute left-0 top-0 h-full border-l-4 border-dashed border-primaryHex-500 shadow-lg z-0"></div>
               {interviews.map((interview) => (
                 <motion.div
-                  key={interview.uuid}
+                  key={interview.interview_uuid}
                   className="flex justify-between items-center shadow rounded-lg p-4 mb-4 ml-4 dark:border"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -92,12 +92,16 @@ export function InvitedInterviews({ interviews }: InvitedInterviewsProps) {
                   </div>
                   <div className="flex flex-row space-x-2 ml-4">
                     <Button className="mb-2" asChild>
-                      <Link href={`/interviews/programmer/${interview.uuid}`}>
+                      <Link
+                        href={`/interviews/programmer/${interview.interview_uuid}`}
+                      >
                         {tCommon("actions.program")}
                       </Link>
                     </Button>
                     <Button variant="outline" asChild>
-                      <Link href={`/interviews/refuser/${interview.uuid}`}>
+                      <Link
+                        href={`/interviews/refuser/${interview.interview_uuid}`}
+                      >
                         {tCommon("actions.refuse")}
                       </Link>
                     </Button>
