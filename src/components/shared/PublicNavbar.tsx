@@ -29,8 +29,8 @@ interface PublicNavbarProps {
 
 const navItems = [
   { name: "Emplois", url: "/emplois" },
-  { name: "Formations", url: "/formations" },
-  { name: "Entreprises", url: "/companies/reviews" },
+  // { name: "Formations", url: "/formations" },
+  // { name: "Entreprises", url: "/companies/reviews" },
 ];
 
 export function PublicNavbar({

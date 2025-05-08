@@ -64,13 +64,13 @@ export function NavBar({ isNewVersion, url, version }: NavBarProps) {
 
   const navItems = [
     { name: t("jobs"), url: "/emplois", icon: Home },
-    { name: t("formations"), url: "/formations", icon: User },
+    // { name: t("formations"), url: "/formations", icon: User },
     { name: t("profile"), url: "/profile", icon: Briefcase },
-    {
-      name: t("companies"),
-      url: "/companies/reviews",
-      icon: Star,
-    },
+    // {
+    //   name: t("companies"),
+    //   url: "/companies/reviews",
+    //   icon: Star,
+    // },
   ];
 
   // Log initial state

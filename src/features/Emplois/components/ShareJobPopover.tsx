@@ -40,7 +40,7 @@ interface ShareJobPopoverProps {
 }
 
 // Create motion components
-const MotionButton = motion(Button);
+const MotionButton = motion.create(Button);
 const MotionSpan = motion.span;
 
 const buttonVariants = {
