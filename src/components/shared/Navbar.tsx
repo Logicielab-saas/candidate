@@ -34,7 +34,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeButton } from "@/components/shared/ThemeButton";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useProfile } from "@/features/candidature/(profile)/hooks/use-profile";
 import { Skeleton } from "../ui/skeleton";
 import { requestPermission } from "@/lib/request-permission";
@@ -54,7 +54,6 @@ interface NavBarProps {
 
 export function NavBar({ isNewVersion, url, version }: NavBarProps) {
   const pathname = usePathname();
-  const router = useRouter();
   const { data: profile, isLoading } = useProfile();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { setStaticData } = useStaticDataStore();
@@ -377,7 +376,7 @@ export function NavBar({ isNewVersion, url, version }: NavBarProps) {
                         className="text-destructive hover:cursor-pointer"
                         onClick={async () => {
                           await logout();
-                          router.replace("/login");
+                          window.location.href = "/login";
                         }}
                       >
                         <LogOut className="h-4 w-4" />

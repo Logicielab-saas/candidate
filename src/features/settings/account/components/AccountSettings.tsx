@@ -14,9 +14,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
-import jsCookie from "js-cookie";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { logout } from "@/features/auth/services/logout";
 
 // Dynamic import of DeleteAccountDialog with loading fallback
 const DeleteAccountDialog = dynamic(
@@ -28,7 +27,6 @@ const DeleteAccountDialog = dynamic(
 
 export function AccountSettings() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const router = useRouter();
   const { toast } = useToast();
   const t = useTranslations("settings.account.accountSettings");
   const tCommon = useTranslations("common");
@@ -36,8 +34,9 @@ export function AccountSettings() {
   const handleLogout = async () => {
     try {
       setIsLoggingOut(true);
-      jsCookie.remove("userRole");
-      router.replace("/login");
+      await logout();
+
+      window.location.href = "/login";
 
       toast({
         variant: "success",

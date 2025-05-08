@@ -6,12 +6,14 @@
  */
 
 import api from "@/lib/axios";
-import { redirect } from "next/navigation";
+import axios from "axios";
 import { AxiosError } from "axios";
 import { setAuthToken, setUserRole } from "@/lib/cookies";
-import jsCookie from "js-cookie";
-import { EmployeeAuthResponse, SignupCredentials } from "../common/interfaces";
-import { LoginCredentials } from "../common/interfaces";
+import type {
+  EmployeeAuthResponse,
+  SignupCredentials,
+} from "../common/interfaces";
+import type { LoginCredentials } from "../common/interfaces";
 
 interface ApiError {
   message: string;
@@ -22,7 +24,10 @@ export async function employeeLogin(
   credentials: LoginCredentials
 ): Promise<EmployeeAuthResponse> {
   try {
-    const response = await api.post(`employee/login`, credentials);
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}employee/login`,
+      credentials
+    );
     console.log(response);
 
     // Set the token in an HTTP-only cookie
@@ -52,25 +57,6 @@ export async function employeeSignup(
     if (error instanceof AxiosError) {
       const apiError = error.response?.data as ApiError;
       throw new Error(apiError?.message || "Failed to signup");
-    }
-    throw error;
-  }
-}
-
-export async function employeeLogout() {
-  try {
-    // Clear the token cookie
-    jsCookie.remove("accessToken");
-
-    // Clear the user role cookie
-    jsCookie.remove("userRole");
-
-    // Redirect to login page
-    redirect("/login");
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      const apiError = error.response?.data as ApiError;
-      throw new Error(apiError?.message || "Failed to logout");
     }
     throw error;
   }

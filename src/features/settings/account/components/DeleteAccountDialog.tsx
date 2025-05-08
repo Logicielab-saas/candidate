@@ -75,6 +75,8 @@ export function DeleteAccountDialog() {
 
       // Use the auth service's logout function to handle cleanup and redirect
       await logout();
+
+      window.location.href = "/login";
     } catch (_error) {
       // Error handling is managed by the hooks, but we'll reset the deleting state
       setIsDeleting(false);
