@@ -161,7 +161,7 @@ export function JobDetails() {
                   <JobBookmarkButton
                     jobId={job.uuid}
                     jobSlug={job.slug}
-                    initialIsSaved={job.saved}
+                    initialIsSaved={job.is_saved}
                     tooltipPosition="top"
                     iconClassName="h-6 w-6"
                     buttonStyle="action"
@@ -267,14 +267,14 @@ export function JobDetails() {
           <Button size="sm" className="w-full" asChild>
             <Link
               href={
-                job.applied
+                job.is_applied
                   ? `/profile/my-jobs?tab=sent-applications`
                   : `/job-apply/${job.slug}`
               }
               target="_blank"
               rel="noopener noreferrer"
             >
-              {job.applied ? t("alreadyApplied") : t("apply")}{" "}
+              {job.is_applied ? t("alreadyApplied") : t("apply")}{" "}
               <ArrowRight className="h-4 w-4 ml-2" />
             </Link>
           </Button>

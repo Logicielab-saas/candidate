@@ -31,6 +31,7 @@ import { useUnarchiveJob } from "../hooks/use-my-archived-jobs";
 import { useLocale, useTranslations } from "next-intl";
 import { formatDate } from "@/core/utils/date";
 import { getCompanyInitials } from "@/core/utils";
+import Link from "next/link";
 
 const ReportJobDialog = dynamic(
   () => import("@/components/shared/ReportJobDialog"),
@@ -40,9 +41,9 @@ const ReportJobDialog = dynamic(
 interface ArchivedJobItemProps {
   jobId: string;
   jobTitle: string;
-  company: {
-    name: string;
-  };
+  jobSlug: string;
+  companyName: string;
+  companyImage: string;
   location: string;
   savedDate: string;
 }
@@ -50,7 +51,9 @@ interface ArchivedJobItemProps {
 export function ArchivedJobItem({
   jobId,
   jobTitle,
-  company,
+  jobSlug,
+  companyName,
+  companyImage,
   location,
   savedDate,
 }: ArchivedJobItemProps) {
@@ -75,21 +78,32 @@ export function ArchivedJobItem({
         <div className="space-y-3">
           <div className="flex items-center gap-3">
             <Avatar className="h-10 w-10">
-              <AvatarImage alt={company.name} />
+              <AvatarImage alt={companyName} src={companyImage} />
               <AvatarFallback className="text-xs font-medium">
-                {getCompanyInitials(company.name)}
+                {getCompanyInitials(companyName)}
               </AvatarFallback>
             </Avatar>
-            <span className="font-medium">{jobTitle}</span>
+            <Link
+              href={`/annonce-details/${jobSlug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium hover:underline"
+            >
+              {jobTitle}
+            </Link>
           </div>
           <div className="space-y-1 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Building2 className="h-4 w-4" />
-              <span>{company.name}</span>
+              <span>{companyName}</span>
             </div>
             <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4" />
-              <span>{location}</span>
+              {location && (
+                <>
+                  <MapPin className="h-4 w-4" />
+                  <span>{location}</span>
+                </>
+              )}
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />

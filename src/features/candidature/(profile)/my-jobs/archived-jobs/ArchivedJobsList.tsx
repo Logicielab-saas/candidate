@@ -16,13 +16,20 @@
 import { ArchivedJobItem } from "./ArchivedJobItem";
 import { motion, AnimatePresence } from "framer-motion";
 import type { ArchivedJobsResponse } from "../services/my-archived-jobs";
-import { Pagination } from "@/components/ui/pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import type { ArchivedJob } from "@/core/interfaces";
 import { useTranslations } from "next-intl";
-// TODO: Comeback to implement this later dynamic item
+import dynamic from "next/dynamic";
+
+const Pagination = dynamic(
+  () => import("@/components/ui/pagination").then((mod) => mod.Pagination),
+  {
+    ssr: false,
+  }
+);
+
 // Animation configuration for the container
 const container = {
   hidden: { opacity: 0 },
@@ -89,6 +96,10 @@ export default function ArchivedJobsList({
       </Alert>
     );
   }
+  const paginationAvailable =
+    archivedJobs.pagination &&
+    archivedJobs.pagination.current_page > 1 &&
+    archivedJobs.pagination.per_page > 0;
 
   return (
     <div className="space-y-6">
@@ -104,17 +115,17 @@ export default function ArchivedJobsList({
               key={job.uuid}
               jobId={job.emploi_uuid}
               jobTitle={job.emploi_title}
-              company={{
-                name: job.emploi_title.split(" - ")[1] || tCommon("company"),
-              }}
-              location="France" // This should come from the API if available
+              jobSlug={job.emploi_slug}
+              companyName={job.company_name}
+              companyImage={job.company_image}
+              location={job.city}
               savedDate={job.created_at}
             />
           ))}
         </AnimatePresence>
       </motion.div>
 
-      {archivedJobs.pagination && archivedJobs.pagination.total > 0 && (
+      {paginationAvailable && (
         <Pagination
           currentPage={archivedJobs.pagination.current_page}
           totalPages={Math.ceil(

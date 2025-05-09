@@ -73,7 +73,7 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
     }
   };
 
-  if (!IsFetching && jobDetails?.applied) {
+  if (!IsFetching && jobDetails?.is_applied) {
     return <AlreadyApplied jobDetails={jobDetails} />;
   }
 

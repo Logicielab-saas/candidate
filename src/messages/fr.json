@@ -1315,6 +1315,20 @@
             "placeholder": "Votre réponse"
           }
         }
+      },
+      "status": {
+        "applied": {
+          "title": "Candidature déjà envoyée",
+          "description": "Vous avez déjà postulé pour cette offre"
+        },
+        "saved": {
+          "title": "Offre sauvegardée",
+          "description": "Cette offre est dans votre liste des favoris"
+        },
+        "archived": {
+          "title": "Offre archivée",
+          "description": "Cette offre a été archivée"
+        }
       }
     }
   },

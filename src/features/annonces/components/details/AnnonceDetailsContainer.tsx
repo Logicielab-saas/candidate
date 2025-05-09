@@ -6,6 +6,7 @@ import { AnnonceHeader } from "./AnnonceHeader";
 import { AnnonceDescription } from "./AnnonceDescription";
 import { AnnonceJobDetails } from "./AnnonceJobDetails";
 import { AnnonceActions } from "./AnnonceActions";
+import { AnnonceStatusAlert } from "./AnnonceStatusAlert";
 import { useTranslations } from "next-intl";
 
 interface AnnonceDetailsContainerProps {
@@ -40,6 +41,9 @@ export function AnnonceDetailsContainer({
     <div className="container mx-auto py-8 space-y-8">
       {/* Header */}
       <AnnonceHeader annonce={annonce} />
+
+      {/* Status Alerts */}
+      <AnnonceStatusAlert annonce={annonce} />
 
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

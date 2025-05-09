@@ -21,7 +21,7 @@ export function AnnonceActions({ annonce }: AnnonceActionsProps) {
   const isAuthenticated = hasAccessToken();
 
   const { isSaved, isProcessing, toggleSaved } = useJobBookmark({
-    initialIsSaved: annonce.saved,
+    initialIsSaved: annonce.is_saved,
     jobId: annonce.uuid,
     jobSlug: annonce.slug,
   });
@@ -31,8 +31,8 @@ export function AnnonceActions({ annonce }: AnnonceActionsProps) {
       <CardContent className="p-6">
         <div className="flex flex-col gap-4">
           {/* Apply Button */}
-          {annonce.applied ? (
-            <Button size="lg" className="w-full" disabled={annonce.applied}>
+          {annonce.is_applied ? (
+            <Button size="lg" className="w-full" disabled={annonce.is_applied}>
               <span>{tCommon("actions.alreadyApplied")}</span>
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
@@ -40,7 +40,7 @@ export function AnnonceActions({ annonce }: AnnonceActionsProps) {
             <Button
               size="lg"
               className="w-full"
-              disabled={annonce.applied}
+              disabled={annonce.is_applied}
               asChild
             >
               <Link href={`/job-apply/${annonce.slug}`}>

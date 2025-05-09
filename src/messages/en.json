@@ -1316,6 +1316,20 @@
             "placeholder": "Your answer"
           }
         }
+      },
+      "status": {
+        "applied": {
+          "title": "Application Submitted",
+          "description": "You have already applied for this position"
+        },
+        "saved": {
+          "title": "Job Saved",
+          "description": "This job is in your saved list"
+        },
+        "archived": {
+          "title": "Job Archived",
+          "description": "This job posting has been archived"
+        }
       }
     }
   },

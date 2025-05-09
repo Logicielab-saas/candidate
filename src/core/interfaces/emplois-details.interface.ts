@@ -33,8 +33,12 @@ export interface EmploisDetails {
   maxWorkingHours: number | null;
   durationType: string | null;
   emploi_uuid: string;
-  saved: boolean;
-  applied: boolean;
+  is_saved: boolean;
+  is_applied: boolean;
+  masked: boolean | null;
+  archived: boolean | null;
+  archive_uuid: string | null;
+  active: boolean;
   emploi_categories: EmploisCategories[];
   emploi_contracts: EmploisContracts[];
   emploi_types: EmploisTypes[];
