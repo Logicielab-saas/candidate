@@ -184,11 +184,7 @@ export function LoginForm({
             </div>
           </form>
           <Illustration
-            src={
-              selectedType === "employee"
-                ? "/login/ask_login.svg"
-                : "/login/recruiter_login.svg"
-            }
+            src="/login/ask_login.svg"
             alt={
               selectedType === "employee"
                 ? t("options.employee.title")

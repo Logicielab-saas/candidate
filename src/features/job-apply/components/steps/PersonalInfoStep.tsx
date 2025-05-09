@@ -43,7 +43,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { DocumentViewer } from "@/components/shared/DocumentViewer";
+import { FileViewer } from "@/components/shared/FileViewer";
 import { useTranslations } from "next-intl";
 import { StepNavigation } from "../../../../components/shared/StepNavigation";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -389,7 +389,7 @@ export function PersonalInfoStep({
                                   </DialogHeader>
                                   <ScrollArea className="h-full w-full rounded-md">
                                     {previewUrl && (
-                                      <DocumentViewer url={previewUrl} />
+                                      <FileViewer url={previewUrl} />
                                     )}
                                   </ScrollArea>
                                 </DialogContent>

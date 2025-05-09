@@ -88,9 +88,8 @@ export function JobApplyContainer({ slug }: JobApplyContainerProps) {
         ) : (
           <>
             <h1 className="text-3xl font-bold text-center mb-2">
-              {tCommon("appliedFor", {
-                jobTitle: jobDetails?.title || "",
-              })}
+              {tCommon("appliedFor")}
+              <span className="text-primaryHex-500">{jobDetails?.title}</span>
             </h1>
             <p className="text-muted-foreground text-center">
               {tCommon("jobApplySteps")}

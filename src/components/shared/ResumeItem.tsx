@@ -6,6 +6,7 @@
  * - File preview, download, and delete actions
  * - Loading states and error handling
  * - Supports both profile and qualifications resume files
+ * - Supports PDF, Word documents, and image files (JPG, PNG, JPEG)
  */
 "use client";
 
@@ -102,13 +103,17 @@ export function ResumeItem({
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Check if file is PDF or Word document
-    if (
-      file.type !== "application/pdf" &&
-      file.type !== "application/msword" &&
-      file.type !==
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    ) {
+    // Check if file is PDF, Word document, or image
+    const allowedTypes = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "image/jpeg",
+      "image/png",
+      "image/jpg",
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
       toast({
         variant: "destructive",
         title: tValidation("invalidType.title"),
@@ -185,7 +190,7 @@ export function ResumeItem({
         type="file"
         ref={fileInputRef}
         className="hidden"
-        accept=".pdf, .doc, .docx"
+        accept=".pdf, .doc, .docx, .jpg, .jpeg, .png"
         onChange={(e) => handleFileChange(e)}
       />
 
@@ -193,7 +198,7 @@ export function ResumeItem({
         type="file"
         ref={updateFileInputRef}
         className="hidden"
-        accept=".pdf, .doc, .docx"
+        accept=".pdf, .doc, .docx, .jpg, .jpeg, .png"
         onChange={(e) => handleFileChange(e, selectedFileUuid || undefined)}
       />
 

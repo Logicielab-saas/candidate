@@ -41,7 +41,7 @@
     "jobNotFound": "Offre d'emploi introuvable. Veuillez vérifier l'URL et réessayer.",
     "profileNotFound": "Profil introuvable. Veuillez vérifier l'URL et réessayer.",
     "unknownStep": "Étape inconnue",
-    "appliedFor": "Postuler pour: {jobTitle}",
+    "appliedFor": "Postuler pour: ",
     "jobApplySteps": "Complétez les étapes suivantes pour soumettre votre candidature",
     "applyBefore": "Postuler avant le {date}",
     "seeLess": "Voir moins",

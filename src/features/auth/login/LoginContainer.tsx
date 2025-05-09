@@ -14,7 +14,7 @@ export function LoginContainer() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center md:mt-12 p-6 md:p-10">
+    <div className="flex flex-col items-center justify-center mt-8 md:mt-12 p-6 md:p-10">
       <div className="w-full max-w-sm md:max-w-6xl">
         {loginType ? (
           <LoginForm onSelect={handleSelect} selectedType={loginType} />

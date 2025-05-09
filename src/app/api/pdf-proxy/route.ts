@@ -1,10 +1,3 @@
-/**
- * Proxy API route for handling CORS issues with document viewing
- *
- * Fetches documents from storage and forwards them to the client
- * while handling CORS headers properly. Includes caching for better performance.
- */
-
 import { NextRequest, NextResponse } from "next/server";
 
 // Cache duration in seconds (1 hour)
@@ -24,19 +17,13 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch document: ${response.statusText}`);
-    }
+    const arrayBuffer = await response.arrayBuffer();
 
-    const blob = await response.blob();
+    // Set appropriate headers for PDF
     const headers = new Headers();
-
-    // Forward content type and length
-    headers.set(
-      "Content-Type",
-      response.headers.get("Content-Type") || "application/octet-stream"
-    );
-    headers.set("Content-Length", response.headers.get("Content-Length") || "");
+    headers.set("Content-Type", "application/pdf");
+    headers.set("Content-Length", arrayBuffer.byteLength.toString());
+    headers.set("Access-Control-Allow-Origin", "*");
 
     // Add caching headers
     headers.set(
@@ -44,14 +31,14 @@ export async function GET(request: NextRequest) {
       `public, s-maxage=${CACHE_DURATION}, stale-while-revalidate`
     );
 
-    return new NextResponse(blob, {
+    return new NextResponse(arrayBuffer, {
       status: 200,
       headers,
     });
   } catch (error) {
-    console.error("Proxy error:", error);
+    console.error("PDF proxy error:", error);
     return new NextResponse(
-      error instanceof Error ? error.message : "Error fetching document",
+      error instanceof Error ? error.message : "Error fetching PDF",
       { status: 500 }
     );
   }
@@ -60,7 +47,6 @@ export async function GET(request: NextRequest) {
 // Increase the default body size limit for PDF files
 export const config = {
   api: {
-    bodyParser: false,
     responseLimit: false,
   },
 };

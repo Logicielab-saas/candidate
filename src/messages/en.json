@@ -42,7 +42,7 @@
     "jobNotFound": "Job not found. Please check the URL and try again.",
     "profileNotFound": "Profile not found. Please check the URL and try again.",
     "unknownStep": "Unknown step",
-    "appliedFor": "Applying for: {jobTitle}",
+    "appliedFor": "Applying for: ",
     "jobApplySteps": "Complete the following steps to submit your application",
     "applyBefore": "Apply before {date}",
     "seeLess": "See less",

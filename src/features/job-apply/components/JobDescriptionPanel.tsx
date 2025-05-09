@@ -61,7 +61,7 @@ export function JobDescriptionPanel({ jobDetails }: JobDescriptionPanelProps) {
   };
 
   return (
-    <Card className="sticky top-4 overflow-auto max-h-[calc(100vh-8rem)]">
+    <Card className="sticky top-14 overflow-auto max-h-[calc(100vh-8rem)]">
       <CardHeader className="pb-2">
         <CardTitle className="text-xl font-bold">{jobDetails.title}</CardTitle>
         <div className="flex flex-wrap gap-1 mt-1 text-sm text-muted-foreground">
