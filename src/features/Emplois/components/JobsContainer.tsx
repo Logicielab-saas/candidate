@@ -10,7 +10,7 @@ import { JobsList } from "./JobsList";
 import { JobDetails } from "./JobDetails";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useQueryState } from "nuqs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { useRecentSearchesStore } from "../store/recent-searches.store";
@@ -19,8 +19,8 @@ import { tabsListStyles, tabTriggerStyles } from "@/core/styles/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import dynamic from "next/dynamic";
 import LoaderOne from "@/components/ui/loader-one";
-import { useTranslations } from "next-intl";
-import { getUserLocale } from "@/lib/i18n-utils";
+import { useLocale, useTranslations } from "next-intl";
+import { hasAccessToken } from "@/lib/check-access-token";
 
 const JobFilters = dynamic(
   () => import("./JobFilters").then((mod) => mod.JobFilters),
@@ -53,12 +53,28 @@ export function JobsContainer() {
   const [selectedCity] = useQueryState("city");
   const [keywords] = useQueryState("keyword");
   const [contractTypes] = useQueryState("contracts");
-  const [activeTab, setActiveTab] = useQueryState("tab", {
-    defaultValue: "recommended",
-  });
+  const [activeTab, setActiveTab] = useQueryState("tab", {});
   const addSearch = useRecentSearchesStore((state) => state.addSearch);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const t = useTranslations("emplois.jobsContainer");
+
+  // Check authentication status on client side only
+  useEffect(() => {
+    setIsAuthenticated(hasAccessToken());
+  }, []);
+
+  // Ensure unauthenticated users can't access resume tab
+  const safeActiveTab =
+    !isAuthenticated && activeTab === "resume"
+      ? "recommended"
+      : activeTab || "recommended";
+
+  useEffect(() => {
+    if (!isAuthenticated && activeTab === "resume") {
+      setActiveTab("recommended");
+    }
+  }, [activeTab, isAuthenticated, setActiveTab]);
 
   // Track searches in Zustand store
   useEffect(() => {
@@ -75,12 +91,19 @@ export function JobsContainer() {
   // Switch to recommended tab when searching
   useEffect(() => {
     if (hasActiveSearch) {
+      setActiveTab(null);
+    } else if (
+      !isAuthenticated &&
+      (activeTab === "resume" || activeTab === null)
+    ) {
+      setActiveTab("recommended");
+    } else if (activeTab === null) {
       setActiveTab("recommended");
     }
-  }, [hasActiveSearch, setActiveTab]);
+  }, [hasActiveSearch, setActiveTab, activeTab, isAuthenticated]);
 
   // Get current locale (client-side)
-  const locale = typeof window !== "undefined" ? getUserLocale() : undefined;
+  const locale = useLocale();
   const isArabic = locale === "ar";
 
   return (
@@ -89,7 +112,7 @@ export function JobsContainer() {
         <>
           <JobFilters />
           <Separator />
-          <div className={cn("grid grid-cols-1 lg:grid-cols-5", "gap-8")}> 
+          <div className={cn("grid grid-cols-1 lg:grid-cols-5", "gap-8")}>
             {/* Flip order if Arabic */}
             {isArabic ? (
               <>
@@ -121,7 +144,7 @@ export function JobsContainer() {
           </div>
         </>
       ) : (
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <Tabs value={safeActiveTab} onValueChange={setActiveTab}>
           <ScrollArea className="w-full max-sm:pb-2 pb-0">
             <TabsList className={cn(tabsListStyles.home)}>
               <TabsTrigger
@@ -134,10 +157,15 @@ export function JobsContainer() {
                 <Pin className="h-4 w-4 mr-2" />
                 {t("tabs.recentSearches")}
               </TabsTrigger>
-              <TabsTrigger value="resume" className={cn(tabTriggerStyles.home)}>
-                <FileText className="h-4 w-4 mr-2" />
-                {t("tabs.resume")}
-              </TabsTrigger>
+              {isAuthenticated && (
+                <TabsTrigger
+                  value="resume"
+                  className={cn(tabTriggerStyles.home)}
+                >
+                  <FileText className="h-4 w-4 mr-2" />
+                  {t("tabs.resume")}
+                </TabsTrigger>
+              )}
             </TabsList>
             <ScrollBar
               orientation="horizontal"
@@ -147,7 +175,7 @@ export function JobsContainer() {
           <Separator />
 
           <TabsContent value="recommended" className="mt-6">
-            <div className={cn("grid grid-cols-1 lg:grid-cols-5", "gap-8")}> 
+            <div className={cn("grid grid-cols-1 lg:grid-cols-5", "gap-8")}>
               {/* Flip order if Arabic */}
               {isArabic ? (
                 <>
@@ -187,10 +215,11 @@ export function JobsContainer() {
               </div>
             </div>
           </TabsContent>
-
-          <TabsContent value="resume" className="mt-6">
-            <ResumeUpload />
-          </TabsContent>
+          {isAuthenticated && (
+            <TabsContent value="resume" className="mt-6">
+              <ResumeUpload />
+            </TabsContent>
+          )}
         </Tabs>
       )}
     </div>

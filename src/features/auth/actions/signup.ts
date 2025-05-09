@@ -48,7 +48,6 @@ export async function signupAction(
   try {
     const headersList = await headers();
     const combinedUA = await getUserAgentAndIp(headersList);
-    // console.log("Combined UA/IP:", combinedUA);
 
     // Transform the signup form data to match the API expectations.
     const signupData: SignupCredentials = {

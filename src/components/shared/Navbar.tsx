@@ -63,32 +63,9 @@ export function NavBar({ isNewVersion, url, version }: NavBarProps) {
 
   const navItems = [
     { name: t("jobs"), url: "/emplois", icon: Home },
-    // { name: t("formations"), url: "/formations", icon: User },
     { name: t("profile"), url: "/profile", icon: Briefcase },
     { name: tCommon("labels.resume"), url: "/profile/resume", icon: File },
-    // {
-    //   name: t("companies"),
-    //   url: "/companies/reviews",
-    //   icon: Star,
-    // },
   ];
-
-  // Log initial state
-  // useEffect(() => {
-  //   console.log("Current static data state:", {
-  //     emploi_contracts,
-  //     emploi_categories,
-  //     emploi_types,
-  //     languages,
-  //     support_categories,
-  //   });
-  // }, [
-  //   emploi_contracts,
-  //   emploi_categories,
-  //   emploi_types,
-  //   languages,
-  //   support_categories,
-  // ]);
 
   useEffect(() => {
     const initializeStaticData = async () => {
@@ -325,28 +302,16 @@ export function NavBar({ isNewVersion, url, version }: NavBarProps) {
                         </Link>
                       </DropdownMenuItem>
 
-                      {/* Jobs & Reviews Section */}
+                      {/* Jobs Section */}
                       <DropdownMenuItem
                         className="w-full hover:cursor-pointer"
                         asChild
                       >
-                        <Link href="/profile/my-jobs" className="flex  w-full">
-                          <Briefcase className=" h-4 w-4" />
+                        <Link href="/profile/my-jobs" className="flex w-full">
+                          <Briefcase className="h-4 w-4" />
                           <span>{t("myJobs")}</span>
                         </Link>
                       </DropdownMenuItem>
-                      {/* <DropdownMenuItem
-                        className="w-full hover:cursor-pointer"
-                        asChild
-                      >
-                        <Link
-                          href="/profile/my-reviews"
-                          className="flex w-full"
-                        >
-                          <Star className="h-4 w-4" />
-                          <span>{t("myReviews")}</span>
-                        </Link>
-                      </DropdownMenuItem> */}
 
                       <DropdownMenuSeparator />
 
