@@ -19,12 +19,12 @@ interface PagesLayoutProps {
 }
 
 export const metadata: Metadata = {
-  title: "Profile | Postuly",
+  title: "Emplois | Postuly",
   description: "Manage your professional profile, CV, and job applications.",
   openGraph: {
-    title: "Profile | Postuly",
+    title: "Emplois | Postuly",
     description: "Manage your professional profile, CV, and job applications.",
-    type: "profile",
+    type: "website",
     siteName: "Postuly",
   },
 };
