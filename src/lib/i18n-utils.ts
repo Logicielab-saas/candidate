@@ -4,6 +4,12 @@ import { defaultLocale } from "@/i18n/config";
 
 const LOCALE_COOKIE_KEY = "NEXT_LOCALE";
 
+export const apiLocaleMap: Record<Locale, string> = {
+  en: "en_US",
+  fr: "fr_FR",
+  ar: "ar_MA",
+};
+
 /**
  * Gets the user's locale from cookies or falls back to default locale
  * This should only be used in client components

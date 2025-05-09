@@ -1,3 +1,10 @@
+/**
+ * Navbar - Client Component
+ *
+ * Main navigation component for authenticated users with dynamic data loading
+ * and state management.
+ */
+
 "use client";
 
 import { motion } from "framer-motion";
@@ -41,25 +48,26 @@ import { requestPermission } from "@/lib/request-permission";
 import { useEffect, useState } from "react";
 import { logout } from "@/features/auth/services/logout";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Cookies from "js-cookie";
 import { fetchStaticDataAction } from "@/lib/actions/static-data.action";
 import { useStaticDataStore } from "@/store/use-static-data-store";
+import { useDataWebJson } from "@/hooks/use-data-web-json";
 
-interface NavBarProps {
-  isNewVersion: boolean;
-  url: string;
-  version: string;
-}
-
-export function NavBar({ isNewVersion, url, version }: NavBarProps) {
+export function NavBar() {
   const pathname = usePathname();
   const { data: profile, isLoading } = useProfile();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { setStaticData } = useStaticDataStore();
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const t = useTranslations("nav");
   const tCommon = useTranslations("common");
+  // Get user data from cookies
+  const userRole = Cookies.get("userRole") || "public";
+  const locale = useLocale();
+
+  const { data, isLoading: isLoadingData } = useDataWebJson(userRole, locale);
 
   const navItems = [
     { name: t("jobs"), url: "/emplois", icon: Home },
@@ -68,30 +76,33 @@ export function NavBar({ isNewVersion, url, version }: NavBarProps) {
   ];
 
   useEffect(() => {
-    const initializeStaticData = async () => {
+    const initializeData = async () => {
       try {
+        if (isLoadingData) return;
+        const storedVersion = Cookies.get("versionwebjs");
+        const currentVersion = data.version;
+        const isNewVersion = !storedVersion || storedVersion !== currentVersion;
+
         // Always fetch cached data first
-        const cachedData = await fetchStaticDataAction(url);
+        const cachedData = await fetchStaticDataAction(data.url);
         setStaticData(cachedData);
 
-        // Check version and update cache if needed
-        const storedVersion = Cookies.get("versionwebjs");
-        if (!storedVersion || storedVersion !== version) {
-          Cookies.set("versionwebjs", version, { expires: 365 });
-
-          if (isNewVersion) {
-            // This will update the cache for future requests
-            const freshData = await fetchStaticDataAction(url);
-            setStaticData(freshData);
-          }
+        if (isNewVersion) {
+          Cookies.set("versionwebjs", currentVersion, { expires: 365 });
+          // This will update the cache for future requests
+          const freshData = await fetchStaticDataAction(data.url);
+          setStaticData(freshData);
         }
+
+        setIsLoaded(true);
       } catch (error) {
-        console.error("Failed to initialize static data:", error);
+        console.error("Failed to initialize data:", error);
+        // Handle error appropriately
       }
     };
 
-    initializeStaticData();
-  }, [isNewVersion, setStaticData, url, version]);
+    initializeData();
+  }, [data, isLoadingData, setStaticData]);
 
   useEffect(() => {
     // Only request permission if we're in a browser environment
@@ -118,6 +129,45 @@ export function NavBar({ isNewVersion, url, version }: NavBarProps) {
         .join("")
         .toUpperCase()
     : "U";
+
+  if (!isLoaded) {
+    return (
+      <header className="flex h-14 items-center gap-2 px-4">
+        <div className="fixed top-0 left-0 right-0 z-50">
+          <div className="md:px-4">
+            <div className="md:mx-auto md:max-w-7xl md:mt-4">
+              <div className="md:rounded-xl bg-background/50 backdrop-blur-lg md:border md:shadow-sm border-b md:border-b">
+                <div className="px-4 py-2 flex items-center justify-between">
+                  {/* Left side - Logo and Menu */}
+                  <div className="flex items-center gap-2">
+                    <div className="md:hidden">
+                      <div className="h-9 w-9 rounded-lg bg-muted animate-pulse" />
+                    </div>
+                    <div className="h-6 w-24 bg-muted animate-pulse rounded" />
+                  </div>
+
+                  {/* Center - Navigation Items */}
+                  <div className="hidden md:flex items-center gap-3">
+                    <div className="h-8 w-20 bg-muted animate-pulse rounded-full" />
+                    <div className="h-8 w-20 bg-muted animate-pulse rounded-full" />
+                    <div className="h-8 w-20 bg-muted animate-pulse rounded-full" />
+                  </div>
+
+                  {/* Right side - Actions */}
+                  <div className="flex items-center gap-2">
+                    <div className="h-9 w-9 rounded-lg bg-muted animate-pulse" />
+                    <div className="h-9 w-9 rounded-lg bg-muted animate-pulse" />
+                    <div className="h-9 w-9 rounded-lg bg-muted animate-pulse" />
+                    <div className="h-9 w-9 rounded-full bg-muted animate-pulse" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header className={cn("flex h-14 items-center gap-2 px-4")}>

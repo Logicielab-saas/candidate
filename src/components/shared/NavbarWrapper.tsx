@@ -1,20 +1,14 @@
 /**
- * NavbarWrapper - Server Component
+ * NavbarWrapper - Client Component
  *
  * Conditionally renders either the authenticated user navbar or public navbar
- * based on the user's authentication status.
+ * based on client-side authentication status.
  */
 
-import { isAuthenticated } from "@/lib/actions/auth.actions";
 import { NavBar } from "./Navbar";
 import { PublicNavbar } from "./PublicNavbar";
-import { getDataWeb } from "@/services/static-data";
-import {
-  getUserLocaleOnServer,
-  getUserRoleOnServer,
-} from "@/lib/actions/getUserLocale.action";
-import { Locale } from "@/i18n/config";
 import { Suspense } from "react";
+import { isAuthenticated } from "@/lib/cookies";
 
 function NavbarFallback() {
   return (
@@ -55,46 +49,24 @@ function NavbarFallback() {
   );
 }
 
-async function NavbarContent() {
-  try {
-    const [isAuth, locale, userRole] = await Promise.all([
-      isAuthenticated(),
-      getUserLocaleOnServer(),
-      getUserRoleOnServer(),
-    ]);
-
-    const staticData = await getDataWeb({ userRole, locale: locale as Locale });
-
-    return isAuth ? (
-      <NavBar
-        isNewVersion={staticData.isNewVersion}
-        url={staticData.url}
-        version={staticData.version}
-      />
-    ) : (
-      <PublicNavbar
-        isNewVersion={staticData.isNewVersion}
-        url={staticData.url}
-        version={staticData.version}
-      />
-    );
-  } catch (error) {
-    console.error("NavbarWrapper error:", error);
-    // Return a minimal navbar in case of errors
-    return (
-      <header className="flex h-14 items-center gap-2 px-4 bg-background/50 backdrop-blur-lg border-b mx-auto">
-        <div className="flex items-center gap-2">
-          <span className="text-xl font-bold text-primary">Postuly</span>
-        </div>
-      </header>
-    );
-  }
-}
-
 export async function NavbarWrapper() {
+  // const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  // useEffect(() => {
+  //   const accessToken = Cookies.get("accessToken");
+  //   const userRole = Cookies.get("userRole");
+  //   setIsAuthenticated(!!(accessToken && userRole));
+  // }, []);
+
+  // // Show loading state while checking auth
+  // if (isAuthenticated === null) {
+  //   return <NavbarFallback />;
+  // }
+  const isAuthentictedUser = await isAuthenticated();
+
   return (
     <Suspense fallback={<NavbarFallback />}>
-      <NavbarContent />
+      {isAuthentictedUser ? <NavBar /> : <PublicNavbar />}
     </Suspense>
   );
 }
