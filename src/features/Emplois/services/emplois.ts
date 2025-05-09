@@ -90,7 +90,6 @@ export async function fetchEmploisBySlug(slug: string) {
   return response.data;
 }
 
-// TODO: Implement this FUNCTIONALITY NO APP TOMORROW (FRIDAY)
 export async function fetchSearchSuggestions(params: {
   q?: string;
   city?: string;
