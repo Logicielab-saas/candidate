@@ -126,13 +126,12 @@ export function PublicNavbar() {
   }
 
   return (
-    <header
-      className={cn(
-        "flex h-14 items-center gap-2 px-4",
-        isEmplois ? "absolute" : "fixed"
-      )}
-    >
-      <div className="fixed top-0 left-0 right-0 z-50">
+    <header className={cn("flex h-14 items-center gap-2 px-4")}>
+      <div
+        className={` ${
+          isEmplois ? "absolute" : "fixed"
+        }  top-0 left-0 right-0  z-50`}
+      >
         <div className="md:px-4">
           <div className="md:mx-auto md:max-w-7xl md:mt-4">
             <div className="md:rounded-xl bg-background/50 backdrop-blur-lg md:border md:shadow-sm border-b md:border-b">

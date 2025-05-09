@@ -31,6 +31,7 @@
         "noResults": "No reviews match your search."
       }
     },
+    "previewNotAvailable": "Preview not available for this file type",
     "minutes": "minutes",
     "inPersonInterview": "In Person Interview",
     "videoInterview": "Video Conference",
