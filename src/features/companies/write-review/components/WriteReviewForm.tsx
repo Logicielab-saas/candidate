@@ -37,10 +37,8 @@ export function WriteReviewForm() {
     },
   });
 
-  async function onSubmit(data: ReviewFormValues) {
+  async function onSubmit(_data: ReviewFormValues) {
     try {
-      // TODO: Implement API call to submit review
-      console.log("Form data:", { ...data, companySlug });
       toast({
         variant: "success",
         title: "Avis soumis avec succès",

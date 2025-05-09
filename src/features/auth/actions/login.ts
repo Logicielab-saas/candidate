@@ -26,7 +26,6 @@ export async function loginAction(
   try {
     const headersList = await headers();
     const deviceName = await getUserAgentAndIp(headersList);
-    console.log("Login attempt for user type:", credentials.user_type);
 
     // Create the credentials object with device name
     const loginData = {
@@ -36,10 +35,9 @@ export async function loginAction(
 
     // Call the appropriate login service based on user type
     if (credentials.user_type === "employee") {
-      console.log("Calling employeeLogin service");
-      const _result = await employeeLogin(loginData);
+      await employeeLogin(loginData);
 
-      // Revalidate relevant paths
+      // Revalidate relevant pathss
       revalidatePath("/");
       revalidatePath("/login");
       revalidatePath("/emplois");
@@ -50,8 +48,7 @@ export async function loginAction(
         redirectTo: "/emplois",
       };
     } else if (credentials.user_type === "recruiter") {
-      console.log("Calling recruiterLogin service");
-      const _result = await recruiterLogin(loginData);
+      await recruiterLogin(loginData);
 
       // Revalidate relevant paths
       revalidatePath("/");

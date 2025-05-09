@@ -11,17 +11,10 @@ import type { JobApplyFormData } from "@/core/types";
 import { hasAccessToken } from "@/lib/check-access-token";
 
 const isAuthenticated = hasAccessToken();
-console.log(isAuthenticated);
 const endpoint = isAuthenticated ? "/employee/emploi/apply" : "/emplois/apply";
 
 export async function ApplyToJob(data: JobApplyFormData) {
   try {
-    // Debug logging
-    console.log("Sending job application with data:", {
-      endpoint,
-      formDataEntries: Array.from((data as FormData).entries()),
-    });
-
     const response = await api.post(endpoint, data, {
       headers: {
         // Let axios set the proper multipart/form-data header with boundary
@@ -31,7 +24,7 @@ export async function ApplyToJob(data: JobApplyFormData) {
       },
       // Important: This tells axios to automatically handle the Content-Type header
       transformRequest: [
-        (data, headers) => {
+        (data) => {
           // If it's FormData, return as is
           if (data instanceof FormData) {
             return data;

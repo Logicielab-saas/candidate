@@ -58,8 +58,6 @@ export function NotificationsProvider({
         const messaging = getMessaging();
 
         onMessage(messaging, (payload) => {
-          console.log("Received foreground message:", payload);
-
           // Always show notification in foreground
           const notification: Notification = {
             id: Date.now().toString(),

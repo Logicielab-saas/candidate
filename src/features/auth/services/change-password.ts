@@ -34,9 +34,6 @@ export async function changePassword(
   formData.append("password", data.password);
   formData.append("password_confirmation", data.password_confirmation);
 
-  // Log FormData contents for debugging (excluding sensitive data)
-  console.log("Password change FormData fields:", Array.from(formData.keys()));
-
   const response = await api.post<ChangePasswordResponse>(
     `employee/change-password`,
     formData,

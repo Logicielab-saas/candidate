@@ -2,6 +2,8 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
 import { NavbarWrapper } from "@/components/shared/NavbarWrapper";
+import { isAuthenticated } from "@/lib/cookies";
+import { redirect } from "next/navigation";
 // import { NavBar } from "@/components/shared/Navbar";
 
 export const metadata: Metadata = {
@@ -14,11 +16,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  //* Check if user logged in then dont show auth pages
+  const isLoggedIn = await isAuthenticated();
+  if (isLoggedIn) redirect("/emplois");
   return (
     <>
       <NavbarWrapper />

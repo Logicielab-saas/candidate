@@ -33,11 +33,10 @@ export function AccountInfo() {
     return null;
   }
 
-  const handleEmailChange = async (newEmail: string) => {
+  const handleEmailChange = async (_newEmail: string) => {
     try {
       setIsUpdating(true);
       // TODO: Implement actual email change logic
-      console.log("Changing email to:", newEmail);
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
       toast({
         variant: "success",

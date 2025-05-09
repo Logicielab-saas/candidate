@@ -14,9 +14,11 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { AnimatedCheckmark } from "@/components/ui/animated-checkmark";
 import { useTranslations } from "next-intl";
+import { hasAccessToken } from "@/lib/check-access-token";
 
 export function SuccessScreen() {
   const tCommon = useTranslations("common");
+  const isAuthenticated = hasAccessToken();
   return (
     <div className="flex items-center justify-center">
       <div className="container max-w-2xl py-8">
@@ -75,10 +77,12 @@ export function SuccessScreen() {
                   </Link>
                 </Button>
                 <Button className="w-full sm:w-1/2" asChild>
-                  <Link href="/profile/my-jobs?tab=sent-applications">
-                    <ClipboardList className="mr-2 h-4 w-4" />
-                    {tCommon("followApplications")}
-                  </Link>
+                  {isAuthenticated && (
+                    <Link href="/profile/my-jobs?tab=sent-applications">
+                      <ClipboardList className="mr-2 h-4 w-4" />
+                      {tCommon("followApplications")}
+                    </Link>
+                  )}
                 </Button>
               </motion.div>
             </div>

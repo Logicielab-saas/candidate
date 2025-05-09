@@ -21,21 +21,17 @@ const PUBLIC_ROUTES = [
 
 // route protection configuration
 const ROUTES = {
-  PROTECTED: {
-    ADMIN: /^\/?(admin|dashboard\/admin)/,
-    RECRUITER: /^\/?(recruiter|dashboard\/recruiter)/,
-  },
+  // PROTECTED: {
+  //   ADMIN: /^\/?(admin|dashboard\/admin)/,
+  //   RECRUITER: /^\/?(recruiter|dashboard\/recruiter)/,
+  // },
   RESTRICTED: {
-    // * Routes that only admin can access
-    ADMIN_ONLY: ["overview"],
-    RECRUITER_ONLY: ["users", "company", "company-settings", "notifications"],
     // * Routes that require authentication and employee role
     EMPLOYEE_ONLY: ["/profile", "/settings", "/messages", "/notifications"],
   },
   // * default route redirection
   DEFAULT_REDIRECTS: {
-    ADMIN: "/admin/annonces",
-    RECRUITER: "/recruiter/annonces",
+    EMPLOYEE: "/emplois",
   },
 } as const;
 
@@ -46,17 +42,13 @@ function _isValidRole(role: string): role is ValidRole {
   return VALID_ROLES.includes(role as ValidRole);
 }
 
-function _isRestrictedPath(pathname: string): boolean {
-  return ROUTES.RESTRICTED.ADMIN_ONLY.some((path) => pathname.includes(path));
-}
-
-function _isEmployeeProtectedRoute(pathname: string): boolean {
+function isEmployeeProtectedRoute(pathname: string): boolean {
   return ROUTES.RESTRICTED.EMPLOYEE_ONLY.some(
     (route) => pathname.startsWith(route) || pathname === route
   );
 }
 
-function _isPublicRoute(pathname: string): boolean {
+function isPublicRoute(pathname: string): boolean {
   return PUBLIC_ROUTES.some(
     (route) => pathname === route || pathname.startsWith(`${route}/`)
   );
@@ -68,12 +60,12 @@ export default function middleware(request: NextRequest) {
   const userRole = request.cookies.get("userRole")?.value;
 
   // Allow access to public routes
-  if (_isPublicRoute(pathname)) {
+  if (isPublicRoute(pathname)) {
     return NextResponse.next();
   }
 
   // Check if trying to access employee protected routes
-  if (_isEmployeeProtectedRoute(pathname)) {
+  if (isEmployeeProtectedRoute(pathname)) {
     // If no token or not an employee, redirect to not-authorized
     if (!token || userRole !== "employee") {
       return NextResponse.redirect(new URL("/not-authorized", request.url));
@@ -81,16 +73,16 @@ export default function middleware(request: NextRequest) {
   }
 
   // Handle admin/recruiter route redirections
-  if (pathname === "/admin") {
-    return NextResponse.redirect(
-      new URL(ROUTES.DEFAULT_REDIRECTS.ADMIN, request.url)
-    );
-  }
-  if (pathname === "/recruiter") {
-    return NextResponse.redirect(
-      new URL(ROUTES.DEFAULT_REDIRECTS.RECRUITER, request.url)
-    );
-  }
+  // if (pathname === "/admin") {
+  //   return NextResponse.redirect(
+  //     new URL(ROUTES.DEFAULT_REDIRECTS.ADMIN, request.url)
+  //   );
+  // }
+  // if (pathname === "/recruiter") {
+  //   return NextResponse.redirect(
+  //     new URL(ROUTES.DEFAULT_REDIRECTS.RECRUITER, request.url)
+  //   );
+  // }
 
   if (pathname === "/recruiter/annonces/edit-annonce") {
     return NextResponse.redirect(new URL("/recruiter/annonces", request.url));

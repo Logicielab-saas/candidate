@@ -50,7 +50,6 @@ const firebaseCloudMessaging = {
           await getToken(messaging);
           return tokenInLocalStorage;
         } catch (_error) {
-          console.log("Existing token is invalid, requesting new token");
           localStorage.removeItem("fcmToken");
         }
       }
@@ -67,7 +66,6 @@ const firebaseCloudMessaging = {
         }
       }
 
-      console.log("Notification permission was not granted.");
       return null;
     } catch (error) {
       console.error("An error occurred while initializing Firebase:", error);
@@ -83,7 +81,6 @@ const firebaseCloudMessaging = {
       try {
         const messaging = getMessaging();
         onMessage(messaging, (payload) => {
-          console.log("Foreground message received:", payload);
           // You can handle the message here if needed
           if (payload.notification && "Notification" in window) {
             const { title, body, image } = payload.notification;

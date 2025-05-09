@@ -11,9 +11,9 @@ import {
   Bell,
   LogOut,
   Settings,
-  Star,
   HelpCircle,
   Menu,
+  File,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -65,6 +65,7 @@ export function NavBar({ isNewVersion, url, version }: NavBarProps) {
     { name: t("jobs"), url: "/emplois", icon: Home },
     // { name: t("formations"), url: "/formations", icon: User },
     { name: t("profile"), url: "/profile", icon: Briefcase },
+    { name: tCommon("labels.resume"), url: "/profile/resume", icon: File },
     // {
     //   name: t("companies"),
     //   url: "/companies/reviews",
@@ -334,7 +335,7 @@ export function NavBar({ isNewVersion, url, version }: NavBarProps) {
                           <span>{t("myJobs")}</span>
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem
+                      {/* <DropdownMenuItem
                         className="w-full hover:cursor-pointer"
                         asChild
                       >
@@ -345,7 +346,7 @@ export function NavBar({ isNewVersion, url, version }: NavBarProps) {
                           <Star className="h-4 w-4" />
                           <span>{t("myReviews")}</span>
                         </Link>
-                      </DropdownMenuItem>
+                      </DropdownMenuItem> */}
 
                       <DropdownMenuSeparator />
 

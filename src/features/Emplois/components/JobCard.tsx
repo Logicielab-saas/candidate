@@ -4,7 +4,6 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import type { Emplois } from "@/core/interfaces";
 import { Building2, MapPin } from "lucide-react";
 import { spanBadgeStyle } from "@/core/styles/span-badge.style";
-import { redirect } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { JobCardMenu } from "./JobCardMenu";
 import { useTranslations, useLocale } from "next-intl";
@@ -22,11 +21,6 @@ export function JobCard({ job, isSelected }: JobCardProps) {
   const locale = useLocale();
 
   const isAuthenticated = hasAccessToken();
-
-  const handleKeywordClick = (e: React.MouseEvent, skill: string) => {
-    e.stopPropagation(); // Prevent job card click
-    redirect(`/home?keyword=${encodeURIComponent(skill)}`);
-  };
 
   // Ensure arrays exist with default empty arrays
   const skills = job?.skills || [];
@@ -86,7 +80,7 @@ export function JobCard({ job, isSelected }: JobCardProps) {
               {skills.map((skill, index) => (
                 <span
                   key={index}
-                  onClick={(e) => handleKeywordClick(e, skill)}
+                  // onClick={(e) => handleKeywordClick(e, skill)}
                   className={cn(
                     spanBadgeStyle,
                     "cursor-pointer hover:bg-secondary/50 transition-colors"

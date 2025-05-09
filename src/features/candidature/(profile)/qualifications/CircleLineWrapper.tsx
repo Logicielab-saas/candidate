@@ -13,7 +13,6 @@ const CircleLineWrapper: React.FC<CircleLineWrapperProps> = ({
   children,
 }) => {
   const isRTL = useLocale() === "ar";
-  console.log(isRTL);
   return (
     <div
       className={`relative flex flex-col items-${

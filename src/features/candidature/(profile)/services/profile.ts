@@ -32,11 +32,6 @@ export async function updateProfile(data: UpdateProfileData) {
 
     // Handle File object for profile picture
     if (key === "image" && value instanceof File) {
-      console.log("Uploading image:", {
-        name: value.name,
-        type: value.type,
-        size: value.size,
-      });
       formData.append(key, value, value.name);
     }
     // Handle boolean value for is_male
@@ -48,15 +43,6 @@ export async function updateProfile(data: UpdateProfileData) {
       formData.append(key, value);
     }
   });
-
-  // Log FormData contents for debugging
-  console.log("FormData entries:");
-  for (const pair of formData.entries()) {
-    console.log(
-      pair[0],
-      pair[1] instanceof File ? `File: ${pair[1].name}` : pair[1]
-    );
-  }
 
   const response = await axios.post<Profile>(
     "/employee/user-profile",

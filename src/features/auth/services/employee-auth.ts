@@ -28,7 +28,6 @@ export async function employeeLogin(
       `${process.env.NEXT_PUBLIC_API_URL}employee/login`,
       credentials
     );
-    console.log(response);
 
     // Set the token in an HTTP-only cookie
     await setAuthToken(response.data.token);

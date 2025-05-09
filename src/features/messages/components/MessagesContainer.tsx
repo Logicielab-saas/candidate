@@ -70,7 +70,7 @@ export function MessagesContainer() {
     setIsMobileView(false);
   };
 
-  const handleReport = (message: Message, reason: string, details: string) => {
+  const handleReport = (message: Message, reason: string, _details: string) => {
     if (reason === "restore") {
       // Restore message from spam
       setMessages((prev) =>
@@ -81,14 +81,6 @@ export function MessagesContainer() {
       // When a message is restored, keep the current view
       return;
     }
-
-    // Regular spam report
-    const data = {
-      messageId: message.id,
-      reason,
-      details,
-    };
-    console.log(data);
     setMessages((prev) =>
       prev.map((msg) =>
         msg.id === message.id ? { ...msg, status: "spam" } : msg
